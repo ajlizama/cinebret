@@ -255,7 +255,7 @@ export default async function EstadisticasPage() {
         p => p.actores?.split(',').map(a => a.trim()).filter(Boolean) ?? [],
         2,
       ).slice(0, 8),
-      totalMovies: platMovies.length,
+      totalMovies: platMovies.filter(p => p.generos.length > 0).length,
     }
   }
 

@@ -273,14 +273,15 @@ export default function CatalogoPage() {
 
   const peliculasFiltradas = peliculas
     .filter(p => {
-      const q = busqueda.toLowerCase()
-      const matchBusqueda = !busqueda ||
+      const terminos = busqueda.split(',').map(t => t.trim().toLowerCase()).filter(Boolean)
+      const matchBusqueda = terminos.length === 0 || terminos.every(q =>
         p.titulo.toLowerCase().includes(q) ||
         (p.titulo_ingles || '').toLowerCase().includes(q) ||
         (p.director || '').toLowerCase().includes(q) ||
         (p.actores || '').toLowerCase().includes(q) ||
         p.generos.some(g => g.toLowerCase().includes(q)) ||
         (p.compositor || '').toLowerCase().includes(q)
+      )
 
       const matchPlataforma = plataformasFiltro.length === 0 ||
         plataformasFiltro.every(plat => p.plataformas.includes(plat))

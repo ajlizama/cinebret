@@ -20,9 +20,9 @@ type Cambio = {
   peliculas: { titulo: string; titulo_ingles: string | null; nota_imdb: number | null } | null
 }
 
-async function getCambios(): Promise<Cambio[]> {
+async function getCambios(dias: number): Promise<Cambio[]> {
   const desde = new Date()
-  desde.setDate(desde.getDate() - 30)
+  desde.setDate(desde.getDate() - dias)
   const desdeStr = desde.toISOString().split('T')[0]
 
   const all: Cambio[] = []
@@ -52,8 +52,16 @@ function formatFecha(fechaStr: string) {
   return date.toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
 }
 
-export default async function CambiosPage() {
-  const cambios = await getCambios()
+const PERIODOS = [
+  { label: 'Último día', dias: 1 },
+  { label: 'Últimos 7 días', dias: 7 },
+  { label: 'Últimos 30 días', dias: 30 },
+]
+
+export default async function CambiosPage({ searchParams }: { searchParams: Promise<{ dias?: string }> }) {
+  const { dias: diasParam } = await searchParams
+  const dias = [1, 7, 30].includes(Number(diasParam)) ? Number(diasParam) : 30
+  const cambios = await getCambios(dias)
 
   // Agrupar por fecha
   const porFecha = new Map<string, Cambio[]>()
@@ -82,8 +90,23 @@ export default async function CambiosPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-1">Cambios en catálogo</h1>
-          <p className="text-zinc-500 text-sm">Últimos 30 días · {totalEntradas} entradas · {totalSalidas} salidas</p>
+          <h1 className="text-3xl font-bold text-white mb-4">Cambios en catálogo</h1>
+          <div className="flex gap-2 mb-4">
+            {PERIODOS.map(p => (
+              <Link
+                key={p.dias}
+                href={`/cambios?dias=${p.dias}`}
+                className={`border rounded-lg px-4 py-2 text-sm transition-colors ${
+                  dias === p.dias
+                    ? 'border-yellow-400 bg-yellow-400 text-zinc-950 font-medium'
+                    : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
+                }`}
+              >
+                {p.label}
+              </Link>
+            ))}
+          </div>
+          <p className="text-zinc-500 text-sm">{totalEntradas} entradas · {totalSalidas} salidas</p>
         </div>
 
         {fechas.length === 0 ? (

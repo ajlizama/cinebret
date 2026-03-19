@@ -418,16 +418,13 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                             ) : (
                               <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
                             )}
-                            {pelicula.es_review_autor && (
-                              <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
-                            )}
                           </div>
                           <Link
                             href={`/pelicula/${pelicula.id}`}
-                            className="text-xs text-zinc-500 hover:text-white transition-colors"
+                            className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
                             onClick={e => e.stopPropagation()}
                           >
-                            Ver ficha completa →
+                            {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
                           </Link>
                         </div>
                         {/* Derecha: equipo + oscars */}
@@ -546,9 +543,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     ) : (
                       <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
                     )}
-                    {pelicula.es_review_autor && (
-                      <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
-                    )}
                   </div>
                   {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                     <div>
@@ -587,10 +581,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   </div>
                   <Link
                     href={`/pelicula/${pelicula.id}`}
-                    className="inline-block text-xs text-zinc-500 hover:text-white transition-colors"
+                    className={`inline-block text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
                     onClick={e => e.stopPropagation()}
                   >
-                    Ver ficha completa →
+                    {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
                   </Link>
                 </div>
               )}

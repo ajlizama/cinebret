@@ -273,9 +273,14 @@ export default function CatalogoPage() {
 
   const peliculasFiltradas = peliculas
     .filter(p => {
+      const q = busqueda.toLowerCase()
       const matchBusqueda = !busqueda ||
-        p.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
-        (p.titulo_ingles || '').toLowerCase().includes(busqueda.toLowerCase())
+        p.titulo.toLowerCase().includes(q) ||
+        (p.titulo_ingles || '').toLowerCase().includes(q) ||
+        (p.director || '').toLowerCase().includes(q) ||
+        (p.actores || '').toLowerCase().includes(q) ||
+        p.generos.some(g => g.toLowerCase().includes(q)) ||
+        (p.compositor || '').toLowerCase().includes(q)
 
       const matchPlataforma = plataformasFiltro.length === 0 ||
         plataformasFiltro.every(plat => p.plataformas.includes(plat))
@@ -348,10 +353,10 @@ export default function CatalogoPage() {
         <div className="flex flex-wrap gap-3 mb-4">
           <input
             type="text"
-            placeholder="Buscar película..."
+            placeholder="Buscar película, director, actor, género..."
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
-            className="bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm w-52 text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm w-72 text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
           />
           <MultiSelect
             label="Plataforma"

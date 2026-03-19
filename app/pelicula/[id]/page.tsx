@@ -38,7 +38,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
     .filter((c: any) => c.fecha === hoy && c.activo)
     .map((c: any) => c.plataforma)
 
-  const tieneReviewAutor = enr?.es_review_autor && enr?.review_autor
+  const tieneReviewAutor = enr?.review_autor
 
   return (
     <main className="min-h-screen bg-zinc-950">

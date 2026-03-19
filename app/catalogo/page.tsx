@@ -60,6 +60,7 @@ type Pelicula = {
   categoria: string | null
   plataformas: string[]
   es_review_autor: boolean
+  sello_bret: boolean
   director: string | null
   actores: string | null
   compositor: string | null
@@ -197,6 +198,7 @@ export default function CatalogoPage() {
   const [actoresDisponibles, setActoresDisponibles] = useState<string[]>([])
   const [compositoresDisponibles, setCompositoresDisponibles] = useState<string[]>([])
   const [orden, setOrden] = useState<Orden>('imdb')
+  const [pagina, setPagina] = useState(0)
   const [columnas, setColumnas] = useState<ColumnasExtra>({
     director: false,
     actores: false,
@@ -246,7 +248,7 @@ export default function CatalogoPage() {
           .from('peliculas')
           .select(`
             id, titulo, titulo_ingles, anio, nota_imdb, oscars, categoria, poster_path,
-            enriquecimiento (es_review_autor, director, actores, compositor, generos, sinopsis_chilensis)
+            enriquecimiento (es_review_autor, sello_bret, director, actores, compositor, generos, sinopsis_chilensis)
           `)
           .in('id', lote)
 
@@ -276,6 +278,7 @@ export default function CatalogoPage() {
             sinopsis: enr.sinopsis_chilensis || null,
             plataformas: plataformasPorPelicula[p.id] || [],
             es_review_autor: enr.es_review_autor || false,
+            sello_bret: enr.sello_bret || false,
             director: enr.director || null,
             actores: enr.actores || null,
             compositor: enr.compositor || null,
@@ -347,6 +350,9 @@ export default function CatalogoPage() {
     generosFiltro.length > 0 || directoresFiltro.length > 0 ||
     actoresFiltro.length > 0 || compositoresFiltro.length > 0 || soloReviews
 
+  // Resetear página al cambiar filtros u orden
+  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, soloReviews, orden])
+
   const limpiarFiltros = () => {
     setBusqueda('')
     setPlataformasFiltro([])
@@ -356,7 +362,12 @@ export default function CatalogoPage() {
     setActoresFiltro([])
     setCompositoresFiltro([])
     setSoloReviews(false)
+    setPagina(0)
   }
+
+  const POR_PAGINA = 200
+  const totalPaginas = Math.ceil(peliculasFiltradas.length / POR_PAGINA)
+  const peliculasPagina = peliculasFiltradas.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA)
 
   return (
     <main className="min-h-screen bg-zinc-950">
@@ -376,7 +387,33 @@ export default function CatalogoPage() {
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-1">Catálogo</h1>
-          <p className="text-zinc-500 text-sm">{peliculas.length} películas disponibles</p>
+          <p className="text-zinc-500 text-sm mb-6">{peliculas.length} películas disponibles</p>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            {[
+              'grok-image-1327d1af-2281-4de3-993f-b7f1a9fbc04a.png',
+              'grok-image-49a19a4c-29a0-4004-9846-a9a267d735e7.png',
+              'grok-image-513fac9b-9a0f-4a9d-a198-6577a71d7e99.png',
+              'grok-image-51d5db78-3829-4fb7-91d1-fec1f4d4e5fb.png',
+              'grok-image-57e4c680-6fba-417b-892b-b1d7ab57b1ff.png',
+              'grok-image-687f30d5-1463-4646-9d79-5142f8649dd1.png',
+              'grok-image-91511f66-7d4b-47fb-a927-1d91a760392d.png',
+              'grok-image-9a93a78f-2f38-4066-ae26-4015b4c48138.png',
+              'grok-image-a1d16758-d46b-4846-bb3b-fc23613c929f.png',
+              'grok-image-a2f13aa6-ec32-4efa-91f3-488186406b70.png',
+              'grok-image-be622a5c-fa71-42d4-b494-f2a3d0e295fa.png',
+              'grok-image-c1d4ff63-7f5d-47e8-9e4c-f6c503b24967.png',
+              'grok-image-e5f99d18-940e-4a52-a49e-befe853ee4ac.png',
+              'grok-image-ee8e466c-8f36-42ba-a81c-a50d66e79e94.png',
+              'grok-image-f0601cd7-c078-4ebd-9cd5-b534d79c7e9e.png',
+            ].map(file => (
+              <img
+                key={file}
+                src={`/iconos/${file}`}
+                alt=""
+                className="h-16 w-16 object-cover rounded-xl"
+              />
+            ))}
+          </div>
         </div>
 
         {/* Filtros */}
@@ -481,14 +518,26 @@ export default function CatalogoPage() {
           <div className="text-center py-20 text-zinc-500">Cargando catálogo...</div>
         ) : (
           <>
-            <p className="text-sm text-zinc-500 mb-4">
-              {peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}
-            </p>
+            <div className="flex items-center gap-4 mb-4">
+              <p className="text-sm text-zinc-500">
+                {peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}
+              </p>
+              <div className="flex items-center gap-3 text-xs text-zinc-500">
+                <span className="flex items-center gap-1.5">
+                  <span className="font-serif italic font-bold bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded">CB</span>
+                  Contiene crítica CineBret
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="font-serif italic font-bold border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded">★ Recomendada</span>
+                  Recomendada por CineBret
+                </span>
+              </div>
+            </div>
 
             {/* Tabla con scroll interno */}
             <div
               className="border border-zinc-800 rounded-xl overflow-hidden"
-              style={{ height: 'calc(100vh - 340px)', overflowY: 'auto' }}
+              style={{ height: 'calc(100vh - 190px)', minHeight: '650px', overflowY: 'auto' }}
             >
               <table className="w-full text-sm">
                 <thead className="sticky top-0 z-10">
@@ -506,7 +555,7 @@ export default function CatalogoPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {peliculasFiltradas.slice(0, 200).map((pelicula, i) => (
+                  {peliculasPagina.map((pelicula, i) => (
                     <React.Fragment key={pelicula.id}>
                       <tr
                         onClick={() => setExpandida(expandida === pelicula.id ? null : pelicula.id)}
@@ -518,36 +567,44 @@ export default function CatalogoPage() {
                               : 'bg-zinc-900/40 hover:bg-zinc-900'
                         }`}
                       >
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-zinc-600 text-xs">
-                              {expandida === pelicula.id ? '▲' : '▼'}
-                            </span>
-                            {pelicula.poster_path ? (
-                              <Image
-                                src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
-                                alt={pelicula.titulo}
-                                width={32}
-                                height={48}
-                                className="rounded object-cover shrink-0"
-                              />
-                            ) : (
-                              <div className="w-8 h-12 bg-zinc-800 rounded shrink-0" />
-                            )}
-                            <div>
-                              <div className="flex items-center gap-1.5">
+                        <td className="p-0" style={{ height: '1px' }}>
+                          <div className="flex items-stretch h-full">
+                            <div className="flex items-center px-3 py-3">
+                              <span className="text-zinc-600 text-xs">
+                                {expandida === pelicula.id ? '▲' : '▼'}
+                              </span>
+                            </div>
+                            <div className="relative w-9 shrink-0 self-stretch">
+                              {pelicula.poster_path ? (
+                                <Image
+                                  src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
+                                  alt={pelicula.titulo}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <div className="absolute inset-0 bg-zinc-800" />
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5 px-3 py-3">
+                              <div>
                                 <span className="font-semibold text-white truncate max-w-48 block">
                                   {pelicula.titulo_ingles || pelicula.titulo}
                                 </span>
-                                {pelicula.es_review_autor && (
-                                  <span className="shrink-0 text-xs bg-yellow-400 text-zinc-950 font-bold px-1.5 py-0.5 rounded-full">
-                                    CB
+                                {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
+                                  <span className="text-xs text-zinc-500 truncate max-w-48 block">
+                                    {pelicula.titulo}
                                   </span>
                                 )}
                               </div>
-                              {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                                <span className="text-xs text-zinc-500 truncate max-w-48 block">
-                                  {pelicula.titulo}
+                              {pelicula.es_review_autor && (
+                                <span className="shrink-0 font-serif italic text-xs font-bold bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded">
+                                  CB
+                                </span>
+                              )}
+                              {pelicula.sello_bret && (
+                                <span className="shrink-0 font-serif italic text-xs font-bold border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded">
+                                  ★ Recomendada
                                 </span>
                               )}
                             </div>
@@ -648,7 +705,7 @@ export default function CatalogoPage() {
                             <div className="grid grid-cols-1 gap-3 max-w-3xl">
                               <div>
                                 <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">
-                                  {pelicula.es_review_autor ? '✍️ Review CineBret' : '🤖 Sinopsis IA'}
+                                  🤖 Sinopsis IA
                                 </p>
                                 {pelicula.sinopsis ? (
                                   <p className="text-sm text-zinc-300 leading-relaxed italic">
@@ -657,6 +714,11 @@ export default function CatalogoPage() {
                                 ) : (
                                   <p className="text-sm text-zinc-600 leading-relaxed italic">
                                     Pendiente de enriquecimiento — disponible en los próximos días
+                                  </p>
+                                )}
+                                {pelicula.es_review_autor && (
+                                  <p className="text-xs text-yellow-400 mt-2">
+                                    ✍️ Ver ficha para reseña CineBret
                                   </p>
                                 )}
                               </div>
@@ -677,10 +739,27 @@ export default function CatalogoPage() {
               </table>
             </div>
 
-            {peliculasFiltradas.length > 200 && (
-              <p className="text-center text-sm text-zinc-500 mt-4">
-                Mostrando 200 de {peliculasFiltradas.length} — usa los filtros para reducir
-              </p>
+            {totalPaginas > 1 && (
+              <div className="flex items-center justify-center gap-3 mt-4">
+                <button
+                  onClick={() => setPagina(p => Math.max(0, p - 1))}
+                  disabled={pagina === 0}
+                  className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
+                >
+                  ← Anterior
+                </button>
+                <span className="text-sm text-zinc-500">
+                  Página <span className="text-white font-medium">{pagina + 1}</span> de {totalPaginas}
+                  <span className="text-zinc-600 ml-2">({peliculasFiltradas.length} resultados)</span>
+                </span>
+                <button
+                  onClick={() => setPagina(p => Math.min(totalPaginas - 1, p + 1))}
+                  disabled={pagina === totalPaginas - 1}
+                  className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
+                >
+                  Siguiente →
+                </button>
+              </div>
             )}
           </>
         )}

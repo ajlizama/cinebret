@@ -14,12 +14,12 @@ const GENEROS_EN_A_ES: Record<string, string> = {
 const normalizarGenero = (g: string) => GENEROS_EN_A_ES[g] ?? g
 
 const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700' },
-  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700' },
-  { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600' },
-  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-gray-800' },
-  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500' },
+  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
+  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-gray-800', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
 ]
 
 type RankingEntry = { nombre: string; avg: number; count: number }

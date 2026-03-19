@@ -14,7 +14,7 @@ type PlatStats = {
   totalMovies: number
 }
 
-type Plataforma = { id: string; nombre: string; color: string }
+type Plataforma = { id: string; nombre: string; color: string; logo: string }
 
 type Props = {
   mejoresEvaluados: {
@@ -68,11 +68,7 @@ export default function EstadisticasInteractivas({
   const maxRankingAvg = ranking[0]?.avg ?? 10
 
   const platStats = porPlataforma[platSeleccionada]
-  const maxPlatAvg = Math.max(
-    ...(platStats?.generos.map(g => g.avg) ?? []),
-    ...(platStats?.categorias.map(c => c.avg) ?? []),
-    1,
-  )
+  const maxPlatAvg = Math.max(...(platStats?.generos.map(g => g.avg) ?? []), 1)
 
   const oscarsLista = oscarsPersonas[tabOscars]
 
@@ -189,6 +185,53 @@ export default function EstadisticasInteractivas({
         {!platStats || platStats.totalMovies === 0 ? (
           <p className="text-sm text-zinc-500">No hay películas en esta plataforma hoy</p>
         ) : (
+          {/* Mapa de categorías */}
+          <div className="mb-10">
+            <h3 className="text-sm font-semibold text-zinc-200 mb-1">Mapa de vibe por plataforma</h3>
+            <p className="text-xs text-zinc-500 mb-4">Posición según distribución de categorías CineBret</p>
+            <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl" style={{ height: 320 }}>
+              {/* Ejes */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-full h-px bg-zinc-700" />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="h-full w-px bg-zinc-700" />
+              </div>
+              {/* Labels ejes */}
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight">Pa'l domingo de bajón</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight text-right">Pa' quedar con el cerebro como licuadora</span>
+              <span className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' saltar del sillón</span>
+              <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' llorar a moco tendido</span>
+              {/* Plataformas */}
+              {plataformas.map(plat => {
+                const cats = porPlataforma[plat.id]?.categorias ?? []
+                const get = (nombre: string) => cats.find(c => c.nombre === nombre)?.count ?? 0
+                const bajon = get("Pa'l domingo de bajón")
+                const licuadora = get("Pa' quedar con el cerebro como licuadora")
+                const sillon = get("Pa' saltar del sillón")
+                const moco = get("Pa' llorar a moco tendido")
+                const total = bajon + licuadora + sillon + moco
+                if (total === 0) return null
+                const x = (licuadora - bajon) / total  // -1 a +1
+                const y = (sillon - moco) / total       // -1 a +1
+                const left = `${50 + x * 38}%`
+                const top = `${50 - y * 38}%`
+                return (
+                  <div
+                    key={plat.id}
+                    className="absolute -translate-x-1/2 -translate-y-1/2"
+                    style={{ left, top }}
+                    title={plat.nombre}
+                  >
+                    <div className="bg-white rounded px-1.5 py-0.5 shadow-lg">
+                      <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-10">
             {/* Géneros */}
             <div>
@@ -228,26 +271,6 @@ export default function EstadisticasInteractivas({
                   </>
                 )
               })()}
-            </div>
-
-            {/* Categorías */}
-            <div>
-              <h3 className="text-sm font-semibold text-zinc-200 mb-1">Categorías</h3>
-              <p className="text-xs text-zinc-500 mb-4">IMDB promedio ponderado por categoría CineBret</p>
-              <div className="space-y-2.5">
-                {platStats.categorias.map(entry => (
-                  <div key={entry.nombre}>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="truncate pr-2 text-zinc-300">{entry.nombre}</span>
-                      <div className="flex gap-2.5 shrink-0 text-xs">
-                        <span className="text-zinc-500">{entry.count} pelis</span>
-                        <span className="text-yellow-400 font-bold">⭐ {entry.avg}</span>
-                      </div>
-                    </div>
-                    <BaraAvg avg={entry.avg} max={maxPlatAvg} />
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Directores en plataforma */}

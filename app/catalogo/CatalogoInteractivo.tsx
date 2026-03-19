@@ -26,6 +26,10 @@ export type Pelicula = {
   titulo_ingles: string | null
   anio: number | null
   nota_imdb: number | null
+  rt_score: number | null
+  metacritic_score: number | null
+  runtime: number | null
+  boxoffice: number | null
   categoria: string | null
   plataformas: string[]
   es_review_autor: boolean
@@ -297,7 +301,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
               <th className="text-left px-4 py-3 w-64">Película</th>
               <th className="text-center px-3 py-3 w-16">Año</th>
-              <th className="text-center px-3 py-3 w-20">IMDB</th>
+              <th className="text-center px-3 py-3 w-24">Ratings</th>
               <th className="text-center px-3 py-3 w-48">Géneros</th>
               {columnas.director && <th className="text-left px-3 py-3 w-36">Director</th>}
               {columnas.actores && <th className="text-left px-3 py-3 w-48">Actores</th>}
@@ -348,9 +352,20 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   </td>
                   <td className="px-3 py-3 text-center text-zinc-400">{pelicula.anio || '—'}</td>
                   <td className="px-3 py-3 text-center">
-                    {pelicula.nota_imdb
-                      ? <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
-                      : <span className="text-zinc-700">—</span>}
+                    <div className="flex flex-col gap-0.5 items-center">
+                      {pelicula.nota_imdb != null && (
+                        <span className="font-bold text-yellow-400 text-xs">⭐ {pelicula.nota_imdb}</span>
+                      )}
+                      {pelicula.rt_score != null && (
+                        <span className="text-xs text-red-400">🍅 {pelicula.rt_score}%</span>
+                      )}
+                      {pelicula.metacritic_score != null && (
+                        <span className="text-xs text-green-400">MC {pelicula.metacritic_score}</span>
+                      )}
+                      {pelicula.nota_imdb == null && pelicula.rt_score == null && pelicula.metacritic_score == null && (
+                        <span className="text-zinc-700">—</span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-3 py-3">
                     <div className="flex flex-wrap gap-1 justify-center">
@@ -429,6 +444,22 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                         </div>
                         {/* Derecha: equipo + oscars */}
                         <div className="space-y-3">
+                          {(pelicula.runtime != null || pelicula.boxoffice != null) && (
+                            <div className="flex gap-6">
+                              {pelicula.runtime != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Duración</p>
+                                  <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
+                                </div>
+                              )}
+                              {pelicula.boxoffice != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Taquilla</p>
+                                  <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
                           {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Oscars</p>
@@ -507,12 +538,18 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
                     <span className="text-xs text-zinc-500 block mb-1">{pelicula.titulo}</span>
                   )}
-                  <div className="flex items-center gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-xs flex-wrap">
                     {pelicula.anio && (
                       <span className="text-zinc-400">{pelicula.anio}</span>
                     )}
-                    {pelicula.nota_imdb && (
+                    {pelicula.nota_imdb != null && (
                       <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
+                    )}
+                    {pelicula.rt_score != null && (
+                      <span className="text-red-400">🍅 {pelicula.rt_score}%</span>
+                    )}
+                    {pelicula.metacritic_score != null && (
+                      <span className="text-green-400">MC {pelicula.metacritic_score}</span>
                     )}
                   </div>
                   {pelicula.categoria && (
@@ -562,6 +599,22 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
                     )}
                   </div>
+                  {(pelicula.runtime != null || pelicula.boxoffice != null) && (
+                    <div className="flex gap-6">
+                      {pelicula.runtime != null && (
+                        <div>
+                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
+                          <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
+                        </div>
+                      )}
+                      {pelicula.boxoffice != null && (
+                        <div>
+                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
+                          <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                   {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                     <div>
                       <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Oscars</p>

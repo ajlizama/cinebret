@@ -59,7 +59,7 @@ export default async function CatalogoPage() {
     ),
     fetchAllPages((from, to) =>
       supabase.from('peliculas').select(`
-        id, titulo, titulo_ingles, anio, nota_imdb, oscars, categoria, poster_path,
+        id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, categoria, poster_path,
         enriquecimiento (es_review_autor, sello_bret, director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, generos, sinopsis_chilensis)
       `).range(from, to)
     ),
@@ -81,6 +81,10 @@ export default async function CatalogoPage() {
       titulo_ingles: p.titulo_ingles ?? null,
       anio: p.anio ?? null,
       nota_imdb: p.nota_imdb ?? null,
+      rt_score: p.rt_score ?? null,
+      metacritic_score: p.metacritic_score ?? null,
+      runtime: p.runtime ?? null,
+      boxoffice: p.boxoffice ?? null,
       categoria: p.categoria ?? null,
       poster_path: p.poster_path ?? null,
       oscars: p.oscars ?? null,

@@ -7,12 +7,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700' },
-  { id: 'hbo_max', nombre: 'HBO', color: 'bg-purple-700' },
-  { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600' },
-  { id: 'apple_tv', nombre: 'Apple', color: 'bg-zinc-600' },
-  { id: 'paramount_plus', nombre: 'Paramount', color: 'bg-blue-500' },
+  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
+  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', nombre: 'HBO', color: 'bg-purple-700', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
 ]
 
 const CATEGORIAS = [
@@ -559,20 +559,20 @@ export default function CatalogoPage() {
                           </td>
                         )}
                         <td className="px-3 py-3">
-                          <div className="flex gap-1 flex-wrap justify-center">
+                          <div className="flex gap-1.5 flex-wrap justify-center items-center">
                             {PLATAFORMAS.map(plat => {
                               const activa = pelicula.plataformas.includes(plat.id)
                               return (
-                                <span
+                                <div
                                   key={plat.id}
-                                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                                    activa
-                                      ? `${plat.color} text-white`
-                                      : 'bg-zinc-800 text-zinc-600'
-                                  }`}
+                                  className={`rounded px-1.5 py-0.5 bg-white transition-opacity ${activa ? 'opacity-100' : 'opacity-20'}`}
                                 >
-                                  {plat.nombre}
-                                </span>
+                                  <img
+                                    src={plat.logo}
+                                    alt={plat.nombre}
+                                    className="h-3.5 w-auto object-contain"
+                                  />
+                                </div>
                               )
                             })}
                           </div>

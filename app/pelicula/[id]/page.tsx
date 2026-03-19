@@ -4,12 +4,12 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700' },
-  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700' },
-  { id: 'amazon_prime', nombre: 'Prime Video', color: 'bg-cyan-600' },
-  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600' },
-  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500' },
+  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
+  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', nombre: 'Prime Video', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
 ]
 
 async function getPelicula(id: string) {
@@ -78,7 +78,10 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                   <span className="text-yellow-400 font-bold text-base">⭐ {pelicula.nota_imdb}</span>
                 )}
                 {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                  <span className="text-yellow-500">🏆 {pelicula.oscars}</span>
+                  <span className="flex items-center gap-1.5 text-yellow-500">
+                    <img src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
+                    {pelicula.oscars}
+                  </span>
                 )}
               </div>
             </div>
@@ -199,12 +202,14 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                   return (
                     <div
                       key={plat.id}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
-                        activa ? 'bg-zinc-800 text-white' : 'text-zinc-700'
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-opacity ${
+                        activa ? 'bg-zinc-800' : 'opacity-25'
                       }`}
                     >
-                      <span className={`w-2 h-2 rounded-full shrink-0 ${activa ? plat.color : 'bg-zinc-800'}`}/>
-                      {plat.nombre}
+                      <div className="bg-white rounded px-1.5 py-0.5 shrink-0">
+                        <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                      </div>
+                      <span className={activa ? 'text-white' : 'text-zinc-500'}>{plat.nombre}</span>
                     </div>
                   )
                 })}

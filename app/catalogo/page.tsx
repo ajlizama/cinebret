@@ -55,6 +55,7 @@ type MultiSelectProps = {
 
 function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectProps) {
   const [abierto, setAbierto] = useState(false)
+  const [busqueda, setBusqueda] = useState('')
 
   const toggle = (opcion: string) => {
     if (seleccionados.includes(opcion)) {
@@ -62,6 +63,15 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
     } else {
       onChange([...seleccionados, opcion])
     }
+  }
+
+  const opcionesFiltradas = opciones.filter(o =>
+    o.toLowerCase().includes(busqueda.toLowerCase())
+  )
+
+  const handleClose = () => {
+    setAbierto(false)
+    setBusqueda('')
   }
 
   return (
@@ -87,11 +97,22 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
         <>
           <div
             className="fixed inset-0 z-10"
-            onClick={() => setAbierto(false)}
+            onClick={handleClose}
           />
-          <div className="absolute top-full mt-1 left-0 z-20 bg-white border border-gray-200 rounded-xl shadow-lg min-w-52 max-h-64 overflow-y-auto">
+          <div className="absolute top-full mt-1 left-0 z-20 bg-white border border-gray-200 rounded-xl shadow-lg min-w-52 flex flex-col max-h-72">
+            <div className="p-2 border-b border-gray-100 shrink-0">
+              <input
+                autoFocus
+                type="text"
+                placeholder="Buscar..."
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
+                onClick={e => e.stopPropagation()}
+                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400"
+              />
+            </div>
             {seleccionados.length > 0 && (
-              <div className="border-b border-gray-100 px-3 py-2">
+              <div className="border-b border-gray-100 px-3 py-2 shrink-0">
                 <button
                   onClick={() => onChange([])}
                   className="text-xs text-gray-400 hover:text-black transition-colors"
@@ -100,24 +121,30 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
                 </button>
               </div>
             )}
-            {opciones.map(opcion => (
-              <div
-                key={opcion}
-                onClick={() => toggle(opcion)}
-                className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
-              >
-                <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
-                  seleccionados.includes(opcion)
-                    ? 'bg-gray-800 border-gray-800'
-                    : 'border-gray-300'
-                }`}>
-                  {seleccionados.includes(opcion) && (
-                    <span className="text-white text-xs">✓</span>
-                  )}
-                </div>
-                <span className="truncate">{opcion}</span>
-              </div>
-            ))}
+            <div className="overflow-y-auto">
+              {opcionesFiltradas.length === 0 ? (
+                <p className="text-xs text-gray-400 px-3 py-3">Sin resultados</p>
+              ) : (
+                opcionesFiltradas.map(opcion => (
+                  <div
+                    key={opcion}
+                    onClick={() => toggle(opcion)}
+                    className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
+                  >
+                    <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                      seleccionados.includes(opcion)
+                        ? 'bg-gray-800 border-gray-800'
+                        : 'border-gray-300'
+                    }`}>
+                      {seleccionados.includes(opcion) && (
+                        <span className="text-white text-xs">✓</span>
+                      )}
+                    </div>
+                    <span className="truncate">{opcion}</span>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </>
       )}

@@ -408,41 +408,50 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 {expandida === pelicula.id && (
                   <tr>
                     <td colSpan={7 + colsExtras} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
-                      <div className="grid grid-cols-1 gap-4 max-w-3xl">
-                        <div>
-                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
-                          {pelicula.sinopsis ? (
-                            <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
-                          ) : (
-                            <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
-                          )}
-                          {pelicula.es_review_autor && (
-                            <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
-                          )}
-                        </div>
-                        {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                      <div className="grid grid-cols-2 gap-8">
+                        {/* Izquierda: sinopsis + links */}
+                        <div className="space-y-3">
                           <div>
-                            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Oscars</p>
-                            <p className="text-sm text-yellow-500">{pelicula.oscars}</p>
+                            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
+                            {pelicula.sinopsis ? (
+                              <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
+                            ) : (
+                              <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
+                            )}
+                            {pelicula.es_review_autor && (
+                              <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
+                            )}
                           </div>
-                        )}
-                        <div className="grid grid-cols-3 gap-4">
+                          <Link
+                            href={`/pelicula/${pelicula.id}`}
+                            className="text-xs text-zinc-500 hover:text-white transition-colors"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            Ver ficha completa →
+                          </Link>
+                        </div>
+                        {/* Derecha: equipo + oscars */}
+                        <div className="space-y-3">
+                          {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                            <div>
+                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Oscars</p>
+                              <p className="text-sm text-yellow-500">{pelicula.oscars}</p>
+                            </div>
+                          )}
                           {pelicula.director && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
-                              <p className="text-sm text-zinc-200">{pelicula.director}</p>
-                              {!!pelicula.director_oscars && <p className="text-xs text-yellow-500 mt-0.5">★ {pelicula.director_oscars} Oscar{pelicula.director_oscars !== 1 ? 's' : ''}</p>}
+                              <p className="text-sm text-zinc-200">{pelicula.director}{!!pelicula.director_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.director_oscars} Oscar{pelicula.director_oscars !== 1 ? 's' : ''}</span>}</p>
                             </div>
                           )}
                           {pelicula.compositor && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
-                              <p className="text-sm text-zinc-200">{pelicula.compositor}</p>
-                              {!!pelicula.compositor_oscars && <p className="text-xs text-yellow-500 mt-0.5">★ {pelicula.compositor_oscars} Oscar{pelicula.compositor_oscars !== 1 ? 's' : ''}</p>}
+                              <p className="text-sm text-zinc-200">{pelicula.compositor}{!!pelicula.compositor_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.compositor_oscars} Oscar{pelicula.compositor_oscars !== 1 ? 's' : ''}</span>}</p>
                             </div>
                           )}
                           {pelicula.actores && (
-                            <div className="col-span-3">
+                            <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
                               <div className="flex flex-wrap gap-x-3 gap-y-1">
                                 {pelicula.actores.split(',').map(a => {
@@ -458,13 +467,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                             </div>
                           )}
                         </div>
-                        <Link
-                          href={`/pelicula/${pelicula.id}`}
-                          className="text-xs text-zinc-500 hover:text-white transition-colors"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          Ver ficha completa →
-                        </Link>
                       </div>
                     </td>
                   </tr>

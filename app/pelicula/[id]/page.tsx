@@ -180,7 +180,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
           </div>
 
           {/* Columna lateral */}
-          <div className="space-y-6">
+          <div className="flex flex-col gap-4">
 
             {/* Poster */}
             {pelicula.poster_path && (
@@ -195,53 +195,25 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Dónde ver */}
             <div>
-              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Disponible en</p>
-              <div className="space-y-2">
+              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
+              <div className="grid grid-cols-2 gap-1.5">
                 {PLATAFORMAS.map(plat => {
                   const activa = plataformasHoy.includes(plat.id)
                   return (
                     <div
                       key={plat.id}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-opacity ${
-                        activa ? 'bg-zinc-800' : 'opacity-25'
+                      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-opacity ${
+                        activa ? 'bg-zinc-800' : 'opacity-20'
                       }`}
                     >
-                      <div className="bg-white rounded px-1.5 py-0.5 shrink-0">
-                        <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                      <div className="bg-white rounded px-1 py-0.5 shrink-0">
+                        <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
                       </div>
-                      <span className={activa ? 'text-white' : 'text-zinc-500'}>{plat.nombre}</span>
+                      <span className={`text-xs truncate ${activa ? 'text-white' : 'text-zinc-500'}`}>{plat.nombre}</span>
                     </div>
                   )
                 })}
               </div>
-            </div>
-
-            {/* Info rápida */}
-            <div className="border border-zinc-800 bg-zinc-900 rounded-xl p-4 space-y-3">
-              {pelicula.anio && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Año</span>
-                  <span className="text-zinc-200">{pelicula.anio}</span>
-                </div>
-              )}
-              {pelicula.nota_imdb && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">IMDB</span>
-                  <span className="text-yellow-400 font-bold">⭐ {pelicula.nota_imdb}</span>
-                </div>
-              )}
-              {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Oscars</span>
-                  <span className="text-zinc-200">{pelicula.oscars}</span>
-                </div>
-              )}
-              {pelicula.categoria && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Categoría</span>
-                  <span className="text-zinc-200 text-right max-w-32">{pelicula.categoria}</span>
-                </div>
-              )}
             </div>
           </div>
         </div>

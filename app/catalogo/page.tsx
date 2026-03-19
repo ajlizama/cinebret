@@ -36,6 +36,7 @@ type Pelicula = {
   compositor: string | null
   generos: string[]
   poster_path: string | null
+  oscars: string | null
 }
 
 type ColumnasExtra = {
@@ -214,7 +215,7 @@ export default function CatalogoPage() {
         const { data } = await supabase
           .from('peliculas')
           .select(`
-            id, titulo, titulo_ingles, anio, nota_imdb, categoria, poster_path,
+            id, titulo, titulo_ingles, anio, nota_imdb, oscars, categoria, poster_path,
             enriquecimiento (es_review_autor, director, actores, compositor, generos)
           `)
           .in('id', lote)
@@ -241,6 +242,7 @@ export default function CatalogoPage() {
             nota_imdb: p.nota_imdb,
             categoria: p.categoria,
             poster_path: p.poster_path || null,
+            oscars: p.oscars || null,
             plataformas: plataformasPorPelicula[p.id] || [],
             es_review_autor: enr.es_review_autor || false,
             director: enr.director || null,
@@ -462,6 +464,7 @@ export default function CatalogoPage() {
                     {columnas.actores && <th className="text-left px-3 py-3 w-48">Actores</th>}
                     {columnas.compositor && <th className="text-left px-3 py-3 w-36">Compositor</th>}
                     <th className="text-center px-3 py-3 w-36">Plataformas</th>
+                    <th className="text-center px-3 py-3 w-20">Oscars</th>
                     <th className="text-center px-3 py-3 w-40">Categoría</th>
                   </tr>
                 </thead>
@@ -578,6 +581,15 @@ export default function CatalogoPage() {
                           </div>
                         </td>
                         <td className="px-3 py-3 text-center">
+                          {pelicula.oscars && pelicula.oscars !== 'N/A'
+                            ? <span className="flex items-center justify-center gap-0.5">
+                                <img src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
+                                <span className="text-xs text-yellow-400 font-bold">{pelicula.oscars.match(/\d+/)?.[0]}</span>
+                              </span>
+                            : <span className="text-zinc-700 text-xs">—</span>
+                          }
+                        </td>
+                        <td className="px-3 py-3 text-center">
                           {pelicula.categoria
                             ? <span className="text-xs text-zinc-400">{pelicula.categoria}</span>
                             : <span className="text-zinc-700 text-xs">—</span>
@@ -588,7 +600,7 @@ export default function CatalogoPage() {
                       {/* Fila expandida */}
                       {expandida === pelicula.id && (
                         <tr>
-                          <td colSpan={6 + colsExtras} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
+                          <td colSpan={7 + colsExtras} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
                             <div className="grid grid-cols-1 gap-3 max-w-3xl">
                               <div>
                                 <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">

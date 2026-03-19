@@ -37,6 +37,7 @@ type Pelicula = {
   generos: string[]
   poster_path: string | null
   oscars: string | null
+  sinopsis: string | null
 }
 
 type ColumnasExtra = {
@@ -216,7 +217,7 @@ export default function CatalogoPage() {
           .from('peliculas')
           .select(`
             id, titulo, titulo_ingles, anio, nota_imdb, oscars, categoria, poster_path,
-            enriquecimiento (es_review_autor, director, actores, compositor, generos)
+            enriquecimiento (es_review_autor, director, actores, compositor, generos, sinopsis_chilensis)
           `)
           .in('id', lote)
 
@@ -243,6 +244,7 @@ export default function CatalogoPage() {
             categoria: p.categoria,
             poster_path: p.poster_path || null,
             oscars: p.oscars || null,
+            sinopsis: enr.sinopsis_chilensis || null,
             plataformas: plataformasPorPelicula[p.id] || [],
             es_review_autor: enr.es_review_autor || false,
             director: enr.director || null,
@@ -606,9 +608,15 @@ export default function CatalogoPage() {
                                 <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">
                                   {pelicula.es_review_autor ? '✍️ Review CineBret' : '🤖 Sinopsis IA'}
                                 </p>
-                                <p className="text-sm text-zinc-400 leading-relaxed italic">
-                                  Pendiente de enriquecimiento — disponible en los próximos días
-                                </p>
+                                {pelicula.sinopsis ? (
+                                  <p className="text-sm text-zinc-300 leading-relaxed italic">
+                                    {pelicula.sinopsis}
+                                  </p>
+                                ) : (
+                                  <p className="text-sm text-zinc-600 leading-relaxed italic">
+                                    Pendiente de enriquecimiento — disponible en los próximos días
+                                  </p>
+                                )}
                               </div>
                               <Link
                                 href={`/pelicula/${pelicula.id}`}

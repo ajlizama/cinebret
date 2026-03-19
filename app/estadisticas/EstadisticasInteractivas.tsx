@@ -679,32 +679,43 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight text-right">Pa' quedar con el cerebro como licuadora</span>
                 <span className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' saltar del sillón</span>
                 <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' llorar a moco tendido</span>
-                {plataformas.map(plat => {
-                  const cats = porPlataforma[plat.id]?.categorias ?? []
-                  const get = (nombre: string) => cats.find(c => c.nombre === nombre)?.count ?? 0
-                  const bajon = get("Pa'l domingo de bajón")
-                  const licuadora = get("Pa' quedar con el cerebro como licuadora")
-                  const sillon = get("Pa' saltar del sillón")
-                  const moco = get("Pa' llorar a moco tendido")
-                  const total = bajon + licuadora + sillon + moco
-                  if (total === 0) return null
-                  const x = (licuadora - bajon) / total
-                  const y = (sillon - moco) / total
-                  const left = `${50 + x * 44}%`
-                  const top = `${50 - y * 38}%`
-                  return (
-                    <div
-                      key={plat.id}
-                      className="absolute -translate-x-1/2 -translate-y-1/2"
-                      style={{ left, top }}
-                      title={plat.nombre}
-                    >
-                      <div className="bg-white rounded px-1.5 py-0.5 shadow-lg">
-                        <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
+                {(() => {
+                  const puntos = plataformas.map(plat => {
+                    const cats = porPlataforma[plat.id]?.categorias ?? []
+                    const get = (nombre: string) => cats.find(c => c.nombre === nombre)?.count ?? 0
+                    const bajon = get("Pa'l domingo de bajón")
+                    const licuadora = get("Pa' quedar con el cerebro como licuadora")
+                    const sillon = get("Pa' saltar del sillón")
+                    const moco = get("Pa' llorar a moco tendido")
+                    const total = bajon + licuadora + sillon + moco
+                    if (total === 0) return null
+                    return { plat, x: (licuadora - bajon) / total, y: (sillon - moco) / total }
+                  }).filter(Boolean) as { plat: Plataforma; x: number; y: number }[]
+
+                  const xs = puntos.map(p => p.x)
+                  const ys = puntos.map(p => p.y)
+                  const minX = Math.min(...xs), maxX = Math.max(...xs)
+                  const minY = Math.min(...ys), maxY = Math.max(...ys)
+                  const rangeX = maxX - minX || 1
+                  const rangeY = maxY - minY || 1
+
+                  return puntos.map(({ plat, x, y }) => {
+                    const left = `${15 + ((x - minX) / rangeX) * 70}%`
+                    const top = `${85 - ((y - minY) / rangeY) * 70}%`
+                    return (
+                      <div
+                        key={plat.id}
+                        className="absolute -translate-x-1/2 -translate-y-1/2"
+                        style={{ left, top }}
+                        title={plat.nombre}
+                      >
+                        <div className="bg-white rounded px-1.5 py-0.5 shadow-lg opacity-70">
+                          <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })
+                })()}
               </div>
             </div>
 

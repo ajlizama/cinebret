@@ -667,7 +667,53 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
           <>
             <div className="mb-10">
               <h3 className="text-sm font-semibold text-zinc-200 mb-1">Mapa de vibe por plataforma</h3>
-              <p className="text-xs text-zinc-500 mb-4">Posición según distribución de categorías CineBret</p>
+              <p className="text-xs text-zinc-500 mb-4">Posición según distribución de categorías CineBret · peso = suma notas IMDB</p>
+
+              {/* Tabla de pesos por plataforma */}
+              <div className="mb-4 overflow-x-auto">
+                <table className="w-full text-xs text-zinc-400 border-collapse">
+                  <thead>
+                    <tr className="border-b border-zinc-800">
+                      <th className="text-left py-1.5 pr-3 text-zinc-500 font-normal">Plataforma</th>
+                      <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">🥲 Bajón</th>
+                      <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">🧠 Licuadora</th>
+                      <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">🪑 Sillón</th>
+                      <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">😭 Moco</th>
+                      <th className="text-right py-1.5 pl-2 text-zinc-500 font-normal">X axis</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {plataformas.map(plat => {
+                      const platMovies = peliculasFiltradas.filter(p => p.plataformas.includes(plat.id))
+                      let bajon = 0, licuadora = 0, sillon = 0, moco = 0
+                      for (const p of platMovies) {
+                        const w = p.nota_imdb ?? 0
+                        const cat = p.categoria ?? ''
+                        if (cat.includes('bajón')) bajon += w
+                        else if (cat.includes('licuadora')) licuadora += w
+                        else if (cat.includes('sillón')) sillon += w
+                        else if (cat.includes('moco')) moco += w
+                      }
+                      const total = bajon + licuadora + sillon + moco
+                      const x = total > 0 ? (licuadora - bajon) / total : 0
+                      return (
+                        <tr key={plat.id} className="border-b border-zinc-800/50">
+                          <td className="py-1.5 pr-3 text-zinc-300 font-medium">{plat.nombre}</td>
+                          <td className="text-right px-2 tabular-nums">{Math.round(bajon)}</td>
+                          <td className="text-right px-2 tabular-nums">{Math.round(licuadora)}</td>
+                          <td className="text-right px-2 tabular-nums">{Math.round(sillon)}</td>
+                          <td className="text-right px-2 tabular-nums">{Math.round(moco)}</td>
+                          <td className={`text-right pl-2 tabular-nums font-bold ${x < 0 ? 'text-blue-400' : 'text-orange-400'}`}>
+                            {x.toFixed(3)}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+                <p className="text-xs text-zinc-600 mt-1">X negativo → izquierda (bajón) · X positivo → derecha (licuadora)</p>
+              </div>
+
               <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl mx-auto" style={{ height: 320, maxWidth: 420 }}>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="w-full h-px bg-zinc-700" />

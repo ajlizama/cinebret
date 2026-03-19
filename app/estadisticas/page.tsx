@@ -2,6 +2,17 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import EstadisticasInteractivas from './EstadisticasInteractivas'
 
+const GENEROS_EN_A_ES: Record<string, string> = {
+  'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
+  'Comedy': 'Comedia', 'Crime': 'Crimen', 'Documentary': 'Documental',
+  'Drama': 'Drama', 'Fantasy': 'Fantasía', 'History': 'Historia',
+  'Horror': 'Terror', 'Music': 'Música', 'Mystery': 'Misterio',
+  'Romance': 'Romance', 'Science Fiction': 'Ciencia ficción', 'Sci-Fi': 'Ciencia ficción',
+  'Thriller': 'Thriller', 'War': 'Guerra', 'Western': 'Western',
+  'Family': 'Familia', 'Biography': 'Biografía', 'Sport': 'Deporte', 'Musical': 'Musical',
+}
+const normalizarGenero = (g: string) => GENEROS_EN_A_ES[g] ?? g
+
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600' },
   { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700' },
@@ -132,7 +143,7 @@ export default async function EstadisticasPage() {
       actores_oscars: (enr.actores_oscars as Record<string, number>) || null,
       compositor: (enr.compositor as string) || null,
       compositor_oscars: (enr.compositor_oscars as number) ?? null,
-      generos: (enr.generos as string[]) || [],
+      generos: ((enr.generos as string[]) || []).map(normalizarGenero),
       plataformas: platMap[p.id] ?? [],
       es_review_autor: (enr.es_review_autor as boolean) || false,
     }

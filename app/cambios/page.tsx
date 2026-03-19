@@ -150,7 +150,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
                           <div className="bg-emerald-950/30 border-b border-zinc-800 px-4 py-2">
                             <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Entran al catálogo</span>
                           </div>
-                          <div className="divide-y divide-zinc-800/50">
+                          <div className="divide-y divide-zinc-800/50 overflow-y-auto max-h-[420px]">
                             {entradas.map(c => {
                               const plat = PLATAFORMAS[c.plataforma]
                               const titulo = c.peliculas?.titulo_ingles || c.peliculas?.titulo || '—'
@@ -178,7 +178,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
                           <div className="bg-red-950/30 border-b border-zinc-800 px-4 py-2">
                             <span className="text-xs font-semibold text-red-400 uppercase tracking-wider">Salen del catálogo</span>
                           </div>
-                          <div className="divide-y divide-zinc-800/50">
+                          <div className="divide-y divide-zinc-800/50 overflow-y-auto max-h-[420px]">
                             {salidas.map(c => {
                               const plat = PLATAFORMAS[c.plataforma]
                               const titulo = c.peliculas?.titulo_ingles || c.peliculas?.titulo || '—'

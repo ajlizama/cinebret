@@ -516,6 +516,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
                     )}
                   </div>
+                  {pelicula.categoria && (
+                    <span className="text-xs text-zinc-500 mt-0.5">{pelicula.categoria}</span>
+                  )}
                 </div>
 
                 {/* Chevron */}

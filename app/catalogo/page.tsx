@@ -192,6 +192,7 @@ export default function CatalogoPage() {
   const [actoresFiltro, setActoresFiltro] = useState<string[]>([])
   const [compositoresFiltro, setCompositoresFiltro] = useState<string[]>([])
   const [soloReviews, setSoloReviews] = useState(false)
+  const [soloSello, setSoloSello] = useState(false)
   const [expandida, setExpandida] = useState<string | null>(null)
   const [generosDisponibles, setGenerosDisponibles] = useState<string[]>([])
   const [directoresDisponibles, setDirectoresDisponibles] = useState<string[]>([])
@@ -334,9 +335,10 @@ export default function CatalogoPage() {
         compositoresFiltro.includes(p.compositor || '')
 
       const matchReview = !soloReviews || p.es_review_autor
+      const matchSello = !soloSello || p.sello_bret
 
       return matchBusqueda && matchPlataforma && matchCategoria &&
-        matchGenero && matchDirector && matchActor && matchCompositor && matchReview
+        matchGenero && matchDirector && matchActor && matchCompositor && matchReview && matchSello
     })
     .sort((a, b) => {
       if (orden === 'imdb') return (b.nota_imdb || 0) - (a.nota_imdb || 0)
@@ -348,10 +350,10 @@ export default function CatalogoPage() {
 
   const hayFiltros = busqueda || plataformasFiltro.length > 0 || categoriasFiltro.length > 0 ||
     generosFiltro.length > 0 || directoresFiltro.length > 0 ||
-    actoresFiltro.length > 0 || compositoresFiltro.length > 0 || soloReviews
+    actoresFiltro.length > 0 || compositoresFiltro.length > 0 || soloReviews || soloSello
 
   // Resetear página al cambiar filtros u orden
-  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, soloReviews, orden])
+  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, soloReviews, soloSello, orden])
 
   const limpiarFiltros = () => {
     setBusqueda('')
@@ -362,6 +364,7 @@ export default function CatalogoPage() {
     setActoresFiltro([])
     setCompositoresFiltro([])
     setSoloReviews(false)
+    setSoloSello(false)
     setPagina(0)
   }
 
@@ -471,6 +474,16 @@ export default function CatalogoPage() {
           >
             Solo reviews CineBret
           </button>
+          <button
+            onClick={() => setSoloSello(!soloSello)}
+            className={`border rounded-lg px-4 py-2 text-sm transition-colors ${
+              soloSello
+                ? 'bg-emerald-500 text-white border-emerald-500 font-medium'
+                : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
+            }`}
+          >
+            Solo recomendadas
+          </button>
           {hayFiltros && (
             <button
               onClick={limpiarFiltros}
@@ -523,14 +536,20 @@ export default function CatalogoPage() {
                 {peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}
               </p>
               <div className="flex items-center gap-3 text-xs text-zinc-500">
-                <span className="flex items-center gap-1.5">
-                  <span className="font-serif italic font-bold bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded">CB</span>
+                <button
+                  onClick={() => setSoloReviews(!soloReviews)}
+                  className={`flex items-center gap-1.5 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
+                >
+                  <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-2 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
                   Contiene crítica CineBret
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="font-serif italic font-bold border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded">★ Recomendada</span>
+                </button>
+                <button
+                  onClick={() => setSoloSello(!soloSello)}
+                  className={`flex items-center gap-1.5 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
+                >
+                  <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded ${soloSello ? 'border-emerald-400 text-emerald-400 ring-2 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★ Recomendada</span>
                   Recomendada por CineBret
-                </span>
+                </button>
               </div>
             </div>
 

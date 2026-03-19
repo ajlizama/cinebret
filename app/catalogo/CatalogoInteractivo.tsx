@@ -477,17 +477,19 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             >
               {/* Fila principal */}
               <div className="flex items-start gap-3">
-                {/* Thumbnail */}
-                <div className="relative w-10 h-14 shrink-0 rounded overflow-hidden bg-zinc-800">
-                  {pelicula.poster_path && (
-                    <Image
-                      src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
-                      alt={pelicula.titulo}
-                      fill
-                      className="object-cover"
-                    />
-                  )}
-                </div>
+                {/* Thumbnail pequeño — solo cuando NO está expandida */}
+                {!isExpanded && (
+                  <div className="relative w-10 h-14 shrink-0 rounded overflow-hidden bg-zinc-800">
+                    {pelicula.poster_path && (
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
+                        alt={pelicula.titulo}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                )}
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
@@ -514,12 +516,25 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     )}
                   </div>
                   {pelicula.categoria && (
-                    <span className="text-xs text-zinc-500 mt-0.5">{pelicula.categoria}</span>
+                    <span className="text-xs text-zinc-500 mt-0.5 block">{pelicula.categoria}</span>
                   )}
                 </div>
 
-                {/* Chevron */}
-                <span className="text-zinc-600 text-xs shrink-0 mt-1">{isExpanded ? '▲' : '▼'}</span>
+                {/* Poster grande a la derecha — solo cuando está expandida, reemplaza al chevron */}
+                {isExpanded ? (
+                  <div className="relative w-20 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ height: 120 }}>
+                    {pelicula.poster_path ? (
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`}
+                        alt={pelicula.titulo}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : null}
+                  </div>
+                ) : (
+                  <span className="text-zinc-600 text-xs shrink-0 mt-1">▼</span>
+                )}
               </div>
 
               {/* Logos de plataformas activas */}
@@ -536,6 +551,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               {/* Contenido expandido */}
               {isExpanded && (
                 <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3">
+                  <div className="flex justify-end">
+                    <span className="text-zinc-600 text-xs">▲ colapsar</span>
+                  </div>
                   <div>
                     <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
                     {pelicula.sinopsis ? (

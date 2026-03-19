@@ -682,7 +682,11 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
                 {(() => {
                   const puntos = plataformas.map(plat => {
                     const cats = porPlataforma[plat.id]?.categorias ?? []
-                    const get = (nombre: string) => cats.find(c => c.nombre === nombre)?.count ?? 0
+                    // Peso = suma de notas IMDB (count × avg) → películas mejor puntuadas pesan más
+                    const get = (nombre: string) => {
+                      const c = cats.find(e => e.nombre === nombre)
+                      return c ? c.count * c.avg : 0
+                    }
                     const bajon = get("Pa'l domingo de bajón")
                     const licuadora = get("Pa' quedar con el cerebro como licuadora")
                     const sillon = get("Pa' saltar del sillón")
@@ -699,9 +703,17 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
                   const rangeX = maxX - minX || 1
                   const rangeY = maxY - minY || 1
 
+                  // Curva de potencia: normaliza a [-1,1] respecto al centro del rango,
+                  // luego aplica |v|^0.55 manteniendo signo → amplifica los extremos
+                  const curve = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 0.55)
+
                   return puntos.map(({ plat, x, y }) => {
-                    const left = `${15 + ((x - minX) / rangeX) * 70}%`
-                    const top = `${85 - ((y - minY) / rangeY) * 70}%`
+                    const midX = (minX + maxX) / 2
+                    const midY = (minY + maxY) / 2
+                    const normX = rangeX > 0 ? (x - midX) / (rangeX / 2) : 0
+                    const normY = rangeY > 0 ? (y - midY) / (rangeY / 2) : 0
+                    const left = `${50 + curve(normX) * 35}%`
+                    const top = `${50 - curve(normY) * 35}%`
                     return (
                       <div
                         key={plat.id}

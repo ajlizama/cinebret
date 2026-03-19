@@ -584,10 +584,17 @@ export default function CatalogoPage() {
                         </td>
                         <td className="px-3 py-3 text-center">
                           {pelicula.oscars && pelicula.oscars !== 'N/A'
-                            ? <span className="flex items-center justify-center gap-0.5">
-                                <img src="/oscar.png" alt="Oscar" className="h-8 w-auto" />
-                                <span className="text-base text-yellow-400 font-bold">{pelicula.oscars.match(/\d+/)?.[0]}</span>
-                              </span>
+                            ? (() => {
+                                const gano = pelicula.oscars.toLowerCase().startsWith('ganó')
+                                return (
+                                  <span className="flex items-center justify-center gap-0.5">
+                                    <img src="/oscar.png" alt="Oscar" className={`h-8 w-auto ${gano ? 'opacity-100' : 'opacity-25'}`} />
+                                    <span className={`text-base font-bold ${gano ? 'text-yellow-400' : 'text-zinc-600'}`}>
+                                      {pelicula.oscars.match(/\d+/)?.[0]}
+                                    </span>
+                                  </span>
+                                )
+                              })()
                             : <span className="text-zinc-700 text-xs">—</span>
                           }
                         </td>

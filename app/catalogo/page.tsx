@@ -11,7 +11,7 @@ const PLATAFORMAS = [
   { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700' },
   { id: 'hbo_max', nombre: 'HBO', color: 'bg-purple-700' },
   { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600' },
-  { id: 'apple_tv', nombre: 'Apple', color: 'bg-gray-800' },
+  { id: 'apple_tv', nombre: 'Apple', color: 'bg-zinc-600' },
   { id: 'paramount_plus', nombre: 'Paramount', color: 'bg-blue-500' },
 ]
 
@@ -80,13 +80,13 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
         onClick={() => setAbierto(!abierto)}
         className={`border rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-colors ${
           seleccionados.length > 0
-            ? 'border-gray-800 bg-gray-800 text-white'
-            : 'border-gray-200 text-gray-600 hover:border-gray-400'
+            ? 'border-yellow-400 bg-yellow-400 text-zinc-950 font-medium'
+            : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
         }`}
       >
         {label}
         {seleccionados.length > 0 && (
-          <span className="bg-white text-gray-800 text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+          <span className="bg-zinc-950 text-yellow-400 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
             {seleccionados.length}
           </span>
         )}
@@ -95,12 +95,9 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
 
       {abierto && (
         <>
-          <div
-            className="fixed inset-0 z-10"
-            onClick={handleClose}
-          />
-          <div className="absolute top-full mt-1 left-0 z-20 bg-white border border-gray-200 rounded-xl shadow-lg min-w-52 flex flex-col max-h-72">
-            <div className="p-2 border-b border-gray-100 shrink-0">
+          <div className="fixed inset-0 z-10" onClick={handleClose} />
+          <div className="absolute top-full mt-1 left-0 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl min-w-52 flex flex-col max-h-72">
+            <div className="p-2 border-b border-zinc-800 shrink-0">
               <input
                 autoFocus
                 type="text"
@@ -108,14 +105,14 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
                 onClick={e => e.stopPropagation()}
-                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400"
+                className="w-full px-3 py-1.5 text-sm bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
               />
             </div>
             {seleccionados.length > 0 && (
-              <div className="border-b border-gray-100 px-3 py-2 shrink-0">
+              <div className="border-b border-zinc-800 px-3 py-2 shrink-0">
                 <button
                   onClick={() => onChange([])}
-                  className="text-xs text-gray-400 hover:text-black transition-colors"
+                  className="text-xs text-zinc-500 hover:text-white transition-colors"
                 >
                   Limpiar selección
                 </button>
@@ -123,24 +120,24 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
             )}
             <div className="overflow-y-auto">
               {opcionesFiltradas.length === 0 ? (
-                <p className="text-xs text-gray-400 px-3 py-3">Sin resultados</p>
+                <p className="text-xs text-zinc-500 px-3 py-3">Sin resultados</p>
               ) : (
                 opcionesFiltradas.map(opcion => (
                   <div
                     key={opcion}
                     onClick={() => toggle(opcion)}
-                    className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
+                    className="flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 cursor-pointer text-sm"
                   >
                     <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
                       seleccionados.includes(opcion)
-                        ? 'bg-gray-800 border-gray-800'
-                        : 'border-gray-300'
+                        ? 'bg-yellow-400 border-yellow-400'
+                        : 'border-zinc-600'
                     }`}>
                       {seleccionados.includes(opcion) && (
-                        <span className="text-white text-xs">✓</span>
+                        <span className="text-zinc-950 text-xs font-bold">✓</span>
                       )}
                     </div>
-                    <span className="truncate">{opcion}</span>
+                    <span className="truncate text-zinc-300">{opcion}</span>
                   </div>
                 ))
               )}
@@ -323,24 +320,24 @@ export default function CatalogoPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-zinc-950">
       {/* Navbar */}
-      <nav className="border-b border-gray-100 px-6 py-4">
+      <nav className="border-b border-zinc-800 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-semibold tracking-tight">CineBret</Link>
-          <div className="flex gap-6 text-sm text-gray-500">
-            <Link href="/" className="hover:text-black transition-colors">Inicio</Link>
-            <Link href="/catalogo" className="text-black font-medium">Catálogo</Link>
-            <Link href="/cambios" className="hover:text-black transition-colors">Cambios</Link>
-            <Link href="/estadisticas" className="hover:text-black transition-colors">Estadísticas</Link>
+          <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
+          <div className="flex gap-6 text-sm text-zinc-500">
+            <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
+            <Link href="/catalogo" className="text-white font-medium">Catálogo</Link>
+            <Link href="/cambios" className="hover:text-white transition-colors">Cambios</Link>
+            <Link href="/estadisticas" className="hover:text-white transition-colors">Estadísticas</Link>
           </div>
         </div>
       </nav>
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold mb-1">Catálogo</h1>
-          <p className="text-gray-400 text-sm">{peliculas.length} películas disponibles</p>
+          <h1 className="text-3xl font-bold text-white mb-1">Catálogo</h1>
+          <p className="text-zinc-500 text-sm">{peliculas.length} películas disponibles</p>
         </div>
 
         {/* Filtros */}
@@ -350,7 +347,7 @@ export default function CatalogoPage() {
             placeholder="Buscar película..."
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
-            className="border border-gray-200 rounded-lg px-4 py-2 text-sm w-52 focus:outline-none focus:border-gray-400"
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm w-52 text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
           />
           <MultiSelect
             label="Plataforma"
@@ -392,8 +389,8 @@ export default function CatalogoPage() {
             onClick={() => setSoloReviews(!soloReviews)}
             className={`border rounded-lg px-4 py-2 text-sm transition-colors ${
               soloReviews
-                ? 'bg-black text-white border-black'
-                : 'border-gray-200 text-gray-600 hover:border-gray-400'
+                ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium'
+                : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
             }`}
           >
             Solo reviews CineBret
@@ -401,7 +398,7 @@ export default function CatalogoPage() {
           {hayFiltros && (
             <button
               onClick={limpiarFiltros}
-              className="text-sm text-gray-400 hover:text-black transition-colors px-2"
+              className="text-sm text-zinc-500 hover:text-white transition-colors px-2"
             >
               Limpiar todo ✕
             </button>
@@ -411,15 +408,15 @@ export default function CatalogoPage() {
         {/* Ordenamiento y columnas */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 mr-1">Columnas extra:</span>
+            <span className="text-xs text-zinc-500 mr-1">Columnas extra:</span>
             {(['director', 'actores', 'compositor'] as const).map(col => (
               <button
                 key={col}
                 onClick={() => toggleColumna(col)}
                 className={`border rounded-full px-3 py-1 text-xs transition-colors ${
                   columnas[col]
-                    ? 'bg-gray-800 text-white border-gray-800'
-                    : 'border-gray-200 text-gray-500 hover:border-gray-400'
+                    ? 'bg-zinc-200 text-zinc-950 border-zinc-200 font-medium'
+                    : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'
                 }`}
               >
                 {col.charAt(0).toUpperCase() + col.slice(1)}
@@ -427,11 +424,11 @@ export default function CatalogoPage() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Ordenar por:</span>
+            <span className="text-xs text-zinc-500">Ordenar por:</span>
             <select
               value={orden}
               onChange={e => setOrden(e.target.value as Orden)}
-              className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-gray-400"
+              className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm text-zinc-300 focus:outline-none focus:border-zinc-500"
             >
               <option value="imdb">Mayor IMDB</option>
               <option value="anio_desc">Más recientes</option>
@@ -442,21 +439,21 @@ export default function CatalogoPage() {
         </div>
 
         {cargando ? (
-          <div className="text-center py-20 text-gray-400">Cargando catálogo...</div>
+          <div className="text-center py-20 text-zinc-500">Cargando catálogo...</div>
         ) : (
           <>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-sm text-zinc-500 mb-4">
               {peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}
             </p>
 
             {/* Tabla con scroll interno */}
             <div
-              className="border border-gray-100 rounded-xl overflow-hidden"
+              className="border border-zinc-800 rounded-xl overflow-hidden"
               style={{ height: 'calc(100vh - 340px)', overflowY: 'auto' }}
             >
               <table className="w-full text-sm">
                 <thead className="sticky top-0 z-10">
-                  <tr className="bg-gray-50 text-xs text-gray-400 font-medium uppercase tracking-wide">
+                  <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
                     <th className="text-left px-4 py-3 w-64">Película</th>
                     <th className="text-center px-3 py-3 w-16">Año</th>
                     <th className="text-center px-3 py-3 w-20">IMDB</th>
@@ -473,56 +470,56 @@ export default function CatalogoPage() {
                     <React.Fragment key={pelicula.id}>
                       <tr
                         onClick={() => setExpandida(expandida === pelicula.id ? null : pelicula.id)}
-                        className={`cursor-pointer border-t border-gray-50 transition-colors ${
+                        className={`cursor-pointer border-t border-zinc-800 transition-colors ${
                           expandida === pelicula.id
-                            ? 'bg-gray-50'
+                            ? 'bg-zinc-800'
                             : i % 2 === 0
-                              ? 'bg-white hover:bg-gray-50/50'
-                              : 'bg-gray-50/30 hover:bg-gray-50'
+                              ? 'bg-zinc-950 hover:bg-zinc-900'
+                              : 'bg-zinc-900/40 hover:bg-zinc-900'
                         }`}
                       >
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <span className="text-gray-300 text-xs">
+                            <span className="text-zinc-600 text-xs">
                               {expandida === pelicula.id ? '▲' : '▼'}
                             </span>
                             {pelicula.poster_path ? (
                               <Image
                                 src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
                                 alt={pelicula.titulo}
-                                width={24}
-                                height={36}
+                                width={32}
+                                height={48}
                                 className="rounded object-cover shrink-0"
                               />
                             ) : (
-                              <div className="w-6 h-9 bg-gray-100 rounded shrink-0" />
+                              <div className="w-8 h-12 bg-zinc-800 rounded shrink-0" />
                             )}
                             <div>
                               <div className="flex items-center gap-1.5">
-                                <span className="font-medium text-gray-900 truncate max-w-48 block">
+                                <span className="font-semibold text-white truncate max-w-48 block">
                                   {pelicula.titulo_ingles || pelicula.titulo}
                                 </span>
                                 {pelicula.es_review_autor && (
-                                  <span className="shrink-0 text-xs bg-black text-white px-1.5 py-0.5 rounded-full">
+                                  <span className="shrink-0 text-xs bg-yellow-400 text-zinc-950 font-bold px-1.5 py-0.5 rounded-full">
                                     CB
                                   </span>
                                 )}
                               </div>
                               {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                                <span className="text-xs text-gray-400 truncate max-w-48 block">
+                                <span className="text-xs text-zinc-500 truncate max-w-48 block">
                                   {pelicula.titulo}
                                 </span>
                               )}
                             </div>
                           </div>
                         </td>
-                        <td className="px-3 py-3 text-center text-gray-500">
+                        <td className="px-3 py-3 text-center text-zinc-400">
                           {pelicula.anio || '—'}
                         </td>
                         <td className="px-3 py-3 text-center">
                           {pelicula.nota_imdb
-                            ? <span className="font-medium text-amber-600">⭐ {pelicula.nota_imdb}</span>
-                            : <span className="text-gray-300">—</span>
+                            ? <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
+                            : <span className="text-zinc-700">—</span>
                           }
                         </td>
                         <td className="px-3 py-3">
@@ -537,28 +534,28 @@ export default function CatalogoPage() {
                                         setGenerosFiltro([...generosFiltro, g])
                                       }
                                     }}
-                                    className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full cursor-pointer hover:bg-gray-200"
+                                    className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full cursor-pointer hover:bg-zinc-700 hover:text-zinc-200"
                                   >
                                     {g}
                                   </span>
                                 ))
-                              : <span className="text-gray-300">—</span>
+                              : <span className="text-zinc-700">—</span>
                             }
                           </div>
                         </td>
                         {columnas.director && (
-                          <td className="px-3 py-3 text-gray-600 text-xs">
-                            {pelicula.director || <span className="text-gray-300">—</span>}
+                          <td className="px-3 py-3 text-zinc-400 text-xs">
+                            {pelicula.director || <span className="text-zinc-700">—</span>}
                           </td>
                         )}
                         {columnas.actores && (
-                          <td className="px-3 py-3 text-gray-600 text-xs">
-                            {pelicula.actores || <span className="text-gray-300">—</span>}
+                          <td className="px-3 py-3 text-zinc-400 text-xs">
+                            {pelicula.actores || <span className="text-zinc-700">—</span>}
                           </td>
                         )}
                         {columnas.compositor && (
-                          <td className="px-3 py-3 text-gray-600 text-xs">
-                            {pelicula.compositor || <span className="text-gray-300">—</span>}
+                          <td className="px-3 py-3 text-zinc-400 text-xs">
+                            {pelicula.compositor || <span className="text-zinc-700">—</span>}
                           </td>
                         )}
                         <td className="px-3 py-3">
@@ -571,7 +568,7 @@ export default function CatalogoPage() {
                                   className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                                     activa
                                       ? `${plat.color} text-white`
-                                      : 'bg-gray-100 text-gray-300'
+                                      : 'bg-zinc-800 text-zinc-600'
                                   }`}
                                 >
                                   {plat.nombre}
@@ -582,8 +579,8 @@ export default function CatalogoPage() {
                         </td>
                         <td className="px-3 py-3 text-center">
                           {pelicula.categoria
-                            ? <span className="text-xs text-gray-500">{pelicula.categoria}</span>
-                            : <span className="text-gray-300 text-xs">—</span>
+                            ? <span className="text-xs text-zinc-400">{pelicula.categoria}</span>
+                            : <span className="text-zinc-700 text-xs">—</span>
                           }
                         </td>
                       </tr>
@@ -591,19 +588,19 @@ export default function CatalogoPage() {
                       {/* Fila expandida */}
                       {expandida === pelicula.id && (
                         <tr>
-                          <td colSpan={6 + colsExtras} className="px-8 py-4 bg-gray-50 border-t border-gray-100">
+                          <td colSpan={6 + colsExtras} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
                             <div className="grid grid-cols-1 gap-3 max-w-3xl">
                               <div>
-                                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">
+                                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">
                                   {pelicula.es_review_autor ? '✍️ Review CineBret' : '🤖 Sinopsis IA'}
                                 </p>
-                                <p className="text-sm text-gray-600 leading-relaxed italic">
+                                <p className="text-sm text-zinc-400 leading-relaxed italic">
                                   Pendiente de enriquecimiento — disponible en los próximos días
                                 </p>
                               </div>
                               <Link
                                 href={`/pelicula/${pelicula.id}`}
-                                className="text-xs text-gray-400 hover:text-black transition-colors"
+                                className="text-xs text-zinc-500 hover:text-white transition-colors"
                                 onClick={e => e.stopPropagation()}
                               >
                                 Ver ficha completa →
@@ -619,7 +616,7 @@ export default function CatalogoPage() {
             </div>
 
             {peliculasFiltradas.length > 200 && (
-              <p className="text-center text-sm text-gray-400 mt-4">
+              <p className="text-center text-sm text-zinc-500 mt-4">
                 Mostrando 200 de {peliculasFiltradas.length} — usa los filtros para reducir
               </p>
             )}

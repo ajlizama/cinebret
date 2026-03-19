@@ -586,12 +586,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     {pelicula.nota_imdb != null && (
                       <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
                     )}
-                    {pelicula.rt_score != null && (
-                      <span className="text-red-400">🍅 {pelicula.rt_score}%</span>
-                    )}
-                    {pelicula.metacritic_score != null && (
-                      <span className="text-green-400">MC {pelicula.metacritic_score}</span>
-                    )}
                   </div>
                   {pelicula.categoria && (
                     <span className="text-xs text-zinc-500 mt-0.5 block">{pelicula.categoria}</span>

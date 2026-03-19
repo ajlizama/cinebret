@@ -441,8 +441,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   <tr>
                     <td colSpan={7 + colsExtras} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
                       <div className="grid grid-cols-2 gap-8">
-                        {/* Izquierda: sinopsis + links */}
-                        <div className="space-y-3">
+                        {/* Izquierda: sinopsis + ratings + links */}
+                        <div className="flex flex-col gap-3">
                           <div>
                             <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
                             {pelicula.sinopsis ? (
@@ -451,32 +451,56 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                               <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
                             )}
                           </div>
-                          <Link
-                            href={`/pelicula/${pelicula.id}`}
-                            className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
-                            onClick={e => e.stopPropagation()}
-                          >
-                            {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
-                          </Link>
+                          <div className="mt-auto space-y-2">
+                            {(pelicula.nota_imdb != null || pelicula.rt_score != null || pelicula.metacritic_score != null) && (
+                              <div className="flex gap-4 flex-wrap">
+                                {pelicula.nota_imdb != null && (
+                                  <div>
+                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">IMDB</p>
+                                    <p className="text-sm font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</p>
+                                  </div>
+                                )}
+                                {pelicula.rt_score != null && (
+                                  <div>
+                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
+                                    <p className="text-sm font-bold text-red-400">🍅 {pelicula.rt_score}%</p>
+                                  </div>
+                                )}
+                                {pelicula.metacritic_score != null && (
+                                  <div>
+                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
+                                    <p className="text-sm font-bold text-green-400">{pelicula.metacritic_score}</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {(pelicula.runtime != null || pelicula.boxoffice != null) && (
+                              <div className="flex gap-4">
+                                {pelicula.runtime != null && (
+                                  <div>
+                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
+                                    <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
+                                  </div>
+                                )}
+                                {pelicula.boxoffice != null && (
+                                  <div>
+                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
+                                    <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            <Link
+                              href={`/pelicula/${pelicula.id}`}
+                              className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
+                              onClick={e => e.stopPropagation()}
+                            >
+                              {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
+                            </Link>
+                          </div>
                         </div>
                         {/* Derecha: equipo + oscars */}
                         <div className="space-y-3">
-                          {(pelicula.runtime != null || pelicula.boxoffice != null) && (
-                            <div className="flex gap-6">
-                              {pelicula.runtime != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Duración</p>
-                                  <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
-                                </div>
-                              )}
-                              {pelicula.boxoffice != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Taquilla</p>
-                                  <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
-                                </div>
-                              )}
-                            </div>
-                          )}
                           {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Oscars</p>

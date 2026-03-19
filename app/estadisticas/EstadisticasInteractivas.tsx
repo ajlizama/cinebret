@@ -744,20 +744,16 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
 
                   const xs = puntos.map(p => p.x)
                   const ys = puntos.map(p => p.y)
-                  const minX = Math.min(...xs), maxX = Math.max(...xs)
-                  const minY = Math.min(...ys), maxY = Math.max(...ys)
-                  const rangeX = maxX - minX || 1
-                  const rangeY = maxY - minY || 1
+                  // Centro siempre en 0 (neutral): escala por el valor absoluto máximo
+                  const absMaxX = Math.max(...xs.map(Math.abs), 0.01)
+                  const absMaxY = Math.max(...ys.map(Math.abs), 0.01)
 
-                  // Curva de potencia: normaliza a [-1,1] respecto al centro del rango,
-                  // luego aplica |v|^0.55 manteniendo signo → amplifica los extremos
-                  const curve = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 0.55)
+                  // Curva de potencia: amplifica extremos manteniendo el 0 en el centro
+                  const curve = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 0.6)
 
                   return puntos.map(({ plat, x, y }) => {
-                    const midX = (minX + maxX) / 2
-                    const midY = (minY + maxY) / 2
-                    const normX = rangeX > 0 ? (x - midX) / (rangeX / 2) : 0
-                    const normY = rangeY > 0 ? (y - midY) / (rangeY / 2) : 0
+                    const normX = x / absMaxX   // [-1, 1] con 0 = neutral real
+                    const normY = y / absMaxY
                     const left = `${50 + curve(normX) * 35}%`
                     const top = `${50 - curve(normY) * 35}%`
                     return (

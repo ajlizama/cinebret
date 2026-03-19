@@ -177,6 +177,29 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 </div>
               )}
             </div>
+
+            {/* Dónde ver */}
+            <div>
+              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
+              <div className="grid grid-cols-3 gap-1.5">
+                {PLATAFORMAS.map(plat => {
+                  const activa = plataformasHoy.includes(plat.id)
+                  return (
+                    <div
+                      key={plat.id}
+                      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-opacity ${
+                        activa ? 'bg-zinc-800' : 'opacity-20'
+                      }`}
+                    >
+                      <div className="bg-white rounded px-1 py-0.5 shrink-0">
+                        <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
+                      </div>
+                      <span className={`text-xs truncate ${activa ? 'text-white' : 'text-zinc-500'}`}>{plat.nombre}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
 
           {/* Columna lateral */}
@@ -192,29 +215,6 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 className="rounded-xl w-full object-cover"
               />
             )}
-
-            {/* Dónde ver */}
-            <div>
-              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
-              <div className="grid grid-cols-2 gap-1.5">
-                {PLATAFORMAS.map(plat => {
-                  const activa = plataformasHoy.includes(plat.id)
-                  return (
-                    <div
-                      key={plat.id}
-                      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-opacity ${
-                        activa ? 'bg-zinc-800' : 'opacity-20'
-                      }`}
-                    >
-                      <div className="bg-white rounded px-1 py-0.5 shrink-0">
-                        <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
-                      </div>
-                      <span className={`text-xs truncate ${activa ? 'text-white' : 'text-zinc-500'}`}>{plat.nombre}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -284,9 +284,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
       </div>
 
-      {/* Tabla */}
+      {/* Tabla (md y superior) */}
       <div
-        className="border border-zinc-800 rounded-xl overflow-hidden"
+        className="hidden md:block border border-zinc-800 rounded-xl overflow-hidden"
         style={{ height: 'calc(100vh - 190px)', minHeight: '650px', overflowY: 'auto' }}
       >
         <table className="w-full text-sm">
@@ -432,6 +432,98 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Lista de tarjetas móvil (por debajo de md) */}
+      <div className="block md:hidden space-y-2">
+        {peliculasPagina.map(pelicula => {
+          const isExpanded = expandida === pelicula.id
+          const plataformasActivas = PLATAFORMAS.filter(plat => pelicula.plataformas.includes(plat.id))
+          return (
+            <div
+              key={pelicula.id}
+              onClick={() => setExpandida(isExpanded ? null : pelicula.id)}
+              className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 cursor-pointer"
+            >
+              {/* Fila principal */}
+              <div className="flex items-start gap-3">
+                {/* Thumbnail */}
+                <div className="relative w-10 h-14 shrink-0 rounded overflow-hidden bg-zinc-800">
+                  {pelicula.poster_path && (
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
+                      alt={pelicula.titulo}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
+                    <span className="font-semibold text-white text-sm leading-snug">
+                      {pelicula.titulo_ingles || pelicula.titulo}
+                    </span>
+                    {pelicula.es_review_autor && (
+                      <span className="shrink-0 font-serif italic text-xs font-bold bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded">CB</span>
+                    )}
+                    {pelicula.sello_bret && (
+                      <span className="shrink-0 font-serif italic text-xs font-bold border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded">★ Recomendada</span>
+                    )}
+                  </div>
+                  {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
+                    <span className="text-xs text-zinc-500 block mb-1">{pelicula.titulo}</span>
+                  )}
+                  <div className="flex items-center gap-2 text-xs">
+                    {pelicula.anio && (
+                      <span className="text-zinc-400">{pelicula.anio}</span>
+                    )}
+                    {pelicula.nota_imdb && (
+                      <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Chevron */}
+                <span className="text-zinc-600 text-xs shrink-0 mt-1">{isExpanded ? '▲' : '▼'}</span>
+              </div>
+
+              {/* Logos de plataformas activas */}
+              {plataformasActivas.length > 0 && (
+                <div className="flex items-center gap-1.5 mt-2">
+                  {plataformasActivas.map(plat => (
+                    <div key={plat.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: '20px' }}>
+                      <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Contenido expandido */}
+              {isExpanded && (
+                <div className="mt-3 pt-3 border-t border-zinc-800">
+                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
+                  {pelicula.sinopsis ? (
+                    <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
+                  ) : (
+                    <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
+                  )}
+                  {pelicula.es_review_autor && (
+                    <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
+                  )}
+                  <Link
+                    href={`/pelicula/${pelicula.id}`}
+                    className="inline-block mt-2 text-xs text-zinc-500 hover:text-white transition-colors"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    Ver ficha completa →
+                  </Link>
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
 
       {totalPaginas > 1 && (

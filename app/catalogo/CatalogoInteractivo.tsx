@@ -420,6 +420,12 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                             <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
                           )}
                         </div>
+                        {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                          <div>
+                            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Oscars</p>
+                            <p className="text-sm text-yellow-500">{pelicula.oscars}</p>
+                          </div>
+                        )}
                         <div className="grid grid-cols-3 gap-4">
                           {pelicula.director && (
                             <div>
@@ -549,6 +555,12 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
                     )}
                   </div>
+                  {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Oscars</p>
+                      <p className="text-sm text-yellow-500">{pelicula.oscars}</p>
+                    </div>
+                  )}
                   <div className="space-y-2">
                     {pelicula.director && (
                       <div>

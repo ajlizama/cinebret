@@ -194,26 +194,40 @@ export default function EstadisticasInteractivas({
             <div>
               <h3 className="text-sm font-semibold text-zinc-200 mb-1">Géneros</h3>
               <p className="text-xs text-zinc-500 mb-4">% de películas en la plataforma</p>
-              <div className="space-y-2.5">
-                {[...platStats.generos].sort((a, b) => b.count - a.count).map(entry => {
-                  const pct = Math.round((entry.count / platStats.totalMovies) * 100)
-                  return (
-                    <div key={entry.nombre}>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="truncate pr-2 text-zinc-300">{entry.nombre}</span>
-                        <div className="flex gap-2.5 shrink-0 text-xs">
-                          <span className="text-zinc-500">{entry.count} pelis</span>
-                          <span className="text-yellow-400 font-bold">⭐ {entry.avg}</span>
-                          <span className="text-zinc-400 w-8 text-right">{pct}%</span>
-                        </div>
-                      </div>
-                      <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                        <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${pct}%` }} />
-                      </div>
+              {(() => {
+                const sorted = [...platStats.generos].sort((a, b) => b.count - a.count)
+                const top10 = sorted.slice(0, 10)
+                const siguientes3 = sorted.slice(10, 13)
+                return (
+                  <>
+                    <div className="space-y-2.5">
+                      {top10.map(entry => {
+                        const pct = Math.round((entry.count / platStats.totalMovies) * 100)
+                        return (
+                          <div key={entry.nombre}>
+                            <div className="flex justify-between text-sm mb-1">
+                              <span className="truncate pr-2 text-zinc-300">{entry.nombre}</span>
+                              <div className="flex gap-2.5 shrink-0 text-xs">
+                                <span className="text-zinc-500">{entry.count} pelis</span>
+                                <span className="text-yellow-400 font-bold">⭐ {entry.avg}</span>
+                                <span className="text-zinc-400 w-8 text-right">{pct}%</span>
+                              </div>
+                            </div>
+                            <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                              <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${pct}%` }} />
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
-                  )
-                })}
-              </div>
+                    {siguientes3.length > 0 && (
+                      <p className="text-xs text-zinc-600 italic mt-3">
+                        {siguientes3.map(e => `${e.nombre} ${Math.round((e.count / platStats.totalMovies) * 100)}%`).join(' · ')}
+                      </p>
+                    )}
+                  </>
+                )
+              })()}
             </div>
 
             {/* Categorías */}

@@ -31,8 +31,11 @@ export type Pelicula = {
   es_review_autor: boolean
   sello_bret: boolean
   director: string | null
+  director_oscars: number | null
   actores: string | null
+  actores_oscars: Record<string, number> | null
   compositor: string | null
+  compositor_oscars: number | null
   generos: string[]
   poster_path: string | null
   oscars: string | null
@@ -405,7 +408,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 {expandida === pelicula.id && (
                   <tr>
                     <td colSpan={7 + colsExtras} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
-                      <div className="grid grid-cols-1 gap-3 max-w-3xl">
+                      <div className="grid grid-cols-1 gap-4 max-w-3xl">
                         <div>
                           <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
                           {pelicula.sinopsis ? (
@@ -415,6 +418,38 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                           )}
                           {pelicula.es_review_autor && (
                             <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          {pelicula.director && (
+                            <div>
+                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
+                              <p className="text-sm text-zinc-200">{pelicula.director}</p>
+                              {!!pelicula.director_oscars && <p className="text-xs text-yellow-500 mt-0.5">★ {pelicula.director_oscars} Oscar{pelicula.director_oscars !== 1 ? 's' : ''}</p>}
+                            </div>
+                          )}
+                          {pelicula.compositor && (
+                            <div>
+                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
+                              <p className="text-sm text-zinc-200">{pelicula.compositor}</p>
+                              {!!pelicula.compositor_oscars && <p className="text-xs text-yellow-500 mt-0.5">★ {pelicula.compositor_oscars} Oscar{pelicula.compositor_oscars !== 1 ? 's' : ''}</p>}
+                            </div>
+                          )}
+                          {pelicula.actores && (
+                            <div className="col-span-3">
+                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
+                              <div className="flex flex-wrap gap-x-3 gap-y-1">
+                                {pelicula.actores.split(',').map(a => {
+                                  const actor = a.trim()
+                                  const oscars = pelicula.actores_oscars?.[actor]
+                                  return (
+                                    <span key={actor} className="text-sm text-zinc-200">
+                                      {actor}{!!oscars && <span className="text-yellow-500 text-xs ml-1">★{oscars}</span>}
+                                    </span>
+                                  )
+                                })}
+                              </div>
+                            </div>
                           )}
                         </div>
                         <Link
@@ -502,19 +537,51 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
               {/* Contenido expandido */}
               {isExpanded && (
-                <div className="mt-3 pt-3 border-t border-zinc-800">
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
-                  {pelicula.sinopsis ? (
-                    <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
-                  ) : (
-                    <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
-                  )}
-                  {pelicula.es_review_autor && (
-                    <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
-                  )}
+                <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3">
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
+                    {pelicula.sinopsis ? (
+                      <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
+                    ) : (
+                      <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
+                    )}
+                    {pelicula.es_review_autor && (
+                      <p className="text-xs text-yellow-400 mt-2">✍️ Ver ficha para reseña CineBret</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    {pelicula.director && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Director</p>
+                        <p className="text-sm text-zinc-200">{pelicula.director}{!!pelicula.director_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.director_oscars} Oscar{pelicula.director_oscars !== 1 ? 's' : ''}</span>}</p>
+                      </div>
+                    )}
+                    {pelicula.compositor && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Compositor</p>
+                        <p className="text-sm text-zinc-200">{pelicula.compositor}{!!pelicula.compositor_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.compositor_oscars} Oscar{pelicula.compositor_oscars !== 1 ? 's' : ''}</span>}</p>
+                      </div>
+                    )}
+                    {pelicula.actores && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Reparto</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          {pelicula.actores.split(',').map(a => {
+                            const actor = a.trim()
+                            const oscars = pelicula.actores_oscars?.[actor]
+                            return (
+                              <span key={actor} className="text-sm text-zinc-200">
+                                {actor}{!!oscars && <span className="text-yellow-500 text-xs ml-1">★{oscars}</span>}
+                              </span>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <Link
                     href={`/pelicula/${pelicula.id}`}
-                    className="inline-block mt-2 text-xs text-zinc-500 hover:text-white transition-colors"
+                    className="inline-block text-xs text-zinc-500 hover:text-white transition-colors"
                     onClick={e => e.stopPropagation()}
                   >
                     Ver ficha completa →

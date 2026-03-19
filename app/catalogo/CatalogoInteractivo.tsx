@@ -237,7 +237,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
       {/* Ordenamiento y columnas */}
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           <span className="text-xs text-zinc-500 mr-1">Columnas extra:</span>
           {(['director', 'actores', 'compositor'] as const).map(col => (
             <button

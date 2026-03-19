@@ -47,7 +47,7 @@ export type Pelicula = {
 }
 
 type ColumnasExtra = { rt_score: boolean; metacritic_score: boolean; director: boolean; actores: boolean; compositor: boolean }
-type Orden = 'imdb' | 'anio_desc' | 'anio_asc' | 'titulo'
+type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
 
 type MultiSelectProps = {
   label: string
@@ -181,6 +181,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     })
     .sort((a, b) => {
       if (orden === 'imdb') return (b.nota_imdb || 0) - (a.nota_imdb || 0)
+      if (orden === 'rt') return (b.rt_score || 0) - (a.rt_score || 0)
+      if (orden === 'metacritic') return (b.metacritic_score || 0) - (a.metacritic_score || 0)
+      if (orden === 'boxoffice') return (b.boxoffice || 0) - (a.boxoffice || 0)
       if (orden === 'anio_desc') return (b.anio || 0) - (a.anio || 0)
       if (orden === 'anio_asc') return (a.anio || 0) - (b.anio || 0)
       if (orden === 'titulo') return (a.titulo_ingles || a.titulo).localeCompare(b.titulo_ingles || b.titulo)
@@ -267,6 +270,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm text-zinc-300 focus:outline-none focus:border-zinc-500"
           >
             <option value="imdb">Mayor IMDB</option>
+            <option value="rt">Mayor Rotten Tomatoes</option>
+            <option value="metacritic">Mayor Metacritic</option>
+            <option value="boxoffice">Mayor taquilla</option>
             <option value="anio_desc">Más recientes</option>
             <option value="anio_asc">Más antiguas</option>
             <option value="titulo">Título A-Z</option>

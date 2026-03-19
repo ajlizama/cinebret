@@ -185,7 +185,7 @@ export default function EstadisticasInteractivas({
         {!platStats || platStats.totalMovies === 0 ? (
           <p className="text-sm text-zinc-500">No hay películas en esta plataforma hoy</p>
         ) : (
-          {/* Mapa de categorías */}
+          <>
           <div className="mb-10">
             <h3 className="text-sm font-semibold text-zinc-200 mb-1">Mapa de vibe por plataforma</h3>
             <p className="text-xs text-zinc-500 mb-4">Posición según distribución de categorías CineBret</p>
@@ -313,6 +313,7 @@ export default function EstadisticasInteractivas({
               )}
             </div>
           </div>
+          </>
         )}
       </section>
     </>

@@ -461,7 +461,7 @@ export default function CatalogoPage() {
                     {columnas.director && <th className="text-left px-3 py-3 w-36">Director</th>}
                     {columnas.actores && <th className="text-left px-3 py-3 w-48">Actores</th>}
                     {columnas.compositor && <th className="text-left px-3 py-3 w-36">Compositor</th>}
-                    <th className="text-center px-3 py-3 min-w-64">Plataformas</th>
+                    <th className="text-center px-3 py-3 w-36">Plataformas</th>
                     <th className="text-center px-3 py-3 w-40">Categoría</th>
                   </tr>
                 </thead>
@@ -559,18 +559,18 @@ export default function CatalogoPage() {
                           </td>
                         )}
                         <td className="px-3 py-3">
-                          <div className="flex gap-1.5 flex-wrap justify-center items-center">
+                          <div className="grid grid-cols-3 gap-1">
                             {PLATAFORMAS.map(plat => {
                               const activa = pelicula.plataformas.includes(plat.id)
                               return (
                                 <div
                                   key={plat.id}
-                                  className={`rounded px-1.5 py-0.5 bg-white transition-opacity ${activa ? 'opacity-100' : 'opacity-20'}`}
+                                  className={`rounded px-1 py-0.5 bg-white flex items-center justify-center transition-opacity ${activa ? 'opacity-100' : 'opacity-20'}`}
                                 >
                                   <img
                                     src={plat.logo}
                                     alt={plat.nombre}
-                                    className="h-3.5 w-auto object-contain"
+                                    className="h-3 w-auto object-contain"
                                   />
                                 </div>
                               )

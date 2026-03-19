@@ -46,7 +46,7 @@ export type Pelicula = {
   sinopsis: string | null
 }
 
-type ColumnasExtra = { director: boolean; actores: boolean; compositor: boolean }
+type ColumnasExtra = { rt_score: boolean; metacritic_score: boolean; director: boolean; actores: boolean; compositor: boolean }
 type Orden = 'imdb' | 'anio_desc' | 'anio_asc' | 'titulo'
 
 type MultiSelectProps = {
@@ -146,7 +146,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
-  const [columnas, setColumnas] = useState<ColumnasExtra>({ director: false, actores: false, compositor: false })
+  const [columnas, setColumnas] = useState<ColumnasExtra>({ rt_score: false, metacritic_score: false, director: false, actores: false, compositor: false })
 
   const generosDisponibles = [...new Set(peliculas.flatMap(p => p.generos))].sort()
   const directoresDisponibles = [...new Set(peliculas.map(p => p.director).filter(Boolean) as string[])].sort()
@@ -241,15 +241,21 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
       {/* Ordenamiento y columnas */}
       <div className="flex items-center justify-between mb-6">
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 flex-wrap">
           <span className="text-xs text-zinc-500 mr-1">Columnas extra:</span>
-          {(['director', 'actores', 'compositor'] as const).map(col => (
+          {([
+            { key: 'rt_score', label: '🍅 RT' },
+            { key: 'metacritic_score', label: 'MC Metacritic' },
+            { key: 'director', label: 'Director' },
+            { key: 'actores', label: 'Actores' },
+            { key: 'compositor', label: 'Compositor' },
+          ] as const).map(({ key, label }) => (
             <button
-              key={col}
-              onClick={() => toggleColumna(col)}
-              className={`border rounded-full px-3 py-1 text-xs transition-colors ${columnas[col] ? 'bg-zinc-200 text-zinc-950 border-zinc-200 font-medium' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
+              key={key}
+              onClick={() => toggleColumna(key)}
+              className={`border rounded-full px-3 py-1 text-xs transition-colors ${columnas[key] ? 'bg-zinc-200 text-zinc-950 border-zinc-200 font-medium' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
             >
-              {col.charAt(0).toUpperCase() + col.slice(1)}
+              {label}
             </button>
           ))}
         </div>
@@ -301,7 +307,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
               <th className="text-left px-4 py-3 w-64">Película</th>
               <th className="text-center px-3 py-3 w-16">Año</th>
-              <th className="text-center px-3 py-3 w-24">Ratings</th>
+              <th className="text-center px-3 py-3 w-20">IMDB</th>
+              {columnas.rt_score && <th className="text-center px-3 py-3 w-16">RT</th>}
+              {columnas.metacritic_score && <th className="text-center px-3 py-3 w-16">MC</th>}
               <th className="text-center px-3 py-3 w-48">Géneros</th>
               {columnas.director && <th className="text-left px-3 py-3 w-36">Director</th>}
               {columnas.actores && <th className="text-left px-3 py-3 w-48">Actores</th>}
@@ -352,21 +360,24 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   </td>
                   <td className="px-3 py-3 text-center text-zinc-400">{pelicula.anio || '—'}</td>
                   <td className="px-3 py-3 text-center">
-                    <div className="flex flex-col gap-0.5 items-center">
-                      {pelicula.nota_imdb != null && (
-                        <span className="font-bold text-yellow-400 text-xs">⭐ {pelicula.nota_imdb}</span>
-                      )}
-                      {pelicula.rt_score != null && (
-                        <span className="text-xs text-red-400">🍅 {pelicula.rt_score}%</span>
-                      )}
-                      {pelicula.metacritic_score != null && (
-                        <span className="text-xs text-green-400">MC {pelicula.metacritic_score}</span>
-                      )}
-                      {pelicula.nota_imdb == null && pelicula.rt_score == null && pelicula.metacritic_score == null && (
-                        <span className="text-zinc-700">—</span>
-                      )}
-                    </div>
+                    {pelicula.nota_imdb != null
+                      ? <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
+                      : <span className="text-zinc-700">—</span>}
                   </td>
+                  {columnas.rt_score && (
+                    <td className="px-3 py-3 text-center">
+                      {pelicula.rt_score != null
+                        ? <span className="text-sm text-red-400">🍅 {pelicula.rt_score}%</span>
+                        : <span className="text-zinc-700">—</span>}
+                    </td>
+                  )}
+                  {columnas.metacritic_score && (
+                    <td className="px-3 py-3 text-center">
+                      {pelicula.metacritic_score != null
+                        ? <span className="text-sm text-green-400">{pelicula.metacritic_score}</span>
+                        : <span className="text-zinc-700">—</span>}
+                    </td>
+                  )}
                   <td className="px-3 py-3">
                     <div className="flex flex-wrap gap-1 justify-center">
                       {pelicula.generos.length > 0

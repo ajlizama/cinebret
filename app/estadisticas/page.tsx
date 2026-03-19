@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import Link from 'next/link'
+import Nav from '@/components/Nav'
 import EstadisticasInteractivas, { type PeliculaRow } from './EstadisticasInteractivas'
 
 const GENEROS_EN_A_ES: Record<string, string> = {
@@ -87,17 +87,7 @@ export default async function EstadisticasPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <nav className="border-b border-zinc-800 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
-          <div className="flex gap-6 text-sm text-zinc-500">
-            <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
-            <Link href="/catalogo" className="hover:text-white transition-colors">Catálogo</Link>
-            <Link href="/cambios" className="hover:text-white transition-colors">Cambios</Link>
-            <Link href="/estadisticas" className="text-white font-medium">Estadísticas</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav active="estadisticas" />
 
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="mb-8">

@@ -106,11 +106,24 @@ export default async function Home() {
           <Link href="/" className="text-xl font-semibold tracking-tight">
             CineBret
           </Link>
-          <div className="flex gap-6 text-sm text-gray-500">
+          <div className="flex items-center gap-6 text-sm text-gray-500">
             <Link href="/" className="text-black font-medium">Inicio</Link>
             <Link href="/catalogo" className="hover:text-black transition-colors">Catálogo</Link>
             <Link href="/cambios" className="hover:text-black transition-colors">Cambios</Link>
             <Link href="/estadisticas" className="hover:text-black transition-colors">Estadísticas</Link>
+            <a
+              href="https://www.instagram.com/cinebret/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-pink-500 transition-colors"
+              aria-label="Instagram CineBret"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <circle cx="12" cy="12" r="3.5" />
+                <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
           </div>
         </div>
       </nav>

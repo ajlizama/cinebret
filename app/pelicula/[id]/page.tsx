@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import Nav from '@/components/Nav'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -42,18 +43,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      {/* Navbar */}
-      <nav className="border-b border-zinc-800 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
-          <div className="flex gap-6 text-sm text-zinc-500">
-            <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
-            <Link href="/catalogo" className="hover:text-white transition-colors">Catálogo</Link>
-            <Link href="/cambios" className="hover:text-white transition-colors">Cambios</Link>
-            <Link href="/estadisticas" className="hover:text-white transition-colors">Estadísticas</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <div className="max-w-6xl mx-auto px-6 py-6">
 

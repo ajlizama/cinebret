@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 export const revalidate = 3600
 
@@ -80,17 +81,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <nav className="border-b border-zinc-800 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
-          <div className="flex gap-6 text-sm text-zinc-500">
-            <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
-            <Link href="/catalogo" className="hover:text-white transition-colors">Catálogo</Link>
-            <Link href="/cambios" className="text-white font-medium">Cambios</Link>
-            <Link href="/estadisticas" className="hover:text-white transition-colors">Estadísticas</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav active="cambios" />
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">

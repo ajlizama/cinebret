@@ -441,29 +441,19 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                           {pelicula.director && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
-                              <p className="text-sm text-zinc-200">{pelicula.director}{!!pelicula.director_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.director_oscars} Oscar{pelicula.director_oscars !== 1 ? 's' : ''}</span>}</p>
+                              <p className="text-sm text-zinc-200">{pelicula.director}</p>
                             </div>
                           )}
                           {pelicula.compositor && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
-                              <p className="text-sm text-zinc-200">{pelicula.compositor}{!!pelicula.compositor_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.compositor_oscars} Oscar{pelicula.compositor_oscars !== 1 ? 's' : ''}</span>}</p>
+                              <p className="text-sm text-zinc-200">{pelicula.compositor}</p>
                             </div>
                           )}
                           {pelicula.actores && (
                             <div>
                               <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
-                              <div className="flex flex-wrap gap-x-3 gap-y-1">
-                                {pelicula.actores.split(',').map(a => {
-                                  const actor = a.trim()
-                                  const oscars = pelicula.actores_oscars?.[actor]
-                                  return (
-                                    <span key={actor} className="text-sm text-zinc-200">
-                                      {actor}{!!oscars && <span className="text-yellow-500 text-xs ml-1">★{oscars}</span>}
-                                    </span>
-                                  )
-                                })}
-                              </div>
+                              <p className="text-sm text-zinc-200">{pelicula.actores}</p>
                             </div>
                           )}
                         </div>
@@ -567,13 +557,13 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     {pelicula.director && (
                       <div>
                         <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Director</p>
-                        <p className="text-sm text-zinc-200">{pelicula.director}{!!pelicula.director_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.director_oscars} Oscar{pelicula.director_oscars !== 1 ? 's' : ''}</span>}</p>
+                        <p className="text-sm text-zinc-200">{pelicula.director}</p>
                       </div>
                     )}
                     {pelicula.compositor && (
                       <div>
                         <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Compositor</p>
-                        <p className="text-sm text-zinc-200">{pelicula.compositor}{!!pelicula.compositor_oscars && <span className="text-yellow-500 text-xs ml-1.5">★ {pelicula.compositor_oscars} Oscar{pelicula.compositor_oscars !== 1 ? 's' : ''}</span>}</p>
+                        <p className="text-sm text-zinc-200">{pelicula.compositor}</p>
                       </div>
                     )}
                     {pelicula.actores && (
@@ -582,10 +572,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                         <div className="flex flex-wrap gap-x-3 gap-y-1">
                           {pelicula.actores.split(',').map(a => {
                             const actor = a.trim()
-                            const oscars = pelicula.actores_oscars?.[actor]
                             return (
                               <span key={actor} className="text-sm text-zinc-200">
-                                {actor}{!!oscars && <span className="text-yellow-500 text-xs ml-1">★{oscars}</span>}
+                                {actor}
                               </span>
                             )
                           })}

@@ -573,7 +573,7 @@ export default function CatalogoPage() {
                                   <img
                                     src={plat.logo}
                                     alt={plat.nombre}
-                                    className="h-3 w-auto object-contain"
+                                    className="h-4 w-auto object-contain"
                                   />
                                 </div>
                               )
@@ -583,8 +583,8 @@ export default function CatalogoPage() {
                         <td className="px-3 py-3 text-center">
                           {pelicula.oscars && pelicula.oscars !== 'N/A'
                             ? <span className="flex items-center justify-center gap-0.5">
-                                <img src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
-                                <span className="text-xs text-yellow-400 font-bold">{pelicula.oscars.match(/\d+/)?.[0]}</span>
+                                <img src="/oscar.png" alt="Oscar" className="h-6 w-auto" />
+                                <span className="text-sm text-yellow-400 font-bold">{pelicula.oscars.match(/\d+/)?.[0]}</span>
                               </span>
                             : <span className="text-zinc-700 text-xs">—</span>
                           }

@@ -681,16 +681,16 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
                 <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' llorar a moco tendido</span>
                 {(() => {
                   const puntos = plataformas.map(plat => {
-                    const cats = porPlataforma[plat.id]?.categorias ?? []
-                    // Peso = suma de notas IMDB (count × avg) → películas mejor puntuadas pesan más
-                    const get = (nombre: string) => {
-                      const c = cats.find(e => e.nombre === nombre)
-                      return c ? c.count * c.avg : 0
+                    const platMovies = peliculasFiltradas.filter(p => p.plataformas.includes(plat.id))
+                    let bajon = 0, licuadora = 0, sillon = 0, moco = 0
+                    for (const p of platMovies) {
+                      const w = p.nota_imdb ?? 0
+                      const cat = p.categoria ?? ''
+                      if (cat.includes('bajón')) bajon += w
+                      else if (cat.includes('licuadora')) licuadora += w
+                      else if (cat.includes('sillón')) sillon += w
+                      else if (cat.includes('moco')) moco += w
                     }
-                    const bajon = get("Pa'l domingo de bajón")
-                    const licuadora = get("Pa' quedar con el cerebro como licuadora")
-                    const sillon = get("Pa' saltar del sillón")
-                    const moco = get("Pa' llorar a moco tendido")
                     const total = bajon + licuadora + sillon + moco
                     if (total === 0) return null
                     return { plat, x: (licuadora - bajon) / total, y: (sillon - moco) / total }

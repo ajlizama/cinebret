@@ -37,7 +37,7 @@ async function getCambios(desdeStr: string, page: number): Promise<{ cambios: Ca
       .range(from, to),
   ])
 
-  return { cambios: (data as Cambio[]) ?? [], total: count ?? 0 }
+  return { cambios: (data as unknown as Cambio[]) ?? [], total: count ?? 0 }
 }
 
 function formatFecha(fechaStr: string) {

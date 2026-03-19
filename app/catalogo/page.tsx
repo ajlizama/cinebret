@@ -6,6 +6,35 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Image from 'next/image'
 
+const GENEROS_EN_A_ES: Record<string, string> = {
+  'Action': 'Acción',
+  'Adventure': 'Aventura',
+  'Animation': 'Animación',
+  'Comedy': 'Comedia',
+  'Crime': 'Crimen',
+  'Documentary': 'Documental',
+  'Drama': 'Drama',
+  'Fantasy': 'Fantasía',
+  'History': 'Historia',
+  'Horror': 'Terror',
+  'Music': 'Música',
+  'Mystery': 'Misterio',
+  'Romance': 'Romance',
+  'Science Fiction': 'Ciencia ficción',
+  'Sci-Fi': 'Ciencia ficción',
+  'Thriller': 'Thriller',
+  'War': 'Guerra',
+  'Western': 'Western',
+  'Family': 'Familia',
+  'Biography': 'Biografía',
+  'Sport': 'Deporte',
+  'Musical': 'Musical',
+}
+
+function normalizarGenero(g: string): string {
+  return GENEROS_EN_A_ES[g] ?? g
+}
+
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
   { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
@@ -223,7 +252,7 @@ export default function CatalogoPage() {
 
         data?.forEach((p: any) => {
           const enr = p.enriquecimiento || {}
-          const generos = enr.generos || []
+          const generos = (enr.generos || []).map(normalizarGenero)
           generos.forEach((g: string) => todosLosGeneros.add(g))
 
           if (enr.director) todosLosDirectores.add(enr.director)
@@ -250,7 +279,7 @@ export default function CatalogoPage() {
             director: enr.director || null,
             actores: enr.actores || null,
             compositor: enr.compositor || null,
-            generos,
+            generos: generos.map(normalizarGenero),
           })
         })
       }
@@ -279,7 +308,7 @@ export default function CatalogoPage() {
         (p.titulo_ingles || '').toLowerCase().includes(q) ||
         (p.director || '').toLowerCase().includes(q) ||
         (p.actores || '').toLowerCase().includes(q) ||
-        p.generos.some(g => g.toLowerCase().includes(q)) ||
+        p.generos.some(g => normalizarGenero(g).toLowerCase().includes(q)) ||
         (p.compositor || '').toLowerCase().includes(q)
       )
 

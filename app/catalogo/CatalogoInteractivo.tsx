@@ -634,6 +634,22 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
                     )}
                   </div>
+                  {(pelicula.rt_score != null || pelicula.metacritic_score != null) && (
+                    <div className="flex gap-4 flex-wrap">
+                      {pelicula.rt_score != null && (
+                        <div>
+                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
+                          <p className="text-sm font-bold text-red-400">🍅 {pelicula.rt_score}%</p>
+                        </div>
+                      )}
+                      {pelicula.metacritic_score != null && (
+                        <div>
+                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
+                          <p className="text-sm font-bold text-green-400">{pelicula.metacritic_score}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                   {(pelicula.runtime != null || pelicula.boxoffice != null) && (
                     <div className="flex gap-6">
                       {pelicula.runtime != null && (

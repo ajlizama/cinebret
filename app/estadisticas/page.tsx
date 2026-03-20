@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import Nav from '@/components/Nav'
-import EstadisticasInteractivas, { type PeliculaRow } from './EstadisticasInteractivas'
+import EstadisticasInteractivas, { type PeliculaRow, type AnalisisCatalogo } from './EstadisticasInteractivas'
 
 const GENEROS_EN_A_ES: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -108,38 +108,10 @@ export default async function EstadisticasPage() {
           <p className="text-zinc-500 text-sm">Resumen del catálogo CineBret</p>
         </div>
 
-        {/* Análisis IA */}
-        {analisis && (
-          <div className="mb-10 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide">🤖 Análisis IA del catálogo</h2>
-              <span className="text-xs text-zinc-600">
-                Actualizado {new Date(analisis.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-5">
-              {PLATAFORMAS.map(plat => {
-                const frase = analisis.plataformas?.[plat.id]
-                if (!frase) return null
-                return (
-                  <div key={plat.id} className="bg-zinc-800 rounded-lg p-3 flex items-start gap-3">
-                    <div className="bg-white rounded px-1.5 py-1 shrink-0">
-                      <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
-                    </div>
-                    <p className="text-xs text-zinc-300 leading-relaxed">{frase}</p>
-                  </div>
-                )
-              })}
-            </div>
-            <div className="border-t border-zinc-800 pt-4">
-              <p className="text-sm text-zinc-400 leading-relaxed italic">{analisis.comparativo}</p>
-            </div>
-          </div>
-        )}
-
         <EstadisticasInteractivas
           peliculas={peliculas}
           plataformas={PLATAFORMAS}
+          analisis={analisis}
         />
       </div>
     </main>

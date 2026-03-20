@@ -2,6 +2,13 @@
 
 import { useMemo } from 'react'
 
+export type AnalisisCatalogo = {
+  plataformas: Record<string, string>
+  comparativo: string
+  fecha_catalogo: string
+  created_at: string
+} | null
+
 export type PeliculaRow = {
   id: string
   titulo: string
@@ -25,6 +32,7 @@ type Plataforma = { id: string; nombre: string; color: string; logo: string }
 type Props = {
   peliculas: PeliculaRow[]
   plataformas: Plataforma[]
+  analisis: AnalisisCatalogo
 }
 
 type PlatData = {
@@ -48,7 +56,7 @@ const CATEGORIAS_SHORT: Record<string, string> = {
   "Pa' llorar a moco tendido": '😭 Moco',
 }
 
-export default function EstadisticasInteractivas({ peliculas, plataformas }: Props) {
+export default function EstadisticasInteractivas({ peliculas, plataformas, analisis }: Props) {
   const platData = useMemo((): PlatData[] => {
     return plataformas.map(plat => {
       const movies = peliculas.filter(p => p.plataformas.includes(plat.id))
@@ -92,25 +100,26 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
 
   return (
     <>
-      {/* === Mapa de vibe === */}
+      {/* === Mapa de vibe + Comentarios IA === */}
       <div className="mb-12">
         <h2 className="text-lg font-bold text-white mb-1">Mapa de vibe por plataforma</h2>
-        <p className="text-xs text-zinc-500 mb-4">Posición según distribución de categorías CineBret · peso = suma notas IMDB</p>
+        <p className="text-xs text-zinc-500 mb-6">Posición según distribución de categorías CineBret · peso = suma notas IMDB</p>
 
-        <div className="mb-4 overflow-x-auto">
-          <table className="w-full text-xs text-zinc-400 border-collapse">
-            <thead>
-              <tr className="border-b border-zinc-800">
-                <th className="text-left py-1.5 pr-3 text-zinc-500 font-normal">Plataforma</th>
-                <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">🥲 Bajón</th>
-                <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">🧠 Licuadora</th>
-                <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">🪑 Sillón</th>
-                <th className="text-right py-1.5 px-2 text-zinc-500 font-normal">😭 Moco</th>
-                <th className="text-right py-1.5 pl-2 text-zinc-500 font-normal">X axis</th>
-              </tr>
-            </thead>
-            <tbody>
-              {plataformas.map(plat => {
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+          {/* Mapa */}
+          <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl shrink-0" style={{ height: 320, width: 380 }}>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-full h-px bg-zinc-700" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="h-full w-px bg-zinc-700" />
+            </div>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight">Pa'l domingo de bajón</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight text-right">Pa' quedar con el cerebro como licuadora</span>
+            <span className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' saltar del sillón</span>
+            <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' llorar a moco tendido</span>
+            {(() => {
+              const puntos = plataformas.map(plat => {
                 const movies = peliculas.filter(p => p.plataformas.includes(plat.id))
                 let bajon = 0, licuadora = 0, sillon = 0, moco = 0
                 for (const p of movies) {
@@ -122,73 +131,60 @@ export default function EstadisticasInteractivas({ peliculas, plataformas }: Pro
                   else if (cat.includes('moco')) moco += w
                 }
                 const total = bajon + licuadora + sillon + moco
-                const x = total > 0 ? (licuadora - bajon) / total : 0
+                if (total === 0) return null
+                return { plat, x: (licuadora - bajon) / total, y: (sillon - moco) / total }
+              }).filter(Boolean) as { plat: Plataforma; x: number; y: number }[]
+
+              const xs = puntos.map(p => p.x)
+              const ys = puntos.map(p => p.y)
+              const absMaxX = Math.max(...xs.map(Math.abs), 0.01)
+              const absMaxY = Math.max(...ys.map(Math.abs), 0.01)
+              const curve = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 0.6)
+
+              return puntos.map(({ plat, x, y }) => {
+                const normX = x / absMaxX
+                const normY = y / absMaxY
+                const left = `${50 + curve(normX) * 35}%`
+                const top = `${50 - curve(normY) * 35}%`
                 return (
-                  <tr key={plat.id} className="border-b border-zinc-800/50">
-                    <td className="py-1.5 pr-3 text-zinc-300 font-medium">{plat.nombre}</td>
-                    <td className="text-right px-2 tabular-nums">{Math.round(bajon)}</td>
-                    <td className="text-right px-2 tabular-nums">{Math.round(licuadora)}</td>
-                    <td className="text-right px-2 tabular-nums">{Math.round(sillon)}</td>
-                    <td className="text-right px-2 tabular-nums">{Math.round(moco)}</td>
-                    <td className={`text-right pl-2 tabular-nums font-bold ${x < 0 ? 'text-blue-400' : 'text-orange-400'}`}>
-                      {x.toFixed(3)}
-                    </td>
-                  </tr>
+                  <div key={plat.id} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left, top }} title={plat.nombre}>
+                    <div className="bg-white rounded px-1.5 py-0.5 shadow-lg opacity-70">
+                      <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
+                    </div>
+                  </div>
+                )
+              })
+            })()}
+          </div>
+
+          {/* Comentarios IA */}
+          {analisis && (
+            <div className="flex-1 flex flex-col gap-3">
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs text-zinc-500 uppercase tracking-wide font-medium">🤖 Análisis IA</p>
+                <span className="text-xs text-zinc-700">
+                  {new Date(analisis.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </span>
+              </div>
+              {plataformas.map(plat => {
+                const frase = analisis.plataformas?.[plat.id]
+                if (!frase || frase.includes('Sin catálogo')) return null
+                return (
+                  <div key={plat.id} className="flex items-start gap-3 bg-zinc-900 border border-zinc-800 rounded-xl p-3">
+                    <div className="bg-white rounded px-1.5 py-1 shrink-0">
+                      <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                    </div>
+                    <p className="text-sm text-zinc-300 leading-relaxed">{frase}</p>
+                  </div>
                 )
               })}
-            </tbody>
-          </table>
-          <p className="text-xs text-zinc-600 mt-1">X negativo → izquierda (bajón) · X positivo → derecha (licuadora)</p>
-        </div>
-
-        <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl mx-auto" style={{ height: 320, maxWidth: 420 }}>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-full h-px bg-zinc-700" />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="h-full w-px bg-zinc-700" />
-          </div>
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight">Pa'l domingo de bajón</span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight text-right">Pa' quedar con el cerebro como licuadora</span>
-          <span className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' saltar del sillón</span>
-          <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' llorar a moco tendido</span>
-          {(() => {
-            const puntos = plataformas.map(plat => {
-              const movies = peliculas.filter(p => p.plataformas.includes(plat.id))
-              let bajon = 0, licuadora = 0, sillon = 0, moco = 0
-              for (const p of movies) {
-                const w = p.nota_imdb ?? 0
-                const cat = p.categoria ?? ''
-                if (cat.includes('bajón')) bajon += w
-                else if (cat.includes('licuadora')) licuadora += w
-                else if (cat.includes('sillón')) sillon += w
-                else if (cat.includes('moco')) moco += w
-              }
-              const total = bajon + licuadora + sillon + moco
-              if (total === 0) return null
-              return { plat, x: (licuadora - bajon) / total, y: (sillon - moco) / total }
-            }).filter(Boolean) as { plat: Plataforma; x: number; y: number }[]
-
-            const xs = puntos.map(p => p.x)
-            const ys = puntos.map(p => p.y)
-            const absMaxX = Math.max(...xs.map(Math.abs), 0.01)
-            const absMaxY = Math.max(...ys.map(Math.abs), 0.01)
-            const curve = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 0.6)
-
-            return puntos.map(({ plat, x, y }) => {
-              const normX = x / absMaxX
-              const normY = y / absMaxY
-              const left = `${50 + curve(normX) * 35}%`
-              const top = `${50 - curve(normY) * 35}%`
-              return (
-                <div key={plat.id} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left, top }} title={plat.nombre}>
-                  <div className="bg-white rounded px-1.5 py-0.5 shadow-lg opacity-70">
-                    <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
-                  </div>
+              {analisis.comparativo && (
+                <div className="mt-1 border-t border-zinc-800 pt-3">
+                  <p className="text-xs text-zinc-500 italic leading-relaxed">{analisis.comparativo}</p>
                 </div>
-              )
-            })
-          })()}
+              )}
+            </div>
+          )}
         </div>
       </div>
 

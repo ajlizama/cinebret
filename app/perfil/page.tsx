@@ -104,17 +104,42 @@ export default function MiPerfilPage() {
     })
   }, [user, loading])
 
+  const [uploadError, setUploadError] = useState<string | null>(null)
+
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file || !user) return
     setUploading(true)
+    setUploadError(null)
+
     const ext = file.name.split('.').pop()
     const path = `${user.id}.${ext}`
-    const { error: uploadErr } = await supabase.storage.from('avatars').upload(path, file, { upsert: true })
-    if (uploadErr) { setUploading(false); return }
+
+    const { error: uploadErr } = await supabase.storage
+      .from('avatars')
+      .upload(path, file, { upsert: true })
+
+    if (uploadErr) {
+      setUploadError(`Error al subir imagen: ${uploadErr.message}`)
+      setUploading(false)
+      return
+    }
+
     const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
+    // cache-bust para forzar recarga del navegador
     const urlWithBust = `${publicUrl}?t=${Date.now()}`
-    await supabase.from('profiles').update({ avatar_url: urlWithBust }).eq('user_id', user.id)
+
+    const { error: updateErr } = await supabase
+      .from('profiles')
+      .update({ avatar_url: urlWithBust })
+      .eq('user_id', user.id)
+
+    if (updateErr) {
+      setUploadError(`Imagen subida pero no se pudo guardar en perfil: ${updateErr.message}`)
+      setUploading(false)
+      return
+    }
+
     setAvatarUrl(urlWithBust)
     setUploading(false)
   }
@@ -179,6 +204,9 @@ export default function MiPerfilPage() {
               <span><span className="text-white font-semibold">{siguiendo}</span> siguiendo</span>
             </div>
             <p className="text-zinc-600 text-xs mt-1">Haz clic en la foto para cambiarla</p>
+            {uploadError && (
+              <p className="text-red-400 text-xs mt-1 max-w-xs">{uploadError}</p>
+            )}
           </div>
         </div>
 

@@ -14,6 +14,8 @@ type Review = {
   avatar_url: string | null
   rating: number | null
   esMia: boolean
+  likes: number
+  youLiked: boolean
 }
 
 function Avatar({ url, username, size = 8 }: { url: string | null; username: string; size?: number }) {
@@ -53,10 +55,12 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
     if (!rawReviews || rawReviews.length === 0) { setCargando(false); return }
 
     const userIds = [...new Set(rawReviews.map((r: any) => r.user_id))]
+    const reviewIds = rawReviews.map((r: any) => r.id)
 
-    const [{ data: profiles }, { data: ratings }] = await Promise.all([
+    const [{ data: profiles }, { data: ratings }, { data: likes }] = await Promise.all([
       supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', userIds),
       supabase.from('user_peliculas').select('user_id, rating').eq('pelicula_id', peliculaId).in('user_id', userIds),
+      supabase.from('review_likes').select('review_id, user_id').in('review_id', reviewIds),
     ])
 
     const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
@@ -64,6 +68,13 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
 
     const ratingMap: Record<string, number | null> = {}
     ;(ratings ?? []).forEach((r: any) => { ratingMap[r.user_id] = r.rating ?? null })
+
+    const likesCount: Record<string, number> = {}
+    const myLikes = new Set<string>()
+    ;(likes ?? []).forEach((l: any) => {
+      likesCount[l.review_id] = (likesCount[l.review_id] ?? 0) + 1
+      if (l.user_id === user?.id) myLikes.add(l.review_id)
+    })
 
     const mapped: Review[] = rawReviews
       .filter((r: any) => profileMap[r.user_id])
@@ -76,6 +87,8 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
         avatar_url: profileMap[r.user_id].avatar_url,
         rating: ratingMap[r.user_id] ?? null,
         esMia: r.user_id === user?.id,
+        likes: likesCount[r.id] ?? 0,
+        youLiked: myLikes.has(r.id),
       }))
 
     setReviews(mapped)
@@ -103,6 +116,25 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
     await supabase.from('user_reviews').delete().eq('user_id', user.id).eq('pelicula_id', peliculaId)
     setMiReview('')
     setReviews(prev => prev.filter(r => !r.esMia))
+  }
+
+  const toggleLike = async (review: Review) => {
+    if (!user) return
+    if (review.youLiked) {
+      await supabase.from('review_likes').delete().eq('user_id', user.id).eq('review_id', review.id)
+      setReviews(prev => prev.map(r => r.id === review.id ? { ...r, likes: r.likes - 1, youLiked: false } : r))
+    } else {
+      await supabase.from('review_likes').insert({ user_id: user.id, review_id: review.id })
+      setReviews(prev => prev.map(r => r.id === review.id ? { ...r, likes: r.likes + 1, youLiked: true } : r))
+      if (review.user_id !== user.id) {
+        await supabase.from('notifications').insert({
+          user_id: review.user_id,
+          type: 'like',
+          from_user_id: user.id,
+          review_id: review.id,
+        })
+      }
+    }
   }
 
   if (cargando) return null
@@ -168,7 +200,16 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
                 {r.rating && <span className="text-yellow-400 text-xs ml-auto">{r.rating}/10</span>}
                 <span className="text-zinc-600 text-xs">{tiempoRelativo(r.created_at)}</span>
               </div>
-              <p className="text-zinc-300 text-sm leading-relaxed">{r.review_text}</p>
+              <p className="text-zinc-300 text-sm leading-relaxed mb-3">{r.review_text}</p>
+              <button
+                onClick={() => toggleLike(r)}
+                className={`flex items-center gap-1.5 text-xs transition-colors ${
+                  r.youLiked ? 'text-yellow-400' : 'text-zinc-600 hover:text-zinc-400'
+                }`}
+              >
+                <span className="text-sm leading-none">{r.youLiked ? '♥' : '♡'}</span>
+                {r.likes > 0 && <span>{r.likes}</span>}
+              </button>
             </div>
           ))}
         </div>

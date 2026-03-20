@@ -126,7 +126,55 @@ export default function ComunidadPage() {
   const [feedSeguidores, setFeedSeguidores] = useState<FeedItem[]>([])
   const [feedCineBret, setFeedCineBret] = useState<FeedItem[]>([])
   const [cargandoFeed, setCargandoFeed] = useState(true)
+  const [todosPerfiles, setTodosPerfiles] = useState<Perfil[]>([])
+  const [mostrarTodos, setMostrarTodos] = useState(false)
+  const [cargandoTodos, setCargandoTodos] = useState(true)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Fetch todos los perfiles
+  useEffect(() => {
+    const fetchTodos = async () => {
+      setCargandoTodos(true)
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('user_id, username, avatar_url')
+        .order('username')
+        .limit(200)
+
+      if (!profiles || profiles.length === 0) { setCargandoTodos(false); return }
+
+      const userIds = profiles.map((p: any) => p.user_id)
+      const { data: vistas } = await supabase
+        .from('user_peliculas')
+        .select('user_id')
+        .eq('visto', true)
+        .in('user_id', userIds)
+
+      const vistasMap: Record<string, number> = {}
+      ;(vistas ?? []).forEach((v: any) => { vistasMap[v.user_id] = (vistasMap[v.user_id] ?? 0) + 1 })
+
+      let sigosSet: Set<string> = new Set()
+      if (user) {
+        const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
+        sigosSet = new Set((followsData ?? []).map((f: any) => f.following_id))
+      }
+
+      const merged: Perfil[] = profiles
+        .filter((p: any) => !user || p.user_id !== user.id)
+        .map((p: any) => ({
+          user_id: p.user_id,
+          username: p.username,
+          avatar_url: p.avatar_url ?? null,
+          vistas: vistasMap[p.user_id] ?? 0,
+          sigo: sigosSet.has(p.user_id),
+        }))
+        .sort((a, b) => b.vistas - a.vistas)
+
+      setTodosPerfiles(merged)
+      setCargandoTodos(false)
+    }
+    fetchTodos()
+  }, [user])
 
   // Fetch CineBret reviews (siempre, para todos)
   useEffect(() => {
@@ -254,12 +302,18 @@ export default function ComunidadPage() {
 
   const toggleFollow = async (perfil: Perfil) => {
     if (!user) return
-    const sigo = siguiendoMap[perfil.user_id]
+    const sigo = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
     setSiguiendoMap(prev => ({ ...prev, [perfil.user_id]: !sigo }))
+    setTodosPerfiles(prev => prev.map(p => p.user_id === perfil.user_id ? { ...p, sigo: !sigo } : p))
     if (sigo) {
       await supabase.from('follows').delete().eq('follower_id', user.id).eq('following_id', perfil.user_id)
     } else {
       await supabase.from('follows').insert({ follower_id: user.id, following_id: perfil.user_id })
+      await supabase.from('notifications').insert({
+        user_id: perfil.user_id,
+        type: 'follow',
+        from_user_id: user.id,
+      })
     }
   }
 
@@ -313,6 +367,57 @@ export default function ComunidadPage() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Explorar todos los perfiles */}
+        {!busqueda && (
+          <div className="mb-6">
+            <button
+              onClick={() => setMostrarTodos(v => !v)}
+              className="flex items-center gap-2 w-full text-left text-sm text-zinc-400 hover:text-white transition-colors mb-3"
+            >
+              <span className="text-xs">{mostrarTodos ? '▲' : '▼'}</span>
+              <span className="font-medium">Explorar perfiles</span>
+              {!cargandoTodos && <span className="text-zinc-600 text-xs">({todosPerfiles.length})</span>}
+            </button>
+
+            {mostrarTodos && (
+              <div className="space-y-2">
+                {cargandoTodos ? (
+                  <p className="text-zinc-500 text-sm">Cargando...</p>
+                ) : todosPerfiles.length === 0 ? (
+                  <p className="text-zinc-600 text-sm">Sin perfiles aún</p>
+                ) : (
+                  todosPerfiles.map(perfil => {
+                    const sigoEste = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
+                    return (
+                      <div key={perfil.user_id} className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
+                        <Link href={`/perfil/${perfil.username}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                          <Avatar url={perfil.avatar_url} username={perfil.username} size={36} />
+                          <div>
+                            <p className="text-white text-sm font-medium">@{perfil.username}</p>
+                            <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
+                          </div>
+                        </Link>
+                        {user && (
+                          <button
+                            onClick={() => toggleFollow(perfil)}
+                            className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                              sigoEste
+                                ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
+                                : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
+                            }`}
+                          >
+                            {sigoEste ? 'Siguiendo' : '+ Seguir'}
+                          </button>
+                        )}
+                      </div>
+                    )
+                  })
+                )}
+              </div>
+            )}
           </div>
         )}
 

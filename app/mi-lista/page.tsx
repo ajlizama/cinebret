@@ -7,11 +7,21 @@ import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
+const PLATAFORMAS = [
+  { id: 'netflix', nombre: 'Netflix', logo: '/netflix.png' },
+  { id: 'disney_plus', nombre: 'Disney+', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', nombre: 'HBO', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', nombre: 'Prime', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', nombre: 'Apple TV+', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', nombre: 'Paramount+', logo: '/paramount_plus.svg' },
+]
+
 type EntradaLista = {
   pelicula_id: string
   visto: boolean
   rating: number | null
   watchlist: boolean
+  plataformas: string[]
   pelicula: {
     titulo: string
     titulo_ingles: string | null
@@ -31,22 +41,35 @@ export default function MiListaPage() {
 
   useEffect(() => {
     if (!user) { setCargando(false); return }
-    supabase
-      .from('user_peliculas')
-      .select('pelicula_id, visto, rating, watchlist, peliculas(titulo, titulo_ingles, anio, nota_imdb, rt_score, poster_path, categoria)')
-      .eq('user_id', user.id)
-      .then(({ data }) => {
-        if (!data) return
-        const mapped = data.map((r: any) => ({
-          pelicula_id: r.pelicula_id,
-          visto: r.visto,
-          rating: r.rating,
-          watchlist: r.watchlist,
-          pelicula: r.peliculas,
-        })).filter(r => r.pelicula)
-        setEntradas(mapped)
-        setCargando(false)
+    const hoy = new Date().toISOString().split('T')[0]
+    Promise.all([
+      supabase
+        .from('user_peliculas')
+        .select('pelicula_id, visto, rating, watchlist, peliculas(titulo, titulo_ingles, anio, nota_imdb, rt_score, poster_path, categoria)')
+        .eq('user_id', user.id),
+      supabase
+        .from('catalogos')
+        .select('pelicula_id, plataforma')
+        .eq('fecha', hoy)
+        .eq('activo', true),
+    ]).then(([{ data }, { data: cats }]) => {
+      if (!data) return
+      const platMap: Record<string, string[]> = {}
+      ;(cats ?? []).forEach((c: any) => {
+        if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
+        platMap[c.pelicula_id].push(c.plataforma)
       })
+      const mapped = data.map((r: any) => ({
+        pelicula_id: r.pelicula_id,
+        visto: r.visto,
+        rating: r.rating,
+        watchlist: r.watchlist,
+        plataformas: platMap[r.pelicula_id] ?? [],
+        pelicula: r.peliculas,
+      })).filter(r => r.pelicula)
+      setEntradas(mapped)
+      setCargando(false)
+    })
   }, [user])
 
   const quitarWatchlist = async (peliculaId: string) => {
@@ -170,16 +193,21 @@ export default function MiListaPage() {
                   </div>
 
                   {/* Info */}
-                  <div className="p-2.5">
+                  <div className="p-2">
                     <p className="text-white text-xs font-semibold leading-snug truncate">{titulo}</p>
-                    {p.titulo_ingles && p.titulo !== p.titulo_ingles && (
-                      <p className="text-zinc-500 text-xs truncate">{p.titulo}</p>
-                    )}
-                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                       {p.anio && <span className="text-zinc-500 text-xs">{p.anio}</span>}
                       {p.nota_imdb && <span className="text-yellow-400 text-xs">⭐ {p.nota_imdb}</span>}
-                      {p.rt_score != null && <span className="text-red-400 text-xs">🍅 {p.rt_score}%</span>}
                     </div>
+                    {entrada.plataformas.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {PLATAFORMAS.filter(pl => entrada.plataformas.includes(pl.id)).map(pl => (
+                          <div key={pl.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: '16px' }}>
+                            <img src={pl.logo} alt={pl.nombre} className="h-3 w-auto object-contain" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )

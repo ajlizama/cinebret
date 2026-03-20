@@ -7,15 +7,17 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
+import {
+  type PeliculaConStats,
+  type Stats,
+  computeStats,
+  StatsCards,
+  TopsPanel,
+  VibeMapa,
+} from '@/components/PerfilStats'
 
-type Pelicula = {
-  pelicula_id: string
-  rating: number | null
-  pelicula: {
-    titulo: string
-    titulo_ingles: string | null
-    poster_path: string | null
-  }
+type Pelicula = PeliculaConStats & {
+  pelicula: PeliculaConStats['pelicula'] & { titulo_ingles: string | null }
 }
 
 export default function MiPerfilPage() {
@@ -23,6 +25,7 @@ export default function MiPerfilPage() {
   const router = useRouter()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
+  const [stats, setStats] = useState<Stats | null>(null)
   const [seguidores, setSeguidores] = useState(0)
   const [siguiendo, setSiguiendo] = useState(0)
   const [uploading, setUploading] = useState(false)
@@ -36,18 +39,18 @@ export default function MiPerfilPage() {
     Promise.all([
       supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle(),
       supabase.from('user_peliculas')
-        .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, poster_path)')
+        .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, nota_imdb, poster_path, oscars, categoria, enriquecimiento(director, actores, compositor))')
         .eq('user_id', user.id).eq('visto', true),
       supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', user.id),
       supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', user.id),
     ]).then(([{ data: prof }, { data: vistas }, { count: nSeg }, { count: nSig }]) => {
       setAvatarUrl((prof as any)?.avatar_url ?? null)
-      setPeliculas(
-        (vistas ?? [])
-          .map((r: any) => ({ pelicula_id: r.pelicula_id, rating: r.rating, pelicula: r.peliculas }))
-          .filter((r: any) => r.pelicula)
-          .sort((a: any, b: any) => (b.rating ?? 0) - (a.rating ?? 0))
-      )
+      const mapped: Pelicula[] = (vistas ?? [])
+        .map((r: any) => ({ pelicula_id: r.pelicula_id, rating: r.rating, pelicula: r.peliculas }))
+        .filter((r: any) => r.pelicula)
+        .sort((a: any, b: any) => (b.rating ?? 0) - (a.rating ?? 0))
+      setPeliculas(mapped)
+      setStats(computeStats(mapped))
       setSeguidores(nSeg ?? 0)
       setSiguiendo(nSig ?? 0)
       setCargando(false)
@@ -58,19 +61,12 @@ export default function MiPerfilPage() {
     const file = e.target.files?.[0]
     if (!file || !user) return
     setUploading(true)
-
     const ext = file.name.split('.').pop()
     const path = `${user.id}.${ext}`
-
-    const { error: uploadErr } = await supabase.storage
-      .from('avatars')
-      .upload(path, file, { upsert: true })
-
+    const { error: uploadErr } = await supabase.storage.from('avatars').upload(path, file, { upsert: true })
     if (uploadErr) { setUploading(false); return }
-
     const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
     const urlWithBust = `${publicUrl}?t=${Date.now()}`
-
     await supabase.from('profiles').update({ avatar_url: urlWithBust }).eq('user_id', user.id)
     setAvatarUrl(urlWithBust)
     setUploading(false)
@@ -85,31 +81,21 @@ export default function MiPerfilPage() {
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav />
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-6 py-10">
 
-        {/* Header */}
+        {/* Header con avatar editable */}
         <div className="flex items-center gap-5 mb-8 flex-wrap">
-          {/* Avatar */}
           <div className="relative group cursor-pointer" onClick={() => fileRef.current?.click()}>
             <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 flex items-center justify-center border-2 border-zinc-700 group-hover:border-yellow-400 transition-colors">
-              {avatarUrl ? (
-                <img src={avatarUrl} alt={username ?? ''} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-2xl font-bold text-zinc-400">
-                  {username?.[0]?.toUpperCase() ?? '?'}
-                </span>
-              )}
+              {avatarUrl
+                ? <img src={avatarUrl} alt={username ?? ''} className="w-full h-full object-cover" />
+                : <span className="text-2xl font-bold text-zinc-400">{username?.[0]?.toUpperCase() ?? '?'}</span>
+              }
             </div>
             <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <span className="text-white text-xs font-medium">{uploading ? '...' : 'Cambiar'}</span>
             </div>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarChange}
-            />
+            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
           </div>
 
           <div>
@@ -124,6 +110,24 @@ export default function MiPerfilPage() {
             <p className="text-zinc-600 text-xs mt-1">Haz clic en la foto para cambiarla</p>
           </div>
         </div>
+
+        {/* Stats */}
+        {stats && peliculas.length > 0 && (
+          <>
+            <StatsCards stats={stats} total={peliculas.length} />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <TopsPanel stats={stats} />
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                <VibeMapa
+                  categorias={stats.categorias}
+                  username={username ?? 'yo'}
+                  avatarUrl={avatarUrl}
+                />
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Grid películas */}
         {peliculas.length === 0 ? (

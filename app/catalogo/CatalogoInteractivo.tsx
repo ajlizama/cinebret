@@ -55,6 +55,8 @@ type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_as
 
 const OSCAR_OPCIONES = [
   'Ganadora Mejor Película',
+  'Ganadora Mejor Película Animada',
+  'Ganadora Mejor Película Internacional',
   'Ganadora de Oscar',
   'Nominada al Oscar',
   'Director con Oscar',
@@ -66,7 +68,12 @@ function matchOscarFiltro(p: Pelicula, filtros: string[]): boolean {
   if (filtros.length === 0) return true
   return filtros.every(f => {
     const osc = (p.oscars ?? '').toLowerCase()
-    if (f === 'Ganadora Mejor Película') return osc.startsWith('ganó') && osc.includes('mejor película')
+    if (f === 'Ganadora Mejor Película')
+      return osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('extranjera') && !osc.includes('habla no inglesa')
+    if (f === 'Ganadora Mejor Película Animada')
+      return osc.startsWith('ganó') && osc.includes('animad')
+    if (f === 'Ganadora Mejor Película Internacional')
+      return osc.startsWith('ganó') && (osc.includes('internacional') || osc.includes('extranjera') || osc.includes('habla no inglesa'))
     if (f === 'Ganadora de Oscar') return osc.startsWith('ganó')
     if (f === 'Nominada al Oscar') return osc.includes('nominad')
     if (f === 'Director con Oscar') return (p.director_oscars ?? 0) > 0

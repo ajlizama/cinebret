@@ -108,7 +108,8 @@ export default function EstadisticasPersonalesPage() {
           if (r.rating) { ratingDist[r.rating] = (ratingDist[r.rating] ?? 0) + 1; totalRating += r.rating; countRating++ }
           const p = r.peliculas
           if (p?.nota_imdb) { totalImdb += p.nota_imdb; countImdb++ }
-          if (p?.oscars?.toLowerCase().startsWith('ganó') && p?.oscars?.toLowerCase().includes('mejor película')) oscars++
+          const osc = (p?.oscars ?? '').toLowerCase()
+          if (osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('extranjera') && !osc.includes('habla no inglesa')) oscars++
           if (p?.categoria) categorias[p.categoria] = (categorias[p.categoria] ?? 0) + 1
           ;(p?.enriquecimiento?.generos ?? []).forEach((g: string) => { generos[g] = (generos[g] ?? 0) + 1 })
         })

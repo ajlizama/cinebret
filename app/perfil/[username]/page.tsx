@@ -37,15 +37,28 @@ type Stats = {
   categorias: Record<string, number>
 }
 
-// Cuadrantes del vibe map 2D
-// X: Tranquilo(-1) ↔ Intenso(+1)
-// Y: Emocional(+1) ↔ Cerebral(-1)
-const VIBE_QUADRANTS = [
-  { key: "Pa'l domingo de bajón",              label: 'Bajón',      emoji: '😴', x: -1, y:  1, color: 'rgba(99,102,241,', pos: 'top-left'     },
-  { key: "Pa' llorar a moco tendido",          label: 'Moco',       emoji: '😭', x:  1, y:  1, color: 'rgba(59,130,246,', pos: 'top-right'    },
-  { key: "Pa' quedar con el cerebro como licuadora", label: 'Licuadora', emoji: '🧠', x: -1, y: -1, color: 'rgba(168,85,247,', pos: 'bottom-left' },
-  { key: "Pa' saltar del sillón",              label: 'Sillón',     emoji: '🎬', x:  1, y: -1, color: 'rgba(239,68,68,',  pos: 'bottom-right' },
-]
+// Ejes del mapa (igual que la imagen de referencia):
+// X: Pa'l domingo de bajón (izq, -1) ↔ Pa' quedar con el cerebro como licuadora (der, +1)
+// Y: Pa' llorar a moco tendido (abajo, -1) ↔ Pa' saltar del sillón (arriba, +1)
+const VIBE_KEYS = {
+  sillon:    "Pa' saltar del sillón",
+  moco:      "Pa' llorar a moco tendido",
+  bajon:     "Pa'l domingo de bajón",
+  licuadora: "Pa' quedar con el cerebro como licuadora",
+}
+
+function computeVibePos(categorias: Record<string, number>): { x: number; y: number } | null {
+  const bajon     = categorias[VIBE_KEYS.bajon]     ?? 0
+  const licuadora = categorias[VIBE_KEYS.licuadora] ?? 0
+  const sillon    = categorias[VIBE_KEYS.sillon]    ?? 0
+  const moco      = categorias[VIBE_KEYS.moco]      ?? 0
+  const total = bajon + licuadora + sillon + moco
+  if (total === 0) return null
+  return {
+    x: (-bajon + licuadora) / total,   // -1 = todo bajón, +1 = todo licuadora
+    y: (sillon - moco) / total,         // -1 = todo moco,  +1 = todo sillón
+  }
+}
 
 function computeStats(peliculas: Pelicula[]): Stats {
   const directors: Record<string, number> = {}
@@ -67,19 +80,13 @@ function computeStats(peliculas: Pelicula[]): Stats {
     if (p.nota_imdb) { totalImdb += p.nota_imdb; countImdb++ }
 
     const enr = p.enriquecimiento
-    if (enr?.director?.trim()) {
-      const d = enr.director.trim()
-      directors[d] = (directors[d] ?? 0) + 1
-    }
+    if (enr?.director?.trim()) directors[enr.director.trim()] = (directors[enr.director.trim()] ?? 0) + 1
     if (enr?.actores) {
       enr.actores.split(',').map(a => a.trim()).filter(Boolean).forEach(a => {
         actors[a] = (actors[a] ?? 0) + 1
       })
     }
-    if (enr?.compositor?.trim()) {
-      const c = enr.compositor.trim()
-      composers[c] = (composers[c] ?? 0) + 1
-    }
+    if (enr?.compositor?.trim()) composers[enr.compositor.trim()] = (composers[enr.compositor.trim()] ?? 0) + 1
   }
 
   return {
@@ -111,99 +118,146 @@ function TopList({ title, items }: { title: string; items: [string, number][] })
   )
 }
 
-function VibeMapa2D({ categorias }: { categorias: Record<string, number> }) {
-  const total = VIBE_QUADRANTS.reduce((s, q) => s + (categorias[q.key] ?? 0), 0)
-  if (total === 0) return null
+type VibeChip = {
+  label: string
+  avatar: string | null
+  pos: { x: number; y: number }
+  muted: boolean
+}
 
-  // Posición ponderada del "punto de vibe"
-  let wx = 0, wy = 0
-  VIBE_QUADRANTS.forEach(q => {
-    const n = categorias[q.key] ?? 0
-    wx += q.x * n
-    wy += q.y * n
-  })
-  const dotX = 50 + (wx / total) * 35   // 15-85% rango
-  const dotY = 50 - (wy / total) * 35   // invertido porque Y CSS va hacia abajo
+function VibeMapa({
+  categorias,
+  username,
+  avatarUrl,
+  misCategorias,
+  miUsername,
+  miAvatarUrl,
+}: {
+  categorias: Record<string, number>
+  username: string
+  avatarUrl: string | null
+  misCategorias: Record<string, number> | null
+  miUsername: string | null
+  miAvatarUrl: string | null
+}) {
+  const elPos = computeVibePos(categorias)
+  const miPos = misCategorias ? computeVibePos(misCategorias) : null
 
-  const max = Math.max(...VIBE_QUADRANTS.map(q => categorias[q.key] ?? 0), 1)
+  const chips: VibeChip[] = []
+  if (elPos) chips.push({ label: username, avatar: avatarUrl, pos: elPos, muted: false })
+  if (miPos && miUsername && miUsername !== username)
+    chips.push({ label: miUsername, avatar: miAvatarUrl, pos: miPos, muted: true })
+
+  // Convert vibe position (-1..+1) to CSS % (10..90)
+  const toCssX = (x: number) => 50 + x * 38
+  const toCssY = (y: number) => 50 - y * 38
+
+  const hasData = Object.values(categorias).some(v => v > 0)
 
   return (
     <div>
       <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Vibe map</p>
 
-      {/* Etiquetas de ejes */}
-      <div className="flex justify-between text-xs text-zinc-600 mb-1 px-1">
-        <span>← Tranquilo</span>
-        <span>Intenso →</span>
-      </div>
+      {!hasData ? (
+        <p className="text-zinc-600 text-sm">Sin datos de categorías aún</p>
+      ) : (
+        <div
+          className="relative w-full bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden"
+          style={{ paddingBottom: '75%' }}
+        >
+          {/* Crosshair lines */}
+          <div className="absolute inset-0">
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-zinc-800" />
+            <div className="absolute top-1/2 left-0 right-0 h-px bg-zinc-800" />
+          </div>
 
-      <div className="relative">
-        {/* Etiqueta eje Y izquierda */}
-        <div className="absolute -left-5 top-0 bottom-0 flex flex-col justify-between py-2 pointer-events-none">
-          <span className="text-xs text-zinc-600 -rotate-90 origin-center" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: 10 }}>Emocional</span>
-          <span className="text-xs text-zinc-600" style={{ writingMode: 'vertical-rl', fontSize: 10 }}>Cerebral</span>
-        </div>
+          {/* Axis labels */}
+          {/* Top: Sillón */}
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 text-center pointer-events-none">
+            <span className="text-zinc-500 text-xs whitespace-nowrap">Pa' saltar del sillón</span>
+          </div>
+          {/* Bottom: Moco */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-center pointer-events-none">
+            <span className="text-zinc-500 text-xs whitespace-nowrap">Pa' llorar a moco tendido</span>
+          </div>
+          {/* Left: Bajón */}
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ maxWidth: 64 }}>
+            <span className="text-zinc-500 text-xs leading-tight block text-left">Pa'l domingo de bajón</span>
+          </div>
+          {/* Right: Licuadora */}
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ maxWidth: 64 }}>
+            <span className="text-zinc-500 text-xs leading-tight block text-right">Pa' quedar con el cerebro como licuadora</span>
+          </div>
 
-        {/* Grid 2×2 */}
-        <div className="grid grid-cols-2 gap-0.5 ml-2">
-          {[
-            VIBE_QUADRANTS[0], // Bajón top-left
-            VIBE_QUADRANTS[1], // Moco top-right
-            VIBE_QUADRANTS[2], // Licuadora bottom-left
-            VIBE_QUADRANTS[3], // Sillón bottom-right
-          ].map(q => {
-            const count = categorias[q.key] ?? 0
-            const intensity = count / max
+          {/* Profile chips */}
+          {chips.map(chip => {
+            const cssX = toCssX(chip.pos.x)
+            const cssY = toCssY(chip.pos.y)
             return (
               <div
-                key={q.key}
-                className="relative rounded-lg p-3 border border-zinc-800 min-h-[72px] flex flex-col justify-between"
-                style={{ background: `${q.color}${(intensity * 0.35 + 0.05).toFixed(2)})` }}
+                key={chip.label}
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 rounded-full px-2 py-1 border"
+                style={{
+                  left: `${cssX}%`,
+                  top: `${cssY}%`,
+                  opacity: chip.muted ? 0.4 : 1,
+                  background: chip.muted ? 'rgba(39,39,42,0.8)' : 'rgba(250,204,21,0.15)',
+                  borderColor: chip.muted ? 'rgb(63,63,70)' : 'rgba(250,204,21,0.6)',
+                  zIndex: chip.muted ? 1 : 2,
+                }}
               >
-                <span className="text-base">{q.emoji}</span>
-                <div>
-                  <p className="text-xs font-medium text-zinc-200">{q.label}</p>
-                  <p className="text-xs text-zinc-500">{count} {count === 1 ? 'peli' : 'pelis'}</p>
+                {/* Avatar circle */}
+                <div className="w-5 h-5 rounded-full bg-zinc-700 overflow-hidden flex items-center justify-center shrink-0">
+                  {chip.avatar
+                    ? <img src={chip.avatar} alt={chip.label} className="w-full h-full object-cover" />
+                    : <span className="text-zinc-300 text-xs font-bold">{chip.label[0]?.toUpperCase()}</span>
+                  }
                 </div>
+                <span className="text-xs font-medium whitespace-nowrap" style={{ color: chip.muted ? 'rgb(161,161,170)' : 'rgb(250,204,21)' }}>
+                  @{chip.label}
+                </span>
               </div>
             )
           })}
-        </div>
 
-        {/* Punto de vibe superpuesto — solo decorativo en grid, usamos un overlay */}
-        <div className="absolute inset-0 ml-2 pointer-events-none" style={{ top: 0, left: 8 }}>
-          <div
-            className="absolute w-4 h-4 rounded-full bg-white border-2 border-zinc-900 shadow-lg transform -translate-x-1/2 -translate-y-1/2"
-            style={{ left: `${dotX}%`, top: `${dotY}%` }}
-            title="Tu vibe promedio"
-          />
+          {/* No position computable */}
+          {!elPos && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <p className="text-zinc-600 text-xs">Sin suficientes categorías para posicionar</p>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
-      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 ml-2">
-        {VIBE_QUADRANTS.map(q => {
-          const count = categorias[q.key] ?? 0
-          const pct = total > 0 ? Math.round((count / total) * 100) : 0
-          return (
-            <span key={q.key} className="text-xs text-zinc-500">
-              {q.emoji} {pct}%
+      {/* Leyenda */}
+      {chips.length > 1 && (
+        <div className="flex gap-4 mt-2 text-xs text-zinc-500">
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full border border-yellow-400/60 inline-block bg-yellow-400/15" />
+            @{username}
+          </span>
+          {miUsername && miUsername !== username && (
+            <span className="flex items-center gap-1 opacity-50">
+              <span className="w-3 h-3 rounded-full border border-zinc-600 inline-block bg-zinc-700/80" />
+              tú (@{miUsername})
             </span>
-          )
-        })}
-        <span className="text-xs text-zinc-600 ml-auto">● tu vibe</span>
-      </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
 export default function PerfilPage() {
   const { username } = useParams<{ username: string }>()
-  const { user } = useAuth()
+  const { user, username: miUsername } = useAuth()
   const [profileUserId, setProfileUserId] = useState<string | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const [miAvatarUrl, setMiAvatarUrl] = useState<string | null>(null)
   const [notFound, setNotFound] = useState(false)
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
+  const [misCategorias, setMisCategorias] = useState<Record<string, number> | null>(null)
   const [seguidores, setSeguidores] = useState(0)
   const [siguiendo, setSiguiendo] = useState(0)
   const [yaSigo, setYaSigo] = useState(false)
@@ -221,17 +275,22 @@ export default function PerfilPage() {
         setProfileUserId(uid)
         setAvatarUrl((profile as any).avatar_url ?? null)
 
-        const [{ data: vistas }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }] = await Promise.all([
+        const esMio = user?.id === uid
+
+        const [{ data: vistas }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }] = await Promise.all([
           supabase.from('user_peliculas')
             .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, anio, nota_imdb, poster_path, oscars, categoria, enriquecimiento(director, actores, compositor))')
             .eq('user_id', uid).eq('visto', true),
           supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', uid),
           supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', uid),
-          user
-            ? supabase.from('follows').select('follower_id').eq('follower_id', user.id).eq('following_id', uid).maybeSingle()
+          user ? supabase.from('follows').select('follower_id').eq('follower_id', user.id).eq('following_id', uid).maybeSingle() : Promise.resolve({ data: null }),
+          // My own movies (for "en común" + vibe position)
+          (user && !esMio)
+            ? supabase.from('user_peliculas').select('pelicula_id, peliculas(categoria)').eq('user_id', user.id).eq('visto', true)
             : Promise.resolve({ data: null }),
-          (user && user.id !== uid)
-            ? supabase.from('user_peliculas').select('pelicula_id').eq('user_id', user.id).eq('visto', true)
+          // My avatar
+          (user && !esMio)
+            ? supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle()
             : Promise.resolve({ data: null }),
         ] as const)
 
@@ -246,9 +305,21 @@ export default function PerfilPage() {
         setSiguiendo(nSiguiendo ?? 0)
         setYaSigo(!!followCheck)
 
+        if (miAvatarUrl === null && miProfData) {
+          setMiAvatarUrl((miProfData as any)?.avatar_url ?? null)
+        }
+
         if (misVistas && misVistas.length > 0) {
           const misIds = new Set((misVistas as any[]).map(v => v.pelicula_id))
           setEnComun(mapped.filter(p => misIds.has(p.pelicula_id)).length)
+
+          // Build my own category distribution for vibe map
+          const cats: Record<string, number> = {}
+          ;(misVistas as any[]).forEach(r => {
+            const cat = r.peliculas?.categoria
+            if (cat) cats[cat] = (cats[cat] ?? 0) + 1
+          })
+          setMisCategorias(cats)
         }
 
         setCargando(false)
@@ -293,7 +364,6 @@ export default function PerfilPage() {
         {/* Header */}
         <div className="flex items-center justify-between gap-4 mb-8 flex-wrap">
           <div className="flex items-center gap-4">
-            {/* Avatar */}
             <div className="w-16 h-16 rounded-full overflow-hidden bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0">
               {avatarUrl
                 ? <img src={avatarUrl} alt={username} className="w-full h-full object-cover" />
@@ -349,7 +419,7 @@ export default function PerfilPage() {
           </div>
         )}
 
-        {/* Tops + Vibe Map 2D */}
+        {/* Tops + Vibe Map */}
         {stats && peliculas.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-5">
@@ -361,10 +431,14 @@ export default function PerfilPage() {
               )}
             </div>
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-              <VibeMapa2D categorias={stats.categorias} />
-              {!Object.keys(stats.categorias).length && (
-                <p className="text-zinc-600 text-sm">Sin datos de categorías aún</p>
-              )}
+              <VibeMapa
+                categorias={stats.categorias}
+                username={username}
+                avatarUrl={avatarUrl}
+                misCategorias={esMiPerfil ? null : misCategorias}
+                miUsername={esMiPerfil ? null : (miUsername ?? null)}
+                miAvatarUrl={esMiPerfil ? null : miAvatarUrl}
+              />
             </div>
           </div>
         )}

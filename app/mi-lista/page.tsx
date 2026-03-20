@@ -96,7 +96,7 @@ export default function MiListaPage() {
         <p className="text-zinc-500 text-sm mb-6">{user.email}</p>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-2 mb-8 flex-wrap">
           <button
             onClick={() => setTab('vistas')}
             className={`px-5 py-2 rounded-lg text-sm font-medium border transition-colors ${
@@ -117,6 +117,12 @@ export default function MiListaPage() {
           >
             ★ Watchlist ({watchlist.length})
           </button>
+          <Link
+            href="/mi-lista/estadisticas"
+            className="px-5 py-2 rounded-lg text-sm font-medium border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white transition-colors"
+          >
+            📊 Estadísticas
+          </Link>
         </div>
 
         {lista.length === 0 ? (

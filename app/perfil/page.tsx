@@ -51,7 +51,7 @@ function RatingBar({ n, count, max }: { n: number; count: number; max: number })
 }
 
 export default function MiPerfilPage() {
-  const { user, username, loading } = useAuth()
+  const { user, username, loading, signOut, refreshUsername } = useAuth()
   const router = useRouter()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [entradas, setEntradas] = useState<Entrada[]>([])
@@ -62,6 +62,20 @@ export default function MiPerfilPage() {
   const [cargando, setCargando] = useState(true)
   const [tab, setTab] = useState<Tab>('vistas')
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // — Modal editar perfil —
+  const [editarModal, setEditarModal] = useState(false)
+  // Cambiar username
+  const [nuevoUsername, setNuevoUsername] = useState('')
+  const [disponibleEdit, setDisponibleEdit] = useState<boolean | null>(null)
+  const [verificandoEdit, setVerificandoEdit] = useState(false)
+  const [guardandoEdit, setGuardandoEdit] = useState(false)
+  const [editError, setEditError] = useState('')
+  const editDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Eliminar cuenta
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleteText, setDeleteText] = useState('')
+  const [eliminando, setEliminando] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) { router.replace('/catalogo'); return }
@@ -144,6 +158,55 @@ export default function MiPerfilPage() {
     setUploading(false)
   }
 
+  // Verificar disponibilidad de nuevo username
+  useEffect(() => {
+    const sanitize = (v: string) => v.toLowerCase().replace(/[^a-z0-9_]/g, '')
+    const val = sanitize(nuevoUsername)
+    if (val.length < 3 || val === username) { setDisponibleEdit(null); return }
+    setVerificandoEdit(true)
+    if (editDebounceRef.current) clearTimeout(editDebounceRef.current)
+    editDebounceRef.current = setTimeout(async () => {
+      const { data } = await supabase.from('profiles').select('user_id').eq('username', val).maybeSingle()
+      setDisponibleEdit(!data)
+      setVerificandoEdit(false)
+    }, 400)
+  }, [nuevoUsername, username])
+
+  const handleUsernameChange = async () => {
+    const sanitize = (v: string) => v.toLowerCase().replace(/[^a-z0-9_]/g, '')
+    const val = sanitize(nuevoUsername)
+    if (!val || val.length < 3) { setEditError('Mínimo 3 caracteres'); return }
+    if (val.length > 20) { setEditError('Máximo 20 caracteres'); return }
+    if (!disponibleEdit) { setEditError('Username no disponible'); return }
+    setGuardandoEdit(true)
+    setEditError('')
+    const { error } = await supabase.from('profiles').update({ username: val }).eq('user_id', user!.id)
+    if (error) { setEditError('Error al guardar: ' + error.message); setGuardandoEdit(false); return }
+    await refreshUsername()
+    setNuevoUsername('')
+    setDisponibleEdit(null)
+    setGuardandoEdit(false)
+    setEditarModal(false)
+  }
+
+  const handleDeleteAccount = async () => {
+    if (!user || deleteText !== 'ELIMINAR') return
+    setEliminando(true)
+    // Intentar borrar avatar del storage
+    try {
+      const ext = avatarUrl?.split('.').pop()?.split('?')[0]
+      if (ext) await supabase.storage.from('avatars').remove([`${user.id}.${ext}`])
+    } catch {}
+    // Llamar función delete_user (requiere SQL previo)
+    const { error } = await supabase.rpc('delete_user')
+    if (error) {
+      // Fallback: borrar perfil y cerrar sesión
+      await supabase.from('profiles').delete().eq('user_id', user.id)
+    }
+    await signOut()
+    router.replace('/')
+  }
+
   const quitarVista = async (peliculaId: string) => {
     setEntradas(prev => prev.map(e => e.pelicula_id === peliculaId ? { ...e, visto: false, rating: null } : e))
     await supabase.from('user_peliculas').update({ visto: false, rating: null }).eq('user_id', user!.id).eq('pelicula_id', peliculaId)
@@ -207,6 +270,12 @@ export default function MiPerfilPage() {
             {uploadError && (
               <p className="text-red-400 text-xs mt-1 max-w-xs">{uploadError}</p>
             )}
+            <button
+              onClick={() => { setEditarModal(true); setNuevoUsername(''); setDisponibleEdit(null); setEditError(''); setConfirmDelete(false); setDeleteText('') }}
+              className="mt-3 text-xs text-zinc-500 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors"
+            >
+              ✎ Editar perfil
+            </button>
           </div>
         </div>
 
@@ -383,6 +452,98 @@ export default function MiPerfilPage() {
           <p className="text-zinc-500 text-sm">Aún no tienes suficientes películas vistas para mostrar estadísticas.</p>
         )}
       </div>
+
+      {/* ── Modal editar perfil ── */}
+      {editarModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4" onClick={() => setEditarModal(false)}>
+          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-7 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-white font-bold text-lg">Editar perfil</h2>
+              <button onClick={() => setEditarModal(false)} className="text-zinc-500 hover:text-white text-xl leading-none transition-colors">✕</button>
+            </div>
+
+            {/* Cambiar username */}
+            <div className="mb-7">
+              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Cambiar username</p>
+              <p className="text-zinc-600 text-xs mb-3">Username actual: <span className="text-zinc-300">@{username}</span></p>
+              <div className={`flex items-center bg-zinc-800 border rounded-lg px-3 py-2.5 mb-1 transition-colors ${
+                nuevoUsername.length >= 3
+                  ? disponibleEdit ? 'border-emerald-500' : verificandoEdit ? 'border-zinc-600' : 'border-red-500'
+                  : 'border-zinc-700'
+              }`}>
+                <span className="text-zinc-500 text-sm mr-1">@</span>
+                <input
+                  type="text"
+                  value={nuevoUsername}
+                  onChange={e => { setNuevoUsername(e.target.value); setEditError('') }}
+                  onKeyDown={e => e.key === 'Enter' && handleUsernameChange()}
+                  placeholder="nuevo_username"
+                  maxLength={20}
+                  className="flex-1 bg-transparent text-sm text-white placeholder:text-zinc-600 focus:outline-none"
+                />
+                {nuevoUsername.length >= 3 && (
+                  <span className="text-xs ml-2 shrink-0">
+                    {verificandoEdit ? <span className="text-zinc-500">...</span>
+                      : disponibleEdit ? <span className="text-emerald-400">✓</span>
+                      : <span className="text-red-400">✗</span>}
+                  </span>
+                )}
+              </div>
+              <p className="text-zinc-600 text-xs mb-3">Solo letras, números y guión bajo.</p>
+              {editError && <p className="text-red-400 text-xs mb-3">{editError}</p>}
+              <button
+                onClick={handleUsernameChange}
+                disabled={guardandoEdit || !disponibleEdit || verificandoEdit || nuevoUsername.length < 3}
+                className="w-full bg-yellow-400 text-zinc-950 font-semibold rounded-lg py-2.5 text-sm hover:bg-yellow-300 transition-colors disabled:opacity-40"
+              >
+                {guardandoEdit ? 'Guardando...' : 'Guardar nuevo username'}
+              </button>
+            </div>
+
+            {/* Zona de peligro */}
+            <div className="border-t border-zinc-800 pt-6">
+              <p className="text-xs text-red-500 uppercase tracking-wide mb-4">Zona de peligro</p>
+              {!confirmDelete ? (
+                <button
+                  onClick={() => setConfirmDelete(true)}
+                  className="w-full border border-red-900 text-red-400 hover:bg-red-950 rounded-lg py-2.5 text-sm transition-colors"
+                >
+                  Eliminar mi cuenta
+                </button>
+              ) : (
+                <div>
+                  <p className="text-zinc-400 text-sm mb-3 leading-relaxed">
+                    Esta acción es <span className="text-white font-semibold">irreversible</span>. Se borrarán todos tus datos.
+                    Escribe <span className="text-white font-bold">ELIMINAR</span> para confirmar.
+                  </p>
+                  <input
+                    type="text"
+                    value={deleteText}
+                    onChange={e => setDeleteText(e.target.value)}
+                    placeholder="ELIMINAR"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-700 mb-3"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => { setConfirmDelete(false); setDeleteText('') }}
+                      className="flex-1 border border-zinc-700 text-zinc-400 rounded-lg py-2.5 text-sm hover:border-zinc-500 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleDeleteAccount}
+                      disabled={deleteText !== 'ELIMINAR' || eliminando}
+                      className="flex-1 bg-red-600 text-white font-semibold rounded-lg py-2.5 text-sm hover:bg-red-500 transition-colors disabled:opacity-40"
+                    >
+                      {eliminando ? 'Eliminando...' : 'Confirmar'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   )
 }

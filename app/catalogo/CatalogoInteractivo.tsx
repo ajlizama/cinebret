@@ -47,6 +47,8 @@ export type Pelicula = {
   generos: string[]
   poster_path: string | null
   oscars: string | null
+  imdb_id: string | null
+  youtube_trailer_key: string | null
   sinopsis: string | null
 }
 
@@ -668,13 +670,22 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                                 )}
                               </div>
                             )}
-                            <Link
-                              href={`/pelicula/${pelicula.id}`}
-                              className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
-                              onClick={e => e.stopPropagation()}
-                            >
-                              {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
-                            </Link>
+                            <div className="flex flex-wrap gap-3 items-center">
+                              <Link
+                                href={`/pelicula/${pelicula.id}`}
+                                className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
+                                onClick={e => e.stopPropagation()}
+                              >
+                                {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
+                              </Link>
+                              {pelicula.imdb_id && (
+                                <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
+                              )}
+                              {pelicula.youtube_trailer_key && (
+                                <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
+                              )}
+                              <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
+                            </div>
                           </div>
                         </div>
                         {/* Derecha: equipo + oscars */}
@@ -917,13 +928,22 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       </div>
                     )}
                   </div>
-                  <Link
-                    href={`/pelicula/${pelicula.id}`}
-                    className={`inline-block text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
-                    onClick={e => e.stopPropagation()}
-                  >
-                    {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
-                  </Link>
+                  <div className="flex flex-wrap gap-3 items-center">
+                    <Link
+                      href={`/pelicula/${pelicula.id}`}
+                      className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      {pelicula.es_review_autor ? '✍️ Ver ficha →' : 'Ver ficha →'}
+                    </Link>
+                    {pelicula.imdb_id && (
+                      <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
+                    )}
+                    {pelicula.youtube_trailer_key && (
+                      <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
+                    )}
+                    <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
+                  </div>
                 </div>
               )}
             </div>

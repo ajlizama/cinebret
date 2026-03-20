@@ -29,11 +29,10 @@ type ReviewFeed = {
 }
 
 function Avatar({ url, username, size = 9 }: { url: string | null; username: string; size?: number }) {
-  const cls = `rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 shrink-0`
-  const style = { width: size * 4, height: size * 4 }
-  if (url) return <img src={url} alt={username} className={`${cls} object-cover`} style={style} />
+  const px = size * 4
+  if (url) return <img src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: px, height: px }} />
   return (
-    <div className={cls} style={style}>
+    <div className="rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 shrink-0" style={{ width: px, height: px }}>
       {username[0]?.toUpperCase()}
     </div>
   )
@@ -72,34 +71,44 @@ export default function ComunidadPage() {
 
         const { data: reviews } = await supabase
           .from('user_reviews')
-          .select('id, review_text, created_at, user_id, pelicula_id, peliculas(titulo, titulo_ingles, poster_path), user_peliculas!inner(rating)')
+          .select('id, review_text, created_at, user_id, pelicula_id')
           .in('user_id', ids)
           .order('created_at', { ascending: false })
           .limit(40)
 
         if (!reviews || reviews.length === 0) { setCargandoFeed(false); return }
 
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('user_id, username, avatar_url')
-          .in('user_id', ids)
+        const reviewUserIds = [...new Set(reviews.map((r: any) => r.user_id))]
+        const peliculaIds = [...new Set(reviews.map((r: any) => r.pelicula_id))]
+
+        const [{ data: profiles }, { data: peliculas }, { data: userPelis }] = await Promise.all([
+          supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', reviewUserIds),
+          supabase.from('peliculas').select('id, titulo, titulo_ingles, poster_path').in('id', peliculaIds),
+          supabase.from('user_peliculas').select('user_id, pelicula_id, rating').in('user_id', reviewUserIds).in('pelicula_id', peliculaIds),
+        ])
 
         const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
-        ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url } })
+        ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
 
-        const merged: ReviewFeed[] = (reviews as any[])
-          .filter(r => profileMap[r.user_id] && r.peliculas)
-          .map(r => ({
+        const peliculaMap: Record<string, { titulo: string; titulo_ingles: string | null; poster_path: string | null }> = {}
+        ;(peliculas ?? []).forEach((p: any) => { peliculaMap[p.id] = { titulo: p.titulo, titulo_ingles: p.titulo_ingles, poster_path: p.poster_path } })
+
+        const ratingMap: Record<string, number | null> = {}
+        ;(userPelis ?? []).forEach((r: any) => { ratingMap[`${r.user_id}_${r.pelicula_id}`] = r.rating ?? null })
+
+        const merged: ReviewFeed[] = reviews
+          .filter((r: any) => profileMap[r.user_id] && peliculaMap[r.pelicula_id])
+          .map((r: any) => ({
             id: r.id,
             review_text: r.review_text,
             created_at: r.created_at,
             username: profileMap[r.user_id].username,
             avatar_url: profileMap[r.user_id].avatar_url,
             pelicula_id: r.pelicula_id,
-            titulo: r.peliculas.titulo,
-            titulo_ingles: r.peliculas.titulo_ingles,
-            poster_path: r.peliculas.poster_path,
-            rating: r.user_peliculas?.rating ?? null,
+            titulo: peliculaMap[r.pelicula_id].titulo,
+            titulo_ingles: peliculaMap[r.pelicula_id].titulo_ingles,
+            poster_path: peliculaMap[r.pelicula_id].poster_path,
+            rating: ratingMap[`${r.user_id}_${r.pelicula_id}`] ?? null,
           }))
 
         setFeed(merged)
@@ -164,7 +173,7 @@ export default function ComunidadPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav />
+      <Nav active="comunidad" />
       <div className="max-w-2xl mx-auto px-6 py-10">
         <h1 className="text-2xl font-bold text-white mb-6">Comunidad</h1>
 
@@ -182,7 +191,7 @@ export default function ComunidadPage() {
           <div className="mb-8">
             {cargandoBusqueda && <p className="text-zinc-500 text-sm">Buscando...</p>}
             {!cargandoBusqueda && resultados.length === 0 && (
-              <p className="text-zinc-500 text-sm">No se encontraron perfiles para "<span className="text-zinc-300">{busqueda}</span>"</p>
+              <p className="text-zinc-500 text-sm">Sin resultados para "<span className="text-zinc-300">{busqueda}</span>"</p>
             )}
             <div className="space-y-3">
               {resultados.map(perfil => (
@@ -224,12 +233,12 @@ export default function ComunidadPage() {
             {user && !cargandoFeed && feed.length === 0 && (
               <div className="text-center mt-12">
                 <p className="text-zinc-500 text-sm mb-2">No hay reviews aún</p>
-                <p className="text-zinc-600 text-xs">Sigue usuarios para ver sus reviews aquí</p>
+                <p className="text-zinc-600 text-xs">Sigue usuarios para ver sus reviews aquí, o escribe la primera</p>
               </div>
             )}
             {user && !cargandoFeed && feed.length > 0 && (
               <div className="space-y-4">
-                <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Reviews de tus seguidos</p>
                 {feed.map(item => (
                   <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
                     {/* Header */}
@@ -261,7 +270,7 @@ export default function ComunidadPage() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-medium mb-1 leading-snug">
+                        <p className="text-white text-sm font-semibold mb-1 leading-snug">
                           {item.titulo_ingles || item.titulo}
                         </p>
                         <p className="text-zinc-400 text-sm leading-relaxed line-clamp-4">

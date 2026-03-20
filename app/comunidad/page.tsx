@@ -15,10 +15,10 @@ type Perfil = {
   sigo: boolean
 }
 
-type ReviewFeed = {
+type FeedItem = {
   id: string
   review_text: string
-  created_at: string
+  created_at: string | null
   username: string
   avatar_url: string | null
   pelicula_id: string
@@ -26,13 +26,24 @@ type ReviewFeed = {
   titulo_ingles: string | null
   poster_path: string | null
   rating: number | null
+  isCineBret: boolean
 }
 
-function Avatar({ url, username, size = 9 }: { url: string | null; username: string; size?: number }) {
-  const px = size * 4
-  if (url) return <img src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: px, height: px }} />
+function AvatarCineBret({ size = 36 }: { size?: number }) {
   return (
-    <div className="rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 shrink-0" style={{ width: px, height: px }}>
+    <div
+      className="rounded-full bg-yellow-400 flex items-center justify-center shrink-0 font-black text-zinc-950"
+      style={{ width: size, height: size, fontSize: size * 0.38 }}
+    >
+      CB
+    </div>
+  )
+}
+
+function Avatar({ url, username, size = 36 }: { url: string | null; username: string; size?: number }) {
+  if (url) return <img src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: size, height: size }} />
+  return (
+    <div className="rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 shrink-0" style={{ width: size, height: size }}>
       {username[0]?.toUpperCase()}
     </div>
   )
@@ -49,24 +60,110 @@ function tiempoRelativo(iso: string) {
   return new Date(iso).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
 }
 
+function FeedCard({ item }: { item: FeedItem }) {
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-4 pt-4 pb-3">
+        {item.isCineBret ? (
+          <>
+            <AvatarCineBret size={36} />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-white text-sm font-semibold">CineBret</span>
+                <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-1.5 py-0.5 rounded-full leading-none">✍️ Autor</span>
+              </div>
+              <p className="text-zinc-500 text-xs">Review oficial</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <Link href={`/perfil/${item.username}`}>
+              <Avatar url={item.avatar_url} username={item.username} size={36} />
+            </Link>
+            <div className="flex-1 min-w-0">
+              <Link href={`/perfil/${item.username}`} className="text-white text-sm font-medium hover:text-zinc-300">
+                @{item.username}
+              </Link>
+              <p className="text-zinc-500 text-xs">{item.created_at ? tiempoRelativo(item.created_at) : ''}</p>
+            </div>
+            {item.rating && <span className="text-yellow-400 font-bold text-sm shrink-0">{item.rating}/10</span>}
+          </>
+        )}
+      </div>
+
+      {/* Película + texto */}
+      <Link href={`/pelicula/${item.pelicula_id}`} className="flex gap-3 px-4 pb-4 hover:opacity-90 transition-opacity">
+        {item.poster_path && (
+          <div className="relative w-14 h-20 shrink-0 rounded-lg overflow-hidden bg-zinc-800">
+            <Image
+              src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
+              alt={item.titulo_ingles || item.titulo}
+              fill
+              className="object-cover"
+            />
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm font-semibold mb-1 leading-snug">
+            {item.titulo_ingles || item.titulo}
+          </p>
+          <p className={`text-sm leading-relaxed line-clamp-4 ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}>
+            {item.review_text}
+          </p>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
 export default function ComunidadPage() {
   const { user } = useAuth()
   const [busqueda, setBusqueda] = useState('')
   const [resultados, setResultados] = useState<Perfil[]>([])
   const [cargandoBusqueda, setCargandoBusqueda] = useState(false)
   const [siguiendoMap, setSiguiendoMap] = useState<Record<string, boolean>>({})
-  const [feed, setFeed] = useState<ReviewFeed[]>([])
-  const [cargandoFeed, setCargandoFeed] = useState(false)
+  const [feedSeguidores, setFeedSeguidores] = useState<FeedItem[]>([])
+  const [feedCineBret, setFeedCineBret] = useState<FeedItem[]>([])
+  const [cargandoFeed, setCargandoFeed] = useState(true)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Feed de reviews de seguidos
+  // Fetch CineBret reviews (siempre, para todos)
+  useEffect(() => {
+    supabase
+      .from('enriquecimiento')
+      .select('pelicula_id, review_autor, peliculas(id, titulo, titulo_ingles, poster_path)')
+      .not('review_autor', 'is', null)
+      .limit(40)
+      .then(({ data }) => {
+        if (!data) { setCargandoFeed(false); return }
+        const items: FeedItem[] = (data as any[])
+          .filter(r => r.peliculas && r.review_autor?.trim())
+          .map(r => ({
+            id: `cb_${r.pelicula_id}`,
+            review_text: r.review_autor,
+            created_at: null,
+            username: 'CineBret',
+            avatar_url: null,
+            pelicula_id: r.pelicula_id,
+            titulo: r.peliculas.titulo,
+            titulo_ingles: r.peliculas.titulo_ingles,
+            poster_path: r.peliculas.poster_path,
+            rating: null,
+            isCineBret: true,
+          }))
+        setFeedCineBret(items)
+        setCargandoFeed(false)
+      })
+  }, [])
+
+  // Fetch reviews de seguidores (solo si hay sesión)
   useEffect(() => {
     if (!user) return
-    setCargandoFeed(true)
 
     supabase.from('follows').select('following_id').eq('follower_id', user.id)
       .then(async ({ data: follows }) => {
-        if (!follows || follows.length === 0) { setCargandoFeed(false); return }
+        if (!follows || follows.length === 0) return
         const ids = follows.map((f: any) => f.following_id)
 
         const { data: reviews } = await supabase
@@ -74,12 +171,12 @@ export default function ComunidadPage() {
           .select('id, review_text, created_at, user_id, pelicula_id')
           .in('user_id', ids)
           .order('created_at', { ascending: false })
-          .limit(40)
+          .limit(30)
 
-        if (!reviews || reviews.length === 0) { setCargandoFeed(false); return }
+        if (!reviews || reviews.length === 0) return
 
         const reviewUserIds = [...new Set(reviews.map((r: any) => r.user_id))]
-        const peliculaIds = [...new Set(reviews.map((r: any) => r.pelicula_id))]
+        const peliculaIds   = [...new Set(reviews.map((r: any) => r.pelicula_id))]
 
         const [{ data: profiles }, { data: peliculas }, { data: userPelis }] = await Promise.all([
           supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', reviewUserIds),
@@ -91,12 +188,12 @@ export default function ComunidadPage() {
         ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
 
         const peliculaMap: Record<string, { titulo: string; titulo_ingles: string | null; poster_path: string | null }> = {}
-        ;(peliculas ?? []).forEach((p: any) => { peliculaMap[p.id] = { titulo: p.titulo, titulo_ingles: p.titulo_ingles, poster_path: p.poster_path } })
+        ;(peliculas ?? []).forEach((p: any) => { peliculaMap[p.id] = p })
 
         const ratingMap: Record<string, number | null> = {}
         ;(userPelis ?? []).forEach((r: any) => { ratingMap[`${r.user_id}_${r.pelicula_id}`] = r.rating ?? null })
 
-        const merged: ReviewFeed[] = reviews
+        const items: FeedItem[] = reviews
           .filter((r: any) => profileMap[r.user_id] && peliculaMap[r.pelicula_id])
           .map((r: any) => ({
             id: r.id,
@@ -109,14 +206,14 @@ export default function ComunidadPage() {
             titulo_ingles: peliculaMap[r.pelicula_id].titulo_ingles,
             poster_path: peliculaMap[r.pelicula_id].poster_path,
             rating: ratingMap[`${r.user_id}_${r.pelicula_id}`] ?? null,
+            isCineBret: false,
           }))
 
-        setFeed(merged)
-        setCargandoFeed(false)
+        setFeedSeguidores(items)
       })
   }, [user])
 
-  // Búsqueda de perfiles
+  // Búsqueda
   useEffect(() => {
     const q = busqueda.trim().toLowerCase()
     if (!q) { setResultados([]); return }
@@ -125,17 +222,12 @@ export default function ComunidadPage() {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
       const { data: profiles } = await supabase
-        .from('profiles')
-        .select('user_id, username, avatar_url')
-        .ilike('username', `%${q}%`)
-        .limit(20)
+        .from('profiles').select('user_id, username, avatar_url').ilike('username', `%${q}%`).limit(20)
 
       if (!profiles || profiles.length === 0) { setResultados([]); setCargandoBusqueda(false); return }
 
       const vistasRes = await Promise.all(
-        profiles.map(p =>
-          supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true)
-        )
+        profiles.map(p => supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true))
       )
 
       let sigosSet: Set<string> = new Set()
@@ -171,6 +263,9 @@ export default function ComunidadPage() {
     }
   }
 
+  // Feed combinado: reviews de seguidores primero, luego CineBret
+  const feedCombinado: FeedItem[] = [...feedSeguidores, ...feedCineBret]
+
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="comunidad" />
@@ -197,7 +292,7 @@ export default function ComunidadPage() {
               {resultados.map(perfil => (
                 <div key={perfil.user_id} className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
                   <Link href={`/perfil/${perfil.username}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <Avatar url={perfil.avatar_url} username={perfil.username} size={9} />
+                    <Avatar url={perfil.avatar_url} username={perfil.username} size={36} />
                     <div>
                       <p className="text-white text-sm font-medium">@{perfil.username}</p>
                       <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
@@ -221,65 +316,31 @@ export default function ComunidadPage() {
           </div>
         )}
 
-        {/* Feed de reviews */}
+        {/* Feed */}
         {!busqueda && (
           <>
-            {!user && (
-              <p className="text-zinc-600 text-sm text-center mt-8">Inicia sesión para ver el feed de tu comunidad</p>
-            )}
-            {user && cargandoFeed && (
-              <p className="text-zinc-500 text-sm">Cargando feed...</p>
-            )}
-            {user && !cargandoFeed && feed.length === 0 && (
-              <div className="text-center mt-12">
-                <p className="text-zinc-500 text-sm mb-2">No hay reviews aún</p>
-                <p className="text-zinc-600 text-xs">Sigue usuarios para ver sus reviews aquí, o escribe la primera</p>
-              </div>
-            )}
-            {user && !cargandoFeed && feed.length > 0 && (
-              <div className="space-y-4">
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Reviews de tus seguidos</p>
-                {feed.map(item => (
-                  <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-                    {/* Header */}
-                    <div className="flex items-center gap-3 px-4 pt-4 pb-3">
-                      <Link href={`/perfil/${item.username}`}>
-                        <Avatar url={item.avatar_url} username={item.username} size={9} />
-                      </Link>
-                      <div className="flex-1 min-w-0">
-                        <Link href={`/perfil/${item.username}`} className="text-white text-sm font-medium hover:text-zinc-300">
-                          @{item.username}
-                        </Link>
-                        <p className="text-zinc-500 text-xs">{tiempoRelativo(item.created_at)}</p>
-                      </div>
-                      {item.rating && (
-                        <span className="text-yellow-400 font-bold text-sm shrink-0">{item.rating}/10</span>
-                      )}
-                    </div>
+            {cargandoFeed && <p className="text-zinc-500 text-sm">Cargando...</p>}
 
-                    {/* Película + review */}
-                    <Link href={`/pelicula/${item.pelicula_id}`} className="flex gap-3 px-4 pb-4 hover:opacity-90 transition-opacity">
-                      {item.poster_path && (
-                        <div className="relative w-14 h-20 shrink-0 rounded-lg overflow-hidden bg-zinc-800">
-                          <Image
-                            src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
-                            alt={item.titulo_ingles || item.titulo}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-semibold mb-1 leading-snug">
-                          {item.titulo_ingles || item.titulo}
-                        </p>
-                        <p className="text-zinc-400 text-sm leading-relaxed line-clamp-4">
-                          {item.review_text}
-                        </p>
-                      </div>
-                    </Link>
+            {!cargandoFeed && feedCombinado.length === 0 && (
+              <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>
+            )}
+
+            {!cargandoFeed && feedCombinado.length > 0 && (
+              <div className="space-y-4">
+                {/* Separador reviews de seguidores */}
+                {feedSeguidores.length > 0 && (
+                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
+                )}
+                {feedSeguidores.map(item => <FeedCard key={item.id} item={item} />)}
+
+                {/* Separador CineBret */}
+                {feedCineBret.length > 0 && (
+                  <div className="flex items-center gap-3 pt-2">
+                    <AvatarCineBret size={28} />
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
                   </div>
-                ))}
+                )}
+                {feedCineBret.map(item => <FeedCard key={item.id} item={item} />)}
               </div>
             )}
           </>

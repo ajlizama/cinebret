@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 
-type UserPelicula = { visto: boolean; rating: number | null }
+type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -156,35 +156,41 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
   useEffect(() => {
     if (!user) { setUserPeliculas({}); return }
-    supabase.from('user_peliculas').select('pelicula_id, visto, rating').eq('user_id', user.id)
+    supabase.from('user_peliculas').select('pelicula_id, visto, rating, watchlist').eq('user_id', user.id)
       .then(({ data }) => {
         if (!data) return
         const map: Record<string, UserPelicula> = {}
-        data.forEach(r => { map[r.pelicula_id] = { visto: r.visto, rating: r.rating } })
+        data.forEach(r => { map[r.pelicula_id] = { visto: r.visto, rating: r.rating, watchlist: r.watchlist } })
         setUserPeliculas(map)
       })
   }, [user])
 
-  const toggleVisto = async (peliculaId: string, e: React.MouseEvent) => {
-    e.stopPropagation()
+  const upsertUserPelicula = async (peliculaId: string, campos: Partial<UserPelicula>) => {
     if (!user) return
-    const actual = userPeliculas[peliculaId]
-    const nuevoVisto = !actual?.visto
-    setUserPeliculas(prev => ({ ...prev, [peliculaId]: { visto: nuevoVisto, rating: actual?.rating ?? null } }))
+    const actual = userPeliculas[peliculaId] ?? { visto: false, rating: null, watchlist: false }
+    const nuevo = { ...actual, ...campos }
+    setUserPeliculas(prev => ({ ...prev, [peliculaId]: nuevo }))
     await supabase.from('user_peliculas').upsert(
-      { user_id: user.id, pelicula_id: peliculaId, visto: nuevoVisto, rating: actual?.rating ?? null },
+      { user_id: user.id, pelicula_id: peliculaId, visto: nuevo.visto, rating: nuevo.rating, watchlist: nuevo.watchlist },
       { onConflict: 'user_id,pelicula_id' }
     )
   }
 
-  const setRating = async (peliculaId: string, rating: number, e: React.MouseEvent) => {
+  const toggleVisto = (peliculaId: string, e: React.MouseEvent) => {
     e.stopPropagation()
-    if (!user) return
-    setUserPeliculas(prev => ({ ...prev, [peliculaId]: { visto: true, rating } }))
-    await supabase.from('user_peliculas').upsert(
-      { user_id: user.id, pelicula_id: peliculaId, visto: true, rating },
-      { onConflict: 'user_id,pelicula_id' }
-    )
+    const actual = userPeliculas[peliculaId]
+    upsertUserPelicula(peliculaId, { visto: !actual?.visto })
+  }
+
+  const toggleWatchlist = (peliculaId: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    const actual = userPeliculas[peliculaId]
+    upsertUserPelicula(peliculaId, { watchlist: !actual?.watchlist })
+  }
+
+  const setRating = (peliculaId: string, rating: number, e: React.MouseEvent) => {
+    e.stopPropagation()
+    upsertUserPelicula(peliculaId, { visto: true, rating })
   }
 
   const generosDisponibles = [...new Set(peliculas.flatMap(p => p.generos))].sort()
@@ -350,7 +356,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <table className="w-full text-sm">
           <thead className="sticky top-0 z-10">
             <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
-              {user && <th className="text-center px-3 py-3 w-28">Mi lista</th>}
+              {user && <th className="text-center px-3 py-3 w-32">Vista / Lista</th>}
               <th className="text-left px-4 py-3 w-64">Película</th>
               <th className="text-center px-3 py-3 w-16">Año</th>
               <th className="text-center px-3 py-3 w-20">IMDB</th>
@@ -377,26 +383,40 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   {user && (
                     <td className="px-3 py-3 text-center" onClick={e => e.stopPropagation()}>
                       <div className="flex flex-col items-center gap-1.5">
-                        <button
-                          onClick={e => toggleVisto(pelicula.id, e)}
-                          className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors ${
-                            userPeliculas[pelicula.id]?.visto
-                              ? 'bg-emerald-500 border-emerald-500 text-white'
-                              : 'border-zinc-600 text-zinc-600 hover:border-zinc-400'
-                          }`}
-                        >
-                          {userPeliculas[pelicula.id]?.visto ? '✓' : ''}
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={e => toggleVisto(pelicula.id, e)}
+                            title="Vista"
+                            className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors ${
+                              userPeliculas[pelicula.id]?.visto
+                                ? 'bg-emerald-500 border-emerald-500 text-white'
+                                : 'border-zinc-600 text-zinc-600 hover:border-zinc-400'
+                            }`}
+                          >
+                            {userPeliculas[pelicula.id]?.visto ? '✓' : ''}
+                          </button>
+                          <button
+                            onClick={e => toggleWatchlist(pelicula.id, e)}
+                            title="Watchlist"
+                            className={`w-6 h-6 rounded text-xs transition-colors ${
+                              userPeliculas[pelicula.id]?.watchlist
+                                ? 'bg-yellow-400 text-zinc-950'
+                                : 'border border-zinc-600 text-zinc-600 hover:border-zinc-400'
+                            }`}
+                          >
+                            {userPeliculas[pelicula.id]?.watchlist ? '★' : '☆'}
+                          </button>
+                        </div>
                         {userPeliculas[pelicula.id]?.visto && (
                           <select
                             value={userPeliculas[pelicula.id]?.rating ?? ''}
                             onChange={e => { if (e.target.value) setRating(pelicula.id, Number(e.target.value), e as any) }}
                             onClick={e => e.stopPropagation()}
-                            className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-1 py-0.5 focus:outline-none w-12"
+                            className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-1 py-0.5 focus:outline-none w-14"
                           >
-                            <option value="">—</option>
+                            <option value="">nota</option>
                             {[1,2,3,4,5,6,7,8,9,10].map(n => (
-                              <option key={n} value={n}>{n}</option>
+                              <option key={n} value={n}>{n}/10</option>
                             ))}
                           </select>
                         )}
@@ -694,7 +714,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3">
                   <div className="flex items-center justify-between">
                     {user ? (
-                      <div className="flex items-center gap-3" onClick={e => e.stopPropagation()}>
+                      <div className="flex items-center gap-2 flex-wrap" onClick={e => e.stopPropagation()}>
                         <button
                           onClick={e => toggleVisto(pelicula.id, e)}
                           className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
@@ -703,7 +723,17 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                               : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
                           }`}
                         >
-                          {userPeliculas[pelicula.id]?.visto ? '✓ Vista' : '○ Marcar como vista'}
+                          {userPeliculas[pelicula.id]?.visto ? '✓ Vista' : '○ Vista'}
+                        </button>
+                        <button
+                          onClick={e => toggleWatchlist(pelicula.id, e)}
+                          className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
+                            userPeliculas[pelicula.id]?.watchlist
+                              ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
+                              : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
+                          }`}
+                        >
+                          {userPeliculas[pelicula.id]?.watchlist ? '★ Watchlist' : '☆ Watchlist'}
                         </button>
                         {userPeliculas[pelicula.id]?.visto && (
                           <select
@@ -712,7 +742,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                             onClick={e => e.stopPropagation()}
                             className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-2 py-1.5 focus:outline-none"
                           >
-                            <option value="">Mi nota —</option>
+                            <option value="">Tu rating —</option>
                             {[1,2,3,4,5,6,7,8,9,10].map(n => (
                               <option key={n} value={n}>{n}/10</option>
                             ))}

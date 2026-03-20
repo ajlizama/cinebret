@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import AuthModal from './AuthModal'
 
-type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' }
+type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' | 'mi-lista' }
 
 export default function Nav({ active }: Props) {
   const { user, loading, signOut } = useAuth()
@@ -30,6 +30,7 @@ export default function Nav({ active }: Props) {
             {link('/catalogo', 'Catálogo', 'catalogo')}
             {link('/cambios', 'Cambios', 'cambios')}
             {link('/estadisticas', 'Estadísticas', 'estadisticas')}
+            {user && link('/mi-lista', 'Mi lista', 'mi-lista')}
 
             <a
               href="https://www.instagram.com/cinebret/"

@@ -16,41 +16,88 @@ import {
   VibeMapa,
 } from '@/components/PerfilStats'
 
-type Pelicula = PeliculaConStats & {
-  pelicula: PeliculaConStats['pelicula'] & { titulo_ingles: string | null }
+const PLATAFORMAS = [
+  { id: 'netflix',        nombre: 'Netflix',     logo: '/netflix.png' },
+  { id: 'disney_plus',   nombre: 'Disney+',     logo: '/disney_plus.svg' },
+  { id: 'hbo_max',       nombre: 'HBO',         logo: '/hbo_max.png' },
+  { id: 'amazon_prime',  nombre: 'Prime',       logo: '/amazon_prime.png' },
+  { id: 'apple_tv',      nombre: 'Apple TV+',   logo: '/apple_tv.png' },
+  { id: 'paramount_plus',nombre: 'Paramount+',  logo: '/paramount_plus.svg' },
+]
+
+type Entrada = PeliculaConStats & {
+  visto: boolean
+  watchlist: boolean
+  pelicula: PeliculaConStats['pelicula'] & {
+    titulo_ingles: string | null
+    anio: number | null
+    rt_score: number | null
+  }
+  plataformas: string[]
+}
+
+type Tab = 'vistas' | 'watchlist' | 'estadisticas'
+
+function RatingBar({ n, count, max }: { n: number; count: number; max: number }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-zinc-500 text-xs w-3 text-right">{n}</span>
+      <div className="flex-1 h-2.5 bg-zinc-800 rounded overflow-hidden">
+        <div className="h-full bg-yellow-400 rounded" style={{ width: `${max > 0 ? (count / max) * 100 : 0}%` }} />
+      </div>
+      <span className="text-zinc-400 text-xs w-5 text-right">{count}</span>
+    </div>
+  )
 }
 
 export default function MiPerfilPage() {
   const { user, username, loading } = useAuth()
   const router = useRouter()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-  const [peliculas, setPeliculas] = useState<Pelicula[]>([])
+  const [entradas, setEntradas] = useState<Entrada[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [seguidores, setSeguidores] = useState(0)
   const [siguiendo, setSiguiendo] = useState(0)
   const [uploading, setUploading] = useState(false)
   const [cargando, setCargando] = useState(true)
+  const [tab, setTab] = useState<Tab>('vistas')
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!loading && !user) { router.replace('/catalogo'); return }
     if (!user) return
 
+    const hoy = new Date().toISOString().split('T')[0]
     Promise.all([
       supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle(),
       supabase.from('user_peliculas')
-        .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, nota_imdb, poster_path, oscars, categoria, enriquecimiento(director, actores, compositor))')
-        .eq('user_id', user.id).eq('visto', true),
+        .select('pelicula_id, visto, rating, watchlist, peliculas(titulo, titulo_ingles, anio, nota_imdb, rt_score, poster_path, categoria, oscars, enriquecimiento(director, actores, compositor))')
+        .eq('user_id', user.id),
+      supabase.from('catalogos').select('pelicula_id, plataforma').eq('fecha', hoy).eq('activo', true),
       supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', user.id),
       supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', user.id),
-    ]).then(([{ data: prof }, { data: vistas }, { count: nSeg }, { count: nSig }]) => {
+    ]).then(([{ data: prof }, { data: rows }, { data: cats }, { count: nSeg }, { count: nSig }]) => {
       setAvatarUrl((prof as any)?.avatar_url ?? null)
-      const mapped: Pelicula[] = (vistas ?? [])
-        .map((r: any) => ({ pelicula_id: r.pelicula_id, rating: r.rating, pelicula: r.peliculas }))
+
+      const platMap: Record<string, string[]> = {}
+      ;(cats ?? []).forEach((c: any) => {
+        platMap[c.pelicula_id] = [...(platMap[c.pelicula_id] ?? []), c.plataforma]
+      })
+
+      const mapped: Entrada[] = (rows ?? [])
+        .map((r: any) => ({
+          pelicula_id: r.pelicula_id,
+          visto: r.visto,
+          rating: r.rating,
+          watchlist: r.watchlist,
+          plataformas: platMap[r.pelicula_id] ?? [],
+          pelicula: r.peliculas,
+        }))
         .filter((r: any) => r.pelicula)
-        .sort((a: any, b: any) => (b.rating ?? 0) - (a.rating ?? 0))
-      setPeliculas(mapped)
-      setStats(computeStats(mapped))
+
+      setEntradas(mapped)
+      const vistas = mapped.filter(e => e.visto)
+      setStats(computeStats(vistas))
       setSeguidores(nSeg ?? 0)
       setSiguiendo(nSig ?? 0)
       setCargando(false)
@@ -72,18 +119,41 @@ export default function MiPerfilPage() {
     setUploading(false)
   }
 
+  const quitarVista = async (peliculaId: string) => {
+    setEntradas(prev => prev.map(e => e.pelicula_id === peliculaId ? { ...e, visto: false, rating: null } : e))
+    await supabase.from('user_peliculas').update({ visto: false, rating: null }).eq('user_id', user!.id).eq('pelicula_id', peliculaId)
+  }
+
+  const quitarWatchlist = async (peliculaId: string) => {
+    setEntradas(prev => prev.map(e => e.pelicula_id === peliculaId ? { ...e, watchlist: false } : e))
+    await supabase.from('user_peliculas').update({ watchlist: false }).eq('user_id', user!.id).eq('pelicula_id', peliculaId)
+  }
+
   if (loading || cargando) return (
     <main className="min-h-screen bg-zinc-950"><Nav />
       <div className="flex items-center justify-center h-64"><p className="text-zinc-500 text-sm">Cargando...</p></div>
     </main>
   )
 
+  const vistas    = entradas.filter(e => e.visto).sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+  const watchlist = entradas.filter(e => e.watchlist)
+  const lista     = tab === 'vistas' ? vistas : watchlist
+
+  // Stats para sección estadísticas
+  const ratingDist: Record<number, number> = {}
+  vistas.forEach(e => { if (e.rating) ratingDist[e.rating] = (ratingDist[e.rating] ?? 0) + 1 })
+  const maxRating = Math.max(...Object.values(ratingDist), 1)
+
+  const catDist: Record<string, number> = stats?.categorias ?? {}
+  const totalCat = Object.values(catDist).reduce((a, b) => a + b, 0)
+  const topCats = Object.entries(catDist).sort((a, b) => b[1] - a[1])
+
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav />
       <div className="max-w-5xl mx-auto px-6 py-10">
 
-        {/* Header con avatar editable */}
+        {/* ── Header ── */}
         <div className="flex items-center gap-5 mb-8 flex-wrap">
           <div className="relative group cursor-pointer" onClick={() => fileRef.current?.click()}>
             <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 flex items-center justify-center border-2 border-zinc-700 group-hover:border-yellow-400 transition-colors">
@@ -102,8 +172,9 @@ export default function MiPerfilPage() {
             <h1 className="text-3xl font-bold text-white">
               {username ? `@${username}` : <span className="text-zinc-400">Sin username</span>}
             </h1>
-            <div className="flex gap-4 mt-2 text-sm text-zinc-500">
-              <span><span className="text-white font-semibold">{peliculas.length}</span> vistas</span>
+            <div className="flex gap-4 mt-1.5 text-sm text-zinc-500 flex-wrap">
+              <span><span className="text-white font-semibold">{vistas.length}</span> vistas</span>
+              <span><span className="text-white font-semibold">{watchlist.length}</span> en watchlist</span>
               <span><span className="text-white font-semibold">{seguidores}</span> seguidores</span>
               <span><span className="text-white font-semibold">{siguiendo}</span> siguiendo</span>
             </div>
@@ -111,12 +182,108 @@ export default function MiPerfilPage() {
           </div>
         </div>
 
-        {/* Stats */}
-        {stats && peliculas.length > 0 && (
-          <>
-            <StatsCards stats={stats} total={peliculas.length} />
+        {/* ── Stats summary cards ── */}
+        {stats && vistas.length > 0 && (
+          <StatsCards stats={stats} total={vistas.length} />
+        )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {/* ── Tabs ── */}
+        <div className="flex gap-2 mb-6 flex-wrap">
+          <button
+            onClick={() => setTab('vistas')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+              tab === 'vistas' ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
+            }`}
+          >
+            ✓ Vistas ({vistas.length})
+          </button>
+          <button
+            onClick={() => setTab('watchlist')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+              tab === 'watchlist' ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
+            }`}
+          >
+            ★ Watchlist ({watchlist.length})
+          </button>
+          <button
+            onClick={() => setTab('estadisticas')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+              tab === 'estadisticas' ? 'bg-zinc-700 border-zinc-500 text-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
+            }`}
+          >
+            📊 Estadísticas
+          </button>
+        </div>
+
+        {/* ── Contenido por tab ── */}
+
+        {/* Vistas / Watchlist */}
+        {tab !== 'estadisticas' && (
+          lista.length === 0 ? (
+            <p className="text-zinc-500 text-sm">
+              {tab === 'vistas'
+                ? 'Aún no has marcado películas como vistas. Búscalas en el catálogo.'
+                : 'Tu watchlist está vacía. Agrega películas desde el catálogo.'}
+            </p>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3">
+              {lista.map(entrada => {
+                const p = entrada.pelicula
+                const titulo = p.titulo_ingles || p.titulo
+                return (
+                  <div key={entrada.pelicula_id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
+                    {/* Botón quitar */}
+                    <button
+                      onClick={() => tab === 'vistas' ? quitarVista(entrada.pelicula_id) : quitarWatchlist(entrada.pelicula_id)}
+                      className="absolute top-1 left-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-zinc-900/90 border border-zinc-700 text-zinc-400 hover:text-white rounded-md w-6 h-6 flex items-center justify-center text-xs"
+                      title={tab === 'vistas' ? 'Quitar de vistas' : 'Quitar de watchlist'}
+                    >
+                      ✕
+                    </button>
+                    <Link href={`/pelicula/${entrada.pelicula_id}`}>
+                      <div className="relative aspect-[2/3] bg-zinc-800">
+                        {p.poster_path ? (
+                          <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={titulo} fill className="object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-zinc-600 text-xs text-center px-2">{titulo}</span>
+                          </div>
+                        )}
+                        {tab === 'vistas' && entrada.rating && (
+                          <div className="absolute top-2 right-2 bg-zinc-900/90 rounded-full px-2 py-0.5 text-xs font-bold text-yellow-400">
+                            {entrada.rating}/10
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                    <div className="p-2">
+                      <p className="text-white text-xs font-semibold leading-snug truncate">{titulo}</p>
+                      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                        {p.anio && <span className="text-zinc-500 text-xs">{p.anio}</span>}
+                        {p.nota_imdb && <span className="text-yellow-400 text-xs">⭐ {p.nota_imdb}</span>}
+                      </div>
+                      {entrada.plataformas.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {PLATAFORMAS.filter(pl => entrada.plataformas.includes(pl.id)).map(pl => (
+                            <div key={pl.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: 16 }}>
+                              <img src={pl.logo} alt={pl.nombre} className="h-3 w-auto object-contain" />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        )}
+
+        {/* Estadísticas */}
+        {tab === 'estadisticas' && stats && (
+          <div className="space-y-6">
+            {/* Tops + Vibe map */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TopsPanel stats={stats} />
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
                 <VibeMapa
@@ -126,42 +293,66 @@ export default function MiPerfilPage() {
                 />
               </div>
             </div>
-          </>
+
+            {/* Rating distribution */}
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+              <h3 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-4">Distribución de ratings</h3>
+              {Object.keys(ratingDist).length === 0 ? (
+                <p className="text-zinc-600 text-sm">Aún no has calificado películas</p>
+              ) : (
+                <div className="space-y-2">
+                  {[10,9,8,7,6,5,4,3,2,1].map(n => (
+                    <RatingBar key={n} n={n} count={ratingDist[n] ?? 0} max={maxRating} />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Categorías */}
+            {topCats.length > 0 && (
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                <h3 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-4">Categorías vistas</h3>
+                <div className="space-y-3">
+                  {topCats.map(([cat, count]) => {
+                    const pct = totalCat > 0 ? Math.round((count / totalCat) * 100) : 0
+                    const SHORT: Record<string, string> = {
+                      "Pa'l domingo de bajón": 'Bajón dominical',
+                      "Pa' saltar del sillón": 'Sillón / Acción',
+                      "Pa' quedar con el cerebro como licuadora": 'Cerebro licuadora',
+                      "Pa' llorar a moco tendido": 'Drama / Moco',
+                    }
+                    return (
+                      <div key={cat}>
+                        <div className="flex justify-between mb-1">
+                          <span className="text-zinc-400 text-xs">{SHORT[cat] ?? cat}</span>
+                          <span className="text-zinc-500 text-xs">{count} pelis · {pct}%</span>
+                        </div>
+                        <div className="h-2 bg-zinc-800 rounded overflow-hidden">
+                          <div className="h-full bg-indigo-500 rounded" style={{ width: `${pct}%` }} />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Link a estadísticas completas con comunidad */}
+            <Link
+              href="/mi-lista/estadisticas"
+              className="flex items-center justify-between bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-xl px-5 py-4 transition-colors group"
+            >
+              <div>
+                <p className="text-white text-sm font-medium">Comparar con la comunidad</p>
+                <p className="text-zinc-500 text-xs mt-0.5">Rating distribution, géneros y más vs. promedio de usuarios</p>
+              </div>
+              <span className="text-zinc-500 group-hover:text-white transition-colors text-lg">→</span>
+            </Link>
+          </div>
         )}
 
-        {/* Grid películas */}
-        {peliculas.length === 0 ? (
-          <p className="text-zinc-500 text-sm">Aún no has marcado películas como vistas.</p>
-        ) : (
-          <>
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Películas vistas</p>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
-              {peliculas.map(entrada => {
-                const p = entrada.pelicula
-                const titulo = p.titulo_ingles || p.titulo
-                return (
-                  <Link key={entrada.pelicula_id} href={`/pelicula/${entrada.pelicula_id}`}>
-                    <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
-                      <div className="relative aspect-[2/3] bg-zinc-800">
-                        {p.poster_path ? (
-                          <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center p-1">
-                            <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
-                          </div>
-                        )}
-                        {entrada.rating && (
-                          <div className="absolute top-1 right-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
-                            {entrada.rating}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </>
+        {tab === 'estadisticas' && !stats && (
+          <p className="text-zinc-500 text-sm">Aún no tienes suficientes películas vistas para mostrar estadísticas.</p>
         )}
       </div>
     </main>

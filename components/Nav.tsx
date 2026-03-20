@@ -89,7 +89,6 @@ export default function Nav({ active }: Props) {
             {link('/catalogo', 'Catálogo', 'catalogo')}
             {link('/cambios', 'Cambios', 'cambios')}
             {link('/estadisticas', 'Estadísticas', 'estadisticas')}
-            {user && link('/mi-lista', 'Mi lista', 'mi-lista')}
             {link('/comunidad', 'Comunidad', 'comunidad')}
             {user && username && (
               <Link href="/perfil" className="hover:text-white transition-colors">

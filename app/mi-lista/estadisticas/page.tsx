@@ -154,6 +154,7 @@ export default function EstadisticasPersonalesPage() {
   const maxGeneroComm = Math.max(...Object.values(commDist?.genre_dist ?? {}).map(Number), 1)
 
   const commAvgVistas = comp?.community_avg_vistas_per_user ?? 0
+  const commUsers = comp?.community_users ?? 1
 
   return (
     <main className="min-h-screen bg-zinc-950">
@@ -191,8 +192,8 @@ export default function EstadisticasPersonalesPage() {
               <div className="space-y-2">
                 {[10,9,8,7,6,5,4,3,2,1].map(n => {
                   const mine = stats?.ratingDist[n] ?? 0
-                  const comm = Number(commDist?.rating_dist[String(n)] ?? 0)
-                  const max = Math.max(...[10,9,8,7,6,5,4,3,2,1].map(i => Math.max(stats?.ratingDist[i] ?? 0, Number(commDist?.rating_dist[String(i)] ?? 0))), 1)
+                  const comm = Math.round((Number(commDist?.rating_dist[String(n)] ?? 0) / commUsers) * 10) / 10
+                  const max = Math.max(...[10,9,8,7,6,5,4,3,2,1].map(i => Math.max(stats?.ratingDist[i] ?? 0, Math.round((Number(commDist?.rating_dist[String(i)] ?? 0) / commUsers) * 10) / 10)), 1)
                   return (
                     <div key={n} className="flex items-center gap-2">
                       <span className="text-zinc-500 text-xs w-3 text-right">{n}</span>
@@ -228,7 +229,7 @@ export default function EstadisticasPersonalesPage() {
               <div className="space-y-4">
                 {categoriasKeys.map(cat => {
                   const mine = stats?.categorias[cat] ?? 0
-                  const comm = Number(commDist?.category_dist[cat] ?? 0)
+                  const comm = Math.round((Number(commDist?.category_dist[cat] ?? 0) / commUsers) * 10) / 10
                   return (
                     <CompareBar
                       key={cat}
@@ -251,7 +252,7 @@ export default function EstadisticasPersonalesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {generosKeys.map(g => {
                 const mine = stats?.generos[g] ?? 0
-                const comm = Number(commDist?.genre_dist[g] ?? 0)
+                const comm = Math.round((Number(commDist?.genre_dist[g] ?? 0) / commUsers) * 10) / 10
                 return <CompareBar key={g} label={g} myVal={mine} commVal={comm} myColor="bg-emerald-500" />
               })}
             </div>

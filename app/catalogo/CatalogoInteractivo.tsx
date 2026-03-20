@@ -53,6 +53,29 @@ export type Pelicula = {
 type ColumnasExtra = { rt_score: boolean; metacritic_score: boolean; director: boolean; actores: boolean; compositor: boolean }
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
 
+const OSCAR_OPCIONES = [
+  'Ganadora Mejor Película',
+  'Ganadora de Oscar',
+  'Nominada al Oscar',
+  'Director con Oscar',
+  'Actor con Oscar',
+  'Compositor con Oscar',
+]
+
+function matchOscarFiltro(p: Pelicula, filtros: string[]): boolean {
+  if (filtros.length === 0) return true
+  return filtros.every(f => {
+    const osc = (p.oscars ?? '').toLowerCase()
+    if (f === 'Ganadora Mejor Película') return osc.startsWith('ganó') && osc.includes('mejor película')
+    if (f === 'Ganadora de Oscar') return osc.startsWith('ganó')
+    if (f === 'Nominada al Oscar') return osc.includes('nominad')
+    if (f === 'Director con Oscar') return (p.director_oscars ?? 0) > 0
+    if (f === 'Actor con Oscar') return p.actores_oscars != null && Object.values(p.actores_oscars).some(v => v > 0)
+    if (f === 'Compositor con Oscar') return (p.compositor_oscars ?? 0) > 0
+    return true
+  })
+}
+
 type MultiSelectProps = {
   label: string
   opciones: string[]
@@ -147,6 +170,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [directoresFiltro, setDirectoresFiltro] = useState<string[]>([])
   const [actoresFiltro, setActoresFiltro] = useState<string[]>([])
   const [compositoresFiltro, setCompositoresFiltro] = useState<string[]>([])
+  const [oscarsFiltro, setOscarsFiltro] = useState<string[]>([])
   const [soloReviews, setSoloReviews] = useState(false)
   const [soloSello, setSoloSello] = useState(false)
   const [expandida, setExpandida] = useState<string | null>(null)
@@ -242,7 +266,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       const matchCompositor = compositoresFiltro.length === 0 || compositoresFiltro.includes(p.compositor || '')
       const matchReview = !soloReviews || p.es_review_autor
       const matchSello = !soloSello || p.sello_bret
-      return matchBusqueda && matchPlataforma && matchCategoria && matchGenero && matchDirector && matchActor && matchCompositor && matchReview && matchSello
+      const matchOscars = matchOscarFiltro(p, oscarsFiltro)
+      return matchBusqueda && matchPlataforma && matchCategoria && matchGenero && matchDirector && matchActor && matchCompositor && matchReview && matchSello && matchOscars
     })
     .sort((a, b) => {
       if (orden === 'imdb') return (b.nota_imdb || 0) - (a.nota_imdb || 0)
@@ -257,14 +282,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
   const hayFiltros = busqueda || plataformasFiltro.length > 0 || categoriasFiltro.length > 0 ||
     generosFiltro.length > 0 || directoresFiltro.length > 0 ||
-    actoresFiltro.length > 0 || compositoresFiltro.length > 0 || soloReviews || soloSello
+    actoresFiltro.length > 0 || compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello
 
-  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, soloReviews, soloSello, orden])
+  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, oscarsFiltro, soloReviews, soloSello, orden])
 
   const limpiarFiltros = () => {
     setBusqueda(''); setPlataformasFiltro([]); setCategoriasFiltro([]); setGenerosFiltro([])
     setDirectoresFiltro([]); setActoresFiltro([]); setCompositoresFiltro([])
-    setSoloReviews(false); setSoloSello(false); setPagina(0)
+    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setPagina(0)
   }
 
   const POR_PAGINA = 200
@@ -288,6 +313,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
         <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
         <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
+        <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
         <button
           onClick={() => setSoloReviews(!soloReviews)}
           className={`border rounded-lg px-4 py-2 text-sm transition-colors ${soloReviews ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}

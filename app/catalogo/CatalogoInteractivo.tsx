@@ -193,6 +193,26 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     upsertUserPelicula(peliculaId, { visto: true, rating })
   }
 
+  const marcarTodos = async (campo: 'visto' | 'watchlist') => {
+    if (!user) return
+    const ids = peliculasFiltradas.map(p => p.id)
+    const updates = ids.map(id => ({
+      user_id: user.id,
+      pelicula_id: id,
+      visto: campo === 'visto' ? true : (userPeliculas[id]?.visto ?? false),
+      rating: userPeliculas[id]?.rating ?? null,
+      watchlist: campo === 'watchlist' ? true : (userPeliculas[id]?.watchlist ?? false),
+    }))
+    setUserPeliculas(prev => {
+      const nuevo = { ...prev }
+      ids.forEach(id => {
+        nuevo[id] = { ...prev[id] ?? { visto: false, rating: null, watchlist: false }, [campo]: true }
+      })
+      return nuevo
+    })
+    await supabase.from('user_peliculas').upsert(updates, { onConflict: 'user_id,pelicula_id' })
+  }
+
   const generosDisponibles = [...new Set(peliculas.flatMap(p => p.generos))].sort()
   const directoresDisponibles = [...new Set(peliculas.map(p => p.director).filter(Boolean) as string[])].sort()
   const actoresDisponibles = [...new Set(
@@ -356,7 +376,30 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <table className="w-full text-sm">
           <thead className="sticky top-0 z-10">
             <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
-              {user && <th className="text-center px-3 py-3 w-32">Vista / Lista</th>}
+              {user && (
+                <th className="text-center px-3 py-3 w-36">
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-zinc-500">Vista / Watchlist</span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => marcarTodos('visto')}
+                        className="text-zinc-600 hover:text-emerald-400 text-xs transition-colors"
+                        title="Marcar todas como vistas"
+                      >
+                        ✓ todo
+                      </button>
+                      <span className="text-zinc-700">·</span>
+                      <button
+                        onClick={() => marcarTodos('watchlist')}
+                        className="text-zinc-600 hover:text-yellow-400 text-xs transition-colors"
+                        title="Agregar todas a watchlist"
+                      >
+                        ★ todo
+                      </button>
+                    </div>
+                  </div>
+                </th>
+              )}
               <th className="text-left px-4 py-3 w-64">Película</th>
               <th className="text-center px-3 py-3 w-16">Año</th>
               <th className="text-center px-3 py-3 w-20">IMDB</th>

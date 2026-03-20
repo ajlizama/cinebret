@@ -50,12 +50,20 @@ const ICONOS = [
 ]
 
 export default async function CatalogoPage() {
-  const hoy = new Date().toISOString().split('T')[0]
+  // Usar la última fecha disponible para evitar catálogo vacío por desfase UTC vs Chile
+  const { data: ultimaFechaRow } = await supabase
+    .from('catalogos')
+    .select('fecha')
+    .eq('activo', true)
+    .order('fecha', { ascending: false })
+    .limit(1)
+    .single()
+  const fechaCatalogo = ultimaFechaRow?.fecha ?? new Date().toISOString().split('T')[0]
 
   const [catalogosRaw, peliculasRaw] = await Promise.all([
     fetchAllPages((from, to) =>
       supabase.from('catalogos').select('pelicula_id, plataforma')
-        .eq('fecha', hoy).eq('activo', true).range(from, to)
+        .eq('fecha', fechaCatalogo).eq('activo', true).range(from, to)
     ),
     fetchAllPages((from, to) =>
       supabase.from('peliculas').select(`

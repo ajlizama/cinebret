@@ -73,7 +73,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
         p.generos.forEach(g => { generos[g] = (generos[g] ?? 0) + 1 })
         if (p.categoria) categorias[p.categoria] = (categorias[p.categoria] ?? 0) + 1
         const osc = (p.oscars ?? '').toLowerCase()
-        if (osc.startsWith('ganó')) oscarWinners++
+        if (osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('extranjera') && !osc.includes('habla no inglesa')) oscarWinners++
         else if (osc.includes('nominad')) oscarNom++
         if (p.es_review_autor) reviews++
       })
@@ -201,7 +201,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
               <p className="text-xs text-zinc-500 mb-2">películas</p>
               {pd.avgImdb && <p className="text-sm font-bold text-yellow-400">⭐ {pd.avgImdb}</p>}
               {pd.oscarWinners > 0 && (
-                <p className="text-xs text-amber-400 mt-1">🏆 {pd.oscarWinners} ganadoras</p>
+                <p className="text-xs text-amber-400 mt-1">🏆 {pd.oscarWinners} Mejor Película</p>
               )}
             </div>
           ))}
@@ -257,7 +257,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
       {/* === Oscars === */}
       <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
         <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-1">Oscars</h2>
-        <p className="text-xs text-zinc-500 mb-5">Ganadoras y nominadas por plataforma</p>
+        <p className="text-xs text-zinc-500 mb-5">Ganadoras a Mejor Película (excluye animadas e internacionales) · nominadas al Oscar</p>
         <div className="space-y-4">
           {[...platData].sort((a, b) => b.oscarWinners - a.oscarWinners).map(pd => (
             <div key={pd.id} className="flex items-start gap-3">

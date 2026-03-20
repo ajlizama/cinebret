@@ -4,12 +4,14 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import AuthModal from './AuthModal'
+import UsernameModal from './UsernameModal'
 
 type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' | 'mi-lista' }
 
 export default function Nav({ active }: Props) {
-  const { user, loading, signOut } = useAuth()
+  const { user, username, loading, signOut } = useAuth()
   const [modalAbierto, setModalAbierto] = useState(false)
+  const [usernameModal, setUsernameModal] = useState(false)
 
   const link = (href: string, label: string, key: Props['active']) => (
     <Link
@@ -55,7 +57,15 @@ export default function Nav({ active }: Props) {
               {!loading && (
                 user ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-zinc-400 text-xs hidden sm:block truncate max-w-36">{user.email}</span>
+                    {username ? (
+                      <Link href={`/perfil/${username}`} className="text-zinc-400 hover:text-white text-xs transition-colors hidden sm:block">
+                        @{username}
+                      </Link>
+                    ) : (
+                      <button onClick={() => setUsernameModal(true)} className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors hidden sm:block">
+                        + Activar perfil
+                      </button>
+                    )}
                     <button
                       onClick={signOut}
                       className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white rounded-lg px-3 py-1.5 text-xs transition-colors"
@@ -85,6 +95,7 @@ export default function Nav({ active }: Props) {
       </nav>
 
       {modalAbierto && <AuthModal onClose={() => setModalAbierto(false)} />}
+      {usernameModal && <UsernameModal onClose={() => setUsernameModal(false)} />}
     </>
   )
 }

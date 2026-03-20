@@ -26,7 +26,6 @@ export default function Nav({ active }: Props) {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
           <div className="flex items-center gap-6 text-sm text-zinc-500">
-            {link('/', 'Inicio', 'inicio')}
             {link('/catalogo', 'Catálogo', 'catalogo')}
             {link('/cambios', 'Cambios', 'cambios')}
             {link('/estadisticas', 'Estadísticas', 'estadisticas')}

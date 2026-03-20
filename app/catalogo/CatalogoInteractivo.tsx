@@ -59,6 +59,12 @@ const OSCAR_OPCIONES = [
   'Ganadora Mejor Película Internacional',
   'Ganadora de Oscar',
   'Nominada al Oscar',
+  'Ganó Mejor Director',
+  'Ganó Mejor Actor',
+  'Ganó Mejor Actriz',
+  'Ganó Mejor Guión',
+  'Ganó Mejor Banda Sonora',
+  'Ganó Mejor Fotografía',
   'Director con Oscar',
   'Actor con Oscar',
   'Compositor con Oscar',
@@ -68,14 +74,21 @@ function matchOscarFiltro(p: Pelicula, filtros: string[]): boolean {
   if (filtros.length === 0) return true
   return filtros.every(f => {
     const osc = (p.oscars ?? '').toLowerCase()
+    const gano = osc.startsWith('ganó')
     if (f === 'Ganadora Mejor Película')
-      return osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('extranjera') && !osc.includes('habla no inglesa')
+      return gano && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('extranjera') && !osc.includes('habla no inglesa')
     if (f === 'Ganadora Mejor Película Animada')
-      return osc.startsWith('ganó') && osc.includes('animad')
+      return gano && osc.includes('animad')
     if (f === 'Ganadora Mejor Película Internacional')
-      return osc.startsWith('ganó') && (osc.includes('internacional') || osc.includes('extranjera') || osc.includes('habla no inglesa'))
-    if (f === 'Ganadora de Oscar') return osc.startsWith('ganó')
+      return gano && (osc.includes('internacional') || osc.includes('extranjera') || osc.includes('habla no inglesa'))
+    if (f === 'Ganadora de Oscar') return gano
     if (f === 'Nominada al Oscar') return osc.includes('nominad')
+    if (f === 'Ganó Mejor Director') return gano && osc.includes('mejor director')
+    if (f === 'Ganó Mejor Actor') return gano && osc.includes('mejor actor') && !osc.includes('mejor actriz')
+    if (f === 'Ganó Mejor Actriz') return gano && osc.includes('mejor actriz')
+    if (f === 'Ganó Mejor Guión') return gano && (osc.includes('guión') || osc.includes('guion'))
+    if (f === 'Ganó Mejor Banda Sonora') return gano && (osc.includes('banda sonora') || osc.includes('música original') || osc.includes('musica original'))
+    if (f === 'Ganó Mejor Fotografía') return gano && (osc.includes('fotografía') || osc.includes('fotografia') || osc.includes('cinematografía'))
     if (f === 'Director con Oscar') return (p.director_oscars ?? 0) > 0
     if (f === 'Actor con Oscar') return p.actores_oscars != null && Object.values(p.actores_oscars).some(v => v > 0)
     if (f === 'Compositor con Oscar') return (p.compositor_oscars ?? 0) > 0

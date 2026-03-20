@@ -190,6 +190,38 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 })}
               </div>
             </div>
+
+            {/* Links externos */}
+            <div className="flex flex-wrap gap-3">
+              {pelicula.imdb_id && (
+                <a
+                  href={`https://www.imdb.com/title/${pelicula.imdb_id}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-colors rounded-lg px-4 py-2 text-sm font-medium"
+                >
+                  IMDb ↗
+                </a>
+              )}
+              {pelicula.youtube_trailer_key && (
+                <a
+                  href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-colors rounded-lg px-4 py-2 text-sm font-medium"
+                >
+                  ▶ Trailer ↗
+                </a>
+              )}
+              <a
+                href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20 transition-colors rounded-lg px-4 py-2 text-sm font-medium"
+              >
+                ♫ Soundtrack ↗
+              </a>
+            </div>
           </div>
 
           {/* Columna lateral */}

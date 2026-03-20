@@ -29,6 +29,17 @@ export default function Nav({ active }: Props) {
             <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
             <div className="flex items-center gap-3">
               <a
+                href="https://open.spotify.com/playlist/4KR3H2OR7VzwZM0AMDskap?si=c8ac5239a4564661"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-500 hover:text-green-400 transition-colors"
+                aria-label="Playlist Spotify CineBret"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.622.622 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.519.781.781 0 01.519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 01.257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.794c3.527-1.07 9.394-.863 13.098 1.382a.937.937 0 01-.938 1.569z"/>
+                </svg>
+              </a>
+              <a
                 href="https://www.instagram.com/cinebret/"
                 target="_blank"
                 rel="noopener noreferrer"

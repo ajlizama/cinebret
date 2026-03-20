@@ -79,9 +79,7 @@ export default async function CatalogoPage() {
     platMap[c.pelicula_id].push(c.plataforma)
   })
 
-  const peliculasEnPlataforma = peliculasRaw.filter((p: any) => platMap[p.id])
-
-  const peliculas: Pelicula[] = peliculasEnPlataforma.map((p: any) => {
+  const peliculas: Pelicula[] = peliculasRaw.map((p: any) => {
     const enr = p.enriquecimiento || {}
     return {
       id: p.id,

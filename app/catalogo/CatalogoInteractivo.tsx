@@ -774,16 +774,17 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 )}
               </div>
 
-              {/* Logos de plataformas activas */}
-              {plataformasActivas.length > 0 && (
-                <div className="flex items-center gap-1.5 mt-2">
-                  {plataformasActivas.map(plat => (
-                    <div key={plat.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: '20px' }}>
+              {/* Logos de plataformas */}
+              <div className="flex items-center gap-1.5 mt-2">
+                {PLATAFORMAS.map(plat => {
+                  const activa = pelicula.plataformas.includes(plat.id)
+                  return (
+                    <div key={plat.id} className={`rounded px-1 py-0.5 bg-white flex items-center justify-center transition-opacity ${activa ? 'opacity-100' : 'opacity-20'}`} style={{ height: '20px' }}>
                       <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
                     </div>
-                  ))}
-                </div>
-              )}
+                  )
+                })}
+              </div>
 
               {/* Contenido expandido */}
               {isExpanded && (

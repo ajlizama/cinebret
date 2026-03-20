@@ -90,6 +90,11 @@ export default function Nav({ active }: Props) {
             {link('/cambios', 'Cambios', 'cambios')}
             {link('/estadisticas', 'Estadísticas', 'estadisticas')}
             {user && link('/mi-lista', 'Mi lista', 'mi-lista')}
+            {user && (
+              <Link href="/buscar" className="hover:text-white transition-colors">
+                Perfiles
+              </Link>
+            )}
           </div>
         </div>
       </nav>

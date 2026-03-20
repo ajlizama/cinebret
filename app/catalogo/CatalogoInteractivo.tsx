@@ -781,20 +781,46 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   )}
                 </div>
 
-                {/* Poster grande a la derecha — solo cuando está expandida, reemplaza al chevron */}
+                {/* Derecha: acciones + poster expandido */}
                 {isExpanded ? (
                   <div className="relative w-20 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ height: 120 }}>
-                    {pelicula.poster_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`}
-                        alt={pelicula.titulo}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : null}
+                    {pelicula.poster_path && (
+                      <Image src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`} alt={pelicula.titulo} fill className="object-cover" />
+                    )}
                   </div>
                 ) : (
-                  <span className="text-zinc-600 text-xs shrink-0 mt-1">▼</span>
+                  <div className="flex flex-col items-center gap-1.5 shrink-0" onClick={e => e.stopPropagation()}>
+                    {user ? (
+                      <>
+                        <button
+                          onClick={e => toggleVisto(pelicula.id, e)}
+                          title="Marcar como vista"
+                          className={`w-8 h-8 rounded-full border text-sm font-bold transition-colors flex items-center justify-center ${
+                            userPeliculas[pelicula.id]?.visto
+                              ? 'bg-emerald-500 border-emerald-500 text-white'
+                              : 'border-zinc-600 text-zinc-600 hover:border-zinc-400 hover:text-zinc-400'
+                          }`}
+                        >
+                          ✓
+                        </button>
+                        <button
+                          onClick={e => toggleWatchlist(pelicula.id, e)}
+                          title="Agregar a watchlist"
+                          className={`w-8 h-8 rounded-full border text-sm font-bold transition-colors flex items-center justify-center ${
+                            userPeliculas[pelicula.id]?.watchlist
+                              ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
+                              : 'border-zinc-600 text-zinc-600 hover:border-zinc-400 hover:text-zinc-400'
+                          }`}
+                        >
+                          ★
+                        </button>
+                        {userPeliculas[pelicula.id]?.visto && userPeliculas[pelicula.id]?.rating && (
+                          <span className="text-yellow-400 text-xs font-bold">{userPeliculas[pelicula.id]?.rating}</span>
+                        )}
+                      </>
+                    ) : null}
+                    <span className="text-zinc-600 text-xs mt-auto">▼</span>
+                  </div>
                 )}
               </div>
 

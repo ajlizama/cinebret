@@ -132,7 +132,7 @@ export default function MiListaPage() {
               : 'Tu watchlist está vacía. Agrega películas desde el catálogo.'}
           </p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3">
             {lista.map(entrada => {
               const p = entrada.pelicula
               const titulo = p.titulo_ingles || p.titulo

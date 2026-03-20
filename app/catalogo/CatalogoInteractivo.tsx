@@ -699,10 +699,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                             <div className="flex flex-wrap gap-3 items-center">
                               <Link
                                 href={`/pelicula/${pelicula.id}`}
-                                className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
+                                className={`inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl border transition-colors ${
+                                  pelicula.es_review_autor
+                                    ? 'bg-yellow-400/10 text-yellow-400 border-yellow-400/40 hover:bg-yellow-400/20'
+                                    : 'bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700'
+                                }`}
                                 onClick={e => e.stopPropagation()}
                               >
-                                {pelicula.es_review_autor ? '✍️ Ver ficha para reseña CineBret →' : 'Ver ficha completa →'}
+                                {pelicula.es_review_autor ? '✍️ Ver reviews · Reseña CineBret' : '💬 Ver reviews'}
                               </Link>
                               {pelicula.imdb_id && (
                                 <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
@@ -818,6 +822,19 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   </div>
                   {pelicula.categoria && (
                     <span className="text-xs text-zinc-500 mt-0.5 block">{pelicula.categoria}</span>
+                  )}
+                  {isExpanded && (
+                    <Link
+                      href={`/pelicula/${pelicula.id}`}
+                      className={`inline-flex items-center gap-1 mt-2 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
+                        pelicula.es_review_autor
+                          ? 'bg-yellow-400/10 text-yellow-400 border-yellow-400/40 hover:bg-yellow-400/20'
+                          : 'bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700'
+                      }`}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      {pelicula.es_review_autor ? '✍️ Ver reviews · Reseña CineBret' : '💬 Ver reviews'}
+                    </Link>
                   )}
                 </div>
 
@@ -995,13 +1012,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     )}
                   </div>
                   <div className="flex flex-wrap gap-3 items-center">
-                    <Link
-                      href={`/pelicula/${pelicula.id}`}
-                      className={`text-xs transition-colors ${pelicula.es_review_autor ? 'text-yellow-400 hover:text-yellow-200' : 'text-zinc-500 hover:text-white'}`}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      {pelicula.es_review_autor ? '✍️ Ver ficha →' : 'Ver ficha →'}
-                    </Link>
                     {pelicula.imdb_id && (
                       <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
                     )}

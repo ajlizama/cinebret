@@ -725,6 +725,20 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </table>
       </div>
 
+      {/* Leyenda botones — solo móvil */}
+      {user && (
+        <div className="flex md:hidden items-center gap-4 mb-3 text-xs text-zinc-500">
+          <span className="flex items-center gap-1.5">
+            <span className="w-7 h-7 rounded-full bg-emerald-500 border-emerald-500 text-white font-bold flex items-center justify-center text-sm">✓</span>
+            Vista
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-7 h-7 rounded-full bg-yellow-400 text-zinc-950 font-bold flex items-center justify-center text-sm">★</span>
+            Watchlist
+          </span>
+        </div>
+      )}
+
       {/* Lista de tarjetas móvil (por debajo de md) */}
       <div className="block md:hidden space-y-2">
         {peliculasPagina.map(pelicula => {

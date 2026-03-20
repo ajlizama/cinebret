@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import Nav from '@/components/Nav'
 import SeguidosQueVieron from './SeguidosQueVieron'
+import ReviewSection from './ReviewSection'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -194,6 +195,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Seguidos que ya la vieron */}
             <SeguidosQueVieron peliculaId={id} />
+
+            {/* Reviews */}
+            <ReviewSection peliculaId={id} />
 
             {/* Links externos */}
             <div className="flex flex-wrap gap-3">

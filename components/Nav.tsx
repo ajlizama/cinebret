@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' | 'mi-lista' }
+type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' | 'mi-lista' | 'comunidad' }
 
 export default function Nav({ active }: Props) {
   const { user, username, loading, signOut } = useAuth()
@@ -90,9 +90,10 @@ export default function Nav({ active }: Props) {
             {link('/cambios', 'Cambios', 'cambios')}
             {link('/estadisticas', 'Estadísticas', 'estadisticas')}
             {user && link('/mi-lista', 'Mi lista', 'mi-lista')}
-            {user && (
-              <Link href="/buscar" className="hover:text-white transition-colors">
-                Perfiles
+            {link('/comunidad', 'Comunidad', 'comunidad')}
+            {user && username && (
+              <Link href="/perfil" className="hover:text-white transition-colors">
+                Mi perfil
               </Link>
             )}
           </div>

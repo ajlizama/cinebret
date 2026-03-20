@@ -29,17 +29,22 @@ type Pelicula = {
 
 type Stats = {
   oscarWinners: number
+  avgRating: number | null
+  avgImdb: number | null
   topDirectores: [string, number][]
   topActores: [string, number][]
   topCompositores: [string, number][]
   categorias: Record<string, number>
 }
 
-const CATEGORIAS_CONFIG: { key: string; label: string; color: string }[] = [
-  { key: "Pa'l domingo de bajón", label: 'Bajón dominical', color: 'bg-indigo-500' },
-  { key: "Pa' saltar del sillón", label: 'Acción / Adrenalina', color: 'bg-red-500' },
-  { key: "Pa' quedar con el cerebro como licuadora", label: 'Cerebro licuadora', color: 'bg-yellow-400' },
-  { key: "Pa' llorar a moco tendido", label: 'Drama / Moco', color: 'bg-blue-400' },
+// Cuadrantes del vibe map 2D
+// X: Tranquilo(-1) ↔ Intenso(+1)
+// Y: Emocional(+1) ↔ Cerebral(-1)
+const VIBE_QUADRANTS = [
+  { key: "Pa'l domingo de bajón",              label: 'Bajón',      emoji: '😴', x: -1, y:  1, color: 'rgba(99,102,241,', pos: 'top-left'     },
+  { key: "Pa' llorar a moco tendido",          label: 'Moco',       emoji: '😭', x:  1, y:  1, color: 'rgba(59,130,246,', pos: 'top-right'    },
+  { key: "Pa' quedar con el cerebro como licuadora", label: 'Licuadora', emoji: '🧠', x: -1, y: -1, color: 'rgba(168,85,247,', pos: 'bottom-left' },
+  { key: "Pa' saltar del sillón",              label: 'Sillón',     emoji: '🎬', x:  1, y: -1, color: 'rgba(239,68,68,',  pos: 'bottom-right' },
 ]
 
 function computeStats(peliculas: Pelicula[]): Stats {
@@ -48,39 +53,39 @@ function computeStats(peliculas: Pelicula[]): Stats {
   const composers: Record<string, number> = {}
   const categorias: Record<string, number> = {}
   let oscarWinners = 0
+  let totalRating = 0, countRating = 0, totalImdb = 0, countImdb = 0
 
   for (const e of peliculas) {
     const p = e.pelicula
     const osc = (p.oscars ?? '').toLowerCase()
-    if (
-      osc.startsWith('ganó') &&
-      osc.includes('mejor película') &&
-      !osc.includes('animad') &&
-      !osc.includes('internacional') &&
-      !osc.includes('extranjera') &&
-      !osc.includes('habla no inglesa')
-    ) oscarWinners++
+    if (osc.startsWith('ganó') && osc.includes('mejor película') &&
+      !osc.includes('animad') && !osc.includes('internacional') &&
+      !osc.includes('extranjera') && !osc.includes('habla no inglesa')) oscarWinners++
 
     if (p.categoria) categorias[p.categoria] = (categorias[p.categoria] ?? 0) + 1
+    if (e.rating) { totalRating += e.rating; countRating++ }
+    if (p.nota_imdb) { totalImdb += p.nota_imdb; countImdb++ }
 
     const enr = p.enriquecimiento
-    if (enr?.director) {
+    if (enr?.director?.trim()) {
       const d = enr.director.trim()
-      if (d) directors[d] = (directors[d] ?? 0) + 1
+      directors[d] = (directors[d] ?? 0) + 1
     }
     if (enr?.actores) {
       enr.actores.split(',').map(a => a.trim()).filter(Boolean).forEach(a => {
         actors[a] = (actors[a] ?? 0) + 1
       })
     }
-    if (enr?.compositor) {
+    if (enr?.compositor?.trim()) {
       const c = enr.compositor.trim()
-      if (c) composers[c] = (composers[c] ?? 0) + 1
+      composers[c] = (composers[c] ?? 0) + 1
     }
   }
 
   return {
     oscarWinners,
+    avgRating: countRating > 0 ? Math.round((totalRating / countRating) * 10) / 10 : null,
+    avgImdb: countImdb > 0 ? Math.round((totalImdb / countImdb) * 10) / 10 : null,
     topDirectores: Object.entries(directors).sort((a, b) => b[1] - a[1]).slice(0, 3),
     topActores: Object.entries(actors).sort((a, b) => b[1] - a[1]).slice(0, 3),
     topCompositores: Object.entries(composers).sort((a, b) => b[1] - a[1]).slice(0, 3),
@@ -98,7 +103,7 @@ function TopList({ title, items }: { title: string; items: [string, number][] })
           <div key={name} className="flex items-center gap-2">
             <span className="text-zinc-600 text-xs w-3">{i + 1}.</span>
             <span className="text-zinc-200 text-sm flex-1 truncate">{name}</span>
-            <span className="text-zinc-500 text-xs shrink-0">{count} {count === 1 ? 'peli' : 'pelis'}</span>
+            <span className="text-zinc-500 text-xs shrink-0">{count}</span>
           </div>
         ))}
       </div>
@@ -106,32 +111,86 @@ function TopList({ title, items }: { title: string; items: [string, number][] })
   )
 }
 
-function VibeMapa({ categorias }: { categorias: Record<string, number> }) {
-  const total = Object.values(categorias).reduce((a, b) => a + b, 0)
+function VibeMapa2D({ categorias }: { categorias: Record<string, number> }) {
+  const total = VIBE_QUADRANTS.reduce((s, q) => s + (categorias[q.key] ?? 0), 0)
   if (total === 0) return null
-  const max = Math.max(...CATEGORIAS_CONFIG.map(c => categorias[c.key] ?? 0), 1)
+
+  // Posición ponderada del "punto de vibe"
+  let wx = 0, wy = 0
+  VIBE_QUADRANTS.forEach(q => {
+    const n = categorias[q.key] ?? 0
+    wx += q.x * n
+    wy += q.y * n
+  })
+  const dotX = 50 + (wx / total) * 35   // 15-85% rango
+  const dotY = 50 - (wy / total) * 35   // invertido porque Y CSS va hacia abajo
+
+  const max = Math.max(...VIBE_QUADRANTS.map(q => categorias[q.key] ?? 0), 1)
+
   return (
     <div>
       <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Vibe map</p>
-      <div className="space-y-2">
-        {CATEGORIAS_CONFIG.map(cat => {
-          const val = categorias[cat.key] ?? 0
-          const pct = Math.round((val / total) * 100)
+
+      {/* Etiquetas de ejes */}
+      <div className="flex justify-between text-xs text-zinc-600 mb-1 px-1">
+        <span>← Tranquilo</span>
+        <span>Intenso →</span>
+      </div>
+
+      <div className="relative">
+        {/* Etiqueta eje Y izquierda */}
+        <div className="absolute -left-5 top-0 bottom-0 flex flex-col justify-between py-2 pointer-events-none">
+          <span className="text-xs text-zinc-600 -rotate-90 origin-center" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: 10 }}>Emocional</span>
+          <span className="text-xs text-zinc-600" style={{ writingMode: 'vertical-rl', fontSize: 10 }}>Cerebral</span>
+        </div>
+
+        {/* Grid 2×2 */}
+        <div className="grid grid-cols-2 gap-0.5 ml-2">
+          {[
+            VIBE_QUADRANTS[0], // Bajón top-left
+            VIBE_QUADRANTS[1], // Moco top-right
+            VIBE_QUADRANTS[2], // Licuadora bottom-left
+            VIBE_QUADRANTS[3], // Sillón bottom-right
+          ].map(q => {
+            const count = categorias[q.key] ?? 0
+            const intensity = count / max
+            return (
+              <div
+                key={q.key}
+                className="relative rounded-lg p-3 border border-zinc-800 min-h-[72px] flex flex-col justify-between"
+                style={{ background: `${q.color}${(intensity * 0.35 + 0.05).toFixed(2)})` }}
+              >
+                <span className="text-base">{q.emoji}</span>
+                <div>
+                  <p className="text-xs font-medium text-zinc-200">{q.label}</p>
+                  <p className="text-xs text-zinc-500">{count} {count === 1 ? 'peli' : 'pelis'}</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Punto de vibe superpuesto — solo decorativo en grid, usamos un overlay */}
+        <div className="absolute inset-0 ml-2 pointer-events-none" style={{ top: 0, left: 8 }}>
+          <div
+            className="absolute w-4 h-4 rounded-full bg-white border-2 border-zinc-900 shadow-lg transform -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${dotX}%`, top: `${dotY}%` }}
+            title="Tu vibe promedio"
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 ml-2">
+        {VIBE_QUADRANTS.map(q => {
+          const count = categorias[q.key] ?? 0
+          const pct = total > 0 ? Math.round((count / total) * 100) : 0
           return (
-            <div key={cat.key}>
-              <div className="flex justify-between items-center mb-0.5">
-                <span className="text-xs text-zinc-400">{cat.label}</span>
-                <span className="text-xs text-zinc-500">{val > 0 ? `${pct}%` : '—'}</span>
-              </div>
-              <div className="h-2 bg-zinc-800 rounded overflow-hidden">
-                <div
-                  className={`h-full ${cat.color} rounded transition-all`}
-                  style={{ width: `${(val / max) * 100}%` }}
-                />
-              </div>
-            </div>
+            <span key={q.key} className="text-xs text-zinc-500">
+              {q.emoji} {pct}%
+            </span>
           )
         })}
+        <span className="text-xs text-zinc-600 ml-auto">● tu vibe</span>
       </div>
     </div>
   )
@@ -141,6 +200,7 @@ export default function PerfilPage() {
   const { username } = useParams<{ username: string }>()
   const { user } = useAuth()
   const [profileUserId, setProfileUserId] = useState<string | null>(null)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [notFound, setNotFound] = useState(false)
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
@@ -154,11 +214,12 @@ export default function PerfilPage() {
   useEffect(() => {
     if (!username) return
 
-    supabase.from('profiles').select('user_id').eq('username', username).maybeSingle()
+    supabase.from('profiles').select('user_id, avatar_url').eq('username', username).maybeSingle()
       .then(async ({ data: profile }) => {
         if (!profile) { setNotFound(true); setCargando(false); return }
         const uid = profile.user_id
         setProfileUserId(uid)
+        setAvatarUrl((profile as any).avatar_url ?? null)
 
         const [{ data: vistas }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }] = await Promise.all([
           supabase.from('user_peliculas')
@@ -187,8 +248,7 @@ export default function PerfilPage() {
 
         if (misVistas && misVistas.length > 0) {
           const misIds = new Set((misVistas as any[]).map(v => v.pelicula_id))
-          const comun = mapped.filter(p => misIds.has(p.pelicula_id)).length
-          setEnComun(comun)
+          setEnComun(mapped.filter(p => misIds.has(p.pelicula_id)).length)
         }
 
         setCargando(false)
@@ -230,20 +290,34 @@ export default function PerfilPage() {
       <Nav />
       <div className="max-w-5xl mx-auto px-6 py-10">
 
-        {/* Header perfil */}
+        {/* Header */}
         <div className="flex items-center justify-between gap-4 mb-8 flex-wrap">
-          <div>
-            <h1 className="text-3xl font-bold text-white">@{username}</h1>
-            <div className="flex gap-4 mt-2 text-sm text-zinc-500 flex-wrap">
-              <span><span className="text-white font-semibold">{peliculas.length}</span> vistas</span>
-              <span><span className="text-white font-semibold">{seguidores}</span> seguidores</span>
-              <span><span className="text-white font-semibold">{siguiendo}</span> siguiendo</span>
-              {enComun !== null && (
-                <span><span className="text-yellow-400 font-semibold">{enComun}</span> en común contigo</span>
-              )}
+          <div className="flex items-center gap-4">
+            {/* Avatar */}
+            <div className="w-16 h-16 rounded-full overflow-hidden bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0">
+              {avatarUrl
+                ? <img src={avatarUrl} alt={username} className="w-full h-full object-cover" />
+                : <span className="text-2xl font-bold text-zinc-400">{username?.[0]?.toUpperCase()}</span>
+              }
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-white">@{username}</h1>
+              <div className="flex gap-4 mt-1 text-sm text-zinc-500 flex-wrap">
+                <span><span className="text-white font-semibold">{peliculas.length}</span> vistas</span>
+                <span><span className="text-white font-semibold">{seguidores}</span> seguidores</span>
+                <span><span className="text-white font-semibold">{siguiendo}</span> siguiendo</span>
+                {enComun !== null && (
+                  <span><span className="text-yellow-400 font-semibold">{enComun}</span> en común</span>
+                )}
+              </div>
             </div>
           </div>
-          {!esMiPerfil && user && (
+
+          {esMiPerfil ? (
+            <Link href="/perfil" className="px-4 py-2 rounded-lg text-xs border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white transition-colors">
+              Editar perfil
+            </Link>
+          ) : user && (
             <button
               onClick={toggleFollow}
               disabled={loadingFollow}
@@ -258,52 +332,37 @@ export default function PerfilPage() {
           )}
         </div>
 
-        {/* Stats panel */}
+        {/* Stats cards */}
         {stats && peliculas.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <p className="text-2xl font-bold text-amber-300">{stats.oscarWinners}</p>
-              <p className="text-xs text-zinc-500 mt-1">Ganadoras Oscar Mejor Película</p>
-            </div>
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <p className="text-2xl font-bold text-blue-400">
-                {peliculas.filter(p => p.rating).length > 0
-                  ? (peliculas.filter(p => p.rating).reduce((s, p) => s + (p.rating ?? 0), 0) / peliculas.filter(p => p.rating).length).toFixed(1)
-                  : '—'}
-              </p>
-              <p className="text-xs text-zinc-500 mt-1">Rating promedio</p>
-            </div>
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <p className="text-2xl font-bold text-emerald-400">{peliculas.length}</p>
-              <p className="text-xs text-zinc-500 mt-1">Películas vistas</p>
-            </div>
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-              <p className="text-2xl font-bold text-pink-400">
-                {peliculas.filter(p => p.pelicula.nota_imdb).length > 0
-                  ? (peliculas.filter(p => p.pelicula.nota_imdb).reduce((s, p) => s + (p.pelicula.nota_imdb ?? 0), 0) / peliculas.filter(p => p.pelicula.nota_imdb).length).toFixed(1)
-                  : '—'}
-              </p>
-              <p className="text-xs text-zinc-500 mt-1">IMDB promedio visto</p>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {[
+              { val: peliculas.length,        label: 'Películas vistas',    color: 'text-emerald-400' },
+              { val: stats.avgRating ?? '—',  label: 'Rating promedio',     color: 'text-yellow-400' },
+              { val: stats.avgImdb ?? '—',    label: 'IMDB promedio visto', color: 'text-blue-400' },
+              { val: stats.oscarWinners,      label: 'Oscars Mejor Peli',   color: 'text-amber-300' },
+            ].map(c => (
+              <div key={c.label} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <p className={`text-2xl font-bold ${c.color}`}>{c.val}</p>
+                <p className="text-xs text-zinc-500 mt-1">{c.label}</p>
+              </div>
+            ))}
           </div>
         )}
 
-        {/* Tops + Vibe */}
+        {/* Tops + Vibe Map 2D */}
         {stats && peliculas.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {/* Tops */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-5">
               <TopList title="Top directores" items={stats.topDirectores} />
               <TopList title="Top actores" items={stats.topActores} />
               <TopList title="Top compositores" items={stats.topCompositores} />
-              {stats.topDirectores.length === 0 && stats.topActores.length === 0 && stats.topCompositores.length === 0 && (
+              {!stats.topDirectores.length && !stats.topActores.length && !stats.topCompositores.length && (
                 <p className="text-zinc-600 text-sm">Sin datos de equipo aún</p>
               )}
             </div>
-            {/* Vibe mapa */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-              <VibeMapa categorias={stats.categorias} />
-              {Object.keys(stats.categorias).length === 0 && (
+              <VibeMapa2D categorias={stats.categorias} />
+              {!Object.keys(stats.categorias).length && (
                 <p className="text-zinc-600 text-sm">Sin datos de categorías aún</p>
               )}
             </div>

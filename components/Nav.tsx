@@ -1,17 +1,92 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
 type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' | 'mi-lista' | 'comunidad' }
 
+type Notif = {
+  id: string
+  type: 'follow' | 'like'
+  from_username: string
+  from_avatar: string | null
+  read: boolean
+  created_at: string
+}
+
+function tiempoRelativo(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60) return `hace ${mins}m`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `hace ${hrs}h`
+  return `hace ${Math.floor(hrs / 24)}d`
+}
+
+function MiniAvatar({ url, username }: { url: string | null; username: string }) {
+  if (url) return <img src={url} alt={username} className="w-7 h-7 rounded-full object-cover shrink-0" />
+  return (
+    <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0">
+      {username[0]?.toUpperCase()}
+    </div>
+  )
+}
+
 export default function Nav({ active }: Props) {
   const { user, username, loading, signOut } = useAuth()
   const [modalAbierto, setModalAbierto] = useState(false)
   const [usernameModal, setUsernameModal] = useState(false)
+  const [notifs, setNotifs] = useState<Notif[]>([])
+  const [showNotifs, setShowNotifs] = useState(false)
+
+  useEffect(() => {
+    if (!user) { setNotifs([]); return }
+    fetchNotifs()
+  }, [user])
+
+  const fetchNotifs = async () => {
+    if (!user) return
+    const { data: raw } = await supabase
+      .from('notifications')
+      .select('id, type, from_user_id, read, created_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(20)
+
+    if (!raw || raw.length === 0) return
+
+    const fromIds = [...new Set(raw.map((n: any) => n.from_user_id).filter(Boolean))]
+    const { data: profiles } = await supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', fromIds)
+    const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
+    ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
+
+    const mapped: Notif[] = raw
+      .filter((n: any) => profileMap[n.from_user_id])
+      .map((n: any) => ({
+        id: n.id,
+        type: n.type as 'follow' | 'like',
+        from_username: profileMap[n.from_user_id].username,
+        from_avatar: profileMap[n.from_user_id].avatar_url,
+        read: n.read,
+        created_at: n.created_at,
+      }))
+
+    setNotifs(mapped)
+  }
+
+  const marcarLeidas = async () => {
+    if (!user) return
+    const unreadIds = notifs.filter(n => !n.read).map(n => n.id)
+    if (unreadIds.length === 0) return
+    await supabase.from('notifications').update({ read: true }).in('id', unreadIds)
+    setNotifs(prev => prev.map(n => ({ ...n, read: true })))
+  }
+
+  const unreadCount = notifs.filter(n => !n.read).length
 
   const link = (href: string, label: string, key: Props['active']) => (
     <Link
@@ -57,6 +132,65 @@ export default function Nav({ active }: Props) {
               {!loading && (
                 user ? (
                   <div className="flex items-center gap-2">
+                    {/* Campana de notificaciones */}
+                    <div className="relative">
+                      <button
+                        onClick={() => {
+                          const opening = !showNotifs
+                          setShowNotifs(opening)
+                          if (opening) marcarLeidas()
+                        }}
+                        className="relative text-zinc-500 hover:text-white transition-colors p-1"
+                        aria-label="Notificaciones"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        {unreadCount > 0 && (
+                          <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold leading-none px-0.5">
+                            {unreadCount > 9 ? '9+' : unreadCount}
+                          </span>
+                        )}
+                      </button>
+                      {showNotifs && (
+                        <>
+                          <div className="fixed inset-0 z-10" onClick={() => setShowNotifs(false)} />
+                          <div className="absolute top-full right-0 mt-2 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl w-72 overflow-hidden">
+                            <div className="px-4 py-2.5 border-b border-zinc-800 flex items-center justify-between">
+                              <span className="text-xs font-medium text-zinc-300">Notificaciones</span>
+                              {notifs.some(n => !n.read) && (
+                                <button onClick={marcarLeidas} className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+                                  Marcar leídas
+                                </button>
+                              )}
+                            </div>
+                            <div className="max-h-72 overflow-y-auto">
+                              {notifs.length === 0 ? (
+                                <p className="text-zinc-600 text-xs px-4 py-4 text-center">Sin notificaciones aún</p>
+                              ) : (
+                                notifs.map(n => (
+                                  <div
+                                    key={n.id}
+                                    className={`flex items-start gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 ${!n.read ? 'bg-zinc-800/50' : ''}`}
+                                  >
+                                    <MiniAvatar url={n.from_avatar} username={n.from_username} />
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-xs text-zinc-300 leading-snug">
+                                        <span className="text-white font-medium">@{n.from_username}</span>
+                                        {' '}{n.type === 'follow' ? 'te siguió' : 'le dio ♥ a tu reseña'}
+                                      </p>
+                                      <p className="text-xs text-zinc-600 mt-0.5">{tiempoRelativo(n.created_at)}</p>
+                                    </div>
+                                    {!n.read && <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full shrink-0 mt-1.5" />}
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
                     {username ? (
                       <Link href={`/perfil/${username}`} className="text-zinc-400 hover:text-white text-xs transition-colors hidden sm:block">
                         @{username}

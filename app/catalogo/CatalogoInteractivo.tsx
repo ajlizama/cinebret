@@ -193,6 +193,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [actoresFiltro, setActoresFiltro] = useState<string[]>([])
   const [compositoresFiltro, setCompositoresFiltro] = useState<string[]>([])
   const [oscarsFiltro, setOscarsFiltro] = useState<string[]>([])
+  const [anioDesde, setAnioDesde] = useState<string>('')
+  const [anioHasta, setAnioHasta] = useState<string>('')
   const [soloReviews, setSoloReviews] = useState(false)
   const [soloSello, setSoloSello] = useState(false)
   const [expandida, setExpandida] = useState<string | null>(null)
@@ -289,7 +291,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       const matchReview = !soloReviews || p.es_review_autor
       const matchSello = !soloSello || p.sello_bret
       const matchOscars = matchOscarFiltro(p, oscarsFiltro)
-      return matchBusqueda && matchPlataforma && matchCategoria && matchGenero && matchDirector && matchActor && matchCompositor && matchReview && matchSello && matchOscars
+      const matchAnioDesde = !anioDesde || (p.anio ?? 0) >= Number(anioDesde)
+      const matchAnioHasta = !anioHasta || (p.anio ?? 9999) <= Number(anioHasta)
+      return matchBusqueda && matchPlataforma && matchCategoria && matchGenero && matchDirector && matchActor && matchCompositor && matchReview && matchSello && matchOscars && matchAnioDesde && matchAnioHasta
     })
     .sort((a, b) => {
       if (orden === 'imdb') return (b.nota_imdb || 0) - (a.nota_imdb || 0)
@@ -304,14 +308,15 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
   const hayFiltros = busqueda || plataformasFiltro.length > 0 || categoriasFiltro.length > 0 ||
     generosFiltro.length > 0 || directoresFiltro.length > 0 ||
-    actoresFiltro.length > 0 || compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello
+    actoresFiltro.length > 0 || compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || anioDesde || anioHasta
 
   useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, oscarsFiltro, soloReviews, soloSello, orden])
 
   const limpiarFiltros = () => {
     setBusqueda(''); setPlataformasFiltro([]); setCategoriasFiltro([]); setGenerosFiltro([])
     setDirectoresFiltro([]); setActoresFiltro([]); setCompositoresFiltro([])
-    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setPagina(0)
+    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false)
+    setAnioDesde(''); setAnioHasta(''); setPagina(0)
   }
 
   const POR_PAGINA = 200
@@ -348,6 +353,27 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         >
           Solo recomendadas
         </button>
+        <div className="flex items-center gap-2">
+          <input
+            type="number"
+            placeholder="Desde"
+            value={anioDesde}
+            onChange={e => setAnioDesde(e.target.value)}
+            min={1900}
+            max={2099}
+            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioDesde ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`}
+          />
+          <span className="text-zinc-600 text-sm">—</span>
+          <input
+            type="number"
+            placeholder="Hasta"
+            value={anioHasta}
+            onChange={e => setAnioHasta(e.target.value)}
+            min={1900}
+            max={2099}
+            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioHasta ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`}
+          />
+        </div>
         {hayFiltros && (
           <button onClick={limpiarFiltros} className="text-sm text-zinc-500 hover:text-white transition-colors px-2">
             Limpiar todo ✕

@@ -871,8 +871,18 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                         >
                           ★
                         </button>
-                        {userPeliculas[pelicula.id]?.visto && userPeliculas[pelicula.id]?.rating && (
-                          <span className="text-yellow-400 text-xs font-bold">{userPeliculas[pelicula.id]?.rating}</span>
+                        {userPeliculas[pelicula.id]?.visto && (
+                          <select
+                            value={userPeliculas[pelicula.id]?.rating ?? ''}
+                            onChange={e => { if (e.target.value) setRating(pelicula.id, Number(e.target.value), e as any) }}
+                            onClick={e => e.stopPropagation()}
+                            className="bg-zinc-800 border border-zinc-700 rounded text-xs text-yellow-400 font-bold px-1 py-0.5 focus:outline-none w-12 text-center"
+                          >
+                            <option value="">—</option>
+                            {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                              <option key={n} value={n}>{n}</option>
+                            ))}
+                          </select>
                         )}
                       </>
                     ) : null}

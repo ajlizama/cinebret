@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
 
-export default function UsernameModal({ onClose }: { onClose: () => void }) {
+export default function UsernameModal({ onClose, forced = false }: { onClose: () => void; forced?: boolean }) {
   const { user, refreshUsername } = useAuth()
   const [username, setUsername] = useState('')
   const [disponible, setDisponible] = useState<boolean | null>(null)
@@ -48,10 +48,20 @@ export default function UsernameModal({ onClose }: { onClose: () => void }) {
   const mostrarEstado = val.length >= 3
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={forced ? undefined : onClose}>
       <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
-        <h2 className="text-white font-bold text-lg mb-1">Elige tu username</h2>
-        <p className="text-zinc-500 text-sm mb-6">Con esto activas tu perfil público y otros te pueden seguir.</p>
+        {forced ? (
+          <>
+            <div className="text-3xl mb-3 text-center">🎬</div>
+            <h2 className="text-white font-bold text-xl mb-1 text-center">¡Activa tu perfil y sigue a tus amigos!</h2>
+            <p className="text-zinc-500 text-sm mb-6 text-center">Elige un username para tener perfil público, dar likes y seguir a otros.</p>
+          </>
+        ) : (
+          <>
+            <h2 className="text-white font-bold text-lg mb-1">Elige tu username</h2>
+            <p className="text-zinc-500 text-sm mb-6">Con esto activas tu perfil público y otros te pueden seguir.</p>
+          </>
+        )}
 
         <div className={`flex items-center bg-zinc-800 border rounded-lg px-3 py-2.5 mb-1 transition-colors ${
           mostrarEstado
@@ -82,9 +92,11 @@ export default function UsernameModal({ onClose }: { onClose: () => void }) {
         {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
 
         <div className="flex gap-2">
-          <button onClick={onClose} className="flex-1 border border-zinc-700 text-zinc-400 rounded-lg py-2.5 text-sm hover:border-zinc-500 transition-colors">
-            Ahora no
-          </button>
+          {!forced && (
+            <button onClick={onClose} className="flex-1 border border-zinc-700 text-zinc-400 rounded-lg py-2.5 text-sm hover:border-zinc-500 transition-colors">
+              Ahora no
+            </button>
+          )}
           <button
             onClick={guardar}
             disabled={cargando || !disponible || verificando}

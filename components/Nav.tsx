@@ -43,6 +43,11 @@ export default function Nav({ active }: Props) {
   const [notifs, setNotifs] = useState<Notif[]>([])
   const [showNotifs, setShowNotifs] = useState(false)
 
+  // Auto-abrir modal de activación cuando el usuario no tiene perfil
+  useEffect(() => {
+    if (!loading && user && !username) setUsernameModal(true)
+  }, [loading, user, username])
+
   useEffect(() => {
     if (!user) { setNotifs([]); return }
     fetchNotifs()
@@ -196,7 +201,7 @@ export default function Nav({ active }: Props) {
                         @{username}
                       </Link>
                     ) : (
-                      <button onClick={() => setUsernameModal(true)} className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors hidden sm:block">
+                      <button onClick={() => setUsernameModal(true)} className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">
                         + Activar perfil
                       </button>
                     )}
@@ -234,7 +239,7 @@ export default function Nav({ active }: Props) {
       </nav>
 
       {modalAbierto && <AuthModal onClose={() => setModalAbierto(false)} />}
-      {usernameModal && <UsernameModal onClose={() => setUsernameModal(false)} />}
+      {usernameModal && <UsernameModal onClose={() => setUsernameModal(false)} forced={!username} />}
     </>
   )
 }

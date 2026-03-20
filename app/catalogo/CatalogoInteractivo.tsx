@@ -278,7 +278,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         p.generos.some(g => g.toLowerCase().includes(q)) ||
         (p.compositor || '').toLowerCase().includes(q)
       )
-      const matchPlataforma = plataformasFiltro.length === 0 || plataformasFiltro.every(plat => p.plataformas.includes(plat))
+      const matchPlataforma = plataformasFiltro.length === 0 || plataformasFiltro.some(plat => p.plataformas.includes(plat))
       const matchCategoria = categoriasFiltro.length === 0 || categoriasFiltro.includes(p.categoria || '')
       const matchGenero = generosFiltro.length === 0 || generosFiltro.every(g => p.generos.includes(g))
       const matchDirector = directoresFiltro.length === 0 || directoresFiltro.includes(p.director || '')

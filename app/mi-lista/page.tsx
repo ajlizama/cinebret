@@ -161,7 +161,16 @@ export default function MiListaPage() {
               const titulo = p.titulo_ingles || p.titulo
               return (
                 <div key={entrada.pelicula_id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
-                  {/* Poster */}
+                  {/* Botón quitar — esquina superior izquierda, solo en hover */}
+                  <button
+                    onClick={() => tab === 'vistas' ? quitarVista(entrada.pelicula_id) : quitarWatchlist(entrada.pelicula_id)}
+                    className="absolute top-1 left-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-zinc-900/90 border border-zinc-700 text-zinc-400 hover:text-white rounded-md w-6 h-6 flex items-center justify-center text-xs"
+                    title={tab === 'vistas' ? 'Quitar de vistas' : 'Quitar de watchlist'}
+                  >
+                    ✕
+                  </button>
+                  {/* Poster — navega a ficha */}
+                  <Link href={`/pelicula/${entrada.pelicula_id}`}>
                   <div className="relative aspect-[2/3] bg-zinc-800">
                     {p.poster_path ? (
                       <Image
@@ -175,15 +184,6 @@ export default function MiListaPage() {
                         <span className="text-zinc-600 text-xs text-center px-2">{titulo}</span>
                       </div>
                     )}
-                    {/* Overlay con botón quitar */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <button
-                        onClick={() => tab === 'vistas' ? quitarVista(entrada.pelicula_id) : quitarWatchlist(entrada.pelicula_id)}
-                        className="text-xs bg-zinc-900 border border-zinc-600 text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg transition-colors"
-                      >
-                        {tab === 'vistas' ? '✕ Quitar vista' : '✕ Quitar'}
-                      </button>
-                    </div>
                     {/* Badge rating */}
                     {tab === 'vistas' && entrada.rating && (
                       <div className="absolute top-2 right-2 bg-zinc-900/90 rounded-full px-2 py-0.5 text-xs font-bold text-white">
@@ -191,6 +191,7 @@ export default function MiListaPage() {
                       </div>
                     )}
                   </div>
+                  </Link>
 
                   {/* Info */}
                   <div className="p-2">

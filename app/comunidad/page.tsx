@@ -23,6 +23,7 @@ type FeedItem = {
   created_at: string | null
   username: string
   avatar_url: string | null
+  user_id: string
   pelicula_id: string
   titulo: string
   titulo_ingles: string | null
@@ -62,7 +63,14 @@ function tiempoRelativo(iso: string) {
   return new Date(iso).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
 }
 
-function FeedCard({ item }: { item: FeedItem }) {
+function FeedCard({
+  item, likes, youLiked, onToggleLike, visto, watchlist, onToggleVisto, onToggleWatchlist, hasUser,
+}: {
+  item: FeedItem
+  likes?: number; youLiked?: boolean; onToggleLike?: () => void
+  visto?: boolean; watchlist?: boolean; onToggleVisto?: () => void; onToggleWatchlist?: () => void
+  hasUser?: boolean
+}) {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
       {/* Header */}
@@ -98,30 +106,49 @@ function FeedCard({ item }: { item: FeedItem }) {
       <Link href={`/pelicula/${item.pelicula_id}`} className="flex gap-3 px-4 pb-3 hover:opacity-90 transition-opacity">
         {item.poster_path && (
           <div className="relative w-14 h-20 shrink-0 rounded-lg overflow-hidden bg-zinc-800">
-            <Image
-              src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
-              alt={item.titulo_ingles || item.titulo}
-              fill
-              className="object-cover"
-            />
+            <Image src={`https://image.tmdb.org/t/p/w92${item.poster_path}`} alt={item.titulo_ingles || item.titulo} fill className="object-cover" />
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm font-semibold mb-1 leading-snug">
-            {item.titulo_ingles || item.titulo}
-          </p>
-          <p className={`text-sm leading-relaxed line-clamp-4 ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}>
-            {item.review_text}
-          </p>
+          <p className="text-white text-sm font-semibold mb-1 leading-snug">{item.titulo_ingles || item.titulo}</p>
+          <p className={`text-sm leading-relaxed line-clamp-4 ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}>{item.review_text}</p>
         </div>
       </Link>
 
-      {/* Like en reseñas CineBret */}
-      {item.isCineBret && (
-        <div className="px-4 pb-3">
+      {/* Acciones */}
+      <div className="flex items-center gap-3 px-4 pb-3">
+        {item.isCineBret ? (
           <AutorReviewLike peliculaId={item.pelicula_id} />
-        </div>
-      )}
+        ) : (
+          <>
+            {/* Like review */}
+            <button
+              onClick={onToggleLike}
+              className={`flex items-center gap-1 text-xs transition-colors ${youLiked ? 'text-yellow-400' : 'text-zinc-600 hover:text-zinc-400'}`}
+            >
+              <span className="text-sm leading-none">{youLiked ? '♥' : '♡'}</span>
+              {(likes ?? 0) > 0 && <span>{likes}</span>}
+            </button>
+            {/* Vista */}
+            {hasUser && (
+              <>
+                <button
+                  onClick={onToggleVisto}
+                  className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-colors ${visto ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
+                >
+                  {visto ? '✓ Vista' : '○ Vista'}
+                </button>
+                <button
+                  onClick={onToggleWatchlist}
+                  className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-colors ${watchlist ? 'bg-yellow-400/20 border-yellow-400 text-yellow-400' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
+                >
+                  {watchlist ? '★' : '☆'}
+                </button>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
@@ -135,6 +162,8 @@ export default function ComunidadPage() {
   const [todosPerfiles, setTodosPerfiles] = useState<Perfil[]>([])
   const [mostrarTodos, setMostrarTodos] = useState(false)
   const [cargandoTodos, setCargandoTodos] = useState(true)
+  const [likesMap, setLikesMap] = useState<Record<string, { count: number; youLiked: boolean }>>({})
+  const [misPeliculasMap, setMisPeliculasMap] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
 
   // Fetch todos los perfiles
   useEffect(() => {
@@ -198,6 +227,7 @@ export default function ComunidadPage() {
             created_at: null,
             username: 'CineBret',
             avatar_url: null,
+            user_id: '',
             pelicula_id: r.pelicula_id,
             titulo: r.peliculas.titulo,
             titulo_ingles: r.peliculas.titulo_ingles,
@@ -231,10 +261,14 @@ export default function ComunidadPage() {
         const reviewUserIds = [...new Set(reviews.map((r: any) => r.user_id))]
         const peliculaIds   = [...new Set(reviews.map((r: any) => r.pelicula_id))]
 
-        const [{ data: profiles }, { data: peliculas }, { data: userPelis }] = await Promise.all([
+        const reviewIds = reviews.map((r: any) => r.id)
+
+        const [{ data: profiles }, { data: peliculas }, { data: userPelis }, { data: likesData }, { data: misMovies }] = await Promise.all([
           supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', reviewUserIds),
           supabase.from('peliculas').select('id, titulo, titulo_ingles, poster_path').in('id', peliculaIds),
           supabase.from('user_peliculas').select('user_id, pelicula_id, rating').in('user_id', reviewUserIds).in('pelicula_id', peliculaIds),
+          supabase.from('review_likes').select('review_id, user_id').in('review_id', reviewIds),
+          supabase.from('user_peliculas').select('pelicula_id, visto, watchlist').eq('user_id', user.id).in('pelicula_id', peliculaIds),
         ])
 
         const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
@@ -246,6 +280,18 @@ export default function ComunidadPage() {
         const ratingMap: Record<string, number | null> = {}
         ;(userPelis ?? []).forEach((r: any) => { ratingMap[`${r.user_id}_${r.pelicula_id}`] = r.rating ?? null })
 
+        const newLikesMap: Record<string, { count: number; youLiked: boolean }> = {}
+        ;(likesData ?? []).forEach((l: any) => {
+          if (!newLikesMap[l.review_id]) newLikesMap[l.review_id] = { count: 0, youLiked: false }
+          newLikesMap[l.review_id].count++
+          if (l.user_id === user.id) newLikesMap[l.review_id].youLiked = true
+        })
+        setLikesMap(newLikesMap)
+
+        const newMisMap: Record<string, { visto: boolean; watchlist: boolean }> = {}
+        ;(misMovies ?? []).forEach((m: any) => { newMisMap[m.pelicula_id] = { visto: m.visto, watchlist: m.watchlist } })
+        setMisPeliculasMap(newMisMap)
+
         const items: FeedItem[] = reviews
           .filter((r: any) => profileMap[r.user_id] && peliculaMap[r.pelicula_id])
           .map((r: any) => ({
@@ -254,6 +300,7 @@ export default function ComunidadPage() {
             created_at: r.created_at,
             username: profileMap[r.user_id].username,
             avatar_url: profileMap[r.user_id].avatar_url,
+            user_id: r.user_id,
             pelicula_id: r.pelicula_id,
             titulo: peliculaMap[r.pelicula_id].titulo,
             titulo_ingles: peliculaMap[r.pelicula_id].titulo_ingles,
@@ -266,6 +313,43 @@ export default function ComunidadPage() {
       })
   }, [user])
 
+
+  const toggleLike = async (item: FeedItem) => {
+    if (!user) return
+    const current = likesMap[item.id] ?? { count: 0, youLiked: false }
+    if (current.youLiked) {
+      await supabase.from('review_likes').delete().eq('review_id', item.id).eq('user_id', user.id)
+      setLikesMap(prev => ({ ...prev, [item.id]: { count: (prev[item.id]?.count ?? 1) - 1, youLiked: false } }))
+    } else {
+      await supabase.from('review_likes').insert({ review_id: item.id, user_id: user.id })
+      setLikesMap(prev => ({ ...prev, [item.id]: { count: (prev[item.id]?.count ?? 0) + 1, youLiked: true } }))
+      if (item.user_id && item.user_id !== user.id) {
+        await supabase.from('notifications').insert({ user_id: item.user_id, type: 'like', from_user_id: user.id, review_id: item.id })
+      }
+    }
+  }
+
+  const toggleVisto = async (peliculaId: string) => {
+    if (!user) return
+    const current = misPeliculasMap[peliculaId] ?? { visto: false, watchlist: false }
+    const nuevo = { ...current, visto: !current.visto }
+    setMisPeliculasMap(prev => ({ ...prev, [peliculaId]: nuevo }))
+    await supabase.from('user_peliculas').upsert(
+      { user_id: user.id, pelicula_id: peliculaId, visto: nuevo.visto, watchlist: nuevo.watchlist, rating: null },
+      { onConflict: 'user_id,pelicula_id' }
+    )
+  }
+
+  const toggleWatchlist = async (peliculaId: string) => {
+    if (!user) return
+    const current = misPeliculasMap[peliculaId] ?? { visto: false, watchlist: false }
+    const nuevo = { ...current, watchlist: !current.watchlist }
+    setMisPeliculasMap(prev => ({ ...prev, [peliculaId]: nuevo }))
+    await supabase.from('user_peliculas').upsert(
+      { user_id: user.id, pelicula_id: peliculaId, visto: nuevo.visto, watchlist: nuevo.watchlist, rating: null },
+      { onConflict: 'user_id,pelicula_id' }
+    )
+  }
 
   const toggleFollow = async (perfil: Perfil) => {
     if (!user) return
@@ -365,7 +449,20 @@ export default function ComunidadPage() {
               {feedSeguidores.length > 0 && (
                 <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
               )}
-              {feedSeguidores.map(item => <FeedCard key={item.id} item={item} />)}
+              {feedSeguidores.map(item => (
+                <FeedCard
+                  key={item.id}
+                  item={item}
+                  likes={likesMap[item.id]?.count ?? 0}
+                  youLiked={likesMap[item.id]?.youLiked ?? false}
+                  onToggleLike={() => toggleLike(item)}
+                  visto={misPeliculasMap[item.pelicula_id]?.visto ?? false}
+                  watchlist={misPeliculasMap[item.pelicula_id]?.watchlist ?? false}
+                  onToggleVisto={() => toggleVisto(item.pelicula_id)}
+                  onToggleWatchlist={() => toggleWatchlist(item.pelicula_id)}
+                  hasUser={!!user}
+                />
+              ))}
 
               {feedCineBret.length > 0 && (
                 <div className="flex items-center gap-3 pt-2">
@@ -373,7 +470,7 @@ export default function ComunidadPage() {
                   <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
                 </div>
               )}
-              {feedCineBret.map(item => <FeedCard key={item.id} item={item} />)}
+              {feedCineBret.map(item => <FeedCard key={item.id} item={item} hasUser={!!user} />)}
             </div>
           )}
         </>

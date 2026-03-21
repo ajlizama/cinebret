@@ -338,6 +338,28 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
         {/* Fila de pills rápidos + botón filtros */}
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-0.5">
+          {/* Categorías como pills */}
+          {([
+            { id: "Pa'l domingo de bajón", label: 'Bajón' },
+            { id: "Pa' saltar del sillón", label: 'Sillón' },
+            { id: "Pa' quedar con el cerebro como licuadora", label: 'Licuadora' },
+            { id: "Pa' llorar a moco tendido", label: 'Llorar' },
+          ]).map(cat => {
+            const activa = categoriasFiltro.includes(cat.id)
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
+                className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors ${activa ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400'}`}
+              >
+                {cat.label}
+              </button>
+            )
+          })}
+
+          {/* Separador */}
+          <div className="w-px bg-zinc-800 shrink-0 mx-0.5" />
+
           {/* Plataformas como logos */}
           {PLATAFORMAS.map(plat => {
             const activa = plataformasFiltro.includes(plat.id)
@@ -384,9 +406,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
             </svg>
             Filtros
-            {[...categoriasFiltro, ...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro].length > 0 && (
+            {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length > 0 && (
               <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
-                {[...categoriasFiltro, ...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro].length}
+                {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length}
               </span>
             )}
           </button>
@@ -402,7 +424,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         {expandida === '__filtros__' && (
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 space-y-3">
             <div className="grid grid-cols-2 gap-2">
-              <MultiSelect label="Categoría" opciones={CATEGORIAS} seleccionados={categoriasFiltro} onChange={setCategoriasFiltro} />
               <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
               <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
               <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />

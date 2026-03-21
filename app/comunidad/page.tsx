@@ -71,6 +71,8 @@ function FeedCard({
   visto?: boolean; watchlist?: boolean; onToggleVisto?: () => void; onToggleWatchlist?: () => void
   hasUser?: boolean
 }) {
+  const [expandido, setExpandido] = useState(false)
+
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
       {/* Header */}
@@ -103,17 +105,36 @@ function FeedCard({
       </div>
 
       {/* Película + texto */}
-      <Link href={`/pelicula/${item.pelicula_id}`} className="flex gap-3 px-4 pb-3 hover:opacity-90 transition-opacity">
-        {item.poster_path && (
-          <div className="relative w-14 h-20 shrink-0 rounded-lg overflow-hidden bg-zinc-800">
-            <Image src={`https://image.tmdb.org/t/p/w92${item.poster_path}`} alt={item.titulo_ingles || item.titulo} fill className="object-cover" />
-          </div>
-        )}
+      <div className="flex gap-3 px-4 pb-3">
+        <Link href={`/pelicula/${item.pelicula_id}`} className="shrink-0">
+          {item.poster_path && (
+            <div className="relative w-14 h-20 rounded-lg overflow-hidden bg-zinc-800">
+              <Image src={`https://image.tmdb.org/t/p/w92${item.poster_path}`} alt={item.titulo_ingles || item.titulo} fill className="object-cover" />
+            </div>
+          )}
+        </Link>
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm font-semibold mb-1 leading-snug">{item.titulo_ingles || item.titulo}</p>
-          <p className={`text-sm leading-relaxed line-clamp-4 ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}>{item.review_text}</p>
+          <Link href={`/pelicula/${item.pelicula_id}`} className="hover:opacity-80 transition-opacity">
+            <p className="text-white text-sm font-semibold mb-1 leading-snug">{item.titulo_ingles || item.titulo}</p>
+          </Link>
+          <p
+            onClick={() => setExpandido(v => !v)}
+            className={`text-sm leading-relaxed cursor-pointer ${expandido ? '' : 'line-clamp-4'} ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}
+          >
+            {item.review_text}
+          </p>
+          {!expandido && item.review_text.length > 200 && (
+            <button onClick={() => setExpandido(true)} className="text-xs text-zinc-500 hover:text-zinc-300 mt-1 transition-colors">
+              Ver más
+            </button>
+          )}
+          {expandido && (
+            <button onClick={() => setExpandido(false)} className="text-xs text-zinc-500 hover:text-zinc-300 mt-1 transition-colors">
+              Ver menos
+            </button>
+          )}
         </div>
-      </Link>
+      </div>
 
       {/* Acciones */}
       <div className="flex items-center gap-3 px-4 pb-3">

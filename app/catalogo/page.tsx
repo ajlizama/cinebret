@@ -117,8 +117,8 @@ export default async function CatalogoPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="flex justify-end mb-3">
-          <Link href="/cambios" className="text-xs text-zinc-500 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">
-            Ver cambios recientes →
+          <Link href="/cambios" className="text-xs text-zinc-600 hover:text-zinc-400 italic transition-colors">
+            Update de plataformas
           </Link>
         </div>
 

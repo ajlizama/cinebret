@@ -327,15 +327,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     <>
       {/* ── Filtros MÓVIL ── */}
       <div className="md:hidden mb-4 space-y-2">
-        {/* Búsqueda */}
-        <input
-          type="text"
-          placeholder="Buscar película, director, actor..."
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-          className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-600"
-        />
-
         {/* Grid 2x2 de categorías — igual tamaño */}
         <div className="grid grid-cols-2 gap-1.5">
           {([
@@ -349,11 +340,11 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <button
                 key={cat.id}
                 onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                className={`h-16 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${
+                className={`h-32 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br ${
                   activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
                 }`}
               >
-                <span className="text-xl leading-none">{cat.emoji}</span>
+                <span className="text-3xl leading-none">{cat.emoji}</span>
                 {cat.id}
               </button>
             )
@@ -407,6 +398,15 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             </button>
           )}
         </div>
+
+        {/* Búsqueda */}
+        <input
+          type="text"
+          placeholder="Buscar película, director, actor..."
+          value={busqueda}
+          onChange={e => setBusqueda(e.target.value)}
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-600"
+        />
 
         {/* Panel plataformas */}
         {expandida === '__plataformas__' && (
@@ -492,9 +492,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         )}
       </div>
 
-      {/* Ordenamiento y columnas */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="hidden md:flex items-center gap-2 flex-wrap">
+      {/* Ordenamiento y columnas — solo desktop */}
+      <div className="hidden md:flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs text-zinc-500 mr-1">Columnas extra:</span>
           {([
             { key: 'rt_score', label: '🍅 RT' },
@@ -528,6 +528,24 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <option value="titulo">Título A-Z</option>
           </select>
         </div>
+      </div>
+
+      {/* Ordenar por — solo móvil */}
+      <div className="md:hidden flex items-center gap-2 mb-4">
+        <span className="text-xs text-zinc-500">Ordenar por:</span>
+        <select
+          value={orden}
+          onChange={e => setOrden(e.target.value as Orden)}
+          className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm text-zinc-300 focus:outline-none focus:border-zinc-500"
+        >
+          <option value="imdb">Mayor IMDB</option>
+          <option value="rt">Mayor Rotten Tomatoes</option>
+          <option value="metacritic">Mayor Metacritic</option>
+          <option value="boxoffice">Mayor taquilla</option>
+          <option value="anio_desc">Más recientes</option>
+          <option value="anio_asc">Más antiguas</option>
+          <option value="titulo">Título A-Z</option>
+        </select>
       </div>
 
       {/* Nomenclatura + contador */}

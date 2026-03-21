@@ -327,6 +327,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     <>
       {/* ── Filtros MÓVIL ── */}
       <div className="md:hidden mb-4 space-y-2">
+        {/* Subtítulo mood */}
+        <p className="text-xs text-zinc-500 font-medium tracking-wide">¿En qué mood estás?</p>
+
         {/* Grid 2x2 de categorías — igual tamaño */}
         <div className="grid grid-cols-2 gap-1.5">
           {([

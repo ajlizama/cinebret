@@ -291,7 +291,10 @@ export default function ComunidadPage() {
     <main className="min-h-screen bg-zinc-950">
       <Nav active="comunidad" />
       <div className="max-w-2xl mx-auto px-6 py-6">
-        <div className="flex justify-end mb-3">
+        <div className="flex justify-between items-center mb-3">
+          <Link href="/cambios" className="text-xs text-zinc-600 hover:text-zinc-400 italic transition-colors">
+            Update de plataformas
+          </Link>
           <Link href="/estadisticas" className="text-xs text-zinc-500 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">
             Ver estadísticas →
           </Link>

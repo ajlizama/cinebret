@@ -116,12 +116,6 @@ export default async function CatalogoPage() {
       <Nav active="inicio" />
 
       <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="flex justify-end mb-3">
-          <Link href="/cambios" className="text-xs text-zinc-600 hover:text-zinc-400 italic transition-colors">
-            Update de plataformas
-          </Link>
-        </div>
-
         <CatalogoInteractivo peliculas={peliculas} />
       </div>
     </main>

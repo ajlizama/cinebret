@@ -122,188 +122,144 @@ export default function ParaTi() {
   const compute = async () => {
     setCargando(true)
 
+    // 1. Todos los IDs con sello_bret = true (fuente de verdad)
+    const { data: selloRows } = await supabase
+      .from('enriquecimiento')
+      .select('pelicula_id')
+      .eq('sello_bret', true)
+    const selloIds: string[] = (selloRows ?? []).map((r: any) => r.pelicula_id)
+    if (selloIds.length === 0) { setCargando(false); return }
+
+    // 2. Vistas del usuario para excluir
     const { data: vistasRaw } = await supabase
       .from('user_peliculas')
       .select('pelicula_id, rating')
       .eq('user_id', user!.id)
       .eq('visto', true)
+    const vistasSet = new Set((vistasRaw ?? []).map((v: any) => v.pelicula_id))
+    const candidatoIds = selloIds.filter(id => !vistasSet.has(id))
+    if (candidatoIds.length === 0) { setCargando(false); return }
 
-    const vistasIds = (vistasRaw ?? []).map((v: any) => v.pelicula_id)
-    const hasHistory = vistasIds.length >= 3
-
-    const buildQuery = (minImdb: number, limit: number) => {
-      let q = supabase
-        .from('peliculas')
-        .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, categoria, imdb_id')
-        .gte('nota_imdb', minImdb)
-        .order('nota_imdb', { ascending: false })
-        .limit(limit)
-      if (vistasIds.length > 0) q = q.not('id', 'in', `(${vistasIds.join(',')})`)
-      return q
+    // 3. Fetch peliculas y enriquecimiento en paralelo por chunks
+    const pelMap: Record<string, any> = {}
+    const enrMap: Record<string, any> = {}
+    for (let i = 0; i < candidatoIds.length; i += 50) {
+      const chunk = candidatoIds.slice(i, i + 50)
+      const [{ data: pels }, { data: enrs }] = await Promise.all([
+        supabase.from('peliculas')
+          .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, categoria, imdb_id')
+          .in('id', chunk),
+        supabase.from('enriquecimiento')
+          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
+          .in('pelicula_id', chunk),
+      ])
+      ;(pels ?? []).forEach((p: any) => { pelMap[p.id] = p })
+      ;(enrs ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
     }
+
+    // 4. Scoring personalizado si tiene historial
+    const hasHistory = (vistasRaw ?? []).length >= 3
+    let normGenre: Record<string, number> = {}
+    let directorAvg: Record<string, number> = {}
+    let topCat = ''
 
     if (hasHistory) {
       const ratingMap: Record<string, number> = {}
-      vistasRaw!.forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
+      ;(vistasRaw ?? []).forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
 
       const [{ data: pelisVistas }, { data: enrVistas }] = await Promise.all([
-        supabase.from('peliculas').select('id, categoria').in('id', vistasIds),
-        supabase.from('enriquecimiento').select('pelicula_id, generos, director').in('pelicula_id', vistasIds),
+        supabase.from('peliculas').select('id, categoria').in('id', Array.from(vistasSet)),
+        supabase.from('enriquecimiento').select('pelicula_id, generos, director').in('pelicula_id', Array.from(vistasSet)),
       ])
 
-      const enrVistasMap: Record<string, { generos: string[]; director: string | null }> = {}
-      ;(enrVistas ?? []).forEach((e: any) => {
-        enrVistasMap[e.pelicula_id] = { generos: e.generos ?? [], director: e.director ?? null }
-      })
+      const evMap: Record<string, any> = {}
+      ;(enrVistas ?? []).forEach((e: any) => { evMap[e.pelicula_id] = e })
 
       const genreWeight: Record<string, number> = {}
-      const directorRatings: Record<string, number[]> = {}
+      const dirRatings: Record<string, number[]> = {}
       const catCount: Record<string, number> = {}
 
       ;(pelisVistas ?? []).forEach((p: any) => {
         const r = ratingMap[p.id] ?? 6
-        const enr = enrVistasMap[p.id]
-        enr?.generos.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
-        if (enr?.director) directorRatings[enr.director] = [...(directorRatings[enr.director] ?? []), r]
+        const enr = evMap[p.id]
+        enr?.generos?.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
+        if (enr?.director) dirRatings[enr.director] = [...(dirRatings[enr.director] ?? []), r]
         if (p.categoria) catCount[p.categoria] = (catCount[p.categoria] ?? 0) + 1
       })
 
-      const maxGenreW = Math.max(...Object.values(genreWeight), 1)
-      const normGenre = Object.fromEntries(Object.entries(genreWeight).map(([g, w]) => [g, w / maxGenreW]))
-      const directorAvg = Object.fromEntries(
-        Object.entries(directorRatings).map(([d, rs]) => [d, rs.reduce((a, b) => a + b, 0) / rs.length])
+      const maxW = Math.max(...Object.values(genreWeight), 1)
+      normGenre = Object.fromEntries(Object.entries(genreWeight).map(([g, w]) => [g, w / maxW]))
+      directorAvg = Object.fromEntries(
+        Object.entries(dirRatings).map(([d, rs]) => [d, rs.reduce((a, b) => a + b, 0) / rs.length])
       )
-      const topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]?.[0]
+      topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? ''
+    }
 
-      const { data: candidatos } = await buildQuery(6, 500)
-      if (!candidatos || candidatos.length === 0) { setCargando(false); return }
-
-      // IDs con sello_bret = true
-      const { data: selloBretRows } = await supabase
-        .from('enriquecimiento')
-        .select('pelicula_id')
-        .eq('sello_bret', true)
-      const selloBretIds = new Set((selloBretRows ?? []).map((r: any) => r.pelicula_id))
-
-      // Filtrar candidatos a solo los con sello_bret (si hay alguno)
-      const conSello = selloBretIds.size > 0
-        ? candidatos.filter((c: any) => selloBretIds.has(c.id))
-        : candidatos
-
-      // Enriquecimiento solo para conSello
-      const enrMap: Record<string, any> = {}
-      for (let i = 0; i < conSello.length; i += 50) {
-        const chunk = conSello.slice(i, i + 50).map((c: any) => c.id)
-        const { data: enrChunk } = await supabase
-          .from('enriquecimiento')
-          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
-          .in('pelicula_id', chunk)
-        ;(enrChunk ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
-      }
-
-      // Score
-      const scored: Rec[] = conSello.map((movie: any) => {
-        const enr = enrMap[movie.id]
+    // 5. Score todos los candidatos
+    const scored: Rec[] = candidatoIds
+      .filter(id => pelMap[id])
+      .map(id => {
+        const movie = pelMap[id]
+        const enr = enrMap[id]
         const generos: string[] = enr?.generos ?? []
         const director: string | null = enr?.director ?? null
-        let score = 0
+        let score = movie.nota_imdb ?? 5
         const razones: string[] = []
 
-        const gs = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3)
-        if (gs > 0.5) {
-          score += gs
-          const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.3).slice(0, 2)
-          if (matched.length) razones.push(matched.join(', '))
+        if (hasHistory) {
+          const gs = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3)
+          if (gs > 0.3) {
+            score += gs
+            const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
+            if (matched.length) razones.push(matched.join(', '))
+          }
+          if (director && directorAvg[director]) {
+            score += (directorAvg[director] / 10) * 2
+            razones.push(`Dir. ${director.split(' ').pop()}`)
+          }
+          if (movie.categoria && movie.categoria === topCat) {
+            score += 1
+            if (!razones.length) razones.push(CATS.find(c => c.key === movie.categoria)?.short ?? '')
+          }
         }
-        if (director && directorAvg[director]) {
-          score += (directorAvg[director] / 10) * 2
-          razones.push(`Dir. ${director.split(' ').pop()}`)
-        }
-        if (movie.categoria && movie.categoria === topCat) {
-          score += 1
-          if (!razones.length) razones.push(CATS.find(c => c.key === movie.categoria)?.short ?? '')
-        }
-        if ((movie.nota_imdb ?? 0) >= 8) score += 0.5
 
         return {
-          id: movie.id, titulo: movie.titulo, titulo_ingles: movie.titulo_ingles,
+          id, titulo: movie.titulo, titulo_ingles: movie.titulo_ingles,
           anio: movie.anio, nota_imdb: movie.nota_imdb,
           poster_path: movie.poster_path, categoria: movie.categoria,
           director, actores: enr?.actores ?? null, generos,
           sinopsis: enr?.sinopsis_chilensis ?? null,
-          razon: razones.join(' · ') || 'Bien valorada',
+          razon: razones.join(' · ') || 'Recomendada por CineBret',
           score, plataformas: [],
           imdb_id: movie.imdb_id, youtube_trailer_key: enr?.youtube_trailer_key ?? null,
         }
       })
 
-      // Balancear: hasta 12 por categoría + rellenar con top general → máx 60
-      const sortedAll = scored.sort((a, b) => b.score - a.score)
-      const byCat: Record<string, Rec[]> = {}
-      for (const r of sortedAll) {
-        const k = r.categoria ?? '__none__'
-        if (!byCat[k]) byCat[k] = []
-        byCat[k].push(r)
-      }
-      const seen = new Set<string>()
-      const balanced: Rec[] = []
-      for (const list of Object.values(byCat)) {
-        for (const r of list.slice(0, 30)) {
-          if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
-        }
-      }
-      for (const r of sortedAll) {
-        if (balanced.length >= 150) break
+    // 6. Balancear por categoría (hasta 30 por cat), máx 150 total
+    const sortedAll = scored.sort((a, b) => b.score - a.score)
+    const byCat: Record<string, Rec[]> = {}
+    for (const r of sortedAll) {
+      const k = r.categoria ?? '__none__'
+      if (!byCat[k]) byCat[k] = []
+      byCat[k].push(r)
+    }
+    const seen = new Set<string>()
+    const balanced: Rec[] = []
+    for (const list of Object.values(byCat)) {
+      for (const r of list.slice(0, 30)) {
         if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
       }
-
-      const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
-      balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
-
-      setRecs(balanced.sort((a, b) => b.score - a.score))
-
-    } else {
-      const { data: topMovies } = await buildQuery(6, 300)
-      if (!topMovies || topMovies.length === 0) { setCargando(false); return }
-
-      // IDs con sello_bret = true
-      const { data: selloBretRowsF } = await supabase
-        .from('enriquecimiento')
-        .select('pelicula_id')
-        .eq('sello_bret', true)
-      const selloBretIdsF = new Set((selloBretRowsF ?? []).map((r: any) => r.pelicula_id))
-
-      const conSelloF = selloBretIdsF.size > 0
-        ? topMovies.filter((m: any) => selloBretIdsF.has(m.id))
-        : topMovies
-
-      const enrMap: Record<string, any> = {}
-      const { data: enrTop } = await supabase
-        .from('enriquecimiento')
-        .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
-        .in('pelicula_id', conSelloF.map((c: any) => c.id))
-      ;(enrTop ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
-
-      const platMap = await fetchCatalogosHoy(conSelloF.map((m: any) => m.id))
-
-      setRecs(conSelloF.map((movie: any) => {
-        const enr = enrMap[movie.id]
-        return {
-          id: movie.id, titulo: movie.titulo, titulo_ingles: movie.titulo_ingles,
-          anio: movie.anio, nota_imdb: movie.nota_imdb,
-          poster_path: movie.poster_path, categoria: movie.categoria,
-          director: enr?.director ?? null, actores: enr?.actores ?? null,
-          generos: enr?.generos ?? [],
-          sinopsis: enr?.sinopsis_chilensis ?? null,
-          razon: 'Mejor valoradas del catálogo',
-          score: movie.nota_imdb ?? 0,
-          plataformas: platMap[movie.id] ?? [],
-          imdb_id: movie.imdb_id,
-          youtube_trailer_key: enr?.youtube_trailer_key ?? null,
-        }
-      }))
+    }
+    for (const r of sortedAll) {
+      if (balanced.length >= 150) break
+      if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
     }
 
+    // 7. Plataformas
+    const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
+    balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
+
+    setRecs(balanced.sort((a, b) => b.score - a.score))
     setCargando(false)
   }
 

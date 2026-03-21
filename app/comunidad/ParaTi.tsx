@@ -43,17 +43,32 @@ type Rec = {
 
 type UserState = { visto: boolean; watchlist: boolean; rating: number | null }
 
+let fechaCatalogoCache = ''
+
+async function getFechaCatalogo(): Promise<string> {
+  if (fechaCatalogoCache) return fechaCatalogoCache
+
+  const { data } = await supabase
+    .from('catalogos')
+    .select('fecha')
+    .eq('activo', true)
+    .order('fecha', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  fechaCatalogoCache = data?.fecha ?? new Date().toISOString().split('T')[0]
+  return fechaCatalogoCache as string
+}
+
 async function fetchCatalogosHoy(ids: string[]): Promise<Record<string, string[]>> {
   if (ids.length === 0) return {}
-  const today = new Date().toISOString().split('T')[0]
-  // Fetch en lotes de 50 para evitar límite URL de Supabase
+  const fecha = await getFechaCatalogo()
   const platMap: Record<string, string[]> = {}
   for (let i = 0; i < ids.length; i += 50) {
     const chunk = ids.slice(i, i + 50)
     const { data } = await supabase
       .from('catalogos')
       .select('pelicula_id, plataforma')
-      .eq('fecha', today)
+      .eq('fecha', fecha)
       .eq('activo', true)
       .in('pelicula_id', chunk)
     ;(data ?? []).forEach((c: any) => {

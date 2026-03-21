@@ -39,20 +39,28 @@ async function fetchAllPages<T>(
 }
 
 export default async function EstadisticasPage() {
-  const hoy = new Date().toISOString().split('T')[0]
+  // Usar la fecha más reciente disponible en catalogos (no necesariamente hoy)
+  const { data: fechaRow } = await supabase
+    .from('catalogos')
+    .select('fecha')
+    .eq('activo', true)
+    .order('fecha', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const fechaCatalogo = fechaRow?.fecha ?? new Date().toISOString().split('T')[0]
 
   const [peliculasRaw, catalogosRaw, analisisRow] = await Promise.all([
     fetchAllPages((from, to) =>
       supabase.from('peliculas').select(`
         id, titulo, titulo_ingles, nota_imdb, oscars, categoria,
-        enriquecimiento (director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, generos, es_review_autor)
+        enriquecimiento (director, actores, compositor, generos, review_autor)
       `).range(from, to)
     ),
     fetchAllPages((from, to) =>
       supabase
         .from('catalogos')
         .select('pelicula_id, plataforma')
-        .eq('fecha', hoy)
+        .eq('fecha', fechaCatalogo)
         .eq('activo', true)
         .range(from, to)
     ),
@@ -87,14 +95,14 @@ export default async function EstadisticasPage() {
       oscars: p.oscars as string | null,
       categoria: p.categoria as string | null,
       director: (enr.director as string) || null,
-      director_oscars: (enr.director_oscars as number) ?? null,
+      director_oscars: null,
       actores: (enr.actores as string) || null,
-      actores_oscars: (enr.actores_oscars as Record<string, number>) || null,
+      actores_oscars: null,
       compositor: (enr.compositor as string) || null,
-      compositor_oscars: (enr.compositor_oscars as number) ?? null,
+      compositor_oscars: null,
       generos: ((enr.generos as string[]) || []).map(normalizarGenero),
       plataformas: platMap[p.id] ?? [],
-      es_review_autor: (enr.es_review_autor as boolean) || false,
+      es_review_autor: !!(enr.review_autor as string),
     }
   })
 

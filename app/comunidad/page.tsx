@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Nav from '@/components/Nav'
@@ -120,9 +120,6 @@ function FeedCard({ item }: { item: FeedItem }) {
 
 export default function ComunidadPage() {
   const { user } = useAuth()
-  const [busqueda, setBusqueda] = useState('')
-  const [resultados, setResultados] = useState<Perfil[]>([])
-  const [cargandoBusqueda, setCargandoBusqueda] = useState(false)
   const [siguiendoMap, setSiguiendoMap] = useState<Record<string, boolean>>({})
   const [feedSeguidores, setFeedSeguidores] = useState<FeedItem[]>([])
   const [feedCineBret, setFeedCineBret] = useState<FeedItem[]>([])
@@ -130,7 +127,6 @@ export default function ComunidadPage() {
   const [todosPerfiles, setTodosPerfiles] = useState<Perfil[]>([])
   const [mostrarTodos, setMostrarTodos] = useState(false)
   const [cargandoTodos, setCargandoTodos] = useState(true)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Fetch todos los perfiles
   useEffect(() => {
@@ -262,44 +258,6 @@ export default function ComunidadPage() {
       })
   }, [user])
 
-  // Búsqueda
-  useEffect(() => {
-    const q = busqueda.trim().toLowerCase()
-    if (!q) { setResultados([]); return }
-
-    setCargandoBusqueda(true)
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(async () => {
-      const { data: profiles } = await supabase
-        .from('profiles').select('user_id, username, avatar_url').ilike('username', `%${q}%`).limit(20)
-
-      if (!profiles || profiles.length === 0) { setResultados([]); setCargandoBusqueda(false); return }
-
-      const vistasRes = await Promise.all(
-        profiles.map(p => supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true))
-      )
-
-      let sigosSet: Set<string> = new Set()
-      if (user) {
-        const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
-        sigosSet = new Set((followsData ?? []).map((f: any) => f.following_id))
-      }
-
-      const merged: Perfil[] = profiles.map((p, i) => ({
-        user_id: p.user_id,
-        username: p.username,
-        avatar_url: (p as any).avatar_url ?? null,
-        vistas: vistasRes[i].count ?? 0,
-        sigo: sigosSet.has(p.user_id),
-      })).filter(p => !user || p.user_id !== user.id)
-
-      setResultados(merged)
-      const map: Record<string, boolean> = {}
-      merged.forEach(p => { map[p.user_id] = p.sigo })
-      setSiguiendoMap(map)
-      setCargandoBusqueda(false)
-    }, 300)
-  }, [busqueda, user])
 
   const toggleFollow = async (perfil: Perfil) => {
     if (!user) return
@@ -325,56 +283,11 @@ export default function ComunidadPage() {
     <main className="min-h-screen bg-zinc-950">
       <Nav active="comunidad" />
       <div className="max-w-2xl mx-auto px-6 py-10">
-        {/* Buscador */}
-        <input
-          type="text"
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-          placeholder="Buscar por username..."
-          className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 mb-4"
-        />
-
-        {/* Resultados búsqueda */}
-        {busqueda && (
-          <div className="mb-8">
-            {cargandoBusqueda && <p className="text-zinc-500 text-sm">Buscando...</p>}
-            {!cargandoBusqueda && resultados.length === 0 && (
-              <p className="text-zinc-500 text-sm">Sin resultados para "<span className="text-zinc-300">{busqueda}</span>"</p>
-            )}
-            <div className="space-y-3">
-              {resultados.map(perfil => (
-                <div key={perfil.user_id} className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
-                  <Link href={`/perfil/${perfil.username}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <Avatar url={perfil.avatar_url} username={perfil.username} size={36} />
-                    <div>
-                      <p className="text-white text-sm font-medium">@{perfil.username}</p>
-                      <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
-                    </div>
-                  </Link>
-                  {user && (
-                    <button
-                      onClick={() => toggleFollow(perfil)}
-                      className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                        siguiendoMap[perfil.user_id]
-                          ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
-                          : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
-                      }`}
-                    >
-                      {siguiendoMap[perfil.user_id] ? 'Siguiendo' : '+ Seguir'}
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Para ti */}
-        {!busqueda && <ParaTi />}
+        <ParaTi />
 
         {/* Explorar todos los perfiles */}
-        {!busqueda && (
-          <div className="mb-6">
+        <div className="mb-6">
             <button
               onClick={() => setMostrarTodos(v => !v)}
               className="flex items-center gap-2 w-full text-left text-sm text-zinc-400 hover:text-white transition-colors mb-3"
@@ -420,38 +333,33 @@ export default function ComunidadPage() {
                 )}
               </div>
             )}
-          </div>
-        )}
+        </div>
 
         {/* Feed */}
-        {!busqueda && (
-          <>
-            {cargandoFeed && <p className="text-zinc-500 text-sm">Cargando...</p>}
+        <>
+          {cargandoFeed && <p className="text-zinc-500 text-sm">Cargando...</p>}
 
-            {!cargandoFeed && feedCombinado.length === 0 && (
-              <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>
-            )}
+          {!cargandoFeed && feedCombinado.length === 0 && (
+            <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>
+          )}
 
-            {!cargandoFeed && feedCombinado.length > 0 && (
-              <div className="space-y-4">
-                {/* Separador reviews de seguidores */}
-                {feedSeguidores.length > 0 && (
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
-                )}
-                {feedSeguidores.map(item => <FeedCard key={item.id} item={item} />)}
+          {!cargandoFeed && feedCombinado.length > 0 && (
+            <div className="space-y-4">
+              {feedSeguidores.length > 0 && (
+                <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
+              )}
+              {feedSeguidores.map(item => <FeedCard key={item.id} item={item} />)}
 
-                {/* Separador CineBret */}
-                {feedCineBret.length > 0 && (
-                  <div className="flex items-center gap-3 pt-2">
-                    <AvatarCineBret size={28} />
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
-                  </div>
-                )}
-                {feedCineBret.map(item => <FeedCard key={item.id} item={item} />)}
-              </div>
-            )}
-          </>
-        )}
+              {feedCineBret.length > 0 && (
+                <div className="flex items-center gap-3 pt-2">
+                  <AvatarCineBret size={28} />
+                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
+                </div>
+              )}
+              {feedCineBret.map(item => <FeedCard key={item.id} item={item} />)}
+            </div>
+          )}
+        </>
       </div>
     </main>
   )

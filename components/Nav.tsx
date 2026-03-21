@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
@@ -16,6 +16,14 @@ type Notif = {
   from_avatar: string | null
   read: boolean
   created_at: string
+}
+
+type Perfil = {
+  user_id: string
+  username: string
+  avatar_url: string | null
+  vistas: number
+  sigo: boolean
 }
 
 function tiempoRelativo(iso: string) {
@@ -42,6 +50,15 @@ export default function Nav({ active }: Props) {
   const [usernameModal, setUsernameModal] = useState(false)
   const [notifs, setNotifs] = useState<Notif[]>([])
   const [showNotifs, setShowNotifs] = useState(false)
+
+  // Buscador de usuarios
+  const [busqueda, setBusqueda] = useState('')
+  const [resultados, setResultados] = useState<Perfil[]>([])
+  const [cargandoBusqueda, setCargandoBusqueda] = useState(false)
+  const [siguiendoMap, setSiguiendoMap] = useState<Record<string, boolean>>({})
+  const [showSearch, setShowSearch] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
 
   // Auto-abrir modal de activación cuando el usuario no tiene perfil
   useEffect(() => {
@@ -93,6 +110,48 @@ export default function Nav({ active }: Props) {
 
   const unreadCount = notifs.filter(n => !n.read).length
 
+  // Búsqueda de usuarios
+  useEffect(() => {
+    const q = busqueda.trim().toLowerCase()
+    if (!q) { setResultados([]); setShowSearch(false); return }
+    setShowSearch(true)
+    setCargandoBusqueda(true)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(async () => {
+      const { data: profiles } = await supabase
+        .from('profiles').select('user_id, username, avatar_url').ilike('username', `%${q}%`).limit(10)
+      if (!profiles || profiles.length === 0) { setResultados([]); setCargandoBusqueda(false); return }
+      const vistasRes = await Promise.all(
+        profiles.map(p => supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true))
+      )
+      let sigosSet: Set<string> = new Set()
+      if (user) {
+        const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
+        sigosSet = new Set((followsData ?? []).map((f: any) => f.following_id))
+      }
+      const merged: Perfil[] = profiles
+        .map((p, i) => ({ user_id: p.user_id, username: p.username, avatar_url: (p as any).avatar_url ?? null, vistas: vistasRes[i].count ?? 0, sigo: sigosSet.has(p.user_id) }))
+        .filter(p => !user || p.user_id !== user.id)
+      setResultados(merged)
+      const map: Record<string, boolean> = {}
+      merged.forEach(p => { map[p.user_id] = p.sigo })
+      setSiguiendoMap(map)
+      setCargandoBusqueda(false)
+    }, 300)
+  }, [busqueda, user])
+
+  const toggleFollow = async (perfil: Perfil) => {
+    if (!user) return
+    const sigo = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
+    setSiguiendoMap(prev => ({ ...prev, [perfil.user_id]: !sigo }))
+    if (sigo) {
+      await supabase.from('follows').delete().eq('follower_id', user.id).eq('following_id', perfil.user_id)
+    } else {
+      await supabase.from('follows').insert({ follower_id: user.id, following_id: perfil.user_id })
+      await supabase.from('notifications').insert({ user_id: perfil.user_id, type: 'follow', from_user_id: user.id })
+    }
+  }
+
   const link = (href: string, label: string, key: Props['active']) => (
     <Link
       href={href}
@@ -106,10 +165,59 @@ export default function Nav({ active }: Props) {
     <>
       <nav className="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800 px-4 py-3">
         <div className="max-w-7xl mx-auto">
-          {/* Fila 1: logo + auth */}
-          <div className="flex items-center justify-between mb-2.5">
-            <Link href="/" className="text-xl font-bold tracking-tight text-white">CineBret</Link>
-            <div className="flex items-center gap-3">
+          {/* Fila 1: logo + buscador + auth */}
+          <div className="flex items-center justify-between mb-2.5 gap-3">
+            <Link href="/" className="text-xl font-bold tracking-tight text-white shrink-0">CineBret</Link>
+
+            {/* Buscador de usuarios */}
+            <div className="relative flex-1 max-w-xs" ref={searchRef}>
+              <input
+                type="text"
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
+                onFocus={() => busqueda && setShowSearch(true)}
+                placeholder="Buscar usuario..."
+                className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+              />
+              {showSearch && busqueda && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setShowSearch(false)} />
+                  <div className="absolute top-full mt-1 left-0 right-0 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden">
+                    {cargandoBusqueda ? (
+                      <p className="text-zinc-500 text-xs px-4 py-3">Buscando...</p>
+                    ) : resultados.length === 0 ? (
+                      <p className="text-zinc-500 text-xs px-4 py-3">Sin resultados</p>
+                    ) : (
+                      resultados.map(perfil => (
+                        <div key={perfil.user_id} className="flex items-center justify-between px-3 py-2.5 hover:bg-zinc-800 border-b border-zinc-800 last:border-0">
+                          <Link href={`/perfil/${perfil.username}`} onClick={() => { setBusqueda(''); setShowSearch(false) }} className="flex items-center gap-2.5 hover:opacity-80">
+                            <MiniAvatar url={perfil.avatar_url} username={perfil.username} />
+                            <div>
+                              <p className="text-white text-xs font-medium">@{perfil.username}</p>
+                              <p className="text-zinc-500 text-xs">{perfil.vistas} vistas</p>
+                            </div>
+                          </Link>
+                          {user && (
+                            <button
+                              onClick={() => toggleFollow(perfil)}
+                              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                                siguiendoMap[perfil.user_id]
+                                  ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
+                                  : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
+                              }`}
+                            >
+                              {siguiendoMap[perfil.user_id] ? 'Siguiendo' : '+ Seguir'}
+                            </button>
+                          )}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
               <a
                 href="https://open.spotify.com/playlist/4KR3H2OR7VzwZM0AMDskap?si=c8ac5239a4564661"
                 target="_blank"

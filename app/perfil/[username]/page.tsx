@@ -15,9 +15,19 @@ import {
   TopsPanel,
   VibeMapa,
 } from '@/components/PerfilStats'
+import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 
 type Pelicula = PeliculaConStats & {
   pelicula: PeliculaConStats['pelicula'] & { titulo_ingles: string | null; anio: number | null }
+}
+
+type PerfilPreferencias = {
+  birth_year: number | null
+  fav_movies: string[]
+  generos_preferidos: string[]
+  mood_ranking: string[]
+  peso_critica: number
+  peso_seguidores: number
 }
 
 export default function PerfilPage() {
@@ -38,6 +48,8 @@ export default function PerfilPage() {
   const [tab, setTab] = useState<'vistas' | 'watchlist' | 'estadisticas'>('vistas')
   const [cargando, setCargando] = useState(true)
   const [loadingFollow, setLoadingFollow] = useState(false)
+  const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
+  const [cuestionarioAbierto, setCuestionarioAbierto] = useState(false)
 
   useEffect(() => {
     if (!username) return
@@ -50,7 +62,7 @@ export default function PerfilPage() {
         setAvatarUrl((profile as any).avatar_url ?? null)
         const esMio = user?.id === uid
 
-        const [{ data: vistas }, { data: wl }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }] = await Promise.all([
+        const promises = [
           supabase.from('user_peliculas')
             .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, anio, nota_imdb, poster_path, oscars, categoria, enriquecimiento(director, actores, compositor))')
             .eq('user_id', uid).eq('visto', true),
@@ -66,7 +78,12 @@ export default function PerfilPage() {
           (user && !esMio)
             ? supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle()
             : Promise.resolve({ data: null }),
-        ] as const)
+          esMio
+            ? supabase.from('perfil_preferencias').select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores').eq('user_id', uid).maybeSingle()
+            : Promise.resolve({ data: null }),
+        ] as const
+
+        const [{ data: vistas }, { data: wl }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }, { data: prefData }] = await Promise.all(promises)
 
         const mapped: Pelicula[] = (vistas ?? [])
           .map((r: any) => ({ pelicula_id: r.pelicula_id, rating: r.rating, pelicula: r.peliculas }))
@@ -84,6 +101,7 @@ export default function PerfilPage() {
         setSiguiendo(nSiguiendo ?? 0)
         setYaSigo(!!followCheck)
         if (miProfData) setMiAvatarUrl((miProfData as any)?.avatar_url ?? null)
+        if (prefData) setPreferencias(prefData as PerfilPreferencias)
 
         if (misVistas && misVistas.length > 0) {
           const misIds = new Set((misVistas as any[]).map(v => v.pelicula_id))
@@ -111,6 +129,19 @@ export default function PerfilPage() {
       setYaSigo(true); setSeguidores(s => s + 1)
     }
     setLoadingFollow(false)
+  }
+
+  const handleCuestionarioComplete = async () => {
+    setCuestionarioAbierto(false)
+    // Refetch preferencias
+    if (user) {
+      const { data } = await supabase
+        .from('perfil_preferencias')
+        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+        .eq('user_id', user.id)
+        .maybeSingle()
+      if (data) setPreferencias(data as PerfilPreferencias)
+    }
   }
 
   if (cargando) return (
@@ -175,6 +206,22 @@ export default function PerfilPage() {
             </button>
           )}
         </div>
+
+        {/* Banner cuestionario para mi perfil */}
+        {esMiPerfil && !preferencias && (
+          <div className="mb-6 flex items-center justify-between gap-3 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
+            <p className="text-sm text-zinc-300">
+              ✨ Personaliza tus recomendaciones para películas más afines a ti
+            </p>
+            <button
+              type="button"
+              onClick={() => setCuestionarioAbierto(true)}
+              className="shrink-0 text-xs font-medium text-yellow-400 hover:text-yellow-300 transition-colors whitespace-nowrap"
+            >
+              Personalizar →
+            </button>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 bg-zinc-900 rounded-xl p-1">
@@ -281,12 +328,52 @@ export default function PerfilPage() {
                   />
                 </div>
               </div>
+
+              {/* Resumen de preferencias para mi perfil */}
+              {esMiPerfil && preferencias && (
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-zinc-300">Mis preferencias</h3>
+                    <button
+                      type="button"
+                      onClick={() => setCuestionarioAbierto(true)}
+                      className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors"
+                    >
+                      Editar preferencias →
+                    </button>
+                  </div>
+                  <div className="space-y-2 text-xs text-zinc-400">
+                    {preferencias.birth_year && (
+                      <p>Año de nacimiento: <span className="text-white">{preferencias.birth_year}</span></p>
+                    )}
+                    {preferencias.generos_preferidos.length > 0 && (
+                      <p>Géneros: <span className="text-white">{preferencias.generos_preferidos.join(', ')}</span></p>
+                    )}
+                    {preferencias.mood_ranking.length > 0 && (
+                      <p>Mood favorito: <span className="text-white">{preferencias.mood_ranking[0]}</span></p>
+                    )}
+                    <p>
+                      Peso crítica: <span className="text-white">{Math.round(preferencias.peso_critica * 10)}/10</span>
+                      {' · '}
+                      Peso seguidores: <span className="text-white">{Math.round(preferencias.peso_seguidores * 10)}/10</span>
+                    </p>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <p className="text-zinc-500 text-sm">Aún no hay suficientes datos para mostrar estadísticas.</p>
           )
         )}
       </div>
+
+      {/* Cuestionario modal */}
+      {cuestionarioAbierto && (
+        <CuestionarioOnboarding
+          onComplete={handleCuestionarioComplete}
+          onDismiss={() => setCuestionarioAbierto(false)}
+        />
+      )}
     </main>
   )
 }

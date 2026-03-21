@@ -23,6 +23,9 @@ const CATS = [
   { key: "Pa' llorar a moco tendido",                   emoji: '😭', short: 'A moco tendido' },
 ]
 
+// Mood bonus multipliers by rank position
+const MOOD_BONUS = [1.5, 1.0, 0.5, 0]
+
 type Rec = {
   id: string
   titulo: string
@@ -50,6 +53,27 @@ type Rec = {
 }
 
 type UserState = { visto: boolean; watchlist: boolean; rating: number | null }
+
+type UserProfile = {
+  birth_year: number | null
+  fav_movies: string[]
+  generos_preferidos: string[]
+  mood_ranking: string[]
+  peso_critica: number
+  peso_seguidores: number
+}
+
+/**
+ * Returns true if the title contains only allowed scripts:
+ * ASCII printable, Latin Extended, Japanese (hiragana, katakana, kanji/CJK), CJK symbols.
+ * Rejects Devanagari, Arabic, Cyrillic, Bengali, Tamil, etc.
+ */
+function tituloValido(titulo: string | null): boolean {
+  if (!titulo) return false
+  // eslint-disable-next-line no-control-regex
+  const allowed = /^[\u0020-\u007E\u00C0-\u024F\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u3400-\u4DBF\u4E00-\u9FFF]+$/
+  return allowed.test(titulo)
+}
 
 let fechaCatalogoCache = ''
 
@@ -86,14 +110,37 @@ async function fetchCatalogosHoy(ids: string[]): Promise<Record<string, string[]
   return platMap
 }
 
+/** Fetch candidate IDs from today's catalog */
+async function fetchCandidatosHoy(): Promise<string[]> {
+  const fecha = await getFechaCatalogo()
+  const ids: string[] = []
+  let offset = 0
+  const batchSize = 1000
+  while (true) {
+    const { data } = await supabase
+      .from('catalogos')
+      .select('pelicula_id')
+      .eq('fecha', fecha)
+      .eq('activo', true)
+      .range(offset, offset + batchSize - 1)
+    if (!data || data.length === 0) break
+    data.forEach((r: any) => ids.push(r.pelicula_id))
+    if (data.length < batchSize) break
+    offset += batchSize
+  }
+  // Deduplicate
+  return Array.from(new Set(ids))
+}
+
 export default function ParaTi() {
-  const { user } = useAuth()
+  const { user, username: miUsername } = useAuth()
   const [recs, setRecs] = useState<Rec[]>([])
   const [cargando, setCargando] = useState(false)
   const [catFiltro, setCatFiltro] = useState<string | null>(null)
   const [page, setPage] = useState(0)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [userMap, setUserMap] = useState<Record<string, UserState>>({})
+  const [sinPerfil, setSinPerfil] = useState(false)
 
   useEffect(() => {
     if (!user) return
@@ -130,13 +177,9 @@ export default function ParaTi() {
   const compute = async () => {
     setCargando(true)
 
-    // 1. Todos los IDs con sello_bret = true (fuente de verdad)
-    const { data: selloRows } = await supabase
-      .from('enriquecimiento')
-      .select('pelicula_id')
-      .eq('sello_bret', true)
-    const selloIds: string[] = (selloRows ?? []).map((r: any) => r.pelicula_id)
-    if (selloIds.length === 0) { setCargando(false); return }
+    // 1. Candidatos: películas del catálogo de hoy
+    const allCandidatoIds = await fetchCandidatosHoy()
+    if (allCandidatoIds.length === 0) { setCargando(false); return }
 
     // 2. Vistas del usuario para excluir
     const { data: vistasRaw } = await supabase
@@ -145,10 +188,28 @@ export default function ParaTi() {
       .eq('user_id', user!.id)
       .eq('visto', true)
     const vistasSet = new Set((vistasRaw ?? []).map((v: any) => v.pelicula_id))
-    const candidatoIds = selloIds.filter(id => !vistasSet.has(id))
+    const candidatoIds = allCandidatoIds.filter(id => !vistasSet.has(id))
     if (candidatoIds.length === 0) { setCargando(false); return }
 
-    // 3. Fetch peliculas y enriquecimiento en paralelo por chunks
+    // 3. Fetch perfil_preferencias
+    const { data: prefData } = await supabase
+      .from('perfil_preferencias')
+      .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+      .eq('user_id', user!.id)
+      .maybeSingle()
+
+    const perfil: UserProfile | null = prefData as UserProfile | null
+    const tienePerfilCompleto = !!perfil
+
+    // Si no tiene perfil y no tiene historial, mostrar banner
+    const hasHistory = (vistasRaw ?? []).length >= 5
+    if (!tienePerfilCompleto && !hasHistory) {
+      setSinPerfil(true)
+    } else {
+      setSinPerfil(false)
+    }
+
+    // 4. Fetch películas y enriquecimiento en paralelo por chunks
     const pelMap: Record<string, any> = {}
     const enrMap: Record<string, any> = {}
     for (let i = 0; i < candidatoIds.length; i += 50) {
@@ -165,18 +226,41 @@ export default function ParaTi() {
       ;(enrs ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
     }
 
-    // 4. Scoring personalizado si tiene historial
-    const hasHistory = (vistasRaw ?? []).length >= 3
+    // 5. Señal de seguidores
+    const followersMap: Record<string, number> = {}
+    const { data: followsData } = await supabase
+      .from('follows')
+      .select('following_id')
+      .eq('follower_id', user!.id)
+    const followingIds: string[] = (followsData ?? []).map((f: any) => f.following_id)
+
+    if (followingIds.length > 0) {
+      for (let i = 0; i < followingIds.length; i += 50) {
+        const chunk = followingIds.slice(i, i + 50)
+        const { data: fvistas } = await supabase
+          .from('user_peliculas')
+          .select('pelicula_id')
+          .in('user_id', chunk)
+          .eq('visto', true)
+        ;(fvistas ?? []).forEach((r: any) => {
+          followersMap[r.pelicula_id] = (followersMap[r.pelicula_id] ?? 0) + 1
+        })
+      }
+    }
+    const maxFollowers = Math.max(...Object.values(followersMap), 1)
+
+    // 6. Scoring con historial del usuario
     let normGenre: Record<string, number> = {}
     let directorAvg: Record<string, number> = {}
     let topCat = ''
+    let eraAvg = 2005
 
     if (hasHistory) {
       const ratingMap: Record<string, number> = {}
       ;(vistasRaw ?? []).forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
 
       const [{ data: pelisVistas }, { data: enrVistas }] = await Promise.all([
-        supabase.from('peliculas').select('id, categoria').in('id', Array.from(vistasSet)),
+        supabase.from('peliculas').select('id, anio, categoria').in('id', Array.from(vistasSet)),
         supabase.from('enriquecimiento').select('pelicula_id, generos, director').in('pelicula_id', Array.from(vistasSet)),
       ])
 
@@ -186,6 +270,7 @@ export default function ParaTi() {
       const genreWeight: Record<string, number> = {}
       const dirRatings: Record<string, number[]> = {}
       const catCount: Record<string, number> = {}
+      const years: number[] = []
 
       ;(pelisVistas ?? []).forEach((p: any) => {
         const r = ratingMap[p.id] ?? 6
@@ -193,6 +278,7 @@ export default function ParaTi() {
         enr?.generos?.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
         if (enr?.director) dirRatings[enr.director] = [...(dirRatings[enr.director] ?? []), r]
         if (p.categoria) catCount[p.categoria] = (catCount[p.categoria] ?? 0) + 1
+        if (p.anio) years.push(p.anio)
       })
 
       const maxW = Math.max(...Object.values(genreWeight), 1)
@@ -201,34 +287,123 @@ export default function ParaTi() {
         Object.entries(dirRatings).map(([d, rs]) => [d, rs.reduce((a, b) => a + b, 0) / rs.length])
       )
       topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? ''
+      if (years.length > 0) {
+        eraAvg = Math.round(years.reduce((a, b) => a + b, 0) / years.length)
+      }
     }
 
-    // 5. Score todos los candidatos
+    // 7. Era desde perfil (edad)
+    const anoActual = new Date().getFullYear()
+    let preferredYear: number | null = null
+    if (perfil?.birth_year) {
+      const edad = anoActual - perfil.birth_year
+      preferredYear = anoActual - edad + 15
+    }
+
+    // 8. Score todos los candidatos
     const scored: Rec[] = candidatoIds
-      .filter(id => pelMap[id])
+      .filter(id => {
+        const movie = pelMap[id]
+        if (!movie) return false
+        return tituloValido(movie.titulo_ingles)
+      })
       .map(id => {
         const movie = pelMap[id]
         const enr = enrMap[id]
         const generos: string[] = enr?.generos ?? []
         const director: string | null = enr?.director ?? null
-        let score = movie.nota_imdb ?? 5
         const razones: string[] = []
 
+        // Calidad normalizada 0-1
+        const imdb = movie.nota_imdb ?? 5
+        const calidadRaw = imdb / 10
+
+        // Era score
+        const anioMovie = movie.anio ?? 2000
+        let eraScore = 0
         if (hasHistory) {
-          const gs = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3)
+          eraScore = Math.exp(-Math.abs(anioMovie - eraAvg) / 20)
+        } else if (preferredYear !== null) {
+          eraScore = Math.exp(-Math.abs(anioMovie - preferredYear) / 20)
+        } else {
+          // Sin nada: bonus para post-2010
+          eraScore = anioMovie >= 2010 ? 1 : Math.exp(-(2010 - anioMovie) / 15)
+        }
+
+        // Followers score 0-1
+        const followersScore = (followersMap[id] ?? 0) / maxFollowers
+
+        // Peso crítica
+        const pesoCritica = perfil?.peso_critica ?? 0.5
+        const calidadFinal = calidadRaw * (0.5 + pesoCritica * 0.5)
+
+        let score = 0
+
+        if (hasHistory) {
+          // Con historial (>= 5 vistas)
+          // calidad: 15%, género: 35%, era: 15%, director: 20%, seguidores: 10%, mood: 5%
+          score += calidadFinal * 0.15 * 10
+
+          const gs = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
+          score += gs * 0.35 * 10
           if (gs > 0.3) {
-            score += gs
             const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
             if (matched.length) razones.push(matched.join(', '))
           }
+
+          score += eraScore * 0.15 * 10
+
           if (director && directorAvg[director]) {
-            score += (directorAvg[director] / 10) * 2
+            const dirScore = (directorAvg[director] / 10)
+            score += dirScore * 0.20 * 10
             razones.push(`Dir. ${director.split(' ').pop()}`)
           }
+
+          score += followersScore * 0.10 * 10
+
+          // Mood desde historial (topCat)
+          const moodRanking = perfil?.mood_ranking ?? []
+          const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
+          const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
           if (movie.categoria && movie.categoria === topCat) {
-            score += 1
-            if (!razones.length) razones.push(CATS.find(c => c.key === movie.categoria)?.short ?? '')
+            score += (0.5 + moodBonus * 0.5) * 0.05 * 10
           }
+
+        } else if (tienePerfilCompleto && perfil) {
+          // Sin historial, con perfil
+          // calidad: 25%, género: 30%, era: 20%, mood: 15%, seguidores: 10%
+          score += calidadFinal * 0.25 * 10
+
+          // Género desde questionnaire
+          const genPrefs = perfil.generos_preferidos ?? []
+          const genMatch = generos.filter(g => genPrefs.includes(g)).length
+          const genScore = genPrefs.length > 0 ? genMatch / genPrefs.length : 0
+          score += genScore * 0.30 * 10
+          if (genMatch > 0) {
+            razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
+          }
+
+          score += eraScore * 0.20 * 10
+
+          // Mood desde questionnaire
+          const moodRanking = perfil.mood_ranking ?? []
+          const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
+          const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
+          score += moodBonus * 0.15 * 10
+
+          score += followersScore * 0.10 * 10
+
+        } else {
+          // Sin nada
+          // calidad: 50%, era reciente: 20%, seguidores: 30%
+          score += calidadFinal * 0.50 * 10
+          score += eraScore * 0.20 * 10
+          score += followersScore * 0.30 * 10
+        }
+
+        if (!razones.length && movie.categoria) {
+          const cat = CATS.find(c => c.key === movie.categoria)
+          if (cat) razones.push(cat.short)
         }
 
         return {
@@ -249,7 +424,7 @@ export default function ParaTi() {
         }
       })
 
-    // 6. Balancear por categoría (hasta 30 por cat), máx 150 total
+    // 9. Balancear por categoría (hasta 30 por cat), máx 150 total
     const sortedAll = scored.sort((a, b) => b.score - a.score)
     const byCat: Record<string, Rec[]> = {}
     for (const r of sortedAll) {
@@ -269,7 +444,7 @@ export default function ParaTi() {
       if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
     }
 
-    // 7. Plataformas
+    // 10. Plataformas
     const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
     balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
 
@@ -293,6 +468,19 @@ export default function ParaTi() {
   return (
     <div className="mb-8">
       <h2 className="text-base font-bold text-white mb-4">🎬 Para ti</h2>
+
+      {/* Banner sin perfil */}
+      {sinPerfil && miUsername && (
+        <div className="mb-4 flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
+          <span className="text-sm text-zinc-300">✨ Completa tu perfil para mejores recomendaciones</span>
+          <Link
+            href={`/perfil/${miUsername}`}
+            className="text-xs font-medium text-yellow-400 hover:text-yellow-300 transition-colors whitespace-nowrap ml-auto"
+          >
+            Personalizar →
+          </Link>
+        </div>
+      )}
 
       {/* Filtros */}
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none mb-4">

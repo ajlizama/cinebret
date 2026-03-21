@@ -81,16 +81,17 @@ export default function MiPerfilPage() {
     if (!loading && !user) { router.replace('/catalogo'); return }
     if (!user) return
 
-    const hoy = new Date().toISOString().split('T')[0]
     Promise.all([
       supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle(),
       supabase.from('user_peliculas')
         .select('pelicula_id, visto, rating, watchlist, peliculas(titulo, titulo_ingles, anio, nota_imdb, rt_score, poster_path, categoria, oscars, enriquecimiento(director, actores, compositor))')
         .eq('user_id', user.id),
-      supabase.from('catalogos').select('pelicula_id, plataforma').eq('fecha', hoy).eq('activo', true),
+      supabase.from('catalogos').select('fecha').eq('activo', true).order('fecha', { ascending: false }).limit(1).maybeSingle(),
       supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', user.id),
       supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', user.id),
-    ]).then(([{ data: prof }, { data: rows }, { data: cats }, { count: nSeg }, { count: nSig }]) => {
+    ]).then(async ([{ data: prof }, { data: rows }, { data: fechaRow }, { count: nSeg }, { count: nSig }]) => {
+      const fechaCatalogo = (fechaRow as any)?.fecha ?? new Date().toISOString().split('T')[0]
+      const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma').eq('fecha', fechaCatalogo).eq('activo', true)
       setAvatarUrl((prof as any)?.avatar_url ?? null)
 
       const platMap: Record<string, string[]> = {}

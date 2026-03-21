@@ -339,19 +339,22 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         {/* Grid 2x2 de categorías — igual tamaño */}
         <div className="grid grid-cols-2 gap-1.5">
           {([
-            "Pa'l domingo de bajón",
-            "Pa' saltar del sillón",
-            "Pa' quedar con el cerebro como licuadora",
-            "Pa' llorar a moco tendido",
+            { id: "Pa'l domingo de bajón",                          emoji: '🛋️', grad: 'from-amber-500 to-orange-600',    dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'   },
+            { id: "Pa' saltar del sillón",                          emoji: '⚡', grad: 'from-violet-500 to-blue-600',     dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'   },
+            { id: "Pa' quedar con el cerebro como licuadora",       emoji: '🤯', grad: 'from-rose-500 to-pink-600',       dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'       },
+            { id: "Pa' llorar a moco tendido",                      emoji: '😭', grad: 'from-cyan-500 to-teal-600',       dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'       },
           ]).map(cat => {
-            const activa = categoriasFiltro.includes(cat)
+            const activa = categoriasFiltro.includes(cat.id)
             return (
               <button
-                key={cat}
-                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat) : [...prev, cat])}
-                className={`h-9 px-2 rounded-lg border text-[11px] font-medium leading-tight transition-colors text-center ${activa ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400'}`}
+                key={cat.id}
+                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
+                className={`h-16 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${
+                  activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
+                }`}
               >
-                {cat}
+                <span className="text-xl leading-none">{cat.emoji}</span>
+                {cat.id}
               </button>
             )
           })}

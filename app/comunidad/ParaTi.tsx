@@ -132,7 +132,13 @@ async function fetchCandidatosHoy(): Promise<string[]> {
   return Array.from(new Set(ids))
 }
 
-export default function ParaTi({ onEditPreferences }: { onEditPreferences?: () => void }) {
+export default function ParaTi({
+  onEditPreferences,
+  preferenciasExternas,
+}: {
+  onEditPreferences?: () => void
+  preferenciasExternas?: UserProfile | null
+}) {
   const { user, username: miUsername } = useAuth()
   const [recs, setRecs] = useState<Rec[]>([])
   const [cargando, setCargando] = useState(false)
@@ -191,14 +197,16 @@ export default function ParaTi({ onEditPreferences }: { onEditPreferences?: () =
     const candidatoIds = allCandidatoIds.filter(id => !vistasSet.has(id))
     if (candidatoIds.length === 0) { setCargando(false); return }
 
-    // 3. Fetch perfil_preferencias
-    const { data: prefData } = await supabase
-      .from('perfil_preferencias')
-      .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
-      .eq('user_id', user!.id)
-      .maybeSingle()
-
-    const perfil: UserProfile | null = prefData as UserProfile | null
+    // 3. Preferencias: usar las pasadas por prop (ya frescas) o fetch desde Supabase
+    let perfil: UserProfile | null = preferenciasExternas !== undefined ? preferenciasExternas : null
+    if (preferenciasExternas === undefined) {
+      const { data: prefData } = await supabase
+        .from('perfil_preferencias')
+        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+        .eq('user_id', user!.id)
+        .maybeSingle()
+      perfil = prefData as UserProfile | null
+    }
     const tienePerfilCompleto = !!perfil
 
     // Si no tiene perfil y no tiene historial, mostrar banner

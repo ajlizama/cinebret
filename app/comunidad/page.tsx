@@ -525,7 +525,7 @@ export default function ComunidadPage() {
 
           {/* Para Ti (sidebar derecha en desktop, arriba en móvil) */}
           <div className="w-full lg:w-[480px] shrink-0 order-1 lg:order-2">
-            <ParaTi key={paraTiKey} onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} />
+            <ParaTi key={paraTiKey} onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} preferenciasExternas={preferencias} />
           </div>
         </div>
       </div>

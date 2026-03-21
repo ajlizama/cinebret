@@ -257,10 +257,26 @@ export default function ParaTi({
     }
     const maxFollowers = Math.max(...Object.values(followersMap), 1)
 
-    // 6. Scoring con historial del usuario
+    // 6. Géneros y directores de películas favoritas del cuestionario
+    let favGenres: string[] = []
+    let favDirectors: string[] = []
+    const favMovieIds = perfil?.fav_movies ?? []
+    if (favMovieIds.length > 0) {
+      const { data: favEnr } = await supabase
+        .from('enriquecimiento')
+        .select('pelicula_id, generos, director')
+        .in('pelicula_id', favMovieIds)
+      ;(favEnr ?? []).forEach((e: any) => {
+        ;(e.generos ?? []).forEach((g: string) => favGenres.push(g))
+        if (e.director) favDirectors.push(e.director)
+      })
+      favGenres = [...new Set(favGenres)]
+      favDirectors = [...new Set(favDirectors)]
+    }
+
+    // 7. Scoring con historial del usuario
     let normGenre: Record<string, number> = {}
     let directorAvg: Record<string, number> = {}
-    let topCat = ''
     let eraAvg = 2005
 
     if (hasHistory) {
@@ -268,7 +284,7 @@ export default function ParaTi({
       ;(vistasRaw ?? []).forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
 
       const [{ data: pelisVistas }, { data: enrVistas }] = await Promise.all([
-        supabase.from('peliculas').select('id, anio, categoria').in('id', Array.from(vistasSet)),
+        supabase.from('peliculas').select('id, anio').in('id', Array.from(vistasSet)),
         supabase.from('enriquecimiento').select('pelicula_id, generos, director').in('pelicula_id', Array.from(vistasSet)),
       ])
 
@@ -277,7 +293,6 @@ export default function ParaTi({
 
       const genreWeight: Record<string, number> = {}
       const dirRatings: Record<string, number[]> = {}
-      const catCount: Record<string, number> = {}
       const years: number[] = []
 
       ;(pelisVistas ?? []).forEach((p: any) => {
@@ -285,7 +300,6 @@ export default function ParaTi({
         const enr = evMap[p.id]
         enr?.generos?.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
         if (enr?.director) dirRatings[enr.director] = [...(dirRatings[enr.director] ?? []), r]
-        if (p.categoria) catCount[p.categoria] = (catCount[p.categoria] ?? 0) + 1
         if (p.anio) years.push(p.anio)
       })
 
@@ -294,13 +308,12 @@ export default function ParaTi({
       directorAvg = Object.fromEntries(
         Object.entries(dirRatings).map(([d, rs]) => [d, rs.reduce((a, b) => a + b, 0) / rs.length])
       )
-      topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? ''
       if (years.length > 0) {
         eraAvg = Math.round(years.reduce((a, b) => a + b, 0) / years.length)
       }
     }
 
-    // 7. Era desde perfil (edad)
+    // 8. Era preferida desde birth_year o historial
     const anoActual = new Date().getFullYear()
     let preferredYear: number | null = null
     if (perfil?.birth_year) {
@@ -308,7 +321,15 @@ export default function ParaTi({
       preferredYear = anoActual - edad + 15
     }
 
-    // 8. Score todos los candidatos
+    // Pesos dinámicos controlados por el cuestionario
+    // peso_critica 0→1: cuánto importa la nota IMDB (rango de aporte: 5%..35%)
+    // peso_seguidores 0→1: cuánto importa lo que vieron tus seguidos (rango: 0%..20%)
+    const pesoCritica = perfil?.peso_critica ?? 0.5
+    const pesoSeguidores = perfil?.peso_seguidores ?? 0.5
+    const wCritica = 0.05 + pesoCritica * 0.30        // [0.05, 0.35]
+    const wSeguidores = pesoSeguidores * 0.20          // [0.00, 0.20]
+
+    // 9. Score todos los candidatos
     const scored: Rec[] = candidatoIds
       .filter(id => {
         const movie = pelMap[id]
@@ -322,11 +343,10 @@ export default function ParaTi({
         const director: string | null = enr?.director ?? null
         const razones: string[] = []
 
-        // Calidad normalizada 0-1
-        const imdb = movie.nota_imdb ?? 5
-        const calidadRaw = imdb / 10
+        // Calidad IMDB normalizada 0-1
+        const calidadRaw = (movie.nota_imdb ?? 5) / 10
 
-        // Era score
+        // Era score 0-1 (decae exponencialmente alejándose del año preferido)
         const anioMovie = movie.anio ?? 2000
         let eraScore = 0
         if (hasHistory) {
@@ -334,83 +354,100 @@ export default function ParaTi({
         } else if (preferredYear !== null) {
           eraScore = Math.exp(-Math.abs(anioMovie - preferredYear) / 20)
         } else {
-          // Sin nada: bonus para post-2010
           eraScore = anioMovie >= 2010 ? 1 : Math.exp(-(2010 - anioMovie) / 15)
         }
 
         // Followers score 0-1
         const followersScore = (followersMap[id] ?? 0) / maxFollowers
 
-        // Peso crítica
-        const pesoCritica = perfil?.peso_critica ?? 0.5
-        const calidadFinal = calidadRaw * (0.5 + pesoCritica * 0.5)
+        // Mood desde questionnaire: el orden del ranking importa
+        const moodRanking = perfil?.mood_ranking ?? []
+        const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
+        const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
 
         let score = 0
 
         if (hasHistory) {
-          // Con historial (>= 5 vistas)
-          // calidad: 15%, género_historial: 20%, género_questionnaire: 15%,
-          // era: 15%, director: 15%, mood_questionnaire: 15%, seguidores: 5%
-          score += calidadFinal * 0.15 * 10
+          // ── Modo con historial de vistas ──
+          // Crítica (peso_critica controla entre 5% y 35%)
+          score += calidadRaw * wCritica * 10
 
-          // Género desde historial
+          // Género desde historial de vistas (15%)
           const gsHistory = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
-          score += gsHistory * 0.20 * 10
+          score += gsHistory * 0.15 * 10
           if (gsHistory > 0.3) {
             const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
             if (matched.length) razones.push(matched.join(', '))
           }
 
-          // Género desde questionnaire (siempre aplica, incluso con historial)
+          // Género desde cuestionario (15%)
           const genPrefs = perfil?.generos_preferidos ?? []
           const genMatchQ = generos.filter(g => genPrefs.includes(g)).length
-          const gsQuestionnaire = genPrefs.length > 0 ? genMatchQ / genPrefs.length : 0
-          score += gsQuestionnaire * 0.15 * 10
-
-          score += eraScore * 0.15 * 10
-
-          if (director && directorAvg[director]) {
-            const dirScore = (directorAvg[director] / 10)
-            score += dirScore * 0.15 * 10
-            razones.push(`Dir. ${director.split(' ').pop()}`)
+          const gsQ = genPrefs.length > 0 ? genMatchQ / genPrefs.length : 0
+          score += gsQ * 0.15 * 10
+          if (gsQ > 0 && !razones.length) {
+            razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
           }
 
-          score += followersScore * 0.05 * 10
+          // Películas favoritas: género (10%) + director (8%)
+          const favGenreMatch = generos.filter(g => favGenres.includes(g)).length
+          const favGenreScore = favGenres.length > 0 ? favGenreMatch / Math.min(favGenres.length, 5) : 0
+          score += favGenreScore * 0.10 * 10
 
-          // Mood desde questionnaire (mayor peso)
-          const moodRanking = perfil?.mood_ranking ?? []
-          const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
-          const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
-          score += moodBonus * 0.15 * 10
+          const favDirScore = director && favDirectors.includes(director) ? 1 : 0
+          score += favDirScore * 0.08 * 10
+          if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
+
+          // Director desde historial (10%)
+          if (director && directorAvg[director]) {
+            score += (directorAvg[director] / 10) * 0.10 * 10
+            if (!razones.some(r => r.startsWith('Dir.'))) razones.push(`Dir. ${director.split(' ').pop()}`)
+          }
+
+          // Mood cuestionario (12%)
+          score += moodBonus * 0.12 * 10
+
+          // Era (10%)
+          score += eraScore * 0.10 * 10
+
+          // Seguidores (peso_seguidores controla entre 0% y 20%)
+          score += followersScore * wSeguidores * 10
 
         } else if (tienePerfilCompleto && perfil) {
-          // Sin historial, con perfil
-          // calidad: 25%, género: 30%, era: 20%, mood: 15%, seguidores: 10%
-          score += calidadFinal * 0.25 * 10
+          // ── Modo solo con perfil cuestionario ──
+          // Crítica (peso_critica controla entre 5% y 35%)
+          score += calidadRaw * wCritica * 10
 
-          // Género desde questionnaire
+          // Género cuestionario (25%)
           const genPrefs = perfil.generos_preferidos ?? []
           const genMatch = generos.filter(g => genPrefs.includes(g)).length
           const genScore = genPrefs.length > 0 ? genMatch / genPrefs.length : 0
-          score += genScore * 0.30 * 10
+          score += genScore * 0.25 * 10
           if (genMatch > 0) {
             razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
           }
 
-          score += eraScore * 0.20 * 10
+          // Películas favoritas: género (15%) + director (10%)
+          const favGenreMatch = generos.filter(g => favGenres.includes(g)).length
+          const favGenreScore = favGenres.length > 0 ? favGenreMatch / Math.min(favGenres.length, 5) : 0
+          score += favGenreScore * 0.15 * 10
 
-          // Mood desde questionnaire
-          const moodRanking = perfil.mood_ranking ?? []
-          const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
-          const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
+          const favDirScore = director && favDirectors.includes(director) ? 1 : 0
+          score += favDirScore * 0.10 * 10
+          if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
+
+          // Mood cuestionario (15%)
           score += moodBonus * 0.15 * 10
 
-          score += followersScore * 0.10 * 10
+          // Era desde birth_year (10%)
+          score += eraScore * 0.10 * 10
+
+          // Seguidores (peso_seguidores controla entre 0% y 20%)
+          score += followersScore * wSeguidores * 10
 
         } else {
-          // Sin nada
-          // calidad: 50%, era reciente: 20%, seguidores: 30%
-          score += calidadFinal * 0.50 * 10
+          // ── Sin datos: calidad + reciente + seguidores ──
+          score += calidadRaw * 0.50 * 10
           score += eraScore * 0.20 * 10
           score += followersScore * 0.30 * 10
         }

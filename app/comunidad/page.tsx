@@ -300,27 +300,30 @@ export default function ComunidadPage() {
       const { data: follows } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
       const followingIds: string[] = (follows ?? []).map((f: any) => f.following_id)
 
-      // Reseñas públicas de cualquiera (menos yo) + todas las reseñas de mis seguidos
-      const [publicResult, followerResult] = await Promise.all([
-        supabase.from('user_reviews')
-          .select('id, review_text, created_at, user_id, pelicula_id, publica')
+      // Query 1: reseñas de seguidos (siempre — no depende de columna publica)
+      const followerData: any[] = []
+      if (followingIds.length > 0) {
+        const { data } = await supabase.from('user_reviews')
+          .select('id, review_text, created_at, user_id, pelicula_id')
+          .in('user_id', followingIds)
+          .order('created_at', { ascending: false })
+          .limit(30)
+        ;(data ?? []).forEach(r => followerData.push(r))
+      }
+
+      // Query 2: reseñas públicas (opcional — solo si la columna publica existe)
+      const publicData: any[] = []
+      try {
+        const { data, error } = await supabase.from('user_reviews')
+          .select('id, review_text, created_at, user_id, pelicula_id')
           .eq('publica', true)
           .neq('user_id', user.id)
           .order('created_at', { ascending: false })
-          .limit(30),
-        followingIds.length > 0
-          ? supabase.from('user_reviews')
-              .select('id, review_text, created_at, user_id, pelicula_id, publica')
-              .in('user_id', followingIds)
-              .order('created_at', { ascending: false })
-              .limit(30)
-          : Promise.resolve({ data: [] as any[] }),
-      ])
+          .limit(30)
+        if (!error) (data ?? []).forEach(r => publicData.push(r))
+      } catch { /* columna publica aún no existe */ }
 
-      const publicData: any[] = publicResult.data ?? []
-      const followerData: any[] = (followerResult as any).data ?? []
-
-      // Merge deduplicado (seguidos tienen prioridad para conservar privadas)
+      // Merge deduplicado (seguidos tienen prioridad)
       const reviewMap = new Map<string, any>()
       ;[...followerData, ...publicData].forEach((r: any) => { if (!reviewMap.has(r.id)) reviewMap.set(r.id, r) })
       const reviews = [...reviewMap.values()]

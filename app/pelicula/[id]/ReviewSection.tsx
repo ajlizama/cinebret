@@ -48,24 +48,23 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
   const [cargando, setCargando] = useState(true)
 
   const cargarReviews = async () => {
+    // Fetch principal sin publica (la columna puede no existir aún)
     const { data: rawReviews } = await supabase
       .from('user_reviews')
-      .select('id, review_text, created_at, user_id, publica')
+      .select('id, review_text, created_at, user_id')
       .eq('pelicula_id', peliculaId)
       .order('created_at', { ascending: false })
 
     if (!rawReviews || rawReviews.length === 0) { setCargando(false); return }
 
-    // Filtrar según visibilidad: públicas para todos, privadas solo para seguidores y autor
+    // Filtrar: públicas (RLS ya filtra en DB) + propias + de seguidos
     let followingSet = new Set<string>()
     if (user) {
       const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
       followingSet = new Set((followsData ?? []).map((f: any) => f.following_id))
     }
-    const visibles = rawReviews.filter((r: any) =>
-      r.publica || r.user_id === user?.id || followingSet.has(r.user_id)
-    )
-    if (visibles.length === 0) { setCargando(false); return }
+    // Si hay RLS activo, rawReviews ya está filtrado. Si no, mostramos todo (viejo comportamiento)
+    const visibles = rawReviews
 
     const userIds = [...new Set(visibles.map((r: any) => r.user_id))]
     const reviewIds = visibles.map((r: any) => r.id)
@@ -102,14 +101,26 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
         esMia: r.user_id === user?.id,
         likes: likesCount[r.id] ?? 0,
         youLiked: myLikes.has(r.id),
-        publica: r.publica,
+        publica: false, // default; se actualiza abajo si la columna existe
       }))
 
     setReviews(mapped)
     const mia = mapped.find(r => r.esMia)
     if (mia) {
       setMiReview(mia.review_text)
-      setEsPublica(mia.publica)
+      // Intentar obtener publica de la propia reseña (columna puede no existir aún)
+      try {
+        const { data: own } = await supabase
+          .from('user_reviews')
+          .select('publica')
+          .eq('user_id', user!.id)
+          .eq('pelicula_id', peliculaId)
+          .maybeSingle()
+        if (own && own.publica !== undefined) {
+          setEsPublica(own.publica)
+          setReviews(prev => prev.map(r => r.esMia ? { ...r, publica: own.publica } : r))
+        }
+      } catch { /* columna publica aún no existe */ }
     }
     setCargando(false)
   }

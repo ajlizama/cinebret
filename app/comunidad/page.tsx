@@ -548,7 +548,7 @@ export default function ComunidadPage() {
                 .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
                 .eq('user_id', user.id)
                 .maybeSingle()
-              if (data) setPreferencias(data as PerfilPreferencias)
+              setPreferencias(data as PerfilPreferencias ?? null)
             }
             setParaTiKey(k => k + 1)
           }}

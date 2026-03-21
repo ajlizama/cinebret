@@ -1,0 +1,68 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
+import ReviewSection from '@/app/pelicula/[id]/ReviewSection'
+
+type Props = {
+  peliculaId: string
+  esReviewAutor: boolean
+  sinopsisIa: string | null
+}
+
+export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa }: Props) {
+  const [reviewAutor, setReviewAutor] = useState<string | null>(null)
+  const [cargando, setCargando] = useState(true)
+
+  useEffect(() => {
+    if (!esReviewAutor) { setCargando(false); return }
+    supabase
+      .from('enriquecimiento')
+      .select('review_autor')
+      .eq('pelicula_id', peliculaId)
+      .maybeSingle()
+      .then(({ data }) => {
+        setReviewAutor(data?.review_autor ?? null)
+        setCargando(false)
+      })
+  }, [peliculaId, esReviewAutor])
+
+  return (
+    <div className="space-y-4 mt-4 pt-4 border-t border-zinc-800">
+      {/* Review CineBret */}
+      {esReviewAutor ? (
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">
+              ✍️ Review CineBret
+            </span>
+          </div>
+          {sinopsisIa && (
+            <p className="text-zinc-400 text-sm leading-relaxed mb-3 italic border-l-2 border-zinc-700 pl-3">
+              {sinopsisIa}
+            </p>
+          )}
+          {cargando ? (
+            <p className="text-zinc-600 text-sm italic">Cargando reseña...</p>
+          ) : reviewAutor ? (
+            <p className="text-zinc-200 text-sm leading-relaxed whitespace-pre-line">{reviewAutor}</p>
+          ) : null}
+          <AutorReviewLike peliculaId={peliculaId} />
+        </div>
+      ) : sinopsisIa ? (
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full font-medium">
+              🤖 Sinopsis IA
+            </span>
+          </div>
+          <p className="text-zinc-300 text-sm leading-relaxed italic">{sinopsisIa}</p>
+        </div>
+      ) : null}
+
+      {/* Reviews de usuarios */}
+      <ReviewSection peliculaId={peliculaId} />
+    </div>
+  )
+}

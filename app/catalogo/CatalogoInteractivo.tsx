@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
+import PeliculaDetalle from './PeliculaDetalle'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
 
@@ -752,78 +753,63 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 {/* Fila expandida */}
                 {expandida === pelicula.id && (
                   <tr>
-                    <td colSpan={7 + colsExtras + (user ? 1 : 0)} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800">
+                    <td colSpan={7 + colsExtras + (user ? 1 : 0)} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800" onClick={e => e.stopPropagation()}>
                       <div className="grid grid-cols-2 gap-8">
-                        {/* Izquierda: sinopsis + ratings + links */}
-                        <div className="flex flex-col gap-3">
-                          <div>
-                            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
-                            {pelicula.sinopsis ? (
-                              <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
-                            ) : (
-                              <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
-                            )}
-                          </div>
-                          <div className="mt-auto space-y-2">
-                            {(pelicula.nota_imdb != null || pelicula.rt_score != null || pelicula.metacritic_score != null) && (
-                              <div className="flex gap-4 flex-wrap">
-                                {pelicula.nota_imdb != null && (
-                                  <div>
-                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">IMDB</p>
-                                    <p className="text-sm font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</p>
-                                  </div>
-                                )}
-                                {pelicula.rt_score != null && (
-                                  <div>
-                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
-                                    <p className="text-sm font-bold text-red-400">🍅 {pelicula.rt_score}%</p>
-                                  </div>
-                                )}
-                                {pelicula.metacritic_score != null && (
-                                  <div>
-                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
-                                    <p className="text-sm font-bold text-green-400">{pelicula.metacritic_score}</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            {(pelicula.runtime != null || pelicula.boxoffice != null) && (
-                              <div className="flex gap-4">
-                                {pelicula.runtime != null && (
-                                  <div>
-                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
-                                    <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
-                                  </div>
-                                )}
-                                {pelicula.boxoffice != null && (
-                                  <div>
-                                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
-                                    <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            <div className="flex flex-wrap gap-3 items-center">
-                              <Link
-                                href={`/pelicula/${pelicula.id}`}
-                                className={`inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl border transition-colors ${
-                                  pelicula.es_review_autor
-                                    ? 'bg-yellow-400/10 text-yellow-400 border-yellow-400/40 hover:bg-yellow-400/20'
-                                    : 'bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700'
-                                }`}
-                                onClick={e => e.stopPropagation()}
-                              >
-                                {pelicula.es_review_autor ? '✍️ Ver reviews · Reseña CineBret' : '💬 Ver reviews'}
-                              </Link>
-                              {pelicula.imdb_id && (
-                                <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
+                        {/* Izquierda: ratings + links */}
+                        <div className="space-y-3">
+                          {(pelicula.nota_imdb != null || pelicula.rt_score != null || pelicula.metacritic_score != null) && (
+                            <div className="flex gap-4 flex-wrap">
+                              {pelicula.nota_imdb != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">IMDB</p>
+                                  <p className="text-sm font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</p>
+                                </div>
                               )}
-                              {pelicula.youtube_trailer_key && (
-                                <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
+                              {pelicula.rt_score != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
+                                  <p className="text-sm font-bold text-red-400">🍅 {pelicula.rt_score}%</p>
+                                </div>
                               )}
-                              <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
+                              {pelicula.metacritic_score != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
+                                  <p className="text-sm font-bold text-green-400">{pelicula.metacritic_score}</p>
+                                </div>
+                              )}
                             </div>
+                          )}
+                          {(pelicula.runtime != null || pelicula.boxoffice != null) && (
+                            <div className="flex gap-4">
+                              {pelicula.runtime != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
+                                  <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
+                                </div>
+                              )}
+                              {pelicula.boxoffice != null && (
+                                <div>
+                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
+                                  <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          <div className="flex flex-wrap gap-3 items-center">
+                            {pelicula.imdb_id && (
+                              <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
+                            )}
+                            {pelicula.youtube_trailer_key && (
+                              <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
+                            )}
+                            <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
                           </div>
+                          {/* Review CineBret + reviews usuarios */}
+                          <PeliculaDetalle
+                            peliculaId={pelicula.id}
+                            esReviewAutor={pelicula.es_review_autor}
+                            sinopsisIa={pelicula.sinopsis}
+                          />
                         </div>
                         {/* Derecha: equipo + oscars */}
                         <div className="space-y-3">
@@ -930,19 +916,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   {pelicula.categoria && (
                     <span className="text-xs text-zinc-500 mt-0.5 block">{pelicula.categoria}</span>
                   )}
-                  {isExpanded && (
-                    <Link
-                      href={`/pelicula/${pelicula.id}`}
-                      className={`inline-flex items-center gap-1 mt-2 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
-                        pelicula.es_review_autor
-                          ? 'bg-yellow-400/10 text-yellow-400 border-yellow-400/40 hover:bg-yellow-400/20'
-                          : 'bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700'
-                      }`}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      {pelicula.es_review_autor ? '✍️ Ver reviews · Reseña CineBret' : '💬 Ver reviews'}
-                    </Link>
-                  )}
                 </div>
 
                 {/* Derecha: acciones + poster expandido */}
@@ -1012,10 +985,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
               {/* Contenido expandido */}
               {isExpanded && (
-                <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3">
+                <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3" onClick={e => e.stopPropagation()}>
                   <div className="flex items-center justify-between">
                     {user ? (
-                      <div className="flex items-center gap-2 flex-wrap" onClick={e => e.stopPropagation()}>
+                      <div className="flex items-center gap-2 flex-wrap">
                         <button
                           onClick={e => toggleVisto(pelicula.id, e)}
                           className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
@@ -1052,14 +1025,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       </div>
                     ) : <div />}
                     <span className="text-zinc-600 text-xs">▲ colapsar</span>
-                  </div>
-                  <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">🤖 Sinopsis IA</p>
-                    {pelicula.sinopsis ? (
-                      <p className="text-sm text-zinc-300 leading-relaxed italic">{pelicula.sinopsis}</p>
-                    ) : (
-                      <p className="text-sm text-zinc-600 leading-relaxed italic">Pendiente de enriquecimiento — disponible en los próximos días</p>
-                    )}
                   </div>
                   {(pelicula.rt_score != null || pelicula.metacritic_score != null) && (
                     <div className="flex gap-4 flex-wrap">
@@ -1130,13 +1095,19 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                   </div>
                   <div className="flex flex-wrap gap-3 items-center">
                     {pelicula.imdb_id && (
-                      <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
+                      <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
                     )}
                     {pelicula.youtube_trailer_key && (
-                      <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
+                      <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
                     )}
-                    <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
+                    <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
                   </div>
+                  {/* Review CineBret + reviews usuarios */}
+                  <PeliculaDetalle
+                    peliculaId={pelicula.id}
+                    esReviewAutor={pelicula.es_review_autor}
+                    sinopsisIa={pelicula.sinopsis}
+                  />
                 </div>
               )}
             </div>

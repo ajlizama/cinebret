@@ -325,8 +325,104 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
   return (
     <>
-      {/* Filtros */}
-      <div className="flex flex-wrap gap-3 mb-4">
+      {/* ── Filtros MÓVIL ── */}
+      <div className="md:hidden mb-4 space-y-2">
+        {/* Búsqueda */}
+        <input
+          type="text"
+          placeholder="Buscar película, director, actor..."
+          value={busqueda}
+          onChange={e => setBusqueda(e.target.value)}
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-600"
+        />
+
+        {/* Fila de pills rápidos + botón filtros */}
+        <div className="flex gap-2 overflow-x-auto scrollbar-none pb-0.5">
+          {/* Plataformas como logos */}
+          {PLATAFORMAS.map(plat => {
+            const activa = plataformasFiltro.includes(plat.id)
+            return (
+              <button
+                key={plat.id}
+                onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
+                className={`shrink-0 h-8 px-2 rounded-lg border transition-colors flex items-center ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-900'}`}
+              >
+                <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
+              </button>
+            )
+          })}
+
+          {/* Separador */}
+          <div className="w-px bg-zinc-800 shrink-0 mx-0.5" />
+
+          {/* Sello */}
+          <button
+            onClick={() => setSoloSello(!soloSello)}
+            className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors ${soloSello ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-700 text-zinc-400'}`}
+          >
+            ★ Bret
+          </button>
+
+          {/* Review CB */}
+          <button
+            onClick={() => setSoloReviews(!soloReviews)}
+            className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors ${soloReviews ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400'}`}
+          >
+            CB
+          </button>
+
+          {/* Más filtros */}
+          <button
+            onClick={() => setExpandida(expandida === '__filtros__' ? null : '__filtros__')}
+            className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center gap-1.5 ${
+              expandida === '__filtros__'
+                ? 'bg-zinc-700 border-zinc-600 text-white'
+                : 'border-zinc-700 text-zinc-400'
+            }`}
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
+            </svg>
+            Filtros
+            {[...categoriasFiltro, ...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro].length > 0 && (
+              <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
+                {[...categoriasFiltro, ...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro].length}
+              </span>
+            )}
+          </button>
+
+          {hayFiltros && (
+            <button onClick={limpiarFiltros} className="shrink-0 h-8 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
+              ✕
+            </button>
+          )}
+        </div>
+
+        {/* Panel filtros expandido móvil */}
+        {expandida === '__filtros__' && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 space-y-3">
+            <div className="grid grid-cols-2 gap-2">
+              <MultiSelect label="Categoría" opciones={CATEGORIAS} seleccionados={categoriasFiltro} onChange={setCategoriasFiltro} />
+              <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
+              <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
+              <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
+              <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
+              <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
+            </div>
+            <div className="flex items-center gap-2 pt-1">
+              <span className="text-zinc-500 text-xs">Año</span>
+              <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
+                className={`flex-1 bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none ${anioDesde ? 'border-yellow-400' : 'border-zinc-700'}`} />
+              <span className="text-zinc-600 text-xs">—</span>
+              <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
+                className={`flex-1 bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none ${anioHasta ? 'border-yellow-400' : 'border-zinc-700'}`} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Filtros DESKTOP ── */}
+      <div className="hidden md:flex flex-wrap gap-3 mb-4">
         <input
           type="text"
           placeholder="Buscar película, director, actor, género..."
@@ -354,25 +450,11 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           Solo recomendadas
         </button>
         <div className="flex items-center gap-2">
-          <input
-            type="number"
-            placeholder="Desde"
-            value={anioDesde}
-            onChange={e => setAnioDesde(e.target.value)}
-            min={1900}
-            max={2099}
-            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioDesde ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`}
-          />
+          <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
+            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioDesde ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`} />
           <span className="text-zinc-600 text-sm">—</span>
-          <input
-            type="number"
-            placeholder="Hasta"
-            value={anioHasta}
-            onChange={e => setAnioHasta(e.target.value)}
-            min={1900}
-            max={2099}
-            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioHasta ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`}
-          />
+          <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
+            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioHasta ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`} />
         </div>
         {hayFiltros && (
           <button onClick={limpiarFiltros} className="text-sm text-zinc-500 hover:text-white transition-colors px-2">

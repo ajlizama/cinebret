@@ -102,10 +102,16 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
   const guardar = async () => {
     if (!user || !miReview.trim()) return
     setGuardando(true)
-    await supabase.from('user_reviews').upsert(
-      { user_id: user.id, pelicula_id: peliculaId, review_text: miReview.trim() },
-      { onConflict: 'user_id,pelicula_id' }
-    )
+    await Promise.all([
+      supabase.from('user_reviews').upsert(
+        { user_id: user.id, pelicula_id: peliculaId, review_text: miReview.trim() },
+        { onConflict: 'user_id,pelicula_id' }
+      ),
+      supabase.from('user_peliculas').upsert(
+        { user_id: user.id, pelicula_id: peliculaId, visto: true },
+        { onConflict: 'user_id,pelicula_id' }
+      ),
+    ])
     setEditando(false)
     setGuardando(false)
     await cargarReviews()

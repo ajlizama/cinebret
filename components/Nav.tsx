@@ -104,7 +104,7 @@ export default function Nav({ active }: Props) {
 
   return (
     <>
-      <nav className="border-b border-zinc-800 px-4 py-3">
+      <nav className="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800 px-4 py-3">
         <div className="max-w-7xl mx-auto">
           {/* Fila 1: logo + auth */}
           <div className="flex items-center justify-between mb-2.5">

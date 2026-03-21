@@ -134,6 +134,7 @@ export default function ParaTi() {
       let q = supabase
         .from('peliculas')
         .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, categoria, imdb_id')
+        .eq('recomendada', true)
         .gte('nota_imdb', minImdb)
         .order('nota_imdb', { ascending: false })
         .limit(limit)
@@ -224,15 +225,15 @@ export default function ParaTi() {
         }
       })
 
-      // Top 20 → fetch catalogos
-      const top20 = scored.filter(r => r.score > 0.3).sort((a, b) => b.score - a.score).slice(0, 20)
-      const platMap = await fetchCatalogosHoy(top20.map(r => r.id))
-      top20.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
+      // Top 50 (para que cada categoría tenga candidatos al filtrar)
+      const top50 = scored.sort((a, b) => b.score - a.score).slice(0, 50)
+      const platMap = await fetchCatalogosHoy(top50.map(r => r.id))
+      top50.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
 
-      setRecs(top20)
+      setRecs(top50)
 
     } else {
-      const { data: topMovies } = await buildQuery(7.5, 60)
+      const { data: topMovies } = await buildQuery(6, 100)
       if (!topMovies || topMovies.length === 0) { setCargando(false); return }
 
       const enrMap: Record<string, any> = {}
@@ -267,7 +268,7 @@ export default function ParaTi() {
 
   if (!user) return null
 
-  const displayed = (catFiltro ? recs.filter(r => r.categoria === catFiltro) : recs).slice(0, 14)
+  const displayed = (catFiltro ? recs.filter(r => r.categoria === catFiltro) : recs).slice(0, 20)
   const expandedRec = expandedId ? displayed.find(r => r.id === expandedId) ?? null : null
 
   return (

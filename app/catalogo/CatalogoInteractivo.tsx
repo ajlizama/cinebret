@@ -366,9 +366,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <button
                 key={plat.id}
                 onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                className={`h-10 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800'}`}
+                className={`h-[30px] rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800'}`}
               >
-                <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                <img src={plat.logo} alt={plat.nombre} className="h-3 w-auto object-contain" />
               </button>
             )
           })}

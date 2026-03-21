@@ -515,11 +515,11 @@ export default function ParaTi({ onEditPreferences }: { onEditPreferences?: () =
               <button
                 key={cat.key}
                 onClick={() => cambiarFiltro(cat.key)}
-                className={`h-24 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${
+                className={`h-12 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-row items-center justify-center gap-1.5 bg-gradient-to-br ${
                   activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
                 }`}
               >
-                <span className="text-2xl leading-none">{cat.emoji}</span>
+                <span className="text-lg leading-none shrink-0">{cat.emoji}</span>
                 {cat.label}
               </button>
             )

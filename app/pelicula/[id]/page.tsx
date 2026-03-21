@@ -7,6 +7,7 @@ import SeguidosQueVieron from './SeguidosQueVieron'
 import ReviewSection from './ReviewSection'
 import UserActions from './UserActions'
 import AutorReviewLike from './AutorReviewLike'
+import BackButton from './BackButton'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -51,10 +52,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
       <div className="max-w-6xl mx-auto px-6 py-6">
 
-        {/* Back */}
-        <Link href="/catalogo" className="text-sm text-zinc-500 hover:text-white transition-colors mb-8 block">
-          ← Volver al catálogo
-        </Link>
+        <BackButton />
 
         {/* Header */}
         <div className="mb-8">

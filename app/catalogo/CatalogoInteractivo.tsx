@@ -344,11 +344,11 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <button
                 key={cat.id}
                 onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                className={`h-32 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br ${
+                className={`h-24 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${
                   activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
                 }`}
               >
-                <span className="text-3xl leading-none">{cat.emoji}</span>
+                <span className="text-2xl leading-none">{cat.emoji}</span>
                 {cat.id}
               </button>
             )

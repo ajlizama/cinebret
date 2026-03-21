@@ -31,6 +31,18 @@ type PerfilPreferencias = {
   peso_seguidores: number
 }
 
+type ReviewEntry = {
+  id: string
+  review_text: string
+  created_at: string
+  pelicula_id: string
+  publica: boolean | null
+  titulo: string
+  titulo_ingles: string | null
+  poster_path: string | null
+  rating: number | null
+}
+
 export default function PerfilPage() {
   const { username } = useParams<{ username: string }>()
   const { user, username: miUsername } = useAuth()
@@ -46,7 +58,8 @@ export default function PerfilPage() {
   const [yaSigo, setYaSigo] = useState(false)
   const [enComun, setEnComun] = useState<number | null>(null)
   const [watchlist, setWatchlist] = useState<Pelicula[]>([])
-  const [tab, setTab] = useState<'vistas' | 'watchlist' | 'estadisticas'>('vistas')
+  const [reviews, setReviews] = useState<ReviewEntry[]>([])
+  const [tab, setTab] = useState<'vistas' | 'watchlist' | 'estadisticas' | 'reviews'>('vistas')
   const [cargando, setCargando] = useState(true)
   const [loadingFollow, setLoadingFollow] = useState(false)
   const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
@@ -125,6 +138,39 @@ export default function PerfilPage() {
             if (cat) cats[cat] = (cats[cat] ?? 0) + 1
           })
           setMisCategorias(cats)
+        }
+
+        // Fetch reviews del perfil
+        const { data: reviewsRaw } = await supabase
+          .from('user_reviews')
+          .select('id, review_text, created_at, pelicula_id, peliculas(titulo, titulo_ingles, poster_path)')
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false })
+
+        if (reviewsRaw && reviewsRaw.length > 0) {
+          const peliculaIds = reviewsRaw.map((r: any) => r.pelicula_id)
+          const { data: ratingsData } = await supabase
+            .from('user_peliculas')
+            .select('pelicula_id, rating')
+            .eq('user_id', uid)
+            .in('pelicula_id', peliculaIds)
+          const ratingMap: Record<string, number | null> = {}
+          ;(ratingsData ?? []).forEach((r: any) => { ratingMap[r.pelicula_id] = r.rating ?? null })
+
+          const mapped: ReviewEntry[] = (reviewsRaw as any[])
+            .filter(r => r.peliculas)
+            .map(r => ({
+              id: r.id,
+              review_text: r.review_text,
+              created_at: r.created_at,
+              pelicula_id: r.pelicula_id,
+              publica: r.publica ?? null,
+              titulo: r.peliculas.titulo,
+              titulo_ingles: r.peliculas.titulo_ingles,
+              poster_path: r.peliculas.poster_path,
+              rating: ratingMap[r.pelicula_id] ?? null,
+            }))
+          setReviews(mapped)
         }
 
         setCargando(false)
@@ -263,8 +309,9 @@ export default function PerfilPage() {
         {/* Tabs */}
         <div className="flex gap-1 mb-6 bg-zinc-900 rounded-xl p-1">
           {([
-            { key: 'vistas', label: `Vistas`, count: peliculas.length },
+            { key: 'vistas', label: 'Vistas', count: peliculas.length },
             { key: 'watchlist', label: 'Watchlist', count: watchlist.length },
+            { key: 'reviews', label: 'Reviews', count: reviews.length },
             { key: 'estadisticas', label: 'Estadísticas', count: null },
           ] as const).map(({ key, label, count }) => (
             <button
@@ -340,6 +387,60 @@ export default function PerfilPage() {
                   </div>
                 )
               })}
+            </div>
+          )
+        )}
+
+        {/* Tab: Reviews */}
+        {tab === 'reviews' && (
+          reviews.length === 0 ? (
+            <p className="text-zinc-500 text-sm">
+              {esMiPerfil ? 'Aún no has escrito ninguna review.' : 'Este usuario no tiene reviews públicas aún.'}
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {reviews.map(r => (
+                <Link key={r.id} href={`/pelicula/${r.pelicula_id}`} className="block">
+                  <div className="bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-colors rounded-xl p-4 flex gap-4">
+                    {/* Poster */}
+                    <div className="relative w-12 shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ height: 72 }}>
+                      {r.poster_path ? (
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w92${r.poster_path}`}
+                          alt={r.titulo_ingles || r.titulo}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center p-1">
+                          <span className="text-zinc-600 text-[10px] text-center leading-tight">{r.titulo_ingles || r.titulo}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Contenido */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <p className="text-white text-sm font-semibold leading-snug line-clamp-1">
+                          {r.titulo_ingles || r.titulo}
+                        </p>
+                        <div className="flex items-center gap-2 shrink-0">
+                          {r.rating != null && (
+                            <span className="text-yellow-400 text-xs font-bold">{r.rating}/10</span>
+                          )}
+                          {esMiPerfil && r.publica !== null && (
+                            <span className="text-zinc-600 text-xs">{r.publica ? '🌐' : '🔒'}</span>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-zinc-400 text-sm leading-relaxed line-clamp-3">{r.review_text}</p>
+                      <p className="text-zinc-600 text-xs mt-1.5">
+                        {new Date(r.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           )
         )}

@@ -111,11 +111,6 @@ export default async function EstadisticasPage() {
       <Nav active="estadisticas" />
 
       <div className="max-w-6xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-1">Estadísticas</h1>
-          <p className="text-zinc-500 text-sm">Resumen del catálogo CineBret</p>
-        </div>
-
         <EstadisticasInteractivas
           peliculas={peliculas}
           plataformas={PLATAFORMAS}

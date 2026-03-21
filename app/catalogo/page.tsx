@@ -115,15 +115,6 @@ export default async function CatalogoPage() {
       <Nav active="catalogo" />
 
       <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-1">Catálogo</h1>
-          <p className="text-zinc-500 text-sm mb-6">{peliculas.length} películas disponibles</p>
-          <div className="hidden md:flex items-center justify-center gap-4 flex-wrap">
-            {ICONOS.map(file => (
-              <img key={file} src={`/iconos/${file}`} alt="" className="h-16 w-16 object-cover rounded-xl" />
-            ))}
-          </div>
-        </div>
 
         <CatalogoInteractivo peliculas={peliculas} />
       </div>

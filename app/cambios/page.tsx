@@ -85,8 +85,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-4">Cambios en catálogo</h1>
-          <div className="flex gap-2 mb-4">
+<div className="flex gap-2 mb-4">
             {PERIODOS.map(p => (
               <Link
                 key={p.dias}

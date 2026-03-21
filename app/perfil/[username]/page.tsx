@@ -34,6 +34,8 @@ export default function PerfilPage() {
   const [siguiendo, setSiguiendo] = useState(0)
   const [yaSigo, setYaSigo] = useState(false)
   const [enComun, setEnComun] = useState<number | null>(null)
+  const [watchlist, setWatchlist] = useState<Pelicula[]>([])
+  const [tab, setTab] = useState<'vistas' | 'watchlist' | 'estadisticas'>('vistas')
   const [cargando, setCargando] = useState(true)
   const [loadingFollow, setLoadingFollow] = useState(false)
 
@@ -48,10 +50,13 @@ export default function PerfilPage() {
         setAvatarUrl((profile as any).avatar_url ?? null)
         const esMio = user?.id === uid
 
-        const [{ data: vistas }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }] = await Promise.all([
+        const [{ data: vistas }, { data: wl }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }] = await Promise.all([
           supabase.from('user_peliculas')
             .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, anio, nota_imdb, poster_path, oscars, categoria, enriquecimiento(director, actores, compositor))')
             .eq('user_id', uid).eq('visto', true),
+          supabase.from('user_peliculas')
+            .select('pelicula_id, rating, peliculas(titulo, titulo_ingles, anio, nota_imdb, poster_path, oscars, categoria, enriquecimiento(director, actores, compositor))')
+            .eq('user_id', uid).eq('watchlist', true),
           supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', uid),
           supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', uid),
           user ? supabase.from('follows').select('follower_id').eq('follower_id', user.id).eq('following_id', uid).maybeSingle() : Promise.resolve({ data: null }),
@@ -68,7 +73,12 @@ export default function PerfilPage() {
           .filter((r: any) => r.pelicula)
           .sort((a: any, b: any) => (b.rating ?? 0) - (a.rating ?? 0))
 
+        const mappedWl: Pelicula[] = (wl ?? [])
+          .map((r: any) => ({ pelicula_id: r.pelicula_id, rating: r.rating, pelicula: r.peliculas }))
+          .filter((r: any) => r.pelicula)
+
         setPeliculas(mapped)
+        setWatchlist(mappedWl)
         setStats(computeStats(mapped))
         setSeguidores(nSeguidores ?? 0)
         setSiguiendo(nSiguiendo ?? 0)
@@ -166,33 +176,35 @@ export default function PerfilPage() {
           )}
         </div>
 
-        {/* Stats */}
-        {stats && peliculas.length > 0 && (
-          <>
-            <StatsCards stats={stats} total={peliculas.length} />
+        {/* Tabs */}
+        <div className="flex gap-1 mb-6 bg-zinc-900 rounded-xl p-1">
+          {([
+            { key: 'vistas', label: `Vistas`, count: peliculas.length },
+            { key: 'watchlist', label: 'Watchlist', count: watchlist.length },
+            { key: 'estadisticas', label: 'Estadísticas', count: null },
+          ] as const).map(({ key, label, count }) => (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                tab === key ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+            >
+              {label}
+              {count !== null && count > 0 && (
+                <span className={`ml-1.5 text-xs ${tab === key ? 'text-zinc-400' : 'text-zinc-600'}`}>
+                  {count}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <TopsPanel stats={stats} />
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                <VibeMapa
-                  categorias={stats.categorias}
-                  username={username}
-                  avatarUrl={avatarUrl}
-                  misCategorias={esMiPerfil ? null : misCategorias}
-                  miUsername={esMiPerfil ? null : (miUsername ?? null)}
-                  miAvatarUrl={esMiPerfil ? null : miAvatarUrl}
-                />
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Grid películas */}
-        {peliculas.length === 0 ? (
-          <p className="text-zinc-500 text-sm">Aún no ha marcado películas como vistas.</p>
-        ) : (
-          <>
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Películas vistas</p>
+        {/* Tab: Vistas */}
+        {tab === 'vistas' && (
+          peliculas.length === 0 ? (
+            <p className="text-zinc-500 text-sm">Aún no ha marcado películas como vistas.</p>
+          ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
               {peliculas.map(entrada => {
                 const p = entrada.pelicula
@@ -219,7 +231,60 @@ export default function PerfilPage() {
                 )
               })}
             </div>
-          </>
+          )
+        )}
+
+        {/* Tab: Watchlist */}
+        {tab === 'watchlist' && (
+          watchlist.length === 0 ? (
+            <p className="text-zinc-500 text-sm">La watchlist está vacía.</p>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+              {watchlist.map(entrada => {
+                const p = entrada.pelicula
+                const titulo = p.titulo_ingles || p.titulo
+                return (
+                  <Link key={entrada.pelicula_id} href={`/pelicula/${entrada.pelicula_id}`}>
+                    <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
+                      <div className="relative aspect-[2/3] bg-zinc-800">
+                        {p.poster_path ? (
+                          <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center p-1">
+                            <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          )
+        )}
+
+        {/* Tab: Estadísticas */}
+        {tab === 'estadisticas' && (
+          stats && peliculas.length > 0 ? (
+            <>
+              <StatsCards stats={stats} total={peliculas.length} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <TopsPanel stats={stats} />
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                  <VibeMapa
+                    categorias={stats.categorias}
+                    username={username}
+                    avatarUrl={avatarUrl}
+                    misCategorias={esMiPerfil ? null : misCategorias}
+                    miUsername={esMiPerfil ? null : (miUsername ?? null)}
+                    miAvatarUrl={esMiPerfil ? null : miAvatarUrl}
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <p className="text-zinc-500 text-sm">Aún no hay suficientes datos para mostrar estadísticas.</p>
+          )
         )}
       </div>
     </main>

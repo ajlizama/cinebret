@@ -349,33 +349,39 @@ export default function ParaTi({
 
         if (hasHistory) {
           // Con historial (>= 5 vistas)
-          // calidad: 15%, género: 35%, era: 15%, director: 20%, seguidores: 10%, mood: 5%
+          // calidad: 15%, género_historial: 20%, género_questionnaire: 15%,
+          // era: 15%, director: 15%, mood_questionnaire: 15%, seguidores: 5%
           score += calidadFinal * 0.15 * 10
 
-          const gs = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
-          score += gs * 0.35 * 10
-          if (gs > 0.3) {
+          // Género desde historial
+          const gsHistory = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
+          score += gsHistory * 0.20 * 10
+          if (gsHistory > 0.3) {
             const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
             if (matched.length) razones.push(matched.join(', '))
           }
+
+          // Género desde questionnaire (siempre aplica, incluso con historial)
+          const genPrefs = perfil?.generos_preferidos ?? []
+          const genMatchQ = generos.filter(g => genPrefs.includes(g)).length
+          const gsQuestionnaire = genPrefs.length > 0 ? genMatchQ / genPrefs.length : 0
+          score += gsQuestionnaire * 0.15 * 10
 
           score += eraScore * 0.15 * 10
 
           if (director && directorAvg[director]) {
             const dirScore = (directorAvg[director] / 10)
-            score += dirScore * 0.20 * 10
+            score += dirScore * 0.15 * 10
             razones.push(`Dir. ${director.split(' ').pop()}`)
           }
 
-          score += followersScore * 0.10 * 10
+          score += followersScore * 0.05 * 10
 
-          // Mood desde historial (topCat)
+          // Mood desde questionnaire (mayor peso)
           const moodRanking = perfil?.mood_ranking ?? []
           const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
           const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
-          if (movie.categoria && movie.categoria === topCat) {
-            score += (0.5 + moodBonus * 0.5) * 0.05 * 10
-          }
+          score += moodBonus * 0.15 * 10
 
         } else if (tienePerfilCompleto && perfil) {
           // Sin historial, con perfil

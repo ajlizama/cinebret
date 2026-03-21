@@ -197,17 +197,22 @@ export default function ComunidadPage() {
   const [misPeliculasMap, setMisPeliculasMap] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
   const [cuestionarioAbierto, setCuestionarioAbierto] = useState(false)
   const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
+  const [preferenciasLoaded, setPreferenciasLoaded] = useState(false)
   const [paraTiKey, setParaTiKey] = useState(0)
 
-  // Fetch preferencias del usuario
+  // Fetch preferencias del usuario — incrementa paraTiKey cuando estén listas
   useEffect(() => {
-    if (!user) return
+    if (!user) { setPreferenciasLoaded(true); return }
     supabase
       .from('perfil_preferencias')
       .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
       .eq('user_id', user.id)
       .maybeSingle()
-      .then(({ data }) => { if (data) setPreferencias(data as PerfilPreferencias) })
+      .then(({ data }) => {
+        setPreferencias(data as PerfilPreferencias ?? null)
+        setPreferenciasLoaded(true)
+        setParaTiKey(k => k + 1)
+      })
   }, [user])
 
   // Fetch todos los perfiles
@@ -525,7 +530,9 @@ export default function ComunidadPage() {
 
           {/* Para Ti (sidebar derecha en desktop, arriba en móvil) */}
           <div className="w-full lg:w-[480px] shrink-0 order-1 lg:order-2">
-            <ParaTi key={paraTiKey} onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} preferenciasExternas={preferencias} />
+            {preferenciasLoaded && (
+              <ParaTi key={paraTiKey} onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} preferenciasExternas={preferencias} />
+            )}
           </div>
         </div>
       </div>

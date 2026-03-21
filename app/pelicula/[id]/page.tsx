@@ -7,7 +7,7 @@ import SeguidosQueVieron from './SeguidosQueVieron'
 import ReviewSection from './ReviewSection'
 import UserActions from './UserActions'
 import AutorReviewLike from './AutorReviewLike'
-import BackButton from './BackButton'
+import BackButton from '@/components/BackButton'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },

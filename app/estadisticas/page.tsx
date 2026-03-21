@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import Nav from '@/components/Nav'
 import EstadisticasInteractivas, { type PeliculaRow, type AnalisisCatalogo } from './EstadisticasInteractivas'
+import BackButton from '@/components/BackButton'
 
 const GENEROS_EN_A_ES: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -111,6 +112,7 @@ export default async function EstadisticasPage() {
       <Nav  />
 
       <div className="max-w-6xl mx-auto px-6 py-10">
+        <BackButton />
         <EstadisticasInteractivas
           peliculas={peliculas}
           plataformas={PLATAFORMAS}

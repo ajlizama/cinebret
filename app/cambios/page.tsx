@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
+import BackButton from '@/components/BackButton'
 
 export const revalidate = 3600
 
@@ -84,6 +85,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
       <Nav active="inicio" />
 
       <div className="max-w-7xl mx-auto px-6 py-10">
+        <BackButton />
         <div className="mb-8">
 <div className="flex gap-2 mb-4">
             {PERIODOS.map(p => (

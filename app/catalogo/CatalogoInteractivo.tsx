@@ -433,44 +433,110 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       </div>
 
       {/* ── Filtros DESKTOP ── */}
-      <div className="hidden md:flex flex-wrap gap-3 mb-4">
-        <input
-          type="text"
-          placeholder="Buscar película, director, actor, género..."
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-          className="bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm w-72 text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
-        />
-        <MultiSelect label="Plataforma" opciones={PLATAFORMAS.map(p => p.id)} seleccionados={plataformasFiltro} onChange={setPlataformasFiltro} />
-        <MultiSelect label="Categoría" opciones={CATEGORIAS} seleccionados={categoriasFiltro} onChange={setCategoriasFiltro} />
-        <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
-        <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
-        <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
-        <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
-        <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
-        <button
-          onClick={() => setSoloReviews(!soloReviews)}
-          className={`border rounded-lg px-4 py-2 text-sm transition-colors ${soloReviews ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}
-        >
-          Solo reviews CineBret
-        </button>
-        <button
-          onClick={() => setSoloSello(!soloSello)}
-          className={`border rounded-lg px-4 py-2 text-sm transition-colors ${soloSello ? 'bg-emerald-500 text-white border-emerald-500 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}
-        >
-          Solo recomendadas
-        </button>
-        <div className="flex items-center gap-2">
-          <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
-            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioDesde ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`} />
-          <span className="text-zinc-600 text-sm">—</span>
-          <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
-            className={`bg-zinc-900 border rounded-lg px-3 py-2 text-sm w-24 text-white placeholder:text-zinc-500 focus:outline-none transition-colors ${anioHasta ? 'border-yellow-400' : 'border-zinc-700 focus:border-zinc-500'}`} />
-        </div>
-        {hayFiltros && (
-          <button onClick={limpiarFiltros} className="text-sm text-zinc-500 hover:text-white transition-colors px-2">
-            Limpiar todo ✕
+      <div className="hidden md:block mb-4">
+        <div className="flex items-center gap-3 flex-wrap">
+
+          {/* Categorías */}
+          {([
+            { id: "Pa'l domingo de bajón",                    emoji: '🛋️', short: 'Bajón',        grad: 'from-amber-500 to-orange-600',  dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'  },
+            { id: "Pa' saltar del sillón",                    emoji: '⚡',  short: 'Del sillón',   grad: 'from-violet-500 to-blue-600',   dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'  },
+            { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', short: 'Licuadora',    grad: 'from-rose-500 to-pink-600',     dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'      },
+            { id: "Pa' llorar a moco tendido",                emoji: '😭', short: 'A moco tendido', grad: 'from-cyan-500 to-teal-600',  dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'      },
+          ]).map(cat => {
+            const activa = categoriasFiltro.includes(cat.id)
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
+                className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all bg-gradient-to-br ${
+                  activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`
+                }`}
+              >
+                <span>{cat.emoji}</span>
+                <span>{cat.short}</span>
+              </button>
+            )
+          })}
+
+          <div className="w-px h-6 bg-zinc-700 shrink-0" />
+
+          {/* Plataformas */}
+          {PLATAFORMAS.map(plat => {
+            const activa = plataformasFiltro.includes(plat.id)
+            return (
+              <button
+                key={plat.id}
+                onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
+                className={`h-[30px] w-12 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800 hover:border-zinc-500'}`}
+              >
+                <img src={plat.logo} alt={plat.nombre} className="h-3 w-auto object-contain" />
+              </button>
+            )
+          })}
+
+          <div className="w-px h-6 bg-zinc-700 shrink-0" />
+
+          {/* Buscador */}
+          <input
+            type="text"
+            placeholder="Buscar película, director, actor..."
+            value={busqueda}
+            onChange={e => setBusqueda(e.target.value)}
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm w-64 text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+          />
+
+          {/* Más filtros */}
+          <button
+            onClick={() => setExpandida(expandida === '__filtros__' ? null : '__filtros__')}
+            className={`h-9 px-3 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors ${
+              expandida === '__filtros__' ? 'bg-zinc-700 border-zinc-600 text-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
+            }`}
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
+            </svg>
+            Más filtros
+            {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length > 0 && (
+              <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
+                {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length}
+              </span>
+            )}
           </button>
+
+          {hayFiltros && (
+            <button onClick={limpiarFiltros} className="h-9 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
+              ✕
+            </button>
+          )}
+        </div>
+
+        {/* Panel filtros avanzados */}
+        {expandida === '__filtros__' && (
+          <div className="mt-3 bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
+            <div className="grid grid-cols-3 gap-3">
+              <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
+              <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
+              <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
+              <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
+              <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
+            </div>
+            <div className="flex items-center gap-3 pt-1">
+              <button onClick={() => setSoloReviews(!soloReviews)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloReviews ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>
+                Solo reviews CineBret
+              </button>
+              <button onClick={() => setSoloSello(!soloSello)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloSello ? 'bg-emerald-500 text-white border-emerald-500 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>
+                Solo recomendadas
+              </button>
+              <div className="flex items-center gap-2 ml-auto">
+                <span className="text-zinc-500 text-xs">Año</span>
+                <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
+                  className={`bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none ${anioDesde ? 'border-yellow-400' : 'border-zinc-700'}`} />
+                <span className="text-zinc-600 text-xs">—</span>
+                <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
+                  className={`bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none ${anioHasta ? 'border-yellow-400' : 'border-zinc-700'}`} />
+              </div>
+            </div>
+          </div>
         )}
       </div>
 

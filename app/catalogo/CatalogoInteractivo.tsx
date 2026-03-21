@@ -615,7 +615,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                           <button
                             onClick={e => toggleVisto(pelicula.id, e)}
                             title="Vista"
-                            className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors ${
+                            className={`w-4 h-4 rounded-full border text-[10px] font-bold transition-colors flex items-center justify-center ${
                               userPeliculas[pelicula.id]?.visto
                                 ? 'bg-emerald-500 border-emerald-500 text-white'
                                 : 'border-zinc-600 text-zinc-600 hover:border-zinc-400'
@@ -626,7 +626,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                           <button
                             onClick={e => toggleWatchlist(pelicula.id, e)}
                             title="Watchlist"
-                            className={`w-6 h-6 rounded text-xs transition-colors ${
+                            className={`w-4 h-4 rounded text-[10px] transition-colors flex items-center justify-center ${
                               userPeliculas[pelicula.id]?.watchlist
                                 ? 'bg-yellow-400 text-zinc-950'
                                 : 'border border-zinc-600 text-zinc-600 hover:border-zinc-400'
@@ -672,12 +672,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                             <span className="text-xs text-zinc-500 truncate max-w-48 block">{pelicula.titulo}</span>
                           )}
                         </div>
-                        {pelicula.es_review_autor && (
-                          <span className="shrink-0 font-serif italic text-xs font-bold bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded">CB</span>
-                        )}
-                        {pelicula.sello_bret && (
-                          <span className="shrink-0 font-serif italic text-xs font-bold border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded">★ Recomendada</span>
-                        )}
                       </div>
                     </div>
                   </td>
@@ -898,12 +892,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     <span className="font-semibold text-white text-sm leading-snug">
                       {pelicula.titulo_ingles || pelicula.titulo}
                     </span>
-                    {pelicula.es_review_autor && (
-                      <span className="shrink-0 font-serif italic text-xs font-bold bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded">CB</span>
-                    )}
-                    {pelicula.sello_bret && (
-                      <span className="shrink-0 font-serif italic text-xs font-bold border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded">★ Recomendada</span>
-                    )}
                   </div>
                   {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
                     <span className="text-xs text-zinc-500 block mb-1">{pelicula.titulo}</span>
@@ -935,7 +923,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                         <button
                           onClick={e => toggleVisto(pelicula.id, e)}
                           title="Marcar como vista"
-                          className={`w-8 h-8 rounded-full border text-sm font-bold transition-colors flex items-center justify-center ${
+                          className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors flex items-center justify-center ${
                             userPeliculas[pelicula.id]?.visto
                               ? 'bg-emerald-500 border-emerald-500 text-white'
                               : 'border-zinc-600 text-zinc-600 hover:border-zinc-400 hover:text-zinc-400'
@@ -946,7 +934,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                         <button
                           onClick={e => toggleWatchlist(pelicula.id, e)}
                           title="Agregar a watchlist"
-                          className={`w-8 h-8 rounded-full border text-sm font-bold transition-colors flex items-center justify-center ${
+                          className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors flex items-center justify-center ${
                             userPeliculas[pelicula.id]?.watchlist
                               ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
                               : 'border-zinc-600 text-zinc-600 hover:border-zinc-400 hover:text-zinc-400'

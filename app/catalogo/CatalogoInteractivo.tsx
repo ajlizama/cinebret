@@ -555,7 +555,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
       {/* Tabla (md y superior) */}
       <div
-        className="hidden md:block border border-zinc-800 rounded-xl overflow-hidden"
+        className="hidden md:block border border-zinc-950 rounded-xl overflow-hidden"
         style={{ height: 'calc(100vh - 190px)', minHeight: '650px', overflowY: 'auto' }}
       >
         <table className="w-full text-sm">
@@ -604,8 +604,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <React.Fragment key={pelicula.id}>
                 <tr
                   onClick={() => setExpandida(expandida === pelicula.id ? null : pelicula.id)}
-                  className={`cursor-pointer border-t border-zinc-800 transition-colors ${
-                    expandida === pelicula.id ? 'bg-zinc-800' : i % 2 === 0 ? 'bg-zinc-950 hover:bg-zinc-900' : 'bg-zinc-900/40 hover:bg-zinc-900'
+                  className={`cursor-pointer border-t border-zinc-950 transition-colors ${
+                    expandida === pelicula.id ? 'bg-zinc-900' : 'bg-zinc-950 hover:bg-zinc-900/50'
                   }`}
                 >
                   {user && (
@@ -874,7 +874,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <div
               key={pelicula.id}
               onClick={() => setExpandida(isExpanded ? null : pelicula.id)}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 cursor-pointer"
+              className="bg-zinc-950 border border-zinc-950 rounded-xl p-3 cursor-pointer"
             >
               {/* Fila principal */}
               <div className="flex items-start gap-3">

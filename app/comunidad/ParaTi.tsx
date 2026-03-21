@@ -177,19 +177,23 @@ export default function ParaTi() {
       const { data: candidatos } = await buildQuery(6, 200)
       if (!candidatos || candidatos.length === 0) { setCargando(false); return }
 
-      // Enriquecimiento en lotes de 50
+      // Enriquecimiento en lotes de 50, filtrando por sello_bret
       const enrMap: Record<string, any> = {}
       for (let i = 0; i < candidatos.length; i += 50) {
         const chunk = candidatos.slice(i, i + 50).map((c: any) => c.id)
         const { data: enrChunk } = await supabase
           .from('enriquecimiento')
-          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
+          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key, sello_bret')
+          .eq('sello_bret', true)
           .in('pelicula_id', chunk)
         ;(enrChunk ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
       }
 
-      // Score todos los candidatos
-      const scored: Rec[] = candidatos.map((movie: any) => {
+      // Solo películas con sello_bret = true
+      const conSello = candidatos.filter((c: any) => !!enrMap[c.id])
+
+      // Score
+      const scored: Rec[] = conSello.map((movie: any) => {
         const enr = enrMap[movie.id]
         const generos: string[] = enr?.generos ?? []
         const director: string | null = enr?.director ?? null
@@ -224,12 +228,30 @@ export default function ParaTi() {
         }
       })
 
-      // Top 50 (para que cada categoría tenga candidatos al filtrar)
-      const top50 = scored.sort((a, b) => b.score - a.score).slice(0, 50)
-      const platMap = await fetchCatalogosHoy(top50.map(r => r.id))
-      top50.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
+      // Balancear: hasta 12 por categoría + rellenar con top general → máx 60
+      const sortedAll = scored.sort((a, b) => b.score - a.score)
+      const byCat: Record<string, Rec[]> = {}
+      for (const r of sortedAll) {
+        const k = r.categoria ?? '__none__'
+        if (!byCat[k]) byCat[k] = []
+        byCat[k].push(r)
+      }
+      const seen = new Set<string>()
+      const balanced: Rec[] = []
+      for (const list of Object.values(byCat)) {
+        for (const r of list.slice(0, 12)) {
+          if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
+        }
+      }
+      for (const r of sortedAll) {
+        if (balanced.length >= 60) break
+        if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
+      }
 
-      setRecs(top50)
+      const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
+      balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
+
+      setRecs(balanced.sort((a, b) => b.score - a.score))
 
     } else {
       const { data: topMovies } = await buildQuery(6, 100)
@@ -238,13 +260,15 @@ export default function ParaTi() {
       const enrMap: Record<string, any> = {}
       const { data: enrTop } = await supabase
         .from('enriquecimiento')
-        .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
+        .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key, sello_bret')
+        .eq('sello_bret', true)
         .in('pelicula_id', topMovies.map((c: any) => c.id))
       ;(enrTop ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
 
-      const platMap = await fetchCatalogosHoy(topMovies.map((m: any) => m.id))
+      const conSelloF = topMovies.filter((m: any) => !!enrMap[m.id])
+      const platMap = await fetchCatalogosHoy(conSelloF.map((m: any) => m.id))
 
-      setRecs(topMovies.map((movie: any) => {
+      setRecs(conSelloF.map((movie: any) => {
         const enr = enrMap[movie.id]
         return {
           id: movie.id, titulo: movie.titulo, titulo_ingles: movie.titulo_ingles,

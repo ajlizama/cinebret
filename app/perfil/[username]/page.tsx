@@ -157,6 +157,27 @@ export default function PerfilPage() {
     }
   }
 
+  function PosterCard({ titulo, poster, rating }: { titulo: string; poster: string | null; rating: number | null }) {
+    return (
+      <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
+        <div className="relative aspect-[2/3] bg-zinc-800">
+          {poster ? (
+            <Image src={`https://image.tmdb.org/t/p/w185${poster}`} alt={titulo} fill className="object-cover" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center p-1">
+              <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
+            </div>
+          )}
+          {rating != null && (
+            <div className="absolute top-1 right-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
+              {rating}
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   if (cargando) return (
     <main className="min-h-screen bg-zinc-950"><Nav />
       <div className="flex items-center justify-center h-64"><p className="text-zinc-500 text-sm">Cargando...</p></div>
@@ -272,36 +293,19 @@ export default function PerfilPage() {
               {peliculas.map(entrada => {
                 const p = entrada.pelicula
                 const titulo = p.titulo_ingles || p.titulo
+                const clickable = !esMiPerfil
                 return (
-                  <div key={entrada.pelicula_id} className="relative group">
-                    <Link href={`/pelicula/${entrada.pelicula_id}`}>
-                      <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
-                        <div className="relative aspect-[2/3] bg-zinc-800">
-                          {p.poster_path ? (
-                            <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center p-1">
-                              <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
-                            </div>
-                          )}
-                          {entrada.rating && (
-                            <div className="absolute top-1 right-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
-                              {entrada.rating}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
-                    {puedecomentar && (
-                      <button
-                        onClick={() => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'vistas' })}
-                        className="absolute bottom-1 left-1 bg-zinc-900/90 rounded-full p-1 text-zinc-400 hover:text-yellow-400 transition-colors opacity-0 group-hover:opacity-100"
-                        title="Comentar"
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                      </button>
+                  <div
+                    key={entrada.pelicula_id}
+                    className={clickable ? 'cursor-pointer' : ''}
+                    onClick={clickable ? () => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'vistas' }) : undefined}
+                  >
+                    {esMiPerfil ? (
+                      <Link href={`/pelicula/${entrada.pelicula_id}`}>
+                        <PosterCard titulo={titulo} poster={p.poster_path ?? null} rating={entrada.rating} />
+                      </Link>
+                    ) : (
+                      <PosterCard titulo={titulo} poster={p.poster_path ?? null} rating={entrada.rating} />
                     )}
                   </div>
                 )
@@ -319,31 +323,19 @@ export default function PerfilPage() {
               {watchlist.map(entrada => {
                 const p = entrada.pelicula
                 const titulo = p.titulo_ingles || p.titulo
+                const clickable = !esMiPerfil
                 return (
-                  <div key={entrada.pelicula_id} className="relative group">
-                    <Link href={`/pelicula/${entrada.pelicula_id}`}>
-                      <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
-                        <div className="relative aspect-[2/3] bg-zinc-800">
-                          {p.poster_path ? (
-                            <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center p-1">
-                              <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
-                    {puedecomentar && (
-                      <button
-                        onClick={() => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'watchlist' })}
-                        className="absolute bottom-1 left-1 bg-zinc-900/90 rounded-full p-1 text-zinc-400 hover:text-yellow-400 transition-colors opacity-0 group-hover:opacity-100"
-                        title="Comentar"
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                      </button>
+                  <div
+                    key={entrada.pelicula_id}
+                    className={clickable ? 'cursor-pointer' : ''}
+                    onClick={clickable ? () => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'watchlist' }) : undefined}
+                  >
+                    {esMiPerfil ? (
+                      <Link href={`/pelicula/${entrada.pelicula_id}`}>
+                        <PosterCard titulo={titulo} poster={p.poster_path ?? null} rating={null} />
+                      </Link>
+                    ) : (
+                      <PosterCard titulo={titulo} poster={p.poster_path ?? null} rating={null} />
                     )}
                   </div>
                 )
@@ -427,6 +419,7 @@ export default function PerfilPage() {
           toUserId={profileUserId}
           toUsername={username as string}
           listaTipo={comentarioModal.listaTipo}
+          puedecomentar={puedecomentar}
           onClose={() => setComentarioModal(null)}
         />
       )}

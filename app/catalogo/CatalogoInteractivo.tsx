@@ -449,12 +449,12 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <button
                 key={cat.id}
                 onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all bg-gradient-to-br ${
+                className={`px-3 py-2 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all bg-gradient-to-br whitespace-nowrap ${
                   activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`
                 }`}
               >
                 <span>{cat.emoji}</span>
-                <span>{cat.short}</span>
+                <span>{cat.id}</span>
               </button>
             )
           })}

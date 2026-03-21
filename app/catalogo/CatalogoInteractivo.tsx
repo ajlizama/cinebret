@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
@@ -201,6 +201,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
+  const tablaRef = useRef<HTMLDivElement>(null)
   const [columnas, setColumnas] = useState<ColumnasExtra>({ rt_score: false, metacritic_score: false, director: false, actores: false, compositor: false })
 
   useEffect(() => {
@@ -621,6 +622,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
       {/* Tabla (md y superior) */}
       <div
+        ref={tablaRef}
         className="hidden md:block border border-zinc-950 rounded-xl overflow-hidden"
         style={{ height: 'calc(100vh - 190px)', minHeight: '650px', overflowY: 'auto' }}
       >
@@ -1175,7 +1177,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       {totalPaginas > 1 && (
         <div className="flex items-center justify-center gap-3 mt-4">
           <button
-            onClick={() => { setPagina(p => Math.max(0, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+            onClick={() => {
+              setPagina(p => Math.max(0, p - 1))
+              tablaRef.current ? tablaRef.current.scrollTop = 0 : window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
             disabled={pagina === 0}
             className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
           >
@@ -1186,7 +1191,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <span className="text-zinc-600 ml-2">({peliculasFiltradas.length} resultados)</span>
           </span>
           <button
-            onClick={() => { setPagina(p => Math.min(totalPaginas - 1, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+            onClick={() => {
+              setPagina(p => Math.min(totalPaginas - 1, p + 1))
+              tablaRef.current ? tablaRef.current.scrollTop = 0 : window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
             disabled={pagina === totalPaginas - 1}
             className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
           >

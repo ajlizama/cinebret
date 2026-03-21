@@ -132,7 +132,7 @@ async function fetchCandidatosHoy(): Promise<string[]> {
   return Array.from(new Set(ids))
 }
 
-export default function ParaTi() {
+export default function ParaTi({ onEditPreferences }: { onEditPreferences?: () => void }) {
   const { user, username: miUsername } = useAuth()
   const [recs, setRecs] = useState<Rec[]>([])
   const [cargando, setCargando] = useState(false)
@@ -467,7 +467,18 @@ export default function ParaTi() {
 
   return (
     <div className="mb-8">
-      <h2 className="text-base font-bold text-white mb-4">🎬 Para ti</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-base font-bold text-white">🎬 Para ti</h2>
+        {onEditPreferences && (
+          <button
+            type="button"
+            onClick={onEditPreferences}
+            className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
+          >
+            ⚙️ Editar recomendaciones
+          </button>
+        )}
+      </div>
 
       {/* Banner sin perfil */}
       {sinPerfil && miUsername && (

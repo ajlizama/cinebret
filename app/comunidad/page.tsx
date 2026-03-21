@@ -8,6 +8,7 @@ import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import ParaTi from './ParaTi'
 import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
+import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 
 type Perfil = {
   user_id: string
@@ -174,6 +175,15 @@ function FeedCard({
   )
 }
 
+type PerfilPreferencias = {
+  birth_year: number | null
+  fav_movies: string[]
+  generos_preferidos: string[]
+  mood_ranking: string[]
+  peso_critica: number
+  peso_seguidores: number
+}
+
 export default function ComunidadPage() {
   const { user } = useAuth()
   const [siguiendoMap, setSiguiendoMap] = useState<Record<string, boolean>>({})
@@ -185,6 +195,19 @@ export default function ComunidadPage() {
   const [cargandoTodos, setCargandoTodos] = useState(true)
   const [likesMap, setLikesMap] = useState<Record<string, { count: number; youLiked: boolean }>>({})
   const [misPeliculasMap, setMisPeliculasMap] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
+  const [cuestionarioAbierto, setCuestionarioAbierto] = useState(false)
+  const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
+
+  // Fetch preferencias del usuario
+  useEffect(() => {
+    if (!user) return
+    supabase
+      .from('perfil_preferencias')
+      .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => { if (data) setPreferencias(data as PerfilPreferencias) })
+  }, [user])
 
   // Fetch todos los perfiles
   useEffect(() => {
@@ -395,8 +418,10 @@ export default function ComunidadPage() {
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="comunidad" />
-      <div className="max-w-2xl mx-auto px-6 py-6">
-        <div className="flex justify-between items-center mb-3">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
+
+        {/* Header */}
+        <div className="flex justify-between items-center mb-4">
           <Link href="/cambios" className="text-xs text-zinc-600 hover:text-zinc-400 italic transition-colors">
             Update de plataformas
           </Link>
@@ -405,97 +430,123 @@ export default function ComunidadPage() {
           </Link>
         </div>
 
-        {/* Para ti */}
-        <ParaTi />
+        {/* Layout de dos columnas en desktop */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
 
-        {/* Explorar todos los perfiles */}
-        <div className="mb-6">
-            <button
-              onClick={() => setMostrarTodos(v => !v)}
-              className="flex items-center gap-2 w-full text-left text-sm text-zinc-400 hover:text-white transition-colors mb-3"
-            >
-              <span className="text-xs">{mostrarTodos ? '▲' : '▼'}</span>
-              <span className="font-medium">Explorar perfiles</span>
-              {!cargandoTodos && <span className="text-zinc-600 text-xs">({todosPerfiles.length})</span>}
-            </button>
+          {/* Feed + Explorar (columna principal izquierda) */}
+          <div className="flex-1 min-w-0 order-2 lg:order-1">
+            {/* Explorar todos los perfiles */}
+            <div className="mb-6">
+              <button
+                onClick={() => setMostrarTodos(v => !v)}
+                className="flex items-center gap-2 w-full text-left text-sm text-zinc-400 hover:text-white transition-colors mb-3"
+              >
+                <span className="text-xs">{mostrarTodos ? '▲' : '▼'}</span>
+                <span className="font-medium">Explorar perfiles</span>
+                {!cargandoTodos && <span className="text-zinc-600 text-xs">({todosPerfiles.length})</span>}
+              </button>
 
-            {mostrarTodos && (
-              <div className="space-y-2">
-                {cargandoTodos ? (
-                  <p className="text-zinc-500 text-sm">Cargando...</p>
-                ) : todosPerfiles.length === 0 ? (
-                  <p className="text-zinc-600 text-sm">Sin perfiles aún</p>
-                ) : (
-                  todosPerfiles.map(perfil => {
-                    const sigoEste = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
-                    return (
-                      <div key={perfil.user_id} className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
-                        <Link href={`/perfil/${perfil.username}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                          <Avatar url={perfil.avatar_url} username={perfil.username} size={36} />
-                          <div>
-                            <p className="text-white text-sm font-medium">@{perfil.username}</p>
-                            <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
-                          </div>
-                        </Link>
-                        {user && (
-                          <button
-                            onClick={() => toggleFollow(perfil)}
-                            className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                              sigoEste
-                                ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
-                                : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
-                            }`}
-                          >
-                            {sigoEste ? 'Siguiendo' : '+ Seguir'}
-                          </button>
-                        )}
-                      </div>
-                    )
-                  })
-                )}
-              </div>
-            )}
-        </div>
-
-        {/* Feed */}
-        <>
-          {cargandoFeed && <p className="text-zinc-500 text-sm">Cargando...</p>}
-
-          {!cargandoFeed && feedCombinado.length === 0 && (
-            <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>
-          )}
-
-          {!cargandoFeed && feedCombinado.length > 0 && (
-            <div className="space-y-4">
-              {feedSeguidores.length > 0 && (
-                <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
-              )}
-              {feedSeguidores.map(item => (
-                <FeedCard
-                  key={item.id}
-                  item={item}
-                  likes={likesMap[item.id]?.count ?? 0}
-                  youLiked={likesMap[item.id]?.youLiked ?? false}
-                  onToggleLike={() => toggleLike(item)}
-                  visto={misPeliculasMap[item.pelicula_id]?.visto ?? false}
-                  watchlist={misPeliculasMap[item.pelicula_id]?.watchlist ?? false}
-                  onToggleVisto={() => toggleVisto(item.pelicula_id)}
-                  onToggleWatchlist={() => toggleWatchlist(item.pelicula_id)}
-                  hasUser={!!user}
-                />
-              ))}
-
-              {feedCineBret.length > 0 && (
-                <div className="flex items-center gap-3 pt-2">
-                  <AvatarCineBret size={28} />
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
+              {mostrarTodos && (
+                <div className="space-y-2">
+                  {cargandoTodos ? (
+                    <p className="text-zinc-500 text-sm">Cargando...</p>
+                  ) : todosPerfiles.length === 0 ? (
+                    <p className="text-zinc-600 text-sm">Sin perfiles aún</p>
+                  ) : (
+                    todosPerfiles.map(perfil => {
+                      const sigoEste = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
+                      return (
+                        <div key={perfil.user_id} className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
+                          <Link href={`/perfil/${perfil.username}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                            <Avatar url={perfil.avatar_url} username={perfil.username} size={36} />
+                            <div>
+                              <p className="text-white text-sm font-medium">@{perfil.username}</p>
+                              <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
+                            </div>
+                          </Link>
+                          {user && (
+                            <button
+                              onClick={() => toggleFollow(perfil)}
+                              className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                                sigoEste
+                                  ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
+                                  : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
+                              }`}
+                            >
+                              {sigoEste ? 'Siguiendo' : '+ Seguir'}
+                            </button>
+                          )}
+                        </div>
+                      )
+                    })
+                  )}
                 </div>
               )}
-              {feedCineBret.map(item => <FeedCard key={item.id} item={item} hasUser={!!user} />)}
             </div>
-          )}
-        </>
+
+            {/* Feed */}
+            {cargandoFeed && <p className="text-zinc-500 text-sm">Cargando...</p>}
+
+            {!cargandoFeed && feedCombinado.length === 0 && (
+              <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>
+            )}
+
+            {!cargandoFeed && feedCombinado.length > 0 && (
+              <div className="space-y-4">
+                {feedSeguidores.length > 0 && (
+                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
+                )}
+                {feedSeguidores.map(item => (
+                  <FeedCard
+                    key={item.id}
+                    item={item}
+                    likes={likesMap[item.id]?.count ?? 0}
+                    youLiked={likesMap[item.id]?.youLiked ?? false}
+                    onToggleLike={() => toggleLike(item)}
+                    visto={misPeliculasMap[item.pelicula_id]?.visto ?? false}
+                    watchlist={misPeliculasMap[item.pelicula_id]?.watchlist ?? false}
+                    onToggleVisto={() => toggleVisto(item.pelicula_id)}
+                    onToggleWatchlist={() => toggleWatchlist(item.pelicula_id)}
+                    hasUser={!!user}
+                  />
+                ))}
+
+                {feedCineBret.length > 0 && (
+                  <div className="flex items-center gap-3 pt-2">
+                    <AvatarCineBret size={28} />
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
+                  </div>
+                )}
+                {feedCineBret.map(item => <FeedCard key={item.id} item={item} hasUser={!!user} />)}
+              </div>
+            )}
+          </div>
+
+          {/* Para Ti (sidebar derecha en desktop, arriba en móvil) */}
+          <div className="w-full lg:w-[480px] shrink-0 order-1 lg:order-2">
+            <ParaTi onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} />
+          </div>
+        </div>
       </div>
+
+      {/* Modal cuestionario */}
+      {cuestionarioAbierto && (
+        <CuestionarioOnboarding
+          onComplete={async () => {
+            setCuestionarioAbierto(false)
+            if (user) {
+              const { data } = await supabase
+                .from('perfil_preferencias')
+                .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+                .eq('user_id', user.id)
+                .maybeSingle()
+              if (data) setPreferencias(data as PerfilPreferencias)
+            }
+          }}
+          onDismiss={() => setCuestionarioAbierto(false)}
+          preferenciasIniciales={preferencias}
+        />
+      )}
     </main>
   )
 }

@@ -177,20 +177,28 @@ export default function ParaTi() {
       const { data: candidatos } = await buildQuery(6, 200)
       if (!candidatos || candidatos.length === 0) { setCargando(false); return }
 
-      // Enriquecimiento en lotes de 50, filtrando por sello_bret
+      // IDs con sello_bret = true
+      const { data: selloBretRows } = await supabase
+        .from('enriquecimiento')
+        .select('pelicula_id')
+        .eq('sello_bret', true)
+      const selloBretIds = new Set((selloBretRows ?? []).map((r: any) => r.pelicula_id))
+
+      // Filtrar candidatos a solo los con sello_bret (si hay alguno)
+      const conSello = selloBretIds.size > 0
+        ? candidatos.filter((c: any) => selloBretIds.has(c.id))
+        : candidatos
+
+      // Enriquecimiento solo para conSello
       const enrMap: Record<string, any> = {}
-      for (let i = 0; i < candidatos.length; i += 50) {
-        const chunk = candidatos.slice(i, i + 50).map((c: any) => c.id)
+      for (let i = 0; i < conSello.length; i += 50) {
+        const chunk = conSello.slice(i, i + 50).map((c: any) => c.id)
         const { data: enrChunk } = await supabase
           .from('enriquecimiento')
-          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key, sello_bret')
-          .eq('sello_bret', true)
+          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
           .in('pelicula_id', chunk)
         ;(enrChunk ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
       }
-
-      // Solo películas con sello_bret = true
-      const conSello = candidatos.filter((c: any) => !!enrMap[c.id])
 
       // Score
       const scored: Rec[] = conSello.map((movie: any) => {
@@ -257,15 +265,24 @@ export default function ParaTi() {
       const { data: topMovies } = await buildQuery(6, 100)
       if (!topMovies || topMovies.length === 0) { setCargando(false); return }
 
+      // IDs con sello_bret = true
+      const { data: selloBretRowsF } = await supabase
+        .from('enriquecimiento')
+        .select('pelicula_id')
+        .eq('sello_bret', true)
+      const selloBretIdsF = new Set((selloBretRowsF ?? []).map((r: any) => r.pelicula_id))
+
+      const conSelloF = selloBretIdsF.size > 0
+        ? topMovies.filter((m: any) => selloBretIdsF.has(m.id))
+        : topMovies
+
       const enrMap: Record<string, any> = {}
       const { data: enrTop } = await supabase
         .from('enriquecimiento')
-        .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key, sello_bret')
-        .eq('sello_bret', true)
-        .in('pelicula_id', topMovies.map((c: any) => c.id))
+        .select('pelicula_id, generos, director, actores, sinopsis_chilensis, youtube_trailer_key')
+        .in('pelicula_id', conSelloF.map((c: any) => c.id))
       ;(enrTop ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
 
-      const conSelloF = topMovies.filter((m: any) => !!enrMap[m.id])
       const platMap = await fetchCatalogosHoy(conSelloF.map((m: any) => m.id))
 
       setRecs(conSelloF.map((movie: any) => {

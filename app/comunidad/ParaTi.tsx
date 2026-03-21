@@ -83,6 +83,7 @@ export default function ParaTi() {
   const [recs, setRecs] = useState<Rec[]>([])
   const [cargando, setCargando] = useState(false)
   const [catFiltro, setCatFiltro] = useState<string | null>(null)
+  const [page, setPage] = useState(0)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [userMap, setUserMap] = useState<Record<string, UserState>>({})
 
@@ -174,7 +175,7 @@ export default function ParaTi() {
       )
       const topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]?.[0]
 
-      const { data: candidatos } = await buildQuery(6, 200)
+      const { data: candidatos } = await buildQuery(6, 500)
       if (!candidatos || candidatos.length === 0) { setCargando(false); return }
 
       // IDs con sello_bret = true
@@ -247,12 +248,12 @@ export default function ParaTi() {
       const seen = new Set<string>()
       const balanced: Rec[] = []
       for (const list of Object.values(byCat)) {
-        for (const r of list.slice(0, 12)) {
+        for (const r of list.slice(0, 30)) {
           if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
         }
       }
       for (const r of sortedAll) {
-        if (balanced.length >= 60) break
+        if (balanced.length >= 150) break
         if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
       }
 
@@ -262,7 +263,7 @@ export default function ParaTi() {
       setRecs(balanced.sort((a, b) => b.score - a.score))
 
     } else {
-      const { data: topMovies } = await buildQuery(6, 100)
+      const { data: topMovies } = await buildQuery(6, 300)
       if (!topMovies || topMovies.length === 0) { setCargando(false); return }
 
       // IDs con sello_bret = true
@@ -308,8 +309,16 @@ export default function ParaTi() {
 
   if (!user) return null
 
-  const displayed = (catFiltro ? recs.filter(r => r.categoria === catFiltro) : recs).slice(0, 20)
+  const filtered = catFiltro ? recs.filter(r => r.categoria === catFiltro) : recs
+  const displayed = filtered.slice(page * 25, (page + 1) * 25)
+  const hayMas = filtered.length > (page + 1) * 25
   const expandedRec = expandedId ? displayed.find(r => r.id === expandedId) ?? null : null
+
+  const cambiarFiltro = (key: string | null) => {
+    setCatFiltro(key === catFiltro ? null : key)
+    setPage(0)
+    setExpandedId(null)
+  }
 
   return (
     <div className="mb-8">
@@ -318,7 +327,7 @@ export default function ParaTi() {
       {/* Filtros */}
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none mb-4">
         <button
-          onClick={() => { setCatFiltro(null); setExpandedId(null) }}
+          onClick={() => cambiarFiltro(null)}
           className={`shrink-0 px-4 py-2 rounded-full text-xs font-semibold border transition-colors ${
             !catFiltro ? 'bg-white text-zinc-950 border-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
           }`}
@@ -328,7 +337,7 @@ export default function ParaTi() {
         {CATS.map(cat => (
           <button
             key={cat.key}
-            onClick={() => { setCatFiltro(catFiltro === cat.key ? null : cat.key); setExpandedId(null) }}
+            onClick={() => cambiarFiltro(cat.key)}
             className={`shrink-0 px-4 py-2 rounded-full text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
               catFiltro === cat.key
                 ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
@@ -399,6 +408,31 @@ export default function ParaTi() {
                 </button>
               )
             })}
+          </div>
+
+          {/* Refresh / Ver otras */}
+          <div className="flex items-center justify-between mt-2 mb-1">
+            <p className="text-zinc-600 text-xs">{filtered.length} películas</p>
+            <div className="flex gap-2">
+              {page > 0 && (
+                <button
+                  type="button"
+                  onClick={() => { setPage(p => p - 1); setExpandedId(null) }}
+                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors"
+                >
+                  ← Anteriores
+                </button>
+              )}
+              {hayMas && (
+                <button
+                  type="button"
+                  onClick={() => { setPage(p => p + 1); setExpandedId(null) }}
+                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors"
+                >
+                  🔄 Ver otras 25
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Panel expandido */}

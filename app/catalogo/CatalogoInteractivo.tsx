@@ -390,6 +390,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 : 'border-zinc-700 text-zinc-400'
             }`}
           >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
+            </svg>
             Más filtros
             {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length > 0 && (
               <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">

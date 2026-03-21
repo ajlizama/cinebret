@@ -197,6 +197,7 @@ export default function ComunidadPage() {
   const [misPeliculasMap, setMisPeliculasMap] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
   const [cuestionarioAbierto, setCuestionarioAbierto] = useState(false)
   const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
+  const [paraTiKey, setParaTiKey] = useState(0)
 
   // Fetch preferencias del usuario
   useEffect(() => {
@@ -524,7 +525,7 @@ export default function ComunidadPage() {
 
           {/* Para Ti (sidebar derecha en desktop, arriba en móvil) */}
           <div className="w-full lg:w-[480px] shrink-0 order-1 lg:order-2">
-            <ParaTi onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} />
+            <ParaTi key={paraTiKey} onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} />
           </div>
         </div>
       </div>
@@ -542,6 +543,7 @@ export default function ComunidadPage() {
                 .maybeSingle()
               if (data) setPreferencias(data as PerfilPreferencias)
             }
+            setParaTiKey(k => k + 1)
           }}
           onDismiss={() => setCuestionarioAbierto(false)}
           preferenciasIniciales={preferencias}

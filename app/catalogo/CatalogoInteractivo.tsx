@@ -871,10 +871,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               className="bg-zinc-950 border border-zinc-950 rounded-xl p-3 cursor-pointer"
             >
               {/* Fila principal */}
-              <div className="flex items-start gap-3">
-                {/* Thumbnail pequeño — solo cuando NO está expandida */}
+              <div className="flex gap-3">
+                {/* Poster — solo cuando NO está expandida, se estira al alto del contenido */}
                 {!isExpanded && (
-                  <div className="relative w-10 h-14 shrink-0 rounded overflow-hidden bg-zinc-800">
+                  <div className="relative w-12 self-stretch shrink-0 rounded overflow-hidden bg-zinc-800 min-h-[72px]">
                     {pelicula.poster_path && (
                       <Image
                         src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
@@ -917,7 +917,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     )}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center gap-1.5 shrink-0" onClick={e => e.stopPropagation()}>
+                  <div className="flex flex-col items-center gap-1.5 shrink-0 self-start" onClick={e => e.stopPropagation()}>
                     {user ? (
                       <>
                         <button

@@ -319,11 +319,10 @@ export default function ParaTi() {
               const platsActivas = PLATAFORMAS.filter(p => rec.plataformas.includes(p.id))
 
               return (
-                <button
+                <div
                   key={rec.id}
-                  type="button"
                   onClick={() => setExpandedId(isExp ? null : rec.id)}
-                  className="shrink-0 w-36 text-left focus:outline-none"
+                  className="shrink-0 w-36 text-left cursor-pointer"
                 >
                   <div className={`relative w-36 h-52 rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 transition-all ${
                     isExp ? 'ring-yellow-400' : 'ring-transparent'
@@ -338,12 +337,27 @@ export default function ParaTi() {
                         ⭐ {rec.nota_imdb}
                       </div>
                     )}
-                    {/* Vista check */}
-                    {us.visto && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs font-bold leading-none">✓</span>
-                      </div>
-                    )}
+                    {/* Vista + Watchlist buttons */}
+                    <div className="absolute top-2 right-2 flex flex-col gap-1" onClick={e => e.stopPropagation()}>
+                      <button
+                        onClick={() => upsert(rec.id, { visto: !us.visto })}
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                          us.visto ? 'bg-emerald-500 text-white' : 'bg-zinc-900/80 text-zinc-400 hover:bg-emerald-500/30 hover:text-emerald-400'
+                        }`}
+                        title={us.visto ? 'Quitar vista' : 'Marcar como vista'}
+                      >
+                        ✓
+                      </button>
+                      <button
+                        onClick={() => upsert(rec.id, { watchlist: !us.watchlist })}
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                          us.watchlist ? 'bg-yellow-400 text-zinc-950' : 'bg-zinc-900/80 text-zinc-400 hover:bg-yellow-400/30 hover:text-yellow-400'
+                        }`}
+                        title={us.watchlist ? 'Quitar watchlist' : 'Agregar a watchlist'}
+                      >
+                        ★
+                      </button>
+                    </div>
                     {/* Plataformas */}
                     {platsActivas.length > 0 && (
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-6 pb-2 px-2">
@@ -361,7 +375,7 @@ export default function ParaTi() {
                     {rec.titulo_ingles || rec.titulo}
                   </p>
                   <p className="text-zinc-500 text-xs leading-snug line-clamp-1">{rec.razon}</p>
-                </button>
+                </div>
               )
             })}
           </div>

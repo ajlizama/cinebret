@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -11,11 +12,17 @@ type Props = { active?: 'inicio' | 'comunidad' | 'perfil' }
 
 type Notif = {
   id: string
-  type: 'follow' | 'like' | 'personalizar'
+  type: 'follow' | 'like' | 'personalizar' | 'lista_comentario'
   from_username: string | null
   from_avatar: string | null
   read: boolean
   created_at: string
+  meta?: {
+    redirect_url?: string
+    pelicula_titulo?: string
+    lista_tipo?: string
+    [key: string]: unknown
+  } | null
 }
 
 type Perfil = {
@@ -46,6 +53,7 @@ function MiniAvatar({ url, username }: { url: string | null; username: string })
 
 export default function Nav({ active }: Props) {
   const { user, username, loading, signOut } = useAuth()
+  const router = useRouter()
   const [modalAbierto, setModalAbierto] = useState(false)
   const [usernameModal, setUsernameModal] = useState(false)
   const [notifs, setNotifs] = useState<Notif[]>([])
@@ -82,7 +90,7 @@ export default function Nav({ active }: Props) {
     if (!user) return
     const { data: raw } = await supabase
       .from('notifications')
-      .select('id, type, from_user_id, read, created_at')
+      .select('id, type, from_user_id, read, created_at, meta')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(20)
@@ -98,11 +106,12 @@ export default function Nav({ active }: Props) {
       .filter((n: any) => !n.from_user_id || profileMap[n.from_user_id])
       .map((n: any) => ({
         id: n.id,
-        type: n.type as 'follow' | 'like' | 'personalizar',
+        type: n.type as 'follow' | 'like' | 'personalizar' | 'lista_comentario',
         from_username: n.from_user_id ? profileMap[n.from_user_id]?.username ?? null : null,
         from_avatar: n.from_user_id ? profileMap[n.from_user_id]?.avatar_url ?? null : null,
         read: n.read,
         created_at: n.created_at,
+        meta: n.meta ?? null,
       }))
 
     setNotifs(mapped)
@@ -117,6 +126,20 @@ export default function Nav({ active }: Props) {
   }
 
   const unreadCount = notifs.filter(n => !n.read).length
+
+  const handleNotifClick = async (n: Notif) => {
+    // Marcar como leída
+    if (!n.read) {
+      await supabase.from('notifications').update({ read: true }).eq('id', n.id)
+      setNotifs(prev => prev.map(x => x.id === n.id ? { ...x, read: true } : x))
+    }
+    setShowNotifs(false)
+    // Redirigir según tipo
+    const redirectUrl = n.meta?.redirect_url
+    if (redirectUrl) { router.push(redirectUrl); return }
+    if (n.type === 'follow' && n.from_username) { router.push(`/perfil/${n.from_username}`); return }
+    if (n.type === 'personalizar' && username) { router.push(`/perfil/${username}`); return }
+  }
 
   // Búsqueda de usuarios
   useEffect(() => {
@@ -282,21 +305,29 @@ export default function Nav({ active }: Props) {
                                 <p className="text-zinc-600 text-xs px-4 py-4 text-center">Sin notificaciones aún</p>
                               ) : (
                                 notifs.map(n => (
-                                  <div
+                                  <button
                                     key={n.id}
-                                    className={`flex items-start gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 ${!n.read ? 'bg-zinc-800/50' : ''}`}
+                                    onClick={() => handleNotifClick(n)}
+                                    className={`w-full flex items-start gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 text-left transition-colors hover:bg-zinc-800/70 ${!n.read ? 'bg-zinc-800/50' : ''}`}
                                   >
                                     {n.type === 'personalizar' ? (
                                       <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center text-sm shrink-0">✨</div>
+                                    ) : n.type === 'lista_comentario' ? (
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">💬</div>
                                     ) : (
                                       <MiniAvatar url={n.from_avatar} username={n.from_username ?? '?'} />
                                     )}
                                     <div className="flex-1 min-w-0">
                                       <p className="text-xs text-zinc-300 leading-snug">
                                         {n.type === 'personalizar' ? (
+                                          <span className="text-white font-medium">Personaliza tus recomendaciones</span>
+                                        ) : n.type === 'lista_comentario' ? (
                                           <>
-                                            <span className="text-white font-medium">Personaliza tus recomendaciones</span>
-                                            {' — '}<Link href={`/perfil/${username}`} className="text-yellow-400 hover:text-yellow-300">ir a mi perfil →</Link>
+                                            <span className="text-white font-medium">@{n.from_username}</span>
+                                            {' comentó en '}
+                                            <span className="text-zinc-200">{n.meta?.pelicula_titulo ?? 'una película'}</span>
+                                            {' de tu '}
+                                            <span className="text-zinc-200">{n.meta?.lista_tipo === 'watchlist' ? 'watchlist' : 'lista de vistas'}</span>
                                           </>
                                         ) : (
                                           <>
@@ -308,7 +339,7 @@ export default function Nav({ active }: Props) {
                                       <p className="text-xs text-zinc-600 mt-0.5">{tiempoRelativo(n.created_at)}</p>
                                     </div>
                                     {!n.read && <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full shrink-0 mt-1.5" />}
-                                  </div>
+                                  </button>
                                 ))
                               )}
                             </div>

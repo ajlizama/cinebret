@@ -16,6 +16,7 @@ import {
   VibeMapa,
 } from '@/components/PerfilStats'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
+import ListaComentarioModal from '@/app/perfil/ListaComentarioModal'
 
 type Pelicula = PeliculaConStats & {
   pelicula: PeliculaConStats['pelicula'] & { titulo_ingles: string | null; anio: number | null }
@@ -50,6 +51,13 @@ export default function PerfilPage() {
   const [loadingFollow, setLoadingFollow] = useState(false)
   const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
   const [cuestionarioAbierto, setCuestionarioAbierto] = useState(false)
+  const [elMeSigue, setElMeSigue] = useState(false)
+  const [comentarioModal, setComentarioModal] = useState<{
+    peliculaId: string
+    peliculaTitulo: string
+    peliculaPoster: string | null
+    listaTipo: 'watchlist' | 'vistas'
+  } | null>(null)
 
   useEffect(() => {
     if (!username) return
@@ -81,9 +89,13 @@ export default function PerfilPage() {
           esMio
             ? supabase.from('perfil_preferencias').select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores').eq('user_id', uid).maybeSingle()
             : Promise.resolve({ data: null }),
+          // El dueño del perfil me sigue a mí (mutual follow check)
+          (user && !esMio)
+            ? supabase.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', user.id).maybeSingle()
+            : Promise.resolve({ data: null }),
         ] as const
 
-        const [{ data: vistas }, { data: wl }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }, { data: prefData }] = await Promise.all(promises)
+        const [{ data: vistas }, { data: wl }, { count: nSeguidores }, { count: nSiguiendo }, { data: followCheck }, { data: misVistas }, { data: miProfData }, { data: prefData }, { data: elMeSigueCheck }] = await Promise.all(promises)
 
         const mapped: Pelicula[] = (vistas ?? [])
           .map((r: any) => ({ pelicula_id: r.pelicula_id, rating: r.rating, pelicula: r.peliculas }))
@@ -102,6 +114,7 @@ export default function PerfilPage() {
         setYaSigo(!!followCheck)
         if (miProfData) setMiAvatarUrl((miProfData as any)?.avatar_url ?? null)
         if (prefData) setPreferencias(prefData as PerfilPreferencias)
+        setElMeSigue(!!elMeSigueCheck)
 
         if (misVistas && misVistas.length > 0) {
           const misIds = new Set((misVistas as any[]).map(v => v.pelicula_id))
@@ -160,6 +173,7 @@ export default function PerfilPage() {
   )
 
   const esMiPerfil = user?.id === profileUserId
+  const puedecomentar = !esMiPerfil && yaSigo && elMeSigue
 
   return (
     <main className="min-h-screen bg-zinc-950">
@@ -259,24 +273,37 @@ export default function PerfilPage() {
                 const p = entrada.pelicula
                 const titulo = p.titulo_ingles || p.titulo
                 return (
-                  <Link key={entrada.pelicula_id} href={`/pelicula/${entrada.pelicula_id}`}>
-                    <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
-                      <div className="relative aspect-[2/3] bg-zinc-800">
-                        {p.poster_path ? (
-                          <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center p-1">
-                            <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
-                          </div>
-                        )}
-                        {entrada.rating && (
-                          <div className="absolute top-1 right-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
-                            {entrada.rating}
-                          </div>
-                        )}
+                  <div key={entrada.pelicula_id} className="relative group">
+                    <Link href={`/pelicula/${entrada.pelicula_id}`}>
+                      <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
+                        <div className="relative aspect-[2/3] bg-zinc-800">
+                          {p.poster_path ? (
+                            <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center p-1">
+                              <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
+                            </div>
+                          )}
+                          {entrada.rating && (
+                            <div className="absolute top-1 right-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
+                              {entrada.rating}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                    {puedecomentar && (
+                      <button
+                        onClick={() => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'vistas' })}
+                        className="absolute bottom-1 left-1 bg-zinc-900/90 rounded-full p-1 text-zinc-400 hover:text-yellow-400 transition-colors opacity-0 group-hover:opacity-100"
+                        title="Comentar"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 )
               })}
             </div>
@@ -293,19 +320,32 @@ export default function PerfilPage() {
                 const p = entrada.pelicula
                 const titulo = p.titulo_ingles || p.titulo
                 return (
-                  <Link key={entrada.pelicula_id} href={`/pelicula/${entrada.pelicula_id}`}>
-                    <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
-                      <div className="relative aspect-[2/3] bg-zinc-800">
-                        {p.poster_path ? (
-                          <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center p-1">
-                            <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
-                          </div>
-                        )}
+                  <div key={entrada.pelicula_id} className="relative group">
+                    <Link href={`/pelicula/${entrada.pelicula_id}`}>
+                      <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
+                        <div className="relative aspect-[2/3] bg-zinc-800">
+                          {p.poster_path ? (
+                            <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={titulo} fill className="object-cover" />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center p-1">
+                              <span className="text-zinc-600 text-xs text-center leading-tight">{titulo}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                    {puedecomentar && (
+                      <button
+                        onClick={() => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'watchlist' })}
+                        className="absolute bottom-1 left-1 bg-zinc-900/90 rounded-full p-1 text-zinc-400 hover:text-yellow-400 transition-colors opacity-0 group-hover:opacity-100"
+                        title="Comentar"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 )
               })}
             </div>
@@ -374,6 +414,19 @@ export default function PerfilPage() {
         <CuestionarioOnboarding
           onComplete={handleCuestionarioComplete}
           onDismiss={() => setCuestionarioAbierto(false)}
+        />
+      )}
+
+      {/* Modal comentario en lista */}
+      {comentarioModal && profileUserId && (
+        <ListaComentarioModal
+          peliculaId={comentarioModal.peliculaId}
+          peliculaTitulo={comentarioModal.peliculaTitulo}
+          peliculaPoster={comentarioModal.peliculaPoster}
+          toUserId={profileUserId}
+          toUsername={username as string}
+          listaTipo={comentarioModal.listaTipo}
+          onClose={() => setComentarioModal(null)}
         />
       )}
     </main>

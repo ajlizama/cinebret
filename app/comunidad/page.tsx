@@ -15,6 +15,19 @@ type Perfil = {
   sigo: boolean
 }
 
+type Recomendacion = {
+  id: string
+  titulo: string
+  titulo_ingles: string | null
+  nota_imdb: number | null
+  poster_path: string | null
+  categoria: string | null
+  director: string | null
+  generos: string[]
+  razon: string
+  score: number
+}
+
 type FeedItem = {
   id: string
   review_text: string
@@ -129,6 +142,8 @@ export default function ComunidadPage() {
   const [todosPerfiles, setTodosPerfiles] = useState<Perfil[]>([])
   const [mostrarTodos, setMostrarTodos] = useState(false)
   const [cargandoTodos, setCargandoTodos] = useState(true)
+  const [recomendaciones, setRecomendaciones] = useState<Recomendacion[]>([])
+  const [cargandoRecs, setCargandoRecs] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Fetch todos los perfiles
@@ -174,6 +189,131 @@ export default function ComunidadPage() {
       setCargandoTodos(false)
     }
     fetchTodos()
+  }, [user])
+
+  // Recomendaciones personalizadas
+  useEffect(() => {
+    if (!user) return
+    const compute = async () => {
+      setCargandoRecs(true)
+
+      // 1. Películas que el usuario ya vio
+      const { data: vistasRaw } = await supabase
+        .from('user_peliculas')
+        .select('pelicula_id, rating')
+        .eq('user_id', user.id)
+        .eq('visto', true)
+
+      if (!vistasRaw || vistasRaw.length === 0) { setCargandoRecs(false); return }
+
+      const vistasIds = vistasRaw.map((v: any) => v.pelicula_id)
+      const ratingMap: Record<string, number> = {}
+      vistasRaw.forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
+
+      // 2. Datos de las películas vistas (categoria) + enriquecimiento (generos, director)
+      const [{ data: pelisVistas }, { data: enrVistas }] = await Promise.all([
+        supabase.from('peliculas').select('id, categoria').in('id', vistasIds),
+        supabase.from('enriquecimiento').select('pelicula_id, generos, director').in('pelicula_id', vistasIds),
+      ])
+
+      const enrVistasMap: Record<string, { generos: string[]; director: string | null }> = {}
+      ;(enrVistas ?? []).forEach((e: any) => { enrVistasMap[e.pelicula_id] = { generos: e.generos ?? [], director: e.director ?? null } })
+
+      // 3. Calcular preferencias ponderadas por rating
+      const genreWeight: Record<string, number> = {}
+      const directorRatings: Record<string, number[]> = {}
+      const catCount: Record<string, number> = {}
+
+      ;(pelisVistas ?? []).forEach((p: any) => {
+        const r = ratingMap[p.id] ?? 6
+        const enr = enrVistasMap[p.id]
+        enr?.generos.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
+        if (enr?.director) directorRatings[enr.director] = [...(directorRatings[enr.director] ?? []), r]
+        if (p.categoria) catCount[p.categoria] = (catCount[p.categoria] ?? 0) + 1
+      })
+
+      const maxGenreW = Math.max(...Object.values(genreWeight), 1)
+      const normGenre = Object.fromEntries(Object.entries(genreWeight).map(([g, w]) => [g, w / maxGenreW]))
+      const directorAvg = Object.fromEntries(
+        Object.entries(directorRatings).map(([d, rs]) => [d, rs.reduce((a, b) => a + b, 0) / rs.length])
+      )
+      const topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0]?.[0]
+      const topGenres = Object.entries(genreWeight).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([g]) => g)
+
+      // 4. Candidatos: películas no vistas con nota_imdb >= 6
+      const { data: candidatos } = await supabase
+        .from('peliculas')
+        .select('id, titulo, titulo_ingles, nota_imdb, poster_path, categoria')
+        .not('id', 'in', `(${vistasIds.join(',')})`)
+        .gte('nota_imdb', 6)
+        .order('nota_imdb', { ascending: false })
+        .limit(300)
+
+      if (!candidatos || candidatos.length === 0) { setCargandoRecs(false); return }
+
+      const { data: enrCandidatos } = await supabase
+        .from('enriquecimiento')
+        .select('pelicula_id, generos, director')
+        .in('pelicula_id', candidatos.map((c: any) => c.id))
+
+      const enrCandMap: Record<string, { generos: string[]; director: string | null }> = {}
+      ;(enrCandidatos ?? []).forEach((e: any) => { enrCandMap[e.pelicula_id] = { generos: e.generos ?? [], director: e.director ?? null } })
+
+      // 5. Puntuar candidatos
+      const scored: Recomendacion[] = candidatos.map((movie: any) => {
+        const enr = enrCandMap[movie.id]
+        const generos: string[] = enr?.generos ?? []
+        const director: string | null = enr?.director ?? null
+        let score = 0
+        const razones: string[] = []
+
+        // Géneros (hasta 3 pts)
+        const gs = generos.reduce((sum: number, g: string) => sum + (normGenre[g] ?? 0), 0)
+        const gsNorm = Math.min(gs, 3)
+        if (gsNorm > 0.5) {
+          score += gsNorm
+          const matchedGenres = generos.filter(g => normGenre[g] > 0.3).slice(0, 2)
+          if (matchedGenres.length) razones.push(matchedGenres.join(', '))
+        }
+
+        // Director (hasta 2 pts)
+        if (director && directorAvg[director]) {
+          score += (directorAvg[director] / 10) * 2
+          razones.push(`Dir. ${director.split(' ').pop()}`)
+        }
+
+        // Categoría favorita (1 pt)
+        if (movie.categoria && movie.categoria === topCat) {
+          score += 1
+          if (!razones.length) razones.push(movie.categoria.replace("Pa'", '').trim())
+        }
+
+        // Bonus IMDB >= 8 (0.5 pt)
+        if ((movie.nota_imdb ?? 0) >= 8) score += 0.5
+
+        return {
+          id: movie.id,
+          titulo: movie.titulo,
+          titulo_ingles: movie.titulo_ingles,
+          nota_imdb: movie.nota_imdb,
+          poster_path: movie.poster_path,
+          categoria: movie.categoria,
+          director,
+          generos,
+          razon: razones.length ? razones.join(' · ') : topGenres.join(', ') || '',
+          score,
+        }
+      })
+
+      const top = scored
+        .filter(r => r.score > 0.3)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10)
+
+      setRecomendaciones(top)
+      setCargandoRecs(false)
+    }
+    compute()
   }, [user])
 
   // Fetch CineBret reviews (siempre, para todos)
@@ -367,6 +507,52 @@ export default function ComunidadPage() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Para ti */}
+        {!busqueda && user && (recomendaciones.length > 0 || cargandoRecs) && (
+          <div className="mb-8">
+            <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-4">🎬 Para ti</h2>
+            {cargandoRecs ? (
+              <p className="text-zinc-500 text-sm">Calculando recomendaciones...</p>
+            ) : (
+              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
+                {recomendaciones.map(rec => (
+                  <Link
+                    key={rec.id}
+                    href={`/pelicula/${rec.id}`}
+                    className="shrink-0 w-32 group"
+                  >
+                    <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-2 group-hover:ring-2 group-hover:ring-yellow-400 transition-all">
+                      {rec.poster_path ? (
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`}
+                          alt={rec.titulo_ingles || rec.titulo}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center p-2">
+                          <span className="text-zinc-600 text-xs text-center leading-snug">{rec.titulo_ingles || rec.titulo}</span>
+                        </div>
+                      )}
+                      {rec.nota_imdb && (
+                        <div className="absolute top-2 right-2 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
+                          ⭐{rec.nota_imdb}
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-white text-xs font-semibold leading-snug truncate">
+                      {rec.titulo_ingles || rec.titulo}
+                    </p>
+                    {rec.razon && (
+                      <p className="text-zinc-500 text-xs mt-0.5 leading-snug line-clamp-2">{rec.razon}</p>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

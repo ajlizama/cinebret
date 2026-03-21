@@ -51,6 +51,14 @@ export default function Nav({ active }: Props) {
   const [notifs, setNotifs] = useState<Notif[]>([])
   const [showNotifs, setShowNotifs] = useState(false)
 
+  // Avatar del usuario logueado
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  useEffect(() => {
+    if (!user) { setAvatarUrl(null); return }
+    supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null))
+  }, [user])
+
   // Buscador de usuarios
   const [busqueda, setBusqueda] = useState('')
   const [resultados, setResultados] = useState<Perfil[]>([])
@@ -343,9 +351,13 @@ export default function Nav({ active }: Props) {
             {/* Perfil */}
             {user && username ? (
               <Link href={`/perfil/${username}`} className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'perfil' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${active === 'perfil' ? 'bg-white text-zinc-950' : 'bg-zinc-700 text-zinc-300'}`}>
-                  {username[0]?.toUpperCase()}
-                </div>
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt={username} className={`w-5 h-5 rounded-full object-cover ${active === 'perfil' ? 'ring-2 ring-white' : ''}`} />
+                ) : (
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${active === 'perfil' ? 'bg-white text-zinc-950' : 'bg-zinc-700 text-zinc-300'}`}>
+                    {username[0]?.toUpperCase()}
+                  </div>
+                )}
                 <span className="text-[10px] font-medium">Perfil</span>
               </Link>
             ) : !loading ? (

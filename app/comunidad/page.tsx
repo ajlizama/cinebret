@@ -282,7 +282,13 @@ export default function ComunidadPage() {
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="comunidad" />
-      <div className="max-w-2xl mx-auto px-6 py-10">
+      <div className="max-w-2xl mx-auto px-6 py-6">
+        <div className="flex justify-end mb-3">
+          <Link href="/estadisticas" className="text-xs text-zinc-500 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">
+            Ver estadísticas →
+          </Link>
+        </div>
+
         {/* Para ti */}
         <ParaTi />
 

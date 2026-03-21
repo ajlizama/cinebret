@@ -219,7 +219,7 @@ export default function MiPerfilPage() {
   }
 
   if (loading || cargando) return (
-    <main className="min-h-screen bg-zinc-950"><Nav />
+    <main className="min-h-screen bg-zinc-950"><Nav active="perfil" />
       <div className="flex items-center justify-center h-64"><p className="text-zinc-500 text-sm">Cargando...</p></div>
     </main>
   )
@@ -239,7 +239,7 @@ export default function MiPerfilPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav />
+      <Nav active="perfil" />
       <div className="max-w-5xl mx-auto px-6 py-10">
 
         {/* ── Header ── */}

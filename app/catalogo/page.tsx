@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import Nav from '@/components/Nav'
 import CatalogoInteractivo, { type Pelicula } from './CatalogoInteractivo'
@@ -112,9 +113,14 @@ export default async function CatalogoPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav active="catalogo" />
+      <Nav active="inicio" />
 
-      <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="flex justify-end mb-3">
+          <Link href="/cambios" className="text-xs text-zinc-500 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">
+            Ver cambios recientes →
+          </Link>
+        </div>
 
         <CatalogoInteractivo peliculas={peliculas} />
       </div>

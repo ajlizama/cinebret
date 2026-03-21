@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'catalogo' | 'cambios' | 'estadisticas' | 'mi-lista' | 'comunidad' }
+type Props = { active?: 'inicio' | 'comunidad' | 'perfil' }
 
 type Notif = {
   id: string
@@ -151,15 +151,6 @@ export default function Nav({ active }: Props) {
       await supabase.from('notifications').insert({ user_id: perfil.user_id, type: 'follow', from_user_id: user.id })
     }
   }
-
-  const link = (href: string, label: string, key: Props['active']) => (
-    <Link
-      href={href}
-      className={`hover:text-white transition-colors ${active === key ? 'text-white font-medium' : ''}`}
-    >
-      {label}
-    </Link>
-  )
 
   return (
     <>
@@ -331,17 +322,40 @@ export default function Nav({ active }: Props) {
               )}
             </div>
           </div>
-          {/* Fila 2: links */}
-          <div className="flex items-center gap-5 text-sm text-zinc-500 overflow-x-auto scrollbar-none">
-            {link('/catalogo', 'Catálogo', 'catalogo')}
-            {link('/cambios', 'Cambios', 'cambios')}
-            {link('/estadisticas', 'Estadísticas', 'estadisticas')}
-            {link('/comunidad', 'Comunidad', 'comunidad')}
-            {user && username && (
-              <Link href="/perfil" className="hover:text-white transition-colors">
-                Mi perfil
+          {/* Fila 2: navegación principal */}
+          <div className="flex items-center justify-around border-t border-zinc-800 pt-2 mt-1">
+            {/* Inicio */}
+            <Link href="/catalogo" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'inicio' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="text-[10px] font-medium">Inicio</span>
+            </Link>
+
+            {/* Comunidad */}
+            <Link href="/comunidad" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'comunidad' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span className="text-[10px] font-medium">Comunidad</span>
+            </Link>
+
+            {/* Perfil */}
+            {user && username ? (
+              <Link href={`/perfil/${username}`} className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'perfil' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${active === 'perfil' ? 'bg-white text-zinc-950' : 'bg-zinc-700 text-zinc-300'}`}>
+                  {username[0]?.toUpperCase()}
+                </div>
+                <span className="text-[10px] font-medium">Perfil</span>
               </Link>
-            )}
+            ) : !loading ? (
+              <button onClick={() => setModalAbierto(true)} className="flex flex-col items-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="text-[10px] font-medium">Perfil</span>
+              </button>
+            ) : null}
           </div>
         </div>
       </nav>

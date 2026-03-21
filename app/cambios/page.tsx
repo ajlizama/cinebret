@@ -81,7 +81,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav active="cambios" />
+      <Nav active="inicio" />
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">

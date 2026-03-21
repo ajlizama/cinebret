@@ -108,7 +108,7 @@ export default async function EstadisticasPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav active="estadisticas" />
+      <Nav  />
 
       <div className="max-w-6xl mx-auto px-6 py-10">
         <EstadisticasInteractivas

@@ -130,13 +130,13 @@ export default function EstadisticasPersonalesPage() {
   }, [user])
 
   if (loading || cargando) return (
-    <main className="min-h-screen bg-zinc-950"><Nav active="mi-lista" />
+    <main className="min-h-screen bg-zinc-950"><Nav  />
       <div className="flex items-center justify-center h-64"><p className="text-zinc-500 text-sm">Cargando estadísticas...</p></div>
     </main>
   )
 
   if (!user) return (
-    <main className="min-h-screen bg-zinc-950"><Nav active="mi-lista" />
+    <main className="min-h-screen bg-zinc-950"><Nav  />
       <div className="flex items-center justify-center h-64"><p className="text-zinc-400 text-sm">Inicia sesión para ver tus estadísticas</p></div>
     </main>
   )
@@ -158,7 +158,7 @@ export default function EstadisticasPersonalesPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav active="mi-lista" />
+      <Nav  />
       <div className="max-w-7xl mx-auto px-6 py-10">
 
         <div className="flex items-center gap-4 mb-8">

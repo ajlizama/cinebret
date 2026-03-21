@@ -1147,7 +1147,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       {totalPaginas > 1 && (
         <div className="flex items-center justify-center gap-3 mt-4">
           <button
-            onClick={() => setPagina(p => Math.max(0, p - 1))}
+            onClick={() => { setPagina(p => Math.max(0, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             disabled={pagina === 0}
             className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
           >
@@ -1158,7 +1158,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <span className="text-zinc-600 ml-2">({peliculasFiltradas.length} resultados)</span>
           </span>
           <button
-            onClick={() => setPagina(p => Math.min(totalPaginas - 1, p + 1))}
+            onClick={() => { setPagina(p => Math.min(totalPaginas - 1, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             disabled={pagina === totalPaginas - 1}
             className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
           >

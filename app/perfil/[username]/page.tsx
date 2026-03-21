@@ -208,17 +208,19 @@ export default function PerfilPage() {
         </div>
 
         {/* Banner cuestionario para mi perfil */}
-        {esMiPerfil && !preferencias && (
+        {esMiPerfil && (
           <div className="mb-6 flex items-center justify-between gap-3 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
             <p className="text-sm text-zinc-300">
-              ✨ Personaliza tus recomendaciones para películas más afines a ti
+              {preferencias
+                ? '⚙️ Tus recomendaciones están personalizadas'
+                : '✨ Personaliza tus recomendaciones para películas más afines a ti'}
             </p>
             <button
               type="button"
               onClick={() => setCuestionarioAbierto(true)}
               className="shrink-0 text-xs font-medium text-yellow-400 hover:text-yellow-300 transition-colors whitespace-nowrap"
             >
-              Personalizar →
+              {preferencias ? 'Editar →' : 'Personalizar →'}
             </button>
           </div>
         )}

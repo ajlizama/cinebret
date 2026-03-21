@@ -11,8 +11,8 @@ type Props = { active?: 'inicio' | 'comunidad' | 'perfil' }
 
 type Notif = {
   id: string
-  type: 'follow' | 'like'
-  from_username: string
+  type: 'follow' | 'like' | 'personalizar'
+  from_username: string | null
   from_avatar: string | null
   read: boolean
   created_at: string
@@ -95,12 +95,12 @@ export default function Nav({ active }: Props) {
     ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
 
     const mapped: Notif[] = raw
-      .filter((n: any) => profileMap[n.from_user_id])
+      .filter((n: any) => !n.from_user_id || profileMap[n.from_user_id])
       .map((n: any) => ({
         id: n.id,
-        type: n.type as 'follow' | 'like',
-        from_username: profileMap[n.from_user_id].username,
-        from_avatar: profileMap[n.from_user_id].avatar_url,
+        type: n.type as 'follow' | 'like' | 'personalizar',
+        from_username: n.from_user_id ? profileMap[n.from_user_id]?.username ?? null : null,
+        from_avatar: n.from_user_id ? profileMap[n.from_user_id]?.avatar_url ?? null : null,
         read: n.read,
         created_at: n.created_at,
       }))
@@ -286,11 +286,24 @@ export default function Nav({ active }: Props) {
                                     key={n.id}
                                     className={`flex items-start gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 ${!n.read ? 'bg-zinc-800/50' : ''}`}
                                   >
-                                    <MiniAvatar url={n.from_avatar} username={n.from_username} />
+                                    {n.type === 'personalizar' ? (
+                                      <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center text-sm shrink-0">✨</div>
+                                    ) : (
+                                      <MiniAvatar url={n.from_avatar} username={n.from_username ?? '?'} />
+                                    )}
                                     <div className="flex-1 min-w-0">
                                       <p className="text-xs text-zinc-300 leading-snug">
-                                        <span className="text-white font-medium">@{n.from_username}</span>
-                                        {' '}{n.type === 'follow' ? 'te siguió' : 'le dio ♥ a tu reseña'}
+                                        {n.type === 'personalizar' ? (
+                                          <>
+                                            <span className="text-white font-medium">Personaliza tus recomendaciones</span>
+                                            {' — '}<Link href={`/perfil/${username}`} className="text-yellow-400 hover:text-yellow-300">ir a mi perfil →</Link>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <span className="text-white font-medium">@{n.from_username}</span>
+                                            {' '}{n.type === 'follow' ? 'te siguió' : 'le dio ♥ a tu reseña'}
+                                          </>
+                                        )}
                                       </p>
                                       <p className="text-xs text-zinc-600 mt-0.5">{tiempoRelativo(n.created_at)}</p>
                                     </div>

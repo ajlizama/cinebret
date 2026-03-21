@@ -419,122 +419,166 @@ export default function ParaTi() {
             </div>
           </div>
 
-          {/* Panel expandido */}
-          {expandedRec && (
-            <div className="bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden mt-2 p-4 space-y-4">
-              {/* Header: poster + info */}
-              <div className="flex gap-4">
-                {expandedRec.poster_path && (
-                  <div className="relative w-24 h-36 shrink-0 rounded-xl overflow-hidden bg-zinc-800">
-                    <Image src={`https://image.tmdb.org/t/p/w185${expandedRec.poster_path}`} alt={expandedRec.titulo_ingles || expandedRec.titulo} fill className="object-cover" />
+          {/* Panel expandido — idéntico al catálogo móvil */}
+          {expandedRec && (() => {
+            const us = userMap[expandedRec.id] ?? { visto: false, watchlist: false, rating: null }
+            const platsActivas = PLATAFORMAS.filter(p => expandedRec.plataformas.includes(p.id))
+            return (
+              <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3">
+                {/* Acciones arriba */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => upsert(expandedRec.id, { visto: !us.visto })}
+                      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
+                        us.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
+                      }`}
+                    >
+                      {us.visto ? '✓ Vista' : '○ Vista'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => upsert(expandedRec.id, { watchlist: !us.watchlist })}
+                      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
+                        us.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
+                      }`}
+                    >
+                      {us.watchlist ? '★ Watchlist' : '☆ Watchlist'}
+                    </button>
+                    {us.visto && (
+                      <select
+                        value={us.rating ?? ''}
+                        onChange={e => upsert(expandedRec.id, { visto: true, rating: e.target.value ? Number(e.target.value) : null })}
+                        className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-2 py-1.5 focus:outline-none"
+                      >
+                        <option value="">Tu rating —</option>
+                        {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}/10</option>)}
+                      </select>
+                    )}
+                  </div>
+                  <button type="button" onClick={() => setExpandedId(null)} className="text-zinc-600 text-xs">▲ colapsar</button>
+                </div>
+
+                {/* Poster + título + plataformas */}
+                <div className="flex gap-3 items-start">
+                  {expandedRec.poster_path && (
+                    <div className="relative w-20 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ height: 120 }}>
+                      <Image src={`https://image.tmdb.org/t/p/w154${expandedRec.poster_path}`} alt={expandedRec.titulo_ingles || expandedRec.titulo} fill className="object-cover" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0 space-y-1.5">
+                    <p className="text-white text-sm font-semibold leading-snug">{expandedRec.titulo_ingles || expandedRec.titulo}</p>
+                    {expandedRec.titulo_ingles && expandedRec.titulo !== expandedRec.titulo_ingles && (
+                      <p className="text-zinc-500 text-xs">{expandedRec.titulo}</p>
+                    )}
+                    <div className="flex items-center gap-2 text-xs flex-wrap">
+                      {expandedRec.anio && <span className="text-zinc-400">{expandedRec.anio}</span>}
+                      {expandedRec.nota_imdb != null && <span className="font-bold text-yellow-400">⭐ {expandedRec.nota_imdb}</span>}
+                      {expandedRec.categoria && <span className="text-zinc-500">{expandedRec.categoria}</span>}
+                    </div>
+                    {platsActivas.length > 0 && (
+                      <div className="flex gap-1 flex-wrap">
+                        {platsActivas.map(p => (
+                          <div key={p.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: 20 }}>
+                            <img src={p.logo} alt={p.nombre} className="h-3.5 w-auto object-contain" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Scores adicionales */}
+                {(expandedRec.rt_score != null || expandedRec.metacritic_score != null) && (
+                  <div className="flex gap-4 flex-wrap">
+                    {expandedRec.rt_score != null && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
+                        <p className="text-sm font-bold text-red-400">🍅 {expandedRec.rt_score}%</p>
+                      </div>
+                    )}
+                    {expandedRec.metacritic_score != null && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
+                        <p className="text-sm font-bold text-green-400">{expandedRec.metacritic_score}</p>
+                      </div>
+                    )}
                   </div>
                 )}
-                <div className="flex-1 min-w-0 space-y-2">
-                  <p className="text-white font-bold leading-snug">{expandedRec.titulo_ingles || expandedRec.titulo}</p>
-                  {expandedRec.titulo_ingles && expandedRec.titulo !== expandedRec.titulo_ingles && (
-                    <p className="text-zinc-500 text-xs">{expandedRec.titulo}</p>
-                  )}
-                  <div className="flex items-center gap-3 text-xs flex-wrap">
-                    {expandedRec.anio && <span className="text-zinc-400">{expandedRec.anio}</span>}
-                    {expandedRec.nota_imdb && <span className="text-yellow-400 font-bold">⭐ {expandedRec.nota_imdb}</span>}
-                    {expandedRec.rt_score != null && <span className="text-red-400">🍅 {expandedRec.rt_score}%</span>}
-                    {expandedRec.metacritic_score != null && <span className="text-green-400">{expandedRec.metacritic_score} MC</span>}
-                    {expandedRec.runtime != null && <span className="text-zinc-500">{Math.floor(expandedRec.runtime / 60)}h {expandedRec.runtime % 60}min</span>}
+
+                {/* Runtime + Boxoffice */}
+                {(expandedRec.runtime != null || expandedRec.boxoffice != null) && (
+                  <div className="flex gap-6">
+                    {expandedRec.runtime != null && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
+                        <p className="text-sm text-zinc-200">{Math.floor(expandedRec.runtime / 60)}h {expandedRec.runtime % 60}min</p>
+                      </div>
+                    )}
+                    {expandedRec.boxoffice != null && (
+                      <div>
+                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
+                        <p className="text-sm text-zinc-200">${(expandedRec.boxoffice / 1_000_000).toFixed(0)}M</p>
+                      </div>
+                    )}
                   </div>
-                  {expandedRec.oscars && expandedRec.oscars !== 'N/A' && (
-                    <p className="text-yellow-500 text-xs">{expandedRec.oscars}</p>
+                )}
+
+                {/* Oscars */}
+                {expandedRec.oscars && expandedRec.oscars !== 'N/A' && (
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Oscars</p>
+                    <p className="text-sm text-yellow-500">{expandedRec.oscars}</p>
+                  </div>
+                )}
+
+                {/* Equipo */}
+                <div className="space-y-2">
+                  {expandedRec.director && (
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Director</p>
+                      <p className="text-sm text-zinc-200">{expandedRec.director}</p>
+                    </div>
                   )}
-                  {PLATAFORMAS.filter(p => expandedRec.plataformas.includes(p.id)).length > 0 && (
-                    <div className="flex gap-1.5 flex-wrap">
-                      {PLATAFORMAS.filter(p => expandedRec.plataformas.includes(p.id)).map(p => (
-                        <div key={p.id} className="bg-white rounded-md px-2 py-1">
-                          <img src={p.logo} alt={p.nombre} className="h-4 w-auto object-contain block" />
-                        </div>
-                      ))}
+                  {expandedRec.compositor && (
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Compositor</p>
+                      <p className="text-sm text-zinc-200">{expandedRec.compositor}</p>
+                    </div>
+                  )}
+                  {expandedRec.actores && (
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Reparto</p>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1">
+                        {expandedRec.actores.split(',').map(a => (
+                          <span key={a.trim()} className="text-sm text-zinc-200">{a.trim()}</span>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
-              </div>
 
-              {/* Equipo */}
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {expandedRec.director && (
-                  <div>
-                    <p className="text-zinc-500 uppercase tracking-wide mb-0.5">Director</p>
-                    <p className="text-zinc-200">{expandedRec.director}</p>
-                  </div>
-                )}
-                {expandedRec.compositor && (
-                  <div>
-                    <p className="text-zinc-500 uppercase tracking-wide mb-0.5">Compositor</p>
-                    <p className="text-zinc-200">{expandedRec.compositor}</p>
-                  </div>
-                )}
-                {expandedRec.actores && (
-                  <div className="col-span-2">
-                    <p className="text-zinc-500 uppercase tracking-wide mb-0.5">Reparto</p>
-                    <p className="text-zinc-200">{expandedRec.actores}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Géneros */}
-              {expandedRec.generos.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {expandedRec.generos.map(g => (
-                    <span key={g} className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full">{g}</span>
-                  ))}
-                </div>
-              )}
-
-              {/* Acciones */}
-              <div className="flex items-center gap-2 flex-wrap">
-                <button
-                  type="button"
-                  onClick={() => upsert(expandedRec.id, { visto: !(userMap[expandedRec.id]?.visto) })}
-                  className={`text-xs px-3 py-2 rounded-xl border font-semibold transition-colors ${
-                    userMap[expandedRec.id]?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-600 text-zinc-400 hover:border-zinc-400'
-                  }`}
-                >
-                  {userMap[expandedRec.id]?.visto ? '✓ Vista' : '○ Marcar vista'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => upsert(expandedRec.id, { watchlist: !(userMap[expandedRec.id]?.watchlist) })}
-                  className={`text-xs px-3 py-2 rounded-xl border font-semibold transition-colors ${
-                    userMap[expandedRec.id]?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-600 text-zinc-400 hover:border-zinc-400'
-                  }`}
-                >
-                  {userMap[expandedRec.id]?.watchlist ? '★ Watchlist' : '☆ Watchlist'}
-                </button>
-                {userMap[expandedRec.id]?.visto && (
-                  <select
-                    value={userMap[expandedRec.id]?.rating ?? ''}
-                    onChange={e => upsert(expandedRec.id, { visto: true, rating: e.target.value ? Number(e.target.value) : null })}
-                    className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-zinc-300 focus:outline-none"
-                  >
-                    <option value="">Tu nota —</option>
-                    {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}/10</option>)}
-                  </select>
-                )}
-                <div className="flex gap-3 ml-auto">
+                {/* Links externos */}
+                <div className="flex flex-wrap gap-3 items-center">
                   {expandedRec.imdb_id && (
                     <a href={`https://www.imdb.com/title/${expandedRec.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
                   )}
                   {expandedRec.youtube_trailer_key && (
-                    <a href={`https://www.youtube.com/watch?v=${expandedRec.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-400 hover:text-red-300 transition-colors">▶ Trailer</a>
+                    <a href={`https://www.youtube.com/watch?v=${expandedRec.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
                   )}
+                  <a href={`https://open.spotify.com/search/${encodeURIComponent((expandedRec.titulo_ingles || expandedRec.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
                 </div>
-              </div>
 
-              {/* Review CineBret + reviews usuarios */}
-              <PeliculaDetalle
-                peliculaId={expandedRec.id}
-                esReviewAutor={expandedRec.esReviewAutor}
-                sinopsisIa={expandedRec.sinopsis}
-              />
-            </div>
-          )}
+                {/* Review CineBret + reviews usuarios */}
+                <PeliculaDetalle
+                  peliculaId={expandedRec.id}
+                  esReviewAutor={expandedRec.esReviewAutor}
+                  sinopsisIa={expandedRec.sinopsis}
+                />
+              </div>
+            )
+          })()}
         </>
       )}
     </div>

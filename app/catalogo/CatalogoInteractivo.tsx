@@ -351,28 +351,24 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           })}
         </div>
 
-        {/* Fila: Plataformas + Más filtros + Limpiar */}
-        <div className="flex gap-2">
-          {/* Plataformas — un solo botón */}
-          <button
-            onClick={() => setExpandida(expandida === '__plataformas__' ? null : '__plataformas__')}
-            className={`flex-1 h-9 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center gap-1.5 ${
-              plataformasFiltro.length > 0
-                ? 'bg-blue-500/20 border-blue-500 text-blue-300'
-                : expandida === '__plataformas__'
-                  ? 'bg-zinc-700 border-zinc-600 text-white'
-                  : 'border-zinc-700 text-zinc-400'
-            }`}
-          >
-            Plataformas
-            {plataformasFiltro.length > 0 && (
-              <span className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
-                {plataformasFiltro.length}
-              </span>
-            )}
-          </button>
+        {/* Plataformas siempre visibles */}
+        <div className="grid grid-cols-3 gap-2">
+          {PLATAFORMAS.map(plat => {
+            const activa = plataformasFiltro.includes(plat.id)
+            return (
+              <button
+                key={plat.id}
+                onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
+                className={`h-10 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800'}`}
+              >
+                <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+              </button>
+            )
+          })}
+        </div>
 
-          {/* Más filtros */}
+        {/* Más filtros + Limpiar */}
+        <div className="flex gap-2">
           <button
             onClick={() => setExpandida(expandida === '__filtros__' ? null : '__filtros__')}
             className={`flex-1 h-9 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center gap-1.5 ${
@@ -391,7 +387,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               </span>
             )}
           </button>
-
           {hayFiltros && (
             <button onClick={limpiarFiltros} className="h-9 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
               ✕
@@ -407,26 +402,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           onChange={e => setBusqueda(e.target.value)}
           className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-600"
         />
-
-        {/* Panel plataformas */}
-        {expandida === '__plataformas__' && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3">
-            <div className="grid grid-cols-3 gap-2">
-              {PLATAFORMAS.map(plat => {
-                const activa = plataformasFiltro.includes(plat.id)
-                return (
-                  <button
-                    key={plat.id}
-                    onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                    className={`h-10 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800'}`}
-                  >
-                    <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
 
         {/* Panel filtros avanzados */}
         {expandida === '__filtros__' && (

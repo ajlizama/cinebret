@@ -7,6 +7,7 @@ import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import ParaTi from './ParaTi'
+import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
 
 type Perfil = {
   user_id: string
@@ -94,7 +95,7 @@ function FeedCard({ item }: { item: FeedItem }) {
       </div>
 
       {/* Película + texto */}
-      <Link href={`/pelicula/${item.pelicula_id}`} className="flex gap-3 px-4 pb-4 hover:opacity-90 transition-opacity">
+      <Link href={`/pelicula/${item.pelicula_id}`} className="flex gap-3 px-4 pb-3 hover:opacity-90 transition-opacity">
         {item.poster_path && (
           <div className="relative w-14 h-20 shrink-0 rounded-lg overflow-hidden bg-zinc-800">
             <Image
@@ -114,6 +115,13 @@ function FeedCard({ item }: { item: FeedItem }) {
           </p>
         </div>
       </Link>
+
+      {/* Like en reseñas CineBret */}
+      {item.isCineBret && (
+        <div className="px-4 pb-3">
+          <AutorReviewLike peliculaId={item.pelicula_id} />
+        </div>
+      )}
     </div>
   )
 }

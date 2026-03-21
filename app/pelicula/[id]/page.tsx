@@ -6,6 +6,7 @@ import Nav from '@/components/Nav'
 import SeguidosQueVieron from './SeguidosQueVieron'
 import ReviewSection from './ReviewSection'
 import UserActions from './UserActions'
+import AutorReviewLike from './AutorReviewLike'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -112,6 +113,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                   <p className="text-zinc-200 leading-relaxed whitespace-pre-line">
                     {enr.review_autor}
                   </p>
+                  <AutorReviewLike peliculaId={pelicula.id} />
                 </>
               ) : enr?.sinopsis_chilensis ? (
                 <>

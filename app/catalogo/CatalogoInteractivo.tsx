@@ -336,76 +336,58 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-600"
         />
 
-        {/* Fila de pills rápidos + botón filtros */}
-        <div className="flex gap-2 overflow-x-auto scrollbar-none pb-0.5">
-          {/* Categorías como pills */}
+        {/* Grid 2x2 de categorías — igual tamaño */}
+        <div className="grid grid-cols-2 gap-1.5">
           {([
-            { id: "Pa'l domingo de bajón", label: 'Bajón' },
-            { id: "Pa' saltar del sillón", label: 'Sillón' },
-            { id: "Pa' quedar con el cerebro como licuadora", label: 'Licuadora' },
-            { id: "Pa' llorar a moco tendido", label: 'Llorar' },
+            "Pa'l domingo de bajón",
+            "Pa' saltar del sillón",
+            "Pa' quedar con el cerebro como licuadora",
+            "Pa' llorar a moco tendido",
           ]).map(cat => {
-            const activa = categoriasFiltro.includes(cat.id)
+            const activa = categoriasFiltro.includes(cat)
             return (
               <button
-                key={cat.id}
-                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors ${activa ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400'}`}
+                key={cat}
+                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat) : [...prev, cat])}
+                className={`h-9 px-2 rounded-lg border text-[11px] font-medium leading-tight transition-colors text-center ${activa ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400'}`}
               >
-                {cat.label}
+                {cat}
               </button>
             )
           })}
+        </div>
 
-          {/* Separador */}
-          <div className="w-px bg-zinc-800 shrink-0 mx-0.5" />
-
-          {/* Plataformas como logos */}
-          {PLATAFORMAS.map(plat => {
-            const activa = plataformasFiltro.includes(plat.id)
-            return (
-              <button
-                key={plat.id}
-                onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                className={`shrink-0 h-8 px-2 rounded-lg border transition-colors flex items-center ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-900'}`}
-              >
-                <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
-              </button>
-            )
-          })}
-
-          {/* Separador */}
-          <div className="w-px bg-zinc-800 shrink-0 mx-0.5" />
-
-          {/* Sello */}
+        {/* Fila: Plataformas + Más filtros + Limpiar */}
+        <div className="flex gap-2">
+          {/* Plataformas — un solo botón */}
           <button
-            onClick={() => setSoloSello(!soloSello)}
-            className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors ${soloSello ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-700 text-zinc-400'}`}
+            onClick={() => setExpandida(expandida === '__plataformas__' ? null : '__plataformas__')}
+            className={`flex-1 h-9 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center gap-1.5 ${
+              plataformasFiltro.length > 0
+                ? 'bg-blue-500/20 border-blue-500 text-blue-300'
+                : expandida === '__plataformas__'
+                  ? 'bg-zinc-700 border-zinc-600 text-white'
+                  : 'border-zinc-700 text-zinc-400'
+            }`}
           >
-            ★ Bret
-          </button>
-
-          {/* Review CB */}
-          <button
-            onClick={() => setSoloReviews(!soloReviews)}
-            className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors ${soloReviews ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-700 text-zinc-400'}`}
-          >
-            CB
+            Plataformas
+            {plataformasFiltro.length > 0 && (
+              <span className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
+                {plataformasFiltro.length}
+              </span>
+            )}
           </button>
 
           {/* Más filtros */}
           <button
             onClick={() => setExpandida(expandida === '__filtros__' ? null : '__filtros__')}
-            className={`shrink-0 h-8 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center gap-1.5 ${
+            className={`flex-1 h-9 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center gap-1.5 ${
               expandida === '__filtros__'
                 ? 'bg-zinc-700 border-zinc-600 text-white'
                 : 'border-zinc-700 text-zinc-400'
             }`}
           >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
-            </svg>
-            Filtros
+            Más filtros
             {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length > 0 && (
               <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
                 {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length}
@@ -414,13 +396,33 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           </button>
 
           {hayFiltros && (
-            <button onClick={limpiarFiltros} className="shrink-0 h-8 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
+            <button onClick={limpiarFiltros} className="h-9 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
               ✕
             </button>
           )}
         </div>
 
-        {/* Panel filtros expandido móvil */}
+        {/* Panel plataformas */}
+        {expandida === '__plataformas__' && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3">
+            <div className="grid grid-cols-3 gap-2">
+              {PLATAFORMAS.map(plat => {
+                const activa = plataformasFiltro.includes(plat.id)
+                return (
+                  <button
+                    key={plat.id}
+                    onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
+                    className={`h-10 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800'}`}
+                  >
+                    <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Panel filtros avanzados */}
         {expandida === '__filtros__' && (
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 space-y-3">
             <div className="grid grid-cols-2 gap-2">

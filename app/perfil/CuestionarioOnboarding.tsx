@@ -31,9 +31,19 @@ type FavSlot = {
   open: boolean
 }
 
+interface PreferenciasIniciales {
+  birth_year: number | null
+  fav_movies: string[]
+  generos_preferidos: string[]
+  mood_ranking: string[]
+  peso_critica: number
+  peso_seguidores: number
+}
+
 interface Props {
   onComplete: () => void
   onDismiss: () => void
+  preferenciasIniciales?: PreferenciasIniciales | null
 }
 
 function useDebounce(value: string, delay: number): string {
@@ -162,19 +172,60 @@ function MovieSearchSlot({
   )
 }
 
-export default function CuestionarioOnboarding({ onComplete, onDismiss }: Props) {
+export default function CuestionarioOnboarding({ onComplete, onDismiss, preferenciasIniciales }: Props) {
   const { user } = useAuth()
-  const [birthYear, setBirthYear] = useState('')
+  const [birthYear, setBirthYear] = useState(preferenciasIniciales?.birth_year?.toString() ?? '')
   const [favSlots, setFavSlots] = useState<FavSlot[]>([
     { query: '', results: [], selected: null, open: false },
     { query: '', results: [], selected: null, open: false },
     { query: '', results: [], selected: null, open: false },
   ])
-  const [generos, setGeneros] = useState<string[]>([])
-  const [moods, setMoods] = useState(MOODS_DEFAULT.map(m => m.key))
-  const [pesoCritica, setPesoCritica] = useState(5)
-  const [pesoSeguidores, setPesoSeguidores] = useState(5)
+  const [generos, setGeneros] = useState<string[]>(preferenciasIniciales?.generos_preferidos ?? [])
+  const [moods, setMoods] = useState<string[]>(() => {
+    const saved = preferenciasIniciales?.mood_ranking ?? []
+    if (saved.length === 0) return MOODS_DEFAULT.map(m => m.key)
+    // Merge: saved moods first, then any missing ones appended
+    const missing = MOODS_DEFAULT.map(m => m.key).filter(k => !saved.includes(k))
+    return [...saved, ...missing]
+  })
+  const [pesoCritica, setPesoCritica] = useState(
+    preferenciasIniciales ? Math.round(preferenciasIniciales.peso_critica * 10) : 5
+  )
+  const [pesoSeguidores, setPesoSeguidores] = useState(
+    preferenciasIniciales ? Math.round(preferenciasIniciales.peso_seguidores * 10) : 5
+  )
   const [guardando, setGuardando] = useState(false)
+
+  // Cargar películas favoritas existentes (solo al editar)
+  useEffect(() => {
+    const ids = preferenciasIniciales?.fav_movies ?? []
+    if (ids.length === 0) return
+    supabase
+      .from('peliculas')
+      .select('id, titulo, titulo_ingles, poster_path')
+      .in('id', ids)
+      .then(({ data }) => {
+        if (!data) return
+        // Ordenar según el orden guardado
+        const map: Record<string, MovieSuggestion> = {}
+        data.forEach((m: any) => { map[m.id] = m as MovieSuggestion })
+        setFavSlots(prev => {
+          const next = [...prev]
+          ids.forEach((id, i) => {
+            if (i < 3 && map[id]) {
+              next[i] = {
+                query: map[id].titulo_ingles || map[id].titulo,
+                results: [],
+                selected: map[id],
+                open: false,
+              }
+            }
+          })
+          return next
+        })
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const toggleGenero = (g: string) => {
     setGeneros(prev => {

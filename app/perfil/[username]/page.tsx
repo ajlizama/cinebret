@@ -414,6 +414,7 @@ export default function PerfilPage() {
         <CuestionarioOnboarding
           onComplete={handleCuestionarioComplete}
           onDismiss={() => setCuestionarioAbierto(false)}
+          preferenciasIniciales={preferencias}
         />
       )}
 

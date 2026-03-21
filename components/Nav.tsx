@@ -357,7 +357,7 @@ export default function Nav({ active }: Props) {
                       </button>
                     )}
                     <button
-                      onClick={signOut}
+                      onClick={() => signOut().then(() => router.push('/'))}
                       className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white rounded-lg px-3 py-1.5 text-xs transition-colors"
                     >
                       Salir

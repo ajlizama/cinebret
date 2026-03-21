@@ -493,29 +493,38 @@ export default function ParaTi({ onEditPreferences }: { onEditPreferences?: () =
         </div>
       )}
 
-      {/* Filtros */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none mb-4">
+      {/* Filtros de categoría — grid 2×2 + botón Todas */}
+      <div className="mb-4 space-y-2">
         <button
           onClick={() => cambiarFiltro(null)}
-          className={`shrink-0 px-4 py-2 rounded-full text-xs font-semibold border transition-colors ${
+          className={`w-full py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
             !catFiltro ? 'bg-white text-zinc-950 border-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
           }`}
         >
           Todas
         </button>
-        {CATS.map(cat => (
-          <button
-            key={cat.key}
-            onClick={() => cambiarFiltro(cat.key)}
-            className={`shrink-0 px-4 py-2 rounded-full text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
-              catFiltro === cat.key
-                ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
-                : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
-            }`}
-          >
-            <span>{cat.emoji}</span><span>{cat.short}</span>
-          </button>
-        ))}
+        <div className="grid grid-cols-2 gap-1.5">
+          {([
+            { key: "Pa'l domingo de bajón",                       emoji: '🛋️', label: "Pa'l domingo de bajón",                   grad: 'from-amber-500 to-orange-600',  dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'  },
+            { key: "Pa' saltar del sillón",                       emoji: '⚡', label: "Pa' saltar del sillón",                   grad: 'from-violet-500 to-blue-600',   dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'  },
+            { key: "Pa' quedar con el cerebro como licuadora",    emoji: '🤯', label: "Pa' quedar con el cerebro como licuadora", grad: 'from-rose-500 to-pink-600',     dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'      },
+            { key: "Pa' llorar a moco tendido",                   emoji: '😭', label: "Pa' llorar a moco tendido",               grad: 'from-cyan-500 to-teal-600',     dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'      },
+          ]).map(cat => {
+            const activa = catFiltro === cat.key
+            return (
+              <button
+                key={cat.key}
+                onClick={() => cambiarFiltro(cat.key)}
+                className={`h-24 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${
+                  activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
+                }`}
+              >
+                <span className="text-2xl leading-none">{cat.emoji}</span>
+                {cat.label}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {cargando ? (

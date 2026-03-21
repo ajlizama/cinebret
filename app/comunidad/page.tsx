@@ -31,6 +31,7 @@ type FeedItem = {
   poster_path: string | null
   rating: number | null
   isCineBret: boolean
+  publica?: boolean
 }
 
 function AvatarCineBret({ size = 36 }: { size?: number }) {
@@ -290,77 +291,99 @@ export default function ComunidadPage() {
       })
   }, [])
 
-  // Fetch reviews de seguidores (solo si hay sesión)
+  // Fetch reviews: públicas (todos) + privadas de seguidores
   useEffect(() => {
     if (!user) return
 
-    supabase.from('follows').select('following_id').eq('follower_id', user.id)
-      .then(async ({ data: follows }) => {
-        if (!follows || follows.length === 0) return
-        const ids = follows.map((f: any) => f.following_id)
+    const fetchReviews = async () => {
+      // Obtener lista de seguidos
+      const { data: follows } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
+      const followingIds: string[] = (follows ?? []).map((f: any) => f.following_id)
 
-        const { data: reviews } = await supabase
-          .from('user_reviews')
-          .select('id, review_text, created_at, user_id, pelicula_id')
-          .in('user_id', ids)
+      // Reseñas públicas de cualquiera (menos yo) + todas las reseñas de mis seguidos
+      const [publicResult, followerResult] = await Promise.all([
+        supabase.from('user_reviews')
+          .select('id, review_text, created_at, user_id, pelicula_id, publica')
+          .eq('publica', true)
+          .neq('user_id', user.id)
           .order('created_at', { ascending: false })
-          .limit(30)
+          .limit(30),
+        followingIds.length > 0
+          ? supabase.from('user_reviews')
+              .select('id, review_text, created_at, user_id, pelicula_id, publica')
+              .in('user_id', followingIds)
+              .order('created_at', { ascending: false })
+              .limit(30)
+          : Promise.resolve({ data: [] as any[] }),
+      ])
 
-        if (!reviews || reviews.length === 0) return
+      const publicData: any[] = publicResult.data ?? []
+      const followerData: any[] = (followerResult as any).data ?? []
 
-        const reviewUserIds = [...new Set(reviews.map((r: any) => r.user_id))]
-        const peliculaIds   = [...new Set(reviews.map((r: any) => r.pelicula_id))]
+      // Merge deduplicado (seguidos tienen prioridad para conservar privadas)
+      const reviewMap = new Map<string, any>()
+      ;[...followerData, ...publicData].forEach((r: any) => { if (!reviewMap.has(r.id)) reviewMap.set(r.id, r) })
+      const reviews = [...reviewMap.values()]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 40)
 
-        const reviewIds = reviews.map((r: any) => r.id)
+      if (reviews.length === 0) return
 
-        const [{ data: profiles }, { data: peliculas }, { data: userPelis }, { data: likesData }, { data: misMovies }] = await Promise.all([
-          supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', reviewUserIds),
-          supabase.from('peliculas').select('id, titulo, titulo_ingles, poster_path').in('id', peliculaIds),
-          supabase.from('user_peliculas').select('user_id, pelicula_id, rating').in('user_id', reviewUserIds).in('pelicula_id', peliculaIds),
-          supabase.from('review_likes').select('review_id, user_id').in('review_id', reviewIds),
-          supabase.from('user_peliculas').select('pelicula_id, visto, watchlist').eq('user_id', user.id).in('pelicula_id', peliculaIds),
-        ])
+      const reviewUserIds = [...new Set(reviews.map((r: any) => r.user_id))]
+      const peliculaIds   = [...new Set(reviews.map((r: any) => r.pelicula_id))]
+      const reviewIds     = reviews.map((r: any) => r.id)
 
-        const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
-        ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
+      const [{ data: profiles }, { data: peliculas }, { data: userPelis }, { data: likesData }, { data: misMovies }] = await Promise.all([
+        supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', reviewUserIds),
+        supabase.from('peliculas').select('id, titulo, titulo_ingles, poster_path').in('id', peliculaIds),
+        supabase.from('user_peliculas').select('user_id, pelicula_id, rating').in('user_id', reviewUserIds).in('pelicula_id', peliculaIds),
+        supabase.from('review_likes').select('review_id, user_id').in('review_id', reviewIds),
+        supabase.from('user_peliculas').select('pelicula_id, visto, watchlist').eq('user_id', user.id).in('pelicula_id', peliculaIds),
+      ])
 
-        const peliculaMap: Record<string, { titulo: string; titulo_ingles: string | null; poster_path: string | null }> = {}
-        ;(peliculas ?? []).forEach((p: any) => { peliculaMap[p.id] = p })
+      const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
+      ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
 
-        const ratingMap: Record<string, number | null> = {}
-        ;(userPelis ?? []).forEach((r: any) => { ratingMap[`${r.user_id}_${r.pelicula_id}`] = r.rating ?? null })
+      const peliculaMap: Record<string, { titulo: string; titulo_ingles: string | null; poster_path: string | null }> = {}
+      ;(peliculas ?? []).forEach((p: any) => { peliculaMap[p.id] = p })
 
-        const newLikesMap: Record<string, { count: number; youLiked: boolean }> = {}
-        ;(likesData ?? []).forEach((l: any) => {
-          if (!newLikesMap[l.review_id]) newLikesMap[l.review_id] = { count: 0, youLiked: false }
-          newLikesMap[l.review_id].count++
-          if (l.user_id === user.id) newLikesMap[l.review_id].youLiked = true
-        })
-        setLikesMap(newLikesMap)
+      const ratingMap: Record<string, number | null> = {}
+      ;(userPelis ?? []).forEach((r: any) => { ratingMap[`${r.user_id}_${r.pelicula_id}`] = r.rating ?? null })
 
-        const newMisMap: Record<string, { visto: boolean; watchlist: boolean }> = {}
-        ;(misMovies ?? []).forEach((m: any) => { newMisMap[m.pelicula_id] = { visto: m.visto, watchlist: m.watchlist } })
-        setMisPeliculasMap(newMisMap)
-
-        const items: FeedItem[] = reviews
-          .filter((r: any) => profileMap[r.user_id] && peliculaMap[r.pelicula_id])
-          .map((r: any) => ({
-            id: r.id,
-            review_text: r.review_text,
-            created_at: r.created_at,
-            username: profileMap[r.user_id].username,
-            avatar_url: profileMap[r.user_id].avatar_url,
-            user_id: r.user_id,
-            pelicula_id: r.pelicula_id,
-            titulo: peliculaMap[r.pelicula_id].titulo,
-            titulo_ingles: peliculaMap[r.pelicula_id].titulo_ingles,
-            poster_path: peliculaMap[r.pelicula_id].poster_path,
-            rating: ratingMap[`${r.user_id}_${r.pelicula_id}`] ?? null,
-            isCineBret: false,
-          }))
-
-        setFeedSeguidores(items)
+      const newLikesMap: Record<string, { count: number; youLiked: boolean }> = {}
+      ;(likesData ?? []).forEach((l: any) => {
+        if (!newLikesMap[l.review_id]) newLikesMap[l.review_id] = { count: 0, youLiked: false }
+        newLikesMap[l.review_id].count++
+        if (l.user_id === user.id) newLikesMap[l.review_id].youLiked = true
       })
+      setLikesMap(newLikesMap)
+
+      const newMisMap: Record<string, { visto: boolean; watchlist: boolean }> = {}
+      ;(misMovies ?? []).forEach((m: any) => { newMisMap[m.pelicula_id] = { visto: m.visto, watchlist: m.watchlist } })
+      setMisPeliculasMap(newMisMap)
+
+      const items: FeedItem[] = reviews
+        .filter((r: any) => profileMap[r.user_id] && peliculaMap[r.pelicula_id])
+        .map((r: any) => ({
+          id: r.id,
+          review_text: r.review_text,
+          created_at: r.created_at,
+          username: profileMap[r.user_id].username,
+          avatar_url: profileMap[r.user_id].avatar_url,
+          user_id: r.user_id,
+          pelicula_id: r.pelicula_id,
+          titulo: peliculaMap[r.pelicula_id].titulo,
+          titulo_ingles: peliculaMap[r.pelicula_id].titulo_ingles,
+          poster_path: peliculaMap[r.pelicula_id].poster_path,
+          rating: ratingMap[`${r.user_id}_${r.pelicula_id}`] ?? null,
+          isCineBret: false,
+          publica: r.publica,
+        }))
+
+      setFeedSeguidores(items)
+    }
+
+    fetchReviews()
   }, [user])
 
 
@@ -500,7 +523,7 @@ export default function ComunidadPage() {
             {!cargandoFeed && feedCombinado.length > 0 && (
               <div className="space-y-4">
                 {feedSeguidores.length > 0 && (
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de tus seguidos</p>
+                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews</p>
                 )}
                 {feedSeguidores.map(item => (
                   <FeedCard

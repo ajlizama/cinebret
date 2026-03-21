@@ -16,6 +16,7 @@ type Review = {
   esMia: boolean
   likes: number
   youLiked: boolean
+  publica: boolean
 }
 
 function Avatar({ url, username, size = 8 }: { url: string | null; username: string; size?: number }) {
@@ -41,6 +42,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
   const { user, username } = useAuth()
   const [reviews, setReviews] = useState<Review[]>([])
   const [miReview, setMiReview] = useState('')
+  const [esPublica, setEsPublica] = useState(true)
   const [editando, setEditando] = useState(false)
   const [guardando, setGuardando] = useState(false)
   const [cargando, setCargando] = useState(true)
@@ -48,14 +50,25 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
   const cargarReviews = async () => {
     const { data: rawReviews } = await supabase
       .from('user_reviews')
-      .select('id, review_text, created_at, user_id')
+      .select('id, review_text, created_at, user_id, publica')
       .eq('pelicula_id', peliculaId)
       .order('created_at', { ascending: false })
 
     if (!rawReviews || rawReviews.length === 0) { setCargando(false); return }
 
-    const userIds = [...new Set(rawReviews.map((r: any) => r.user_id))]
-    const reviewIds = rawReviews.map((r: any) => r.id)
+    // Filtrar según visibilidad: públicas para todos, privadas solo para seguidores y autor
+    let followingSet = new Set<string>()
+    if (user) {
+      const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
+      followingSet = new Set((followsData ?? []).map((f: any) => f.following_id))
+    }
+    const visibles = rawReviews.filter((r: any) =>
+      r.publica || r.user_id === user?.id || followingSet.has(r.user_id)
+    )
+    if (visibles.length === 0) { setCargando(false); return }
+
+    const userIds = [...new Set(visibles.map((r: any) => r.user_id))]
+    const reviewIds = visibles.map((r: any) => r.id)
 
     const [{ data: profiles }, { data: ratings }, { data: likes }] = await Promise.all([
       supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', userIds),
@@ -76,7 +89,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
       if (l.user_id === user?.id) myLikes.add(l.review_id)
     })
 
-    const mapped: Review[] = rawReviews
+    const mapped: Review[] = visibles
       .filter((r: any) => profileMap[r.user_id])
       .map((r: any) => ({
         id: r.id,
@@ -89,11 +102,15 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
         esMia: r.user_id === user?.id,
         likes: likesCount[r.id] ?? 0,
         youLiked: myLikes.has(r.id),
+        publica: r.publica,
       }))
 
     setReviews(mapped)
     const mia = mapped.find(r => r.esMia)
-    if (mia) setMiReview(mia.review_text)
+    if (mia) {
+      setMiReview(mia.review_text)
+      setEsPublica(mia.publica)
+    }
     setCargando(false)
   }
 
@@ -104,7 +121,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
     setGuardando(true)
     await Promise.all([
       supabase.from('user_reviews').upsert(
-        { user_id: user.id, pelicula_id: peliculaId, review_text: miReview.trim() },
+        { user_id: user.id, pelicula_id: peliculaId, review_text: miReview.trim(), publica: esPublica },
         { onConflict: 'user_id,pelicula_id' }
       ),
       supabase.from('user_peliculas').upsert(
@@ -174,6 +191,27 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
                 rows={3}
                 className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 resize-none mb-3"
               />
+              {/* Toggle visibilidad */}
+              <div className="flex gap-2 mb-3">
+                <button
+                  type="button"
+                  onClick={() => setEsPublica(true)}
+                  className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full border transition-colors ${
+                    esPublica ? 'bg-yellow-400/20 border-yellow-500 text-yellow-300' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'
+                  }`}
+                >
+                  🌐 Pública
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEsPublica(false)}
+                  className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full border transition-colors ${
+                    !esPublica ? 'bg-zinc-700 border-zinc-500 text-zinc-300' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'
+                  }`}
+                >
+                  🔒 Solo seguidores
+                </button>
+              </div>
               <div className="flex gap-2 justify-end">
                 {editando && (
                   <button onClick={() => setEditando(false)} className="text-xs text-zinc-500 hover:text-white px-3 py-1.5">Cancelar</button>
@@ -183,12 +221,15 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
                   disabled={guardando || !miReview.trim()}
                   className="bg-yellow-400 text-zinc-950 font-semibold text-xs px-4 py-1.5 rounded-lg hover:bg-yellow-300 disabled:opacity-40 transition-colors"
                 >
-                  {guardando ? 'Guardando...' : 'Publicar review'}
+                  {guardando ? 'Guardando...' : 'Guardar review'}
                 </button>
               </div>
             </>
           ) : (
-            <p className="text-zinc-300 text-sm leading-relaxed">{miReviewObj.review_text}</p>
+            <>
+              <p className="text-zinc-300 text-sm leading-relaxed">{miReviewObj.review_text}</p>
+              <p className="text-xs text-zinc-600 mt-2">{miReviewObj.publica ? '🌐 Pública' : '🔒 Solo seguidores'}</p>
+            </>
           )}
         </div>
       )}

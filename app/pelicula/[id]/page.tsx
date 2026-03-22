@@ -8,6 +8,8 @@ import ReviewSection from './ReviewSection'
 import UserActions from './UserActions'
 import AutorReviewLike from './AutorReviewLike'
 import BackButton from '@/components/BackButton'
+import RecomendarButton from './RecomendarButton'
+import AgregarAListaButton from './AgregarAListaButton'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -213,6 +215,8 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Links externos */}
             <div className="flex flex-wrap gap-3">
+              <RecomendarButton peliculaId={id} peliculaTitulo={titulo} />
+              <AgregarAListaButton peliculaId={id} />
               {pelicula.imdb_id && (
                 <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-colors rounded-lg px-4 py-2 text-sm font-medium">

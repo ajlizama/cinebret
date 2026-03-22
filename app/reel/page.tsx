@@ -152,6 +152,8 @@ function ReelCard({
   const [seguidosList, setSeguidosList] = useState<Seguido[]>([])
   const [seguidosCargando, setSeguidosCargando] = useState(false)
   const [recomendadoA, setRecomendadoA] = useState<Set<string>>(new Set())
+  const [pendingRec, setPendingRec] = useState<Seguido | null>(null)
+  const [mensajeRec, setMensajeRec] = useState('')
 
   // Button feedback
   const [vistaOk, setVistaOk] = useState(false)
@@ -226,15 +228,22 @@ function ReelCard({
     })()
   }, [showRecomendar, currentUserId, seguidosList.length])
 
-  const recomendar = async (seguido: Seguido) => {
+  const recomendar = async (seguido: Seguido, mensaje: string) => {
     if (!currentUserId || recomendadoA.has(seguido.user_id)) return
     await supabase.from('notifications').insert({
       user_id: seguido.user_id,
       type: 'recomendacion',
       from_user_id: currentUserId,
-      meta: { pelicula_id: pelicula.id, redirect_url: `/pelicula/${pelicula.id}` },
+      meta: {
+        pelicula_id: pelicula.id,
+        pelicula_titulo: pelicula.titulo_ingles || pelicula.titulo,
+        mensaje: mensaje.trim() || null,
+        redirect_url: `/pelicula/${pelicula.id}`,
+      },
     })
     setRecomendadoA(prev => new Set([...prev, seguido.user_id]))
+    setPendingRec(null)
+    setMensajeRec('')
   }
 
   // Touch handlers
@@ -270,7 +279,7 @@ function ReelCard({
 
   const closeAll = (e: React.TouchEvent) => {
     e.stopPropagation()
-    setShowInfo(false); setShowReviews(false); setShowRecomendar(false)
+    setShowInfo(false); setShowReviews(false); setShowRecomendar(false); setPendingRec(null); setMensajeRec('')
   }
 
   const rotation = offset.x / 20
@@ -447,37 +456,76 @@ function ReelCard({
       {showRecomendar && (
         <div className="absolute inset-0 flex flex-col" style={{ background: 'rgba(0,0,0,0.92)' }} onTouchEnd={closeAll}>
           <div className="flex items-center justify-between px-4 pt-4 pb-3">
-            <p className="text-white font-semibold text-sm">Recomendar a...</p>
-            <button onTouchEnd={e => { e.stopPropagation(); setShowRecomendar(false) }} className="text-zinc-500 text-xs">Cerrar</button>
-          </div>
-          <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2" onTouchEnd={e => e.stopPropagation()}>
-            {seguidosCargando && <p className="text-zinc-500 text-xs text-center pt-4">Cargando...</p>}
-            {!seguidosCargando && seguidosList.length === 0 && (
-              <p className="text-zinc-500 text-xs text-center pt-4">No seguís a nadie todavía.</p>
+            {pendingRec ? (
+              <button
+                onTouchEnd={e => { e.stopPropagation(); setPendingRec(null); setMensajeRec('') }}
+                className="text-zinc-400 text-xs flex items-center gap-1"
+              >
+                ← @{pendingRec.username}
+              </button>
+            ) : (
+              <p className="text-white font-semibold text-sm">Recomendar a...</p>
             )}
-            {seguidosList.map(s => {
-              const enviado = recomendadoA.has(s.user_id)
-              return (
-                <button
-                  key={s.user_id}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors ${enviado ? 'border-emerald-700 bg-emerald-950/40' : 'border-zinc-800 bg-zinc-900/60 active:bg-zinc-800'}`}
-                  onTouchEnd={e => { e.stopPropagation(); recomendar(s) }}
-                >
-                  <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 overflow-hidden">
-                    {s.avatar_url ? <img src={s.avatar_url} alt={s.username} className="w-full h-full object-cover" /> : s.username[0]?.toUpperCase()}
-                  </div>
-                  <span className="text-white text-sm flex-1 text-left">@{s.username}</span>
-                  {enviado ? (
-                    <span className="text-emerald-400 text-xs">Enviado ✓</span>
-                  ) : (
-                    <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-zinc-400">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                  )}
-                </button>
-              )
-            })}
+            <button onTouchEnd={e => { e.stopPropagation(); setShowRecomendar(false); setPendingRec(null); setMensajeRec('') }} className="text-zinc-500 text-xs">Cerrar</button>
           </div>
+
+          {pendingRec ? (
+            /* Step 2: mensaje */
+            <div className="flex-1 flex flex-col px-4 pb-4 gap-3" onTouchEnd={e => e.stopPropagation()}>
+              <div className="flex items-center gap-3 bg-zinc-800/60 rounded-xl px-3 py-2.5">
+                <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 overflow-hidden">
+                  {pendingRec.avatar_url ? <img src={pendingRec.avatar_url} alt={pendingRec.username} className="w-full h-full object-cover" /> : pendingRec.username[0]?.toUpperCase()}
+                </div>
+                <span className="text-white text-sm">@{pendingRec.username}</span>
+              </div>
+              <textarea
+                value={mensajeRec}
+                onChange={e => setMensajeRec(e.target.value)}
+                placeholder="¿Qué le querés decir? (opcional)"
+                rows={3}
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 resize-none"
+              />
+              <button
+                onTouchEnd={e => { e.stopPropagation(); recomendar(pendingRec, mensajeRec) }}
+                className="w-full bg-yellow-400 text-zinc-950 font-semibold rounded-xl py-3 text-sm flex items-center justify-center gap-2"
+              >
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                Enviar
+              </button>
+            </div>
+          ) : (
+            /* Step 1: lista de seguidos */
+            <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2" onTouchEnd={e => e.stopPropagation()}>
+              {seguidosCargando && <p className="text-zinc-500 text-xs text-center pt-4">Cargando...</p>}
+              {!seguidosCargando && seguidosList.length === 0 && (
+                <p className="text-zinc-500 text-xs text-center pt-4">No seguís a nadie todavía.</p>
+              )}
+              {seguidosList.map(s => {
+                const enviado = recomendadoA.has(s.user_id)
+                return (
+                  <button
+                    key={s.user_id}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors ${enviado ? 'border-emerald-700 bg-emerald-950/40' : 'border-zinc-800 bg-zinc-900/60 active:bg-zinc-800'}`}
+                    onTouchEnd={e => { e.stopPropagation(); if (!enviado) setPendingRec(s) }}
+                  >
+                    <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 overflow-hidden">
+                      {s.avatar_url ? <img src={s.avatar_url} alt={s.username} className="w-full h-full object-cover" /> : s.username[0]?.toUpperCase()}
+                    </div>
+                    <span className="text-white text-sm flex-1 text-left">@{s.username}</span>
+                    {enviado ? (
+                      <span className="text-emerald-400 text-xs">Enviado ✓</span>
+                    ) : (
+                      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-zinc-400">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
       )}
 
@@ -529,7 +577,7 @@ function ReelCard({
         {/* Recomendar (avión) */}
         <button
           className={`w-11 h-11 rounded-full flex items-center justify-center border transition-colors ${showRecomendar ? 'bg-zinc-600 border-zinc-400' : 'bg-black/50 backdrop-blur-sm border-white/15'} text-white`}
-          onTouchEnd={e => { e.stopPropagation(); setShowRecomendar(v => !v); setShowInfo(false); setShowReviews(false) }}
+          onTouchEnd={e => { e.stopPropagation(); setShowRecomendar(v => !v); setShowInfo(false); setShowReviews(false); setPendingRec(null); setMensajeRec('') }}
         >
           <svg width="19" height="19" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

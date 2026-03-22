@@ -8,11 +8,11 @@ import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'perfil' }
+type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'listas' | 'perfil' }
 
 type Notif = {
   id: string
-  type: 'follow' | 'like' | 'personalizar' | 'lista_comentario'
+  type: 'follow' | 'like' | 'personalizar' | 'lista_comentario' | 'lista_invitacion' | 'recomendacion'
   from_username: string | null
   from_avatar: string | null
   read: boolean
@@ -116,7 +116,7 @@ export default function Nav({ active }: Props) {
       .filter((n: any) => !n.from_user_id || profileMap[n.from_user_id])
       .map((n: any) => ({
         id: n.id,
-        type: n.type as 'follow' | 'like' | 'personalizar' | 'lista_comentario',
+        type: n.type as 'follow' | 'like' | 'personalizar' | 'lista_comentario' | 'lista_invitacion' | 'recomendacion',
         from_username: n.from_user_id ? profileMap[n.from_user_id]?.username ?? null : null,
         from_avatar: n.from_user_id ? profileMap[n.from_user_id]?.avatar_url ?? null : null,
         read: n.read,
@@ -379,6 +379,10 @@ export default function Nav({ active }: Props) {
                                       <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center text-sm shrink-0">✨</div>
                                     ) : n.type === 'lista_comentario' ? (
                                       <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">💬</div>
+                                    ) : n.type === 'lista_invitacion' ? (
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">📋</div>
+                                    ) : n.type === 'recomendacion' ? (
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">✈️</div>
                                     ) : (
                                       <MiniAvatar url={n.from_avatar} username={n.from_username ?? '?'} />
                                     )}
@@ -394,10 +398,30 @@ export default function Nav({ active }: Props) {
                                             {' de tu '}
                                             <span className="text-zinc-200">{n.meta?.lista_tipo === 'watchlist' ? 'watchlist' : 'lista de vistas'}</span>
                                           </>
+                                        ) : n.type === 'lista_invitacion' ? (
+                                          <>
+                                            <span className="text-white font-medium">@{n.from_username}</span>
+                                            {' te invitó a la lista '}
+                                            <span className="text-zinc-200">{(n.meta as any)?.lista_nombre ?? 'compartida'}</span>
+                                          </>
+                                        ) : n.type === 'recomendacion' ? (
+                                          <>
+                                            <span className="text-white font-medium">@{n.from_username}</span>
+                                            {' te recomendó '}
+                                            <span className="text-zinc-200">{n.meta?.pelicula_titulo ?? 'una película'}</span>
+                                            {(n.meta as any)?.mensaje && (
+                                              <span className="block text-zinc-400 italic mt-0.5">"{(n.meta as any).mensaje}"</span>
+                                            )}
+                                          </>
+                                        ) : n.type === 'follow' ? (
+                                          <>
+                                            <span className="text-white font-medium">@{n.from_username}</span>
+                                            {' te siguió'}
+                                          </>
                                         ) : (
                                           <>
                                             <span className="text-white font-medium">@{n.from_username}</span>
-                                            {' '}{n.type === 'follow' ? 'te siguió' : 'le dio ♥ a tu reseña'}
+                                            {' le dio ♥ a tu reseña'}
                                           </>
                                         )}
                                       </p>
@@ -468,6 +492,14 @@ export default function Nav({ active }: Props) {
                 <line x1="15" y1="3.5" x2="16.5" y2="20.5" strokeLinecap="round" />
               </svg>
               <span className="text-[10px] font-medium">Reel</span>
+            </Link>
+
+            {/* Listas */}
+            <Link href="/listas" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'listas' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span className="text-[10px] font-medium">Listas</span>
             </Link>
 
             {/* Perfil */}

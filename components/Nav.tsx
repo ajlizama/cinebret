@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'comunidad' | 'perfil' }
+type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'perfil' }
 
 type Notif = {
   id: string
@@ -390,6 +390,19 @@ export default function Nav({ active }: Props) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <span className="text-[10px] font-medium">Comunidad</span>
+            </Link>
+
+            {/* Reel */}
+            <Link href="/reel" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'reel' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                <circle cx="12" cy="12" r="9" strokeLinecap="round" />
+                <circle cx="12" cy="12" r="3" />
+                <line x1="3" y1="9" x2="21" y2="9" strokeLinecap="round" />
+                <line x1="3" y1="15" x2="21" y2="15" strokeLinecap="round" />
+                <line x1="9" y1="3.5" x2="7.5" y2="20.5" strokeLinecap="round" />
+                <line x1="15" y1="3.5" x2="16.5" y2="20.5" strokeLinecap="round" />
+              </svg>
+              <span className="text-[10px] font-medium">Reel</span>
             </Link>
 
             {/* Perfil */}

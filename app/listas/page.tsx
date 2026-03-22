@@ -44,6 +44,7 @@ export default function ListasPage() {
   const [seguidos, setSeguidos] = useState<Seguido[]>([])
   const [invitados, setInvitados] = useState<Set<string>>(new Set())
   const [creando, setCreando] = useState(false)
+  const [errorCrear, setErrorCrear] = useState<string | null>(null)
 
   const fetchListas = async () => {
     if (!user) { setCargando(false); return }
@@ -162,6 +163,7 @@ export default function ListasPage() {
   const crearLista = async () => {
     if (!user || !nombre.trim() || creando) return
     setCreando(true)
+    setErrorCrear(null)
 
     // Insert lista
     const { data: lista, error } = await supabase
@@ -170,7 +172,12 @@ export default function ListasPage() {
       .select('id')
       .single()
 
-    if (error || !lista) { setCreando(false); return }
+    if (error || !lista) {
+      console.error('Error creando lista:', error)
+      setErrorCrear(error?.message ?? 'Error desconocido al crear la lista')
+      setCreando(false)
+      return
+    }
 
     const listaId = lista.id
 
@@ -372,6 +379,9 @@ export default function ListasPage() {
               >
                 {creando ? 'Creando...' : 'Crear lista'}
               </button>
+              {errorCrear && (
+                <p className="text-red-400 text-xs text-center mt-2">{errorCrear}</p>
+              )}
             </div>
           </div>
         </>

@@ -55,9 +55,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
           <img
             src={`https://image.tmdb.org/t/p/w500${pelicula.poster_path}`}
             alt=""
-            className="w-full h-full object-cover object-top opacity-[0.08] scale-110 blur-sm"
+            className="w-full h-full object-cover object-top opacity-20 scale-110 blur-md"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/75 to-zinc-950" />
         </div>
       )}
 

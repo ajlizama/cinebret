@@ -47,17 +47,40 @@ const PLATFORM_LOGOS: Record<string, string> = {
 
 const SWIPE_THRESHOLD = 80
 const TAP_THRESHOLD = 8
-const SESSION_KEY = 'reel_handled_ids'
+const SNOOZE_KEY = 'reel_snoozed' // localStorage: { [id]: timestamp }
+const SNOOZE_MS = 30 * 24 * 60 * 60 * 1000 // 30 días
 
-function getHandledIds(): Set<string> {
+// Snooze en localStorage (persiste entre sesiones, expira en 30 días)
+function getSnoozed(): Record<string, number> {
   try {
-    const raw = sessionStorage.getItem(SESSION_KEY)
-    return new Set(raw ? JSON.parse(raw) : [])
-  } catch { return new Set() }
+    const raw = localStorage.getItem(SNOOZE_KEY)
+    const all: Record<string, number> = raw ? JSON.parse(raw) : {}
+    // Limpiar expirados
+    const now = Date.now()
+    const vigentes = Object.fromEntries(Object.entries(all).filter(([, ts]) => now - ts < SNOOZE_MS))
+    return vigentes
+  } catch { return {} }
 }
-function addHandledId(id: string) {
+function snoozeId(id: string) {
   try {
-    const set = getHandledIds(); set.add(id)
+    const snoozed = getSnoozed()
+    snoozed[id] = Date.now()
+    localStorage.setItem(SNOOZE_KEY, JSON.stringify(snoozed))
+  } catch {}
+}
+function isSnoozed(id: string): boolean {
+  const snoozed = getSnoozed()
+  return !!snoozed[id]
+}
+
+// Watchlist/vista en sesión (para no reaparecer en la sesión actual tras swipe derecha)
+const SESSION_KEY = 'reel_session_done'
+function getSessionDone(): Set<string> {
+  try { return new Set(JSON.parse(sessionStorage.getItem(SESSION_KEY) ?? '[]')) } catch { return new Set() }
+}
+function markSessionDone(id: string) {
+  try {
+    const set = getSessionDone(); set.add(id)
     sessionStorage.setItem(SESSION_KEY, JSON.stringify([...set]))
   } catch {}
 }
@@ -530,8 +553,9 @@ export default function ReelPage() {
 
   const cargarPeliculas = useCallback(async () => {
     setCargando(true)
-    const handledIds = getHandledIds()
-    const excluidos = new Set<string>(handledIds)
+    const snoozed = getSnoozed()
+    const sessionDone = getSessionDone()
+    const excluidos = new Set<string>([...Object.keys(snoozed), ...sessionDone])
     if (user) {
       const { data } = await supabase
         .from('user_peliculas').select('pelicula_id')
@@ -587,11 +611,14 @@ export default function ReelPage() {
       if (prev.length === 0) return prev
       const [top, ...rest] = prev
       if (dir === 'right') {
-        addHandledId(top.id)
+        markSessionDone(top.id)
         if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, watchlist: true }, { onConflict: 'user_id,pelicula_id' }).then(() => {})
         return rest
       }
-      if (dir === 'left') { addHandledId(top.id); return [...rest, top] }
+      if (dir === 'left') {
+        snoozeId(top.id) // persiste 30 días en localStorage
+        return rest      // desaparece del feed actual también
+      }
       if (dir === 'down') {
         const pos = Math.min(5, rest.length); const next = [...rest]; next.splice(pos, 0, top); return next
       }
@@ -600,13 +627,13 @@ export default function ReelPage() {
   }, [user])
 
   const handleVista = useCallback((pelicula: Pelicula) => {
-    addHandledId(pelicula.id)
+    markSessionDone(pelicula.id)
     if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: pelicula.id, visto: true }, { onConflict: 'user_id,pelicula_id' }).then(() => {})
     setPeliculas(prev => prev.filter(p => p.id !== pelicula.id))
   }, [user])
 
   const handleWatchlist = useCallback((pelicula: Pelicula) => {
-    addHandledId(pelicula.id)
+    markSessionDone(pelicula.id)
     if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: pelicula.id, watchlist: true }, { onConflict: 'user_id,pelicula_id' }).then(() => {})
     setPeliculas(prev => prev.filter(p => p.id !== pelicula.id))
   }, [user])

@@ -479,7 +479,7 @@ export default function ComunidadPage() {
               </button>
 
               {mostrarTodos && (
-                <div className="space-y-2">
+                <div className="max-h-72 overflow-y-auto rounded-xl space-y-2 pr-1">
                   {cargandoTodos ? (
                     <p className="text-zinc-500 text-sm">Cargando...</p>
                   ) : todosPerfiles.length === 0 ? (

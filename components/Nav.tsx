@@ -33,6 +33,15 @@ type Perfil = {
   sigo: boolean
 }
 
+type ResultadoPelicula = {
+  id: string
+  titulo: string
+  titulo_ingles: string | null
+  anio: number | null
+  nota_imdb: number | null
+  poster_path: string | null
+}
+
 function tiempoRelativo(iso: string) {
   const diff = Date.now() - new Date(iso).getTime()
   const mins = Math.floor(diff / 60000)
@@ -67,9 +76,10 @@ export default function Nav({ active }: Props) {
       .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null))
   }, [user])
 
-  // Buscador de usuarios
+  // Buscador unificado
   const [busqueda, setBusqueda] = useState('')
   const [resultados, setResultados] = useState<Perfil[]>([])
+  const [peliculasResultados, setPeliculasResultados] = useState<ResultadoPelicula[]>([])
   const [cargandoBusqueda, setCargandoBusqueda] = useState(false)
   const [siguiendoMap, setSiguiendoMap] = useState<Record<string, boolean>>({})
   const [showSearch, setShowSearch] = useState(false)
@@ -141,16 +151,31 @@ export default function Nav({ active }: Props) {
     if (n.type === 'personalizar' && username) { router.push(`/perfil/${username}`); return }
   }
 
-  // Búsqueda de usuarios
+  // Búsqueda unificada: usuarios + películas
   useEffect(() => {
-    const q = busqueda.trim().toLowerCase()
-    if (!q) { setResultados([]); setShowSearch(false); return }
+    const q = busqueda.trim()
+    if (!q) { setResultados([]); setPeliculasResultados([]); setShowSearch(false); return }
     setShowSearch(true)
     setCargandoBusqueda(true)
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
-      const { data: profiles } = await supabase
-        .from('profiles').select('user_id, username, avatar_url').ilike('username', `%${q}%`).limit(10)
+      const [{ data: profiles }, { data: peliculas }] = await Promise.all([
+        supabase.from('profiles').select('user_id, username, avatar_url').ilike('username', `%${q}%`).limit(6),
+        supabase.from('peliculas')
+          .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path')
+          .or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%`)
+          .not('poster_path', 'is', null)
+          .order('nota_imdb', { ascending: false, nullsFirst: false })
+          .limit(5),
+      ])
+
+      // Películas
+      setPeliculasResultados((peliculas ?? []).map((p: any) => ({
+        id: p.id, titulo: p.titulo, titulo_ingles: p.titulo_ingles ?? null,
+        anio: p.anio ?? null, nota_imdb: p.nota_imdb ?? null, poster_path: p.poster_path ?? null,
+      })))
+
+      // Usuarios
       if (!profiles || profiles.length === 0) { setResultados([]); setCargandoBusqueda(false); return }
       const vistasRes = await Promise.all(
         profiles.map(p => supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true))
@@ -191,48 +216,88 @@ export default function Nav({ active }: Props) {
           <div className="flex items-center justify-between mb-2.5 gap-3">
             <Link href="/" className="text-xl font-bold tracking-tight text-white shrink-0">CineBret</Link>
 
-            {/* Buscador de usuarios */}
+            {/* Buscador unificado */}
             <div className="relative flex-1 max-w-xs" ref={searchRef}>
               <input
                 type="text"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
                 onFocus={() => busqueda && setShowSearch(true)}
-                placeholder="Buscar usuario..."
+                placeholder="Buscar película o usuario..."
                 className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
               />
               {showSearch && busqueda && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setShowSearch(false)} />
-                  <div className="absolute top-full mt-1 left-0 right-0 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden">
+                  <div className="absolute top-full mt-1 left-0 right-0 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden max-h-[70vh] overflow-y-auto">
                     {cargandoBusqueda ? (
                       <p className="text-zinc-500 text-xs px-4 py-3">Buscando...</p>
-                    ) : resultados.length === 0 ? (
+                    ) : peliculasResultados.length === 0 && resultados.length === 0 ? (
                       <p className="text-zinc-500 text-xs px-4 py-3">Sin resultados</p>
                     ) : (
-                      resultados.map(perfil => (
-                        <div key={perfil.user_id} className="flex items-center justify-between px-3 py-2.5 hover:bg-zinc-800 border-b border-zinc-800 last:border-0">
-                          <Link href={`/perfil/${perfil.username}`} onClick={() => { setBusqueda(''); setShowSearch(false) }} className="flex items-center gap-2.5 hover:opacity-80">
-                            <MiniAvatar url={perfil.avatar_url} username={perfil.username} />
-                            <div>
-                              <p className="text-white text-xs font-medium">@{perfil.username}</p>
-                              <p className="text-zinc-500 text-xs">{perfil.vistas} vistas</p>
-                            </div>
-                          </Link>
-                          {user && (
-                            <button
-                              onClick={() => toggleFollow(perfil)}
-                              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
-                                siguiendoMap[perfil.user_id]
-                                  ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
-                                  : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
-                              }`}
-                            >
-                              {siguiendoMap[perfil.user_id] ? 'Siguiendo' : '+ Seguir'}
-                            </button>
-                          )}
-                        </div>
-                      ))
+                      <>
+                        {/* Sección películas */}
+                        {peliculasResultados.length > 0 && (
+                          <div>
+                            <p className="text-zinc-600 text-[10px] font-semibold uppercase tracking-wide px-3 pt-2.5 pb-1">Películas</p>
+                            {peliculasResultados.map(p => (
+                              <Link
+                                key={p.id}
+                                href={`/pelicula/${p.id}`}
+                                onClick={() => { setBusqueda(''); setShowSearch(false) }}
+                                className="flex items-center gap-3 px-3 py-2 hover:bg-zinc-800 border-b border-zinc-800/60 last:border-0 transition-colors"
+                              >
+                                <div className="w-8 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+                                  {p.poster_path && (
+                                    <img
+                                      src={`https://image.tmdb.org/t/p/w92${p.poster_path}`}
+                                      alt={p.titulo_ingles ?? p.titulo}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-white text-xs font-medium leading-snug line-clamp-1">{p.titulo_ingles ?? p.titulo}</p>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    {p.anio && <span className="text-zinc-500 text-[10px]">{p.anio}</span>}
+                                    {p.nota_imdb && <span className="text-yellow-400 text-[10px]">⭐ {p.nota_imdb}</span>}
+                                  </div>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Sección usuarios */}
+                        {resultados.length > 0 && (
+                          <div>
+                            <p className="text-zinc-600 text-[10px] font-semibold uppercase tracking-wide px-3 pt-2.5 pb-1">Usuarios</p>
+                            {resultados.map(perfil => (
+                              <div key={perfil.user_id} className="flex items-center justify-between px-3 py-2.5 hover:bg-zinc-800 border-b border-zinc-800/60 last:border-0">
+                                <Link href={`/perfil/${perfil.username}`} onClick={() => { setBusqueda(''); setShowSearch(false) }} className="flex items-center gap-2.5">
+                                  <MiniAvatar url={perfil.avatar_url} username={perfil.username} />
+                                  <div>
+                                    <p className="text-white text-xs font-medium">@{perfil.username}</p>
+                                    <p className="text-zinc-500 text-xs">{perfil.vistas} vistas</p>
+                                  </div>
+                                </Link>
+                                {user && (
+                                  <button
+                                    onClick={() => toggleFollow(perfil)}
+                                    className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                                      siguiendoMap[perfil.user_id]
+                                        ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
+                                        : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
+                                    }`}
+                                  >
+                                    {siguiendoMap[perfil.user_id] ? 'Siguiendo' : '+ Seguir'}
+                                  </button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -34,6 +35,7 @@ function MiniAvatar({ url, username, size = 7 }: { url: string | null; username:
 
 export default function ListasPage() {
   const { user, username } = useAuth()
+  const router = useRouter()
   const [listas, setListas] = useState<Lista[]>([])
   const [cargando, setCargando] = useState(true)
   const [modalAbierto, setModalAbierto] = useState(false)

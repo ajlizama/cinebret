@@ -173,16 +173,16 @@ export default function Nav({ active }: Props) {
       // Usuarios
       if (!profiles || profiles.length === 0) { setResultados([]); setCargandoBusqueda(false); return }
       const vistasRes = await Promise.all(
-        profiles.map(p => supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true))
+        (profiles as any[]).map((p: any) => supabase.from('user_peliculas').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id).eq('visto', true))
       )
       let sigosSet: Set<string> = new Set()
       if (user) {
         const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
         sigosSet = new Set((followsData ?? []).map((f: any) => f.following_id))
       }
-      const merged: Perfil[] = profiles
-        .map((p, i) => ({ user_id: p.user_id, username: p.username, avatar_url: (p as any).avatar_url ?? null, vistas: vistasRes[i].count ?? 0, sigo: sigosSet.has(p.user_id) }))
-        .filter(p => !user || p.user_id !== user.id)
+      const merged: Perfil[] = (profiles as any[])
+        .map((p: any, i: number) => ({ user_id: p.user_id, username: p.username, avatar_url: p.avatar_url ?? null, vistas: vistasRes[i].count ?? 0, sigo: sigosSet.has(p.user_id) }))
+        .filter((p: any) => !user || p.user_id !== user.id)
       setResultados(merged)
       const map: Record<string, boolean> = {}
       merged.forEach(p => { map[p.user_id] = p.sigo })

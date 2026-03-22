@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import PeliculaDetalle from './PeliculaDetalle'
+import AgregarAListaButton from '@/app/pelicula/[id]/AgregarAListaButton'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
 
@@ -868,6 +869,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                               <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
                             )}
                             <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
+                            <AgregarAListaButton peliculaId={pelicula.id} />
                           </div>
                           {/* Review CineBret + reviews usuarios */}
                           <PeliculaDetalle
@@ -1160,6 +1162,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                       <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
                     )}
                     <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
+                    <AgregarAListaButton peliculaId={pelicula.id} />
                   </div>
                   {/* Review CineBret + reviews usuarios */}
                   <PeliculaDetalle

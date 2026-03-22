@@ -184,7 +184,12 @@ export default function ListaComentarioModal({
 
           {/* Header: poster + info básica */}
           <div className="flex items-start gap-4">
-            <div className="relative w-16 shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+            <Link
+              href={`/pelicula/${peliculaId}`}
+              onClick={onClose}
+              className="relative w-16 shrink-0 rounded-lg overflow-hidden bg-zinc-800 hover:opacity-80 transition-opacity"
+              style={{ aspectRatio: '2/3' }}
+            >
               {poster && (
                 <Image
                   src={`https://image.tmdb.org/t/p/w185${poster}`}
@@ -193,7 +198,7 @@ export default function ListaComentarioModal({
                   className="object-cover"
                 />
               )}
-            </div>
+            </Link>
             <div className="flex-1 min-w-0">
               <p className="text-xs text-zinc-500 mb-1">
                 En la {listaTipo === 'watchlist' ? 'watchlist' : 'lista de vistas'} de{' '}

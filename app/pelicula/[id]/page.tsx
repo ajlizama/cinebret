@@ -47,10 +47,23 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
   const tieneReviewAutor = enr?.review_autor
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main className="min-h-screen bg-zinc-950 relative overflow-hidden">
+
+      {/* Fondo: poster muy transparente */}
+      {pelicula.poster_path && (
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
+          <img
+            src={`https://image.tmdb.org/t/p/w500${pelicula.poster_path}`}
+            alt=""
+            className="w-full h-full object-cover object-top opacity-[0.08] scale-110 blur-sm"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
+        </div>
+      )}
+
       <Nav />
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="relative max-w-6xl mx-auto px-6 py-6">
 
         <BackButton />
 

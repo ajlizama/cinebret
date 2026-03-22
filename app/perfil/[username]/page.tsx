@@ -71,6 +71,9 @@ export default function PerfilPage() {
     peliculaPoster: string | null
     listaTipo: 'watchlist' | 'vistas'
   } | null>(null)
+  const [socialModal, setSocialModal] = useState<'seguidores' | 'siguiendo' | null>(null)
+  const [socialList, setSocialList] = useState<{ user_id: string; username: string; avatar_url: string | null }[]>([])
+  const [socialCargando, setSocialCargando] = useState(false)
 
   useEffect(() => {
     if (!username) return
@@ -186,8 +189,37 @@ export default function PerfilPage() {
     } else {
       await supabase.from('follows').insert({ follower_id: user.id, following_id: profileUserId })
       setYaSigo(true); setSeguidores(s => s + 1)
+      // Notificar al usuario seguido
+      await supabase.from('notifications').insert({
+        user_id: profileUserId,
+        type: 'follow',
+        from_user_id: user.id,
+        meta: { redirect_url: `/perfil/${miUsername}` },
+      })
     }
     setLoadingFollow(false)
+  }
+
+  const abrirSocialModal = async (tipo: 'seguidores' | 'siguiendo') => {
+    if (!profileUserId) return
+    setSocialModal(tipo)
+    setSocialList([])
+    setSocialCargando(true)
+
+    const { data: follows } = tipo === 'seguidores'
+      ? await supabase.from('follows').select('follower_id').eq('following_id', profileUserId)
+      : await supabase.from('follows').select('following_id').eq('follower_id', profileUserId)
+
+    if (!follows || follows.length === 0) { setSocialCargando(false); return }
+
+    const ids = follows.map((f: any) => tipo === 'seguidores' ? f.follower_id : f.following_id)
+    const { data: profiles } = await supabase
+      .from('profiles').select('user_id, username, avatar_url').in('user_id', ids)
+
+    setSocialList((profiles ?? []).map((p: any) => ({
+      user_id: p.user_id, username: p.username, avatar_url: p.avatar_url ?? null,
+    })))
+    setSocialCargando(false)
   }
 
   const handleCuestionarioComplete = async () => {
@@ -260,8 +292,12 @@ export default function PerfilPage() {
               <h1 className="text-3xl font-bold text-white">@{username}</h1>
               <div className="flex gap-4 mt-1 text-sm text-zinc-500 flex-wrap">
                 <span><span className="text-white font-semibold">{peliculas.length}</span> vistas</span>
-                <span><span className="text-white font-semibold">{seguidores}</span> seguidores</span>
-                <span><span className="text-white font-semibold">{siguiendo}</span> siguiendo</span>
+                <button onClick={() => abrirSocialModal('seguidores')} className="hover:text-zinc-300 transition-colors">
+                  <span className="text-white font-semibold">{seguidores}</span> seguidores
+                </button>
+                <button onClick={() => abrirSocialModal('siguiendo')} className="hover:text-zinc-300 transition-colors">
+                  <span className="text-white font-semibold">{siguiendo}</span> siguiendo
+                </button>
                 {enComun !== null && (
                   <span><span className="text-yellow-400 font-semibold">{enComun}</span> en común</span>
                 )}
@@ -492,6 +528,42 @@ export default function PerfilPage() {
           onDismiss={() => setCuestionarioAbierto(false)}
           preferenciasIniciales={preferencias}
         />
+      )}
+
+      {/* Modal seguidores / siguiendo */}
+      {socialModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70" onClick={() => setSocialModal(null)}>
+          <div className="w-full sm:max-w-sm bg-zinc-900 border border-zinc-700 rounded-t-2xl sm:rounded-2xl flex flex-col max-h-[70vh]" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
+              <p className="text-white font-semibold text-sm">
+                {socialModal === 'seguidores' ? `Seguidores · ${seguidores}` : `Siguiendo · ${siguiendo}`}
+              </p>
+              <button onClick={() => setSocialModal(null)} className="text-zinc-500 hover:text-white text-lg leading-none">✕</button>
+            </div>
+            <div className="overflow-y-auto flex-1 p-3 space-y-1">
+              {socialCargando && <p className="text-zinc-500 text-sm text-center py-6">Cargando...</p>}
+              {!socialCargando && socialList.length === 0 && (
+                <p className="text-zinc-500 text-sm text-center py-6">Nadie aún.</p>
+              )}
+              {socialList.map(u => (
+                <Link
+                  key={u.user_id}
+                  href={`/perfil/${u.username}`}
+                  onClick={() => setSocialModal(null)}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-zinc-800 transition-colors"
+                >
+                  <div className="w-9 h-9 rounded-full bg-zinc-700 overflow-hidden shrink-0 flex items-center justify-center text-sm font-bold text-zinc-300">
+                    {u.avatar_url
+                      ? <img src={u.avatar_url} alt={u.username} className="w-full h-full object-cover" />
+                      : u.username[0]?.toUpperCase()
+                    }
+                  </div>
+                  <span className="text-white text-sm">@{u.username}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Modal comentario en lista */}

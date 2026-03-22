@@ -205,11 +205,11 @@ function ReelCard({
 
   const recomendar = async (seguido: Seguido) => {
     if (!currentUserId || recomendadoA.has(seguido.user_id)) return
-    await supabase.from('notificaciones').insert({
-      to_user_id: seguido.user_id,
+    await supabase.from('notifications').insert({
+      user_id: seguido.user_id,
+      type: 'recomendacion',
       from_user_id: currentUserId,
-      tipo: 'recomendacion',
-      pelicula_id: pelicula.id,
+      meta: { pelicula_id: pelicula.id, redirect_url: `/pelicula/${pelicula.id}` },
     })
     setRecomendadoA(prev => new Set([...prev, seguido.user_id]))
   }

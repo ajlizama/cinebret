@@ -266,7 +266,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
   if (cargando) {
     return (
       <main className="min-h-screen bg-zinc-950">
-        <Nav active="listas" />
+        <Nav active="perfil" />
         <div className="flex items-center justify-center min-h-[60vh]">
           <p className="text-zinc-500 text-sm">Cargando...</p>
         </div>
@@ -277,7 +277,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
   if (!lista) {
     return (
       <main className="min-h-screen bg-zinc-950">
-        <Nav active="listas" />
+        <Nav active="perfil" />
         <div className="flex items-center justify-center min-h-[60vh]">
           <p className="text-zinc-500 text-sm">Lista no encontrada.</p>
         </div>
@@ -287,7 +287,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
 
   return (
     <main className="min-h-screen bg-zinc-950 pb-20">
-      <Nav active="listas" />
+      <Nav active="perfil" />
       <div className="max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-5">

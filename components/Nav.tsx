@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'listas' | 'perfil' }
+type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'perfil' }
 
 type Notif = {
   id: string
@@ -487,14 +487,6 @@ export default function Nav({ active }: Props) {
                 <line x1="15" y1="3.5" x2="16.5" y2="20.5" strokeLinecap="round" />
               </svg>
               <span className="text-[10px] font-medium">Reel</span>
-            </Link>
-
-            {/* Listas */}
-            <Link href="/listas" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'listas' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              <span className="text-[10px] font-medium">Listas</span>
             </Link>
 
             {/* Perfil */}

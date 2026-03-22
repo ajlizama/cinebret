@@ -240,7 +240,7 @@ export default function ListasPage() {
   if (!user) {
     return (
       <main className="min-h-screen bg-zinc-950">
-        <Nav active="listas" />
+        <Nav active="perfil" />
         <div className="flex items-center justify-center min-h-[60vh]">
           <p className="text-zinc-500 text-sm">Iniciá sesión para ver tus listas compartidas.</p>
         </div>
@@ -250,7 +250,7 @@ export default function ListasPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav active="listas" />
+      <Nav active="perfil" />
       <div className="max-w-2xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-xl font-bold text-white">Listas compartidas</h1>

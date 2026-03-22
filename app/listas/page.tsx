@@ -165,21 +165,36 @@ export default function ListasPage() {
     setCreando(true)
     setErrorCrear(null)
 
-    // Insert lista
-    const { data: lista, error } = await supabase
+    // Insert lista (sin .single() para evitar fallos de RLS en el SELECT posterior)
+    const { data: listaArr, error } = await supabase
       .from('listas_compartidas')
       .insert({ nombre: nombre.trim(), descripcion: descripcion.trim() || null, creador_id: user.id })
       .select('id')
-      .single()
 
-    if (error || !lista) {
+    if (error) {
       console.error('Error creando lista:', error)
-      setErrorCrear(error?.message ?? 'Error desconocido al crear la lista')
+      setErrorCrear(error.message || 'Error al crear la lista')
       setCreando(false)
       return
     }
 
-    const listaId = lista.id
+    // Si el insert funcionó pero RLS bloqueó el SELECT, buscar la lista recién creada
+    let listaId = listaArr?.[0]?.id
+    if (!listaId) {
+      const { data: reciente } = await supabase
+        .from('listas_compartidas')
+        .select('id')
+        .eq('creador_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+      listaId = reciente?.[0]?.id
+    }
+
+    if (!listaId) {
+      setErrorCrear('No se pudo obtener la lista creada')
+      setCreando(false)
+      return
+    }
 
     // Insert owner
     await supabase.from('lista_miembros').insert({
@@ -192,7 +207,7 @@ export default function ListasPage() {
     const invitadosArr = [...invitados]
     if (invitadosArr.length > 0) {
       await supabase.from('lista_miembros').insert(
-        invitadosArr.map(uid => ({ lista_id: listaId, user_id: uid, rol: 'member' }))
+        invitadosArr.map(uid => ({ lista_id: listaId!, user_id: uid, rol: 'member' }))
       )
       await supabase.from('notifications').insert(
         invitadosArr.map(uid => ({
@@ -208,9 +223,7 @@ export default function ListasPage() {
       )
     }
 
-    setCreando(false)
-    setModalAbierto(false)
-    fetchListas()
+    router.push(`/listas/${listaId}`)
   }
 
   const toggleInvitado = (uid: string) => {

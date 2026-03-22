@@ -17,27 +17,46 @@ type Pelicula = {
   poster_path: string | null
   categoria: string | null
   plataformas: string[]
+  sinopsis: string | null
+  generos: string[]
 }
 
-const PLATAFORMAS: Record<string, string> = {
-  netflix: 'Netflix',
-  disney_plus: 'Disney+',
-  hbo_max: 'HBO Max',
-  amazon_prime: 'Prime',
-  apple_tv: 'Apple TV+',
-  paramount_plus: 'Paramount+',
+const PLATFORM_LOGOS: Record<string, string> = {
+  netflix: '/netflix.png',
+  disney_plus: '/disney_plus.svg',
+  hbo_max: '/hbo_max.png',
+  amazon_prime: '/amazon_prime.png',
+  apple_tv: '/apple_tv.png',
+  paramount_plus: '/paramount_plus.svg',
 }
 
 const SWIPE_THRESHOLD = 80
+const TAP_THRESHOLD = 8 // px — menos de esto es un tap
+const SESSION_KEY = 'reel_handled_ids'
+
+function getHandledIds(): Set<string> {
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY)
+    return new Set(raw ? JSON.parse(raw) : [])
+  } catch { return new Set() }
+}
+
+function addHandledId(id: string) {
+  try {
+    const set = getHandledIds()
+    set.add(id)
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify([...set]))
+  } catch {}
+}
 
 // Onboarding overlay
 function OnboardingOverlay({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0)
 
   const pasos = [
-    { dir: 'right', emoji: '👉', color: 'text-emerald-400', label: 'Guardar en watchlist' },
-    { dir: 'left',  emoji: '👈', color: 'text-red-400',     label: 'No me importa' },
-    { dir: 'down',  emoji: '👇', color: 'text-zinc-300',    label: 'Ver otra' },
+    { emoji: '👉', color: 'text-emerald-400', label: 'Guardar en watchlist' },
+    { emoji: '👈', color: 'text-red-400',     label: 'No me importa' },
+    { emoji: '👇', color: 'text-zinc-300',    label: 'Ver otra' },
   ]
 
   useEffect(() => {
@@ -68,17 +87,23 @@ function ReelCard({
   pelicula,
   onSwipe,
   isTop,
+  onVista,
+  onWatchlist,
 }: {
   pelicula: Pelicula
   onSwipe: (dir: 'left' | 'right' | 'down') => void
   isTop: boolean
+  onVista: () => void
+  onWatchlist: () => void
 }) {
-  const cardRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const startY = useRef(0)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const [dragging, setDragging] = useState(false)
   const [gone, setGone] = useState<'left' | 'right' | 'down' | null>(null)
+  const [showInfo, setShowInfo] = useState(false)
+  const [vistaOk, setVistaOk] = useState(false)
+  const [watchlistOk, setWatchlistOk] = useState(false)
 
   const titulo = pelicula.titulo_ingles || pelicula.titulo
 
@@ -100,16 +125,31 @@ function ReelCard({
     if (!isTop) return
     setDragging(false)
     const { x, y } = offset
+    const dist = Math.sqrt(x * x + y * y)
+
+    // Tap: poco movimiento → toggle info
+    if (dist < TAP_THRESHOLD) {
+      setOffset({ x: 0, y: 0 })
+      if (!showInfo) setShowInfo(true)
+      return
+    }
+
+    // Swipe horizontal
     if (Math.abs(x) > SWIPE_THRESHOLD && Math.abs(x) > Math.abs(y)) {
       const dir = x > 0 ? 'right' : 'left'
       setGone(dir)
       setTimeout(() => onSwipe(dir), 300)
-    } else if (y > SWIPE_THRESHOLD && Math.abs(y) > Math.abs(x)) {
+      return
+    }
+
+    // Swipe hacia abajo
+    if (y > SWIPE_THRESHOLD && Math.abs(y) > Math.abs(x)) {
       setGone('down')
       setTimeout(() => onSwipe('down'), 300)
-    } else {
-      setOffset({ x: 0, y: 0 })
+      return
     }
+
+    setOffset({ x: 0, y: 0 })
   }
 
   const rotation = offset.x / 20
@@ -117,11 +157,10 @@ function ReelCard({
   const translateX = gone === 'left' ? -400 : gone === 'right' ? 400 : offset.x
   const translateY = gone === 'down' ? 400 : offset.y
 
-  const swipeIndicator = offset.x > 40 ? 'right' : offset.x < -40 ? 'left' : offset.y > 40 ? 'down' : null
+  const swipeIndicator = !showInfo && (offset.x > 40 ? 'right' : offset.x < -40 ? 'left' : offset.y > 40 ? 'down' : null)
 
   return (
     <div
-      ref={cardRef}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -148,8 +187,32 @@ function ReelCard({
         </div>
       )}
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+      {/* Gradients */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.1) 60%, transparent 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 30%)' }} />
+
+      {/* Platform logos — top left */}
+      {pelicula.plataformas.length > 0 && (
+        <div className="absolute top-3 left-3 flex gap-1.5">
+          {pelicula.plataformas.map(p => {
+            const logo = PLATFORM_LOGOS[p]
+            return logo ? (
+              <div key={p} className="w-8 h-8 rounded-lg overflow-hidden bg-black/40 backdrop-blur-sm flex items-center justify-center p-1">
+                <img src={logo} alt={p} className="w-full h-full object-contain opacity-85" />
+              </div>
+            ) : null
+          })}
+        </div>
+      )}
+
+      {/* Categoria — top right */}
+      {pelicula.categoria && (
+        <div className="absolute top-3 right-3 max-w-[52%]">
+          <span className="bg-black/50 backdrop-blur-sm text-white text-[9px] font-semibold px-2 py-1 rounded-lg leading-tight block text-right">
+            {pelicula.categoria}
+          </span>
+        </div>
+      )}
 
       {/* Swipe indicators */}
       {swipeIndicator === 'right' && (
@@ -168,43 +231,122 @@ function ReelCard({
         </div>
       )}
 
-      {/* Info panel inferior */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <h2 className="text-white font-bold text-xl leading-tight mb-1">{titulo}</h2>
-        {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-          <p className="text-zinc-400 text-sm mb-1">{pelicula.titulo}</p>
-        )}
-        <div className="flex items-center gap-3 mb-3">
-          {pelicula.anio && <span className="text-zinc-400 text-sm">{pelicula.anio}</span>}
-          {pelicula.nota_imdb && (
-            <span className="text-yellow-400 text-sm font-medium">⭐ {pelicula.nota_imdb}</span>
+      {/* Info normal (sinopsis + título) — solo cuando showInfo es false */}
+      {!showInfo && (
+        <>
+          {pelicula.sinopsis && (
+            <div className="absolute left-4 right-14 bottom-[155px]">
+              <p className="text-white/80 text-[11px] italic leading-snug line-clamp-2">{pelicula.sinopsis}</p>
+            </div>
           )}
-          {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-            <span className="text-amber-300 text-xs">🏆 {pelicula.oscars}</span>
-          )}
-        </div>
-        {pelicula.plataformas.length > 0 && (
-          <div className="flex gap-2 flex-wrap">
-            {pelicula.plataformas.map(p => (
-              <span key={p} className="bg-white/10 text-white text-xs px-2 py-0.5 rounded-full">
-                {PLATAFORMAS[p] || p}
-              </span>
-            ))}
+          <div className="absolute bottom-0 left-0 right-14 p-4">
+            <h2 className="text-white font-bold text-lg leading-tight mb-0.5">{titulo}</h2>
+            {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
+              <p className="text-zinc-400 text-xs mb-1">{pelicula.titulo}</p>
+            )}
+            <div className="flex items-center gap-2 mb-2">
+              {pelicula.anio && <span className="text-zinc-400 text-xs">{pelicula.anio}</span>}
+              {pelicula.nota_imdb && (
+                <span className="text-yellow-400 text-xs font-medium">⭐ {pelicula.nota_imdb}</span>
+              )}
+              {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                <span className="text-amber-300 text-[10px]">🏆 {pelicula.oscars}</span>
+              )}
+            </div>
+            {pelicula.generos.length > 0 && (
+              <div className="flex gap-1.5 flex-wrap">
+                {pelicula.generos.slice(0, 3).map(g => (
+                  <span key={g} className="bg-white/10 text-zinc-300 text-[9px] px-2 py-0.5 rounded-full">{g}</span>
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
 
-      {/* Botones acción laterales */}
-      <div className="absolute right-3 bottom-32 flex flex-col gap-4">
-        <Link
-          href={`/pelicula/${pelicula.id}`}
-          className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white"
-          onClick={e => e.stopPropagation()}
+      {/* Info expandida — overlay al tocar */}
+      {showInfo && (
+        <div
+          className="absolute inset-0 flex flex-col justify-end"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.3) 100%)' }}
+          onTouchEnd={e => { e.stopPropagation(); setShowInfo(false) }}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <div className="p-5 pb-6" onTouchEnd={e => e.stopPropagation()}>
+            {/* Cerrar hint */}
+            <p className="text-zinc-600 text-[10px] text-center mb-4">Toca para cerrar</p>
+
+            <h2 className="text-white font-bold text-xl leading-tight mb-1">{titulo}</h2>
+            {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
+              <p className="text-zinc-400 text-sm mb-2">{pelicula.titulo}</p>
+            )}
+
+            <div className="flex items-center gap-3 mb-3 flex-wrap">
+              {pelicula.anio && <span className="text-zinc-400 text-sm">{pelicula.anio}</span>}
+              {pelicula.nota_imdb && (
+                <span className="text-yellow-400 text-sm font-medium">⭐ {pelicula.nota_imdb}</span>
+              )}
+              {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                <span className="text-amber-300 text-xs">🏆 {pelicula.oscars}</span>
+              )}
+            </div>
+
+            {pelicula.generos.length > 0 && (
+              <div className="flex gap-1.5 flex-wrap mb-3">
+                {pelicula.generos.map(g => (
+                  <span key={g} className="bg-white/10 text-zinc-300 text-[10px] px-2.5 py-1 rounded-full">{g}</span>
+                ))}
+              </div>
+            )}
+
+            {pelicula.sinopsis && (
+              <p className="text-zinc-300 text-sm italic leading-relaxed mb-4">{pelicula.sinopsis}</p>
+            )}
+
+            {pelicula.categoria && (
+              <p className="text-zinc-500 text-xs mb-4">{pelicula.categoria}</p>
+            )}
+
+            <Link
+              href={`/pelicula/${pelicula.id}`}
+              className="flex items-center gap-2 text-zinc-400 text-sm hover:text-white transition-colors"
+              onClick={e => e.stopPropagation()}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Ver ficha completa
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Action buttons — right side */}
+      <div className="absolute right-3 bottom-4 flex flex-col gap-2.5">
+        <button
+          className={`w-10 h-10 rounded-full flex items-center justify-center border transition-colors ${watchlistOk ? 'bg-emerald-600 border-emerald-500 text-white' : 'bg-black/50 backdrop-blur-sm border-white/15 text-white'}`}
+          onTouchEnd={e => { e.stopPropagation(); setWatchlistOk(true); onWatchlist() }}
+        >
+          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+        </button>
+        <button
+          className={`w-10 h-10 rounded-full flex items-center justify-center border transition-colors ${vistaOk ? 'bg-blue-600 border-blue-500 text-white' : 'bg-black/50 backdrop-blur-sm border-white/15 text-white'}`}
+          onTouchEnd={e => { e.stopPropagation(); setVistaOk(true); onVista() }}
+        >
+          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </button>
+        <button
+          className="w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/15"
+          onTouchEnd={e => { e.stopPropagation(); setShowInfo(v => !v) }}
+        >
+          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-        </Link>
+        </button>
       </div>
     </div>
   )
@@ -215,7 +357,6 @@ export default function ReelPage() {
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
   const [cargando, setCargando] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
-  const penalizadas = useRef<Map<string, number>>(new Map()) // id → penalización (cuántos puestos al fondo)
 
   useEffect(() => {
     const visto = localStorage.getItem('reel_onboarding')
@@ -225,8 +366,8 @@ export default function ReelPage() {
   const cargarPeliculas = useCallback(async () => {
     setCargando(true)
 
-    // IDs excluidos (vistas + watchlist del usuario)
-    let excluidos = new Set<string>()
+    const handledIds = getHandledIds()
+    const excluidos = new Set<string>(handledIds)
     if (user) {
       const { data } = await supabase
         .from('user_peliculas')
@@ -236,13 +377,11 @@ export default function ReelPage() {
       ;(data ?? []).forEach((r: any) => excluidos.add(r.pelicula_id))
     }
 
-    // Traer películas del catálogo activo ordenadas por nota_imdb
     const { data: cats } = await supabase
       .from('catalogos')
       .select('pelicula_id, plataforma')
       .eq('activo', true)
 
-    // Agrupar plataformas por pelicula_id
     const platMap: Record<string, string[]> = {}
     ;(cats ?? []).forEach((c: any) => {
       if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
@@ -252,7 +391,6 @@ export default function ReelPage() {
     const ids = Object.keys(platMap).filter(id => !excluidos.has(id))
     if (ids.length === 0) { setCargando(false); return }
 
-    // Traer info de películas en chunks
     const CHUNK = 100
     const todas: Pelicula[] = []
     for (let i = 0; i < Math.min(ids.length, 300); i += CHUNK) {
@@ -264,13 +402,31 @@ export default function ReelPage() {
         .not('poster_path', 'is', null)
         .order('nota_imdb', { ascending: false, nullsFirst: false })
       ;(pels ?? []).forEach((p: any) => {
-        todas.push({ ...p, plataformas: platMap[p.id] ?? [] })
+        todas.push({ ...p, plataformas: platMap[p.id] ?? [], sinopsis: null, generos: [] })
       })
     }
 
-    // Ordenar por nota
-    todas.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
-    setPeliculas(todas)
+    const todosIds = todas.map(p => p.id)
+    const enrMap: Record<string, { sinopsis: string | null; generos: string[] }> = {}
+    for (let i = 0; i < todosIds.length; i += CHUNK) {
+      const chunk = todosIds.slice(i, i + CHUNK)
+      const { data: enr } = await supabase
+        .from('enriquecimiento')
+        .select('pelicula_id, sinopsis_chilensis, generos')
+        .in('pelicula_id', chunk)
+      ;(enr ?? []).forEach((e: any) => {
+        enrMap[e.pelicula_id] = { sinopsis: e.sinopsis_chilensis, generos: e.generos ?? [] }
+      })
+    }
+
+    const final = todas.map(p => ({
+      ...p,
+      sinopsis: enrMap[p.id]?.sinopsis ?? null,
+      generos: enrMap[p.id]?.generos ?? [],
+    }))
+
+    final.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+    setPeliculas(final)
     setCargando(false)
   }, [user])
 
@@ -282,7 +438,7 @@ export default function ReelPage() {
       const [top, ...rest] = prev
 
       if (dir === 'right') {
-        // Guardar en watchlist
+        addHandledId(top.id)
         if (user) {
           supabase.from('user_peliculas').upsert(
             { user_id: user.id, pelicula_id: top.id, watchlist: true },
@@ -293,12 +449,11 @@ export default function ReelPage() {
       }
 
       if (dir === 'left') {
-        // Penalizar más — manda al fondo (posición máxima)
+        addHandledId(top.id)
         return [...rest, top]
       }
 
       if (dir === 'down') {
-        // Penalizar menos — manda 5 posiciones al fondo
         const pos = Math.min(5, rest.length)
         const next = [...rest]
         next.splice(pos, 0, top)
@@ -307,6 +462,28 @@ export default function ReelPage() {
 
       return rest
     })
+  }, [user])
+
+  const handleVista = useCallback((pelicula: Pelicula) => {
+    addHandledId(pelicula.id)
+    if (user) {
+      supabase.from('user_peliculas').upsert(
+        { user_id: user.id, pelicula_id: pelicula.id, visto: true },
+        { onConflict: 'user_id,pelicula_id' }
+      ).then(() => {})
+    }
+    setPeliculas(prev => prev.filter(p => p.id !== pelicula.id))
+  }, [user])
+
+  const handleWatchlist = useCallback((pelicula: Pelicula) => {
+    addHandledId(pelicula.id)
+    if (user) {
+      supabase.from('user_peliculas').upsert(
+        { user_id: user.id, pelicula_id: pelicula.id, watchlist: true },
+        { onConflict: 'user_id,pelicula_id' }
+      ).then(() => {})
+    }
+    setPeliculas(prev => prev.filter(p => p.id !== pelicula.id))
   }, [user])
 
   const onboardingDone = () => {
@@ -330,7 +507,7 @@ export default function ReelPage() {
       <main className="min-h-screen bg-zinc-950 flex flex-col">
         <Nav active="reel" />
         <div className="flex-1 flex items-center justify-center px-6">
-          <p className="text-zinc-500 text-sm text-center">No hay películas disponibles por ahora.</p>
+          <p className="text-zinc-500 text-sm text-center">No hay más películas disponibles.</p>
         </div>
       </main>
     )
@@ -341,9 +518,7 @@ export default function ReelPage() {
       <Nav active="reel" />
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 pb-4">
-        {/* Stack de cartas */}
         <div className="relative w-full max-w-sm" style={{ height: '72vh' }}>
-          {/* Mostrar solo las 3 primeras (apiladas) */}
           {peliculas.slice(0, 3).map((p, i) => (
             <div
               key={p.id}
@@ -357,6 +532,8 @@ export default function ReelPage() {
                 pelicula={p}
                 onSwipe={handleSwipe}
                 isTop={i === 0}
+                onVista={() => handleVista(p)}
+                onWatchlist={() => handleWatchlist(p)}
               />
               {i === 0 && showOnboarding && (
                 <OnboardingOverlay onDone={onboardingDone} />
@@ -365,7 +542,6 @@ export default function ReelPage() {
           ))}
         </div>
 
-        {/* Botones de acción (para quien no quiera swipe) */}
         <div className="flex items-center gap-8 mt-4">
           <button
             onClick={() => handleSwipe('left')}

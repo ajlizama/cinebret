@@ -171,13 +171,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
     setBuscando(true)
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
-      const { data } = await supabase
-        .from('peliculas')
-        .select('id, titulo, titulo_ingles, anio, poster_path')
-        .or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%`)
-        .not('poster_path', 'is', null)
-        .order('nota_imdb', { ascending: false, nullsFirst: false })
-        .limit(10)
+      const { data } = await supabase.rpc('buscar_peliculas', { q })
       setResultados((data ?? []).map((p: any) => ({
         id: p.id, titulo: p.titulo, titulo_ingles: p.titulo_ingles ?? null,
         anio: p.anio ?? null, poster_path: p.poster_path ?? null,

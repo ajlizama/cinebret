@@ -160,13 +160,8 @@ export default function Nav({ active }: Props) {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
       const [{ data: profiles }, { data: peliculas }] = await Promise.all([
-        supabase.from('profiles').select('user_id, username, avatar_url').ilike('username', `%${q}%`).limit(6),
-        supabase.from('peliculas')
-          .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path')
-          .or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%`)
-          .not('poster_path', 'is', null)
-          .order('nota_imdb', { ascending: false, nullsFirst: false })
-          .limit(5),
+        supabase.rpc('buscar_usuarios', { q }),
+        supabase.rpc('buscar_peliculas', { q }),
       ])
 
       // Películas

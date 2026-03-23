@@ -51,15 +51,15 @@ const ICONOS = [
 ]
 
 export default async function CatalogoPage() {
-  // Usar la última fecha disponible para evitar catálogo vacío por desfase UTC vs Chile
+  // Sin filtro activo=true para no quedar sin fecha durante el window de scraping
   const { data: ultimaFechaRow } = await supabase
     .from('catalogos')
     .select('fecha')
-    .eq('activo', true)
     .order('fecha', { ascending: false })
     .limit(1)
-    .single()
-  const fechaCatalogo = ultimaFechaRow?.fecha ?? new Date().toISOString().split('T')[0]
+    .maybeSingle()
+  const chileDate = new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const fechaCatalogo = ultimaFechaRow?.fecha ?? chileDate
 
   const [catalogosRaw, peliculasRaw] = await Promise.all([
     fetchAllPages((from, to) =>

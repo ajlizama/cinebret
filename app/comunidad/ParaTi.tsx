@@ -75,20 +75,17 @@ function tituloValido(titulo: string | null): boolean {
   return allowed.test(titulo)
 }
 
-let fechaCatalogoCache = ''
-
 async function getFechaCatalogo(): Promise<string> {
-  if (fechaCatalogoCache) return fechaCatalogoCache
-
+  // Sin filtro activo=true para no quedar sin fecha durante el window de scraping
   const { data } = await supabase
     .from('catalogos')
     .select('fecha')
-    .eq('activo', true)
     .order('fecha', { ascending: false })
     .limit(1)
     .maybeSingle()
-  fechaCatalogoCache = data?.fecha ?? new Date().toISOString().split('T')[0]
-  return fechaCatalogoCache as string
+  // Fallback: fecha de Chile (UTC-4)
+  const chileDate = new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString().split('T')[0]
+  return data?.fecha ?? chileDate
 }
 
 async function fetchCatalogosHoy(ids: string[]): Promise<Record<string, string[]>> {

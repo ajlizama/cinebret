@@ -629,14 +629,8 @@ export default function ReelPage() {
       ;(data ?? []).forEach((r: any) => excluidos.add(r.pelicula_id))
     }
 
-    // Obtener la fecha más reciente del catálogo para no acumular entradas históricas
-    const { data: latestFecha } = await supabase
-      .from('catalogos').select('fecha').eq('activo', true)
-      .order('fecha', { ascending: false }).limit(1).maybeSingle()
-    const fechaQuery = latestFecha?.fecha ?? new Date().toISOString().split('T')[0]
-
-    const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma')
-      .eq('activo', true).eq('fecha', fechaQuery)
+    // Traer todos los activos sin filtro de fecha — el Set deduplica plataformas repetidas entre días
+    const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma').eq('activo', true)
     const platSets: Record<string, Set<string>> = {}
     ;(cats ?? []).forEach((c: any) => {
       if (!platSets[c.pelicula_id]) platSets[c.pelicula_id] = new Set()

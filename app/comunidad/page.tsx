@@ -573,7 +573,6 @@ export default function ComunidadPage() {
                 {feedCineBret.map(item => <FeedCard key={item.id} item={item} hasUser={!!user} />)}
               </div>
             )}
-          </div>
 
         </div>
       </div>

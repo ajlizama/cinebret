@@ -615,7 +615,7 @@ export default function ReelPage() {
     const platMap: Record<string, string[]> = {}
     ;(cats ?? []).forEach((c: any) => {
       if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
-      platMap[c.pelicula_id].push(c.plataforma)
+      if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
     })
     const ids = Object.keys(platMap).filter(id => !excluidos.has(id))
     if (ids.length === 0) { setCargando(false); return }

@@ -83,7 +83,7 @@ export default async function EstadisticasPage() {
   const platMap: Record<string, string[]> = {}
   catalogosRaw.forEach(c => {
     if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
-    platMap[c.pelicula_id].push(c.plataforma)
+    if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
   })
 
   const peliculas: PeliculaRow[] = peliculasRaw.map((p: any) => {

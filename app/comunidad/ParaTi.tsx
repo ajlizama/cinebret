@@ -104,7 +104,9 @@ async function fetchCatalogosHoy(ids: string[]): Promise<Record<string, string[]
       .eq('activo', true)
       .in('pelicula_id', chunk)
     ;(data ?? []).forEach((c: any) => {
-      platMap[c.pelicula_id] = [...(platMap[c.pelicula_id] ?? []), c.plataforma]
+      const prev = platMap[c.pelicula_id] ?? []
+      if (!prev.includes(c.plataforma)) platMap[c.pelicula_id] = [...prev, c.plataforma]
+      else platMap[c.pelicula_id] = prev
     })
   }
   return platMap

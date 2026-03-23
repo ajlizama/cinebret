@@ -77,7 +77,7 @@ export default async function CatalogoPage() {
   const platMap: Record<string, string[]> = {}
   catalogosRaw.forEach((c: any) => {
     if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
-    platMap[c.pelicula_id].push(c.plataforma)
+    if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
   })
 
   const peliculas: Pelicula[] = peliculasRaw.map((p: any) => {

@@ -96,7 +96,9 @@ export default function MiPerfilPage() {
 
       const platMap: Record<string, string[]> = {}
       ;(cats ?? []).forEach((c: any) => {
-        platMap[c.pelicula_id] = [...(platMap[c.pelicula_id] ?? []), c.plataforma]
+        const prev = platMap[c.pelicula_id] ?? []
+        if (!prev.includes(c.plataforma)) platMap[c.pelicula_id] = [...prev, c.plataforma]
+        else platMap[c.pelicula_id] = prev
       })
 
       const mapped: Entrada[] = (rows ?? [])

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -11,19 +10,12 @@ import AgregarAListaButton from '@/app/pelicula/[id]/AgregarAListaButton'
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
 
 const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
-  { id: 'hbo_max', nombre: 'HBO', color: 'bg-purple-700', logo: '/hbo_max.png' },
-  { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
-  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600', logo: '/apple_tv.png' },
-  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
-]
-
-const CATEGORIAS = [
-  "Pa'l domingo de bajón",
-  "Pa' saltar del sillón",
-  "Pa' quedar con el cerebro como licuadora",
-  "Pa' llorar a moco tendido",
+  { id: 'netflix', nombre: 'Netflix', logo: '/netflix.png' },
+  { id: 'disney_plus', nombre: 'Disney+', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', nombre: 'HBO', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', nombre: 'Prime', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', nombre: 'Apple TV+', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', nombre: 'Paramount+', logo: '/paramount_plus.svg' },
 ]
 
 export type Pelicula = {
@@ -54,7 +46,6 @@ export type Pelicula = {
   sinopsis: string | null
 }
 
-type ColumnasExtra = { rt_score: boolean; metacritic_score: boolean; director: boolean; actores: boolean; compositor: boolean }
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
 
 const OSCAR_OPCIONES = [
@@ -202,8 +193,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
-  const tablaRef = useRef<HTMLDivElement>(null)
-  const [columnas, setColumnas] = useState<ColumnasExtra>({ rt_score: false, metacritic_score: false, director: false, actores: false, compositor: false })
+  const [mostrarFiltrosAvanzados, setMostrarFiltrosAvanzados] = useState(false)
+  const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!user) { setUserPeliculas({}); return }
@@ -239,29 +230,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     upsertUserPelicula(peliculaId, { watchlist: !actual?.watchlist })
   }
 
-  const setRating = (peliculaId: string, rating: number, e: React.MouseEvent) => {
-    e.stopPropagation()
+  const setRating = (peliculaId: string, rating: number, e: React.MouseEvent | React.ChangeEvent<HTMLSelectElement>) => {
+    if ('stopPropagation' in e) e.stopPropagation()
     upsertUserPelicula(peliculaId, { visto: true, rating })
-  }
-
-  const marcarTodos = async (campo: 'visto' | 'watchlist') => {
-    if (!user) return
-    const ids = peliculasFiltradas.map(p => p.id)
-    const updates = ids.map(id => ({
-      user_id: user.id,
-      pelicula_id: id,
-      visto: campo === 'visto' ? true : (userPeliculas[id]?.visto ?? false),
-      rating: userPeliculas[id]?.rating ?? null,
-      watchlist: campo === 'watchlist' ? true : (userPeliculas[id]?.watchlist ?? false),
-    }))
-    setUserPeliculas(prev => {
-      const nuevo = { ...prev }
-      ids.forEach(id => {
-        nuevo[id] = { ...prev[id] ?? { visto: false, rating: null, watchlist: false }, [campo]: true }
-      })
-      return nuevo
-    })
-    await supabase.from('user_peliculas').upsert(updates, { onConflict: 'user_id,pelicula_id' })
   }
 
   const generosDisponibles = [...new Set(peliculas.flatMap(p => p.generos))].sort()
@@ -270,9 +241,6 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     peliculas.flatMap(p => (p.actores || '').split(',').map(a => a.trim()).filter(Boolean))
   )].sort()
   const compositoresDisponibles = [...new Set(peliculas.map(p => p.compositor).filter(Boolean) as string[])].sort()
-
-  const toggleColumna = (col: keyof ColumnasExtra) => setColumnas(prev => ({ ...prev, [col]: !prev[col] }))
-  const colsExtras = Object.values(columnas).filter(Boolean).length
 
   const peliculasFiltradas = peliculas
     .filter(p => {
@@ -326,210 +294,137 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const totalPaginas = Math.ceil(peliculasFiltradas.length / POR_PAGINA)
   const peliculasPagina = peliculasFiltradas.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA)
 
+  const filtrosAvanzadosCount = [...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length
+
+  // Find movie for modal
+  const peliculaModal = expandida && expandida !== '__filtros__' ? peliculas.find(p => p.id === expandida) : null
+
   return (
     <>
-      {/* ── Filtros MÓVIL ── */}
-      <div className="md:hidden mb-4 space-y-2">
-        {/* Subtítulo mood */}
-        <p className="text-base font-semibold text-zinc-200">¿En qué mood estás?</p>
-
-        {/* Grid 2x2 de categorías — igual tamaño */}
-        <div className="grid grid-cols-2 gap-1.5">
-          {([
-            { id: "Pa'l domingo de bajón",                          emoji: '🛋️', grad: 'from-amber-500 to-orange-600',    dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'   },
-            { id: "Pa' saltar del sillón",                          emoji: '⚡', grad: 'from-violet-500 to-blue-600',     dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'   },
-            { id: "Pa' quedar con el cerebro como licuadora",       emoji: '🤯', grad: 'from-rose-500 to-pink-600',       dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'       },
-            { id: "Pa' llorar a moco tendido",                      emoji: '😭', grad: 'from-cyan-500 to-teal-600',       dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'       },
-          ]).map(cat => {
-            const activa = categoriasFiltro.includes(cat.id)
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                className={`h-24 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-col items-center justify-center gap-1 bg-gradient-to-br ${
-                  activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
-                }`}
-              >
-                <span className="text-2xl leading-none">{cat.emoji}</span>
-                {cat.id}
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Subtítulo plataformas */}
-        <p className="text-base font-semibold text-zinc-200">¿Qué plataformas tienes?</p>
-
-        {/* Plataformas siempre visibles */}
-        <div className="grid grid-cols-3 gap-2">
-          {PLATAFORMAS.map(plat => {
-            const activa = plataformasFiltro.includes(plat.id)
-            return (
-              <button
-                key={plat.id}
-                onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                className={`h-[30px] rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800'}`}
-              >
-                <img src={plat.logo} alt={plat.nombre} className="h-3 w-auto object-contain" />
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Más filtros + Limpiar */}
-        <div className="flex gap-2">
-          <button
-            onClick={() => setExpandida(expandida === '__filtros__' ? null : '__filtros__')}
-            className={`flex-1 h-9 px-3 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center gap-1.5 ${
-              expandida === '__filtros__'
-                ? 'bg-zinc-700 border-zinc-600 text-white'
-                : 'border-zinc-700 text-zinc-400'
-            }`}
-          >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
-            </svg>
-            Más filtros
-            {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length > 0 && (
-              <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
-                {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length}
-              </span>
-            )}
-          </button>
-          {hayFiltros && (
-            <button onClick={limpiarFiltros} className="h-9 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
-              ✕
-            </button>
-          )}
-        </div>
-
-        {/* Búsqueda */}
-        <input
-          type="text"
-          placeholder="Buscar película, director, actor..."
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
-          className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-600"
+      {/* ── HERO ── */}
+      <div className="relative overflow-hidden" style={{ height: '300px' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/fondo-interstellar.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-
-        {/* Panel filtros avanzados */}
-        {expandida === '__filtros__' && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 space-y-3">
-            <div className="grid grid-cols-2 gap-2">
-              <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
-              <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
-              <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
-              <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
-              <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
-            </div>
-            <div className="flex items-center gap-2 pt-1">
-              <span className="text-zinc-500 text-xs">Año</span>
-              <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
-                className={`flex-1 bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none ${anioDesde ? 'border-yellow-400' : 'border-zinc-700'}`} />
-              <span className="text-zinc-600 text-xs">—</span>
-              <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
-                className={`flex-1 bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none ${anioHasta ? 'border-yellow-400' : 'border-zinc-700'}`} />
-            </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
+        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
+          <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-1.5 tracking-tight">
+            Bienvenido a <span className="text-yellow-400">CineBret</span>
+          </h1>
+          <p className="text-zinc-300 text-sm md:text-base text-center mb-6 max-w-md">
+            Buscador y recomendador inteligente de las mejores películas
+          </p>
+          <div className="relative w-full max-w-xl">
+            <input
+              type="text"
+              placeholder="Buscar película, director, actor..."
+              value={busqueda}
+              onChange={e => { setBusqueda(e.target.value); setPagina(0) }}
+              className="w-full bg-white/10 backdrop-blur border border-white/20 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-white/50 text-sm"
+            />
+            <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
+            </svg>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* ── Filtros DESKTOP ── */}
-      <div className="hidden md:block mb-4">
-        <div className="flex items-center gap-3 flex-wrap">
+      {/* ── FILTROS + GRILLA ── */}
+      <div className="max-w-7xl mx-auto px-3 md:px-6 py-6">
 
-          {/* Categorías */}
-          {([
-            { id: "Pa'l domingo de bajón",                    emoji: '🛋️', short: 'Bajón',        grad: 'from-amber-500 to-orange-600',  dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'  },
-            { id: "Pa' saltar del sillón",                    emoji: '⚡',  short: 'Del sillón',   grad: 'from-violet-500 to-blue-600',   dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'  },
-            { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', short: 'Licuadora',    grad: 'from-rose-500 to-pink-600',     dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'      },
-            { id: "Pa' llorar a moco tendido",                emoji: '😭', short: 'A moco tendido', grad: 'from-cyan-500 to-teal-600',  dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'      },
-          ]).map(cat => {
-            const activa = categoriasFiltro.includes(cat.id)
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                className={`px-3 py-2 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all bg-gradient-to-br whitespace-nowrap ${
-                  activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`
-                }`}
-              >
-                <span>{cat.emoji}</span>
-                <span>{cat.id}</span>
-              </button>
-            )
-          })}
+        {/* Mood (categorías) */}
+        <div className="mb-4">
+          <p className="text-sm font-semibold text-zinc-300 mb-2 md:hidden">¿En qué mood estás?</p>
+          <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
+            {([
+              { id: "Pa'l domingo de bajón",                          emoji: '🛋️', short: 'Bajón',            grad: 'from-amber-500 to-orange-600',  dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'  },
+              { id: "Pa' saltar del sillón",                          emoji: '⚡',  short: 'Del sillón',       grad: 'from-violet-500 to-blue-600',   dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'  },
+              { id: "Pa' quedar con el cerebro como licuadora",       emoji: '🤯', short: 'Licuadora',        grad: 'from-rose-500 to-pink-600',     dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'      },
+              { id: "Pa' llorar a moco tendido",                      emoji: '😭', short: 'A moco tendido',   grad: 'from-cyan-500 to-teal-600',     dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'      },
+            ]).map(cat => {
+              const activa = categoriasFiltro.includes(cat.id)
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
+                  className={`md:px-4 md:py-2 px-2 py-3 rounded-xl border text-xs font-semibold flex items-center justify-center md:justify-start gap-1.5 transition-all bg-gradient-to-br ${
+                    activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`
+                  }`}
+                >
+                  <span className="text-base md:text-sm">{cat.emoji}</span>
+                  <span className="hidden md:inline">{cat.id}</span>
+                  <span className="md:hidden text-center leading-tight">{cat.short}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
 
-          <div className="w-px h-6 bg-zinc-700 shrink-0" />
-
-          {/* Plataformas */}
+        {/* Plataformas + búsqueda avanzada */}
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          <p className="text-sm font-semibold text-zinc-300 w-full md:hidden">Plataformas</p>
           {PLATAFORMAS.map(plat => {
             const activa = plataformasFiltro.includes(plat.id)
             return (
               <button
                 key={plat.id}
                 onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                className={`h-[30px] w-12 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800 hover:border-zinc-500'}`}
+                className={`h-8 w-14 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-700 bg-zinc-800/80 hover:border-zinc-500'}`}
               >
-                <img src={plat.logo} alt={plat.nombre} className="h-3 w-auto object-contain" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
               </button>
             )
           })}
 
-          <div className="w-px h-6 bg-zinc-700 shrink-0" />
-
-          {/* Buscador */}
-          <input
-            type="text"
-            placeholder="Buscar película, director, actor..."
-            value={busqueda}
-            onChange={e => setBusqueda(e.target.value)}
-            className="bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm w-64 text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
-          />
+          <div className="hidden md:block w-px h-6 bg-zinc-700 mx-1" />
 
           {/* Más filtros */}
           <button
-            onClick={() => setExpandida(expandida === '__filtros__' ? null : '__filtros__')}
-            className={`h-9 px-3 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors ${
-              expandida === '__filtros__' ? 'bg-zinc-700 border-zinc-600 text-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
+            onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
+            className={`h-8 px-3 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors ${
+              mostrarFiltrosAvanzados ? 'bg-zinc-700 border-zinc-600 text-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
             }`}
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
             </svg>
             Más filtros
-            {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length > 0 && (
+            {filtrosAvanzadosCount > 0 && (
               <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">
-                {[...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length}
+                {filtrosAvanzadosCount}
               </span>
             )}
           </button>
 
           {hayFiltros && (
-            <button onClick={limpiarFiltros} className="h-9 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
-              ✕
+            <button onClick={limpiarFiltros} className="h-8 px-3 rounded-lg border border-zinc-700 text-xs text-zinc-500 hover:text-white transition-colors">
+              ✕ Limpiar
             </button>
           )}
         </div>
 
         {/* Panel filtros avanzados */}
-        {expandida === '__filtros__' && (
-          <div className="mt-3 bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
-            <div className="grid grid-cols-3 gap-3">
+        {mostrarFiltrosAvanzados && (
+          <div className="mb-4 bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
               <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
               <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
               <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
               <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
             </div>
-            <div className="flex items-center gap-3 pt-1">
+            <div className="flex items-center flex-wrap gap-3 pt-1">
               <button onClick={() => setSoloReviews(!soloReviews)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloReviews ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>
                 Solo reviews CineBret
               </button>
               <button onClick={() => setSoloSello(!soloSello)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloSello ? 'bg-emerald-500 text-white border-emerald-500 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>
                 Solo recomendadas
               </button>
-              <div className="flex items-center gap-2 ml-auto">
+              <div className="flex items-center gap-2 md:ml-auto">
                 <span className="text-zinc-500 text-xs">Año</span>
                 <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
                   className={`bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none ${anioDesde ? 'border-yellow-400' : 'border-zinc-700'}`} />
@@ -540,30 +435,28 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             </div>
           </div>
         )}
-      </div>
 
-      {/* Ordenamiento y columnas — solo desktop */}
-      <div className="hidden md:flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-zinc-500 mr-1">Columnas extra:</span>
-          {([
-            { key: 'rt_score', label: '🍅 RT' },
-            { key: 'metacritic_score', label: 'MC Metacritic' },
-            { key: 'director', label: 'Director' },
-            { key: 'actores', label: 'Actores' },
-            { key: 'compositor', label: 'Compositor' },
-          ] as const).map(({ key, label }) => (
+        {/* Contador + badges leyenda + ordenar */}
+        <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="text-sm text-zinc-500">
+              {peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}
+            </p>
             <button
-              key={key}
-              onClick={() => toggleColumna(key)}
-              className={`border rounded-full px-3 py-1 text-xs transition-colors ${columnas[key] ? 'bg-zinc-200 text-zinc-950 border-zinc-200 font-medium' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
+              onClick={() => setSoloReviews(!soloReviews)}
+              className={`flex items-center gap-1.5 text-xs transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}
             >
-              {label}
+              <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-[10px] ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
+              <span className="text-zinc-500 hidden sm:inline text-xs">Reviews</span>
             </button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-zinc-500">Ordenar por:</span>
+            <button
+              onClick={() => setSoloSello(!soloSello)}
+              className={`flex items-center gap-1.5 text-xs transition-opacity ${soloSello ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}
+            >
+              <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-[10px] ${soloSello ? 'border-emerald-400 text-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★</span>
+              <span className="text-zinc-500 hidden sm:inline text-xs">Recomendadas</span>
+            </button>
+          </div>
           <select
             value={orden}
             onChange={e => setOrden(e.target.value as Orden)}
@@ -578,633 +471,368 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             <option value="titulo">Título A-Z</option>
           </select>
         </div>
-      </div>
 
-      {/* Ordenar por — solo móvil */}
-      <div className="md:hidden flex items-center gap-2 mb-4">
-        <span className="text-xs text-zinc-500">Ordenar por:</span>
-        <select
-          value={orden}
-          onChange={e => setOrden(e.target.value as Orden)}
-          className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm text-zinc-300 focus:outline-none focus:border-zinc-500"
-        >
-          <option value="imdb">Mayor IMDB</option>
-          <option value="rt">Mayor Rotten Tomatoes</option>
-          <option value="metacritic">Mayor Metacritic</option>
-          <option value="boxoffice">Mayor taquilla</option>
-          <option value="anio_desc">Más recientes</option>
-          <option value="anio_asc">Más antiguas</option>
-          <option value="titulo">Título A-Z</option>
-        </select>
-      </div>
+        {/* ── GRILLA DE POSTERS ── */}
+        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {peliculasPagina.map(pelicula => {
+            const up = userPeliculas[pelicula.id]
+            const platsActivas = PLATAFORMAS.filter(pl => pelicula.plataformas.includes(pl.id))
+            const oscarGano = pelicula.oscars?.toLowerCase().startsWith('ganó')
 
-      {/* Nomenclatura + contador */}
-      <div className="flex items-center gap-4 mb-4">
-        <p className="text-sm text-zinc-500">
-          {peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}
-        </p>
-        <div className="flex items-center gap-3 text-xs text-zinc-500">
-          <button
-            onClick={() => setSoloReviews(!soloReviews)}
-            className={`flex items-center gap-1.5 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
-          >
-            <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-2 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
-            Contiene crítica CineBret
-          </button>
-          <button
-            onClick={() => setSoloSello(!soloSello)}
-            className={`flex items-center gap-1.5 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
-          >
-            <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded ${soloSello ? 'border-emerald-400 text-emerald-400 ring-2 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★ Recomendada</span>
-            Recomendada por CineBret
-          </button>
-        </div>
-      </div>
-
-      {/* Tabla (md y superior) */}
-      <div
-        ref={tablaRef}
-        className="hidden md:block border border-zinc-950 rounded-xl overflow-hidden"
-        style={{ height: 'calc(100vh - 190px)', minHeight: '650px', overflowY: 'auto' }}
-      >
-        <table className="w-full text-sm">
-          <thead className="sticky top-0 z-10">
-            <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
-              {user && (
-                <th className="text-center px-3 py-3 w-36">
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="text-zinc-500">Vista / Watchlist</span>
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => marcarTodos('visto')}
-                        className="text-zinc-600 hover:text-emerald-400 text-xs transition-colors"
-                        title="Marcar todas como vistas"
-                      >
-                        ✓ todo
-                      </button>
-                      <span className="text-zinc-700">·</span>
-                      <button
-                        onClick={() => marcarTodos('watchlist')}
-                        className="text-zinc-600 hover:text-yellow-400 text-xs transition-colors"
-                        title="Agregar todas a watchlist"
-                      >
-                        ★ todo
-                      </button>
-                    </div>
+            return (
+              <div
+                key={pelicula.id}
+                onClick={() => setExpandida(pelicula.id)}
+                className="relative rounded-xl overflow-hidden cursor-pointer group bg-zinc-800 shadow-lg hover:shadow-2xl transition-shadow"
+                style={{ aspectRatio: '2/3' }}
+              >
+                {/* Poster image */}
+                {pelicula.poster_path ? (
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w342${pelicula.poster_path}`}
+                    alt={pelicula.titulo_ingles || pelicula.titulo}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-zinc-800">
+                    <span className="text-zinc-600 text-5xl">🎬</span>
                   </div>
-                </th>
-              )}
-              <th className="text-left px-4 py-3 w-64">Película</th>
-              <th className="text-center px-3 py-3 w-16">Año</th>
-              <th className="text-center px-3 py-3 w-20">IMDB</th>
-              {columnas.rt_score && <th className="text-center px-3 py-3 w-16">RT</th>}
-              {columnas.metacritic_score && <th className="text-center px-3 py-3 w-16">MC</th>}
-              <th className="text-center px-3 py-3 w-48">Géneros</th>
-              {columnas.director && <th className="text-left px-3 py-3 w-36">Director</th>}
-              {columnas.actores && <th className="text-left px-3 py-3 w-48">Actores</th>}
-              {columnas.compositor && <th className="text-left px-3 py-3 w-36">Compositor</th>}
-              <th className="text-center px-3 py-3 w-36">Plataformas</th>
-              <th className="text-center px-3 py-3 w-20">Oscars</th>
-              <th className="text-center px-3 py-3 w-40">Categoría</th>
-            </tr>
-          </thead>
-          <tbody>
-            {peliculasPagina.map((pelicula, i) => (
-              <React.Fragment key={pelicula.id}>
-                <tr
-                  onClick={() => setExpandida(expandida === pelicula.id ? null : pelicula.id)}
-                  className={`cursor-pointer border-t border-zinc-950 transition-colors ${
-                    expandida === pelicula.id ? 'bg-zinc-900' : 'bg-zinc-950 hover:bg-zinc-900/50'
-                  }`}
-                >
-                  {user && (
-                    <td className="px-3 py-3 text-center" onClick={e => e.stopPropagation()}>
-                      <div className="flex flex-col items-center gap-1.5">
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={e => toggleVisto(pelicula.id, e)}
-                            title="Vista"
-                            className={`w-4 h-4 rounded-full border text-[10px] font-bold transition-colors flex items-center justify-center ${
-                              userPeliculas[pelicula.id]?.visto
-                                ? 'bg-emerald-500 border-emerald-500 text-white'
-                                : 'border-zinc-600 text-zinc-600 hover:border-zinc-400'
-                            }`}
-                          >
-                            {userPeliculas[pelicula.id]?.visto ? '✓' : ''}
-                          </button>
-                          <button
-                            onClick={e => toggleWatchlist(pelicula.id, e)}
-                            title="Watchlist"
-                            className={`w-4 h-4 rounded text-[10px] transition-colors flex items-center justify-center ${
-                              userPeliculas[pelicula.id]?.watchlist
-                                ? 'bg-yellow-400 text-zinc-950'
-                                : 'border border-zinc-600 text-zinc-600 hover:border-zinc-400'
-                            }`}
-                          >
-                            {userPeliculas[pelicula.id]?.watchlist ? '★' : '☆'}
-                          </button>
+                )}
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
+
+                {/* Top-left badges */}
+                <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+                  {pelicula.es_review_autor && (
+                    <span className="font-serif italic font-bold text-[10px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none shadow">CB</span>
+                  )}
+                  {pelicula.sello_bret && (
+                    <span className="text-[10px] border border-emerald-400 text-emerald-400 bg-black/60 px-1 py-0.5 rounded leading-none font-bold shadow">★</span>
+                  )}
+                </div>
+
+                {/* User action buttons — top right (hover on desktop, always on mobile when user) */}
+                {user && (
+                  <div
+                    className="absolute top-2 right-2 flex flex-col gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <button
+                      onClick={e => toggleVisto(pelicula.id, e)}
+                      className={`w-7 h-7 rounded-full border text-xs font-bold flex items-center justify-center transition-colors shadow ${
+                        up?.visto
+                          ? 'bg-emerald-500 border-emerald-500 text-white'
+                          : 'border-white/70 bg-black/60 text-white hover:border-emerald-400 hover:text-emerald-400'
+                      }`}
+                    >✓</button>
+                    <button
+                      onClick={e => toggleWatchlist(pelicula.id, e)}
+                      className={`w-7 h-7 rounded-full border text-xs font-bold flex items-center justify-center transition-colors shadow ${
+                        up?.watchlist
+                          ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
+                          : 'border-white/70 bg-black/60 text-white hover:border-yellow-400 hover:text-yellow-400'
+                      }`}
+                    >★</button>
+                  </div>
+                )}
+
+                {/* Bottom info overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-2.5 z-10">
+                  <div className="flex items-end justify-between gap-1">
+                    <div className="flex-1 min-w-0">
+                      {/* Platform logos */}
+                      {platsActivas.length > 0 && (
+                        <div className="flex gap-1 mb-1.5 flex-wrap">
+                          {platsActivas.map(pl => (
+                            <div key={pl.id} className="rounded bg-white/95 px-1 py-0.5 flex items-center">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={pl.logo} alt={pl.nombre} className="h-3 w-auto object-contain" />
+                            </div>
+                          ))}
                         </div>
-                        {userPeliculas[pelicula.id]?.visto && (
-                          <select
-                            value={userPeliculas[pelicula.id]?.rating ?? ''}
-                            onChange={e => { if (e.target.value) setRating(pelicula.id, Number(e.target.value), e as any) }}
-                            onClick={e => e.stopPropagation()}
-                            className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-1 py-0.5 focus:outline-none w-14"
-                          >
-                            <option value="">nota</option>
-                            {[1,2,3,4,5,6,7,8,9,10].map(n => (
-                              <option key={n} value={n}>{n}/10</option>
-                            ))}
-                          </select>
+                      )}
+                      <p className="text-white font-semibold text-xs md:text-sm leading-tight line-clamp-2">
+                        {pelicula.titulo_ingles || pelicula.titulo}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        {pelicula.anio && (
+                          <span className="text-zinc-400 text-[10px] md:text-xs">{pelicula.anio}</span>
+                        )}
+                        {pelicula.nota_imdb != null && (
+                          <span className="text-yellow-400 font-bold text-[10px] md:text-xs">⭐ {pelicula.nota_imdb}</span>
                         )}
                       </div>
-                    </td>
-                  )}
-                  <td className="p-0" style={{ height: '1px' }}>
-                    <div className="flex items-stretch h-full">
-                      <div className="flex items-center px-3 py-3">
-                        <span className="text-zinc-600 text-xs">{expandida === pelicula.id ? '▲' : '▼'}</span>
-                      </div>
-                      <div className="relative w-9 shrink-0 self-stretch">
-                        {pelicula.poster_path ? (
-                          <Image src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`} alt={pelicula.titulo} fill className="object-cover" />
-                        ) : (
-                          <div className="absolute inset-0 bg-zinc-800" />
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1.5 px-3 py-3">
-                        <div>
-                          <span className="font-semibold text-white truncate max-w-48 block">
-                            {pelicula.titulo_ingles || pelicula.titulo}
-                          </span>
-                          {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                            <span className="text-xs text-zinc-500 truncate max-w-48 block">{pelicula.titulo}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-3 py-3 text-center text-zinc-400">{pelicula.anio || '—'}</td>
-                  <td className="px-3 py-3 text-center">
-                    {pelicula.nota_imdb != null
-                      ? <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
-                      : <span className="text-zinc-700">—</span>}
-                  </td>
-                  {columnas.rt_score && (
-                    <td className="px-3 py-3 text-center">
-                      {pelicula.rt_score != null
-                        ? <span className="text-sm text-red-400">🍅 {pelicula.rt_score}%</span>
-                        : <span className="text-zinc-700">—</span>}
-                    </td>
-                  )}
-                  {columnas.metacritic_score && (
-                    <td className="px-3 py-3 text-center">
-                      {pelicula.metacritic_score != null
-                        ? <span className="text-sm text-green-400">{pelicula.metacritic_score}</span>
-                        : <span className="text-zinc-700">—</span>}
-                    </td>
-                  )}
-                  <td className="px-3 py-3">
-                    <div className="flex flex-wrap gap-1 justify-center">
-                      {pelicula.generos.length > 0
-                        ? pelicula.generos.map(g => (
-                            <span
-                              key={g}
-                              onClick={e => { e.stopPropagation(); if (!generosFiltro.includes(g)) setGenerosFiltro([...generosFiltro, g]) }}
-                              className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full cursor-pointer hover:bg-zinc-700 hover:text-zinc-200"
-                            >
+                      {/* Genre chips — visible on hover */}
+                      {pelicula.generos.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          {pelicula.generos.slice(0, 2).map(g => (
+                            <span key={g} className="text-[9px] bg-white/15 backdrop-blur-sm text-zinc-300 px-1.5 py-0.5 rounded-full">
                               {g}
                             </span>
-                          ))
-                        : <span className="text-zinc-700">—</span>}
-                    </div>
-                  </td>
-                  {columnas.director && <td className="px-3 py-3 text-zinc-400 text-xs">{pelicula.director || <span className="text-zinc-700">—</span>}</td>}
-                  {columnas.actores && <td className="px-3 py-3 text-zinc-400 text-xs">{pelicula.actores || <span className="text-zinc-700">—</span>}</td>}
-                  {columnas.compositor && <td className="px-3 py-3 text-zinc-400 text-xs">{pelicula.compositor || <span className="text-zinc-700">—</span>}</td>}
-                  <td className="px-3 py-3">
-                    <div className="grid grid-cols-3 gap-1">
-                      {PLATAFORMAS.map(plat => {
-                        const activa = pelicula.plataformas.includes(plat.id)
-                        return (
-                          <div key={plat.id} className={`rounded px-1 py-0.5 bg-white flex items-center justify-center transition-opacity ${activa ? 'opacity-100' : 'opacity-20'}`}>
-                            <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    {pelicula.oscars && pelicula.oscars !== 'N/A'
-                      ? (() => {
-                          const gano = pelicula.oscars!.toLowerCase().startsWith('ganó')
-                          return (
-                            <span className="flex items-center justify-center gap-0.5">
-                              <img src="/oscar.png" alt="Oscar" className={`h-8 w-auto ${gano ? 'opacity-100' : 'opacity-25'}`} />
-                              <span className={`text-base font-bold ${gano ? 'text-yellow-400' : 'text-zinc-600'}`}>
-                                {pelicula.oscars!.match(/\d+/)?.[0]}
-                              </span>
-                            </span>
-                          )
-                        })()
-                      : <span className="text-zinc-700 text-xs">—</span>}
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    {pelicula.categoria
-                      ? <span className="text-xs text-zinc-400">{pelicula.categoria}</span>
-                      : <span className="text-zinc-700 text-xs">—</span>}
-                  </td>
-                </tr>
-
-                {/* Fila expandida */}
-                {expandida === pelicula.id && (
-                  <tr>
-                    <td colSpan={7 + colsExtras + (user ? 1 : 0)} className="px-8 py-4 bg-zinc-900 border-t border-zinc-800" onClick={e => e.stopPropagation()}>
-                      <div className="grid grid-cols-2 gap-8">
-                        {/* Izquierda: ratings + links */}
-                        <div className="space-y-3">
-                          {(pelicula.nota_imdb != null || pelicula.rt_score != null || pelicula.metacritic_score != null) && (
-                            <div className="flex gap-4 flex-wrap">
-                              {pelicula.nota_imdb != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">IMDB</p>
-                                  <p className="text-sm font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</p>
-                                </div>
-                              )}
-                              {pelicula.rt_score != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
-                                  <p className="text-sm font-bold text-red-400">🍅 {pelicula.rt_score}%</p>
-                                </div>
-                              )}
-                              {pelicula.metacritic_score != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
-                                  <p className="text-sm font-bold text-green-400">{pelicula.metacritic_score}</p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                          {(pelicula.runtime != null || pelicula.boxoffice != null) && (
-                            <div className="flex gap-4">
-                              {pelicula.runtime != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
-                                  <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
-                                </div>
-                              )}
-                              {pelicula.boxoffice != null && (
-                                <div>
-                                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
-                                  <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                          <div className="flex flex-wrap gap-3 items-center">
-                            {pelicula.imdb_id && (
-                              <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
-                            )}
-                            {pelicula.youtube_trailer_key && (
-                              <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
-                            )}
-                            <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
-                            <AgregarAListaButton peliculaId={pelicula.id} />
-                          </div>
-                          {/* Review CineBret + reviews usuarios */}
-                          <PeliculaDetalle
-                            peliculaId={pelicula.id}
-                            esReviewAutor={pelicula.es_review_autor}
-                            sinopsisIa={pelicula.sinopsis}
-                          />
+                          ))}
                         </div>
-                        {/* Derecha: equipo + oscars */}
-                        <div className="space-y-3">
-                          {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                            <div>
-                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Oscars</p>
-                              <p className="text-sm text-yellow-500">{pelicula.oscars}</p>
-                            </div>
-                          )}
-                          {pelicula.director && (
-                            <div>
-                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
-                              <p className="text-sm text-zinc-200">{pelicula.director}</p>
-                            </div>
-                          )}
-                          {pelicula.compositor && (
-                            <div>
-                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
-                              <p className="text-sm text-zinc-200">{pelicula.compositor}</p>
-                            </div>
-                          )}
-                          {pelicula.actores && (
-                            <div>
-                              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
-                              <p className="text-sm text-zinc-200">{pelicula.actores}</p>
-                            </div>
-                          )}
-                        </div>
+                      )}
+                    </div>
+                    {/* Oscar trophy */}
+                    {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                      <div className="shrink-0 self-end">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/oscar.png"
+                          alt="Oscar"
+                          className={`h-8 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`}
+                        />
                       </div>
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Leyenda botones — solo móvil */}
-      {user && (
-        <div className="flex md:hidden items-center gap-4 mb-3 text-xs text-zinc-500">
-          <span className="flex items-center gap-1.5">
-            <span className="w-7 h-7 rounded-full bg-emerald-500 border-emerald-500 text-white font-bold flex items-center justify-center text-sm">✓</span>
-            Vista
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-7 h-7 rounded-full bg-yellow-400 text-zinc-950 font-bold flex items-center justify-center text-sm">★</span>
-            Watchlist
-          </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
-      )}
 
-      {/* Lista de tarjetas móvil (por debajo de md) */}
-      <div className="block md:hidden space-y-2">
-        {peliculasPagina.map(pelicula => {
-          const isExpanded = expandida === pelicula.id
-          const plataformasActivas = PLATAFORMAS.filter(plat => pelicula.plataformas.includes(plat.id))
-          return (
-            <div
-              key={pelicula.id}
-              onClick={() => setExpandida(isExpanded ? null : pelicula.id)}
-              className="bg-zinc-950 border border-zinc-950 rounded-xl p-3 cursor-pointer"
+        {/* Paginación */}
+        {totalPaginas > 1 && (
+          <div className="flex items-center justify-center gap-3 mt-8">
+            <button
+              onClick={() => {
+                setPagina(p => Math.max(0, p - 1))
+                gridRef.current ? gridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }) : window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              disabled={pagina === 0}
+              className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
             >
-              {/* Fila principal */}
-              <div className="flex gap-3">
-                {/* Poster — solo cuando NO está expandida, se estira al alto del contenido */}
-                {!isExpanded && (
-                  <div className="relative w-12 self-stretch shrink-0 rounded overflow-hidden bg-zinc-800 min-h-[72px]">
-                    {pelicula.poster_path && (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`}
-                        alt={pelicula.titulo}
-                        fill
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                )}
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
-                    <span className="font-semibold text-white text-sm leading-snug">
-                      {pelicula.titulo_ingles || pelicula.titulo}
-                    </span>
-                  </div>
-                  {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                    <span className="text-xs text-zinc-500 block mb-1">{pelicula.titulo}</span>
-                  )}
-                  <div className="flex items-center gap-2 text-xs flex-wrap">
-                    {pelicula.anio && (
-                      <span className="text-zinc-400">{pelicula.anio}</span>
-                    )}
-                    {pelicula.nota_imdb != null && (
-                      <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span>
-                    )}
-                  </div>
-                  {pelicula.categoria && (
-                    <span className="text-xs text-zinc-500 mt-0.5 block">{pelicula.categoria}</span>
-                  )}
-                </div>
-
-                {/* Derecha: acciones + poster expandido */}
-                {isExpanded ? (
-                  <div className="relative w-20 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ height: 120 }}>
-                    {pelicula.poster_path && (
-                      <Image src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`} alt={pelicula.titulo} fill className="object-cover" />
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-1.5 shrink-0 self-start" onClick={e => e.stopPropagation()}>
-                    {user ? (
-                      <>
-                        <button
-                          onClick={e => toggleVisto(pelicula.id, e)}
-                          title="Marcar como vista"
-                          className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors flex items-center justify-center ${
-                            userPeliculas[pelicula.id]?.visto
-                              ? 'bg-emerald-500 border-emerald-500 text-white'
-                              : 'border-zinc-600 text-zinc-600 hover:border-zinc-400 hover:text-zinc-400'
-                          }`}
-                        >
-                          ✓
-                        </button>
-                        <button
-                          onClick={e => toggleWatchlist(pelicula.id, e)}
-                          title="Agregar a watchlist"
-                          className={`w-6 h-6 rounded-full border text-xs font-bold transition-colors flex items-center justify-center ${
-                            userPeliculas[pelicula.id]?.watchlist
-                              ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
-                              : 'border-zinc-600 text-zinc-600 hover:border-zinc-400 hover:text-zinc-400'
-                          }`}
-                        >
-                          ★
-                        </button>
-                        {userPeliculas[pelicula.id]?.visto && (
-                          <select
-                            value={userPeliculas[pelicula.id]?.rating ?? ''}
-                            onChange={e => { if (e.target.value) setRating(pelicula.id, Number(e.target.value), e as any) }}
-                            onClick={e => e.stopPropagation()}
-                            className="bg-zinc-800 border border-zinc-700 rounded text-xs text-yellow-400 font-bold px-1 py-0.5 focus:outline-none w-12 text-center"
-                          >
-                            <option value="">—</option>
-                            {[1,2,3,4,5,6,7,8,9,10].map(n => (
-                              <option key={n} value={n}>{n}</option>
-                            ))}
-                          </select>
-                        )}
-                      </>
-                    ) : null}
-                    <span className="text-zinc-600 text-xs mt-auto">▼</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Logos de plataformas */}
-              <div className="flex items-center gap-1.5 mt-2">
-                {PLATAFORMAS.map(plat => {
-                  const activa = pelicula.plataformas.includes(plat.id)
-                  return (
-                    <div key={plat.id} className={`rounded px-1 py-0.5 bg-white flex items-center justify-center transition-opacity ${activa ? 'opacity-100' : 'opacity-20'}`} style={{ height: '20px' }}>
-                      <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Contenido expandido */}
-              {isExpanded && (
-                <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3" onClick={e => e.stopPropagation()}>
-                  <div className="flex items-center justify-between">
-                    {user ? (
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <button
-                          onClick={e => toggleVisto(pelicula.id, e)}
-                          className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
-                            userPeliculas[pelicula.id]?.visto
-                              ? 'bg-emerald-500 border-emerald-500 text-white'
-                              : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
-                          }`}
-                        >
-                          {userPeliculas[pelicula.id]?.visto ? '✓ Vista' : '○ Vista'}
-                        </button>
-                        <button
-                          onClick={e => toggleWatchlist(pelicula.id, e)}
-                          className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
-                            userPeliculas[pelicula.id]?.watchlist
-                              ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
-                              : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
-                          }`}
-                        >
-                          {userPeliculas[pelicula.id]?.watchlist ? '★ Watchlist' : '☆ Watchlist'}
-                        </button>
-                        {userPeliculas[pelicula.id]?.visto && (
-                          <select
-                            value={userPeliculas[pelicula.id]?.rating ?? ''}
-                            onChange={e => { if (e.target.value) setRating(pelicula.id, Number(e.target.value), e as any) }}
-                            onClick={e => e.stopPropagation()}
-                            className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-2 py-1.5 focus:outline-none"
-                          >
-                            <option value="">Tu rating —</option>
-                            {[1,2,3,4,5,6,7,8,9,10].map(n => (
-                              <option key={n} value={n}>{n}/10</option>
-                            ))}
-                          </select>
-                        )}
-                      </div>
-                    ) : <div />}
-                    <span className="text-zinc-600 text-xs">▲ colapsar</span>
-                  </div>
-                  {(pelicula.rt_score != null || pelicula.metacritic_score != null) && (
-                    <div className="flex gap-4 flex-wrap">
-                      {pelicula.rt_score != null && (
-                        <div>
-                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
-                          <p className="text-sm font-bold text-red-400">🍅 {pelicula.rt_score}%</p>
-                        </div>
-                      )}
-                      {pelicula.metacritic_score != null && (
-                        <div>
-                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
-                          <p className="text-sm font-bold text-green-400">{pelicula.metacritic_score}</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {(pelicula.runtime != null || pelicula.boxoffice != null) && (
-                    <div className="flex gap-6">
-                      {pelicula.runtime != null && (
-                        <div>
-                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
-                          <p className="text-sm text-zinc-200">{Math.floor(pelicula.runtime / 60)}h {pelicula.runtime % 60}min</p>
-                        </div>
-                      )}
-                      {pelicula.boxoffice != null && (
-                        <div>
-                          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
-                          <p className="text-sm text-zinc-200">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                    <div>
-                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Oscars</p>
-                      <p className="text-sm text-yellow-500">{pelicula.oscars}</p>
-                    </div>
-                  )}
-                  <div className="space-y-2">
-                    {pelicula.director && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Director</p>
-                        <p className="text-sm text-zinc-200">{pelicula.director}</p>
-                      </div>
-                    )}
-                    {pelicula.compositor && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Compositor</p>
-                        <p className="text-sm text-zinc-200">{pelicula.compositor}</p>
-                      </div>
-                    )}
-                    {pelicula.actores && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Reparto</p>
-                        <div className="flex flex-wrap gap-x-3 gap-y-1">
-                          {pelicula.actores.split(',').map(a => {
-                            const actor = a.trim()
-                            return (
-                              <span key={actor} className="text-sm text-zinc-200">
-                                {actor}
-                              </span>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-3 items-center">
-                    {pelicula.imdb_id && (
-                      <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
-                    )}
-                    {pelicula.youtube_trailer_key && (
-                      <a href={`https://www.youtube.com/watch?v=${pelicula.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
-                    )}
-                    <a href={`https://open.spotify.com/search/${encodeURIComponent((pelicula.titulo_ingles || pelicula.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
-                    <AgregarAListaButton peliculaId={pelicula.id} />
-                  </div>
-                  {/* Review CineBret + reviews usuarios */}
-                  <PeliculaDetalle
-                    peliculaId={pelicula.id}
-                    esReviewAutor={pelicula.es_review_autor}
-                    sinopsisIa={pelicula.sinopsis}
-                  />
-                </div>
-              )}
-            </div>
-          )
-        })}
+              ← Anterior
+            </button>
+            <span className="text-sm text-zinc-500">
+              Página <span className="text-white font-medium">{pagina + 1}</span> de {totalPaginas}
+              <span className="text-zinc-600 ml-2">({peliculasFiltradas.length} resultados)</span>
+            </span>
+            <button
+              onClick={() => {
+                setPagina(p => Math.min(totalPaginas - 1, p + 1))
+                gridRef.current ? gridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }) : window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              disabled={pagina === totalPaginas - 1}
+              className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
+            >
+              Siguiente →
+            </button>
+          </div>
+        )}
       </div>
 
-      {totalPaginas > 1 && (
-        <div className="flex items-center justify-center gap-3 mt-4">
-          <button
-            onClick={() => {
-              setPagina(p => Math.max(0, p - 1))
-              tablaRef.current ? tablaRef.current.scrollTop = 0 : window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-            disabled={pagina === 0}
-            className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
+      {/* ── MODAL DETALLE ── */}
+      {peliculaModal && (() => {
+        const p = peliculaModal
+        const up = userPeliculas[p.id]
+        const oscarGano = p.oscars?.toLowerCase().startsWith('ganó')
+
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/80 backdrop-blur-sm"
+            onClick={() => setExpandida(null)}
           >
-            ← Anterior
-          </button>
-          <span className="text-sm text-zinc-500">
-            Página <span className="text-white font-medium">{pagina + 1}</span> de {totalPaginas}
-            <span className="text-zinc-600 ml-2">({peliculasFiltradas.length} resultados)</span>
-          </span>
-          <button
-            onClick={() => {
-              setPagina(p => Math.min(totalPaginas - 1, p + 1))
-              tablaRef.current ? tablaRef.current.scrollTop = 0 : window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-            disabled={pagina === totalPaginas - 1}
-            className="border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-lg px-4 py-2 text-sm transition-colors"
-          >
-            Siguiente →
-          </button>
-        </div>
-      )}
+            <div
+              className="w-full max-w-2xl bg-zinc-900 rounded-2xl overflow-hidden max-h-[92vh] overflow-y-auto shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header backdrop */}
+              <div className="relative h-48 md:h-64 bg-zinc-800 shrink-0">
+                {p.poster_path && (
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w780${p.poster_path}`}
+                    alt={p.titulo_ingles || p.titulo}
+                    fill
+                    className="object-cover object-top"
+                    sizes="672px"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent" />
+                <button
+                  onClick={() => setExpandida(null)}
+                  className="absolute top-3 right-3 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Title + poster strip */}
+              <div className="px-5 py-4 flex items-start gap-4">
+                <div className="relative w-16 shrink-0 rounded-lg overflow-hidden bg-zinc-800 shadow-lg" style={{ aspectRatio: '2/3' }}>
+                  {p.poster_path && (
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w154${p.poster_path}`}
+                      alt={p.titulo_ingles || p.titulo}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-lg md:text-xl font-bold text-white leading-tight">
+                    {p.titulo_ingles || p.titulo}
+                  </h2>
+                  {p.titulo_ingles && p.titulo !== p.titulo_ingles && (
+                    <p className="text-zinc-400 text-sm mt-0.5">{p.titulo}</p>
+                  )}
+                  <div className="flex items-center gap-3 mt-2 flex-wrap">
+                    {p.anio && <span className="text-zinc-400 text-sm">{p.anio}</span>}
+                    {p.runtime != null && <span className="text-zinc-500 text-sm">{Math.floor(p.runtime / 60)}h {p.runtime % 60}min</span>}
+                    {p.nota_imdb != null && <span className="font-bold text-yellow-400">⭐ {p.nota_imdb}</span>}
+                    {p.rt_score != null && <span className="text-red-400 text-sm">🍅 {p.rt_score}%</span>}
+                    {p.metacritic_score != null && <span className="text-green-400 text-sm">{p.metacritic_score} MC</span>}
+                  </div>
+                  {/* Plataformas */}
+                  {p.plataformas.length > 0 && (
+                    <div className="flex gap-1.5 mt-2.5 flex-wrap">
+                      {PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id)).map(pl => (
+                        <div key={pl.id} className="rounded-md bg-white px-2 py-1 flex items-center">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={pl.logo} alt={pl.nombre} className="h-4 w-auto object-contain" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="px-5 pb-6 space-y-4 border-t border-zinc-800 pt-4">
+                {/* User actions */}
+                {user && (
+                  <div className="flex items-center gap-2 flex-wrap" onClick={e => e.stopPropagation()}>
+                    <button
+                      onClick={e => toggleVisto(p.id, e)}
+                      className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors ${
+                        up?.visto
+                          ? 'bg-emerald-500 border-emerald-500 text-white'
+                          : 'border-zinc-600 text-zinc-400 hover:border-emerald-400 hover:text-emerald-400'
+                      }`}
+                    >
+                      {up?.visto ? '✓ Vista' : '○ Marcar vista'}
+                    </button>
+                    <button
+                      onClick={e => toggleWatchlist(p.id, e)}
+                      className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors ${
+                        up?.watchlist
+                          ? 'bg-yellow-400 border-yellow-400 text-zinc-950'
+                          : 'border-zinc-600 text-zinc-400 hover:border-yellow-400 hover:text-yellow-400'
+                      }`}
+                    >
+                      {up?.watchlist ? '★ En watchlist' : '☆ Watchlist'}
+                    </button>
+                    {up?.visto && (
+                      <select
+                        value={up.rating ?? ''}
+                        onChange={e => { if (e.target.value) setRating(p.id, Number(e.target.value), e as any) }}
+                        onClick={e => e.stopPropagation()}
+                        className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-300 focus:outline-none"
+                      >
+                        <option value="">Tu rating</option>
+                        {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                          <option key={n} value={n}>{n}/10</option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                )}
+
+                {/* Genres */}
+                {p.generos.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {p.generos.map(g => (
+                      <span
+                        key={g}
+                        onClick={e => { e.stopPropagation(); if (!generosFiltro.includes(g)) { setGenerosFiltro([...generosFiltro, g]); setExpandida(null) } }}
+                        className="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1 rounded-full cursor-pointer transition-colors"
+                      >
+                        {g}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Oscars */}
+                {p.oscars && p.oscars !== 'N/A' && (
+                  <div className="flex items-center gap-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/oscar.png" alt="Oscar" className={`h-10 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
+                    <p className="text-sm text-yellow-500">{p.oscars}</p>
+                  </div>
+                )}
+
+                {/* Boxoffice */}
+                {p.boxoffice != null && (
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Taquilla</p>
+                    <p className="text-sm text-zinc-200">${(p.boxoffice / 1_000_000).toFixed(0)}M</p>
+                  </div>
+                )}
+
+                {/* Team */}
+                <div className="grid grid-cols-2 gap-4">
+                  {p.director && (
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
+                      <p className="text-sm text-zinc-200">{p.director}</p>
+                    </div>
+                  )}
+                  {p.compositor && (
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
+                      <p className="text-sm text-zinc-200">{p.compositor}</p>
+                    </div>
+                  )}
+                  {p.actores && (
+                    <div className="col-span-2">
+                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
+                      <p className="text-sm text-zinc-200">{p.actores}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Categoria mood */}
+                {p.categoria && (
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Categoría</p>
+                    <p className="text-sm text-zinc-400">{p.categoria}</p>
+                  </div>
+                )}
+
+                {/* Links */}
+                <div className="flex flex-wrap gap-3 items-center" onClick={e => e.stopPropagation()}>
+                  {p.imdb_id && (
+                    <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">
+                      IMDb ↗
+                    </a>
+                  )}
+                  {p.youtube_trailer_key && (
+                    <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">
+                      ▶ Trailer ↗
+                    </a>
+                  )}
+                  <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">
+                    ♫ Soundtrack ↗
+                  </a>
+                  <AgregarAListaButton peliculaId={p.id} />
+                </div>
+
+                {/* Review CineBret + reviews usuarios */}
+                <PeliculaDetalle
+                  peliculaId={p.id}
+                  esReviewAutor={p.es_review_autor}
+                  sinopsisIa={p.sinopsis}
+                />
+              </div>
+            </div>
+          </div>
+        )
+      })()}
     </>
   )
 }

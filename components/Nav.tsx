@@ -211,7 +211,7 @@ export default function Nav({ active }: Props) {
           <div className="flex items-center justify-between mb-2.5 gap-3">
             <Link href="/" className="shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-oficial.svg" alt="CineBret" className="h-8 w-auto" />
+              <img src="/logo-oficial.png" alt="CineBret" className="h-8 w-auto" />
             </Link>
 
             {/* Buscador unificado */}

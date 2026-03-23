@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   title: "CineBret — Buscador y recomendador de películas",
   description: "Descubre, recomienda y comparte las mejores películas con tus amigos",
   icons: {
-    icon: "/logo-pequeno.svg",
-    apple: "/logo-pequeno.svg",
+    icon: "/logo-pequeno.png",
+    apple: "/logo-pequeno.png",
   },
 };
 

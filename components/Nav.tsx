@@ -205,11 +205,18 @@ export default function Nav({ active }: Props) {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800 px-4 py-3">
-        <div className="max-w-7xl mx-auto">
-          {/* Fila 1: logo + buscador + auth */}
+      <nav className="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800 px-4 md:px-2 py-3">
+        <div className="max-w-7xl mx-auto flex gap-3 md:gap-4">
+          {/* Logo — desktop: grande, ocupa ambas filas */}
+          <Link href="/" className="shrink-0 hidden md:flex items-center pl-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-oficial.png" alt="CineBret" className="h-14 w-auto" />
+          </Link>
+
+          <div className="flex-1 min-w-0">
+          {/* Fila 1: logo mobile + buscador + auth */}
           <div className="flex items-center justify-between mb-2.5 gap-3">
-            <Link href="/" className="shrink-0">
+            <Link href="/" className="shrink-0 md:hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-oficial.png" alt="CineBret" className="h-8 w-auto" />
             </Link>
@@ -522,6 +529,7 @@ export default function Nav({ active }: Props) {
                 <span className="text-[10px] font-medium">Perfil</span>
               </button>
             ) : null}
+          </div>
           </div>
         </div>
       </nav>

@@ -13,20 +13,21 @@ type Props = {
 
 export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa }: Props) {
   const [reviewAutor, setReviewAutor] = useState<string | null>(null)
+  const [sinopsis, setSinopsis] = useState<string | null>(sinopsisIa)
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
-    if (!esReviewAutor) { setCargando(false); return }
     supabase
       .from('enriquecimiento')
-      .select('review_autor')
+      .select('review_autor, sinopsis_chilensis')
       .eq('pelicula_id', peliculaId)
       .maybeSingle()
       .then(({ data }) => {
-        setReviewAutor(data?.review_autor ?? null)
+        if (data?.review_autor) setReviewAutor(data.review_autor)
+        if (!sinopsisIa && data?.sinopsis_chilensis) setSinopsis(data.sinopsis_chilensis)
         setCargando(false)
       })
-  }, [peliculaId, esReviewAutor])
+  }, [peliculaId, sinopsisIa])
 
   return (
     <div className="space-y-4 mt-4 pt-4 border-t border-zinc-800">
@@ -38,9 +39,9 @@ export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa 
               ✍️ Review CineBret
             </span>
           </div>
-          {sinopsisIa && (
+          {sinopsis && (
             <p className="text-zinc-400 text-sm leading-relaxed mb-3 italic border-l-2 border-zinc-700 pl-3">
-              {sinopsisIa}
+              {sinopsis}
             </p>
           )}
           {cargando ? (
@@ -50,14 +51,14 @@ export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa 
           ) : null}
           <AutorReviewLike peliculaId={peliculaId} />
         </div>
-      ) : sinopsisIa ? (
+      ) : sinopsis ? (
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full font-medium">
               🤖 Sinopsis IA
             </span>
           </div>
-          <p className="text-zinc-300 text-sm leading-relaxed italic">{sinopsisIa}</p>
+          <p className="text-zinc-300 text-sm leading-relaxed italic">{sinopsis}</p>
         </div>
       ) : null}
 

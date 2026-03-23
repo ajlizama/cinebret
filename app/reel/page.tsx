@@ -163,7 +163,7 @@ function ReelCard({
     })()
   }, [slide, pelicula.id, reviews.length, reviewsCargando])
 
-  // Touch handlers
+  // Touch handlers — on slides 1/2, only handle taps + horizontal swipes (vertical = scroll)
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isTop) return
     startX.current = e.touches[0].clientX
@@ -172,40 +172,54 @@ function ReelCard({
   }
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isTop || !dragging) return
-    setOffset({ x: e.touches[0].clientX - startX.current, y: e.touches[0].clientY - startY.current })
+    const dx = e.touches[0].clientX - startX.current
+    const dy = e.touches[0].clientY - startY.current
+    // On slides 1/2: only track horizontal movement, let vertical scroll naturally
+    if (slide > 0) {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        setOffset({ x: dx, y: 0 })
+      }
+      // don't set vertical offset — browser handles scroll
+    } else {
+      setOffset({ x: dx, y: dy })
+    }
   }
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isTop) return
     setDragging(false)
     const { x, y } = offset
-    const dist = Math.sqrt(x * x + y * y)
+    const rawDx = (e.changedTouches[0]?.clientX ?? 0) - startX.current
+    const rawDy = (e.changedTouches[0]?.clientY ?? 0) - startY.current
+    const rawDist = Math.sqrt(rawDx * rawDx + rawDy * rawDy)
 
     // Tap → navigate slides
-    if (dist < TAP_THRESHOLD) {
+    if (rawDist < TAP_THRESHOLD) {
       setOffset({ x: 0, y: 0 })
       const touchX = e.changedTouches[0]?.clientX ?? 0
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
       const relX = touchX - rect.left
       if (relX > rect.width * 0.5) {
-        setSlide(s => Math.min(2, s + 1)) // tap right → next
+        setSlide(s => Math.min(2, s + 1))
       } else {
-        setSlide(s => Math.max(0, s - 1)) // tap left → prev
+        setSlide(s => Math.max(0, s - 1))
       }
       return
     }
 
-    // Swipe horizontal
+    // Swipe horizontal (works on all slides)
     if (Math.abs(x) > SWIPE_THRESHOLD && Math.abs(x) > Math.abs(y)) {
       const dir = x > 0 ? 'right' : 'left'
       setGone(dir); setTimeout(() => onSwipe(dir), 300); return
     }
-    // Swipe down
-    if (y > SWIPE_THRESHOLD && Math.abs(y) > Math.abs(x)) {
-      setGone('down'); setTimeout(() => onSwipe('down'), 300); return
-    }
-    // Swipe up
-    if (y < -SWIPE_THRESHOLD && Math.abs(y) > Math.abs(x)) {
-      setGone('up'); setTimeout(() => onSwipe('up'), 300); return
+
+    // Swipe vertical (only on slide 0 — slides 1/2 use native scroll)
+    if (slide === 0) {
+      if (y > SWIPE_THRESHOLD && Math.abs(y) > Math.abs(x)) {
+        setGone('down'); setTimeout(() => onSwipe('down'), 300); return
+      }
+      if (y < -SWIPE_THRESHOLD && Math.abs(y) > Math.abs(x)) {
+        setGone('up'); setTimeout(() => onSwipe('up'), 300); return
+      }
     }
     setOffset({ x: 0, y: 0 })
   }
@@ -307,8 +321,7 @@ function ReelCard({
 
       {/* ══ SLIDE 1: Detailed info ══ */}
       {slide === 1 && (
-        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}
-          onTouchStart={e => e.stopPropagation()} onTouchMove={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
+        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           <h2 className="text-white font-bold text-lg leading-tight mb-1">{titulo}</h2>
           {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
             <p className="text-zinc-400 text-xs mb-3">{pelicula.titulo}</p>
@@ -417,8 +430,7 @@ function ReelCard({
 
       {/* ══ SLIDE 2: Reviews ══ */}
       {slide === 2 && (
-        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}
-          onTouchStart={e => e.stopPropagation()} onTouchMove={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
+        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           <h3 className="text-white font-bold text-base mb-3">Reviews</h3>
           {reviewsCargando && <p className="text-zinc-500 text-xs text-center pt-4">Cargando reviews...</p>}
           {!reviewsCargando && reviews.length === 0 && (

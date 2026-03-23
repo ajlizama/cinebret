@@ -12,7 +12,7 @@ type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'perfil' }
 
 type Notif = {
   id: string
-  type: 'follow' | 'like' | 'personalizar' | 'lista_comentario' | 'lista_invitacion' | 'recomendacion'
+  type: 'follow' | 'like' | 'personalizar' | 'lista_comentario' | 'lista_invitacion' | 'recomendacion' | 'lista_pelicula'
   from_username: string | null
   from_avatar: string | null
   read: boolean
@@ -116,7 +116,7 @@ export default function Nav({ active }: Props) {
       .filter((n: any) => !n.from_user_id || profileMap[n.from_user_id])
       .map((n: any) => ({
         id: n.id,
-        type: n.type as 'follow' | 'like' | 'personalizar' | 'lista_comentario' | 'lista_invitacion' | 'recomendacion',
+        type: n.type as 'follow' | 'like' | 'personalizar' | 'lista_comentario' | 'lista_invitacion' | 'recomendacion' | 'lista_pelicula',
         from_username: n.from_user_id ? profileMap[n.from_user_id]?.username ?? null : null,
         from_avatar: n.from_user_id ? profileMap[n.from_user_id]?.avatar_url ?? null : null,
         read: n.read,
@@ -374,6 +374,8 @@ export default function Nav({ active }: Props) {
                                       <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center text-sm shrink-0">✨</div>
                                     ) : n.type === 'lista_comentario' ? (
                                       <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">💬</div>
+                                    ) : n.type === 'lista_pelicula' ? (
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">🎬</div>
                                     ) : n.type === 'lista_invitacion' ? (
                                       <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">📋</div>
                                     ) : n.type === 'recomendacion' ? (
@@ -392,6 +394,14 @@ export default function Nav({ active }: Props) {
                                             <span className="text-zinc-200">{n.meta?.pelicula_titulo ?? 'una película'}</span>
                                             {' de tu '}
                                             <span className="text-zinc-200">{n.meta?.lista_tipo === 'watchlist' ? 'watchlist' : 'lista de vistas'}</span>
+                                          </>
+                                        ) : n.type === 'lista_pelicula' ? (
+                                          <>
+                                            <span className="text-white font-medium">@{n.from_username}</span>
+                                            {' agregó '}
+                                            <span className="text-zinc-200">{(n.meta as any)?.pelicula_titulo ?? 'una película'}</span>
+                                            {' a '}
+                                            <span className="text-zinc-200">{(n.meta as any)?.lista_nombre ?? 'la lista'}</span>
                                           </>
                                         ) : n.type === 'lista_invitacion' ? (
                                           <>

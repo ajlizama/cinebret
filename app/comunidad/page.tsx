@@ -400,7 +400,7 @@ export default function ComunidadPage() {
       await supabase.from('review_likes').insert({ review_id: item.id, user_id: user.id })
       setLikesMap(prev => ({ ...prev, [item.id]: { count: (prev[item.id]?.count ?? 0) + 1, youLiked: true } }))
       if (item.user_id && item.user_id !== user.id) {
-        await supabase.from('notifications').insert({ user_id: item.user_id, type: 'like', from_user_id: user.id, review_id: item.id })
+        await supabase.from('notifications').insert({ user_id: item.user_id, type: 'like', from_user_id: user.id, meta: { review_id: item.id, redirect_url: `/pelicula/${item.pelicula_id}` } })
       }
     }
   }

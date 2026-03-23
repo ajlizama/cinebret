@@ -214,6 +214,23 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
       pelicula_id: pelicula.id,
       added_by: user.id,
     })
+    // Notificar a los otros miembros
+    const otrosMiembros = miembros.filter(m => m.user_id !== user.id)
+    if (otrosMiembros.length > 0) {
+      await supabase.from('notifications').insert(
+        otrosMiembros.map(m => ({
+          user_id: m.user_id,
+          type: 'lista_pelicula',
+          from_user_id: user.id,
+          meta: {
+            lista_id: id,
+            lista_nombre: lista?.nombre ?? '',
+            pelicula_titulo: pelicula.titulo_ingles ?? pelicula.titulo,
+            redirect_url: `/listas/${id}`,
+          },
+        }))
+      )
+    }
     fetchData()
   }
 

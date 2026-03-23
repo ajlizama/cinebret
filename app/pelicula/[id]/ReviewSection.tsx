@@ -165,7 +165,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
           user_id: review.user_id,
           type: 'like',
           from_user_id: user.id,
-          review_id: review.id,
+          meta: { review_id: review.id, redirect_url: `/pelicula/${peliculaId}` },
         })
       }
     }

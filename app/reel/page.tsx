@@ -84,6 +84,18 @@ function markSessionDone(id: string) {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify([...set]))
   } catch {}
 }
+function unmarkSessionDone(id: string) {
+  try {
+    const set = getSessionDone(); set.delete(id)
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify([...set]))
+  } catch {}
+}
+function unsnoozeId(id: string) {
+  try {
+    const snoozed = getSnoozed(); delete snoozed[id]
+    localStorage.setItem(SNOOZE_KEY, JSON.stringify(snoozed))
+  } catch {}
+}
 
 function tiempoRelativo(iso: string) {
   const diff = Date.now() - new Date(iso).getTime()
@@ -588,11 +600,17 @@ function ReelCard({
   )
 }
 
+type LastAction = {
+  pelicula: Pelicula
+  action: 'left' | 'right' | 'vista' | 'watchlist'
+}
+
 export default function ReelPage() {
   const { user } = useAuth()
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
   const [cargando, setCargando] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [lastAction, setLastAction] = useState<LastAction | null>(null)
 
   useEffect(() => {
     const visto = localStorage.getItem('reel_onboarding')
@@ -668,13 +686,15 @@ export default function ReelPage() {
       if (prev.length === 0) return prev
       const [top, ...rest] = prev
       if (dir === 'right') {
+        setLastAction({ pelicula: top, action: 'right' })
         markSessionDone(top.id)
         if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, watchlist: true }, { onConflict: 'user_id,pelicula_id' }).then(() => {})
         return rest
       }
       if (dir === 'left') {
-        snoozeId(top.id) // persiste 30 días en localStorage
-        return rest      // desaparece del feed actual también
+        setLastAction({ pelicula: top, action: 'left' })
+        snoozeId(top.id)
+        return rest
       }
       if (dir === 'down') {
         const pos = Math.min(5, rest.length); const next = [...rest]; next.splice(pos, 0, top); return next
@@ -684,16 +704,33 @@ export default function ReelPage() {
   }, [user])
 
   const handleVista = useCallback((pelicula: Pelicula) => {
+    setLastAction({ pelicula, action: 'vista' })
     markSessionDone(pelicula.id)
     if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: pelicula.id, visto: true }, { onConflict: 'user_id,pelicula_id' }).then(() => {})
     setPeliculas(prev => prev.filter(p => p.id !== pelicula.id))
   }, [user])
 
   const handleWatchlist = useCallback((pelicula: Pelicula) => {
+    setLastAction({ pelicula, action: 'watchlist' })
     markSessionDone(pelicula.id)
     if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: pelicula.id, watchlist: true }, { onConflict: 'user_id,pelicula_id' }).then(() => {})
     setPeliculas(prev => prev.filter(p => p.id !== pelicula.id))
   }, [user])
+
+  const handleUndo = useCallback(() => {
+    if (!lastAction) return
+    const { pelicula, action } = lastAction
+    setPeliculas(prev => [pelicula, ...prev.filter(p => p.id !== pelicula.id)])
+    unmarkSessionDone(pelicula.id)
+    if (action === 'left') {
+      unsnoozeId(pelicula.id)
+    } else if (action === 'right' || action === 'watchlist') {
+      if (user) supabase.from('user_peliculas').update({ watchlist: false }).eq('user_id', user.id).eq('pelicula_id', pelicula.id).then(() => {})
+    } else if (action === 'vista') {
+      if (user) supabase.from('user_peliculas').update({ visto: false }).eq('user_id', user.id).eq('pelicula_id', pelicula.id).then(() => {})
+    }
+    setLastAction(null)
+  }, [lastAction, user])
 
   const onboardingDone = () => {
     localStorage.setItem('reel_onboarding', '1')
@@ -731,8 +768,14 @@ export default function ReelPage() {
           ))}
         </div>
 
-        <div className="flex items-center gap-8 mt-4">
+        <div className="flex items-center gap-5 mt-4">
           <button onClick={() => handleSwipe('left')} className="w-14 h-14 rounded-full bg-zinc-800 border border-red-500/50 flex items-center justify-center text-2xl hover:bg-red-950/40 transition-colors">✕</button>
+          <button
+            onClick={handleUndo}
+            disabled={!lastAction}
+            className="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-600 flex items-center justify-center text-lg hover:bg-zinc-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            title="Deshacer"
+          >↩</button>
           <button onClick={() => handleSwipe('down')} className="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-600 flex items-center justify-center text-lg hover:bg-zinc-700 transition-colors">↓</button>
           <button onClick={() => handleSwipe('right')} className="w-14 h-14 rounded-full bg-zinc-800 border border-emerald-500/50 flex items-center justify-center text-2xl hover:bg-emerald-950/40 transition-colors">♥</button>
         </div>

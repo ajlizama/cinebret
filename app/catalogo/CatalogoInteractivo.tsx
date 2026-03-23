@@ -445,6 +445,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
   const [mostrarFiltrosAvanzados, setMostrarFiltrosAvanzados] = useState(false)
+  const [vistaMode, setVistaMode] = useState<'grilla' | 'lista'>('grilla')
   const [showCuestionario, setShowCuestionario] = useState(false)
   const [prefKey, setPrefKey] = useState(0)
   const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number } | null>(null)
@@ -704,6 +705,17 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           <div className="flex items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-3">
               <h2 className="text-lg font-bold text-white">Catálogo</h2>
+              {/* Toggle Grilla / Lista */}
+              <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
+                <button onClick={() => setVistaMode('grilla')}
+                  className={`px-3 py-1 transition-colors ${vistaMode === 'grilla' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
+                  Grilla
+                </button>
+                <button onClick={() => setVistaMode('lista')}
+                  className={`px-3 py-1 transition-colors ${vistaMode === 'lista' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
+                  Lista
+                </button>
+              </div>
               <p className="text-sm text-zinc-500">{peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}</p>
               <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
                 <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-[10px] ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
@@ -726,93 +738,175 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
       </div>
 
-      {/* ── GRILLA con expansión full-width ── */}
+      {/* ── CONTENIDO: GRILLA o LISTA ── */}
       <div className="max-w-7xl mx-auto px-3 md:px-6 pb-6">
-        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 grid-flow-row-dense items-start">
-          {peliculasPagina.map(pelicula => {
-            const isExpanded = expandida === pelicula.id
-            const up = userPeliculas[pelicula.id]
-            const platsActivas = PLATAFORMAS.filter(pl => pelicula.plataformas.includes(pl.id))
-            const oscarGano = pelicula.oscars?.toLowerCase().startsWith('ganó')
-            const oscarNum = pelicula.oscars?.match(/\d+/)?.[0]
 
-            return (
-              <React.Fragment key={pelicula.id}>
-                {/* Poster card */}
-                <div
-                  onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
-                  className={`relative rounded-xl overflow-hidden cursor-pointer group bg-zinc-800 shadow-lg hover:shadow-2xl transition-all ${isExpanded ? 'ring-2 ring-yellow-400' : ''}`}
-                  style={{ aspectRatio: '2/3' }}
-                >
-                  {pelicula.poster_path ? (
-                    <Image src={`https://image.tmdb.org/t/p/w342${pelicula.poster_path}`} alt={pelicula.titulo_ingles || pelicula.titulo} fill
-                      className={`object-cover transition-transform duration-500 ${isExpanded ? '' : 'group-hover:scale-105'}`} sizes="(max-width: 768px) 50vw, 25vw" />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-zinc-800"><span className="text-zinc-600 text-5xl">🎬</span></div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent" />
+        {vistaMode === 'grilla' ? (
+          /* ── GRILLA con expansión full-width ── */
+          <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 grid-flow-row-dense items-start">
+            {peliculasPagina.map(pelicula => {
+              const isExpanded = expandida === pelicula.id
+              const up = userPeliculas[pelicula.id]
+              const platsActivas = PLATAFORMAS.filter(pl => pelicula.plataformas.includes(pl.id))
+              const oscarGano = pelicula.oscars?.toLowerCase().startsWith('ganó')
+              const oscarNum = pelicula.oscars?.match(/\d+/)?.[0]
 
-                  {/* Top-left badges */}
-                  <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
-                    {pelicula.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none shadow">CB</span>}
-                    {pelicula.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/70 px-1.5 py-0.5 rounded leading-none font-bold shadow">★</span>}
-                  </div>
-
-                  {/* User actions hover */}
-                  {user && (
-                    <div className="absolute top-2 right-2 flex flex-col gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={e => e.stopPropagation()}>
-                      <button onClick={e => toggleVisto(pelicula.id, e)}
-                        className={`w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-white/70 bg-black/60 text-white hover:border-emerald-400'}`}>✓</button>
-                      <button onClick={e => toggleWatchlist(pelicula.id, e)}
-                        className={`w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-white/70 bg-black/60 text-white hover:border-yellow-400'}`}>★</button>
+              return (
+                <React.Fragment key={pelicula.id}>
+                  <div
+                    onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
+                    className={`relative rounded-xl overflow-hidden cursor-pointer group bg-zinc-800 shadow-lg hover:shadow-2xl transition-all ${isExpanded ? 'ring-2 ring-yellow-400' : ''}`}
+                    style={{ aspectRatio: '2/3' }}
+                  >
+                    {pelicula.poster_path ? (
+                      <Image src={`https://image.tmdb.org/t/p/w342${pelicula.poster_path}`} alt={pelicula.titulo_ingles || pelicula.titulo} fill
+                        className={`object-cover transition-transform duration-500 ${isExpanded ? '' : 'group-hover:scale-105'}`} sizes="(max-width: 768px) 50vw, 25vw" />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-zinc-800"><span className="text-zinc-600 text-5xl">🎬</span></div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent" />
+                    <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+                      {pelicula.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none shadow">CB</span>}
+                      {pelicula.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/70 px-1.5 py-0.5 rounded leading-none font-bold shadow">★</span>}
                     </div>
-                  )}
-
-                  {/* Bottom overlay */}
-                  <div className="absolute inset-x-0 bottom-0 p-3 z-10">
-                    <div className="flex items-end justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        {platsActivas.length > 0 && (
-                          <div className="flex gap-1 mb-2 flex-wrap">
-                            {platsActivas.map(pl => (
-                              <div key={pl.id} className="rounded bg-white px-1 py-0.5 flex items-center">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
-                              </div>
-                            ))}
+                    {user && (
+                      <div className="absolute top-2 right-2 flex flex-col gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={e => e.stopPropagation()}>
+                        <button onClick={e => toggleVisto(pelicula.id, e)}
+                          className={`w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-white/70 bg-black/60 text-white hover:border-emerald-400'}`}>✓</button>
+                        <button onClick={e => toggleWatchlist(pelicula.id, e)}
+                          className={`w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-white/70 bg-black/60 text-white hover:border-yellow-400'}`}>★</button>
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 p-3 z-10">
+                      <div className="flex items-end justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          {platsActivas.length > 0 && (
+                            <div className="flex gap-1 mb-2 flex-wrap">
+                              {platsActivas.map(pl => (
+                                <div key={pl.id} className="rounded bg-white px-1 py-0.5 flex items-center">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          <p className="text-white font-bold text-sm md:text-base leading-tight line-clamp-2">{pelicula.titulo_ingles || pelicula.titulo}</p>
+                          <div className="flex items-center gap-2 mt-1 flex-wrap">
+                            {pelicula.anio && <span className="text-zinc-300 text-xs md:text-sm">{pelicula.anio}</span>}
+                            {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs md:text-sm">⭐ {pelicula.nota_imdb}</span>}
+                          </div>
+                          {pelicula.categoria && <p className="text-zinc-400 text-[11px] md:text-xs mt-1 leading-tight">{pelicula.categoria}</p>}
+                        </div>
+                        {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                          <div className="shrink-0 self-end flex flex-col items-center">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/oscar.png" alt="Oscar" className={`h-9 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
+                            {oscarNum && <span className={`text-xs font-bold leading-none -mt-1 ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
                           </div>
                         )}
-                        <p className="text-white font-bold text-sm md:text-base leading-tight line-clamp-2">{pelicula.titulo_ingles || pelicula.titulo}</p>
-                        <div className="flex items-center gap-2 mt-1 flex-wrap">
-                          {pelicula.anio && <span className="text-zinc-300 text-xs md:text-sm">{pelicula.anio}</span>}
-                          {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs md:text-sm">⭐ {pelicula.nota_imdb}</span>}
-                        </div>
-                        {pelicula.categoria && <p className="text-zinc-400 text-[11px] md:text-xs mt-1 leading-tight">{pelicula.categoria}</p>}
                       </div>
-                      {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                        <div className="shrink-0 self-end flex flex-col items-center">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src="/oscar.png" alt="Oscar" className={`h-9 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
-                          {oscarNum && <span className={`text-xs font-bold leading-none -mt-1 ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
-                        </div>
-                      )}
                     </div>
                   </div>
-                </div>
+                  {isExpanded && (
+                    <PanelExpandido p={pelicula} up={up} user={user}
+                      generosFiltro={generosFiltro} setGenerosFiltro={setGenerosFiltro}
+                      setExpandida={setExpandida} toggleVisto={toggleVisto}
+                      toggleWatchlist={toggleWatchlist} setRating={setRatingFn} />
+                  )}
+                </React.Fragment>
+              )
+            })}
+          </div>
+        ) : (
+          /* ── LISTA ── */
+          <div ref={gridRef} className="space-y-1">
+            {peliculasPagina.map(pelicula => {
+              const isExpanded = expandida === pelicula.id
+              const up = userPeliculas[pelicula.id]
+              const platsActivas = PLATAFORMAS.filter(pl => pelicula.plataformas.includes(pl.id))
+              const oscarGano = pelicula.oscars?.toLowerCase().startsWith('ganó')
 
-                {/* Full-width expansion panel */}
-                {isExpanded && (
-                  <PanelExpandido
-                    p={pelicula} up={up} user={user}
-                    generosFiltro={generosFiltro} setGenerosFiltro={setGenerosFiltro}
-                    setExpandida={setExpandida} toggleVisto={toggleVisto}
-                    toggleWatchlist={toggleWatchlist} setRating={setRatingFn}
-                  />
-                )}
-              </React.Fragment>
-            )
-          })}
-        </div>
+              return (
+                <React.Fragment key={pelicula.id}>
+                  <div
+                    onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors ${isExpanded ? 'bg-zinc-800 ring-1 ring-yellow-400/50' : 'hover:bg-zinc-900'}`}
+                  >
+                    {/* Poster mini */}
+                    <div className="relative w-10 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+                      {pelicula.poster_path && (
+                        <Image src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`} alt={pelicula.titulo_ingles || pelicula.titulo} fill className="object-cover" sizes="40px" />
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        {pelicula.es_review_autor && <span className="font-serif italic font-bold text-[9px] bg-yellow-400 text-zinc-950 px-1 py-0.5 rounded leading-none">CB</span>}
+                        {pelicula.sello_bret && <span className="text-[9px] border border-emerald-400 text-emerald-400 px-1 py-0.5 rounded leading-none font-bold">★</span>}
+                        <span className="text-white text-sm font-semibold truncate">{pelicula.titulo_ingles || pelicula.titulo}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-zinc-500 mt-0.5">
+                        {pelicula.anio && <span>{pelicula.anio}</span>}
+                        {pelicula.generos.length > 0 && <span className="truncate max-w-32">{pelicula.generos.slice(0, 2).join(', ')}</span>}
+                        {pelicula.categoria && <span className="hidden md:inline text-zinc-600">{pelicula.categoria}</span>}
+                      </div>
+                    </div>
+
+                    {/* Ratings */}
+                    <div className="hidden md:flex items-center gap-3 shrink-0">
+                      {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-sm">⭐ {pelicula.nota_imdb}</span>}
+                      {pelicula.rt_score != null && <span className="text-red-400 text-xs">🍅 {pelicula.rt_score}%</span>}
+                    </div>
+
+                    {/* Plataformas */}
+                    <div className="hidden md:flex items-center gap-1 shrink-0">
+                      {platsActivas.map(pl => (
+                        <div key={pl.id} className="rounded bg-white px-1 py-0.5 flex items-center">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={pl.logo} alt={pl.nombre} className="h-3 w-auto object-contain" />
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Oscar */}
+                    {pelicula.oscars && pelicula.oscars !== 'N/A' && (
+                      <div className="hidden md:flex items-center gap-0.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/oscar.png" alt="Oscar" className={`h-6 w-auto ${oscarGano ? '' : 'opacity-30'}`} />
+                      </div>
+                    )}
+
+                    {/* IMDB mobile */}
+                    <div className="md:hidden shrink-0">
+                      {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs">⭐ {pelicula.nota_imdb}</span>}
+                    </div>
+
+                    {/* User actions */}
+                    {user && (
+                      <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
+                        <button onClick={e => toggleVisto(pelicula.id, e)}
+                          className={`w-6 h-6 rounded-full border text-[10px] font-bold flex items-center justify-center transition-colors ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-600 text-zinc-600 hover:border-emerald-400'}`}>✓</button>
+                        <button onClick={e => toggleWatchlist(pelicula.id, e)}
+                          className={`w-6 h-6 rounded-full border text-[10px] font-bold flex items-center justify-center transition-colors ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-600 text-zinc-600 hover:border-yellow-400'}`}>★</button>
+                      </div>
+                    )}
+
+                    <span className="text-zinc-600 text-xs shrink-0">{isExpanded ? '▲' : '▼'}</span>
+                  </div>
+
+                  {/* Expansion — same panel */}
+                  {isExpanded && (
+                    <PanelExpandido p={pelicula} up={up} user={user}
+                      generosFiltro={generosFiltro} setGenerosFiltro={setGenerosFiltro}
+                      setExpandida={setExpandida} toggleVisto={toggleVisto}
+                      toggleWatchlist={toggleWatchlist} setRating={setRatingFn} />
+                  )}
+                </React.Fragment>
+              )
+            })}
+          </div>
+        )}
 
         {/* Paginación */}
         {totalPaginas > 1 && (

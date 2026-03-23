@@ -628,7 +628,7 @@ export default function ReelPage() {
         </div>
 
         {/* ── Bottom action buttons (overlapping poster) ── */}
-        <div className="flex items-end gap-6 -mt-20 relative z-10">
+        <div className="flex items-start gap-6 -mt-20 relative z-10">
           <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-1">
             <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-3xl shadow-lg backdrop-blur-sm">✕</div>
             <span className="text-red-400 text-[10px] font-semibold leading-tight text-center">No me<br/>interesa</span>

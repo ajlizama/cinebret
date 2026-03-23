@@ -133,11 +133,12 @@ function PanelExpandido({
   return (
     <div id={`expand-${p.id}`} className="col-span-2 md:col-span-4 rounded-2xl overflow-hidden my-2 shadow-2xl scroll-mt-28" onClick={e => e.stopPropagation()}>
       <div className="relative bg-zinc-900">
-        {/* Blurred backdrop */}
+        {/* Blurred poster backdrop */}
         {p.poster_path && (
           <div className="absolute inset-0 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover blur-3xl opacity-15 scale-110" />
+            <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover blur-2xl opacity-25 scale-125" />
+            <div className="absolute inset-0 bg-zinc-950/70" />
           </div>
         )}
 

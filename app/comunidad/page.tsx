@@ -454,7 +454,7 @@ export default function ComunidadPage() {
       {/* ── HERO ── */}
       <div className="relative overflow-hidden" style={{ height: '300px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/comunidad-fondo.png" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
+        <img src="/comunidad-fondo.png" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_40%]" />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
         <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
           <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-1.5 tracking-tight">

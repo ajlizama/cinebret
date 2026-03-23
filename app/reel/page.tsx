@@ -611,12 +611,21 @@ export default function ReelPage() {
       ;(data ?? []).forEach((r: any) => excluidos.add(r.pelicula_id))
     }
 
-    const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma').eq('activo', true)
-    const platMap: Record<string, string[]> = {}
+    // Obtener la fecha más reciente del catálogo para no acumular entradas históricas
+    const { data: latestFecha } = await supabase
+      .from('catalogos').select('fecha').eq('activo', true)
+      .order('fecha', { ascending: false }).limit(1).maybeSingle()
+    const fechaQuery = latestFecha?.fecha ?? new Date().toISOString().split('T')[0]
+
+    const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma')
+      .eq('activo', true).eq('fecha', fechaQuery)
+    const platSets: Record<string, Set<string>> = {}
     ;(cats ?? []).forEach((c: any) => {
-      if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
-      if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
+      if (!platSets[c.pelicula_id]) platSets[c.pelicula_id] = new Set()
+      platSets[c.pelicula_id].add(c.plataforma)
     })
+    const platMap: Record<string, string[]> = {}
+    Object.entries(platSets).forEach(([id, set]) => { platMap[id] = [...set] })
     const ids = Object.keys(platMap).filter(id => !excluidos.has(id))
     if (ids.length === 0) { setCargando(false); return }
 

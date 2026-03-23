@@ -628,14 +628,14 @@ export default function ReelPage() {
         </div>
 
         {/* ── Bottom action buttons (overlapping poster) ── */}
-        <div className="flex items-end gap-6 -mt-12 relative z-10">
+        <div className="flex items-end gap-6 -mt-20 relative z-10">
           <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-2xl shadow-lg backdrop-blur-sm">✕</div>
+            <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-3xl shadow-lg backdrop-blur-sm">✕</div>
             <span className="text-red-400 text-[10px] font-semibold leading-tight text-center">No me<br/>interesa</span>
           </button>
           <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm">
-              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
+            <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm">
+              <svg width="26" height="26" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
@@ -643,7 +643,7 @@ export default function ReelPage() {
             <span className="text-blue-400 text-[10px] font-semibold">Ya la vi</span>
           </button>
           <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-2xl shadow-lg backdrop-blur-sm">♥</div>
+            <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-3xl shadow-lg backdrop-blur-sm">♥</div>
             <span className="text-pink-400 text-[10px] font-semibold">Watchlist</span>
           </button>
         </div>

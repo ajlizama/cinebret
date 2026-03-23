@@ -448,6 +448,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [anioHasta, setAnioHasta] = useState<string>('')
   const [soloReviews, setSoloReviews] = useState(false)
   const [soloSello, setSoloSello] = useState(false)
+  const [filtroVistas, setFiltroVistas] = useState<'todas' | 'vistas' | 'no_vistas'>('todas')
+  const [soloWatchlist, setSoloWatchlist] = useState(false)
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
@@ -526,6 +528,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         (actoresFiltro.length === 0 || actoresFiltro.some(a => (p.actores || '').includes(a))) &&
         (compositoresFiltro.length === 0 || compositoresFiltro.includes(p.compositor || '')) &&
         (!soloReviews || p.es_review_autor) && (!soloSello || p.sello_bret) &&
+        (filtroVistas === 'todas' || (filtroVistas === 'vistas' ? userPeliculas[p.id]?.visto : !userPeliculas[p.id]?.visto)) &&
+        (!soloWatchlist || userPeliculas[p.id]?.watchlist) &&
         matchOscarFiltro(p, oscarsFiltro) &&
         (!anioDesde || (p.anio ?? 0) >= Number(anioDesde)) &&
         (!anioHasta || (p.anio ?? 9999) <= Number(anioHasta))
@@ -543,14 +547,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
   const hayFiltros = busqueda || plataformasFiltro.length > 0 || categoriasFiltro.length > 0 ||
     generosFiltro.length > 0 || directoresFiltro.length > 0 || actoresFiltro.length > 0 ||
-    compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || anioDesde || anioHasta
+    compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || filtroVistas !== 'todas' || soloWatchlist || anioDesde || anioHasta
 
-  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, oscarsFiltro, soloReviews, soloSello, orden])
+  useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, oscarsFiltro, soloReviews, soloSello, filtroVistas, soloWatchlist, orden])
 
   const limpiarFiltros = () => {
     setBusqueda(''); setPlataformasFiltro([]); setCategoriasFiltro([]); setGenerosFiltro([])
     setDirectoresFiltro([]); setActoresFiltro([]); setCompositoresFiltro([])
-    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setAnioDesde(''); setAnioHasta(''); setPagina(0)
+    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setFiltroVistas('todas'); setSoloWatchlist(false); setAnioDesde(''); setAnioHasta(''); setPagina(0)
   }
 
   const POR_PAGINA = 200
@@ -648,6 +652,17 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                 <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
               </div>
               <div className="flex items-center flex-wrap gap-3 pt-1">
+                {/* Todas / Vistas / No Vistas */}
+                <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
+                  {(['todas', 'vistas', 'no_vistas'] as const).map(v => (
+                    <button key={v} onClick={() => setFiltroVistas(v)}
+                      className={`px-3 py-1.5 transition-colors ${filtroVistas === v ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
+                      {v === 'todas' ? 'Todas' : v === 'vistas' ? 'Vistas' : 'No vistas'}
+                    </button>
+                  ))}
+                </div>
+                {/* Watchlist */}
+                <button onClick={() => setSoloWatchlist(!soloWatchlist)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloWatchlist ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>Watchlist</button>
                 <button onClick={() => setSoloReviews(!soloReviews)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloReviews ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>Solo reviews CineBret</button>
                 <button onClick={() => setSoloSello(!soloSello)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloSello ? 'bg-emerald-500 text-white border-emerald-500 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>Solo recomendadas</button>
                 <div className="flex items-center gap-2 md:ml-auto">

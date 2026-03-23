@@ -17,7 +17,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CineBret — Buscador y recomendador de películas",
-  description: "Descubre, recomienda y comparte las mejores películas con tus amigos",
+  description: "Descubre, recomienda y comparte las mejores películas disponibles en streaming en Chile. Recomendaciones personalizadas, reviews y comunidad cinéfila.",
+  metadataBase: new URL("https://cinebret.cl"),
+  openGraph: {
+    title: "CineBret — Buscador y recomendador de películas",
+    description: "Descubre, recomienda y comparte las mejores películas disponibles en streaming en Chile.",
+    url: "https://cinebret.cl",
+    siteName: "CineBret",
+    type: "website",
+    images: [{ url: "/logo-oficial.png" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "CineBret",
+    description: "Buscador y recomendador inteligente de películas en streaming",
+  },
   icons: {
     icon: "/logo-pequeno.png",
     apple: "/logo-pequeno.png",

@@ -259,7 +259,7 @@ function PanelExpandido({
                 <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
                   className="text-xs text-white bg-zinc-800 rounded-lg px-3 py-1.5">▶ Tráiler</a>
               )}
-              {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-yellow-500 hover:text-yellow-300"><svg className="w-5 h-3.5" viewBox="0 0 64 32" fill="currentColor"><path d="M0 0h8v32H0zm13 0h7l3 12 3-12h7v32h-6V12l-3 11h-2l-3-11v19h-6zm26 0h12c3 0 5 1 6 3s2 5 2 9v8c0 4-1 7-2 9s-3 3-6 3H39zm7 6v20h3c1 0 2-1 2-2V8c0-1-1-2-2-2zm17-6h8c4 0 6 1 7 4 1 2 1 5 1 8 0 4-1 6-3 7 2 1 3 4 3 8v5c0 0 0 1 0 0h-7v-7c0-3-1-5-3-5h-1v12h-5zm5 6v8h1c2 0 3-1 3-4s-1-4-3-4z"/></svg>IMDb</a>}
+              {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-300"><svg className="w-10 h-5" viewBox="0 0 64 32" fill="currentColor"><path d="M0 0h8v32H0zm13 0h7l3 12 3-12h7v32h-6V12l-3 11h-2l-3-11v19h-6zm26 0h12c3 0 5 1 6 3s2 5 2 9v8c0 4-1 7-2 9s-3 3-6 3H39zm7 6v20h3c1 0 2-1 2-2V8c0-1-1-2-2-2zm17-6h8c4 0 6 1 7 4 1 2 1 5 1 8 0 4-1 6-3 7 2 1 3 4 3 8v5c0 0 0 1 0 0h-7v-7c0-3-1-5-3-5h-1v12h-5zm5 6v8h1c2 0 3-1 3-4s-1-4-3-4z"/></svg></a>}
               <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-green-500 hover:text-green-300"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.622.622 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.519.781.781 0 01.519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 01.257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.794c3.527-1.07 9.394-.863 13.098 1.382a.937.937 0 01-.938 1.569z"/></svg>Soundtrack</a>
               <AgregarAListaButton peliculaId={p.id} />
             </div>
@@ -396,7 +396,7 @@ function PanelExpandido({
                   <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-sm text-white bg-black/40 backdrop-blur-sm hover:bg-black/60 border border-zinc-600 rounded-lg px-3 py-1.5 transition-colors">▶ Reproducir tráiler</a>
                 )}
-                {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-yellow-400 hover:text-yellow-300 drop-shadow"><svg className="w-5 h-3.5" viewBox="0 0 64 32" fill="currentColor"><path d="M0 0h8v32H0zm13 0h7l3 12 3-12h7v32h-6V12l-3 11h-2l-3-11v19h-6zm26 0h12c3 0 5 1 6 3s2 5 2 9v8c0 4-1 7-2 9s-3 3-6 3H39zm7 6v20h3c1 0 2-1 2-2V8c0-1-1-2-2-2zm17-6h8c4 0 6 1 7 4 1 2 1 5 1 8 0 4-1 6-3 7 2 1 3 4 3 8v5c0 0 0 1 0 0h-7v-7c0-3-1-5-3-5h-1v12h-5zm5 6v8h1c2 0 3-1 3-4s-1-4-3-4z"/></svg>IMDb</a>}
+                {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-yellow-400 hover:text-yellow-300 drop-shadow"><svg className="w-10 h-5" viewBox="0 0 64 32" fill="currentColor"><path d="M0 0h8v32H0zm13 0h7l3 12 3-12h7v32h-6V12l-3 11h-2l-3-11v19h-6zm26 0h12c3 0 5 1 6 3s2 5 2 9v8c0 4-1 7-2 9s-3 3-6 3H39zm7 6v20h3c1 0 2-1 2-2V8c0-1-1-2-2-2zm17-6h8c4 0 6 1 7 4 1 2 1 5 1 8 0 4-1 6-3 7 2 1 3 4 3 8v5c0 0 0 1 0 0h-7v-7c0-3-1-5-3-5h-1v12h-5zm5 6v8h1c2 0 3-1 3-4s-1-4-3-4z"/></svg></a>}
                 <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-green-400 hover:text-green-300 drop-shadow"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.622.622 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.519.781.781 0 01.519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 01.257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.794c3.527-1.07 9.394-.863 13.098 1.382a.937.937 0 01-.938 1.569z"/></svg>Soundtrack</a>
                 <AgregarAListaButton peliculaId={p.id} />
               </div>
@@ -836,7 +836,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-zinc-900 text-xs text-zinc-500 font-medium uppercase tracking-wide">
-                    <th className="text-left px-4 py-3 w-72">Película</th>
+                    <th className="text-left px-4 py-3 w-80">Película</th>
                     <th className="text-center px-2 py-3 w-16">Año</th>
                     <th className="text-center px-2 py-3 w-16">IMDB</th>
                     <th className="text-center px-3 py-3 w-48">Géneros</th>
@@ -857,18 +857,18 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                           onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
                           className={`cursor-pointer border-t border-zinc-800/60 transition-colors ${isExpanded ? 'bg-zinc-800' : 'hover:bg-zinc-900/60'}`}
                         >
-                          <td className="px-4 py-2.5">
+                          <td className="px-4 py-2">
                             <div className="flex items-center gap-3">
                               <span className="text-zinc-600 text-xs">{isExpanded ? '▲' : '▼'}</span>
-                              <div className="relative w-9 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
-                                {pelicula.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`} alt="" fill className="object-cover" sizes="36px" />}
+                              <div className="relative w-[72px] shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+                                {pelicula.poster_path && <Image src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`} alt="" fill className="object-cover" sizes="72px" />}
                               </div>
                               <div className="min-w-0">
-                                <div className="flex items-center gap-1.5">
-                                  {pelicula.es_review_autor && <span className="font-serif italic font-bold text-[9px] bg-yellow-400 text-zinc-950 px-1 py-0.5 rounded leading-none">CB</span>}
-                                  {pelicula.sello_bret && <span className="text-[9px] border border-emerald-400 text-emerald-400 px-1 py-0.5 rounded leading-none font-bold">★</span>}
-                                  <span className="text-white font-semibold truncate max-w-52 block">{pelicula.titulo_ingles || pelicula.titulo}</span>
+                                <div className="flex items-center gap-1.5 mb-0.5">
+                                  {pelicula.es_review_autor && <span className="font-serif italic font-bold text-[10px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none">CB</span>}
+                                  {pelicula.sello_bret && <span className="text-[10px] border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded leading-none font-bold">★</span>}
                                 </div>
+                                <span className="text-white font-semibold text-sm truncate max-w-52 block">{pelicula.titulo_ingles || pelicula.titulo}</span>
                                 {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
                                   <span className="text-xs text-zinc-500 truncate max-w-52 block">{pelicula.titulo}</span>
                                 )}
@@ -935,25 +935,25 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     >
                       <div className="flex gap-3">
                         {/* Poster */}
-                        <div className="relative w-16 shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
-                          {pelicula.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${pelicula.poster_path}`} alt="" fill className="object-cover" sizes="64px" />}
+                        <div className="relative w-28 shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+                          {pelicula.poster_path && <Image src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`} alt="" fill className="object-cover" sizes="112px" />}
                         </div>
                         {/* Info */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0">
-                              <p className="text-white font-semibold text-sm leading-snug">{pelicula.titulo_ingles || pelicula.titulo}</p>
+                              <p className="text-white font-semibold text-base leading-snug">{pelicula.titulo_ingles || pelicula.titulo}</p>
                               {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                                <p className="text-zinc-500 text-xs">{pelicula.titulo}</p>
+                                <p className="text-zinc-500 text-xs mt-0.5">{pelicula.titulo}</p>
                               )}
                             </div>
                             <span className="text-zinc-600 text-xs shrink-0 mt-1">{isExpanded ? '▲' : '▼'}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-xs mt-1 flex-wrap">
+                          <div className="flex items-center gap-2 text-sm mt-1.5 flex-wrap">
                             {pelicula.anio && <span className="text-zinc-400">{pelicula.anio}</span>}
                             {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold">⭐ {pelicula.nota_imdb}</span>}
                           </div>
-                          {pelicula.categoria && <p className="text-zinc-500 text-xs mt-0.5">{pelicula.categoria}</p>}
+                          {pelicula.categoria && <p className="text-zinc-500 text-xs mt-1">{pelicula.categoria}</p>}
                         </div>
                       </div>
                       {/* All platforms row */}

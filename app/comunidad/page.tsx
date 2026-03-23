@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
-import ParaTi from './ParaTi'
+// ParaTi moved to home page (catalogo)
 import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 
@@ -110,8 +110,8 @@ function FeedCard({
       <div className="flex gap-3 px-4 pb-3">
         <Link href={`/pelicula/${item.pelicula_id}`} className="shrink-0">
           {item.poster_path && (
-            <div className="relative w-14 h-20 rounded-lg overflow-hidden bg-zinc-800">
-              <Image src={`https://image.tmdb.org/t/p/w92${item.poster_path}`} alt={item.titulo_ingles || item.titulo} fill className="object-cover" />
+            <div className="relative w-28 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+              <Image src={`https://image.tmdb.org/t/p/w154${item.poster_path}`} alt={item.titulo_ingles || item.titulo} fill className="object-cover" />
             </div>
           )}
         </Link>
@@ -554,11 +554,8 @@ export default function ComunidadPage() {
             )}
           </div>
 
-          {/* Para Ti (sidebar derecha en desktop, arriba en móvil) */}
+          {/* Sidebar derecha (espacio para contenido futuro) */}
           <div className="w-full lg:w-[480px] shrink-0 order-1 lg:order-2">
-            {preferenciasLoaded && (
-              <ParaTi key={paraTiKey} onEditPreferences={user ? () => setCuestionarioAbierto(true) : undefined} preferenciasExternas={preferencias} />
-            )}
           </div>
         </div>
       </div>

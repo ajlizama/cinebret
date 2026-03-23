@@ -131,7 +131,7 @@ function PanelExpandido({
   const oscarNum = p.oscars?.match(/\d+/)?.[0]
 
   return (
-    <div className="col-span-2 md:col-span-4 rounded-2xl overflow-hidden my-2 shadow-2xl" onClick={e => e.stopPropagation()}>
+    <div id={`expand-${p.id}`} className="col-span-2 md:col-span-4 rounded-2xl overflow-hidden my-2 shadow-2xl scroll-mt-28" onClick={e => e.stopPropagation()}>
       <div className="relative bg-zinc-900">
         {/* Blurred backdrop */}
         {p.poster_path && (
@@ -425,6 +425,16 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const peliculasPagina = peliculasFiltradas.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA)
   const filtrosAvanzadosCount = [...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length
 
+  // Auto-scroll to expanded panel
+  useEffect(() => {
+    if (expandida) {
+      setTimeout(() => {
+        const el = document.getElementById(`expand-${expandida}`)
+        el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }, 80)
+    }
+  }, [expandida])
+
   return (
     <>
       {/* ── HERO ── */}
@@ -450,20 +460,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
       </div>
 
-      {/* ── PARA TI (carousel) ── */}
-      {user && (
-        <div className="max-w-7xl mx-auto px-3 md:px-6 pt-6 pb-2">
-          <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} />
-        </div>
-      )}
-
-      {/* ── STICKY FILTROS ── */}
-      <div className="sticky top-24 z-20 bg-zinc-950 border-b border-zinc-800/60 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
-        <div className="max-w-7xl mx-auto px-3 md:px-6 pt-3 pb-3 space-y-3">
-          {/* Section title */}
-          <h2 className="text-lg font-bold text-white">Catálogo</h2>
-
-          {/* Mood categorías — 4 columnas iguales */}
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-6">
+        {/* ── ¿En qué mood estás? ── */}
+        <div className="mb-5">
+          <h2 className="text-base font-bold text-white mb-2">¿En qué mood estás?</h2>
           <div className="grid grid-cols-4 gap-2">
             {MOOD_CATS.map(cat => {
               const activa = categoriasFiltro.includes(cat.id)
@@ -478,8 +478,11 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               )
             })}
           </div>
+        </div>
 
-          {/* Plataformas + más filtros */}
+        {/* ── ¿Qué plataformas tienes? ── */}
+        <div className="mb-5">
+          <h2 className="text-base font-bold text-white mb-2">¿Qué plataformas tienes?</h2>
           <div className="flex flex-wrap items-center gap-2">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
@@ -504,7 +507,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
           {/* Panel filtros avanzados */}
           {mostrarFiltrosAvanzados && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
+            <div className="mt-3 bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
                 <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
@@ -526,10 +529,40 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               </div>
             </div>
           )}
+        </div>
 
-          {/* Contador + sort */}
-          <div className="flex items-center justify-between gap-3">
+        {/* ── Para Ti ── */}
+        <div className="mb-6 border-t border-zinc-800 pt-5">
+          {user ? (
+            <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} />
+          ) : (
+            <div>
+              <h2 className="text-base font-bold text-white mb-3">🎬 Para Ti</h2>
+              <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent border border-yellow-400/30 rounded-2xl p-5 flex flex-col md:flex-row items-center gap-4">
+                <div className="flex-1">
+                  <p className="text-white font-semibold text-sm md:text-base mb-1">
+                    ✨ Completa el cuestionario para recibir recomendaciones personalizadas
+                  </p>
+                  <p className="text-zinc-400 text-xs md:text-sm">
+                    Inicia sesión y cuéntanos tus gustos para descubrir películas hechas para ti
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowCuestionario(true)}
+                  className="shrink-0 bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold rounded-xl px-5 py-2.5 text-sm transition-colors"
+                >
+                  Completar cuestionario
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ── Catálogo ── */}
+        <div className="border-t border-zinc-800 pt-4 mb-4">
+          <div className="flex items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-3">
+              <h2 className="text-lg font-bold text-white">Catálogo</h2>
               <p className="text-sm text-zinc-500">{peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}</p>
               <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
                 <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-[10px] ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
@@ -553,7 +586,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       </div>
 
       {/* ── GRILLA con expansión full-width ── */}
-      <div className="max-w-7xl mx-auto px-3 md:px-6 py-6">
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pb-6">
         <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 grid-flow-row-dense items-start">
           {peliculasPagina.map(pelicula => {
             const isExpanded = expandida === pelicula.id

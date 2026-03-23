@@ -41,9 +41,10 @@ interface PreferenciasIniciales {
 }
 
 interface Props {
-  onComplete: () => void
+  onComplete: (prefs?: PreferenciasIniciales) => void
   onDismiss: () => void
   preferenciasIniciales?: PreferenciasIniciales | null
+  anonymous?: boolean
 }
 
 function useDebounce(value: string, delay: number): string {
@@ -172,7 +173,7 @@ function MovieSearchSlot({
   )
 }
 
-export default function CuestionarioOnboarding({ onComplete, onDismiss, preferenciasIniciales }: Props) {
+export default function CuestionarioOnboarding({ onComplete, onDismiss, preferenciasIniciales, anonymous }: Props) {
   const { user } = useAuth()
   const [birthYear, setBirthYear] = useState(preferenciasIniciales?.birth_year?.toString() ?? '')
   const [favSlots, setFavSlots] = useState<FavSlot[]>([
@@ -250,27 +251,29 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
   }
 
   const handleGuardar = async () => {
-    if (!user) return
     setGuardando(true)
     const favMovies = favSlots
       .filter(s => s.selected)
       .map(s => s.selected!.id)
 
-    await supabase.from('perfil_preferencias').upsert(
-      {
-        user_id: user.id,
-        birth_year: birthYear ? parseInt(birthYear, 10) : null,
-        fav_movies: favMovies,
-        generos_preferidos: generos,
-        mood_ranking: moods,
-        peso_critica: pesoCritica / 10,
-        peso_seguidores: pesoSeguidores / 10,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'user_id' }
-    )
+    const prefs: PreferenciasIniciales = {
+      birth_year: birthYear ? parseInt(birthYear, 10) : null,
+      fav_movies: favMovies,
+      generos_preferidos: generos,
+      mood_ranking: moods,
+      peso_critica: pesoCritica / 10,
+      peso_seguidores: anonymous ? 0 : pesoSeguidores / 10,
+    }
+
+    if (user && !anonymous) {
+      await supabase.from('perfil_preferencias').upsert(
+        { user_id: user.id, ...prefs, updated_at: new Date().toISOString() },
+        { onConflict: 'user_id' }
+      )
+    }
+
     setGuardando(false)
-    onComplete()
+    onComplete(prefs)
   }
 
   return (
@@ -411,7 +414,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
             </div>
 
             {/* Peso seguidores */}
-            <div className="space-y-2">
+            <div className={`space-y-2 ${anonymous ? 'opacity-40 pointer-events-none' : ''}`}>
               <p className="text-sm text-zinc-300">¿Cuánto te importa lo que ven tus seguidores?</p>
               <div className="flex justify-between text-xs text-zinc-500">
                 <span>No mucho</span>
@@ -427,6 +430,11 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
                 className="w-full accent-yellow-400"
               />
             </div>
+            {anonymous && (
+              <p className="text-xs text-yellow-400/80 -mt-1">
+                Inicia sesión para fortalecer tus gustos
+              </p>
+            )}
           </section>
 
           {/* Botones */}

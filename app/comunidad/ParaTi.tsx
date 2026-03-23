@@ -147,9 +147,9 @@ export default function ParaTi({
   const [sinPerfil, setSinPerfil] = useState(false)
 
   useEffect(() => {
-    if (!user) return
+    if (!user && !preferenciasExternas) return
     compute()
-  }, [user])
+  }, [user, preferenciasExternas])
 
   useEffect(() => {
     if (!user || recs.length === 0) return
@@ -186,29 +186,33 @@ export default function ParaTi({
     if (allCandidatoIds.length === 0) { setCargando(false); return }
 
     // 2. Vistas del usuario para excluir
-    const { data: vistasRaw } = await supabase
-      .from('user_peliculas')
-      .select('pelicula_id, rating')
-      .eq('user_id', user!.id)
-      .eq('visto', true)
-    const vistasSet = new Set((vistasRaw ?? []).map((v: any) => v.pelicula_id))
+    let vistasRaw: any[] = []
+    if (user) {
+      const { data } = await supabase
+        .from('user_peliculas')
+        .select('pelicula_id, rating')
+        .eq('user_id', user.id)
+        .eq('visto', true)
+      vistasRaw = data ?? []
+    }
+    const vistasSet = new Set(vistasRaw.map((v: any) => v.pelicula_id))
     const candidatoIds = allCandidatoIds.filter(id => !vistasSet.has(id))
     if (candidatoIds.length === 0) { setCargando(false); return }
 
     // 3. Preferencias: usar las pasadas por prop (ya frescas) o fetch desde Supabase
-    let perfil: UserProfile | null = preferenciasExternas !== undefined ? preferenciasExternas : null
-    if (preferenciasExternas === undefined) {
+    let perfil: UserProfile | null = preferenciasExternas !== undefined ? (preferenciasExternas ?? null) : null
+    if (preferenciasExternas === undefined && user) {
       const { data: prefData } = await supabase
         .from('perfil_preferencias')
         .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
-        .eq('user_id', user!.id)
+        .eq('user_id', user.id)
         .maybeSingle()
       perfil = prefData as UserProfile | null
     }
     const tienePerfilCompleto = !!perfil
 
     // Si no tiene perfil y no tiene historial, mostrar banner
-    const hasHistory = (vistasRaw ?? []).length >= 5
+    const hasHistory = vistasRaw.length >= 5
     if (!tienePerfilCompleto && !hasHistory) {
       setSinPerfil(true)
     } else {
@@ -234,11 +238,14 @@ export default function ParaTi({
 
     // 5. Señal de seguidores
     const followersMap: Record<string, number> = {}
-    const { data: followsData } = await supabase
-      .from('follows')
-      .select('following_id')
-      .eq('follower_id', user!.id)
-    const followingIds: string[] = (followsData ?? []).map((f: any) => f.following_id)
+    let followingIds: string[] = []
+    if (user) {
+      const { data: followsData } = await supabase
+        .from('follows')
+        .select('following_id')
+        .eq('follower_id', user.id)
+      followingIds = (followsData ?? []).map((f: any) => f.following_id)
+    }
 
     if (followingIds.length > 0) {
       for (let i = 0; i < followingIds.length; i += 50) {
@@ -279,7 +286,7 @@ export default function ParaTi({
 
     if (hasHistory) {
       const ratingMap: Record<string, number> = {}
-      ;(vistasRaw ?? []).forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
+      vistasRaw.forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
 
       const [{ data: pelisVistas }, { data: enrVistas }] = await Promise.all([
         supabase.from('peliculas').select('id, anio').in('id', Array.from(vistasSet)),
@@ -501,7 +508,7 @@ export default function ParaTi({
     setCargando(false)
   }
 
-  if (!user) return null
+  if (!user && !preferenciasExternas) return null
 
   const filtered = catFiltro ? recs.filter(r => r.categoria === catFiltro) : recs
   const displayed = filtered.slice(page * 25, (page + 1) * 25)

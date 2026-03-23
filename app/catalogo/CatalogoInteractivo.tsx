@@ -139,16 +139,15 @@ function PanelExpandido({
 
         {/* ── Upper section: poster left + info right WITH poster background ── */}
         <div className="relative overflow-hidden">
-          {/* Background poster image — visible, covers from title to right edge */}
+          {/* Background poster image — starts from ~40% left (title area), visible on right half */}
           {p.poster_path && (
-            <div className="absolute inset-0">
+            <div className="absolute inset-y-0 right-0 w-[65%] md:w-[55%]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt=""
-                className="w-full h-full object-cover object-top" />
-              {/* Dark overlay for readability — gradient from solid left to more visible right */}
-              <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/85 to-zinc-900/60" />
-              {/* Additional top/bottom fade */}
-              <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/40 via-transparent to-zinc-900/80" />
+                className="w-full h-full object-cover object-center" />
+              {/* Heavy dark overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/80 to-zinc-900/50" />
+              <div className="absolute inset-0 bg-zinc-900/40" />
             </div>
           )}
 
@@ -337,7 +336,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [pagina, setPagina] = useState(0)
   const [mostrarFiltrosAvanzados, setMostrarFiltrosAvanzados] = useState(false)
   const [showCuestionario, setShowCuestionario] = useState(false)
-  const [prefKey, setPrefKey] = useState(0) // force re-render ParaTi after cuestionario
+  const [prefKey, setPrefKey] = useState(0)
+  const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number } | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -538,6 +538,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <div className="mb-6 border-t border-zinc-800 pt-5">
           {user ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} />
+          ) : anonPrefs ? (
+            <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} preferenciasExternas={anonPrefs} />
           ) : (
             <div>
               <h2 className="text-base font-bold text-white mb-3">🎬 Para Ti</h2>
@@ -547,7 +549,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
                     ✨ Completa el cuestionario para recibir recomendaciones personalizadas
                   </p>
                   <p className="text-zinc-400 text-xs md:text-sm">
-                    Inicia sesión y cuéntanos tus gustos para descubrir películas hechas para ti
+                    Inicia sesión y cuéntanos tus gustos para descubrir aún mejores películas para ti
                   </p>
                 </div>
                 <button
@@ -691,7 +693,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       {/* ── Cuestionario modal ── */}
       {showCuestionario && (
         <CuestionarioOnboarding
-          onComplete={() => { setShowCuestionario(false); setPrefKey(k => k + 1) }}
+          anonymous={!user}
+          onComplete={(prefs) => {
+            setShowCuestionario(false)
+            if (prefs && !user) {
+              setAnonPrefs(prefs)
+            }
+            setPrefKey(k => k + 1)
+          }}
           onDismiss={() => setShowCuestionario(false)}
         />
       )}

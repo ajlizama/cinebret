@@ -602,7 +602,7 @@ export default function ReelPage() {
     <main className="min-h-screen bg-zinc-950 flex flex-col overflow-hidden">
       <Nav active="reel" />
       <div className="flex-1 flex flex-col items-center justify-center px-4 pb-2">
-        <div className="relative w-full max-w-sm" style={{ height: '75vh' }}>
+        <div className="relative w-full max-w-sm" style={{ height: '65vh' }}>
           {peliculas.slice(0, 3).map((p, i) => (
             <div key={p.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 10}px)`, zIndex: 3 - i }}>
               <ReelCard

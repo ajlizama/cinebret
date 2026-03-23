@@ -130,12 +130,16 @@ async function fetchCandidatosHoy(): Promise<string[]> {
   return Array.from(new Set(ids))
 }
 
+export type RecExport = Rec
+
 export default function ParaTi({
   onEditPreferences,
   preferenciasExternas,
+  onMovieExpand,
 }: {
   onEditPreferences?: () => void
   preferenciasExternas?: UserProfile | null
+  onMovieExpand?: (rec: Rec) => void
 }) {
   const { user, username: miUsername } = useAuth()
   const [recs, setRecs] = useState<Rec[]>([])
@@ -522,126 +526,54 @@ export default function ParaTi({
   }
 
   return (
-    <div className="mb-8">
-      <div className="flex items-center justify-between mb-4">
+    <div className="mb-4">
+      <div className="flex items-center justify-between mb-3">
         <h2 className="text-base font-bold text-white">🎬 Para ti</h2>
         {onEditPreferences && (
-          <button
-            type="button"
-            onClick={onEditPreferences}
-            className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
-          >
+          <button type="button" onClick={onEditPreferences}
+            className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors">
             ⚙️ Editar recomendaciones
           </button>
         )}
       </div>
 
-      {/* Banner sin perfil */}
       {sinPerfil && miUsername && (
-        <div className="mb-4 flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
+        <div className="mb-3 flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
           <span className="text-sm text-zinc-300">✨ Completa tu perfil para mejores recomendaciones</span>
-          <Link
-            href={`/perfil/${miUsername}`}
-            className="text-xs font-medium text-yellow-400 hover:text-yellow-300 transition-colors whitespace-nowrap ml-auto"
-          >
+          <Link href={`/perfil/${miUsername}`}
+            className="text-xs font-medium text-yellow-400 hover:text-yellow-300 transition-colors whitespace-nowrap ml-auto">
             Personalizar →
           </Link>
         </div>
       )}
 
-      {/* Filtros de categoría — grid 2×2 + botón Todas */}
-      <div className="mb-4 space-y-2">
-        <button
-          onClick={() => cambiarFiltro(null)}
-          className={`w-full py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-            !catFiltro ? 'bg-white text-zinc-950 border-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
-          }`}
-        >
-          Todas
-        </button>
-        <div className="grid grid-cols-2 gap-1.5">
-          {([
-            { key: "Pa'l domingo de bajón",                       emoji: '🛋️', label: "Pa'l domingo de bajón",                   grad: 'from-amber-500 to-orange-600',  dim: 'from-amber-950/60 to-orange-950/60 border-amber-800'  },
-            { key: "Pa' saltar del sillón",                       emoji: '⚡', label: "Pa' saltar del sillón",                   grad: 'from-violet-500 to-blue-600',   dim: 'from-violet-950/60 to-blue-950/60 border-violet-800'  },
-            { key: "Pa' quedar con el cerebro como licuadora",    emoji: '🤯', label: "Pa' quedar con el cerebro como licuadora", grad: 'from-rose-500 to-pink-600',     dim: 'from-rose-950/60 to-pink-950/60 border-rose-800'      },
-            { key: "Pa' llorar a moco tendido",                   emoji: '😭', label: "Pa' llorar a moco tendido",               grad: 'from-cyan-500 to-teal-600',     dim: 'from-cyan-950/60 to-teal-950/60 border-cyan-800'      },
-          ]).map(cat => {
-            const activa = catFiltro === cat.key
-            return (
-              <button
-                key={cat.key}
-                onClick={() => cambiarFiltro(cat.key)}
-                className={`h-12 px-2 rounded-xl border text-[11px] font-semibold leading-tight transition-all text-center flex flex-row items-center justify-center gap-1.5 bg-gradient-to-br ${
-                  activa ? `${cat.grad} border-transparent text-white shadow-lg` : `${cat.dim} text-zinc-300`
-                }`}
-              >
-                <span className="text-lg leading-none shrink-0">{cat.emoji}</span>
-                {cat.label}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
       {cargando ? (
         <p className="text-zinc-500 text-sm animate-pulse">Calculando recomendaciones...</p>
       ) : displayed.length === 0 ? (
-        <p className="text-zinc-500 text-sm">Sin películas para esta categoría.</p>
+        <p className="text-zinc-500 text-sm">Sin películas recomendadas aún.</p>
       ) : (
         <>
-          {/* Carrusel */}
-          <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-6 px-6">
+          <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
             {displayed.map(rec => {
-              const isExp = expandedId === rec.id
-              const us = userMap[rec.id] ?? { visto: false, watchlist: false, rating: null }
               const platsActivas = PLATAFORMAS.filter(p => rec.plataformas.includes(p.id))
-
               return (
-                <div
-                  key={rec.id}
-                  onClick={() => setExpandedId(isExp ? null : rec.id)}
-                  className="shrink-0 w-36 text-left cursor-pointer"
-                >
-                  <div className={`relative w-36 h-52 rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 transition-all ${
-                    isExp ? 'ring-yellow-400' : 'ring-transparent'
-                  }`}>
+                <div key={rec.id}
+                  onClick={() => onMovieExpand?.(rec)}
+                  className="shrink-0 w-36 text-left cursor-pointer">
+                  <div className="relative w-36 h-52 rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
                     {rec.poster_path
-                      ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" />
-                      : <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center leading-snug">{rec.titulo_ingles || rec.titulo}</span></div>
+                      ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" sizes="144px" />
+                      : <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center">{rec.titulo_ingles || rec.titulo}</span></div>
                     }
-                    {/* IMDB */}
                     {rec.nota_imdb && (
-                      <div className="absolute top-2 left-2 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
-                        ⭐ {rec.nota_imdb}
-                      </div>
+                      <div className="absolute top-2 left-2 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {rec.nota_imdb}</div>
                     )}
-                    {/* Vista + Watchlist buttons */}
-                    <div className="absolute top-2 right-2 flex flex-col gap-1" onClick={e => e.stopPropagation()}>
-                      <button
-                        onClick={() => upsert(rec.id, { visto: !us.visto })}
-                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                          us.visto ? 'bg-emerald-500 text-white' : 'bg-zinc-900/80 text-zinc-400 hover:bg-emerald-500/30 hover:text-emerald-400'
-                        }`}
-                        title={us.visto ? 'Quitar vista' : 'Marcar como vista'}
-                      >
-                        ✓
-                      </button>
-                      <button
-                        onClick={() => upsert(rec.id, { watchlist: !us.watchlist })}
-                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                          us.watchlist ? 'bg-yellow-400 text-zinc-950' : 'bg-zinc-900/80 text-zinc-400 hover:bg-yellow-400/30 hover:text-yellow-400'
-                        }`}
-                        title={us.watchlist ? 'Quitar watchlist' : 'Agregar a watchlist'}
-                      >
-                        ★
-                      </button>
-                    </div>
-                    {/* Plataformas */}
                     {platsActivas.length > 0 && (
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-6 pb-2 px-2">
                         <div className="flex items-center gap-1 flex-wrap">
                           {platsActivas.map(p => (
                             <div key={p.id} className="bg-white rounded px-1 py-0.5">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img src={p.logo} alt={p.nombre} className="h-3 w-auto object-contain block" />
                             </div>
                           ))}
@@ -649,200 +581,25 @@ export default function ParaTi({
                       </div>
                     )}
                   </div>
-                  <p className="text-white text-xs font-semibold leading-snug line-clamp-2 mb-0.5">
-                    {rec.titulo_ingles || rec.titulo}
-                  </p>
+                  <p className="text-white text-xs font-semibold leading-snug line-clamp-2 mb-0.5">{rec.titulo_ingles || rec.titulo}</p>
                   <p className="text-zinc-500 text-xs leading-snug line-clamp-1">{rec.razon}</p>
                 </div>
               )
             })}
           </div>
-
-          {/* Refresh / Ver otras */}
-          <div className="flex items-center justify-between mt-2 mb-1">
+          <div className="flex items-center justify-between mt-1">
             <p className="text-zinc-600 text-xs">{filtered.length} películas</p>
             <div className="flex gap-2">
               {page > 0 && (
-                <button
-                  type="button"
-                  onClick={() => { setPage(p => p - 1); setExpandedId(null) }}
-                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors"
-                >
-                  ← Anteriores
-                </button>
+                <button type="button" onClick={() => setPage(p => p - 1)}
+                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">← Anteriores</button>
               )}
               {hayMas && (
-                <button
-                  type="button"
-                  onClick={() => { setPage(p => p + 1); setExpandedId(null) }}
-                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors"
-                >
-                  🔄 Ver otras 25
-                </button>
+                <button type="button" onClick={() => setPage(p => p + 1)}
+                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">Ver otras 25 →</button>
               )}
             </div>
           </div>
-
-          {/* Panel expandido — idéntico al catálogo móvil */}
-          {expandedRec && (() => {
-            const us = userMap[expandedRec.id] ?? { visto: false, watchlist: false, rating: null }
-            const platsActivas = PLATAFORMAS.filter(p => expandedRec.plataformas.includes(p.id))
-            return (
-              <div className="mt-3 pt-3 border-t border-zinc-800 space-y-3">
-                {/* Acciones arriba */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <button
-                      type="button"
-                      onClick={() => upsert(expandedRec.id, { visto: !us.visto })}
-                      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
-                        us.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
-                      }`}
-                    >
-                      {us.visto ? '✓ Vista' : '○ Vista'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => upsert(expandedRec.id, { watchlist: !us.watchlist })}
-                      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
-                        us.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
-                      }`}
-                    >
-                      {us.watchlist ? '★ Watchlist' : '☆ Watchlist'}
-                    </button>
-                    {us.visto && (
-                      <select
-                        value={us.rating ?? ''}
-                        onChange={e => upsert(expandedRec.id, { visto: true, rating: e.target.value ? Number(e.target.value) : null })}
-                        className="bg-zinc-800 border border-zinc-700 rounded text-xs text-zinc-300 px-2 py-1.5 focus:outline-none"
-                      >
-                        <option value="">Tu rating —</option>
-                        {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}/10</option>)}
-                      </select>
-                    )}
-                  </div>
-                  <button type="button" onClick={() => setExpandedId(null)} className="text-zinc-600 text-xs">▲ colapsar</button>
-                </div>
-
-                {/* Poster + título + plataformas */}
-                <div className="flex gap-3 items-start">
-                  {expandedRec.poster_path && (
-                    <div className="relative w-20 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ height: 120 }}>
-                      <Image src={`https://image.tmdb.org/t/p/w154${expandedRec.poster_path}`} alt={expandedRec.titulo_ingles || expandedRec.titulo} fill className="object-cover" />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0 space-y-1.5">
-                    <p className="text-white text-sm font-semibold leading-snug">{expandedRec.titulo_ingles || expandedRec.titulo}</p>
-                    {expandedRec.titulo_ingles && expandedRec.titulo !== expandedRec.titulo_ingles && (
-                      <p className="text-zinc-500 text-xs">{expandedRec.titulo}</p>
-                    )}
-                    <div className="flex items-center gap-2 text-xs flex-wrap">
-                      {expandedRec.anio && <span className="text-zinc-400">{expandedRec.anio}</span>}
-                      {expandedRec.nota_imdb != null && <span className="font-bold text-yellow-400">⭐ {expandedRec.nota_imdb}</span>}
-                      {expandedRec.categoria && <span className="text-zinc-500">{expandedRec.categoria}</span>}
-                    </div>
-                    {platsActivas.length > 0 && (
-                      <div className="flex gap-1 flex-wrap">
-                        {platsActivas.map(p => (
-                          <div key={p.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: 20 }}>
-                            <img src={p.logo} alt={p.nombre} className="h-3.5 w-auto object-contain" />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Scores adicionales */}
-                {(expandedRec.rt_score != null || expandedRec.metacritic_score != null) && (
-                  <div className="flex gap-4 flex-wrap">
-                    {expandedRec.rt_score != null && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Rotten Tomatoes</p>
-                        <p className="text-sm font-bold text-red-400">🍅 {expandedRec.rt_score}%</p>
-                      </div>
-                    )}
-                    {expandedRec.metacritic_score != null && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Metacritic</p>
-                        <p className="text-sm font-bold text-green-400">{expandedRec.metacritic_score}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Runtime + Boxoffice */}
-                {(expandedRec.runtime != null || expandedRec.boxoffice != null) && (
-                  <div className="flex gap-6">
-                    {expandedRec.runtime != null && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Duración</p>
-                        <p className="text-sm text-zinc-200">{Math.floor(expandedRec.runtime / 60)}h {expandedRec.runtime % 60}min</p>
-                      </div>
-                    )}
-                    {expandedRec.boxoffice != null && (
-                      <div>
-                        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Taquilla</p>
-                        <p className="text-sm text-zinc-200">${(expandedRec.boxoffice / 1_000_000).toFixed(0)}M</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Oscars */}
-                {expandedRec.oscars && expandedRec.oscars !== 'N/A' && (
-                  <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Oscars</p>
-                    <p className="text-sm text-yellow-500">{expandedRec.oscars}</p>
-                  </div>
-                )}
-
-                {/* Equipo */}
-                <div className="space-y-2">
-                  {expandedRec.director && (
-                    <div>
-                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Director</p>
-                      <p className="text-sm text-zinc-200">{expandedRec.director}</p>
-                    </div>
-                  )}
-                  {expandedRec.compositor && (
-                    <div>
-                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Compositor</p>
-                      <p className="text-sm text-zinc-200">{expandedRec.compositor}</p>
-                    </div>
-                  )}
-                  {expandedRec.actores && (
-                    <div>
-                      <p className="text-xs text-zinc-500 uppercase tracking-wide mb-0.5">Reparto</p>
-                      <div className="flex flex-wrap gap-x-3 gap-y-1">
-                        {expandedRec.actores.split(',').map(a => (
-                          <span key={a.trim()} className="text-sm text-zinc-200">{a.trim()}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Links externos */}
-                <div className="flex flex-wrap gap-3 items-center">
-                  {expandedRec.imdb_id && (
-                    <a href={`https://www.imdb.com/title/${expandedRec.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300 transition-colors">IMDb ↗</a>
-                  )}
-                  {expandedRec.youtube_trailer_key && (
-                    <a href={`https://www.youtube.com/watch?v=${expandedRec.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer" className="text-xs text-red-500 hover:text-red-300 transition-colors">▶ Trailer ↗</a>
-                  )}
-                  <a href={`https://open.spotify.com/search/${encodeURIComponent((expandedRec.titulo_ingles || expandedRec.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300 transition-colors">♫ Soundtrack ↗</a>
-                </div>
-
-                {/* Review CineBret + reviews usuarios */}
-                <PeliculaDetalle
-                  peliculaId={expandedRec.id}
-                  esReviewAutor={expandedRec.esReviewAutor}
-                  sinopsisIa={expandedRec.sinopsis}
-                />
-              </div>
-            )
-          })()}
         </>
       )}
     </div>

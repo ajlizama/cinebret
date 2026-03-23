@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import PeliculaDetalle from './PeliculaDetalle'
 import AgregarAListaButton from '@/app/pelicula/[id]/AgregarAListaButton'
-import ParaTi from '@/app/comunidad/ParaTi'
+import ParaTi, { type RecExport } from '@/app/comunidad/ParaTi'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
@@ -132,29 +132,173 @@ function PanelExpandido({
 
   return (
     <div id={`expand-${p.id}`} className="col-span-2 md:col-span-4 rounded-2xl overflow-hidden my-2 shadow-2xl scroll-mt-28" onClick={e => e.stopPropagation()}>
-      <div className="bg-zinc-900">
+      <div className="bg-zinc-900 relative">
         {/* Close button */}
         <button onClick={() => setExpandida(null)}
           className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm transition-colors">✕</button>
 
-        {/* ── Upper section: poster left + info right WITH poster background ── */}
-        <div className="relative overflow-hidden">
-          {/* Background poster image — starts from ~40% left (title area), visible on right half */}
+        {/* ══ MOBILE layout ══ */}
+        <div className="md:hidden">
+          {/* Banner backdrop */}
+          <div className="relative h-44 overflow-hidden">
+            {p.poster_path && (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-top" />
+                <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-900" />
+              </>
+            )}
+          </div>
+
+          {/* Poster overlapping + title */}
+          <div className="px-4 -mt-16 relative z-10">
+            <div className="flex gap-3 items-end">
+              <div className="relative w-24 shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-zinc-900" style={{ aspectRatio: '2/3' }}>
+                {p.poster_path ? (
+                  <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="96px" />
+                ) : (
+                  <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-2xl">🎬</span></div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0 pb-1">
+                <h3 className="text-lg font-bold text-white leading-tight">
+                  {p.titulo_ingles || p.titulo}
+                  {p.anio && <span className="text-zinc-400 font-normal ml-1 text-base">({p.anio})</span>}
+                </h3>
+                {p.titulo_ingles && p.titulo !== p.titulo_ingles && (
+                  <p className="text-zinc-500 text-xs mt-0.5">{p.titulo}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Info stacked */}
+          <div className="px-4 pt-3 pb-4 space-y-3">
+            {/* Ratings */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {p.nota_imdb != null && (
+                <div className="flex items-center gap-1">
+                  <div className="w-9 h-9 rounded-full border-2 border-yellow-400 flex items-center justify-center">
+                    <span className="text-yellow-400 font-bold text-xs">{p.nota_imdb}</span>
+                  </div>
+                  <span className="text-zinc-500 text-[10px]">IMDB</span>
+                </div>
+              )}
+              {p.rt_score != null && (
+                <div className="flex items-center gap-1">
+                  <div className="w-9 h-9 rounded-full border-2 border-red-400 flex items-center justify-center">
+                    <span className="text-red-400 font-bold text-xs">{p.rt_score}%</span>
+                  </div>
+                  <span className="text-zinc-500 text-[10px]">RT</span>
+                </div>
+              )}
+              {p.metacritic_score != null && (
+                <div className="flex items-center gap-1">
+                  <div className="w-9 h-9 rounded-full border-2 border-green-400 flex items-center justify-center">
+                    <span className="text-green-400 font-bold text-xs">{p.metacritic_score}</span>
+                  </div>
+                  <span className="text-zinc-500 text-[10px]">MC</span>
+                </div>
+              )}
+              {p.oscars && p.oscars !== 'N/A' && (
+                <div className="flex items-center gap-1">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/oscar.png" alt="Oscar" className={`h-8 w-auto ${oscarGano ? '' : 'opacity-30'}`} />
+                  {oscarNum && <span className={`text-xs font-bold ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
+                </div>
+              )}
+            </div>
+
+            {/* Meta */}
+            <div className="text-xs text-zinc-400 flex flex-wrap gap-1">
+              {p.generos.length > 0 && <span>{p.generos.join(', ')}</span>}
+              {p.runtime != null && <span>· {Math.floor(p.runtime / 60)}h {p.runtime % 60}min</span>}
+              {p.categoria && <span>· {p.categoria}</span>}
+            </div>
+
+            {/* Platforms */}
+            {platsActivas.length > 0 && (
+              <div className="flex gap-1.5 flex-wrap">
+                {platsActivas.map(pl => (
+                  <div key={pl.id} className="rounded-md bg-white px-1.5 py-0.5 flex items-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* User actions */}
+            {user && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <button onClick={e => toggleVisto(p.id, e)}
+                  className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-600 text-zinc-400 hover:border-emerald-400'}`}>
+                  {up?.visto ? '✓ Vista' : '○ Vista'}
+                </button>
+                <button onClick={e => toggleWatchlist(p.id, e)}
+                  className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-600 text-zinc-400 hover:border-yellow-400'}`}>
+                  {up?.watchlist ? '★ Watchlist' : '☆ Watchlist'}
+                </button>
+                {up?.visto && (
+                  <select value={up.rating ?? ''} onChange={e => { if (e.target.value) setRating(p.id, Number(e.target.value), e as any) }}
+                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs text-zinc-300 focus:outline-none">
+                    <option value="">Rating</option>
+                    {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}/10</option>)}
+                  </select>
+                )}
+              </div>
+            )}
+
+            {/* Trailer + links */}
+            <div className="flex flex-wrap gap-3 items-center">
+              {p.youtube_trailer_key && (
+                <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
+                  className="text-xs text-white bg-zinc-800 rounded-lg px-3 py-1.5">▶ Tráiler</a>
+              )}
+              {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500">IMDb ↗</a>}
+              <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500">♫ Soundtrack ↗</a>
+              <AgregarAListaButton peliculaId={p.id} />
+            </div>
+
+            {/* Synopsis */}
+            {p.sinopsis && (
+              <div>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1 font-medium">Vista general</p>
+                <p className="text-sm text-zinc-300 leading-relaxed">{p.sinopsis}</p>
+              </div>
+            )}
+
+            {/* Team */}
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              {p.director && <div><p className="text-white text-sm font-medium">{p.director}</p><p className="text-zinc-500 text-xs">Director</p></div>}
+              {p.compositor && <div><p className="text-white text-sm font-medium">{p.compositor}</p><p className="text-zinc-500 text-xs">Compositor</p></div>}
+            </div>
+            {p.actores && <div><p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p><p className="text-sm text-zinc-300">{p.actores}</p></div>}
+
+            {/* Badges */}
+            <div className="flex gap-2 flex-wrap">
+              {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded">CB Review</span>}
+              {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-2 py-0.5 rounded font-bold">★ Recomendada</span>}
+              {p.boxoffice != null && <span className="text-xs text-zinc-400">Taquilla: ${(p.boxoffice / 1_000_000).toFixed(0)}M</span>}
+            </div>
+          </div>
+        </div>
+
+        {/* ══ DESKTOP layout ══ */}
+        <div className="hidden md:block relative overflow-hidden">
+          {/* Background poster — right 55% */}
           {p.poster_path && (
-            <div className="absolute inset-y-0 right-0 w-[65%] md:w-[55%]">
+            <div className="absolute inset-y-0 right-0 w-[55%]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt=""
-                className="w-full h-full object-cover object-center" />
-              {/* Heavy dark overlay for text readability */}
+              <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-center" />
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/80 to-zinc-900/50" />
               <div className="absolute inset-0 bg-zinc-900/40" />
             </div>
           )}
 
-          {/* Content */}
-          <div className="relative z-10 p-4 md:p-6 flex gap-5 md:gap-8">
-            {/* LEFT: poster */}
-            <div className="relative w-32 md:w-48 shrink-0 rounded-xl overflow-hidden shadow-2xl self-start" style={{ aspectRatio: '2/3' }}>
+          <div className="relative z-10 p-6 flex gap-8">
+            {/* Poster */}
+            <div className="relative w-48 shrink-0 rounded-xl overflow-hidden shadow-2xl self-start" style={{ aspectRatio: '2/3' }}>
               {p.poster_path ? (
                 <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
               ) : (
@@ -162,56 +306,45 @@ function PanelExpandido({
               )}
             </div>
 
-            {/* RIGHT: info */}
+            {/* Info */}
             <div className="flex-1 min-w-0 space-y-3">
-              {/* Title + year */}
               <div>
-                <h3 className="text-xl md:text-2xl font-bold text-white leading-tight drop-shadow-lg">
+                <h3 className="text-2xl font-bold text-white leading-tight drop-shadow-lg">
                   {p.titulo_ingles || p.titulo}
                   {p.anio && <span className="text-zinc-300 font-normal ml-2">({p.anio})</span>}
                 </h3>
-                {p.titulo_ingles && p.titulo !== p.titulo_ingles && (
-                  <p className="text-zinc-400 text-sm mt-0.5 drop-shadow">{p.titulo}</p>
-                )}
+                {p.titulo_ingles && p.titulo !== p.titulo_ingles && <p className="text-zinc-400 text-sm mt-0.5 drop-shadow">{p.titulo}</p>}
               </div>
 
-              {/* Meta line: genres · runtime */}
               <div className="flex items-center gap-2 text-sm text-zinc-300 flex-wrap drop-shadow">
                 {p.generos.length > 0 && <span>{p.generos.join(', ')}</span>}
                 {p.runtime != null && <span>· {Math.floor(p.runtime / 60)}h {p.runtime % 60}min</span>}
                 {p.categoria && <span>· {p.categoria}</span>}
               </div>
 
-              {/* Ratings row */}
               <div className="flex items-center gap-4 flex-wrap">
                 {p.nota_imdb != null && (
                   <div className="flex items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full border-2 border-yellow-400 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-yellow-400 font-bold text-sm">{p.nota_imdb}</span>
-                    </div>
+                    <div className="w-10 h-10 rounded-full border-2 border-yellow-400 bg-black/40 backdrop-blur-sm flex items-center justify-center"><span className="text-yellow-400 font-bold text-sm">{p.nota_imdb}</span></div>
                     <span className="text-zinc-400 text-xs drop-shadow">IMDB</span>
                   </div>
                 )}
                 {p.rt_score != null && (
                   <div className="flex items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full border-2 border-red-400 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-red-400 font-bold text-sm">{p.rt_score}%</span>
-                    </div>
+                    <div className="w-10 h-10 rounded-full border-2 border-red-400 bg-black/40 backdrop-blur-sm flex items-center justify-center"><span className="text-red-400 font-bold text-sm">{p.rt_score}%</span></div>
                     <span className="text-zinc-400 text-xs drop-shadow">RT</span>
                   </div>
                 )}
                 {p.metacritic_score != null && (
                   <div className="flex items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full border-2 border-green-400 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-green-400 font-bold text-sm">{p.metacritic_score}</span>
-                    </div>
+                    <div className="w-10 h-10 rounded-full border-2 border-green-400 bg-black/40 backdrop-blur-sm flex items-center justify-center"><span className="text-green-400 font-bold text-sm">{p.metacritic_score}</span></div>
                     <span className="text-zinc-400 text-xs drop-shadow">MC</span>
                   </div>
                 )}
                 {p.oscars && p.oscars !== 'N/A' && (
                   <div className="flex items-center gap-1.5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/oscar.png" alt="Oscar" className={`h-10 w-auto drop-shadow-lg ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
+                    <img src="/oscar.png" alt="Oscar" className={`h-10 w-auto drop-shadow-lg ${oscarGano ? '' : 'opacity-30'}`} />
                     <div>
                       {oscarNum && <span className={`text-sm font-bold drop-shadow ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
                       <p className="text-zinc-400 text-[10px] leading-none drop-shadow">{oscarGano ? 'Ganó' : 'Nom.'}</p>
@@ -220,7 +353,6 @@ function PanelExpandido({
                 )}
               </div>
 
-              {/* Platforms */}
               {platsActivas.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
                   {platsActivas.map(pl => (
@@ -232,15 +364,14 @@ function PanelExpandido({
                 </div>
               )}
 
-              {/* User actions */}
               {user && (
                 <div className="flex items-center gap-2 flex-wrap">
                   <button onClick={e => toggleVisto(p.id, e)}
-                    className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors backdrop-blur-sm ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-400 text-zinc-200 bg-black/30 hover:border-emerald-400 hover:text-emerald-400'}`}>
+                    className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors backdrop-blur-sm ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-400 text-zinc-200 bg-black/30 hover:border-emerald-400'}`}>
                     {up?.visto ? '✓ Vista' : '○ Marcar vista'}
                   </button>
                   <button onClick={e => toggleWatchlist(p.id, e)}
-                    className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors backdrop-blur-sm ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-400 text-zinc-200 bg-black/30 hover:border-yellow-400 hover:text-yellow-400'}`}>
+                    className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors backdrop-blur-sm ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-400 text-zinc-200 bg-black/30 hover:border-yellow-400'}`}>
                     {up?.watchlist ? '★ En watchlist' : '☆ Watchlist'}
                   </button>
                   {up?.visto && (
@@ -253,20 +384,16 @@ function PanelExpandido({
                 </div>
               )}
 
-              {/* Trailer + links */}
               <div className="flex flex-wrap gap-3 items-center">
                 {p.youtube_trailer_key && (
                   <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm text-white bg-black/40 backdrop-blur-sm hover:bg-black/60 border border-zinc-600 rounded-lg px-3 py-1.5 transition-colors">
-                    ▶ Reproducir tráiler
-                  </a>
+                    className="flex items-center gap-1.5 text-sm text-white bg-black/40 backdrop-blur-sm hover:bg-black/60 border border-zinc-600 rounded-lg px-3 py-1.5 transition-colors">▶ Reproducir tráiler</a>
                 )}
                 {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-400 hover:text-yellow-300 drop-shadow">IMDb ↗</a>}
                 <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-400 hover:text-green-300 drop-shadow">♫ Soundtrack ↗</a>
                 <AgregarAListaButton peliculaId={p.id} />
               </div>
 
-              {/* Synopsis */}
               {p.sinopsis && (
                 <div>
                   <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 font-medium drop-shadow">Vista general</p>
@@ -274,29 +401,12 @@ function PanelExpandido({
                 </div>
               )}
 
-              {/* Team */}
               <div className="flex flex-wrap gap-x-8 gap-y-2">
-                {p.director && (
-                  <div>
-                    <p className="text-white text-sm font-medium drop-shadow">{p.director}</p>
-                    <p className="text-zinc-400 text-xs drop-shadow">Director</p>
-                  </div>
-                )}
-                {p.compositor && (
-                  <div>
-                    <p className="text-white text-sm font-medium drop-shadow">{p.compositor}</p>
-                    <p className="text-zinc-400 text-xs drop-shadow">Compositor</p>
-                  </div>
-                )}
+                {p.director && <div><p className="text-white text-sm font-medium drop-shadow">{p.director}</p><p className="text-zinc-400 text-xs drop-shadow">Director</p></div>}
+                {p.compositor && <div><p className="text-white text-sm font-medium drop-shadow">{p.compositor}</p><p className="text-zinc-400 text-xs drop-shadow">Compositor</p></div>}
               </div>
-              {p.actores && (
-                <div>
-                  <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 drop-shadow">Reparto</p>
-                  <p className="text-sm text-zinc-200 drop-shadow">{p.actores}</p>
-                </div>
-              )}
+              {p.actores && <div><p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 drop-shadow">Reparto</p><p className="text-sm text-zinc-200 drop-shadow">{p.actores}</p></div>}
 
-              {/* Badges + boxoffice */}
               <div className="flex gap-3 items-center flex-wrap">
                 {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
                 {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/30 px-2 py-0.5 rounded font-bold shadow">★ Recomendada</span>}
@@ -306,7 +416,7 @@ function PanelExpandido({
           </div>
         </div>
 
-        {/* ── Lower section: Reviews (no poster background) ── */}
+        {/* Reviews — both layouts */}
         <div className="px-4 md:px-6 pb-5 pt-2 border-t border-zinc-800">
           <PeliculaDetalle peliculaId={p.id} esReviewAutor={p.es_review_autor} sinopsisIa={p.sinopsis} />
         </div>
@@ -338,6 +448,18 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [showCuestionario, setShowCuestionario] = useState(false)
   const [prefKey, setPrefKey] = useState(0)
   const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number } | null>(null)
+  const [paraTiMovie, setParaTiMovie] = useState<Pelicula | null>(null)
+
+  const recToPelicula = (rec: RecExport): Pelicula => ({
+    id: rec.id, titulo: rec.titulo, titulo_ingles: rec.titulo_ingles, anio: rec.anio,
+    nota_imdb: rec.nota_imdb, rt_score: rec.rt_score, metacritic_score: rec.metacritic_score,
+    runtime: rec.runtime, boxoffice: rec.boxoffice, categoria: rec.categoria,
+    plataformas: rec.plataformas, es_review_autor: rec.esReviewAutor, sello_bret: false,
+    director: rec.director, director_oscars: null, actores: rec.actores,
+    actores_oscars: null, compositor: rec.compositor, compositor_oscars: null,
+    generos: rec.generos, poster_path: rec.poster_path, oscars: rec.oscars,
+    imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
+  })
   const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -537,9 +659,11 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         {/* ── Para Ti ── */}
         <div className="mb-6 border-t border-zinc-800 pt-5">
           {user ? (
-            <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} />
+            <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)}
+              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }} />
           ) : anonPrefs ? (
-            <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} preferenciasExternas={anonPrefs} />
+            <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} preferenciasExternas={anonPrefs}
+              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }} />
           ) : (
             <div>
               <h2 className="text-base font-bold text-white mb-3">🎬 Para Ti</h2>
@@ -562,6 +686,18 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             </div>
           )}
         </div>
+
+        {/* Para Ti expansion panel */}
+        {paraTiMovie && (
+          <div className="mb-4">
+            <PanelExpandido
+              p={paraTiMovie} up={userPeliculas[paraTiMovie.id]} user={user}
+              generosFiltro={generosFiltro} setGenerosFiltro={setGenerosFiltro}
+              setExpandida={() => setParaTiMovie(null)} toggleVisto={toggleVisto}
+              toggleWatchlist={toggleWatchlist} setRating={setRatingFn}
+            />
+          </div>
+        )}
 
         {/* ── Catálogo ── */}
         <div className="border-t border-zinc-800 pt-4 mb-4">
@@ -604,7 +740,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               <React.Fragment key={pelicula.id}>
                 {/* Poster card */}
                 <div
-                  onClick={() => setExpandida(isExpanded ? null : pelicula.id)}
+                  onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
                   className={`relative rounded-xl overflow-hidden cursor-pointer group bg-zinc-800 shadow-lg hover:shadow-2xl transition-all ${isExpanded ? 'ring-2 ring-yellow-400' : ''}`}
                   style={{ aspectRatio: '2/3' }}
                 >

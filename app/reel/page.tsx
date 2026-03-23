@@ -613,8 +613,8 @@ export default function ReelPage() {
   return (
     <main className="min-h-screen bg-zinc-950 flex flex-col overflow-hidden">
       <Nav active="reel" />
-      <div className="flex-1 flex flex-col items-center justify-center px-4 pb-2">
-        <div className="relative w-full max-w-sm" style={{ height: '65vh' }}>
+      <div className="flex-1 flex flex-col items-center px-4 pt-1 pb-1">
+        <div className="relative w-full max-w-sm flex-1" style={{ maxHeight: '70vh' }}>
           {peliculas.slice(0, 3).map((p, i) => (
             <div key={p.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 10}px)`, zIndex: 3 - i }}>
               <ReelCard
@@ -628,37 +628,27 @@ export default function ReelPage() {
         </div>
 
         {/* ── Bottom action buttons ── */}
-        <div className="flex items-end gap-6 -mt-8 relative z-10">
-          {/* No me interesa */}
-          <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-2xl shadow-lg backdrop-blur-sm">✕</div>
-            <span className="text-red-400 text-[10px] font-semibold">No me interesa</span>
+        <div className="flex items-end gap-8 mt-2 relative z-10">
+          <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-0.5">
+            <div className="w-12 h-12 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-xl shadow-lg backdrop-blur-sm">✕</div>
+            <span className="text-red-400 text-[9px] font-semibold leading-tight text-center">No me<br/>interesa</span>
           </button>
-          {/* Ya la vi */}
-          <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm">
-              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
+          <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-0.5">
+            <div className="w-12 h-12 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm">
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </div>
-            <span className="text-blue-400 text-[10px] font-semibold">Ya la vi</span>
+            <span className="text-blue-400 text-[9px] font-semibold">Ya la vi</span>
           </button>
-          {/* Watchlist */}
-          <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-2xl shadow-lg backdrop-blur-sm">♥</div>
-            <span className="text-pink-400 text-[10px] font-semibold">Watchlist</span>
+          <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-0.5">
+            <div className="w-12 h-12 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-xl shadow-lg backdrop-blur-sm">♥</div>
+            <span className="text-pink-400 text-[9px] font-semibold">Watchlist</span>
           </button>
         </div>
-
-        {/* Undo */}
-        <button
-          onClick={handleUndo}
-          disabled={!lastAction}
-          className="mt-2 text-zinc-600 text-xs disabled:opacity-20 hover:text-zinc-400 transition-colors"
-        >
-          ↩ Deshacer
-        </button>
+        <button onClick={handleUndo} disabled={!lastAction}
+          className="mt-1 text-zinc-600 text-[10px] disabled:opacity-20 hover:text-zinc-400 transition-colors">↩ Deshacer</button>
       </div>
     </main>
   )

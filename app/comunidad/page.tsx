@@ -450,7 +450,31 @@ export default function ComunidadPage() {
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="comunidad" />
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
+
+      {/* ── HERO ── */}
+      <div className="relative overflow-hidden" style={{ height: '300px' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/comunidad-fondo.png" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
+        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
+          <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-1.5 tracking-tight">
+            Comunidad <span className="text-yellow-400">CineBret</span>
+          </h1>
+          <p className="text-zinc-300 text-sm md:text-base text-center mb-6 max-w-md">
+            Busca, escribe y comparte tus reviews con tus amigos
+          </p>
+          <div className="relative w-full max-w-xl">
+            <input type="text" placeholder="Buscar película o usuario..." readOnly
+              onClick={() => { const el = document.querySelector('nav input') as HTMLInputElement; el?.focus() }}
+              className="w-full bg-white/10 backdrop-blur border border-white/20 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-white/50 text-sm cursor-pointer" />
+            <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
@@ -462,11 +486,8 @@ export default function ComunidadPage() {
           </Link>
         </div>
 
-        {/* Layout de dos columnas en desktop */}
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
-
-          {/* Feed + Explorar (columna principal izquierda) */}
-          <div className="flex-1 min-w-0 order-2 lg:order-1">
+        {/* Contenido principal — ancho completo */}
+        <div>
             {/* Explorar todos los perfiles */}
             <div className="mb-6">
               <button
@@ -554,9 +575,6 @@ export default function ComunidadPage() {
             )}
           </div>
 
-          {/* Sidebar derecha (espacio para contenido futuro) */}
-          <div className="w-full lg:w-[480px] shrink-0 order-1 lg:order-2">
-          </div>
         </div>
       </div>
 

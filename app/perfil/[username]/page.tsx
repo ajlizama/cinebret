@@ -437,7 +437,11 @@ export default function PerfilPage() {
             <p className="text-zinc-500 text-sm">La watchlist está vacía.</p>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
-              {watchlist.map(entrada => {
+              {[...watchlist].sort((a, b) => {
+                const rA = esMiPerfil ? (recMap[a.pelicula_id]?.length ?? 0) : 0
+                const rB = esMiPerfil ? (recMap[b.pelicula_id]?.length ?? 0) : 0
+                return rB - rA
+              }).map(entrada => {
                 const p = entrada.pelicula
                 const titulo = p.titulo_ingles || p.titulo
                 const recomendadores = esMiPerfil ? (recMap[entrada.pelicula_id] ?? []) : []

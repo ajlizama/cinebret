@@ -682,10 +682,12 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <div className="mb-6 border-t border-zinc-800 pt-5">
           {user ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)}
-              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }} />
+              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }}
+              filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : anonPrefs ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} preferenciasExternas={anonPrefs}
-              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }} />
+              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }}
+              filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : (
             <div>
               <h2 className="text-base font-bold text-white mb-3">🎬 Para Ti</h2>

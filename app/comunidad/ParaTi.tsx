@@ -136,10 +136,14 @@ export default function ParaTi({
   onEditPreferences,
   preferenciasExternas,
   onMovieExpand,
+  filtrosCategorias,
+  filtrosPlataformas,
 }: {
   onEditPreferences?: () => void
   preferenciasExternas?: UserProfile | null
   onMovieExpand?: (rec: Rec) => void
+  filtrosCategorias?: string[]
+  filtrosPlataformas?: string[]
 }) {
   const { user, username: miUsername } = useAuth()
   const [recs, setRecs] = useState<Rec[]>([])
@@ -514,7 +518,11 @@ export default function ParaTi({
 
   if (!user && !preferenciasExternas) return null
 
-  const filtered = catFiltro ? recs.filter(r => r.categoria === catFiltro) : recs
+  const filtered = recs.filter(r => {
+    if (filtrosCategorias && filtrosCategorias.length > 0 && !filtrosCategorias.includes(r.categoria ?? '')) return false
+    if (filtrosPlataformas && filtrosPlataformas.length > 0 && !filtrosPlataformas.some(pl => r.plataformas.includes(pl))) return false
+    return true
+  })
   const displayed = filtered.slice(page * 25, (page + 1) * 25)
   const hayMas = filtered.length > (page + 1) * 25
   const expandedRec = expandedId ? displayed.find(r => r.id === expandedId) ?? null : null

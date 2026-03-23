@@ -307,7 +307,8 @@ function ReelCard({
 
       {/* ══ SLIDE 1: Detailed info ══ */}
       {slide === 1 && (
-        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10">
+        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}
+          onTouchStart={e => e.stopPropagation()} onTouchMove={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
           <h2 className="text-white font-bold text-lg leading-tight mb-1">{titulo}</h2>
           {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
             <p className="text-zinc-400 text-xs mb-3">{pelicula.titulo}</p>
@@ -416,7 +417,8 @@ function ReelCard({
 
       {/* ══ SLIDE 2: Reviews ══ */}
       {slide === 2 && (
-        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10">
+        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}
+          onTouchStart={e => e.stopPropagation()} onTouchMove={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
           <h3 className="text-white font-bold text-base mb-3">Reviews</h3>
           {reviewsCargando && <p className="text-zinc-500 text-xs text-center pt-4">Cargando reviews...</p>}
           {!reviewsCargando && reviews.length === 0 && (
@@ -447,11 +449,14 @@ function ReelCard({
 
       {/* ── "Otra película" button top-right ── */}
       <button
-        className="absolute top-8 right-3 z-30 bg-black/50 backdrop-blur-sm border border-white/20 text-white text-[10px] font-medium px-3 py-1.5 rounded-full"
+        className="absolute top-8 right-3 z-30 w-11 h-11 rounded-full bg-zinc-900/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white shadow-lg"
         onTouchEnd={e => { e.stopPropagation(); onSwipe('down') }}
         onClick={() => onSwipe('down')}
+        title="Otra película"
       >
-        Otra película
+        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
       </button>
     </div>
   )

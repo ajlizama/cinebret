@@ -132,183 +132,185 @@ function PanelExpandido({
 
   return (
     <div id={`expand-${p.id}`} className="col-span-2 md:col-span-4 rounded-2xl overflow-hidden my-2 shadow-2xl scroll-mt-28" onClick={e => e.stopPropagation()}>
-      <div className="relative bg-zinc-900">
-        {/* Blurred poster backdrop */}
-        {p.poster_path && (
-          <div className="absolute inset-0 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover blur-2xl opacity-25 scale-125" />
-            <div className="absolute inset-0 bg-zinc-950/70" />
-          </div>
-        )}
-
+      <div className="bg-zinc-900">
         {/* Close button */}
         <button onClick={() => setExpandida(null)}
           className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm transition-colors">✕</button>
 
-        {/* Content: poster left + info right */}
-        <div className="relative z-10 p-4 md:p-6 flex gap-5 md:gap-8">
-          {/* LEFT: poster */}
-          <div className="relative w-32 md:w-48 shrink-0 rounded-xl overflow-hidden shadow-2xl self-start" style={{ aspectRatio: '2/3' }}>
-            {p.poster_path ? (
-              <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
-            ) : (
-              <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-4xl">🎬</span></div>
-            )}
-          </div>
+        {/* ── Upper section: poster left + info right WITH poster background ── */}
+        <div className="relative overflow-hidden">
+          {/* Background poster image — visible, covers from title to right edge */}
+          {p.poster_path && (
+            <div className="absolute inset-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt=""
+                className="w-full h-full object-cover object-top" />
+              {/* Dark overlay for readability — gradient from solid left to more visible right */}
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/85 to-zinc-900/60" />
+              {/* Additional top/bottom fade */}
+              <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/40 via-transparent to-zinc-900/80" />
+            </div>
+          )}
 
-          {/* RIGHT: info */}
-          <div className="flex-1 min-w-0 space-y-3">
-            {/* Title + year */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">
-                {p.titulo_ingles || p.titulo}
-                {p.anio && <span className="text-zinc-400 font-normal ml-2">({p.anio})</span>}
-              </h3>
-              {p.titulo_ingles && p.titulo !== p.titulo_ingles && (
-                <p className="text-zinc-500 text-sm mt-0.5">{p.titulo}</p>
+          {/* Content */}
+          <div className="relative z-10 p-4 md:p-6 flex gap-5 md:gap-8">
+            {/* LEFT: poster */}
+            <div className="relative w-32 md:w-48 shrink-0 rounded-xl overflow-hidden shadow-2xl self-start" style={{ aspectRatio: '2/3' }}>
+              {p.poster_path ? (
+                <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
+              ) : (
+                <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-4xl">🎬</span></div>
               )}
             </div>
 
-            {/* Meta line: genres · runtime */}
-            <div className="flex items-center gap-2 text-sm text-zinc-400 flex-wrap">
-              {p.generos.length > 0 && <span>{p.generos.join(', ')}</span>}
-              {p.runtime != null && <span>· {Math.floor(p.runtime / 60)}h {p.runtime % 60}min</span>}
-              {p.categoria && <span>· {p.categoria}</span>}
-            </div>
-
-            {/* Ratings row */}
-            <div className="flex items-center gap-4 flex-wrap">
-              {p.nota_imdb != null && (
-                <div className="flex items-center gap-1.5">
-                  <div className="w-10 h-10 rounded-full border-2 border-yellow-400 flex items-center justify-center">
-                    <span className="text-yellow-400 font-bold text-sm">{p.nota_imdb}</span>
-                  </div>
-                  <span className="text-zinc-500 text-xs">IMDB</span>
-                </div>
-              )}
-              {p.rt_score != null && (
-                <div className="flex items-center gap-1.5">
-                  <div className="w-10 h-10 rounded-full border-2 border-red-400 flex items-center justify-center">
-                    <span className="text-red-400 font-bold text-sm">{p.rt_score}%</span>
-                  </div>
-                  <span className="text-zinc-500 text-xs">RT</span>
-                </div>
-              )}
-              {p.metacritic_score != null && (
-                <div className="flex items-center gap-1.5">
-                  <div className="w-10 h-10 rounded-full border-2 border-green-400 flex items-center justify-center">
-                    <span className="text-green-400 font-bold text-sm">{p.metacritic_score}</span>
-                  </div>
-                  <span className="text-zinc-500 text-xs">MC</span>
-                </div>
-              )}
-              {/* Oscars */}
-              {p.oscars && p.oscars !== 'N/A' && (
-                <div className="flex items-center gap-1.5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/oscar.png" alt="Oscar" className={`h-10 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
-                  <div>
-                    {oscarNum && <span className={`text-sm font-bold ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
-                    <p className="text-zinc-500 text-[10px] leading-none">{oscarGano ? 'Ganó' : 'Nom.'}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Platforms */}
-            {platsActivas.length > 0 && (
-              <div className="flex gap-2 flex-wrap">
-                {platsActivas.map(pl => (
-                  <div key={pl.id} className="rounded-lg bg-white px-2 py-1 flex items-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={pl.logo} alt={pl.nombre} className="h-4 w-auto object-contain" />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* User actions */}
-            {user && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <button onClick={e => toggleVisto(p.id, e)}
-                  className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-600 text-zinc-400 hover:border-emerald-400 hover:text-emerald-400'}`}>
-                  {up?.visto ? '✓ Vista' : '○ Marcar vista'}
-                </button>
-                <button onClick={e => toggleWatchlist(p.id, e)}
-                  className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-600 text-zinc-400 hover:border-yellow-400 hover:text-yellow-400'}`}>
-                  {up?.watchlist ? '★ En watchlist' : '☆ Watchlist'}
-                </button>
-                {up?.visto && (
-                  <select value={up.rating ?? ''} onChange={e => { if (e.target.value) setRating(p.id, Number(e.target.value), e as any) }}
-                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-300 focus:outline-none">
-                    <option value="">Tu rating</option>
-                    {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}/10</option>)}
-                  </select>
+            {/* RIGHT: info */}
+            <div className="flex-1 min-w-0 space-y-3">
+              {/* Title + year */}
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold text-white leading-tight drop-shadow-lg">
+                  {p.titulo_ingles || p.titulo}
+                  {p.anio && <span className="text-zinc-300 font-normal ml-2">({p.anio})</span>}
+                </h3>
+                {p.titulo_ingles && p.titulo !== p.titulo_ingles && (
+                  <p className="text-zinc-400 text-sm mt-0.5 drop-shadow">{p.titulo}</p>
                 )}
               </div>
-            )}
 
-            {/* Trailer + links */}
-            <div className="flex flex-wrap gap-3 items-center">
-              {p.youtube_trailer_key && (
-                <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg px-3 py-1.5 transition-colors">
-                  ▶ Reproducir tráiler
-                </a>
-              )}
-              {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-500 hover:text-yellow-300">IMDb ↗</a>}
-              <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-500 hover:text-green-300">♫ Soundtrack ↗</a>
-              <AgregarAListaButton peliculaId={p.id} />
-            </div>
-
-            {/* Synopsis */}
-            {p.sinopsis && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1 font-medium">Vista general</p>
-                <p className="text-sm text-zinc-300 leading-relaxed">{p.sinopsis}</p>
+              {/* Meta line: genres · runtime */}
+              <div className="flex items-center gap-2 text-sm text-zinc-300 flex-wrap drop-shadow">
+                {p.generos.length > 0 && <span>{p.generos.join(', ')}</span>}
+                {p.runtime != null && <span>· {Math.floor(p.runtime / 60)}h {p.runtime % 60}min</span>}
+                {p.categoria && <span>· {p.categoria}</span>}
               </div>
-            )}
 
-            {/* Team */}
-            <div className="flex flex-wrap gap-x-8 gap-y-2">
-              {p.director && (
-                <div>
-                  <p className="text-white text-sm font-medium">{p.director}</p>
-                  <p className="text-zinc-500 text-xs">Director</p>
+              {/* Ratings row */}
+              <div className="flex items-center gap-4 flex-wrap">
+                {p.nota_imdb != null && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-10 h-10 rounded-full border-2 border-yellow-400 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                      <span className="text-yellow-400 font-bold text-sm">{p.nota_imdb}</span>
+                    </div>
+                    <span className="text-zinc-400 text-xs drop-shadow">IMDB</span>
+                  </div>
+                )}
+                {p.rt_score != null && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-10 h-10 rounded-full border-2 border-red-400 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                      <span className="text-red-400 font-bold text-sm">{p.rt_score}%</span>
+                    </div>
+                    <span className="text-zinc-400 text-xs drop-shadow">RT</span>
+                  </div>
+                )}
+                {p.metacritic_score != null && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-10 h-10 rounded-full border-2 border-green-400 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                      <span className="text-green-400 font-bold text-sm">{p.metacritic_score}</span>
+                    </div>
+                    <span className="text-zinc-400 text-xs drop-shadow">MC</span>
+                  </div>
+                )}
+                {p.oscars && p.oscars !== 'N/A' && (
+                  <div className="flex items-center gap-1.5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/oscar.png" alt="Oscar" className={`h-10 w-auto drop-shadow-lg ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
+                    <div>
+                      {oscarNum && <span className={`text-sm font-bold drop-shadow ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
+                      <p className="text-zinc-400 text-[10px] leading-none drop-shadow">{oscarGano ? 'Ganó' : 'Nom.'}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Platforms */}
+              {platsActivas.length > 0 && (
+                <div className="flex gap-2 flex-wrap">
+                  {platsActivas.map(pl => (
+                    <div key={pl.id} className="rounded-lg bg-white px-2 py-1 flex items-center shadow">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={pl.logo} alt={pl.nombre} className="h-4 w-auto object-contain" />
+                    </div>
+                  ))}
                 </div>
               )}
-              {p.compositor && (
-                <div>
-                  <p className="text-white text-sm font-medium">{p.compositor}</p>
-                  <p className="text-zinc-500 text-xs">Compositor</p>
+
+              {/* User actions */}
+              {user && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button onClick={e => toggleVisto(p.id, e)}
+                    className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors backdrop-blur-sm ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-zinc-400 text-zinc-200 bg-black/30 hover:border-emerald-400 hover:text-emerald-400'}`}>
+                    {up?.visto ? '✓ Vista' : '○ Marcar vista'}
+                  </button>
+                  <button onClick={e => toggleWatchlist(p.id, e)}
+                    className={`flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border font-medium transition-colors backdrop-blur-sm ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-zinc-400 text-zinc-200 bg-black/30 hover:border-yellow-400 hover:text-yellow-400'}`}>
+                    {up?.watchlist ? '★ En watchlist' : '☆ Watchlist'}
+                  </button>
+                  {up?.visto && (
+                    <select value={up.rating ?? ''} onChange={e => { if (e.target.value) setRating(p.id, Number(e.target.value), e as any) }}
+                      className="bg-black/40 backdrop-blur-sm border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none">
+                      <option value="">Tu rating</option>
+                      {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}/10</option>)}
+                    </select>
+                  )}
                 </div>
               )}
-            </div>
-            {p.actores && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
-                <p className="text-sm text-zinc-300">{p.actores}</p>
+
+              {/* Trailer + links */}
+              <div className="flex flex-wrap gap-3 items-center">
+                {p.youtube_trailer_key && (
+                  <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-sm text-white bg-black/40 backdrop-blur-sm hover:bg-black/60 border border-zinc-600 rounded-lg px-3 py-1.5 transition-colors">
+                    ▶ Reproducir tráiler
+                  </a>
+                )}
+                {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="text-xs text-yellow-400 hover:text-yellow-300 drop-shadow">IMDb ↗</a>}
+                <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-400 hover:text-green-300 drop-shadow">♫ Soundtrack ↗</a>
+                <AgregarAListaButton peliculaId={p.id} />
               </div>
-            )}
 
-            {/* Badges */}
-            <div className="flex gap-2">
-              {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded">CB Review</span>}
-              {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-2 py-0.5 rounded font-bold">★ Recomendada</span>}
+              {/* Synopsis */}
+              {p.sinopsis && (
+                <div>
+                  <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 font-medium drop-shadow">Vista general</p>
+                  <p className="text-sm text-zinc-200 leading-relaxed drop-shadow">{p.sinopsis}</p>
+                </div>
+              )}
+
+              {/* Team */}
+              <div className="flex flex-wrap gap-x-8 gap-y-2">
+                {p.director && (
+                  <div>
+                    <p className="text-white text-sm font-medium drop-shadow">{p.director}</p>
+                    <p className="text-zinc-400 text-xs drop-shadow">Director</p>
+                  </div>
+                )}
+                {p.compositor && (
+                  <div>
+                    <p className="text-white text-sm font-medium drop-shadow">{p.compositor}</p>
+                    <p className="text-zinc-400 text-xs drop-shadow">Compositor</p>
+                  </div>
+                )}
+              </div>
+              {p.actores && (
+                <div>
+                  <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 drop-shadow">Reparto</p>
+                  <p className="text-sm text-zinc-200 drop-shadow">{p.actores}</p>
+                </div>
+              )}
+
+              {/* Badges + boxoffice */}
+              <div className="flex gap-3 items-center flex-wrap">
+                {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
+                {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/30 px-2 py-0.5 rounded font-bold shadow">★ Recomendada</span>}
+                {p.boxoffice != null && <span className="text-xs text-zinc-400 drop-shadow">Taquilla: <span className="text-zinc-200">${(p.boxoffice / 1_000_000).toFixed(0)}M</span></span>}
+              </div>
             </div>
-
-            {/* Reviews */}
-            <PeliculaDetalle peliculaId={p.id} esReviewAutor={p.es_review_autor} sinopsisIa={p.sinopsis} />
           </div>
         </div>
 
-        {/* Boxoffice bar */}
-        {p.boxoffice != null && (
-          <div className="relative z-10 px-6 pb-4 flex gap-6 text-xs text-zinc-500">
-            <span>Taquilla: <span className="text-zinc-300">${(p.boxoffice / 1_000_000).toFixed(0)}M</span></span>
-          </div>
-        )}
+        {/* ── Lower section: Reviews (no poster background) ── */}
+        <div className="px-4 md:px-6 pb-5 pt-2 border-t border-zinc-800">
+          <PeliculaDetalle peliculaId={p.id} esReviewAutor={p.es_review_autor} sinopsisIa={p.sinopsis} />
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -153,12 +154,15 @@ function PanelExpandido({
           {/* Poster overlapping + title */}
           <div className="px-4 -mt-16 relative z-10">
             <div className="flex gap-3 items-end">
-              <div className="relative w-24 shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-zinc-900" style={{ aspectRatio: '2/3' }}>
-                {p.poster_path ? (
-                  <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="96px" />
-                ) : (
-                  <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-2xl">🎬</span></div>
-                )}
+              <div className="flex flex-col items-center gap-1.5">
+                <Link href={`/pelicula/${p.id}`} className="relative w-24 shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-zinc-900 block" style={{ aspectRatio: '2/3' }}>
+                  {p.poster_path ? (
+                    <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="96px" />
+                  ) : (
+                    <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-2xl">🎬</span></div>
+                  )}
+                </Link>
+                <Link href={`/pelicula/${p.id}`} className="text-[10px] text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
               </div>
               <div className="flex-1 min-w-0 pb-1">
                 <h3 className="text-lg font-bold text-white leading-tight">
@@ -297,13 +301,16 @@ function PanelExpandido({
           )}
 
           <div className="relative z-10 p-6 flex gap-8">
-            {/* Poster */}
-            <div className="relative w-48 shrink-0 rounded-xl overflow-hidden shadow-2xl self-start" style={{ aspectRatio: '2/3' }}>
-              {p.poster_path ? (
-                <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
-              ) : (
-                <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-4xl">🎬</span></div>
-              )}
+            {/* Poster + Ver ficha */}
+            <div className="flex flex-col items-center gap-2 shrink-0 self-start">
+              <Link href={`/pelicula/${p.id}`} className="relative w-48 rounded-xl overflow-hidden shadow-2xl block" style={{ aspectRatio: '2/3' }}>
+                {p.poster_path ? (
+                  <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
+                ) : (
+                  <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-4xl">🎬</span></div>
+                )}
+              </Link>
+              <Link href={`/pelicula/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
             </div>
 
             {/* Info */}

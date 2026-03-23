@@ -76,14 +76,13 @@ function tituloValido(titulo: string | null): boolean {
 }
 
 async function getFechaCatalogo(): Promise<string> {
-  // Sin filtro activo=true para no quedar sin fecha durante el window de scraping
   const { data } = await supabase
     .from('catalogos')
     .select('fecha')
+    .eq('activo', true)
     .order('fecha', { ascending: false })
     .limit(1)
     .maybeSingle()
-  // Fallback: fecha de Chile (UTC-4)
   const chileDate = new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString().split('T')[0]
   return data?.fecha ?? chileDate
 }

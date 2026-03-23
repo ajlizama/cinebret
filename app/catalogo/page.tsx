@@ -51,10 +51,10 @@ const ICONOS = [
 ]
 
 export default async function CatalogoPage() {
-  // Sin filtro activo=true para no quedar sin fecha durante el window de scraping
   const { data: ultimaFechaRow } = await supabase
     .from('catalogos')
     .select('fecha')
+    .eq('activo', true)
     .order('fecha', { ascending: false })
     .limit(1)
     .maybeSingle()

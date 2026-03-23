@@ -43,17 +43,6 @@ type ReviewEntry = {
   rating: number | null
 }
 
-type RecomendacionEntry = {
-  id: string
-  from_username: string
-  from_avatar: string | null
-  pelicula_id: string
-  pelicula_titulo: string
-  pelicula_poster: string | null
-  mensaje: string | null
-  created_at: string
-}
-
 export default function PerfilPage() {
   const { username } = useParams<{ username: string }>()
   const { user, username: miUsername } = useAuth()
@@ -70,8 +59,9 @@ export default function PerfilPage() {
   const [enComun, setEnComun] = useState<number | null>(null)
   const [watchlist, setWatchlist] = useState<Pelicula[]>([])
   const [reviews, setReviews] = useState<ReviewEntry[]>([])
-  const [recomendaciones, setRecomendaciones] = useState<RecomendacionEntry[]>([])
-  const [tab, setTab] = useState<'vistas' | 'watchlist' | 'estadisticas' | 'reviews' | 'recomendaciones'>('vistas')
+  // recMap: pelicula_id -> usernames que la recomendaron (solo en perfil propio)
+  const [recMap, setRecMap] = useState<Record<string, string[]>>({})
+  const [tab, setTab] = useState<'vistas' | 'watchlist' | 'estadisticas' | 'reviews'>('vistas')
   const [cargando, setCargando] = useState(true)
   const [loadingFollow, setLoadingFollow] = useState(false)
   const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
@@ -117,7 +107,6 @@ export default function PerfilPage() {
           esMio
             ? supabase.from('perfil_preferencias').select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores').eq('user_id', uid).maybeSingle()
             : Promise.resolve({ data: null }),
-          // El dueño del perfil me sigue a mí (mutual follow check)
           (user && !esMio)
             ? supabase.from('follows').select('follower_id').eq('follower_id', uid).eq('following_id', user.id).maybeSingle()
             : Promise.resolve({ data: null }),
@@ -172,7 +161,7 @@ export default function PerfilPage() {
           const ratingMap: Record<string, number | null> = {}
           ;(ratingsData ?? []).forEach((r: any) => { ratingMap[r.pelicula_id] = r.rating ?? null })
 
-          const mapped: ReviewEntry[] = (reviewsRaw as any[])
+          const mappedReviews: ReviewEntry[] = (reviewsRaw as any[])
             .filter(r => r.peliculas)
             .map(r => ({
               id: r.id,
@@ -185,46 +174,37 @@ export default function PerfilPage() {
               poster_path: r.peliculas.poster_path,
               rating: ratingMap[r.pelicula_id] ?? null,
             }))
-          setReviews(mapped)
+          setReviews(mappedReviews)
         }
 
+        // Si es mi perfil, fetch recomendaciones recibidas para mostrar overlay en watchlist
         if (esMio) {
           const { data: notifRecs } = await supabase
             .from('notifications')
-            .select('id, from_user_id, meta, created_at')
+            .select('from_user_id, meta')
             .eq('user_id', uid)
             .eq('type', 'recomendacion')
-            .order('created_at', { ascending: false })
-            .limit(50)
 
           if (notifRecs && notifRecs.length > 0) {
             const fromIds = [...new Set(notifRecs.map((n: any) => n.from_user_id).filter(Boolean))]
-            const peliculaIds = [...new Set(notifRecs.map((n: any) => n.meta?.pelicula_id).filter(Boolean))]
+            const { data: recProfiles } = await supabase
+              .from('profiles')
+              .select('user_id, username')
+              .in('user_id', fromIds)
 
-            const [{ data: recProfiles }, { data: recPeliculas }] = await Promise.all([
-              supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', fromIds),
-              supabase.from('peliculas').select('id, titulo, titulo_ingles, poster_path').in('id', peliculaIds),
-            ])
+            const recProfileMap: Record<string, string> = {}
+            ;(recProfiles ?? []).forEach((p: any) => { recProfileMap[p.user_id] = p.username })
 
-            const recProfileMap: Record<string, { username: string; avatar_url: string | null }> = {}
-            ;(recProfiles ?? []).forEach((p: any) => { recProfileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
-
-            const recPeliculaMap: Record<string, { titulo: string; titulo_ingles: string | null; poster_path: string | null }> = {}
-            ;(recPeliculas ?? []).forEach((p: any) => { recPeliculaMap[p.id] = p })
-
-            const mappedRecs: RecomendacionEntry[] = notifRecs
-              .filter((n: any) => recProfileMap[n.from_user_id] && recPeliculaMap[n.meta?.pelicula_id])
-              .map((n: any) => ({
-                id: n.id,
-                from_username: recProfileMap[n.from_user_id].username,
-                from_avatar: recProfileMap[n.from_user_id].avatar_url,
-                pelicula_id: n.meta.pelicula_id,
-                pelicula_titulo: n.meta.pelicula_titulo ?? recPeliculaMap[n.meta.pelicula_id]?.titulo_ingles ?? recPeliculaMap[n.meta.pelicula_id]?.titulo ?? '',
-                pelicula_poster: recPeliculaMap[n.meta.pelicula_id]?.poster_path ?? null,
-                mensaje: n.meta.mensaje ?? null,
-                created_at: n.created_at,
-              }))
-            setRecomendaciones(mappedRecs)
+            const map: Record<string, string[]> = {}
+            notifRecs.forEach((n: any) => {
+              const pid = n.meta?.pelicula_id
+              const uname = recProfileMap[n.from_user_id]
+              if (pid && uname) {
+                if (!map[pid]) map[pid] = []
+                if (!map[pid].includes(uname)) map[pid].push(uname)
+              }
+            })
+            setRecMap(map)
           }
         }
 
@@ -241,7 +221,6 @@ export default function PerfilPage() {
     } else {
       await supabase.from('follows').insert({ follower_id: user.id, following_id: profileUserId })
       setYaSigo(true); setSeguidores(s => s + 1)
-      // Notificar al usuario seguido
       await supabase.from('notifications').insert({
         user_id: profileUserId,
         type: 'follow',
@@ -276,7 +255,6 @@ export default function PerfilPage() {
 
   const handleCuestionarioComplete = async () => {
     setCuestionarioAbierto(false)
-    // Refetch preferencias
     if (user) {
       const { data } = await supabase
         .from('perfil_preferencias')
@@ -287,7 +265,17 @@ export default function PerfilPage() {
     }
   }
 
-  function PosterCard({ titulo, poster, rating }: { titulo: string; poster: string | null; rating: number | null }) {
+  function PosterCard({
+    titulo,
+    poster,
+    rating,
+    recomendadores,
+  }: {
+    titulo: string
+    poster: string | null
+    rating: number | null
+    recomendadores?: string[]
+  }) {
     return (
       <div className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition-colors">
         <div className="relative aspect-[2/3] bg-zinc-800">
@@ -301,6 +289,16 @@ export default function PerfilPage() {
           {rating != null && (
             <div className="absolute top-1 right-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">
               {rating}
+            </div>
+          )}
+          {recomendadores && recomendadores.length > 0 && (
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent px-1.5 pt-5 pb-1.5">
+              <p className="text-[8px] leading-tight text-zinc-300 truncate">
+                ✈️ <span className="text-white font-medium">@{recomendadores[0]}</span>
+                {recomendadores.length > 1 && (
+                  <span className="text-zinc-400"> +{recomendadores.length - 1}</span>
+                )}
+              </p>
             </div>
           )}
         </div>
@@ -387,16 +385,12 @@ export default function PerfilPage() {
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 bg-zinc-900 rounded-xl p-1">
-          {(() => {
-            const tabsArray = [
-              { key: 'vistas' as const, label: 'Vistas', count: peliculas.length },
-              { key: 'watchlist' as const, label: 'Watchlist', count: watchlist.length },
-              { key: 'reviews' as const, label: 'Reviews', count: reviews.length },
-              { key: 'estadisticas' as const, label: 'Estadísticas', count: null },
-              ...(esMiPerfil ? [{ key: 'recomendaciones' as const, label: '✈️ Para mí', count: recomendaciones.length }] : []),
-            ]
-            return tabsArray
-          })().map(({ key, label, count }) => (
+          {[
+            { key: 'vistas' as const, label: 'Vistas', count: peliculas.length },
+            { key: 'watchlist' as const, label: 'Watchlist', count: watchlist.length },
+            { key: 'reviews' as const, label: 'Reviews', count: reviews.length },
+            { key: 'estadisticas' as const, label: 'Estadísticas', count: null },
+          ].map(({ key, label, count }) => (
             <button
               key={key}
               onClick={() => setTab(key)}
@@ -446,13 +440,14 @@ export default function PerfilPage() {
               {watchlist.map(entrada => {
                 const p = entrada.pelicula
                 const titulo = p.titulo_ingles || p.titulo
+                const recomendadores = esMiPerfil ? (recMap[entrada.pelicula_id] ?? []) : []
                 return (
                   <div
                     key={entrada.pelicula_id}
                     className="cursor-pointer"
                     onClick={() => setComentarioModal({ peliculaId: entrada.pelicula_id, peliculaTitulo: titulo, peliculaPoster: p.poster_path ?? null, listaTipo: 'watchlist' })}
                   >
-                    <PosterCard titulo={titulo} poster={p.poster_path ?? null} rating={null} />
+                    <PosterCard titulo={titulo} poster={p.poster_path ?? null} rating={null} recomendadores={recomendadores} />
                   </div>
                 )
               })}
@@ -507,42 +502,6 @@ export default function PerfilPage() {
                         {new Date(r.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )
-        )}
-
-        {/* Tab: Recomendaciones */}
-        {tab === 'recomendaciones' && (
-          recomendaciones.length === 0 ? (
-            <p className="text-zinc-500 text-sm">Aún no tenés recomendaciones.</p>
-          ) : (
-            <div className="space-y-3">
-              {recomendaciones.map(rec => (
-                <Link
-                  key={rec.id}
-                  href={`/pelicula/${rec.pelicula_id}`}
-                  className="flex items-start gap-4 bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-600 transition-colors"
-                >
-                  <div className="w-12 shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
-                    {rec.pelicula_poster && (
-                      <img
-                        src={`https://image.tmdb.org/t/p/w92${rec.pelicula_poster}`}
-                        alt={rec.pelicula_titulo}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white font-semibold text-sm leading-snug mb-1">{rec.pelicula_titulo}</p>
-                    <p className="text-zinc-500 text-xs mb-2">
-                      Recomendada por <span className="text-zinc-300">@{rec.from_username}</span>
-                    </p>
-                    {rec.mensaje && (
-                      <p className="text-zinc-400 text-xs italic border-l-2 border-zinc-700 pl-3">"{rec.mensaje}"</p>
-                    )}
                   </div>
                 </Link>
               ))}

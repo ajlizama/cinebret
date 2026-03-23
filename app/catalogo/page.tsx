@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase'
 import Nav from '@/components/Nav'
 import CatalogoInteractivo, { type Pelicula } from './CatalogoInteractivo'
 
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const GENEROS_EN_A_ES: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',

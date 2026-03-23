@@ -573,7 +573,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       {/* ── HERO ── */}
       <div className="relative overflow-hidden" style={{ height: '300px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/fondo-interstellar.jpg" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_35%]" />
+        <img src="/fondo-interstellar.jpg" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_40%] md:object-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
         <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
           <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-1.5 tracking-tight">
@@ -603,10 +603,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition-all bg-gradient-to-br ${activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`}`}>
-                  <span className="text-base md:text-sm">{cat.emoji}</span>
-                  <span className="hidden md:inline truncate">{cat.id}</span>
-                  <span className="md:hidden text-[10px] text-center leading-tight">{cat.short}</span>
+                  className={`py-3 md:py-2.5 rounded-xl border text-[10px] md:text-xs font-semibold flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-1.5 transition-all bg-gradient-to-br ${activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`}`}>
+                  <span className="text-lg md:text-sm leading-none">{cat.emoji}</span>
+                  <span className="text-center leading-tight">{cat.id}</span>
                 </button>
               )
             })}
@@ -709,37 +708,34 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
         {/* ── Catálogo ── */}
         <div className="border-t border-zinc-800 pt-4 mb-4">
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg font-bold text-white">Catálogo</h2>
-              {/* Toggle Grilla / Lista */}
-              <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
-                <button onClick={() => setVistaMode('grilla')}
-                  className={`px-3 py-1 transition-colors ${vistaMode === 'grilla' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
-                  Grilla
-                </button>
-                <button onClick={() => setVistaMode('lista')}
-                  className={`px-3 py-1 transition-colors ${vistaMode === 'lista' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
-                  Lista
-                </button>
-              </div>
-              <p className="text-sm text-zinc-500">{peliculasFiltradas.length} resultado{peliculasFiltradas.length !== 1 ? 's' : ''}</p>
-              <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-                <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-[10px] ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
+          {/* Row 1: title + toggle + badges */}
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
+            <h2 className="text-lg font-bold text-white">Catálogo</h2>
+            <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
+              <button onClick={() => setVistaMode('grilla')}
+                className={`px-4 py-1.5 transition-colors ${vistaMode === 'grilla' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
+                Grilla
               </button>
-              <button onClick={() => setSoloSello(!soloSello)} className={`flex items-center gap-1 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-                <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-[10px] ${soloSello ? 'border-emerald-400 text-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★</span>
+              <button onClick={() => setVistaMode('lista')}
+                className={`px-4 py-1.5 transition-colors ${vistaMode === 'lista' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
+                Lista
               </button>
             </div>
+            <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
+              <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-[10px] ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
+            </button>
+            <button onClick={() => setSoloSello(!soloSello)} className={`flex items-center gap-1 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
+              <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-[10px] ${soloSello ? 'border-emerald-400 text-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★</span>
+            </button>
             <select value={orden} onChange={e => setOrden(e.target.value as Orden)}
-              className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm text-zinc-300 focus:outline-none focus:border-zinc-500">
-              <option value="imdb">Mayor IMDB</option>
-              <option value="rt">Mayor RT</option>
-              <option value="metacritic">Mayor MC</option>
-              <option value="boxoffice">Mayor taquilla</option>
-              <option value="anio_desc">Más recientes</option>
-              <option value="anio_asc">Más antiguas</option>
-              <option value="titulo">Título A-Z</option>
+              className="ml-auto bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-zinc-500 shrink-0">
+              <option value="imdb">IMDB</option>
+              <option value="rt">RT</option>
+              <option value="metacritic">MC</option>
+              <option value="boxoffice">Taquilla</option>
+              <option value="anio_desc">Recientes</option>
+              <option value="anio_asc">Antiguas</option>
+              <option value="titulo">A-Z</option>
             </select>
           </div>
         </div>

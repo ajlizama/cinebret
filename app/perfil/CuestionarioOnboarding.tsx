@@ -74,12 +74,12 @@ function MovieSearchSlot({
       return
     }
     supabase
-      .from('peliculas')
-      .select('id, titulo, titulo_ingles, poster_path')
-      .ilike('titulo_ingles', `%${debounced}%`)
-      .limit(6)
+      .rpc('buscar_peliculas', { q: debounced })
       .then(({ data }) => {
-        onChange({ ...slot, results: (data ?? []) as MovieSuggestion[], open: true })
+        const results: MovieSuggestion[] = (data ?? []).slice(0, 8).map((p: any) => ({
+          id: p.id, titulo: p.titulo, titulo_ingles: p.titulo_ingles ?? null, poster_path: p.poster_path ?? null,
+        }))
+        onChange({ ...slot, results, open: true })
       })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced])

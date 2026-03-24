@@ -66,6 +66,24 @@ function tiempoRelativo(iso: string) {
   return new Date(iso).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
 }
 
+// Global tracker: only the most visible video plays
+const visibleVideos = new Map<HTMLVideoElement, number>()
+
+function updateActiveVideo() {
+  let best: HTMLVideoElement | null = null
+  let bestRatio = 0
+  visibleVideos.forEach((ratio, video) => {
+    if (ratio > bestRatio) { bestRatio = ratio; best = video }
+  })
+  visibleVideos.forEach((_, video) => {
+    if (video === best) {
+      if (video.paused) video.play().catch(() => {})
+    } else {
+      if (!video.paused) { video.pause(); video.currentTime = 0 }
+    }
+  })
+}
+
 function AutoplayClip({ url }: { url: string }) {
   const ref = useRef<HTMLVideoElement>(null)
   const [muted, setMuted] = useState(true)
@@ -75,18 +93,20 @@ function AutoplayClip({ url }: { url: string }) {
     if (!video) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {})
+        if (entry.intersectionRatio > 0.3) {
+          visibleVideos.set(video, entry.intersectionRatio)
         } else {
+          visibleVideos.delete(video)
           video.pause()
           video.currentTime = 0
           setMuted(true)
         }
+        updateActiveVideo()
       },
-      { threshold: 0.6 }
+      { threshold: [0, 0.3, 0.5, 0.7, 1] }
     )
     observer.observe(video)
-    return () => observer.disconnect()
+    return () => { observer.disconnect(); visibleVideos.delete(video) }
   }, [])
 
   return (

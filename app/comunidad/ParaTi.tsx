@@ -1,11 +1,65 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import PeliculaDetalle from '@/app/catalogo/PeliculaDetalle'
+
+// ── Engagement tracking (skip detection) ──────────────────────────────
+const ENGAGEMENT_KEY = 'cinebret-engagement'
+const SKIP_DECAY_MS = 3 * 24 * 60 * 60 * 1000 // 3 days decay
+const MIN_VIEW_MS = 3000 // 3 seconds threshold
+
+type EngagementEntry = { skips: number; lastSkip: number; engaged: boolean }
+type EngagementMap = Record<string, EngagementEntry>
+
+function getEngagement(): EngagementMap {
+  try {
+    const raw = localStorage.getItem(ENGAGEMENT_KEY)
+    if (!raw) return {}
+    const map: EngagementMap = JSON.parse(raw)
+    // Clean up old entries (> 7 days)
+    const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000
+    const cleaned: EngagementMap = {}
+    for (const [id, entry] of Object.entries(map)) {
+      if (entry.lastSkip > cutoff || entry.engaged) cleaned[id] = entry
+    }
+    return cleaned
+  } catch { return {} }
+}
+
+function saveEngagement(map: EngagementMap) {
+  try { localStorage.setItem(ENGAGEMENT_KEY, JSON.stringify(map)) } catch {}
+}
+
+function recordSkip(movieId: string) {
+  const map = getEngagement()
+  const existing = map[movieId] || { skips: 0, lastSkip: 0, engaged: false }
+  if (existing.engaged) return // already engaged, don't penalize
+  existing.skips = Math.min(existing.skips + 1, 5) // cap at 5
+  existing.lastSkip = Date.now()
+  map[movieId] = existing
+  saveEngagement(map)
+}
+
+function recordEngagement(movieId: string) {
+  const map = getEngagement()
+  map[movieId] = { skips: 0, lastSkip: 0, engaged: true }
+  saveEngagement(map)
+}
+
+function getSkipPenalty(movieId: string): number {
+  const map = getEngagement()
+  const entry = map[movieId]
+  if (!entry || entry.engaged) return 1.0 // no penalty
+  const age = Date.now() - entry.lastSkip
+  const decay = Math.min(age / SKIP_DECAY_MS, 1.0) // 0→1 over 3 days
+  // Each skip reduces score by 10%, decaying over time
+  const penalty = 1.0 - (entry.skips * 0.10 * (1.0 - decay))
+  return Math.max(penalty, 0.5) // never penalize more than 50%
+}
 
 const PLATAFORMAS = [
   { id: 'netflix',         nombre: 'Netflix',     logo: '/netflix.png' },
@@ -133,6 +187,42 @@ async function fetchCandidatosHoy(): Promise<string[]> {
 }
 
 export type RecExport = Rec
+
+// ── Tracked card: detects skips via IntersectionObserver ──────────────
+function TrackedCard({ movieId, onClick, children }: {
+  movieId: string; onClick: () => void; children: React.ReactNode
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const enteredAt = useRef<number | null>(null)
+  const clicked = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          enteredAt.current = Date.now()
+        } else if (enteredAt.current && !clicked.current) {
+          const viewTime = Date.now() - enteredAt.current
+          if (viewTime < MIN_VIEW_MS) recordSkip(movieId)
+          enteredAt.current = null
+        }
+      },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [movieId])
+
+  return (
+    <div ref={ref}
+      onClick={() => { clicked.current = true; onClick() }}
+      className="shrink-0 w-36 text-left cursor-pointer">
+      {children}
+    </div>
+  )
+}
 
 export default function ParaTi({
   onEditPreferences,
@@ -606,10 +696,12 @@ export default function ParaTi({
     const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
     balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
 
-    // Agregar jitter aleatorio para variar recomendaciones entre sesiones
-    // El jitter es ±8% del score, suficiente para reordenar películas de score similar
-    const jittered = balanced.map(r => ({ ...r, score: r.score * (0.92 + Math.random() * 0.16) }))
-    setRecs(jittered.sort((a, b) => b.score - a.score))
+    // Aplicar penalidad por skips + jitter aleatorio
+    const final = balanced.map(r => ({
+      ...r,
+      score: r.score * getSkipPenalty(r.id) * (0.92 + Math.random() * 0.16)
+    }))
+    setRecs(final.sort((a, b) => b.score - a.score))
     setCargando(false)
   }
 
@@ -662,9 +754,8 @@ export default function ParaTi({
             {displayed.map(rec => {
               const platsActivas = PLATAFORMAS.filter(p => rec.plataformas.includes(p.id))
               return (
-                <div key={rec.id}
-                  onClick={() => onMovieExpand?.(rec)}
-                  className="shrink-0 w-36 text-left cursor-pointer">
+                <TrackedCard key={rec.id} movieId={rec.id}
+                  onClick={() => { recordEngagement(rec.id); onMovieExpand?.(rec) }}>
                   <div className="relative w-36 h-52 rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
                     {rec.poster_path
                       ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" sizes="144px" />
@@ -688,7 +779,7 @@ export default function ParaTi({
                   </div>
                   <p className="text-white text-xs font-semibold leading-snug line-clamp-2 mb-0.5">{rec.titulo_ingles || rec.titulo}</p>
                   <p className="text-zinc-500 text-xs leading-snug line-clamp-1">{rec.razon}</p>
-                </div>
+                </TrackedCard>
               )
             })}
           </div>

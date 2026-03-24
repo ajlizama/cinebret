@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Nav from '@/components/Nav'
@@ -32,6 +32,7 @@ type FeedItem = {
   rating: number | null
   isCineBret: boolean
   publica?: boolean
+  video_clip_url?: string | null
 }
 
 function AvatarCineBret({ size = 36 }: { size?: number }) {
@@ -63,6 +64,51 @@ function tiempoRelativo(iso: string) {
   const days = Math.floor(hrs / 24)
   if (days < 7) return `hace ${days}d`
   return new Date(iso).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
+}
+
+function AutoplayClip({ url }: { url: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const [muted, setMuted] = useState(true)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+          video.currentTime = 0
+          setMuted(true)
+        }
+      },
+      { threshold: 0.6 }
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div className="relative rounded-xl overflow-hidden bg-black mt-2 mb-1">
+      <video
+        ref={ref}
+        src={url}
+        muted={muted}
+        loop
+        playsInline
+        preload="metadata"
+        className="w-full max-h-72 object-contain"
+        onClick={() => setMuted(m => !m)}
+      />
+      <button
+        onClick={e => { e.stopPropagation(); setMuted(m => !m) }}
+        className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center text-white text-xs"
+      >
+        {muted ? '🔇' : '🔊'}
+      </button>
+    </div>
+  )
 }
 
 function FeedCard({
@@ -137,6 +183,13 @@ function FeedCard({
           )}
         </div>
       </div>
+
+      {/* Video clip */}
+      {item.video_clip_url && (
+        <div className="px-4">
+          <AutoplayClip url={item.video_clip_url} />
+        </div>
+      )}
 
       {/* Acciones */}
       <div className="flex items-center gap-3 px-4 pb-3">
@@ -265,7 +318,7 @@ export default function ComunidadPage() {
   useEffect(() => {
     supabase
       .from('enriquecimiento')
-      .select('pelicula_id, review_autor, peliculas(id, titulo, titulo_ingles, poster_path)')
+      .select('pelicula_id, review_autor, video_clip_url, peliculas(id, titulo, titulo_ingles, poster_path)')
       .not('review_autor', 'is', null)
       .limit(40)
       .then(({ data }) => {
@@ -285,6 +338,7 @@ export default function ComunidadPage() {
             poster_path: r.peliculas.poster_path,
             rating: null,
             isCineBret: true,
+            video_clip_url: r.video_clip_url ?? null,
           }))
         setFeedCineBret(items)
         setCargandoFeed(false)
@@ -336,13 +390,17 @@ export default function ComunidadPage() {
       const peliculaIds   = [...new Set(reviews.map((r: any) => r.pelicula_id))]
       const reviewIds     = reviews.map((r: any) => r.id)
 
-      const [{ data: profiles }, { data: peliculas }, { data: userPelis }, { data: likesData }, { data: misMovies }] = await Promise.all([
+      const [{ data: profiles }, { data: peliculas }, { data: userPelis }, { data: likesData }, { data: misMovies }, { data: enrData }] = await Promise.all([
         supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', reviewUserIds),
         supabase.from('peliculas').select('id, titulo, titulo_ingles, poster_path').in('id', peliculaIds),
         supabase.from('user_peliculas').select('user_id, pelicula_id, rating').in('user_id', reviewUserIds).in('pelicula_id', peliculaIds),
         supabase.from('review_likes').select('review_id, user_id').in('review_id', reviewIds),
         supabase.from('user_peliculas').select('pelicula_id, visto, watchlist').eq('user_id', user.id).in('pelicula_id', peliculaIds),
+        supabase.from('enriquecimiento').select('pelicula_id, video_clip_url').in('pelicula_id', peliculaIds).not('video_clip_url', 'is', null),
       ])
+
+      const clipMap: Record<string, string> = {}
+      ;(enrData ?? []).forEach((e: any) => { if (e.video_clip_url) clipMap[e.pelicula_id] = e.video_clip_url })
 
       const profileMap: Record<string, { username: string; avatar_url: string | null }> = {}
       ;(profiles ?? []).forEach((p: any) => { profileMap[p.user_id] = { username: p.username, avatar_url: p.avatar_url ?? null } })
@@ -381,6 +439,7 @@ export default function ComunidadPage() {
           rating: ratingMap[`${r.user_id}_${r.pelicula_id}`] ?? null,
           isCineBret: false,
           publica: r.publica,
+          video_clip_url: clipMap[r.pelicula_id] ?? null,
         }))
 
       setFeedSeguidores(items)

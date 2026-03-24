@@ -630,7 +630,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           <div className="relative w-full max-w-xl">
             <input type="text" placeholder="Buscar película, director, actor..." value={busqueda}
               onChange={e => { setBusqueda(e.target.value); setPagina(0) }}
-              className="w-full bg-white/10 backdrop-blur border border-white/20 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-white/50 text-sm" />
+              className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-sm shadow-lg" />
             <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
             </svg>
@@ -666,9 +666,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               return (
                 <button key={plat.id}
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                  className={`h-8 w-14 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-600 bg-zinc-800 hover:border-zinc-400'}`}>
+                  className={`h-11 w-16 md:h-8 md:w-14 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-600 bg-zinc-800 hover:border-zinc-400'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
+                  <img src={plat.logo} alt={plat.nombre} className="h-4 md:h-3.5 w-auto object-contain" />
                 </button>
               )
             })}

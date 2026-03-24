@@ -53,22 +53,24 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
     <main className="min-h-screen bg-zinc-950">
       <Nav />
 
-      {/* ── HERO: poster de fondo, ancho completo ── */}
-      <div className="relative w-full overflow-hidden">
+      {/* ── HERO: poster de fondo con blur cinematográfico ── */}
+      <div className="relative w-full overflow-hidden" style={{ minHeight: '280px' }}>
         {pelicula.poster_path && (
           <>
-            {/* Poster como fondo */}
+            {/* Poster como fondo: escalado y con blur para efecto cinematográfico */}
             <img
               src={`https://image.tmdb.org/t/p/w1280${pelicula.poster_path}`}
               alt=""
               aria-hidden
-              className="absolute inset-0 w-full h-full object-cover object-top"
-              style={{ opacity: 0.35 }}
+              className="absolute inset-0 w-full h-full object-cover object-top scale-110"
+              style={{ opacity: 0.3, filter: 'blur(12px)' }}
             />
+            {/* Capa de color sólido para reforzar contraste */}
+            <div className="absolute inset-0 bg-zinc-950/40" />
             {/* Gradiente lateral (oscurece los bordes) */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(9,9,11,0.7) 0%, rgba(9,9,11,0.2) 40%, rgba(9,9,11,0.2) 60%, rgba(9,9,11,0.7) 100%)' }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(9,9,11,0.8) 0%, rgba(9,9,11,0.3) 40%, rgba(9,9,11,0.3) 60%, rgba(9,9,11,0.8) 100%)' }} />
             {/* Gradiente vertical: transparente arriba → zinc-950 sólido abajo */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(9,9,11,0.2) 0%, rgba(9,9,11,0.5) 60%, rgba(9,9,11,1) 100%)' }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(9,9,11,0.1) 0%, rgba(9,9,11,0.4) 50%, rgba(9,9,11,1) 100%)' }} />
           </>
         )}
 
@@ -186,26 +188,30 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               )}
             </div>
 
-            {/* Dónde ver */}
-            <div>
-              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
-              <div className="grid grid-cols-3 gap-1.5">
-                {PLATAFORMAS.map(plat => {
-                  const activa = plataformasHoy.includes(plat.id)
-                  return (
+            {/* Dónde ver — solo plataformas activas */}
+            {PLATAFORMAS.some(plat => plataformasHoy.includes(plat.id)) ? (
+              <div>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
+                <div className="flex flex-wrap gap-2">
+                  {PLATAFORMAS.filter(plat => plataformasHoy.includes(plat.id)).map(plat => (
                     <div
                       key={plat.id}
-                      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-opacity ${activa ? 'bg-zinc-800' : 'opacity-20'}`}
+                      className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 min-h-[44px]"
                     >
-                      <div className="bg-white rounded px-1 py-0.5 shrink-0">
-                        <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
+                      <div className="bg-white rounded px-1.5 py-1 shrink-0">
+                        <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
                       </div>
-                      <span className={`text-xs truncate ${activa ? 'text-white' : 'text-zinc-500'}`}>{plat.nombre}</span>
+                      <span className="text-sm text-white">{plat.nombre}</span>
                     </div>
-                  )
-                })}
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
+                <p className="text-sm text-zinc-600">No disponible en streaming actualmente</p>
+              </div>
+            )}
 
             {/* Video clip */}
             {enr?.video_clip_url && (

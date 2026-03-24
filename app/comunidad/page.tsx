@@ -538,7 +538,7 @@ export default function ComunidadPage() {
       <Nav active="comunidad" />
 
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden" style={{ height: '300px' }}>
+      <div className="relative overflow-hidden" style={{ height: '240px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/comunidad-fondo.png" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_40%]" />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
@@ -552,7 +552,7 @@ export default function ComunidadPage() {
           <div className="relative w-full max-w-xl">
             <input type="text" placeholder="Buscar película o usuario..." readOnly
               onClick={() => { const el = document.querySelector('nav input') as HTMLInputElement; el?.focus() }}
-              className="w-full bg-white/10 backdrop-blur border border-white/20 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-white/50 text-sm cursor-pointer" />
+              className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-sm cursor-pointer shadow-lg" />
             <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
             </svg>
@@ -560,7 +560,7 @@ export default function ComunidadPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-3">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-4">

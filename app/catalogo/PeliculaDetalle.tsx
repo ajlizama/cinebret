@@ -9,11 +9,12 @@ type Props = {
   peliculaId: string
   esReviewAutor: boolean
   sinopsisIa: string | null
+  hideSinopsis?: boolean
 }
 
-export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa }: Props) {
+export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa, hideSinopsis }: Props) {
   const [reviewAutor, setReviewAutor] = useState<string | null>(null)
-  const [sinopsis, setSinopsis] = useState<string | null>(sinopsisIa)
+  const [sinopsis, setSinopsis] = useState<string | null>(hideSinopsis ? null : sinopsisIa)
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa 
       .maybeSingle()
       .then(({ data }) => {
         if (data?.review_autor) setReviewAutor(data.review_autor)
-        if (!sinopsisIa && data?.sinopsis_chilensis) setSinopsis(data.sinopsis_chilensis)
+        if (!hideSinopsis && !sinopsisIa && data?.sinopsis_chilensis) setSinopsis(data.sinopsis_chilensis)
         setCargando(false)
       })
   }, [peliculaId, sinopsisIa])

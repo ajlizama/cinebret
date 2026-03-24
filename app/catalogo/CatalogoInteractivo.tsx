@@ -30,7 +30,7 @@ export type Pelicula = {
   actores_oscars: Record<string, number> | null; compositor: string | null
   compositor_oscars: number | null; generos: string[]; poster_path: string | null
   oscars: string | null; imdb_id: string | null; youtube_trailer_key: string | null
-  sinopsis: string | null
+  sinopsis: string | null; video_clip_url: string | null
 }
 
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
@@ -114,6 +114,43 @@ const MOOD_CATS = [
   { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', short: 'Licuadora', grad: 'from-rose-500 to-pink-600', dim: 'from-rose-950/70 to-pink-950/70 border-rose-800' },
   { id: "Pa' llorar a moco tendido", emoji: '😭', short: 'A moco tendido', grad: 'from-cyan-500 to-teal-600', dim: 'from-cyan-950/70 to-teal-950/70 border-cyan-800' },
 ]
+
+/* ─────────── Click-to-play video clip ─────────── */
+function ClickToPlayClip({ url }: { url: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const [playing, setPlaying] = useState(false)
+  const [muted, setMuted] = useState(true)
+
+  const toggle = () => {
+    const v = ref.current
+    if (!v) return
+    if (v.paused) { v.play().catch(() => {}); setPlaying(true) }
+    else { v.pause(); setPlaying(false) }
+  }
+
+  return (
+    <div className="px-4 md:px-6 py-3">
+      <div className="relative rounded-xl overflow-hidden bg-black cursor-pointer" onClick={toggle}>
+        <video ref={ref} src={url} muted={muted} loop playsInline preload="none"
+          className="w-full max-h-64 object-contain"
+          onEnded={() => setPlaying(false)} />
+        {!playing && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        )}
+        {playing && (
+          <button onClick={e => { e.stopPropagation(); setMuted(m => !m) }}
+            className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center text-white text-xs">
+            {muted ? '🔇' : '🔊'}
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
 
 /* ─────────── Expanded detail panel (TMDB-style) ─────────── */
 function PanelExpandido({
@@ -423,6 +460,9 @@ function PanelExpandido({
           </div>
         </div>
 
+        {/* Video clip */}
+        {p.video_clip_url && <ClickToPlayClip url={p.video_clip_url} />}
+
         {/* Reviews — both layouts */}
         <div className="px-4 md:px-6 pb-5 pt-2 border-t border-zinc-800">
           <PeliculaDetalle peliculaId={p.id} esReviewAutor={p.es_review_autor} sinopsisIa={p.sinopsis} />
@@ -469,6 +509,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     actores_oscars: null, compositor: rec.compositor, compositor_oscars: null,
     generos: rec.generos, poster_path: rec.poster_path, oscars: rec.oscars,
     imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
+    video_clip_url: null,
   })
   const gridRef = useRef<HTMLDivElement>(null)
 

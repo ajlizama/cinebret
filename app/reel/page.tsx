@@ -13,7 +13,7 @@ type Pelicula = {
   oscars: string | null; poster_path: string | null; categoria: string | null
   plataformas: string[]; sinopsis: string | null; generos: string[]
   director: string | null; actores: string | null; compositor: string | null
-  runtime: number | null; boxoffice: number | null
+  runtime: number | null; boxoffice: number | null; video_clip_url: string | null
 }
 
 type MiniReview = {
@@ -199,7 +199,7 @@ function ReelCard({
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
       const relX = touchX - rect.left
       if (relX > rect.width * 0.5) {
-        setSlide(s => Math.min(2, s + 1))
+        setSlide(s => Math.min(pelicula.video_clip_url ? 3 : 2, s + 1))
       } else {
         setSlide(s => Math.max(0, s - 1))
       }
@@ -257,7 +257,7 @@ function ReelCard({
       }} />
 
       {/* Story bars */}
-      <StoryBars total={3} current={slide} />
+      <StoryBars total={pelicula.video_clip_url ? 4 : 3} current={slide} />
 
       {/* Swipe indicators */}
       {swipeIndicator === 'right' && (
@@ -459,6 +459,25 @@ function ReelCard({
         </div>
       )}
 
+      {/* ══ SLIDE 3: Video clip (only if available) ══ */}
+      {slide === 3 && pelicula.video_clip_url && (
+        <div className="absolute inset-x-0 bottom-24 top-10 flex flex-col items-center justify-center p-4 z-10">
+          <p className="text-white font-bold text-base mb-3">Clip</p>
+          <div className="relative rounded-xl overflow-hidden bg-black w-full max-w-sm">
+            <video
+              src={pelicula.video_clip_url}
+              autoPlay muted loop playsInline
+              className="w-full max-h-[50vh] object-contain"
+              onClick={e => {
+                const v = e.currentTarget
+                v.muted = !v.muted
+              }}
+            />
+            <p className="absolute bottom-2 left-2 text-zinc-400 text-[10px] bg-black/60 rounded-full px-2 py-0.5">Toca para audio</p>
+          </div>
+        </div>
+      )}
+
       {/* ── "Otra película" button top-right ── */}
       <button
         className="absolute top-8 right-3 z-30 w-11 h-11 rounded-full bg-zinc-900/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white shadow-lg"
@@ -523,7 +542,7 @@ export default function ReelPage() {
         .in('id', chunk).not('poster_path', 'is', null)
         .order('nota_imdb', { ascending: false, nullsFirst: false })
       ;(pels ?? []).forEach((p: any) => {
-        todas.push({ ...p, plataformas: platMap[p.id] ?? [], sinopsis: null, generos: [], director: null, actores: null, compositor: null })
+        todas.push({ ...p, plataformas: platMap[p.id] ?? [], sinopsis: null, generos: [], director: null, actores: null, compositor: null, video_clip_url: null })
       })
     }
 
@@ -532,7 +551,7 @@ export default function ReelPage() {
     for (let i = 0; i < todosIds.length; i += CHUNK) {
       const chunk = todosIds.slice(i, i + CHUNK)
       const { data: enr } = await supabase
-        .from('enriquecimiento').select('pelicula_id, sinopsis_chilensis, generos, director, actores, compositor')
+        .from('enriquecimiento').select('pelicula_id, sinopsis_chilensis, generos, director, actores, compositor, video_clip_url')
         .in('pelicula_id', chunk)
       ;(enr ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
     }
@@ -544,6 +563,7 @@ export default function ReelPage() {
       director: enrMap[p.id]?.director ?? null,
       actores: enrMap[p.id]?.actores ?? null,
       compositor: enrMap[p.id]?.compositor ?? null,
+      video_clip_url: enrMap[p.id]?.video_clip_url ?? null,
     }))
     final.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
     setPeliculas(final)

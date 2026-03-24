@@ -207,6 +207,14 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               </div>
             </div>
 
+            {/* Video clip */}
+            {enr?.video_clip_url && (
+              <div className="relative rounded-xl overflow-hidden bg-black">
+                <video src={enr.video_clip_url} controls playsInline preload="none"
+                  className="w-full max-h-80 object-contain" />
+              </div>
+            )}
+
             {/* Seguidos que ya la vieron */}
             <SeguidosQueVieron peliculaId={id} />
 

@@ -616,11 +616,8 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden" style={{ height: '260px' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/fondo-interstellar.jpg" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
-        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
+      <div className="relative overflow-hidden bg-zinc-950" style={{ height: '220px' }}>
+        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-2">
           <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-2 tracking-tight">
             Bienvenido a <span className="text-yellow-400">CineBret</span>
           </h1>
@@ -638,7 +635,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-6">
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-3">
         {/* ── ¿En qué mood estás? ── */}
         <div className="mb-5">
           <h2 className="text-lg md:text-xl font-bold text-white mb-3">¿En qué mood estás?</h2>

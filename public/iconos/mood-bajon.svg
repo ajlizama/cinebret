@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Sillón -->
+  <path d="M10 44V28c0-6 4-10 10-10h24c6 0 10 4 10 10v16" fill="none" stroke-width="4"/>
+  <path d="M6 30v18h4v-14c0-4 3-7 7-7h30c4 0 7 3 7 7v14h4V30c0-4-3-7-7-7H13c-4 0-7 3-7 7z" fill="white"/>
+  <rect x="14" y="34" width="36" height="10" rx="3" fill="white"/>
+  <line x1="32" y1="34" x2="32" y2="44" stroke-width="2" stroke="rgba(0,0,0,0.2)"/>
+  <!-- Patas -->
+  <rect x="10" y="48" width="4" height="6" rx="1" fill="white"/>
+  <rect x="50" y="48" width="4" height="6" rx="1" fill="white"/>
+  <!-- Cojín -->
+  <path d="M18 30c0-3 6-5 14-5s14 2 14 5" fill="none" stroke-width="3"/>
+</svg>

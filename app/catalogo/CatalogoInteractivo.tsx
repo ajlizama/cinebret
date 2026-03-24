@@ -109,10 +109,10 @@ function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectPr
 }
 
 const MOOD_CATS = [
-  { id: "Pa'l domingo de bajón", emoji: '🛋️', short: 'Bajón', grad: 'from-amber-500 to-orange-600', dim: 'from-amber-950/70 to-orange-950/70 border-amber-800' },
-  { id: "Pa' saltar del sillón", emoji: '⚡', short: 'Del sillón', grad: 'from-violet-500 to-blue-600', dim: 'from-violet-950/70 to-blue-950/70 border-violet-800' },
-  { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', short: 'Licuadora', grad: 'from-rose-500 to-pink-600', dim: 'from-rose-950/70 to-pink-950/70 border-rose-800' },
-  { id: "Pa' llorar a moco tendido", emoji: '😭', short: 'A moco tendido', grad: 'from-cyan-500 to-teal-600', dim: 'from-cyan-950/70 to-teal-950/70 border-cyan-800' },
+  { id: "Pa'l domingo de bajón", emoji: '🛋️', label: 'Domingo de bajón' },
+  { id: "Pa' saltar del sillón", emoji: '⚡', label: 'Saltar del sillón' },
+  { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', label: 'Quedar con el cerebro como licuadora' },
+  { id: "Pa' llorar a moco tendido", emoji: '😭', label: 'Llorar a moco tendido' },
 ]
 
 /* ─────────── Click-to-play video clip ─────────── */
@@ -616,7 +616,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden" style={{ height: '300px' }}>
+      <div className="relative overflow-hidden" style={{ height: '260px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/fondo-interstellar.jpg" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
@@ -648,9 +648,9 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-3 md:py-2.5 rounded-xl border text-[10px] md:text-xs font-semibold flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-1.5 transition-all bg-gradient-to-br ${activa ? `${cat.grad} border-transparent text-white shadow-md` : `${cat.dim} text-zinc-300 hover:text-white`}`}>
-                  <span className="text-lg md:text-sm leading-none">{cat.emoji}</span>
-                  <span className="text-center leading-tight">{cat.id}</span>
+                  className={`py-4 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold flex flex-col items-center justify-center gap-1.5 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
+                  <span className="text-2xl md:text-xl leading-none">{cat.emoji}</span>
+                  <span className="text-center leading-tight">{cat.label}</span>
                 </button>
               )
             })}

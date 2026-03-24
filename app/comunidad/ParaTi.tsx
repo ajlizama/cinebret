@@ -287,6 +287,21 @@ export default function ParaTi({
       favDirectors = [...new Set(favDirectors)]
     }
 
+    // 6b. Director clusters — fetch all clusters and build user preference
+    const clusterMap: Record<string, number> = {} // director → cluster_id
+    const { data: clusterData } = await supabase
+      .from('director_clusters').select('director, cluster_id')
+    ;(clusterData ?? []).forEach((c: any) => { clusterMap[c.director] = c.cluster_id })
+
+    // Build user's preferred clusters from fav directors + history (populated below)
+    const userClusterWeights: Record<number, number> = {}
+
+    // Add clusters from favorite movies' directors
+    for (const fd of favDirectors) {
+      const cid = clusterMap[fd]
+      if (cid !== undefined) userClusterWeights[cid] = (userClusterWeights[cid] ?? 0) + 2
+    }
+
     // 7. Scoring con historial del usuario
     let normGenre: Record<string, number> = {}
     let directorAvg: Record<string, number> = {}
@@ -312,7 +327,12 @@ export default function ParaTi({
         const r = ratingMap[p.id] ?? 6
         const enr = evMap[p.id]
         enr?.generos?.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
-        if (enr?.director) dirRatings[enr.director] = [...(dirRatings[enr.director] ?? []), r]
+        if (enr?.director) {
+          dirRatings[enr.director] = [...(dirRatings[enr.director] ?? []), r]
+          // Add cluster weight from watch history (weighted by rating)
+          const cid = clusterMap[enr.director]
+          if (cid !== undefined) userClusterWeights[cid] = (userClusterWeights[cid] ?? 0) + (r / 10)
+        }
         if (p.anio) years.push(p.anio)
       })
 
@@ -411,17 +431,25 @@ export default function ParaTi({
           score += favDirScore * 0.08 * 10
           if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
 
-          // Director desde historial (10%)
+          // Director desde historial (8%)
           if (director && directorAvg[director]) {
-            score += (directorAvg[director] / 10) * 0.10 * 10
+            score += (directorAvg[director] / 10) * 0.08 * 10
             if (!razones.some(r => r.startsWith('Dir.'))) razones.push(`Dir. ${director.split(' ').pop()}`)
           }
 
-          // Mood cuestionario (12%)
-          score += moodBonus * 0.12 * 10
+          // Director cluster affinity (7%) — boost movies from same cluster as liked directors
+          if (director && clusterMap[director] !== undefined) {
+            const cid = clusterMap[director]
+            const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
+            const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
+            score += clusterAffinity * 0.07 * 10
+          }
 
-          // Era (10%)
-          score += eraScore * 0.10 * 10
+          // Mood cuestionario (10%)
+          score += moodBonus * 0.10 * 10
+
+          // Era (8%)
+          score += eraScore * 0.08 * 10
 
           // Seguidores (peso_seguidores controla entre 0% y 20%)
           score += followersScore * wSeguidores * 10
@@ -446,14 +474,22 @@ export default function ParaTi({
           score += favGenreScore * 0.15 * 10
 
           const favDirScore = director && favDirectors.includes(director) ? 1 : 0
-          score += favDirScore * 0.10 * 10
+          score += favDirScore * 0.08 * 10
           if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
 
-          // Mood cuestionario (15%)
-          score += moodBonus * 0.15 * 10
+          // Director cluster affinity (7%) — from fav directors' clusters
+          if (director && clusterMap[director] !== undefined) {
+            const cid = clusterMap[director]
+            const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
+            const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
+            score += clusterAffinity * 0.07 * 10
+          }
 
-          // Era desde birth_year (10%)
-          score += eraScore * 0.10 * 10
+          // Mood cuestionario (12%)
+          score += moodBonus * 0.12 * 10
+
+          // Era desde birth_year (8%)
+          score += eraScore * 0.08 * 10
 
           // Seguidores (peso_seguidores controla entre 0% y 20%)
           score += followersScore * wSeguidores * 10

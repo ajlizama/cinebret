@@ -61,8 +61,8 @@ type UserProfile = {
   mood_ranking: string[]
   peso_critica: number
   peso_seguidores: number
-  peso_director: number
-  peso_actores: number
+  peso_director?: number
+  peso_actores?: number
 }
 
 /**

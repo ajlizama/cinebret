@@ -260,6 +260,8 @@ type PerfilPreferencias = {
   mood_ranking: string[]
   peso_critica: number
   peso_seguidores: number
+  peso_director?: number
+  peso_actores?: number
 }
 
 export default function ComunidadPage() {
@@ -283,7 +285,7 @@ export default function ComunidadPage() {
     if (!user) { setPreferenciasLoaded(true); return }
     supabase
       .from('perfil_preferencias')
-      .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+      .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores')
       .eq('user_id', user.id)
       .maybeSingle()
       .then(({ data }) => {
@@ -669,7 +671,7 @@ export default function ComunidadPage() {
             if (user) {
               const { data } = await supabase
                 .from('perfil_preferencias')
-                .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+                .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores')
                 .eq('user_id', user.id)
                 .maybeSingle()
               setPreferencias(data as PerfilPreferencias ?? null)

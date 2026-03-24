@@ -33,6 +33,7 @@ type FeedItem = {
   isCineBret: boolean
   publica?: boolean
   video_clip_url?: string | null
+  sinopsis?: string | null
 }
 
 function AvatarCineBret({ size = 36 }: { size?: number }) {
@@ -185,6 +186,9 @@ function FeedCard({
           <Link href={`/pelicula/${item.pelicula_id}`} className="hover:opacity-80 transition-opacity">
             <p className="text-white text-sm font-semibold mb-1 leading-snug">{item.titulo_ingles || item.titulo}</p>
           </Link>
+          {item.isCineBret && item.sinopsis && (
+            <p className="text-zinc-400 text-sm italic leading-relaxed mb-2 border-l-2 border-zinc-700 pl-3">{item.sinopsis}</p>
+          )}
           <p
             onClick={() => setExpandido(v => !v)}
             className={`text-sm leading-relaxed cursor-pointer ${expandido ? '' : 'line-clamp-4'} ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}
@@ -338,7 +342,7 @@ export default function ComunidadPage() {
   useEffect(() => {
     supabase
       .from('enriquecimiento')
-      .select('pelicula_id, review_autor, video_clip_url, peliculas(id, titulo, titulo_ingles, poster_path)')
+      .select('pelicula_id, review_autor, video_clip_url, sinopsis_chilensis, peliculas(id, titulo, titulo_ingles, poster_path)')
       .not('review_autor', 'is', null)
       .limit(40)
       .then(({ data }) => {
@@ -359,6 +363,7 @@ export default function ComunidadPage() {
             rating: null,
             isCineBret: true,
             video_clip_url: r.video_clip_url ?? null,
+            sinopsis: r.sinopsis_chilensis ?? null,
           }))
         setFeedCineBret(items)
         setCargandoFeed(false)

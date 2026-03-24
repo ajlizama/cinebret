@@ -61,6 +61,7 @@ type UserProfile = {
   mood_ranking: string[]
   peso_critica: number
   peso_seguidores: number
+  peso_director: number
 }
 
 /**
@@ -212,7 +213,7 @@ export default function ParaTi({
     if (preferenciasExternas === undefined && user) {
       const { data: prefData } = await supabase
         .from('perfil_preferencias')
-        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores')
+        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director')
         .eq('user_id', user.id)
         .maybeSingle()
       perfil = prefData as UserProfile | null
@@ -361,6 +362,8 @@ export default function ParaTi({
     const pesoSeguidores = perfil?.peso_seguidores ?? 0.5
     const wCritica = 0.05 + pesoCritica * 0.30        // [0.05, 0.35]
     const wSeguidores = pesoSeguidores * 0.20          // [0.00, 0.20]
+    const pesoDir = perfil?.peso_director ?? 0.5
+    const wDirector = 0.02 + pesoDir * 0.16            // [0.02, 0.18] — director + cluster combined
 
     // 9. Score todos los candidatos
     const scored: Rec[] = candidatoIds
@@ -422,27 +425,27 @@ export default function ParaTi({
             razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
           }
 
-          // Películas favoritas: género (10%) + director (8%)
+          // Películas favoritas: género (10%) + director (dynamic)
           const favGenreMatch = generos.filter(g => favGenres.includes(g)).length
           const favGenreScore = favGenres.length > 0 ? favGenreMatch / Math.min(favGenres.length, 5) : 0
           score += favGenreScore * 0.10 * 10
 
           const favDirScore = director && favDirectors.includes(director) ? 1 : 0
-          score += favDirScore * 0.08 * 10
+          score += favDirScore * (wDirector * 0.5) * 10
           if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
 
-          // Director desde historial (8%)
+          // Director desde historial (dynamic)
           if (director && directorAvg[director]) {
-            score += (directorAvg[director] / 10) * 0.08 * 10
+            score += (directorAvg[director] / 10) * (wDirector * 0.3) * 10
             if (!razones.some(r => r.startsWith('Dir.'))) razones.push(`Dir. ${director.split(' ').pop()}`)
           }
 
-          // Director cluster affinity (7%) — boost movies from same cluster as liked directors
+          // Director cluster affinity (dynamic)
           if (director && clusterMap[director] !== undefined) {
             const cid = clusterMap[director]
             const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
             const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
-            score += clusterAffinity * 0.07 * 10
+            score += clusterAffinity * (wDirector * 0.2) * 10
           }
 
           // Mood cuestionario (10%)
@@ -468,21 +471,21 @@ export default function ParaTi({
             razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
           }
 
-          // Películas favoritas: género (15%) + director (10%)
+          // Películas favoritas: género (15%) + director (dynamic)
           const favGenreMatch = generos.filter(g => favGenres.includes(g)).length
           const favGenreScore = favGenres.length > 0 ? favGenreMatch / Math.min(favGenres.length, 5) : 0
           score += favGenreScore * 0.15 * 10
 
           const favDirScore = director && favDirectors.includes(director) ? 1 : 0
-          score += favDirScore * 0.08 * 10
+          score += favDirScore * (wDirector * 0.6) * 10
           if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
 
-          // Director cluster affinity (7%) — from fav directors' clusters
+          // Director cluster affinity (dynamic)
           if (director && clusterMap[director] !== undefined) {
             const cid = clusterMap[director]
             const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
             const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
-            score += clusterAffinity * 0.07 * 10
+            score += clusterAffinity * (wDirector * 0.4) * 10
           }
 
           // Mood cuestionario (12%)

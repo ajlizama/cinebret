@@ -38,6 +38,7 @@ interface PreferenciasIniciales {
   mood_ranking: string[]
   peso_critica: number
   peso_seguidores: number
+  peso_director: number
 }
 
 interface Props {
@@ -195,6 +196,10 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
   const [pesoSeguidores, setPesoSeguidores] = useState(
     preferenciasIniciales ? Math.round(preferenciasIniciales.peso_seguidores * 10) : 5
   )
+  const [pesoDirector, setPesoDirector] = useState(
+    preferenciasIniciales ? Math.round((preferenciasIniciales.peso_director ?? 0.5) * 10) : 5
+  )
+  const [showDetalleExtra, setShowDetalleExtra] = useState(false)
   const [guardando, setGuardando] = useState(false)
 
   // Cargar películas favoritas existentes (solo al editar)
@@ -263,6 +268,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
       mood_ranking: moods,
       peso_critica: pesoCritica / 10,
       peso_seguidores: anonymous ? 0 : pesoSeguidores / 10,
+      peso_director: pesoDirector / 10,
     }
 
     if (user && !anonymous) {
@@ -434,6 +440,30 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
               <p className="text-xs text-yellow-400/80 -mt-1">
                 Inicia sesión para fortalecer tus gustos
               </p>
+            )}
+          </section>
+
+          {/* Detalle Extra */}
+          <section>
+            <button type="button" onClick={() => setShowDetalleExtra(v => !v)}
+              className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors w-full">
+              <span className="text-xs">{showDetalleExtra ? '▲' : '▼'}</span>
+              <span className="font-medium">Detalle extra</span>
+            </button>
+            {showDetalleExtra && (
+              <div className="mt-3 space-y-2">
+                <p className="text-sm text-zinc-300">¿Qué tan importante es el director para ti?</p>
+                <div className="flex justify-between text-xs text-zinc-500">
+                  <span>No mucho</span>
+                  <span className="text-white font-semibold">{pesoDirector}/10</span>
+                  <span>Fundamental</span>
+                </div>
+                <input
+                  type="range" min={0} max={10} value={pesoDirector}
+                  onChange={e => setPesoDirector(Number(e.target.value))}
+                  className="w-full accent-yellow-400"
+                />
+              </div>
             )}
           </section>
 

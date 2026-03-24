@@ -168,7 +168,7 @@ export default function AdminPage() {
                   <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fill: '#71717a', fontSize: 12 }} />
                   <YAxis yAxisId="left" tick={{ fill: '#71717a', fontSize: 12 }} />
                   <YAxis yAxisId="right" orientation="right" tick={{ fill: '#71717a', fontSize: 12 }} />
-                  <Tooltip {...tooltipStyle} formatter={(v: number, name: string) => [v, name === 'nuevos' ? 'Nuevos' : 'Acumulado']} labelFormatter={formatDate} />
+                  <Tooltip {...tooltipStyle} labelFormatter={(v: any) => formatDate(v)} />
                   <Legend />
                   <Area yAxisId="right" type="monotone" dataKey="acumulado" stroke="#eab308" fill="rgba(234,179,8,0.15)" name="Acumulado" />
                   <Bar yAxisId="left" dataKey="nuevos" fill="#3b82f6" name="Nuevos por día" radius={[4, 4, 0, 0]} />
@@ -185,7 +185,7 @@ export default function AdminPage() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
                     <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fill: '#71717a', fontSize: 12 }} />
                     <YAxis tick={{ fill: '#71717a', fontSize: 12 }} />
-                    <Tooltip {...tooltipStyle} labelFormatter={formatDate} />
+                    <Tooltip {...tooltipStyle} labelFormatter={(v: any) => formatDate(v)} />
                     <Legend />
                     <Bar dataKey="vistas" fill="#22c55e" name="Vistas" radius={[2, 2, 0, 0]} />
                     <Bar dataKey="watchlist" fill="#eab308" name="Watchlist" radius={[2, 2, 0, 0]} />
@@ -204,7 +204,7 @@ export default function AdminPage() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
                     <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fill: '#71717a', fontSize: 12 }} />
                     <YAxis tick={{ fill: '#71717a', fontSize: 12 }} />
-                    <Tooltip {...tooltipStyle} labelFormatter={formatDate} />
+                    <Tooltip {...tooltipStyle} labelFormatter={(v: any) => formatDate(v)} />
                     <Line type="monotone" dataKey="reviews" stroke="#f43f5e" strokeWidth={2} dot={{ fill: '#f43f5e', r: 4 }} name="Reviews" />
                   </LineChart>
                 </ResponsiveContainer>

@@ -10,7 +10,8 @@ import PeliculaDetalle from '@/app/catalogo/PeliculaDetalle'
 // ── Engagement tracking (skip detection) ──────────────────────────────
 const ENGAGEMENT_KEY = 'cinebret-engagement'
 const SKIP_DECAY_MS = 3 * 24 * 60 * 60 * 1000 // 3 days decay
-const MIN_VIEW_MS = 3000 // 3 seconds threshold
+const MIN_VIEW_MS_MOBILE = 3000 // 3 seconds on mobile
+const MIN_VIEW_MS_DESKTOP = 4000 // 4 seconds on desktop
 
 type EngagementEntry = { skips: number; lastSkip: number; engaged: boolean }
 type EngagementMap = Record<string, EngagementEntry>
@@ -205,7 +206,8 @@ function TrackedCard({ movieId, onClick, children }: {
           enteredAt.current = Date.now()
         } else if (enteredAt.current && !clicked.current) {
           const viewTime = Date.now() - enteredAt.current
-          if (viewTime < MIN_VIEW_MS) recordSkip(movieId)
+          const threshold = window.innerWidth >= 768 ? MIN_VIEW_MS_DESKTOP : MIN_VIEW_MS_MOBILE
+          if (viewTime < threshold) recordSkip(movieId)
           enteredAt.current = null
         }
       },
@@ -712,8 +714,9 @@ export default function ParaTi({
     if (filtrosPlataformas && filtrosPlataformas.length > 0 && !filtrosPlataformas.some(pl => r.plataformas.includes(pl))) return false
     return true
   })
-  const displayed = filtered.slice(page * 25, (page + 1) * 25)
-  const hayMas = filtered.length > (page + 1) * 25
+  const PAGE_SIZE = 100
+  const displayed = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+  const hayMas = filtered.length > (page + 1) * PAGE_SIZE
   const expandedRec = expandedId ? displayed.find(r => r.id === expandedId) ?? null : null
 
   const cambiarFiltro = (key: string | null) => {
@@ -792,7 +795,7 @@ export default function ParaTi({
               )}
               {hayMas && (
                 <button type="button" onClick={() => setPage(p => p + 1)}
-                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">Ver otras 25 →</button>
+                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">Ver otras 100 →</button>
               )}
             </div>
           </div>

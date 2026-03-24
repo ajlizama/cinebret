@@ -76,7 +76,7 @@ function FeedCard({
   const [expandido, setExpandido] = useState(false)
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+    <div className="bg-black border-t border-b border-zinc-800 overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pt-4 pb-3">
         {item.isCineBret ? (

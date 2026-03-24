@@ -39,6 +39,7 @@ interface PreferenciasIniciales {
   peso_critica: number
   peso_seguidores: number
   peso_director: number
+  peso_actores: number
 }
 
 interface Props {
@@ -199,6 +200,9 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
   const [pesoDirector, setPesoDirector] = useState(
     preferenciasIniciales ? Math.round((preferenciasIniciales.peso_director ?? 0.5) * 10) : 5
   )
+  const [pesoActores, setPesoActores] = useState(
+    preferenciasIniciales ? Math.round((preferenciasIniciales.peso_actores ?? 0.5) * 10) : 5
+  )
   const [showDetalleExtra, setShowDetalleExtra] = useState(false)
   const [guardando, setGuardando] = useState(false)
 
@@ -269,6 +273,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
       peso_critica: pesoCritica / 10,
       peso_seguidores: anonymous ? 0 : pesoSeguidores / 10,
       peso_director: pesoDirector / 10,
+      peso_actores: pesoActores / 10,
     }
 
     if (user && !anonymous) {
@@ -451,18 +456,27 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
               <span className="font-medium">Detalle extra</span>
             </button>
             {showDetalleExtra && (
-              <div className="mt-3 space-y-2">
-                <p className="text-sm text-zinc-300">¿Qué tan importante es el director para ti?</p>
-                <div className="flex justify-between text-xs text-zinc-500">
-                  <span>No mucho</span>
-                  <span className="text-white font-semibold">{pesoDirector}/10</span>
-                  <span>Fundamental</span>
+              <div className="mt-3 space-y-5">
+                <div className="space-y-2">
+                  <p className="text-sm text-zinc-300">¿Qué tan importante es el director para ti?</p>
+                  <div className="flex justify-between text-xs text-zinc-500">
+                    <span>No mucho</span>
+                    <span className="text-white font-semibold">{pesoDirector}/10</span>
+                    <span>Fundamental</span>
+                  </div>
+                  <input type="range" min={0} max={10} value={pesoDirector}
+                    onChange={e => setPesoDirector(Number(e.target.value))} className="w-full accent-yellow-400" />
                 </div>
-                <input
-                  type="range" min={0} max={10} value={pesoDirector}
-                  onChange={e => setPesoDirector(Number(e.target.value))}
-                  className="w-full accent-yellow-400"
-                />
+                <div className="space-y-2">
+                  <p className="text-sm text-zinc-300">¿Qué tan importante es el reparto para ti?</p>
+                  <div className="flex justify-between text-xs text-zinc-500">
+                    <span>No mucho</span>
+                    <span className="text-white font-semibold">{pesoActores}/10</span>
+                    <span>Fundamental</span>
+                  </div>
+                  <input type="range" min={0} max={10} value={pesoActores}
+                    onChange={e => setPesoActores(Number(e.target.value))} className="w-full accent-yellow-400" />
+                </div>
               </div>
             )}
           </section>

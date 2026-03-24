@@ -62,6 +62,7 @@ type UserProfile = {
   peso_critica: number
   peso_seguidores: number
   peso_director: number
+  peso_actores: number
 }
 
 /**
@@ -213,7 +214,7 @@ export default function ParaTi({
     if (preferenciasExternas === undefined && user) {
       const { data: prefData } = await supabase
         .from('perfil_preferencias')
-        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director')
+        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores')
         .eq('user_id', user.id)
         .maybeSingle()
       perfil = prefData as UserProfile | null
@@ -294,13 +295,29 @@ export default function ParaTi({
       .from('director_clusters').select('director, cluster_id')
     ;(clusterData ?? []).forEach((c: any) => { clusterMap[c.director] = c.cluster_id })
 
-    // Build user's preferred clusters from fav directors + history (populated below)
     const userClusterWeights: Record<number, number> = {}
-
-    // Add clusters from favorite movies' directors
     for (const fd of favDirectors) {
       const cid = clusterMap[fd]
       if (cid !== undefined) userClusterWeights[cid] = (userClusterWeights[cid] ?? 0) + 2
+    }
+
+    // 6c. Actor clusters
+    const actorClusterMap: Record<string, number> = {} // actor → cluster_id
+    const { data: actorClusterData } = await supabase
+      .from('actor_clusters').select('actor, cluster_id')
+    ;(actorClusterData ?? []).forEach((c: any) => { actorClusterMap[c.actor] = c.cluster_id })
+
+    const userActorClusterWeights: Record<number, number> = {}
+    // Seed from fav movies' actors
+    if (favMovieIds.length > 0) {
+      const { data: favActEnr } = await supabase
+        .from('enriquecimiento').select('actores').in('pelicula_id', favMovieIds)
+      ;(favActEnr ?? []).forEach((e: any) => {
+        ;(e.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean).forEach((a: string) => {
+          const cid = actorClusterMap[a]
+          if (cid !== undefined) userActorClusterWeights[cid] = (userActorClusterWeights[cid] ?? 0) + 1
+        })
+      })
     }
 
     // 7. Scoring con historial del usuario
@@ -334,6 +351,12 @@ export default function ParaTi({
           const cid = clusterMap[enr.director]
           if (cid !== undefined) userClusterWeights[cid] = (userClusterWeights[cid] ?? 0) + (r / 10)
         }
+        // Actor cluster weights from history
+        const actoresStr = enr?.actores ?? ''
+        actoresStr.split(',').map((a: string) => a.trim()).filter(Boolean).forEach((a: string) => {
+          const acid = actorClusterMap[a]
+          if (acid !== undefined) userActorClusterWeights[acid] = (userActorClusterWeights[acid] ?? 0) + (r / 10)
+        })
         if (p.anio) years.push(p.anio)
       })
 
@@ -364,6 +387,8 @@ export default function ParaTi({
     const wSeguidores = pesoSeguidores * 0.20          // [0.00, 0.20]
     const pesoDir = perfil?.peso_director ?? 0.5
     const wDirector = 0.02 + pesoDir * 0.16            // [0.02, 0.18] — director + cluster combined
+    const pesoAct = perfil?.peso_actores ?? 0.5
+    const wActores = 0.02 + pesoAct * 0.12             // [0.02, 0.14] — actor + cluster combined
 
     // 9. Score todos los candidatos
     const scored: Rec[] = candidatoIds
@@ -448,6 +473,21 @@ export default function ParaTi({
             score += clusterAffinity * (wDirector * 0.2) * 10
           }
 
+          // Actor cluster affinity (dynamic)
+          const movieActors = (enrMap[id]?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
+          if (movieActors.length > 0) {
+            const maxActClusterW = Math.max(...Object.values(userActorClusterWeights), 1)
+            let bestActorAffinity = 0
+            for (const a of movieActors) {
+              const acid = actorClusterMap[a]
+              if (acid !== undefined) {
+                const aff = (userActorClusterWeights[acid] ?? 0) / maxActClusterW
+                if (aff > bestActorAffinity) bestActorAffinity = aff
+              }
+            }
+            score += bestActorAffinity * wActores * 10
+          }
+
           // Mood cuestionario (10%)
           score += moodBonus * 0.10 * 10
 
@@ -486,6 +526,21 @@ export default function ParaTi({
             const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
             const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
             score += clusterAffinity * (wDirector * 0.4) * 10
+          }
+
+          // Actor cluster affinity (dynamic — from fav movies)
+          const movieActorsQ = (enrMap[id]?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
+          if (movieActorsQ.length > 0) {
+            const maxActClusterW = Math.max(...Object.values(userActorClusterWeights), 1)
+            let bestActorAffinity = 0
+            for (const a of movieActorsQ) {
+              const acid = actorClusterMap[a]
+              if (acid !== undefined) {
+                const aff = (userActorClusterWeights[acid] ?? 0) / maxActClusterW
+                if (aff > bestActorAffinity) bestActorAffinity = aff
+              }
+            }
+            score += bestActorAffinity * wActores * 10
           }
 
           // Mood cuestionario (12%)

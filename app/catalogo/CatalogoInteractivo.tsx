@@ -497,7 +497,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [vistaMode, setVistaMode] = useState<'grilla' | 'lista'>('grilla')
   const [showCuestionario, setShowCuestionario] = useState(false)
   const [prefKey, setPrefKey] = useState(0)
-  const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number; peso_director: number } | null>(null)
+  const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number; peso_director: number; peso_actores: number } | null>(null)
   const [paraTiMovie, setParaTiMovie] = useState<Pelicula | null>(null)
 
   const recToPelicula = (rec: RecExport): Pelicula => ({

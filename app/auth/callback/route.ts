@@ -10,7 +10,19 @@ export async function GET(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_KEY!
     )
-    await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+
+    if (data?.session) {
+      // Redirect with tokens in hash so client-side supabase picks them up
+      const { access_token, refresh_token } = data.session
+      const params = new URLSearchParams({
+        access_token,
+        refresh_token,
+        token_type: 'bearer',
+        type: 'recovery',
+      })
+      return NextResponse.redirect(`${origin}/catalogo#${params.toString()}`)
+    }
   }
 
   return NextResponse.redirect(`${origin}/catalogo`)

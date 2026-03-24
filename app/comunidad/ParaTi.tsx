@@ -606,7 +606,10 @@ export default function ParaTi({
     const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
     balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
 
-    setRecs(balanced.sort((a, b) => b.score - a.score))
+    // Agregar jitter aleatorio para variar recomendaciones entre sesiones
+    // El jitter es ±8% del score, suficiente para reordenar películas de score similar
+    const jittered = balanced.map(r => ({ ...r, score: r.score * (0.92 + Math.random() * 0.16) }))
+    setRecs(jittered.sort((a, b) => b.score - a.score))
     setCargando(false)
   }
 

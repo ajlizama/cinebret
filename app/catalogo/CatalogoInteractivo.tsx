@@ -729,12 +729,12 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           ) : (
             <div>
               <h2 className="text-lg md:text-xl font-bold text-white mb-3">🎬 Para Ti</h2>
-              <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent border border-yellow-400/30 rounded-2xl p-5 flex flex-col md:flex-row items-center gap-4">
+              <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent rounded-2xl p-5 flex flex-col md:flex-row items-center gap-4">
                 <div className="flex-1">
-                  <p className="text-white font-semibold text-sm md:text-base mb-1">
+                  <p className="text-white font-semibold text-base md:text-lg mb-1">
                     ✨ Completa el cuestionario para recibir recomendaciones personalizadas
                   </p>
-                  <p className="text-zinc-400 text-xs md:text-sm">
+                  <p className="text-zinc-400 text-sm md:text-base">
                     Inicia sesión y cuéntanos tus gustos para descubrir aún mejores películas para ti
                   </p>
                 </div>

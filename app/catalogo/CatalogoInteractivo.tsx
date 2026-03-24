@@ -304,7 +304,7 @@ function PanelExpandido({
             {/* Synopsis */}
             {p.sinopsis && (
               <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1 font-medium">Vista general</p>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1 font-medium">Sinopsis IA</p>
                 <p className="text-sm text-zinc-300 leading-relaxed">{p.sinopsis}</p>
               </div>
             )}
@@ -465,7 +465,7 @@ function PanelExpandido({
 
         {/* Reviews — both layouts */}
         <div className="px-4 md:px-6 pb-5 pt-2 border-t border-zinc-800">
-          <PeliculaDetalle peliculaId={p.id} esReviewAutor={p.es_review_autor} sinopsisIa={p.sinopsis} />
+          <PeliculaDetalle peliculaId={p.id} esReviewAutor={p.es_review_autor} sinopsisIa={null} />
         </div>
       </div>
     </div>

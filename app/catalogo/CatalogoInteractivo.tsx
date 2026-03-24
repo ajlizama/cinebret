@@ -621,10 +621,10 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <img src="/fondo-interstellar.jpg" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-zinc-950/40 to-zinc-950" />
         <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
-          <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-1.5 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-2 tracking-tight">
             Bienvenido a <span className="text-yellow-400">CineBret</span>
           </h1>
-          <p className="text-zinc-300 text-sm md:text-base text-center mb-6 max-w-md">
+          <p className="text-zinc-300 text-base md:text-lg text-center mb-6 max-w-md">
             Buscador y recomendador inteligente de las mejores películas
           </p>
           <div className="relative w-full max-w-xl">
@@ -641,7 +641,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       <div className="max-w-7xl mx-auto px-3 md:px-6 pt-6">
         {/* ── ¿En qué mood estás? ── */}
         <div className="mb-5">
-          <h2 className="text-base font-bold text-white mb-2">¿En qué mood estás?</h2>
+          <h2 className="text-lg md:text-xl font-bold text-white mb-3">¿En qué mood estás?</h2>
           <div className="grid grid-cols-4 gap-2">
             {MOOD_CATS.map(cat => {
               const activa = categoriasFiltro.includes(cat.id)
@@ -659,16 +659,16 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
 
         {/* ── ¿Qué plataformas tienes? ── */}
         <div className="mb-5">
-          <h2 className="text-base font-bold text-white mb-2">¿Qué plataformas tienes?</h2>
+          <h2 className="text-lg md:text-xl font-bold text-white mb-3">¿Qué plataformas tienes?</h2>
           <div className="flex flex-wrap items-center gap-2">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
               return (
                 <button key={plat.id}
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                  className={`h-11 w-16 md:h-8 md:w-14 rounded-lg border flex items-center justify-center transition-colors ${activa ? 'bg-white border-white' : 'border-zinc-600 bg-zinc-800 hover:border-zinc-400'}`}>
+                  className={`h-12 w-20 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all ${activa ? 'bg-white border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.6)] scale-110 ring-2 ring-yellow-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={plat.logo} alt={plat.nombre} className="h-4 md:h-3.5 w-auto object-contain" />
+                  <img src={plat.logo} alt={plat.nombre} className="h-5 md:h-4.5 w-auto object-contain" />
                 </button>
               )
             })}
@@ -731,7 +731,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : (
             <div>
-              <h2 className="text-base font-bold text-white mb-3">🎬 Para Ti</h2>
+              <h2 className="text-lg md:text-xl font-bold text-white mb-3">🎬 Para Ti</h2>
               <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent border border-yellow-400/30 rounded-2xl p-5 flex flex-col md:flex-row items-center gap-4">
                 <div className="flex-1">
                   <p className="text-white font-semibold text-sm md:text-base mb-1">
@@ -768,7 +768,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         <div className="border-t border-zinc-800 pt-4 mb-4">
           {/* Row 1: title + toggle + badges */}
           <div className="flex items-center gap-2 mb-3 flex-wrap">
-            <h2 className="text-lg font-bold text-white">Catálogo</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-white">Catálogo</h2>
             <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
               <button onClick={() => setVistaMode('grilla')}
                 className={`px-4 py-1.5 transition-colors ${vistaMode === 'grilla' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>

@@ -230,11 +230,25 @@ function ReelCard({
   const translateY = gone === 'down' ? 400 : gone === 'up' ? -400 : offset.y
   const swipeIndicator = offset.x > 40 ? 'right' : offset.x < -40 ? 'left' : offset.y > 40 ? 'down' : offset.y < -40 ? 'up' : null
 
+  // Desktop click handler for slide navigation
+  const handleClick = (e: React.MouseEvent) => {
+    if (!isTop) return
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    const relX = e.clientX - rect.left
+    const maxSlide = pelicula.video_clip_url ? 3 : 2
+    if (relX > rect.width * 0.5) {
+      setSlide(s => Math.min(maxSlide, s + 1))
+    } else {
+      setSlide(s => Math.max(0, s - 1))
+    }
+  }
+
   return (
     <div
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onClick={handleClick}
       style={{
         transform: `translate(${translateX}px, ${translateY}px) rotate(${rotation}deg)`,
         transition: dragging ? 'none' : 'transform 0.3s ease, opacity 0.3s ease',

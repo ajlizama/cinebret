@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import BackButton from '@/components/BackButton'
 
-export const revalidate = 3600
+export const revalidate = 21600 // 6 hours
 
 const PAGE_SIZE = 200
 

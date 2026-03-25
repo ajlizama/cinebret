@@ -214,12 +214,28 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             )}
 
             {/* Video clip */}
-            {enr?.video_clip_url && (
-              <div className="relative rounded-xl overflow-hidden bg-black">
-                <video src={enr.video_clip_url} controls playsInline preload="none"
-                  className="w-full max-h-80 object-contain" />
-              </div>
-            )}
+            {enr?.video_clip_url && (() => {
+              const url = enr.video_clip_url as string
+              const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+              if (ytMatch) {
+                return (
+                  <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
+                    <iframe
+                      src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0`}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                )
+              }
+              return (
+                <div className="relative rounded-xl overflow-hidden bg-black">
+                  <video src={url} controls playsInline preload="none"
+                    className="w-full max-h-80 object-contain" />
+                </div>
+              )
+            })()}
 
             {/* Seguidos que ya la vieron */}
             <SeguidosQueVieron peliculaId={id} />

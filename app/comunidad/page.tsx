@@ -110,6 +110,21 @@ function AutoplayClip({ url }: { url: string }) {
     return () => { observer.disconnect(); visibleVideos.delete(video) }
   }, [])
 
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+
+  if (ytMatch) {
+    return (
+      <div className="relative rounded-xl overflow-hidden bg-black mt-2 mb-1 aspect-video">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0`}
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="relative rounded-xl overflow-hidden bg-black mt-2 mb-1">
       <video

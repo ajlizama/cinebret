@@ -474,23 +474,36 @@ function ReelCard({
       )}
 
       {/* ══ SLIDE 3: Video clip (only if available) ══ */}
-      {slide === 3 && pelicula.video_clip_url && (
-        <div className="absolute inset-x-0 bottom-24 top-10 flex flex-col items-center justify-center p-4 z-10">
-          <p className="text-white font-bold text-base mb-3">Clip</p>
-          <div className="relative rounded-xl overflow-hidden bg-black w-full max-w-sm">
-            <video
-              src={pelicula.video_clip_url}
-              autoPlay muted loop playsInline
-              className="w-full max-h-[50vh] object-contain"
-              onClick={e => {
-                const v = e.currentTarget
-                v.muted = !v.muted
-              }}
-            />
-            <p className="absolute bottom-2 left-2 text-zinc-400 text-[10px] bg-black/60 rounded-full px-2 py-0.5">Toca para audio</p>
+      {slide === 3 && pelicula.video_clip_url && (() => {
+        const ytMatch = pelicula.video_clip_url!.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+        return (
+          <div className="absolute inset-x-0 bottom-24 top-10 flex flex-col items-center justify-center p-4 z-10">
+            <p className="text-white font-bold text-base mb-3">Clip</p>
+            <div className="relative rounded-xl overflow-hidden bg-black w-full max-w-sm">
+              {ytMatch ? (
+                <div className="aspect-video">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0&autoplay=1&mute=1`}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <>
+                  <video
+                    src={pelicula.video_clip_url!}
+                    autoPlay muted loop playsInline
+                    className="w-full max-h-[50vh] object-contain"
+                    onClick={e => { e.currentTarget.muted = !e.currentTarget.muted }}
+                  />
+                  <p className="absolute bottom-2 left-2 text-zinc-400 text-[10px] bg-black/60 rounded-full px-2 py-0.5">Toca para audio</p>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )
+      })()}
 
       {/* ── "Otra película" button top-right ── */}
       <button

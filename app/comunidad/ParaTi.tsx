@@ -247,9 +247,40 @@ export default function ParaTi({
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [userMap, setUserMap] = useState<Record<string, UserState>>({})
   const [sinPerfil, setSinPerfil] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Cache key for sessionStorage
+  const cacheKey = user ? `cinebret-recs-${user.id}` : 'cinebret-recs-anon'
+  const scrollKey = `${cacheKey}-scroll`
+  const interactedKey = `${cacheKey}-dirty`
 
   useEffect(() => {
     if (!user && !preferenciasExternas) return
+
+    // Try to restore from cache if user hasn't interacted
+    try {
+      const dirty = sessionStorage.getItem(interactedKey) === '1'
+      const cached = sessionStorage.getItem(cacheKey)
+      const cachedPage = sessionStorage.getItem(`${cacheKey}-page`)
+      if (!dirty && cached) {
+        const parsed: Rec[] = JSON.parse(cached)
+        if (parsed.length > 0) {
+          setRecs(parsed)
+          if (cachedPage) setPage(parseInt(cachedPage, 10))
+          // Restore scroll position after render
+          requestAnimationFrame(() => {
+            const savedScroll = sessionStorage.getItem(scrollKey)
+            if (savedScroll && scrollRef.current) {
+              scrollRef.current.scrollLeft = parseInt(savedScroll, 10)
+            }
+          })
+          return
+        }
+      }
+    } catch {}
+
+    // Clear dirty flag and compute fresh
+    try { sessionStorage.removeItem(interactedKey) } catch {}
     compute()
   }, [user, preferenciasExternas])
 
@@ -271,6 +302,8 @@ export default function ParaTi({
 
   const upsert = async (peliculaId: string, campos: Partial<UserState>) => {
     if (!user) return
+    // Mark as dirty so recs recalculate on next visit
+    try { sessionStorage.setItem(interactedKey, '1') } catch {}
     const actual = userMap[peliculaId] ?? { visto: false, watchlist: false, rating: null }
     const nuevo = { ...actual, ...campos }
     setUserMap(prev => ({ ...prev, [peliculaId]: nuevo }))
@@ -703,7 +736,9 @@ export default function ParaTi({
       ...r,
       score: r.score * getSkipPenalty(r.id) * (0.92 + Math.random() * 0.16)
     }))
-    setRecs(final.sort((a, b) => b.score - a.score))
+    const sorted = final.sort((a, b) => b.score - a.score)
+    setRecs(sorted)
+    try { sessionStorage.setItem(cacheKey, JSON.stringify(sorted)) } catch {}
     setCargando(false)
   }
 
@@ -753,7 +788,9 @@ export default function ParaTi({
         <p className="text-zinc-500 text-sm">Sin películas recomendadas aún.</p>
       ) : (
         <>
-          <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
+          <div ref={scrollRef} onScroll={() => {
+            try { if (scrollRef.current) sessionStorage.setItem(scrollKey, String(scrollRef.current.scrollLeft)) } catch {}
+          }} className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
             {displayed.map(rec => {
               const platsActivas = PLATAFORMAS.filter(p => rec.plataformas.includes(p.id))
               return (
@@ -790,11 +827,11 @@ export default function ParaTi({
             <p className="text-zinc-600 text-xs">{filtered.length} películas</p>
             <div className="flex gap-2">
               {page > 0 && (
-                <button type="button" onClick={() => setPage(p => p - 1)}
+                <button type="button" onClick={() => { setPage(p => { const np = p - 1; try { sessionStorage.setItem(`${cacheKey}-page`, String(np)) } catch {}; return np }) }}
                   className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">← Anteriores</button>
               )}
               {hayMas && (
-                <button type="button" onClick={() => setPage(p => p + 1)}
+                <button type="button" onClick={() => { setPage(p => { const np = p + 1; try { sessionStorage.setItem(`${cacheKey}-page`, String(np)) } catch {}; return np }) }}
                   className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">Ver otras 100 →</button>
               )}
             </div>

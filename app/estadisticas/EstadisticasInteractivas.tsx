@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 export type AnalisisCatalogo = {
   plataformas: Record<string, string>
@@ -42,21 +42,50 @@ type PlatData = {
   logo: string
   count: number
   avgImdb: number | null
+  avgRt: number | null
   oscarWinners: number
-  oscarNom: number
   generos: Record<string, number>
   categorias: Record<string, number>
-  reviews: number
 }
 
-const CATEGORIAS_SHORT: Record<string, string> = {
-  "Pa'l domingo de bajón": '🥲 Bajón',
-  "Pa' saltar del sillón": '🪑 Sillón',
-  "Pa' quedar con el cerebro como licuadora": '🧠 Licuadora',
-  "Pa' llorar a moco tendido": '😭 Moco',
+const CAT_LABELS: Record<string, string> = {
+  "Pa'l domingo de bajón": 'Domingo de bajón',
+  "Pa' saltar del sillón": 'Saltar del sillón',
+  "Pa' quedar con el cerebro como licuadora": 'Cerebro licuadora',
+  "Pa' llorar a moco tendido": 'Llorar a moco tendido',
+}
+
+const CAT_COLORS: Record<string, string> = {
+  "Pa'l domingo de bajón": 'bg-amber-500',
+  "Pa' saltar del sillón": 'bg-violet-500',
+  "Pa' quedar con el cerebro como licuadora": 'bg-rose-500',
+  "Pa' llorar a moco tendido": 'bg-cyan-500',
+}
+
+const GENRE_COLORS = [
+  'bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500', 'bg-violet-500',
+  'bg-cyan-500', 'bg-pink-500', 'bg-lime-500', 'bg-orange-500', 'bg-indigo-500',
+]
+
+function StackedBar({ segments, total }: { segments: { label: string; value: number; color: string }[]; total: number }) {
+  return (
+    <div className="w-full h-6 bg-zinc-800 rounded-full overflow-hidden flex">
+      {segments.map((s, i) => {
+        const pct = total > 0 ? (s.value / total) * 100 : 0
+        if (pct < 2) return null
+        return (
+          <div key={i} className={`${s.color} h-full relative group`} style={{ width: `${pct}%` }} title={`${s.label}: ${Math.round(pct)}%`}>
+            {pct > 8 && <span className="absolute inset-0 flex items-center justify-center text-white text-[9px] font-bold">{Math.round(pct)}%</span>}
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export default function EstadisticasInteractivas({ peliculas, plataformas, analisis }: Props) {
+  const [selectedPlat, setSelectedPlat] = useState<string | null>(null)
+
   const platData = useMemo((): PlatData[] => {
     return plataformas.map(plat => {
       const movies = peliculas.filter(p => p.plataformas.includes(plat.id))
@@ -64,305 +93,206 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
       const avgImdb = conImdb.length > 0
         ? Math.round((conImdb.reduce((s, p) => s + p.nota_imdb!, 0) / conImdb.length) * 10) / 10
         : null
+      const conRt = movies.filter(p => (p as any).rt_score != null)
+      const avgRt = conRt.length > 0
+        ? Math.round((conRt.reduce((s, p) => s + ((p as any).rt_score ?? 0), 0) / conRt.length) * 10) / 10
+        : null
 
       const generos: Record<string, number> = {}
       const categorias: Record<string, number> = {}
-      let oscarWinners = 0, oscarNom = 0, reviews = 0
+      let oscarWinners = 0
 
       movies.forEach(p => {
         p.generos.forEach(g => { generos[g] = (generos[g] ?? 0) + 1 })
         if (p.categoria) categorias[p.categoria] = (categorias[p.categoria] ?? 0) + 1
         const osc = (p.oscars ?? '').toLowerCase()
-        if (osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('extranjera') && !osc.includes('habla no inglesa')) oscarWinners++
-        else if (osc.includes('nominad')) oscarNom++
-        if (p.es_review_autor) reviews++
+        if (osc.startsWith('ganó')) oscarWinners++
       })
 
-      return { ...plat, count: movies.length, avgImdb, oscarWinners, oscarNom, generos, categorias, reviews }
+      return { ...plat, count: movies.length, avgImdb, avgRt, oscarWinners, generos, categorias }
     })
   }, [peliculas, plataformas])
 
-  const topGeneros = useMemo(() => {
-    const counts: Record<string, number> = {}
-    peliculas.forEach(p => p.generos.forEach(g => { counts[g] = (counts[g] ?? 0) + 1 }))
-    return Object.entries(counts).sort(([, a], [, b]) => b - a).slice(0, 10).map(([g]) => g)
-  }, [peliculas])
-
-  const allCategorias = useMemo(() => {
-    const cats = new Set<string>()
-    peliculas.forEach(p => { if (p.categoria) cats.add(p.categoria) })
-    return Array.from(cats)
-  }, [peliculas])
-
-  const maxCount = Math.max(...platData.map(p => p.count), 1)
-  const maxImdb = Math.max(...platData.map(p => p.avgImdb ?? 0), 1)
-  const maxOscars = Math.max(...platData.map(p => p.oscarWinners + p.oscarNom), 1)
+  const sortedByCount = [...platData].sort((a, b) => b.count - a.count)
 
   return (
     <>
-      {/* === Mapa de vibe + Comentarios IA === */}
-      <div className="mb-12">
-        <h2 className="text-lg font-bold text-white mb-1">Mapa de vibe por plataforma</h2>
-        <p className="text-xs text-zinc-500 mb-6">Posición según distribución de categorías CineBret · peso = suma notas IMDB</p>
+      {/* ── Header ── */}
+      <div className="mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-1">Estadísticas</h1>
+        <p className="text-zinc-500 text-sm">Comparativa de plataformas de streaming en Chile</p>
+      </div>
 
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          {/* Mapa */}
-          <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl shrink-0" style={{ height: 320, width: 380 }}>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-full h-px bg-zinc-700" />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="h-full w-px bg-zinc-700" />
-            </div>
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight">Pa'l domingo de bajón</span>
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 italic max-w-16 leading-tight text-right">Pa' quedar con el cerebro como licuadora</span>
-            <span className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' saltar del sillón</span>
-            <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-zinc-500 italic whitespace-nowrap">Pa' llorar a moco tendido</span>
-            {(() => {
-              const puntos = plataformas.map(plat => {
-                const movies = peliculas.filter(p => p.plataformas.includes(plat.id))
-                let bajon = 0, licuadora = 0, sillon = 0, moco = 0
-                for (const p of movies) {
-                  const w = p.nota_imdb ?? 0
-                  const cat = p.categoria ?? ''
-                  if (cat.includes('bajón')) bajon += w
-                  else if (cat.includes('licuadora')) licuadora += w
-                  else if (cat.includes('sillón')) sillon += w
-                  else if (cat.includes('moco')) moco += w
-                }
-                const total = bajon + licuadora + sillon + moco
-                if (total === 0) return null
-                return { plat, x: (licuadora - bajon) / total, y: (sillon - moco) / total }
-              }).filter(Boolean) as { plat: Plataforma; x: number; y: number }[]
-
-              const xs = puntos.map(p => p.x)
-              const ys = puntos.map(p => p.y)
-              const absMaxX = Math.max(...xs.map(Math.abs), 0.01)
-              const absMaxY = Math.max(...ys.map(Math.abs), 0.01)
-              const curve = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 0.6)
-
-              return puntos.map(({ plat, x, y }) => {
-                const normX = x / absMaxX
-                const normY = y / absMaxY
-                const left = `${50 + curve(normX) * 35}%`
-                const top = `${50 - curve(normY) * 35}%`
-                return (
-                  <div key={plat.id} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left, top }} title={plat.nombre}>
-                    <div className="bg-white rounded px-1.5 py-0.5 shadow-lg opacity-70">
-                      <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
-                    </div>
+      {/* ── Análisis IA ── */}
+      {analisis && (
+        <div className="mb-10">
+          <p className="text-xs text-zinc-600 uppercase tracking-wide font-medium mb-3">Análisis IA · {new Date(analisis.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long' })}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {plataformas.map(plat => {
+              const frase = analisis.plataformas?.[plat.id]
+              if (!frase) return null
+              return (
+                <div key={plat.id} className="flex items-start gap-3 bg-zinc-900 rounded-xl p-4">
+                  <div className="bg-white rounded-lg px-2 py-1 shrink-0">
+                    <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
                   </div>
-                )
-              })
-            })()}
-          </div>
-
-          {/* Comentarios IA */}
-          {analisis && (
-            <div className="flex-1 flex flex-col gap-3">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-zinc-500 uppercase tracking-wide font-medium">🤖 Análisis IA</p>
-                <span className="text-xs text-zinc-700">
-                  {new Date(analisis.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </span>
-              </div>
-              {plataformas.map(plat => {
-                const frase = analisis.plataformas?.[plat.id]
-                if (!frase || frase.includes('Sin catálogo')) return null
-                return (
-                  <div key={plat.id} className="flex items-start gap-3 bg-zinc-900 border border-zinc-800 rounded-xl p-3">
-                    <div className="bg-white rounded px-1.5 py-1 shrink-0">
-                      <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
-                    </div>
-                    <p className="text-sm text-zinc-300 leading-relaxed">{frase}</p>
-                  </div>
-                )
-              })}
-              {analisis.comparativo && (
-                <div className="mt-1 border-t border-zinc-800 pt-3">
-                  <p className="text-xs text-zinc-500 italic leading-relaxed">{analisis.comparativo}</p>
+                  <p className="text-sm text-zinc-300 leading-relaxed">{frase}</p>
                 </div>
-              )}
-            </div>
+              )
+            })}
+          </div>
+          {analisis.comparativo && (
+            <p className="text-zinc-500 text-sm italic mt-4 leading-relaxed">{analisis.comparativo}</p>
           )}
         </div>
-      </div>
+      )}
 
-      {/* === Cards resumen por plataforma === */}
-      <div className="mb-12">
-        <h2 className="text-lg font-bold text-white mb-4">Resumen por plataforma</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {platData.map(pd => (
-            <div key={pd.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-center">
-              <div className="bg-white rounded px-2 py-1 mx-auto w-fit mb-3">
-                <img src={pd.logo} alt={pd.nombre} className="h-5 w-auto object-contain" />
+      {/* ── Platform selector (mobile swipe cards) ── */}
+      <div className="mb-8">
+        <h2 className="text-lg font-bold text-white mb-4">Comparar plataformas</h2>
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none -mx-2 px-2">
+          <button
+            onClick={() => setSelectedPlat(null)}
+            className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all ${!selectedPlat ? 'bg-white text-zinc-900' : 'bg-zinc-800 text-zinc-400'}`}
+          >Todas</button>
+          {sortedByCount.map(pd => (
+            <button key={pd.id}
+              onClick={() => setSelectedPlat(pd.id === selectedPlat ? null : pd.id)}
+              className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedPlat === pd.id ? 'bg-white text-zinc-900' : 'bg-zinc-800 text-zinc-400'}`}
+            >
+              <div className={`rounded px-1 py-0.5 ${selectedPlat === pd.id ? '' : 'bg-white'}`}>
+                <img src={pd.logo} alt={pd.nombre} className="h-3.5 w-auto object-contain" />
               </div>
-              <p className="text-2xl font-bold text-white">{pd.count}</p>
-              <p className="text-xs text-zinc-500 mb-2">películas</p>
-              {pd.avgImdb && <p className="text-sm font-bold text-yellow-400">⭐ {pd.avgImdb}</p>}
-              {pd.oscarWinners > 0 && (
-                <p className="text-xs text-amber-400 mt-1">🏆 {pd.oscarWinners} Mejor Película</p>
-              )}
-            </div>
+              {pd.nombre}
+            </button>
           ))}
         </div>
       </div>
 
-      {/* === Comparativa IMDB promedio === */}
-      <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-1">IMDB promedio por plataforma</h2>
-        <p className="text-xs text-zinc-500 mb-5">Nota promedio de las películas en catálogo</p>
+      {/* ── Quick stats row ── */}
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-8">
+        {(selectedPlat ? platData.filter(p => p.id === selectedPlat) : sortedByCount).map(pd => (
+          <div key={pd.id} className="bg-zinc-900 rounded-xl p-3 text-center">
+            <div className="bg-white rounded-lg px-2 py-1 mx-auto w-fit mb-2">
+              <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
+            </div>
+            <p className="text-xl font-bold text-white">{pd.count}</p>
+            <p className="text-[10px] text-zinc-500">películas</p>
+            <div className="flex items-center justify-center gap-2 mt-1.5">
+              {pd.avgImdb && <span className="text-xs font-bold text-yellow-400">⭐{pd.avgImdb}</span>}
+              {pd.oscarWinners > 0 && <span className="text-xs text-amber-400">🏆{pd.oscarWinners}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── IMDB comparison ── */}
+      <div className="bg-zinc-900 rounded-xl p-5 mb-6">
+        <h2 className="text-base font-semibold text-white mb-4">Nota IMDB promedio</h2>
         <div className="space-y-3">
-          {[...platData].sort((a, b) => (b.avgImdb ?? 0) - (a.avgImdb ?? 0)).map(pd => (
-            <div key={pd.id} className="flex items-center gap-3">
-              <div className="bg-white rounded px-1.5 py-0.5 shrink-0 w-16 flex items-center justify-center">
-                <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
-              </div>
-              <div className="flex-1 h-4 bg-zinc-800 rounded overflow-hidden">
-                <div
-                  className={`h-full ${pd.color} rounded transition-all`}
-                  style={{ width: pd.avgImdb ? `${((pd.avgImdb - 5) / (maxImdb - 5)) * 100}%` : '0%' }}
-                />
-              </div>
-              <span className="text-sm font-bold text-yellow-400 w-8 text-right shrink-0">
-                {pd.avgImdb ?? '—'}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* === Cantidad de películas === */}
-      <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-1">Películas en catálogo</h2>
-        <p className="text-xs text-zinc-500 mb-5">Disponibles hoy en cada plataforma</p>
-        <div className="space-y-3">
-          {[...platData].sort((a, b) => b.count - a.count).map(pd => (
-            <div key={pd.id} className="flex items-center gap-3">
-              <div className="bg-white rounded px-1.5 py-0.5 shrink-0 w-16 flex items-center justify-center">
-                <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
-              </div>
-              <div className="flex-1 h-4 bg-zinc-800 rounded overflow-hidden">
-                <div
-                  className={`h-full ${pd.color} rounded transition-all`}
-                  style={{ width: `${(pd.count / maxCount) * 100}%` }}
-                />
-              </div>
-              <span className="text-sm font-bold text-white w-10 text-right shrink-0">{pd.count}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* === Oscars === */}
-      <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-1">Oscars</h2>
-        <p className="text-xs text-zinc-500 mb-5">Ganadoras a Mejor Película (excluye animadas e internacionales) · nominadas al Oscar</p>
-        <div className="space-y-4">
-          {[...platData].sort((a, b) => b.oscarWinners - a.oscarWinners).map(pd => (
-            <div key={pd.id} className="flex items-start gap-3">
-              <div className="bg-white rounded px-1.5 py-0.5 shrink-0 w-16 flex items-center justify-center mt-1">
-                <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
-              </div>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-3 bg-zinc-800 rounded overflow-hidden">
-                    <div
-                      className="h-full bg-amber-400 rounded"
-                      style={{ width: `${(pd.oscarWinners / Math.max(maxOscars, 1)) * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-xs text-amber-400 w-20 shrink-0">{pd.oscarWinners} ganadoras</span>
+          {[...platData].sort((a, b) => (b.avgImdb ?? 0) - (a.avgImdb ?? 0)).map(pd => {
+            const highlighted = !selectedPlat || selectedPlat === pd.id
+            return (
+              <div key={pd.id} className={`flex items-center gap-3 transition-opacity ${highlighted ? 'opacity-100' : 'opacity-30'}`}>
+                <div className="bg-white rounded px-1.5 py-0.5 shrink-0 w-14 flex items-center justify-center">
+                  <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-3 bg-zinc-800 rounded overflow-hidden">
-                    <div
-                      className="h-full bg-zinc-500 rounded"
-                      style={{ width: `${(pd.oscarNom / Math.max(maxOscars, 1)) * 100}%` }}
-                    />
+                <div className="flex-1 h-5 bg-zinc-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-yellow-400 rounded-full transition-all"
+                    style={{ width: pd.avgImdb ? `${((pd.avgImdb - 5) / 5) * 100}%` : '0%' }}
+                  />
+                </div>
+                <span className="text-sm font-bold text-yellow-400 w-8 text-right">{pd.avgImdb ?? '—'}</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* ── Composición por géneros (per platform) ── */}
+      <div className="bg-zinc-900 rounded-xl p-5 mb-6">
+        <h2 className="text-base font-semibold text-white mb-1">¿De qué está hecha cada plataforma?</h2>
+        <p className="text-xs text-zinc-500 mb-5">Composición por géneros — top géneros de cada plataforma</p>
+        <div className="space-y-5">
+          {(selectedPlat ? platData.filter(p => p.id === selectedPlat) : sortedByCount).map(pd => {
+            const sorted = Object.entries(pd.generos).sort(([, a], [, b]) => b - a)
+            const top = sorted.slice(0, 6)
+            const otherCount = sorted.slice(6).reduce((s, [, v]) => s + v, 0)
+            const segments = top.map(([g, v], i) => ({ label: g, value: v, color: GENRE_COLORS[i % GENRE_COLORS.length] }))
+            if (otherCount > 0) segments.push({ label: 'Otros', value: otherCount, color: 'bg-zinc-600' })
+            const total = sorted.reduce((s, [, v]) => s + v, 0)
+
+            return (
+              <div key={pd.id}>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="bg-white rounded px-1.5 py-0.5">
+                    <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
                   </div>
-                  <span className="text-xs text-zinc-500 w-20 shrink-0">{pd.oscarNom} nominadas</span>
+                  <span className="text-sm text-zinc-300 font-medium">{pd.nombre}</span>
+                </div>
+                <StackedBar segments={segments} total={total} />
+                <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+                  {segments.map((s, i) => (
+                    <div key={i} className="flex items-center gap-1">
+                      <div className={`w-2 h-2 rounded-full ${s.color}`} />
+                      <span className="text-[10px] text-zinc-500">{s.label}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
-      {/* === Géneros comparados === */}
-      <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-1">Géneros por plataforma</h2>
-        <p className="text-xs text-zinc-500 mb-5">% del catálogo de cada plataforma — top 10 géneros</p>
+      {/* ── Composición por categorías CineBret ── */}
+      <div className="bg-zinc-900 rounded-xl p-5 mb-6">
+        <h2 className="text-base font-semibold text-white mb-1">Personalidad de cada plataforma</h2>
+        <p className="text-xs text-zinc-500 mb-5">Composición por categorías CineBret</p>
+        <div className="space-y-5">
+          {(selectedPlat ? platData.filter(p => p.id === selectedPlat) : sortedByCount).map(pd => {
+            const sorted = Object.entries(pd.categorias).sort(([, a], [, b]) => b - a)
+            const segments = sorted.map(([cat, v]) => ({
+              label: CAT_LABELS[cat] ?? cat,
+              value: v,
+              color: CAT_COLORS[cat] ?? 'bg-zinc-600',
+            }))
+            const total = sorted.reduce((s, [, v]) => s + v, 0)
 
-        {/* Leyenda */}
-        <div className="flex flex-wrap gap-3 mb-5">
-          {platData.map(pd => (
-            <div key={pd.id} className="flex items-center gap-1.5">
+            return (
+              <div key={pd.id}>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="bg-white rounded px-1.5 py-0.5">
+                    <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
+                  </div>
+                  <span className="text-sm text-zinc-300 font-medium">{pd.nombre}</span>
+                </div>
+                <StackedBar segments={segments} total={total} />
+                <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+                  {segments.map((s, i) => (
+                    <div key={i} className="flex items-center gap-1">
+                      <div className={`w-2 h-2 rounded-full ${s.color}`} />
+                      <span className="text-[10px] text-zinc-500">{s.label} ({Math.round((s.value / total) * 100)}%)</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* ── Dato menor: películas en catálogo ── */}
+      <div className="bg-zinc-900/50 rounded-xl p-4 mb-6">
+        <p className="text-xs text-zinc-600 uppercase tracking-wide mb-3">Películas en catálogo</p>
+        <div className="flex flex-wrap gap-4">
+          {sortedByCount.map(pd => (
+            <div key={pd.id} className="flex items-center gap-2">
               <div className="bg-white rounded px-1 py-0.5">
                 <img src={pd.logo} alt={pd.nombre} className="h-3 w-auto object-contain" />
               </div>
-              <span className={`w-2.5 h-2.5 rounded-full ${pd.color} inline-block`} />
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-4">
-          {topGeneros.map(genero => (
-            <div key={genero}>
-              <p className="text-xs text-zinc-400 mb-1.5 font-medium">{genero}</p>
-              <div className="flex gap-1 items-end h-8">
-                {platData.map(pd => {
-                  const count = pd.generos[genero] ?? 0
-                  const pct = pd.count > 0 ? Math.round((count / pd.count) * 100) : 0
-                  const maxPct = Math.max(...platData.map(p => p.count > 0 ? Math.round(((p.generos[genero] ?? 0) / p.count) * 100) : 0), 1)
-                  return (
-                    <div key={pd.id} className="flex-1 flex flex-col items-center gap-0.5">
-                      <div className="w-full bg-zinc-800 rounded-sm flex items-end overflow-hidden" style={{ height: 28 }}>
-                        <div
-                          className={`w-full ${pd.color} rounded-sm transition-all`}
-                          style={{ height: `${(pct / maxPct) * 100}%` }}
-                          title={`${pd.nombre}: ${pct}%`}
-                        />
-                      </div>
-                      <span className="text-zinc-600 text-xs tabular-nums">{pct}%</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* === Categorías comparadas === */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-1">Categorías CineBret por plataforma</h2>
-        <p className="text-xs text-zinc-500 mb-5">% del catálogo de cada plataforma con esa categoría</p>
-        <div className="space-y-4">
-          {allCategorias.map(cat => (
-            <div key={cat}>
-              <p className="text-xs text-zinc-400 mb-1.5 font-medium">{CATEGORIAS_SHORT[cat] ?? cat}</p>
-              <div className="space-y-1.5">
-                {platData.map(pd => {
-                  const count = pd.categorias[cat] ?? 0
-                  const pct = pd.count > 0 ? Math.round((count / pd.count) * 100) : 0
-                  const maxPct = Math.max(...platData.map(p => p.count > 0 ? Math.round(((p.categorias[cat] ?? 0) / p.count) * 100) : 0), 1)
-                  return (
-                    <div key={pd.id} className="flex items-center gap-2">
-                      <div className="bg-white rounded px-1 py-0.5 shrink-0 w-12 flex items-center justify-center">
-                        <img src={pd.logo} alt={pd.nombre} className="h-3 w-auto object-contain" />
-                      </div>
-                      <div className="flex-1 h-3 bg-zinc-800 rounded overflow-hidden">
-                        <div
-                          className={`h-full ${pd.color} rounded transition-all`}
-                          style={{ width: `${(pct / maxPct) * 100}%` }}
-                        />
-                      </div>
-                      <span className="text-xs text-zinc-500 w-10 text-right shrink-0">{count} ({pct}%)</span>
-                    </div>
-                  )
-                })}
-              </div>
+              <span className="text-xs text-zinc-500">{pd.count}</span>
             </div>
           ))}
         </div>

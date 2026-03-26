@@ -27,7 +27,7 @@ type MiniReview = {
 
 const PLATFORM_LOGOS: Record<string, string> = {
   netflix: '/netflix.png', disney_plus: '/disney_plus.svg', hbo_max: '/hbo_max.png',
-  amazon_prime: '/amazon_prime.png', apple_tv: '/apple_tv.png', paramount_plus: '/paramount_plus.svg',
+  amazon_prime: '/amazon_prime.png', apple_tv: '/apple_tv.png', paramount_plus: '/paramount_plus.svg', mubi: '/mubi.png',
 }
 
 const SWIPE_THRESHOLD = 80

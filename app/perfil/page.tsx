@@ -24,6 +24,7 @@ const PLATAFORMAS = [
   { id: 'amazon_prime',  nombre: 'Prime',       logo: '/amazon_prime.png' },
   { id: 'apple_tv',      nombre: 'Apple TV+',   logo: '/apple_tv.png' },
   { id: 'paramount_plus',nombre: 'Paramount+',  logo: '/paramount_plus.svg' },
+  { id: 'mubi',           nombre: 'MUBI',        logo: '/mubi.png' },
 ]
 
 type Entrada = PeliculaConStats & {

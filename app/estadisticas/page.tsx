@@ -27,6 +27,7 @@ const PLATAFORMAS = [
   { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
   { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-gray-800', logo: '/apple_tv.png' },
   { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
+  { id: 'mubi', nombre: 'MUBI', color: 'bg-blue-800', logo: '/mubi.png' },
 ]
 
 async function fetchAllPages<T>(

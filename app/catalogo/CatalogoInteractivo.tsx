@@ -612,13 +612,13 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950" style={{ height: '220px' }}>
-        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-2">
-          <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-2 tracking-tight">
+      <div className="relative overflow-hidden bg-zinc-950" style={{ height: '180px' }}>
+        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-1">
+          <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-1.5 tracking-tight">
             Bienvenido a <span className="text-yellow-400">CineBret</span>
           </h1>
-          <p className="text-zinc-300 text-base md:text-lg text-center mb-6 max-w-md">
-            Buscador y recomendador inteligente de las mejores películas
+          <p className="text-zinc-300 text-sm md:text-lg text-center mb-4 max-w-md">
+            Buscador y recomendador de películas
           </p>
           <div className="relative w-full max-w-xl">
             <input type="text" placeholder="Buscar película, director, actor..." value={busqueda}
@@ -631,18 +631,18 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-3">
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-2">
         {/* ── ¿En qué mood estás? ── */}
-        <div className="mb-5">
-          <h2 className="text-lg md:text-xl font-bold text-white mb-3">¿En qué mood estás?</h2>
+        <div className="mb-3">
+          <h2 className="text-base md:text-xl font-bold text-white mb-2">¿En qué mood estás?</h2>
           <div className="grid grid-cols-4 gap-2">
             {MOOD_CATS.map(cat => {
               const activa = categoriasFiltro.includes(cat.id)
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-4 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold flex flex-col items-center justify-center gap-1.5 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
-                  <span className="text-2xl md:text-xl leading-none">{cat.emoji}</span>
+                  className={`py-2.5 md:py-3.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-1 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
+                  <span className="text-lg md:text-xl leading-none">{cat.emoji}</span>
                   <span className="text-center leading-tight">{cat.label}</span>
                 </button>
               )
@@ -651,17 +651,17 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
 
         {/* ── ¿Qué plataformas tienes? ── */}
-        <div className="mb-5">
-          <h2 className="text-lg md:text-xl font-bold text-white mb-3">¿Qué plataformas tienes?</h2>
+        <div className="mb-3">
+          <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>
           <div className="flex flex-wrap items-center gap-2">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
               return (
                 <button key={plat.id}
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                  className={`h-12 w-20 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all ${activa ? 'bg-white border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.6)] scale-110 ring-2 ring-yellow-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
+                  className={`h-10 w-16 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all ${activa ? 'bg-white border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.6)] scale-110 ring-2 ring-yellow-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={plat.logo} alt={plat.nombre} className="h-5 md:h-4.5 w-auto object-contain" />
+                  <img src={plat.logo} alt={plat.nombre} className="h-4 md:h-4.5 w-auto object-contain" />
                 </button>
               )
             })}
@@ -713,7 +713,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
         </div>
 
         {/* ── Para Ti ── */}
-        <div className="mb-6 border-t border-zinc-800 pt-5">
+        <div className="mb-4 border-t border-zinc-800 pt-3">
           {user ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)}
               onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }}
@@ -724,21 +724,46 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
               filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : (
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-white mb-3">🎬 Para Ti</h2>
-              <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent rounded-2xl p-5 flex flex-col md:flex-row items-center gap-4">
-                <div className="flex-1">
-                  <p className="text-white font-semibold text-base md:text-lg mb-1">
-                    ✨ Completa el cuestionario para recibir recomendaciones personalizadas
-                  </p>
-                  <p className="text-zinc-400 text-sm md:text-base">
-                    Inicia sesión y cuéntanos tus gustos para descubrir aún mejores películas para ti
-                  </p>
-                </div>
+              <h2 className="text-base md:text-xl font-bold text-white mb-2">🎬 Para Ti</h2>
+              {/* Carrusel IMDB top para usuarios sin cuestionario */}
+              <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
+                {peliculas
+                  .filter(p => p.nota_imdb && p.poster_path && p.plataformas.length > 0)
+                  .sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+                  .slice(0, 30)
+                  .map(p => (
+                    <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => { setExpandida(p.id === expandida ? null : p.id) }}>
+                      <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
+                        <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
+                        {p.nota_imdb && (
+                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {p.nota_imdb}</div>
+                        )}
+                        {p.plataformas.length > 0 && (
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+                            <div className="flex items-center gap-0.5">
+                              {PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
+                                <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
+                                  <img src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
+                    </div>
+                  ))}
+              </div>
+              {/* CTA compacto */}
+              <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent rounded-xl px-4 py-3 flex items-center gap-3 mt-1">
+                <p className="text-zinc-300 text-xs flex-1">
+                  ✨ Completa el cuestionario para recomendaciones personalizadas
+                </p>
                 <button
                   onClick={() => setShowCuestionario(true)}
-                  className="shrink-0 bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold rounded-xl px-5 py-2.5 text-sm transition-colors"
+                  className="shrink-0 bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold rounded-lg px-3 py-1.5 text-xs transition-colors"
                 >
-                  Completar cuestionario
+                  Completar
                 </button>
               </div>
             </div>

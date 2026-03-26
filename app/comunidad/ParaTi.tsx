@@ -559,19 +559,22 @@ export default function ParaTi({
           // Crítica (peso_critica controla entre 5% y 35%)
           score += calidadRaw * wCritica * 10
 
-          // Género desde historial de vistas (15%)
+          // Género desde historial de vistas (10%)
           const gsHistory = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
-          score += gsHistory * 0.15 * 10
+          score += gsHistory * 0.10 * 10
           if (gsHistory > 0.3) {
             const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
             if (matched.length) razones.push(matched.join(', '))
           }
 
-          // Género desde cuestionario (15%)
+          // Género desde cuestionario (20%)
           const genPrefs = perfil?.generos_preferidos ?? []
-          const genMatchQ = generos.filter(g => genPrefs.includes(g)).length
+          // Normalize both sides for matching
+          const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          const genPrefsNorm = genPrefs.map(genNorm)
+          const genMatchQ = generos.filter(g => genPrefsNorm.includes(genNorm(g))).length
           const gsQ = genPrefs.length > 0 ? genMatchQ / genPrefs.length : 0
-          score += gsQ * 0.15 * 10
+          score += gsQ * 0.20 * 10
           if (gsQ > 0 && !razones.length) {
             razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
           }
@@ -614,8 +617,8 @@ export default function ParaTi({
             score += bestActorAffinity * wActores * 10
           }
 
-          // Mood cuestionario (10%)
-          score += moodBonus * 0.10 * 10
+          // Mood cuestionario (15%)
+          score += moodBonus * 0.15 * 10
 
           // Era (8%)
           score += eraScore * 0.08 * 10
@@ -630,11 +633,13 @@ export default function ParaTi({
 
           // Género cuestionario (25%)
           const genPrefs = perfil.generos_preferidos ?? []
-          const genMatch = generos.filter(g => genPrefs.includes(g)).length
+          const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          const genPrefsNorm = genPrefs.map(genNorm)
+          const genMatch = generos.filter(g => genPrefsNorm.includes(genNorm(g))).length
           const genScore = genPrefs.length > 0 ? genMatch / genPrefs.length : 0
           score += genScore * 0.25 * 10
           if (genMatch > 0) {
-            razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
+            razones.push(generos.filter(g => genPrefsNorm.includes(genNorm(g))).slice(0, 2).join(', '))
           }
 
           // Películas favoritas: género (15%) + director (dynamic)

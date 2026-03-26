@@ -1050,6 +1050,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
             if (prefs && user) {
               setUserPrefs(prefs)
             }
+            // Clear recommendation cache so it recalculates with new prefs
+            try {
+              const key = user ? `cinebret-recs-${user.id}` : 'cinebret-recs-anon'
+              sessionStorage.removeItem(key)
+              sessionStorage.removeItem(`${key}-scroll`)
+              sessionStorage.removeItem(`${key}-page`)
+              sessionStorage.setItem(`${key}-dirty`, '1')
+            } catch {}
             setPrefKey(k => k + 1)
           }}
           onDismiss={() => setShowCuestionario(false)}

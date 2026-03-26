@@ -120,12 +120,13 @@ function ReelCard({
 
   const [reviews, setReviews] = useState<MiniReview[]>([])
   const [reviewsCargando, setReviewsCargando] = useState(false)
+  const [reviewsFetched, setReviewsFetched] = useState(false)
 
   const titulo = pelicula.titulo_ingles || pelicula.titulo
 
   // Load reviews when slide 2 is shown
   useEffect(() => {
-    if (slide !== 2 || reviews.length > 0 || reviewsCargando) return
+    if (slide !== 2 || reviewsFetched || reviewsCargando) return
     setReviewsCargando(true)
     ;(async () => {
       // Author review
@@ -162,9 +163,10 @@ function ReelCard({
       }
 
       setReviews(allReviews)
+      setReviewsFetched(true)
       setReviewsCargando(false)
     })()
-  }, [slide, pelicula.id, reviews.length, reviewsCargando])
+  }, [slide, pelicula.id, reviewsFetched, reviewsCargando])
 
   // Touch handlers — on slides 1/2, only handle taps + horizontal swipes (vertical = scroll)
   const handleTouchStart = (e: React.TouchEvent) => {

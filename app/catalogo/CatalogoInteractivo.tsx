@@ -461,7 +461,9 @@ function PanelExpandido({
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula[] }) {
+type TrendingMovie = { id: number; title: string; poster_path: string | null; vote_average: number; release_date: string }
+
+export default function CatalogoInteractivo({ peliculas, trending = [] }: { peliculas: Pelicula[]; trending?: TrendingMovie[] }) {
   const { user } = useAuth()
   const [userPeliculas, setUserPeliculas] = useState<Record<string, UserPelicula>>({})
   const [busqueda, setBusqueda] = useState('')
@@ -725,34 +727,32 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
           ) : (
             <div>
               <h2 className="text-base md:text-xl font-bold text-white mb-2">🎬 Para Ti</h2>
-              {/* Carrusel IMDB top para usuarios sin cuestionario */}
+              {/* Carrusel Trending TMDB para usuarios sin cuestionario */}
               <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
-                {peliculas
+                {(trending.length > 0 ? trending : peliculas
                   .filter(p => p.nota_imdb && p.poster_path && p.plataformas.length > 0)
                   .sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
-                  .slice(0, 30)
-                  .map(p => (
-                    <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => { setExpandida(p.id === expandida ? null : p.id) }}>
+                  .slice(0, 20)
+                ).map((item: any) => {
+                  const isTrending = 'vote_average' in item
+                  const poster = isTrending ? item.poster_path : item.poster_path
+                  const title = isTrending ? item.title : (item.titulo_ingles || item.titulo)
+                  const rating = isTrending ? item.vote_average : item.nota_imdb
+                  const key = isTrending ? `tmdb-${item.id}` : item.id
+                  return (
+                    <div key={key} className="shrink-0 w-32 cursor-pointer" onClick={() => { if (!isTrending) setExpandida(item.id === expandida ? null : item.id) }}>
                       <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
-                        <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
-                        {p.nota_imdb && (
-                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {p.nota_imdb}</div>
+                        {poster && (
+                          <Image src={`https://image.tmdb.org/t/p/w185${poster}`} alt={title} fill className="object-cover" sizes="128px" />
                         )}
-                        {p.plataformas.length > 0 && (
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
-                            <div className="flex items-center gap-0.5">
-                              {PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
-                                <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
-                                  <img src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                        {rating && (
+                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {typeof rating === 'number' ? rating.toFixed(1) : rating}</div>
                         )}
                       </div>
-                      <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
+                      <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{title}</p>
                     </div>
-                  ))}
+                  )
+                })}
               </div>
               {/* CTA compacto */}
               <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent rounded-xl px-4 py-3 flex items-center gap-3 mt-1">

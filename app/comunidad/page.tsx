@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase'
 import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 import YouTubeClip from '@/components/YouTubeClip'
+import Loading from '@/components/Loading'
 import { extractYouTubeId } from '@/lib/youtube'
 
 type Perfil = {
@@ -592,7 +593,7 @@ export default function ComunidadPage() {
               {mostrarTodos && (
                 <div className="max-h-72 overflow-y-auto rounded-xl space-y-2 pr-1">
                   {cargandoTodos ? (
-                    <p className="text-zinc-500 text-sm">Cargando...</p>
+                    <Loading text="Cargando..." size="sm" />
                   ) : todosPerfiles.length === 0 ? (
                     <p className="text-zinc-600 text-sm">Sin perfiles aún</p>
                   ) : (
@@ -628,7 +629,7 @@ export default function ComunidadPage() {
             </div>
 
             {/* Feed */}
-            {cargandoFeed && <p className="text-zinc-500 text-sm">Cargando...</p>}
+            {cargandoFeed && <Loading text="Cargando..." size="sm" />}
 
             {!cargandoFeed && feedCombinado.length === 0 && (
               <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>

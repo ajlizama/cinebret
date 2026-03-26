@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
+import Loading from '@/components/Loading'
 import {
   type PeliculaConStats,
   type Stats,
@@ -222,7 +223,7 @@ export default function MiPerfilPage() {
 
   if (loading || cargando) return (
     <main className="min-h-screen bg-zinc-950"><Nav active="perfil" />
-      <div className="flex items-center justify-center h-64"><p className="text-zinc-500 text-sm">Cargando...</p></div>
+      <div className="flex items-center justify-center h-64"><Loading text="Cargando perfil..." /></div>
     </main>
   )
 

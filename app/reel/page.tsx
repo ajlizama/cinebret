@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
+import Loading from '@/components/Loading'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
 
@@ -640,7 +641,7 @@ export default function ReelPage() {
   if (cargando) return (
     <main className="min-h-screen bg-zinc-950 flex flex-col">
       <Nav active="reel" />
-      <div className="flex-1 flex items-center justify-center"><p className="text-zinc-500 text-sm">Cargando películas...</p></div>
+      <div className="flex-1 flex items-center justify-center"><Loading text="Cargando películas..." size="lg" /></div>
     </main>
   )
 

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import PeliculaDetalle from '@/app/catalogo/PeliculaDetalle'
+import Loading from '@/components/Loading'
 
 // ── Engagement tracking (skip detection) ──────────────────────────────
 const ENGAGEMENT_KEY = 'cinebret-engagement'
@@ -783,7 +784,7 @@ export default function ParaTi({
       )}
 
       {cargando ? (
-        <p className="text-zinc-500 text-sm animate-pulse">Calculando recomendaciones...</p>
+        <Loading text="Calculando recomendaciones..." />
       ) : displayed.length === 0 ? (
         <p className="text-zinc-500 text-sm">Sin películas recomendadas aún.</p>
       ) : (

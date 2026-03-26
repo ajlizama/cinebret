@@ -25,7 +25,7 @@ const PLATAFORMAS = [
 ]
 
 export type Pelicula = {
-  id: string; titulo: string; titulo_ingles: string | null; anio: number | null
+  id: string; tmdb_id?: number | null; titulo: string; titulo_ingles: string | null; anio: number | null
   nota_imdb: number | null; rt_score: number | null; metacritic_score: number | null
   runtime: number | null; boxoffice: number | null; categoria: string | null
   plataformas: string[]; es_review_autor: boolean; sello_bret: boolean
@@ -747,11 +747,12 @@ export default function CatalogoInteractivo({ peliculas, trending = [] }: { peli
                     pool = pool.filter(p => p.generos.some(g => generosFiltro.includes(g)))
                   }
 
-                  // Sort: trending first, then by IMDB
+                  // Sort by trending order: movies matching TMDB trending come first in trending order
+                  const trendingOrder = new Map(trending.map((t, i) => [t.id, i]))
                   pool.sort((a, b) => {
-                    const aT = trendingIds.has(Number((a as any).tmdb_id)) ? 1 : 0
-                    const bT = trendingIds.has(Number((b as any).tmdb_id)) ? 1 : 0
-                    if (bT !== aT) return bT - aT
+                    const aIdx = a.tmdb_id ? (trendingOrder.get(a.tmdb_id) ?? 999) : 999
+                    const bIdx = b.tmdb_id ? (trendingOrder.get(b.tmdb_id) ?? 999) : 999
+                    if (aIdx !== bIdx) return aIdx - bIdx
                     return (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0)
                   })
 

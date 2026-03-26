@@ -4,7 +4,8 @@ import CatalogoInteractivo, { type Pelicula } from './CatalogoInteractivo'
 
 export const revalidate = 21600 // 6 hours
 
-const GENEROS_EN_A_ES: Record<string, string> = {
+const GENEROS_NORMALIZE: Record<string, string> = {
+  // English → Spanish
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
   'Comedy': 'Comedia', 'Crime': 'Crimen', 'Documentary': 'Documental',
   'Drama': 'Drama', 'Fantasy': 'Fantasía', 'History': 'Historia',
@@ -12,8 +13,15 @@ const GENEROS_EN_A_ES: Record<string, string> = {
   'Romance': 'Romance', 'Science Fiction': 'Ciencia ficción', 'Sci-Fi': 'Ciencia ficción',
   'Thriller': 'Thriller', 'War': 'Guerra', 'Western': 'Western',
   'Family': 'Familia', 'Biography': 'Biografía', 'Sport': 'Deporte', 'Musical': 'Musical',
+  'Sports': 'Deporte',
+  // Variantes sin tilde / mayúsculas
+  'Accion': 'Acción', 'Animacion': 'Animación', 'Biografia': 'Biografía',
+  'Biográfico': 'Biografía', 'Fantasia': 'Fantasía', 'Familiar': 'Familia',
+  'Ciencia Ficción': 'Ciencia ficción', 'Ciencia Ficcion': 'Ciencia ficción',
+  'Musica': 'Música', 'Deportes': 'Deporte',
+  'Unknown': 'Otros', 'Desconocido': 'Otros',
 }
-const normalizarGenero = (g: string) => GENEROS_EN_A_ES[g] ?? g
+const normalizarGenero = (g: string) => GENEROS_NORMALIZE[g] ?? g
 
 async function fetchAllPages<T>(
   queryFn: (from: number, to: number) => PromiseLike<{ data: T[] | null }>,

@@ -3,7 +3,7 @@ import Nav from '@/components/Nav'
 import EstadisticasInteractivas, { type PeliculaRow, type AnalisisCatalogo } from './EstadisticasInteractivas'
 import BackButton from '@/components/BackButton'
 
-const GENEROS_EN_A_ES: Record<string, string> = {
+const GENEROS_NORMALIZE: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
   'Comedy': 'Comedia', 'Crime': 'Crimen', 'Documentary': 'Documental',
   'Drama': 'Drama', 'Fantasy': 'Fantasía', 'History': 'Historia',
@@ -11,8 +11,14 @@ const GENEROS_EN_A_ES: Record<string, string> = {
   'Romance': 'Romance', 'Science Fiction': 'Ciencia ficción', 'Sci-Fi': 'Ciencia ficción',
   'Thriller': 'Thriller', 'War': 'Guerra', 'Western': 'Western',
   'Family': 'Familia', 'Biography': 'Biografía', 'Sport': 'Deporte', 'Musical': 'Musical',
+  'Sports': 'Deporte',
+  'Accion': 'Acción', 'Animacion': 'Animación', 'Biografia': 'Biografía',
+  'Biográfico': 'Biografía', 'Fantasia': 'Fantasía', 'Familiar': 'Familia',
+  'Ciencia Ficción': 'Ciencia ficción', 'Ciencia Ficcion': 'Ciencia ficción',
+  'Musica': 'Música', 'Deportes': 'Deporte',
+  'Unknown': 'Otros', 'Desconocido': 'Otros',
 }
-const normalizarGenero = (g: string) => GENEROS_EN_A_ES[g] ?? g
+const normalizarGenero = (g: string) => GENEROS_NORMALIZE[g] ?? g
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },

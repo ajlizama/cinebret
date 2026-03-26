@@ -483,6 +483,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
   const [mostrarFiltrosAvanzados, setMostrarFiltrosAvanzados] = useState(false)
   const [vistaMode, setVistaMode] = useState<'grilla' | 'lista'>('grilla')
   const [showCuestionario, setShowCuestionario] = useState(false)
+  const [userPrefs, setUserPrefs] = useState<any>(null)
+
+  // Load user preferences for cuestionario
+  useEffect(() => {
+    if (!user) return
+    supabase.from('perfil_preferencias').select('*').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => { if (data) setUserPrefs(data) })
+  }, [user])
   const [prefKey, setPrefKey] = useState(0)
   const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number; peso_director?: number; peso_actores?: number } | null>(null)
   const [paraTiMovie, setParaTiMovie] = useState<Pelicula | null>(null)
@@ -1033,10 +1041,14 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
       {showCuestionario && (
         <CuestionarioOnboarding
           anonymous={!user}
+          preferenciasIniciales={user ? userPrefs : anonPrefs}
           onComplete={(prefs) => {
             setShowCuestionario(false)
             if (prefs && !user) {
               setAnonPrefs(prefs)
+            }
+            if (prefs && user) {
+              setUserPrefs(prefs)
             }
             setPrefKey(k => k + 1)
           }}

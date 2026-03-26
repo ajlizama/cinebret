@@ -747,17 +747,10 @@ export default function CatalogoInteractivo({ peliculas, trending = [] }: { peli
                     pool = pool.filter(p => p.generos.some(g => generosFiltro.includes(g)))
                   }
 
-                  // Sort by trending order: movies matching TMDB trending come first in trending order
-                  const trendingOrder = new Map(trending.map((t, i) => [t.id, i]))
-                  pool.sort((a, b) => {
-                    const aIdx = a.tmdb_id ? (trendingOrder.get(a.tmdb_id) ?? 999) : 999
-                    const bIdx = b.tmdb_id ? (trendingOrder.get(b.tmdb_id) ?? 999) : 999
-                    if (aIdx !== bIdx) return aIdx - bIdx
-                    return (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0)
-                  })
+                  pool.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
 
                   return pool.slice(0, 30).map(p => (
-                    <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => setExpandida(p.id === expandida ? null : p.id)}>
+                    <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => { setParaTiMovie(p); setExpandida(null) }}>
                       <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
                         <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
                         {p.nota_imdb && (

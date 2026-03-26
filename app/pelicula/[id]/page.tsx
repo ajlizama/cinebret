@@ -10,6 +10,8 @@ import AutorReviewLike from './AutorReviewLike'
 import BackButton from '@/components/BackButton'
 import RecomendarButton from './RecomendarButton'
 import AgregarAListaButton from './AgregarAListaButton'
+import YouTubeClip from '@/components/YouTubeClip'
+import { extractYouTubeId } from '@/lib/youtube'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -216,23 +218,13 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             {/* Video clip */}
             {enr?.video_clip_url && (() => {
               const url = enr.video_clip_url as string
-              const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
-              if (ytMatch) {
-                return (
-                  <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
-                    <iframe
-                      src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&vq=hd1080&autoplay=1&mute=1`}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                )
-              }
+              const ytId = extractYouTubeId(url)
+              if (ytId) return <YouTubeClip videoId={ytId} />
               return (
                 <div className="relative rounded-xl overflow-hidden bg-black">
                   <video src={url} autoPlay muted loop playsInline preload="metadata"
-                    className="w-full max-h-80 object-contain" />
+                    className="w-full max-h-80 object-contain"
+                    onClick={(e: any) => { e.currentTarget.muted = !e.currentTarget.muted }} />
                 </div>
               )
             })()}

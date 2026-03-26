@@ -6,6 +6,8 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
+import YouTubeClip from '@/components/YouTubeClip'
+import { extractYouTubeId } from '@/lib/youtube'
 
 type Pelicula = {
   id: string; titulo: string; titulo_ingles: string | null; anio: number | null
@@ -475,37 +477,23 @@ function ReelCard({
 
       {/* ══ SLIDE 3: Video clip (only if available) ══ */}
       {slide === 3 && pelicula.video_clip_url && (() => {
-        const ytMatch = pelicula.video_clip_url!.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+        const ytId = extractYouTubeId(pelicula.video_clip_url!)
         return (
           <div className="absolute inset-x-0 bottom-24 top-10 flex flex-col items-center justify-center p-4 z-10">
             <p className="text-white font-bold text-base mb-3">Clip</p>
-            <div className="relative rounded-xl overflow-hidden bg-black w-full max-w-sm">
-              {ytMatch ? (
-                <div className="aspect-video">
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&vq=hd1080&autoplay=1&mute=1`}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
+            <div className="w-full max-w-sm">
+              {ytId ? (
+                <YouTubeClip videoId={ytId} />
+              ) : (
+                <div className="relative rounded-xl overflow-hidden bg-black">
+                  <video
+                    src={pelicula.video_clip_url!}
+                    autoPlay muted loop playsInline
+                    className="w-full max-h-[50vh] object-contain"
+                    onClick={e => { e.currentTarget.muted = !e.currentTarget.muted }}
                   />
                 </div>
-              ) : (
-                <video
-                  src={pelicula.video_clip_url!}
-                  autoPlay muted loop playsInline
-                  className="w-full max-h-[50vh] object-contain"
-                  onClick={e => { e.currentTarget.muted = !e.currentTarget.muted }}
-                />
               )}
-              <button
-                onClick={e => {
-                  e.stopPropagation()
-                  const video = (e.currentTarget.parentElement?.querySelector('video') as HTMLVideoElement)
-                  if (video) video.muted = !video.muted
-                }}
-                className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center text-white text-sm z-10">
-                🔇
-              </button>
             </div>
           </div>
         )

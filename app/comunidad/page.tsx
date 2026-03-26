@@ -9,6 +9,8 @@ import { supabase } from '@/lib/supabase'
 // ParaTi moved to home page (catalogo)
 import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
+import YouTubeClip from '@/components/YouTubeClip'
+import { extractYouTubeId } from '@/lib/youtube'
 
 type Perfil = {
   user_id: string
@@ -86,6 +88,11 @@ function updateActiveVideo() {
 }
 
 function AutoplayClip({ url }: { url: string }) {
+  const ytId = extractYouTubeId(url)
+  if (ytId) {
+    return <YouTubeClip videoId={ytId} className="mt-2 mb-1" />
+  }
+
   const ref = useRef<HTMLVideoElement>(null)
   const [muted, setMuted] = useState(true)
 
@@ -109,21 +116,6 @@ function AutoplayClip({ url }: { url: string }) {
     observer.observe(video)
     return () => { observer.disconnect(); visibleVideos.delete(video) }
   }, [])
-
-  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
-
-  if (ytMatch) {
-    return (
-      <div className="relative rounded-xl overflow-hidden bg-black mt-2 mb-1 aspect-video">
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&vq=hd1080`}
-          className="w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
-    )
-  }
 
   return (
     <div className="relative rounded-xl overflow-hidden bg-black mt-2 mb-1">

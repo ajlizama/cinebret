@@ -356,6 +356,17 @@ export default function MiPerfilPage() {
                             {entrada.rating}/10
                           </div>
                         )}
+                        {entrada.plataformas.length > 0 && (
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1.5 px-1.5">
+                            <div className="flex items-center gap-0.5 flex-wrap">
+                              {PLATAFORMAS.filter(pl => entrada.plataformas.includes(pl.id)).map(pl => (
+                                <div key={pl.id} className="rounded px-0.5 py-0.5 bg-white/90" style={{ height: 14 }}>
+                                  <img src={pl.logo} alt={pl.nombre} className="h-2.5 w-auto object-contain" />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </Link>
                     <div className="p-2">

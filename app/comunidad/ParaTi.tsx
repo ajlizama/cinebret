@@ -119,6 +119,7 @@ type UserProfile = {
   peso_seguidores: number
   peso_director?: number
   peso_actores?: number
+  peso_historial?: number
 }
 
 /**
@@ -340,7 +341,7 @@ export default function ParaTi({
     if (preferenciasExternas === undefined && user) {
       const { data: prefData } = await supabase
         .from('perfil_preferencias')
-        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores')
+        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores, peso_historial')
         .eq('user_id', user.id)
         .maybeSingle()
       perfil = prefData as UserProfile | null
@@ -559,9 +560,10 @@ export default function ParaTi({
           // Crítica (peso_critica controla entre 5% y 35%)
           score += calidadRaw * wCritica * 10
 
-          // Género desde historial de vistas (10%)
+          // Género desde historial de vistas (5-15% según peso_historial)
+          const wHistorial = 0.05 + (perfil?.peso_historial ?? 0.5) * 0.10
           const gsHistory = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
-          score += gsHistory * 0.10 * 10
+          score += gsHistory * wHistorial * 10
           if (gsHistory > 0.3) {
             const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
             if (matched.length) razones.push(matched.join(', '))

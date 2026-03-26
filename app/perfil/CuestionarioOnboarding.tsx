@@ -40,6 +40,7 @@ interface PreferenciasIniciales {
   peso_seguidores: number
   peso_director?: number
   peso_actores?: number
+  peso_historial?: number
 }
 
 interface Props {
@@ -203,6 +204,9 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
   const [pesoActores, setPesoActores] = useState(
     preferenciasIniciales ? Math.round((preferenciasIniciales.peso_actores ?? 0.5) * 10) : 5
   )
+  const [pesoHistorial, setPesoHistorial] = useState(
+    preferenciasIniciales ? Math.round((preferenciasIniciales.peso_historial ?? 0.5) * 10) : 5
+  )
   const [showDetalleExtra, setShowDetalleExtra] = useState(false)
   const [guardando, setGuardando] = useState(false)
 
@@ -274,6 +278,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
       peso_seguidores: anonymous ? 0 : pesoSeguidores / 10,
       peso_director: pesoDirector / 10,
       peso_actores: pesoActores / 10,
+      peso_historial: anonymous ? 0.5 : pesoHistorial / 10,
     }
 
     if (user && !anonymous) {
@@ -420,6 +425,24 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
                 max={10}
                 value={pesoCritica}
                 onChange={e => setPesoCritica(Number(e.target.value))}
+                className="w-full accent-yellow-400"
+              />
+            </div>
+
+            {/* Peso historial de vistas */}
+            <div className={`space-y-2 ${anonymous ? 'opacity-40 pointer-events-none' : ''}`}>
+              <p className="text-sm text-zinc-300">¿Cuánto peso darle a tus películas vistas?</p>
+              <div className="flex justify-between text-xs text-zinc-500">
+                <span>Poco</span>
+                <span className="text-white font-semibold">{pesoHistorial}/10</span>
+                <span>Mucho</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={10}
+                value={pesoHistorial}
+                onChange={e => setPesoHistorial(Number(e.target.value))}
                 className="w-full accent-yellow-400"
               />
             </div>

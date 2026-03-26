@@ -62,10 +62,37 @@ const CAT_COLORS: Record<string, string> = {
   "Pa' llorar a moco tendido": 'bg-cyan-500',
 }
 
-const GENRE_COLORS = [
-  'bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500', 'bg-violet-500',
-  'bg-cyan-500', 'bg-pink-500', 'bg-lime-500', 'bg-orange-500', 'bg-indigo-500',
-]
+// Fixed color per genre — consistent across all platforms
+const GENRE_COLOR_MAP: Record<string, string> = {
+  'Drama': 'bg-blue-500',
+  'Comedia': 'bg-emerald-500',
+  'Acción': 'bg-amber-500',
+  'Thriller': 'bg-rose-500',
+  'Aventura': 'bg-violet-500',
+  'Crimen': 'bg-cyan-500',
+  'Romance': 'bg-pink-500',
+  'Animación': 'bg-lime-500',
+  'Ciencia ficción': 'bg-orange-500',
+  'Familia': 'bg-indigo-500',
+  'Terror': 'bg-red-700',
+  'Fantasía': 'bg-purple-500',
+  'Misterio': 'bg-teal-500',
+  'Guerra': 'bg-stone-500',
+  'Biografía': 'bg-sky-500',
+  'Historia': 'bg-yellow-600',
+  'Música': 'bg-fuchsia-500',
+  'Documental': 'bg-slate-500',
+  'Western': 'bg-amber-700',
+  'Deporte': 'bg-green-600',
+  'Musical': 'bg-pink-400',
+  'Action': 'bg-amber-500',
+  'Comedy': 'bg-emerald-500',
+  'Animation': 'bg-lime-500',
+  'Sci-Fi': 'bg-orange-500',
+}
+function genreColor(genre: string): string {
+  return GENRE_COLOR_MAP[genre] ?? 'bg-zinc-500'
+}
 
 function StackedBar({ segments, total }: { segments: { label: string; value: number; color: string }[]; total: number }) {
   return (
@@ -219,7 +246,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
             const sorted = Object.entries(pd.generos).sort(([, a], [, b]) => b - a)
             const top = sorted.slice(0, 6)
             const otherCount = sorted.slice(6).reduce((s, [, v]) => s + v, 0)
-            const segments = top.map(([g, v], i) => ({ label: g, value: v, color: GENRE_COLORS[i % GENRE_COLORS.length] }))
+            const segments = top.map(([g, v]) => ({ label: g, value: v, color: genreColor(g) }))
             if (otherCount > 0) segments.push({ label: 'Otros', value: otherCount, color: 'bg-zinc-600' })
             const total = sorted.reduce((s, [, v]) => s + v, 0)
 
@@ -249,8 +276,17 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
       {/* ── Composición por categorías CineBret ── */}
       <div className="bg-zinc-900 rounded-xl p-5 mb-6">
         <h2 className="text-base font-semibold text-white mb-1">Personalidad de cada plataforma</h2>
-        <p className="text-xs text-zinc-500 mb-5">Composición por categorías CineBret</p>
-        <div className="space-y-5">
+        <p className="text-xs text-zinc-500 mb-4">Composición por categorías CineBret</p>
+        {/* Leyenda global — una sola vez */}
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mb-5">
+          {Object.entries(CAT_COLORS).map(([cat, color]) => (
+            <div key={cat} className="flex items-center gap-1.5">
+              <div className={`w-2.5 h-2.5 rounded-full ${color}`} />
+              <span className="text-xs text-zinc-400">{CAT_LABELS[cat] ?? cat}</span>
+            </div>
+          ))}
+        </div>
+        <div className="space-y-4">
           {(selectedPlat ? platData.filter(p => p.id === selectedPlat) : sortedByCount).map(pd => {
             const sorted = Object.entries(pd.categorias).sort(([, a], [, b]) => b - a)
             const segments = sorted.map(([cat, v]) => ({
@@ -269,14 +305,6 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
                   <span className="text-sm text-zinc-300 font-medium">{pd.nombre}</span>
                 </div>
                 <StackedBar segments={segments} total={total} />
-                <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
-                  {segments.map((s, i) => (
-                    <div key={i} className="flex items-center gap-1">
-                      <div className={`w-2 h-2 rounded-full ${s.color}`} />
-                      <span className="text-[10px] text-zinc-500">{s.label} ({Math.round((s.value / total) * 100)}%)</span>
-                    </div>
-                  ))}
-                </div>
               </div>
             )
           })}

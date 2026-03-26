@@ -221,7 +221,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 return (
                   <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
                     <iframe
-                      src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&vq=hd1080`}
+                      src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&vq=hd1080&autoplay=1&mute=1`}
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
@@ -231,7 +231,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               }
               return (
                 <div className="relative rounded-xl overflow-hidden bg-black">
-                  <video src={url} controls playsInline preload="none"
+                  <video src={url} autoPlay muted loop playsInline preload="metadata"
                     className="w-full max-h-80 object-contain" />
                 </div>
               )

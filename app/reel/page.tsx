@@ -490,16 +490,22 @@ function ReelCard({
                   />
                 </div>
               ) : (
-                <>
-                  <video
-                    src={pelicula.video_clip_url!}
-                    autoPlay muted loop playsInline
-                    className="w-full max-h-[50vh] object-contain"
-                    onClick={e => { e.currentTarget.muted = !e.currentTarget.muted }}
-                  />
-                  <p className="absolute bottom-2 left-2 text-zinc-400 text-[10px] bg-black/60 rounded-full px-2 py-0.5">Toca para audio</p>
-                </>
+                <video
+                  src={pelicula.video_clip_url!}
+                  autoPlay muted loop playsInline
+                  className="w-full max-h-[50vh] object-contain"
+                  onClick={e => { e.currentTarget.muted = !e.currentTarget.muted }}
+                />
               )}
+              <button
+                onClick={e => {
+                  e.stopPropagation()
+                  const video = (e.currentTarget.parentElement?.querySelector('video') as HTMLVideoElement)
+                  if (video) video.muted = !video.muted
+                }}
+                className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center text-white text-sm z-10">
+                🔇
+              </button>
             </div>
           </div>
         )

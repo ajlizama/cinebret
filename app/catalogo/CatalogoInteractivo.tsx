@@ -116,37 +116,91 @@ const MOOD_CATS = [
 ]
 
 /* ─────────── Click-to-play video clip ─────────── */
-function ClickToPlayClip({ url }: { url: string }) {
-  const ref = useRef<HTMLVideoElement>(null)
-  const [playing, setPlaying] = useState(false)
-  const [muted, setMuted] = useState(true)
+// Global: only one video/iframe plays at a time
+const activeClips = new Set<{ pause: () => void }>()
+function registerActiveClip(clip: { pause: () => void }) {
+  activeClips.forEach(c => { if (c !== clip) c.pause() })
+  activeClips.clear()
+  activeClips.add(clip)
+}
 
-  const toggle = () => {
-    const v = ref.current
-    if (!v) return
-    if (v.paused) { v.play().catch(() => {}); setPlaying(true) }
-    else { v.pause(); setPlaying(false) }
+function ClickToPlayClip({ url }: { url: string }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [muted, setMuted] = useState(true)
+  const [playing, setPlaying] = useState(false)
+
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+  const isYT = !!ytMatch
+
+  // Autoplay when visible, pause when not
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          if (!isYT && videoRef.current) {
+            videoRef.current.play().catch(() => {})
+            setPlaying(true)
+            registerActiveClip({ pause: () => { videoRef.current?.pause(); setPlaying(false) } })
+          } else if (isYT) {
+            setPlaying(true)
+            registerActiveClip({ pause: () => setPlaying(false) })
+          }
+        } else {
+          if (!isYT && videoRef.current) { videoRef.current.pause(); setPlaying(false) }
+          else if (isYT) setPlaying(false)
+        }
+      },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [isYT])
+
+  if (isYT) {
+    return (
+      <div ref={containerRef} className="px-4 md:px-6 py-3">
+        <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
+          {playing ? (
+            <iframe
+              ref={iframeRef}
+              src={`https://www.youtube-nocookie.com/embed/${ytMatch![1]}?rel=0&modestbranding=1&showinfo=0&cc_load_policy=0&iv_load_policy=3&vq=hd1080&autoplay=1&mute=${muted ? 1 : 0}`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-black cursor-pointer"
+              onClick={() => { setPlaying(true); registerActiveClip({ pause: () => setPlaying(false) }) }}>
+              <img src={`https://img.youtube.com/vi/${ytMatch![1]}/hqdefault.jpg`} alt="" className="w-full h-full object-cover opacity-60" />
+              <div className="absolute w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <svg width="28" height="28" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          )}
+          {playing && (
+            <button onClick={() => { setMuted(m => !m); setPlaying(false); setTimeout(() => setPlaying(true), 50) }}
+              className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center text-white text-sm z-10">
+              {muted ? '🔇' : '🔊'}
+            </button>
+          )}
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="px-4 md:px-6 py-3">
-      <div className="relative rounded-xl overflow-hidden bg-black cursor-pointer" onClick={toggle}>
-        <video ref={ref} src={url} muted={muted} loop playsInline preload="none"
-          className="w-full max-h-64 object-contain"
-          onEnded={() => setPlaying(false)} />
-        {!playing && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-        )}
-        {playing && (
-          <button onClick={e => { e.stopPropagation(); setMuted(m => !m) }}
-            className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center text-white text-xs">
-            {muted ? '🔇' : '🔊'}
-          </button>
-        )}
+    <div ref={containerRef} className="px-4 md:px-6 py-3">
+      <div className="relative rounded-xl overflow-hidden bg-black">
+        <video ref={videoRef} src={url} muted={muted} loop playsInline preload="metadata"
+          className="w-full max-h-64 object-contain" />
+        <button onClick={e => { e.stopPropagation(); setMuted(m => !m) }}
+          className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center text-white text-sm z-10">
+          {muted ? '🔇' : '🔊'}
+        </button>
       </div>
     </div>
   )
@@ -509,7 +563,7 @@ export default function CatalogoInteractivo({ peliculas }: { peliculas: Pelicula
     actores_oscars: null, compositor: rec.compositor, compositor_oscars: null,
     generos: rec.generos, poster_path: rec.poster_path, oscars: rec.oscars,
     imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
-    video_clip_url: null,
+    video_clip_url: (rec as any).video_clip_url ?? null,
   })
   const gridRef = useRef<HTMLDivElement>(null)
 

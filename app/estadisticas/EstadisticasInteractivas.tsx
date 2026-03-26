@@ -94,15 +94,16 @@ function genreColor(genre: string): string {
   return GENRE_COLOR_MAP[genre] ?? 'bg-zinc-500'
 }
 
-function StackedBar({ segments, total }: { segments: { label: string; value: number; color: string }[]; total: number }) {
+function StackedBar({ segments, total, showTopN = 6 }: { segments: { label: string; value: number; color: string }[]; total: number; showTopN?: number }) {
   return (
-    <div className="w-full h-6 bg-zinc-800 rounded-full overflow-hidden flex">
+    <div className="w-full h-7 bg-zinc-800 rounded-full overflow-hidden flex">
       {segments.map((s, i) => {
         const pct = total > 0 ? (s.value / total) * 100 : 0
         if (pct < 2) return null
+        const showNumber = i < showTopN || pct > 8
         return (
-          <div key={i} className={`${s.color} h-full relative group`} style={{ width: `${pct}%` }} title={`${s.label}: ${Math.round(pct)}%`}>
-            {pct > 8 && <span className="absolute inset-0 flex items-center justify-center text-white text-[9px] font-bold">{Math.round(pct)}%</span>}
+          <div key={i} className={`${s.color} h-full relative group`} style={{ width: `${pct}%`, minWidth: showNumber ? '28px' : undefined }} title={`${s.label}: ${Math.round(pct)}%`}>
+            {showNumber && <span className="absolute inset-0 flex items-center justify-center text-white text-[9px] font-bold drop-shadow-sm">{Math.round(pct)}%</span>}
           </div>
         )
       })}

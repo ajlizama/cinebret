@@ -94,6 +94,31 @@ function genreColor(genre: string): string {
   return GENRE_COLOR_MAP[genre] ?? 'bg-zinc-500'
 }
 
+// Normalize genre variants (tildes, English, capitalization) to a single canonical form
+const GENRE_NORMALIZE: Record<string, string> = {
+  'Action': 'Acción', 'Accion': 'Acción',
+  'Comedy': 'Comedia',
+  'Adventure': 'Aventura',
+  'Animation': 'Animación', 'Animacion': 'Animación',
+  'Crime': 'Crimen',
+  'Horror': 'Terror',
+  'Biography': 'Biografía', 'Biografia': 'Biografía', 'Biográfico': 'Biografía',
+  'Sci-Fi': 'Ciencia ficción', 'Science Fiction': 'Ciencia ficción',
+  'Ciencia Ficción': 'Ciencia ficción', 'Ciencia Ficcion': 'Ciencia ficción',
+  'Mystery': 'Misterio',
+  'Family': 'Familia', 'Familiar': 'Familia',
+  'Fantasy': 'Fantasía', 'Fantasia': 'Fantasía',
+  'History': 'Historia',
+  'War': 'Guerra',
+  'Sport': 'Deporte', 'Deportes': 'Deporte', 'Sports': 'Deporte',
+  'Music': 'Música', 'Musica': 'Música',
+  'Documentary': 'Documental',
+  'Unknown': 'Otros', 'Desconocido': 'Otros',
+}
+function normalizeGenre(g: string): string {
+  return GENRE_NORMALIZE[g] ?? g
+}
+
 function StackedBar({ segments, total, showTopN = 6 }: { segments: { label: string; value: number; color: string }[]; total: number; showTopN?: number }) {
   return (
     <div className="w-full h-7 bg-zinc-800 rounded-full overflow-hidden flex">
@@ -131,7 +156,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
       let oscarWinners = 0
 
       movies.forEach(p => {
-        p.generos.forEach(g => { generos[g] = (generos[g] ?? 0) + 1 })
+        p.generos.forEach(g => { const ng = normalizeGenre(g); generos[ng] = (generos[ng] ?? 0) + 1 })
         if (p.categoria) categorias[p.categoria] = (categorias[p.categoria] ?? 0) + 1
         const osc = (p.oscars ?? '').toLowerCase()
         if (osc.startsWith('ganó')) oscarWinners++

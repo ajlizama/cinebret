@@ -11,6 +11,7 @@ export default function Loading({ text, size = 'md' }: { text?: string; size?: '
         loop
         playsInline
         className={`${dims} object-contain`}
+        style={{ mixBlendMode: 'lighten' }}
       />
       {text && <p className="text-zinc-500 text-sm">{text}</p>}
     </div>

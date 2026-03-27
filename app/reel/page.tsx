@@ -597,32 +597,44 @@ export default function ReelPage() {
   useEffect(() => { cargarPeliculas() }, [cargarPeliculas])
 
   const handleSwipe = useCallback((dir: 'left' | 'right' | 'down' | 'up') => {
-    setPeliculas(prev => {
-      if (prev.length === 0) return prev
-      const [top, ...rest] = prev
-      if (dir === 'right') {
-        setLastAction({ pelicula: top, action: 'right' })
-        markSessionDone(top.id)
-        if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, watchlist: true, visto: false }, { onConflict: 'user_id,pelicula_id' }).then(({ error }) => { if (error) console.error('watchlist upsert error:', error) })
-        return rest
+    // Get the top movie before modifying state
+    const top = peliculas[0]
+    if (!top) return
+
+    if (dir === 'right') {
+      setLastAction({ pelicula: top, action: 'right' })
+      markSessionDone(top.id)
+      setPeliculas(prev => prev.slice(1))
+      if (user) {
+        supabase.from('user_peliculas').upsert(
+          { user_id: user.id, pelicula_id: top.id, watchlist: true, visto: false },
+          { onConflict: 'user_id,pelicula_id' }
+        ).then(({ error }) => { if (error) console.error('watchlist error:', error) })
       }
-      if (dir === 'left') {
-        setLastAction({ pelicula: top, action: 'left' })
-        snoozeId(top.id)
-        return rest
+    } else if (dir === 'left') {
+      setLastAction({ pelicula: top, action: 'left' })
+      snoozeId(top.id)
+      setPeliculas(prev => prev.slice(1))
+    } else if (dir === 'up') {
+      setLastAction({ pelicula: top, action: 'up' })
+      markSessionDone(top.id)
+      setPeliculas(prev => prev.slice(1))
+      if (user) {
+        supabase.from('user_peliculas').upsert(
+          { user_id: user.id, pelicula_id: top.id, visto: true, watchlist: false },
+          { onConflict: 'user_id,pelicula_id' }
+        ).then(({ error }) => { if (error) console.error('visto error:', error) })
       }
-      if (dir === 'up') {
-        setLastAction({ pelicula: top, action: 'up' })
-        markSessionDone(top.id)
-        if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, visto: true, watchlist: false }, { onConflict: 'user_id,pelicula_id' }).then(({ error }) => { if (error) console.error('visto upsert error:', error) })
-        return rest
-      }
-      if (dir === 'down') {
-        const pos = Math.min(5, rest.length); const next = [...rest]; next.splice(pos, 0, top); return next
-      }
-      return rest
-    })
-  }, [user])
+    } else if (dir === 'down') {
+      setPeliculas(prev => {
+        const [first, ...rest] = prev
+        const pos = Math.min(5, rest.length)
+        const next = [...rest]
+        next.splice(pos, 0, first)
+        return next
+      })
+    }
+  }, [user, peliculas])
 
   const handleUndo = useCallback(() => {
     if (!lastAction) return

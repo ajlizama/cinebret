@@ -460,6 +460,48 @@ function PanelExpandido({
   )
 }
 
+/* ─────────── Trending carousel ─────────── */
+function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect }: {
+  peliculas: Pelicula[]; trendingIds: number[]; plataformas: typeof PLATAFORMAS; onSelect: (p: Pelicula) => void
+}) {
+  const trendingSet = new Set(trendingIds)
+  const trendingMovies = peliculas
+    .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path && p.plataformas.length > 0)
+    .sort((a, b) => trendingIds.indexOf(a.tmdb_id!) - trendingIds.indexOf(b.tmdb_id!))
+
+  if (trendingMovies.length === 0) return null
+
+  return (
+    <div className="mb-4">
+      <h2 className="text-base md:text-xl font-bold text-white mb-2">🔥 Trending</h2>
+      <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
+        {trendingMovies.map((p, i) => (
+          <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => onSelect(p)}>
+            <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
+              <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
+              <div className="absolute top-0 left-0 bg-zinc-950/80 rounded-br-lg px-2 py-1">
+                <span className="text-white font-black text-lg leading-none">{i + 1}</span>
+              </div>
+              {p.plataformas.length > 0 && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+                  <div className="flex items-center gap-0.5">
+                    {plataformas.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
+                      <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
+                        <img src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /* ─────────── Main component ─────────── */
 export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[] }) {
   const { user } = useAuth()
@@ -713,43 +755,12 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         </div>
 
         {/* ── Trending ── */}
-        {(() => {
-          const trendingSet = new Set(trendingIds)
-          const trendingMovies = peliculas
-            .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path && p.plataformas.length > 0)
-            .sort((a, b) => trendingIds.indexOf(a.tmdb_id!) - trendingIds.indexOf(b.tmdb_id!))
-          if (trendingMovies.length === 0) return null
-          return (
-            <div className="mb-4">
-              <h2 className="text-base md:text-xl font-bold text-white mb-2">🔥 Trending</h2>
-              <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
-                {trendingMovies.map((p, i) => (
-                  <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => { setParaTiMovie(p); setExpandida(null) }}>
-                    <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
-                      <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
-                      {/* Ranking number */}
-                      <div className="absolute top-0 left-0 bg-zinc-950/80 rounded-br-lg px-2 py-1">
-                        <span className="text-white font-black text-lg leading-none">{i + 1}</span>
-                      </div>
-                      {p.plataformas.length > 0 && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
-                          <div className="flex items-center gap-0.5">
-                            {PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
-                              <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
-                                <img src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )
-        })()}
+        <TrendingCarousel
+          peliculas={peliculas}
+          trendingIds={trendingIds}
+          plataformas={PLATAFORMAS}
+          onSelect={p => { setParaTiMovie(p); setExpandida(null) }}
+        />
 
         {/* ── Para Ti ── */}
         <div className="mb-4 border-t border-zinc-800 pt-3">

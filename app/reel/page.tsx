@@ -603,7 +603,7 @@ export default function ReelPage() {
       if (dir === 'right') {
         setLastAction({ pelicula: top, action: 'right' })
         markSessionDone(top.id)
-        if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, watchlist: true }, { onConflict: 'user_id,pelicula_id' })
+        if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, watchlist: true, visto: false }, { onConflict: 'user_id,pelicula_id' }).then(({ error }) => { if (error) console.error('watchlist upsert error:', error) })
         return rest
       }
       if (dir === 'left') {
@@ -614,7 +614,7 @@ export default function ReelPage() {
       if (dir === 'up') {
         setLastAction({ pelicula: top, action: 'up' })
         markSessionDone(top.id)
-        if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, visto: true }, { onConflict: 'user_id,pelicula_id' })
+        if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: top.id, visto: true, watchlist: false }, { onConflict: 'user_id,pelicula_id' }).then(({ error }) => { if (error) console.error('visto upsert error:', error) })
         return rest
       }
       if (dir === 'down') {

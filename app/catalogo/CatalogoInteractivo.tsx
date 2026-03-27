@@ -537,6 +537,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   const [prefKey, setPrefKey] = useState(0)
   const [anonPrefs, setAnonPrefs] = useState<{ birth_year: number | null; fav_movies: string[]; generos_preferidos: string[]; mood_ranking: string[]; peso_critica: number; peso_seguidores: number; peso_director?: number; peso_actores?: number } | null>(null)
   const [paraTiMovie, setParaTiMovie] = useState<Pelicula | null>(null)
+  const [trendingMovie, setTrendingMovie] = useState<Pelicula | null>(null)
 
   const recToPelicula = (rec: RecExport): Pelicula => ({
     id: rec.id, titulo: rec.titulo, titulo_ingles: rec.titulo_ingles, anio: rec.anio,
@@ -759,18 +760,30 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           peliculas={peliculas}
           trendingIds={trendingIds}
           plataformas={PLATAFORMAS}
-          onSelect={p => { setParaTiMovie(p); setExpandida(null) }}
+          onSelect={p => { setTrendingMovie(prev => prev?.id === p.id ? null : p); setParaTiMovie(null); setExpandida(null) }}
         />
+
+        {/* Trending expansion panel */}
+        {trendingMovie && (
+          <div className="mb-4">
+            <PanelExpandido
+              p={trendingMovie} up={userPeliculas[trendingMovie.id]} user={user}
+              generosFiltro={generosFiltro} setGenerosFiltro={setGenerosFiltro}
+              setExpandida={() => setTrendingMovie(null)} toggleVisto={toggleVisto}
+              toggleWatchlist={toggleWatchlist} setRating={setRatingFn}
+            />
+          </div>
+        )}
 
         {/* ── Para Ti ── */}
         <div className="mb-4 border-t border-zinc-800 pt-3">
           {user ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)}
-              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }}
+              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setTrendingMovie(null); setExpandida(null) }}
               filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : anonPrefs ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)} preferenciasExternas={anonPrefs}
-              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setExpandida(null) }}
+              onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setTrendingMovie(null); setExpandida(null) }}
               filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : (
             <div>
@@ -796,7 +809,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                   pool.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
 
                   return pool.slice(0, 30).map(p => (
-                    <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => { setParaTiMovie(p); setExpandida(null) }}>
+                    <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => { setParaTiMovie(p); setTrendingMovie(null); setExpandida(null) }}>
                       <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
                         <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
                         {p.nota_imdb && (

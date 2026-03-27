@@ -103,27 +103,25 @@ export default async function CatalogoPage() {
     }
   })
 
-  // Fetch TMDB trending for non-logged users
-  let trending: { id: number; title: string; poster_path: string | null; vote_average: number; release_date: string }[] = []
+  // Fetch TMDB trending (3 pages = 60 movies)
+  let trendingIds: number[] = []
   try {
     const tmdbKey = process.env.TMDB_API_KEY
     if (tmdbKey) {
-      const res = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL`, { next: { revalidate: 21600 } })
-      const data = await res.json()
-      trending = (data.results ?? []).map((m: any) => ({
-        id: m.id,
-        title: m.title,
-        poster_path: m.poster_path,
-        vote_average: m.vote_average,
-        release_date: m.release_date ?? '',
-      }))
+      const pages = await Promise.all(
+        [1, 2, 3].map(p =>
+          fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
+            .then(r => r.json()).catch(() => ({ results: [] }))
+        )
+      )
+      trendingIds = pages.flatMap((d: any) => (d.results ?? []).map((m: any) => m.id as number))
     }
   } catch {}
 
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="inicio" />
-      <CatalogoInteractivo peliculas={peliculas} trending={trending} />
+      <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} />
     </main>
   )
 }

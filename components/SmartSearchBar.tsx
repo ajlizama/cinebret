@@ -15,7 +15,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
   const [listening, setListening] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [responseMsg, setResponseMsg] = useState<string | null>(null)
-  const [usedMic, setUsedMic] = useState(false)
+  const usedMicRef = useRef(false)
   const recognitionRef = useRef<any>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [micSupported, setMicSupported] = useState(false)
@@ -33,12 +33,16 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
       // Load voices first (needed on some browsers)
       const speak = () => {
         const utterance = new SpeechSynthesisUtterance(msg)
-        utterance.lang = 'es-CL'
-        utterance.rate = 1.0
+        utterance.lang = 'es-MX'
+        utterance.rate = 1.05
         utterance.pitch = 1.0
         const voices = window.speechSynthesis.getVoices()
-        const esVoice = voices.find(v => v.lang.startsWith('es'))
-        if (esVoice) utterance.voice = esVoice
+        // Prefer: Paulina (MX) > Google español > any es-*
+        const paulina = voices.find(v => v.name.includes('Paulina'))
+        const google = voices.find(v => v.name.includes('Google español'))
+        const anyEs = voices.find(v => v.lang.startsWith('es'))
+        utterance.voice = paulina ?? google ?? anyEs ?? null
+        window.speechSynthesis.cancel() // cancel any pending
         window.speechSynthesis.speak(utterance)
       }
       if (window.speechSynthesis.getVoices().length > 0) speak()
@@ -55,8 +59,8 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
     const local = parseSmartSearch(query)
     if (local.understood) {
       onSmartFilters(local)
-      if (local.response) showResponse(local.response, usedMic)
-      setUsedMic(false)
+      if (local.response) showResponse(local.response, usedMicRef.current)
+      usedMicRef.current = false
       return
     }
 
@@ -66,11 +70,11 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
       const ai = await aiParseSearch(query)
       if (ai && ai.understood) {
         onSmartFilters(ai)
-        if (ai.response) showResponse(ai.response, usedMic)
+        if (ai.response) showResponse(ai.response, usedMicRef.current)
       }
     } finally {
       setProcessing(false)
-      setUsedMic(false)
+      usedMicRef.current = false
     }
   }, [onSmartFilters])
 
@@ -124,7 +128,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
     recognitionRef.current = recognition
     recognition.start()
     setListening(true)
-    setUsedMic(true)
+    usedMicRef.current = true
   }
 
   const stopListening = () => {

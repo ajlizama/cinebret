@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { supabase } from '@/lib/supabase'
 import EnrichedDetails from './EnrichedDetails'
+import { useAuth } from '@/context/AuthContext'
 
 type Movie = {
   id: string
@@ -14,8 +16,66 @@ type Movie = {
   poster_path: string | null
 }
 
+type FullMovie = Movie & {
+  rt_score: number | null
+  metacritic_score: number | null
+  oscars: string | null
+  categoria: string | null
+  runtime: number | null
+  backdrop_path: string | null
+  sinopsis: string | null
+  director: string | null
+  compositor: string | null
+  video_clip_url: string | null
+  youtube_trailer_key: string | null
+  imdb_id: string | null
+  generos: string[]
+  plataformas: string[]
+}
+
+const PLATAFORMAS = [
+  { id: 'netflix', nombre: 'Netflix', logo: '/netflix.png' },
+  { id: 'disney_plus', nombre: 'Disney+', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', nombre: 'HBO', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', nombre: 'Prime', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', nombre: 'Apple TV+', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', nombre: 'Paramount+', logo: '/paramount_plus.svg' },
+  { id: 'mubi', nombre: 'MUBI', logo: '/mubi.png' },
+]
+
 export default function FilmographyGrid({ movies }: { movies: Movie[] }) {
+  const { user } = useAuth()
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [fullData, setFullData] = useState<FullMovie | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!expanded) { setFullData(null); return }
+    setLoading(true)
+    ;(async () => {
+      const [{ data: pel }, { data: enr }] = await Promise.all([
+        supabase.from('peliculas').select('*, catalogos(plataforma, fecha, activo)').eq('id', expanded).single(),
+        supabase.from('enriquecimiento').select('*').eq('pelicula_id', expanded).maybeSingle(),
+      ])
+      if (!pel) { setLoading(false); return }
+      const hoy = new Date().toISOString().split('T')[0]
+      const plats = (pel.catalogos || []).filter((c: any) => c.fecha === hoy && c.activo).map((c: any) => c.plataforma)
+      setFullData({
+        ...pel,
+        rt_score: pel.rt_score ?? null,
+        metacritic_score: pel.metacritic_score ?? null,
+        sinopsis: enr?.sinopsis_chilensis ?? null,
+        director: enr?.director ?? null,
+        compositor: enr?.compositor ?? null,
+        video_clip_url: enr?.video_clip_url ?? null,
+        youtube_trailer_key: pel.youtube_trailer_key ?? null,
+        imdb_id: pel.imdb_id ?? null,
+        generos: enr?.generos ?? [],
+        plataformas: plats,
+      })
+      setLoading(false)
+    })()
+  }, [expanded])
 
   return (
     <div>
@@ -43,32 +103,123 @@ export default function FilmographyGrid({ movies }: { movies: Movie[] }) {
                   <p className="text-zinc-500 text-[10px]">{m.anio}</p>
                 </div>
               ) : (
-                <div className="bg-zinc-900 rounded-2xl p-4 my-2">
-                  <div className="flex items-start gap-4">
-                    <div className="shrink-0">
-                      {m.poster_path && (
-                        <div className="relative w-24 rounded-xl overflow-hidden" style={{ aspectRatio: '2/3' }}>
-                          <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="96px" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="text-lg font-bold text-white">{m.titulo_ingles || m.titulo}</h3>
-                          {m.titulo_ingles && m.titulo !== m.titulo_ingles && (
-                            <p className="text-zinc-500 text-sm">{m.titulo}</p>
-                          )}
-                          <div className="flex items-center gap-3 mt-1 text-sm text-zinc-400">
-                            {m.anio && <span>{m.anio}</span>}
-                            {m.nota_imdb && <span className="text-yellow-400 font-bold">⭐ {m.nota_imdb}</span>}
-                          </div>
-                        </div>
-                        <button onClick={() => setExpanded(null)} className="text-zinc-500 hover:text-white transition-colors text-lg">✕</button>
+                <div className="bg-zinc-900 rounded-2xl overflow-hidden my-2 shadow-2xl">
+                  {/* Banner */}
+                  <div className="relative h-32 md:h-44 overflow-hidden">
+                    {(fullData?.backdrop_path || m.poster_path) && (
+                      <>
+                        <img src={`https://image.tmdb.org/t/p/w780${fullData?.backdrop_path || m.poster_path}`} alt="" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-900" />
+                      </>
+                    )}
+                    <button onClick={() => setExpanded(null)} className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">✕</button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="px-4 -mt-12 relative z-10">
+                    <div className="flex gap-3 items-end">
+                      <Link href={`/pelicula/${m.id}`} className="relative w-20 md:w-24 shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-zinc-900 block" style={{ aspectRatio: '2/3' }}>
+                        {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="96px" />}
+                      </Link>
+                      <div className="flex-1 min-w-0 pb-1">
+                        <h3 className="text-lg font-bold text-white leading-tight">
+                          {m.titulo_ingles || m.titulo}
+                          {m.anio && <span className="text-zinc-400 font-normal ml-1 text-base">({m.anio})</span>}
+                        </h3>
+                        {m.titulo_ingles && m.titulo !== m.titulo_ingles && (
+                          <p className="text-zinc-500 text-xs">{m.titulo}</p>
+                        )}
                       </div>
-                      <EnrichedDetails peliculaId={m.id} />
-                      <Link href={`/pelicula/${m.id}`} className="inline-block mt-3 text-xs text-yellow-400 hover:text-yellow-300 font-medium">Ver ficha completa →</Link>
                     </div>
+                  </div>
+
+                  <div className="px-4 pt-3 pb-4 space-y-3">
+                    {loading ? (
+                      <p className="text-zinc-500 text-xs animate-pulse">Cargando...</p>
+                    ) : fullData && (
+                      <>
+                        {/* Ratings */}
+                        <div className="flex items-center gap-3 flex-wrap">
+                          {fullData.nota_imdb != null && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-9 h-9 rounded-full border-2 border-yellow-400 flex items-center justify-center">
+                                <span className="text-yellow-400 font-bold text-xs">{fullData.nota_imdb}</span>
+                              </div>
+                              <span className="text-zinc-500 text-[10px]">IMDB</span>
+                            </div>
+                          )}
+                          {fullData.rt_score != null && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-9 h-9 rounded-full border-2 border-red-400 flex items-center justify-center">
+                                <span className="text-red-400 font-bold text-xs">{fullData.rt_score}%</span>
+                              </div>
+                              <span className="text-zinc-500 text-[10px]">RT</span>
+                            </div>
+                          )}
+                          {fullData.oscars && fullData.oscars !== 'N/A' && (
+                            <div className="flex items-center gap-1">
+                              <img src="/oscar.png" alt="Oscar" className="h-8 w-auto" />
+                              <span className="text-xs font-bold text-yellow-400">{fullData.oscars.match(/\d+/)?.[0]}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Meta */}
+                        <div className="text-xs text-zinc-400 flex flex-wrap gap-1">
+                          {fullData.generos.length > 0 && <span>{fullData.generos.join(', ')}</span>}
+                          {fullData.runtime != null && <span>· {Math.floor(fullData.runtime / 60)}h {fullData.runtime % 60}min</span>}
+                          {fullData.categoria && <span>· {fullData.categoria}</span>}
+                        </div>
+
+                        {/* Platforms */}
+                        {fullData.plataformas.length > 0 && (
+                          <div className="flex gap-1.5 flex-wrap">
+                            {PLATAFORMAS.filter(pl => fullData.plataformas.includes(pl.id)).map(pl => (
+                              <div key={pl.id} className="rounded-md bg-white px-1.5 py-0.5 flex items-center">
+                                <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Synopsis */}
+                        {fullData.sinopsis && (
+                          <p className="text-sm text-zinc-300 leading-relaxed">{fullData.sinopsis}</p>
+                        )}
+
+                        {/* Director + Compositor */}
+                        <div className="flex flex-wrap gap-x-6 gap-y-2">
+                          {fullData.director && (
+                            <Link href={`/director/${encodeURIComponent(fullData.director)}`} className="hover:text-yellow-400 transition-colors">
+                              <p className="text-white text-sm font-medium">{fullData.director}</p>
+                              <p className="text-zinc-500 text-xs">Director</p>
+                            </Link>
+                          )}
+                          {fullData.compositor && (
+                            <Link href={`/compositor/${encodeURIComponent(fullData.compositor)}`} className="hover:text-yellow-400 transition-colors">
+                              <p className="text-white text-sm font-medium">{fullData.compositor}</p>
+                              <p className="text-zinc-500 text-xs">Compositor</p>
+                            </Link>
+                          )}
+                        </div>
+
+                        {/* Links */}
+                        <div className="flex flex-wrap gap-2">
+                          {fullData.youtube_trailer_key && (
+                            <a href={`https://www.youtube.com/watch?v=${fullData.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
+                              className="text-xs text-white bg-zinc-800 rounded-lg px-3 py-1.5">▶ Tráiler</a>
+                          )}
+                          {fullData.imdb_id && (
+                            <a href={`https://www.imdb.com/title/${fullData.imdb_id}/`} target="_blank" rel="noopener noreferrer"
+                              className="inline-flex items-center bg-yellow-400 text-zinc-950 font-black text-[10px] px-1.5 py-0.5 rounded">IMDb</a>
+                          )}
+                          <Link href={`/pelicula/${m.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium px-3 py-1.5">Ver ficha completa →</Link>
+                        </div>
+
+                        {/* Enriched details */}
+                        <EnrichedDetails peliculaId={m.id} />
+                      </>
+                    )}
                   </div>
                 </div>
               )}

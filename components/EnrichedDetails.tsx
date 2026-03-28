@@ -66,10 +66,10 @@ export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) 
   if (!data) return null
 
   return (
-    <div className="space-y-3 mt-3 overflow-hidden min-w-0">
-      {/* Tagline */}
+    <div className="space-y-3 mt-1 overflow-hidden min-w-0">
+      {/* Tagline — first thing shown */}
       {data.tagline && (
-        <p className="text-zinc-400 text-xs italic">&ldquo;{data.tagline}&rdquo;</p>
+        <p className="text-zinc-400 text-xs italic -mt-1 mb-1">&ldquo;{data.tagline}&rdquo;</p>
       )}
 
       {/* Cast with photos */}

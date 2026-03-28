@@ -306,7 +306,7 @@ function PanelExpandido({
               {p.director && <div><p className="text-white text-sm font-medium">{p.director}</p><p className="text-zinc-500 text-xs">Director</p></div>}
               {p.compositor && <div><p className="text-white text-sm font-medium">{p.compositor}</p><p className="text-zinc-500 text-xs">Compositor</p></div>}
             </div>
-            {p.actores && <div><p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p><p className="text-sm text-zinc-300">{p.actores}</p></div>}
+            {/* Reparto se muestra con fotos en EnrichedDetails */}
 
             {/* Badges */}
             <div className="flex gap-2 flex-wrap">
@@ -443,7 +443,7 @@ function PanelExpandido({
                 {p.director && <div><p className="text-white text-sm font-medium drop-shadow">{p.director}</p><p className="text-zinc-400 text-xs drop-shadow">Director</p></div>}
                 {p.compositor && <div><p className="text-white text-sm font-medium drop-shadow">{p.compositor}</p><p className="text-zinc-400 text-xs drop-shadow">Compositor</p></div>}
               </div>
-              {p.actores && <div><p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 drop-shadow">Reparto</p><p className="text-sm text-zinc-200 drop-shadow">{p.actores}</p></div>}
+              {/* Reparto se muestra con fotos en EnrichedDetails */}
 
               <div className="flex gap-3 items-center flex-wrap">
                 {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
@@ -690,22 +690,21 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
             onSmartFilters={(f: SmartFilters) => {
-              // Clear all filters first
-              limpiarFiltros()
-              // Apply smart filters — when keywordSearch is active, don't set genre filter (too restrictive)
-              if (f.plataformas.length) setPlataformasFiltro(f.plataformas)
-              if (f.categorias.length) setCategoriasFiltro(f.categorias)
+              // Set platforms and categories (these also filter trending + para ti)
+              setPlataformasFiltro(f.plataformas)
+              setCategoriasFiltro(f.categorias)
+              // Genres vs keywords: use one or the other, not both
               if (f.keywordSearch?.length) {
                 setSmartKeywords(f.keywordSearch)
-                // Don't set genre filter when doing keyword search — it's too restrictive combined
+                setGenerosFiltro([]) // keywords are broader, don't restrict with genres
               } else {
                 setSmartKeywords([])
-                if (f.generos.length) setGenerosFiltro(f.generos)
+                setGenerosFiltro(f.generos)
               }
-              if (f.directores.length) setDirectoresFiltro(f.directores)
-              if (f.actores.length) setActoresFiltro(f.actores)
-              if (f.anioDesde) setAnioDesde(f.anioDesde)
-              if (f.anioHasta) setAnioHasta(f.anioHasta)
+              setDirectoresFiltro(f.directores)
+              setActoresFiltro(f.actores)
+              setAnioDesde(f.anioDesde || '')
+              setAnioHasta(f.anioHasta || '')
               if (f.orden) setOrden(f.orden as any)
               setBusqueda(f.searchText || '')
               setPagina(0)

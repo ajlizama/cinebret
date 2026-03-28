@@ -58,8 +58,8 @@ export default async function CatalogoPage() {
     ),
     fetchAllPages((from, to) =>
       supabase.from('peliculas').select(`
-        id, tmdb_id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, categoria, poster_path, imdb_id, youtube_trailer_key,
-        enriquecimiento (es_review_autor, sello_bret, director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, generos, sinopsis_chilensis, video_clip_url)
+        id, tmdb_id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, categoria, poster_path, imdb_id, youtube_trailer_key, tagline,
+        enriquecimiento (es_review_autor, sello_bret, director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, generos, sinopsis_chilensis, video_clip_url, keywords)
       `).range(from, to)
     ),
   ])
@@ -100,6 +100,8 @@ export default async function CatalogoPage() {
       compositor_oscars: enr.compositor_oscars ?? null,
       generos: ((enr.generos as string[]) || []).map(normalizarGenero),
       video_clip_url: enr.video_clip_url ?? null,
+      keywords: ((enr.keywords as string[]) || []),
+      tagline: p.tagline ?? null,
     }
   })
 

@@ -11,6 +11,7 @@ export type SmartFilters = {
   anioHasta: string
   orden: string
   searchText: string // remaining text for regular search
+  keywordSearch: string[] // search in keywords/taglines/sinopsis
   understood: boolean // whether we parsed anything useful
 }
 
@@ -127,6 +128,7 @@ export function parseSmartSearch(query: string): SmartFilters {
     anioHasta: '',
     orden: '',
     searchText: '',
+    keywordSearch: [],
     understood: false,
   }
 

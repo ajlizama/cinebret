@@ -37,6 +37,7 @@ export type Pelicula = {
   compositor_oscars: number | null; generos: string[]; poster_path: string | null
   oscars: string | null; imdb_id: string | null; youtube_trailer_key: string | null
   sinopsis: string | null; video_clip_url: string | null
+  keywords: string[]; tagline: string | null
 }
 
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
@@ -531,6 +532,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   const [soloSello, setSoloSello] = useState(false)
   const [filtroVistas, setFiltroVistas] = useState<'todas' | 'vistas' | 'no_vistas'>('todas')
   const [soloWatchlist, setSoloWatchlist] = useState(false)
+  const [smartKeywords, setSmartKeywords] = useState<string[]>([])
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
@@ -560,6 +562,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
     generos: rec.generos, poster_path: rec.poster_path, oscars: rec.oscars,
     imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
     video_clip_url: (rec as any).video_clip_url ?? null,
+    keywords: [], tagline: null,
   })
   const gridRef = useRef<HTMLDivElement>(null)
 
@@ -623,7 +626,16 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         (!soloWatchlist || userPeliculas[p.id]?.watchlist) &&
         matchOscarFiltro(p, oscarsFiltro) &&
         (!anioDesde || (p.anio ?? 0) >= Number(anioDesde)) &&
-        (!anioHasta || (p.anio ?? 9999) <= Number(anioHasta))
+        (!anioHasta || (p.anio ?? 9999) <= Number(anioHasta)) &&
+        (smartKeywords.length === 0 || smartKeywords.some(kw => {
+          const kwl = kw.toLowerCase()
+          return p.keywords.some(k => k.toLowerCase().includes(kwl)) ||
+            (p.tagline || '').toLowerCase().includes(kwl) ||
+            (p.sinopsis || '').toLowerCase().includes(kwl) ||
+            p.generos.some(g => g.toLowerCase().includes(kwl)) ||
+            p.titulo.toLowerCase().includes(kwl) ||
+            (p.titulo_ingles || '').toLowerCase().includes(kwl)
+        }))
     })
     .sort((a, b) => {
       if (orden === 'imdb') return (b.nota_imdb || 0) - (a.nota_imdb || 0)
@@ -638,14 +650,14 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
 
   const hayFiltros = busqueda || plataformasFiltro.length > 0 || categoriasFiltro.length > 0 ||
     generosFiltro.length > 0 || directoresFiltro.length > 0 || actoresFiltro.length > 0 ||
-    compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || filtroVistas !== 'todas' || soloWatchlist || anioDesde || anioHasta
+    compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || filtroVistas !== 'todas' || soloWatchlist || anioDesde || anioHasta || smartKeywords.length > 0
 
   useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, oscarsFiltro, soloReviews, soloSello, filtroVistas, soloWatchlist, orden])
 
   const limpiarFiltros = () => {
     setBusqueda(''); setPlataformasFiltro([]); setCategoriasFiltro([]); setGenerosFiltro([])
     setDirectoresFiltro([]); setActoresFiltro([]); setCompositoresFiltro([])
-    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setFiltroVistas('todas'); setSoloWatchlist(false); setAnioDesde(''); setAnioHasta(''); setPagina(0)
+    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setFiltroVistas('todas'); setSoloWatchlist(false); setAnioDesde(''); setAnioHasta(''); setSmartKeywords([]); setPagina(0)
   }
 
   const POR_PAGINA = 200
@@ -686,7 +698,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               if (f.anioDesde) setAnioDesde(f.anioDesde)
               if (f.anioHasta) setAnioHasta(f.anioHasta)
               if (f.orden) setOrden(f.orden as any)
-              // Clear search text when smart filters are applied, unless there's a specific title to search
+              if (f.keywordSearch?.length) setSmartKeywords(f.keywordSearch)
+              else setSmartKeywords([])
               setBusqueda(f.searchText || '')
               setPagina(0)
             }}

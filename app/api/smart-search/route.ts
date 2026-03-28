@@ -21,10 +21,12 @@ Responde SOLO con JSON válido, sin texto adicional:
   "anioHasta": "",
   "orden": "",
   "searchText": "",
+  "keywordSearch": [],
   "understood": true
 }
 
-- searchText: si el usuario menciona un título o nombre específico, ponlo aquí
+- searchText: si el usuario menciona un título específico para buscar, ponlo aquí
+- keywordSearch: palabras clave temáticas para buscar en tags de películas (ej. "prison", "time travel", "based on true story", "dream", "heist"). Si el usuario pide "algo parecido a X", piensa en las temáticas de X y ponlas aquí. Si pide "películas sobre viajes en el tiempo", pon ["time travel"]. Usa inglés para los keywords.
 - Si no entiendes nada, pon understood: false
 - Se breve y preciso`
 

@@ -690,16 +690,23 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
             onSmartFilters={(f: SmartFilters) => {
+              // Clear all filters first
+              limpiarFiltros()
+              // Apply smart filters — when keywordSearch is active, don't set genre filter (too restrictive)
               if (f.plataformas.length) setPlataformasFiltro(f.plataformas)
               if (f.categorias.length) setCategoriasFiltro(f.categorias)
-              if (f.generos.length) setGenerosFiltro(f.generos)
+              if (f.keywordSearch?.length) {
+                setSmartKeywords(f.keywordSearch)
+                // Don't set genre filter when doing keyword search — it's too restrictive combined
+              } else {
+                setSmartKeywords([])
+                if (f.generos.length) setGenerosFiltro(f.generos)
+              }
               if (f.directores.length) setDirectoresFiltro(f.directores)
               if (f.actores.length) setActoresFiltro(f.actores)
               if (f.anioDesde) setAnioDesde(f.anioDesde)
               if (f.anioHasta) setAnioHasta(f.anioHasta)
               if (f.orden) setOrden(f.orden as any)
-              if (f.keywordSearch?.length) setSmartKeywords(f.keywordSearch)
-              else setSmartKeywords([])
               setBusqueda(f.searchText || '')
               setPagina(0)
             }}

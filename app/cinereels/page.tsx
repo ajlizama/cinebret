@@ -35,211 +35,22 @@ function loadYT(): Promise<void> {
   return ytPromise
 }
 
-export default function CineReelsPage() {
-  const [movies, setMovies] = useState<ReelMovie[]>([])
-  const [current, setCurrent] = useState(0)
-  const [muted, setMuted] = useState(true)
-  const [loading, setLoading] = useState(true)
-  const [playing, setPlaying] = useState(false)
-  const [playerReady, setPlayerReady] = useState(false)
-  const playerRef = useRef<any>(null)
-  const playerDivRef = useRef<HTMLDivElement>(null)
-  const touchStartY = useRef(0)
-  const swipeLocked = useRef(false)
-
-  // Fetch movies
-  useEffect(() => {
-    ;(async () => {
-      const allEnr: any[] = []
-      let offset = 0
-      while (true) {
-        const { data } = await supabase.from('enriquecimiento')
-          .select('pelicula_id, video_clip_url, director')
-          .not('video_clip_url', 'is', null)
-          .range(offset, offset + 999)
-        if (!data || data.length === 0) break
-        allEnr.push(...data)
-        if (data.length < 1000) break
-        offset += 1000
-      }
-
-      const ytEnr = allEnr.filter(e => extractYTId(e.video_clip_url))
-      const ids = ytEnr.map(e => e.pelicula_id)
-      const clipMap: Record<string, any> = {}
-      ytEnr.forEach(e => { clipMap[e.pelicula_id] = e })
-
-      const allMovies: ReelMovie[] = []
-      for (let i = 0; i < ids.length; i += 50) {
-        const chunk = ids.slice(i, i + 50)
-        const { data } = await supabase.from('peliculas')
-          .select('id, titulo, titulo_ingles, nota_imdb, anio, categoria, poster_path')
-          .in('id', chunk)
-        if (data) {
-          data.forEach((m: any) => {
-            const enr = clipMap[m.id]
-            const videoId = extractYTId(enr.video_clip_url)
-            if (videoId) allMovies.push({ ...m, director: enr.director, videoId })
-          })
-        }
-      }
-
-      // Shuffle
-      for (let i = allMovies.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[allMovies[i], allMovies[j]] = [allMovies[j], allMovies[i]]
-      }
-
-      setMovies(allMovies)
-      setLoading(false)
-    })()
-  }, [])
-
-  // Initialize YouTube player once
-  useEffect(() => {
-    if (movies.length === 0) return
-    let destroyed = false
-    loadYT().then(() => {
-      if (destroyed || !playerDivRef.current) return
-      playerRef.current = new (window as any).YT.Player(playerDivRef.current, {
-        videoId: movies[0].videoId,
-        playerVars: {
-          autoplay: 1, mute: 1, controls: 0, modestbranding: 1, rel: 0,
-          showinfo: 0, iv_load_policy: 3, cc_load_policy: 0, playsinline: 1,
-          loop: 1, playlist: movies[0].videoId, disablekb: 1, fs: 0,
-        },
-        events: {
-          onReady: (e: any) => {
-            if (destroyed) return
-            setPlayerReady(true)
-            e.target.mute()
-            e.target.playVideo()
-          },
-          onStateChange: (e: any) => {
-            if (e.data === 1) setPlaying(true)
-            else setPlaying(false)
-          },
-        },
-      })
-    })
-    return () => { destroyed = true }
-  }, [movies])
-
-  // Change video when current changes
-  useEffect(() => {
-    const p = playerRef.current
-    if (!p || !playerReady || movies.length === 0) return
-    const movie = movies[current]
-    if (!movie) return
-    setPlaying(false)
-    try {
-      p.loadVideoById({ videoId: movie.videoId })
-      if (muted) p.mute()
-      else p.unMute()
-    } catch {}
-  }, [current, playerReady])
-
-  // Mute/unmute
-  useEffect(() => {
-    const p = playerRef.current
-    if (!p || !playerReady) return
-    if (muted) p.mute()
-    else p.unMute()
-  }, [muted, playerReady])
-
-  const goTo = useCallback((idx: number) => {
-    if (idx < 0 || idx >= movies.length || swipeLocked.current) return
-    swipeLocked.current = true
-    setCurrent(idx)
-    setTimeout(() => { swipeLocked.current = false }, 500)
-  }, [movies.length])
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY
-  }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStartY.current - e.changedTouches[0].clientY
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) goTo(current + 1)
-      else goTo(current - 1)
-    }
-  }
-
-  // Keyboard
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') goTo(current + 1)
-      else if (e.key === 'ArrowUp') goTo(current - 1)
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [current, goTo])
-
-  // Detect iPhone volume button (unmute on volume up)
-  useEffect(() => {
-    const audio = new Audio()
-    audio.volume = 0.01
-    const checkVolume = () => {
-      if (audio.volume > 0.01 && muted) {
-        setMuted(false)
-      }
-    }
-    audio.addEventListener('volumechange', checkVolume)
-    return () => audio.removeEventListener('volumechange', checkVolume)
-  }, [muted])
-
-  if (loading) {
-    return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-        <video src="/loading.mp4" autoPlay muted loop playsInline className="w-20 h-20 object-contain" style={{ mixBlendMode: 'lighten' }} />
-      </div>
-    )
-  }
-
-  const movie = movies[current]
-  if (!movie) return null
-
+function MovieOverlay({ movie, index, total, muted }: { movie: ReelMovie; index: number; total: number; muted: boolean }) {
   return (
-    <div className="fixed inset-0 bg-black z-50"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* YouTube player — fullscreen cover */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div
-          ref={playerDivRef}
-          className="absolute"
-          style={{
-            // Make 16:9 video cover vertical screen by scaling up
-            width: '300%',
-            height: '100%',
-            left: '-100%',
-            top: '0',
-          }}
-        />
+    <>
+      <div className="absolute top-4 left-4 z-30 bg-black/50 rounded-full w-9 h-9 flex items-center justify-center">
+        <Link href="/catalogo" className="text-white">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </Link>
       </div>
-
-      {/* Tap overlay for mute toggle */}
-      <div className="absolute inset-0 z-10" onClick={() => setMuted(v => !v)} />
-
-      {/* Back button */}
-      <Link href="/catalogo" className="absolute top-4 left-4 z-40 bg-black/50 rounded-full w-9 h-9 flex items-center justify-center text-white">
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-      </Link>
-
-      {/* Counter */}
-      <div className="absolute top-4 right-4 z-40 bg-black/50 rounded-full px-3 py-1 text-white text-xs">
-        {current + 1} / {movies.length}
+      <div className="absolute top-4 right-4 z-30 bg-black/50 rounded-full px-3 py-1 text-white text-xs">
+        {index + 1} / {total}
       </div>
-
-      {/* Mute indicator */}
-      <div className="absolute top-14 right-4 z-40 bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
+      <div className="absolute top-14 right-4 z-30 bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
         {muted ? '🔇' : '🔊'}
       </div>
-
-      {/* Movie info — bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}>
         <div className="p-5 pb-8">
@@ -257,16 +68,222 @@ export default function CineReelsPage() {
           {movie.categoria && <p className="text-zinc-500 text-xs mt-1">{movie.categoria}</p>}
         </div>
       </div>
+    </>
+  )
+}
 
-      {/* Poster + loading until video plays */}
-      {!playing && (
-        <div className="absolute inset-0 z-5 flex items-center justify-center bg-black">
-          {movie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`} alt="" className="h-full object-cover opacity-50" />}
-          <div className="absolute">
-            <video src="/loading.mp4" autoPlay muted loop playsInline className="w-16 h-16 object-contain" style={{ mixBlendMode: 'lighten' }} />
+export default function CineReelsPage() {
+  const [movies, setMovies] = useState<ReelMovie[]>([])
+  const [current, setCurrent] = useState(0)
+  const [muted, setMuted] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [playing, setPlaying] = useState(false)
+  const [playerReady, setPlayerReady] = useState(false)
+  const [slideOffset, setSlideOffset] = useState(0) // px offset during drag
+  const [transitioning, setTransitioning] = useState(false)
+  const playerRef = useRef<any>(null)
+  const playerDivRef = useRef<HTMLDivElement>(null)
+  const touchStartY = useRef(0)
+  const touchCurrentY = useRef(0)
+  const isDragging = useRef(false)
+
+  // Fetch movies
+  useEffect(() => {
+    ;(async () => {
+      const allEnr: any[] = []
+      let offset = 0
+      while (true) {
+        const { data } = await supabase.from('enriquecimiento')
+          .select('pelicula_id, video_clip_url, director')
+          .not('video_clip_url', 'is', null)
+          .range(offset, offset + 999)
+        if (!data || data.length === 0) break
+        allEnr.push(...data)
+        if (data.length < 1000) break
+        offset += 1000
+      }
+      const ytEnr = allEnr.filter(e => extractYTId(e.video_clip_url))
+      const ids = ytEnr.map(e => e.pelicula_id)
+      const clipMap: Record<string, any> = {}
+      ytEnr.forEach(e => { clipMap[e.pelicula_id] = e })
+      const allMovies: ReelMovie[] = []
+      for (let i = 0; i < ids.length; i += 50) {
+        const chunk = ids.slice(i, i + 50)
+        const { data } = await supabase.from('peliculas')
+          .select('id, titulo, titulo_ingles, nota_imdb, anio, categoria, poster_path')
+          .in('id', chunk)
+        if (data) {
+          data.forEach((m: any) => {
+            const enr = clipMap[m.id]
+            const videoId = extractYTId(enr.video_clip_url)
+            if (videoId) allMovies.push({ ...m, director: enr.director, videoId })
+          })
+        }
+      }
+      for (let i = allMovies.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[allMovies[i], allMovies[j]] = [allMovies[j], allMovies[i]]
+      }
+      setMovies(allMovies)
+      setLoading(false)
+    })()
+  }, [])
+
+  // Initialize player
+  useEffect(() => {
+    if (movies.length === 0) return
+    let destroyed = false
+    loadYT().then(() => {
+      if (destroyed || !playerDivRef.current) return
+      playerRef.current = new (window as any).YT.Player(playerDivRef.current, {
+        videoId: movies[0].videoId,
+        playerVars: {
+          autoplay: 1, mute: 1, controls: 0, modestbranding: 1, rel: 0,
+          showinfo: 0, iv_load_policy: 3, cc_load_policy: 0, playsinline: 1,
+          loop: 1, playlist: movies[0].videoId, disablekb: 1, fs: 0,
+        },
+        events: {
+          onReady: (e: any) => { if (!destroyed) { setPlayerReady(true); e.target.mute(); e.target.playVideo() } },
+          onStateChange: (e: any) => { setPlaying(e.data === 1) },
+        },
+      })
+    })
+    return () => { destroyed = true }
+  }, [movies])
+
+  // Change video
+  useEffect(() => {
+    const p = playerRef.current
+    if (!p || !playerReady || movies.length === 0) return
+    const movie = movies[current]
+    if (!movie) return
+    setPlaying(false)
+    try {
+      p.loadVideoById({ videoId: movie.videoId })
+      if (muted) p.mute(); else p.unMute()
+    } catch {}
+  }, [current, playerReady])
+
+  useEffect(() => {
+    const p = playerRef.current
+    if (!p || !playerReady) return
+    if (muted) p.mute(); else p.unMute()
+  }, [muted, playerReady])
+
+  const goTo = useCallback((idx: number) => {
+    if (idx < 0 || idx >= movies.length) return
+    setTransitioning(true)
+    setCurrent(idx)
+    setTimeout(() => setTransitioning(false), 400)
+  }, [movies.length])
+
+  // Touch handlers for TikTok-style drag
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY
+    touchCurrentY.current = e.touches[0].clientY
+    isDragging.current = true
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current) return
+    touchCurrentY.current = e.touches[0].clientY
+    const diff = touchStartY.current - touchCurrentY.current
+    // Limit drag amount
+    const maxDrag = window.innerHeight * 0.4
+    const clamped = Math.max(-maxDrag, Math.min(maxDrag, diff))
+    setSlideOffset(clamped)
+  }
+
+  const handleTouchEnd = () => {
+    isDragging.current = false
+    const diff = slideOffset
+    setSlideOffset(0)
+    if (Math.abs(diff) > 80) {
+      if (diff > 0) goTo(current + 1)
+      else goTo(current - 1)
+    }
+  }
+
+  // Keyboard
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown') goTo(current + 1)
+      else if (e.key === 'ArrowUp') goTo(current - 1)
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [current, goTo])
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
+        <video src="/loading.mp4" autoPlay muted loop playsInline className="w-20 h-20 object-contain" style={{ mixBlendMode: 'lighten' }} />
+      </div>
+    )
+  }
+
+  const movie = movies[current]
+  const prevMovie = current > 0 ? movies[current - 1] : null
+  const nextMovie = current < movies.length - 1 ? movies[current + 1] : null
+  if (!movie) return null
+
+  return (
+    <div className="fixed inset-0 bg-black z-50 overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Sliding container */}
+      <div
+        className="absolute inset-0"
+        style={{
+          transform: `translateY(${-slideOffset}px)`,
+          transition: slideOffset === 0 ? 'transform 0.3s ease-out' : 'none',
+        }}
+      >
+        {/* Previous movie poster (peeking from top) */}
+        {prevMovie && slideOffset < 0 && (
+          <div className="absolute inset-x-0 bg-black flex items-center justify-center" style={{ bottom: '100%', height: '100%' }}>
+            {prevMovie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${prevMovie.poster_path}`} alt="" className="h-full object-cover opacity-60" />}
+            <div className="absolute bottom-6 left-5 z-10">
+              <p className="text-white font-bold text-lg drop-shadow-lg">{prevMovie.titulo_ingles || prevMovie.titulo}</p>
+            </div>
           </div>
+        )}
+
+        {/* Current video */}
+        <div className="absolute inset-0">
+          {/* YouTube player fullscreen */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div ref={playerDivRef} className="absolute" style={{ width: '300%', height: '100%', left: '-100%', top: '0' }} />
+          </div>
+
+          {/* Tap for mute */}
+          <div className="absolute inset-0 z-10" onClick={() => setMuted(v => !v)} />
+
+          <MovieOverlay movie={movie} index={current} total={movies.length} muted={muted} />
+
+          {/* Poster + loading */}
+          {!playing && (
+            <div className="absolute inset-0 z-5 flex items-center justify-center bg-black">
+              {movie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`} alt="" className="h-full object-cover opacity-50" />}
+              <div className="absolute">
+                <video src="/loading.mp4" autoPlay muted loop playsInline className="w-16 h-16 object-contain" style={{ mixBlendMode: 'lighten' }} />
+              </div>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Next movie poster (peeking from bottom) */}
+        {nextMovie && slideOffset > 0 && (
+          <div className="absolute inset-x-0 bg-black flex items-center justify-center" style={{ top: '100%', height: '100%' }}>
+            {nextMovie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${nextMovie.poster_path}`} alt="" className="h-full object-cover opacity-60" />}
+            <div className="absolute bottom-6 left-5 z-10">
+              <p className="text-white font-bold text-lg drop-shadow-lg">{nextMovie.titulo_ingles || nextMovie.titulo}</p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -131,11 +131,11 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* ── CONTENIDO: fondo negro ── */}
-      <div className="max-w-6xl mx-auto px-6 py-6 overflow-hidden">
-        <div className="grid md:grid-cols-3 gap-8 overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 py-6">
+        <div className="grid md:grid-cols-3 gap-8">
 
           {/* Columna principal */}
-          <div className="md:col-span-2 space-y-8">
+          <div className="md:col-span-2 space-y-8 min-w-0">
 
             {/* Review / Sinopsis */}
             <div>
@@ -147,11 +147,11 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                     </span>
                   </div>
                   {enr.sinopsis_chilensis && (
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-4 italic border-l-2 border-zinc-700 pl-4">
+                    <p className="text-zinc-400 text-sm leading-relaxed mb-4 italic border-l-2 border-zinc-700 pl-4 break-words">
                       {enr.sinopsis_chilensis}
                     </p>
                   )}
-                  <p className="text-zinc-200 leading-relaxed whitespace-pre-line">
+                  <p className="text-zinc-200 leading-relaxed whitespace-pre-line break-words overflow-wrap-anywhere">
                     {enr.review_autor}
                   </p>
                   <AutorReviewLike peliculaId={pelicula.id} />
@@ -261,9 +261,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             {enr?.video_clip_url && (() => {
               const url = enr.video_clip_url as string
               const ytId = extractYouTubeId(url)
-              if (ytId) return <div className="-mx-6 px-6"><YouTubeClip videoId={ytId} /></div>
+              if (ytId) return <YouTubeClip videoId={ytId} />
               return (
-                <div className="relative rounded-xl overflow-hidden bg-black -mx-6">
+                <div className="relative rounded-xl overflow-hidden bg-black">
                   <video src={url} autoPlay muted loop playsInline preload="metadata"
                     className="w-full max-h-80 object-contain"
                     onClick={(e: any) => { e.currentTarget.muted = !e.currentTarget.muted }} />

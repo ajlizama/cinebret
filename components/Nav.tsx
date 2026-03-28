@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'cinereels' | 'perfil' }
+type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'cinereels' | 'perfil'; transparent?: boolean }
 
 type Notif = {
   id: string
@@ -60,7 +60,7 @@ function MiniAvatar({ url, username }: { url: string | null; username: string })
   )
 }
 
-export default function Nav({ active }: Props) {
+export default function Nav({ active, transparent }: Props) {
   const { user, username, loading, signOut } = useAuth()
   const router = useRouter()
   const [modalAbierto, setModalAbierto] = useState(false)
@@ -206,7 +206,7 @@ export default function Nav({ active }: Props) {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800 px-4 md:px-2 py-3">
+      <nav className={`sticky top-0 z-50 px-4 md:px-2 py-3 ${transparent ? 'bg-transparent border-b border-transparent' : 'bg-zinc-950 border-b border-zinc-800'}`}>
         <div className="max-w-7xl mx-auto flex gap-3 md:gap-4">
           {/* Logo — desktop: grande, ocupa ambas filas */}
           <Link href="/" className="shrink-0 hidden md:flex items-center pl-1">

@@ -377,7 +377,7 @@ export default function CineReelsPage() {
 
       {/* Nav overlay */}
       <div className="absolute top-0 left-0 right-0 z-40">
-        <Nav active="cinereels" />
+        <Nav active="cinereels" transparent />
       </div>
 
       {/* Info panel (slides up like TikTok comments) */}

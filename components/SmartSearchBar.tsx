@@ -26,8 +26,8 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
 
   const showResponse = useCallback((msg: string, spokenByMic: boolean) => {
     setResponseMsg(msg)
-    // Auto-scroll to catalog
-    setTimeout(() => { onScrollToCatalog?.() }, 300)
+    // Auto-scroll to catalog (longer delay on mobile for render)
+    setTimeout(() => { onScrollToCatalog?.() }, 800)
     // Speak if mic was used
     if (spokenByMic && typeof window !== 'undefined' && 'speechSynthesis' in window) {
       // Load voices first (needed on some browsers)

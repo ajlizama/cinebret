@@ -103,13 +103,14 @@ export default async function CatalogoPage() {
     }
   })
 
-  // Fetch TMDB trending (3 pages = 60 movies)
+  // Fetch TMDB trending (20 pages = 400 movies)
   let trendingIds: number[] = []
   try {
     const tmdbKey = process.env.TMDB_API_KEY
     if (tmdbKey) {
+      const pageNums = Array.from({ length: 20 }, (_, i) => i + 1)
       const pages = await Promise.all(
-        [1, 2, 3].map(p =>
+        pageNums.map(p =>
           fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
             .then(r => r.json()).catch(() => ({ results: [] }))
         )

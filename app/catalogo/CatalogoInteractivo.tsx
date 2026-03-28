@@ -11,6 +11,7 @@ import ParaTi, { type RecExport } from '@/app/comunidad/ParaTi'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
 import EnrichedDetails from '@/components/EnrichedDetails'
+import SpotifyPlayer from '@/components/SpotifyPlayer'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 import SmartSearchBar from '@/components/SmartSearchBar'
 import type { SmartFilters } from '@/lib/smart-search'
@@ -285,14 +286,9 @@ function PanelExpandido({
               </div>
             )}
 
-            {/* Trailer + links */}
+            {/* Links */}
             <div className="flex flex-wrap gap-3 items-center">
-              {p.youtube_trailer_key && (
-                <a href={`https://www.youtube.com/watch?v=${p.youtube_trailer_key}`} target="_blank" rel="noopener noreferrer"
-                  className="text-xs text-white bg-zinc-800 rounded-lg px-3 py-1.5">▶ Tráiler</a>
-              )}
               {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-yellow-400 text-zinc-950 font-black text-[10px] px-1.5 py-0.5 rounded hover:bg-yellow-300 transition-colors tracking-tight">IMDb</a>}
-              <a href={`https://open.spotify.com/search/${encodeURIComponent((p.titulo_ingles || p.titulo) + ' soundtrack')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-green-500 hover:text-green-300"><svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.622.622 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.519.781.781 0 01.519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 01.257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.794c3.527-1.07 9.394-.863 13.098 1.382a.937.937 0 01-.938 1.569z"/></svg></a>
               <AgregarAListaButton peliculaId={p.id} />
             </div>
 
@@ -454,6 +450,11 @@ function PanelExpandido({
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Spotify */}
+        <div className="px-4 md:px-6">
+          <SpotifyPlayer movieTitle={p.titulo_ingles || p.titulo} />
         </div>
 
         {/* Video clip */}

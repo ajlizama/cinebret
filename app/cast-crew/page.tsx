@@ -65,17 +65,27 @@ export default function CastCrewPage() {
       allPels.forEach(p => { pelMap[p.id] = p })
 
       const actors: Record<string, { photo: string | null; movies: string[]; oscars: number }> = {}
-      const directors: Record<string, { movies: string[]; oscars: number }> = {}
-      const composers: Record<string, { movies: string[]; oscars: number }> = {}
+      const directors: Record<string, { photo: string | null; movies: string[]; oscars: number }> = {}
+      const composers: Record<string, { photo: string | null; movies: string[]; oscars: number }> = {}
+
+      // First pass: collect all cast photos by name for cross-referencing
+      const photoByName: Record<string, string> = {}
+      for (const enr of allEnr) {
+        if (enr.cast_json) {
+          for (const c of enr.cast_json) {
+            if (c.profile_path && !photoByName[c.name]) photoByName[c.name] = c.profile_path
+          }
+        }
+      }
 
       for (const enr of allEnr) {
         if (enr.director) {
-          if (!directors[enr.director]) directors[enr.director] = { movies: [], oscars: enr.director_oscars ?? 0 }
+          if (!directors[enr.director]) directors[enr.director] = { photo: photoByName[enr.director] ?? null, movies: [], oscars: enr.director_oscars ?? 0 }
           directors[enr.director].movies.push(enr.pelicula_id)
           if ((enr.director_oscars ?? 0) > directors[enr.director].oscars) directors[enr.director].oscars = enr.director_oscars
         }
         if (enr.compositor) {
-          if (!composers[enr.compositor]) composers[enr.compositor] = { movies: [], oscars: enr.compositor_oscars ?? 0 }
+          if (!composers[enr.compositor]) composers[enr.compositor] = { photo: photoByName[enr.compositor] ?? null, movies: [], oscars: enr.compositor_oscars ?? 0 }
           composers[enr.compositor].movies.push(enr.pelicula_id)
           if ((enr.compositor_oscars ?? 0) > composers[enr.compositor].oscars) composers[enr.compositor].oscars = enr.compositor_oscars
         }
@@ -93,9 +103,10 @@ export default function CastCrewPage() {
         }
       }
 
+      const INVALID_NAMES = ['desconocido', 'unknown', 'n/a', 'no data', '', 'none', 'sin datos', 'sin información']
       const buildList = (map: Record<string, { movies: string[]; photo?: string | null; oscars: number }>, type: 'actor' | 'director' | 'compositor'): Person[] => {
         return Object.entries(map)
-          .filter(([, v]) => v.movies.length >= 2)
+          .filter(([name, v]) => v.movies.length >= 2 && !INVALID_NAMES.includes(name.toLowerCase().trim()))
           .map(([name, v]) => {
             const movieData = v.movies.map(id => pelMap[id]).filter(Boolean)
             const scores = movieData.filter((m: any) => m.nota_imdb).map((m: any) => m.nota_imdb as number)
@@ -106,7 +117,7 @@ export default function CastCrewPage() {
             const topMovies = movieData
               .filter((m: any) => m.poster_path)
               .sort((a: any, b: any) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
-              .slice(0, 4)
+              .slice(0, 5)
               .map((m: any) => ({ id: m.id, titulo: m.titulo, titulo_ingles: m.titulo_ingles, nota_imdb: m.nota_imdb, poster_path: m.poster_path, anio: m.anio }))
             return {
               name, photo: (v as any).photo ?? null, movieCount: v.movies.length,
@@ -191,8 +202,8 @@ export default function CastCrewPage() {
                   <div
                     onClick={() => handleExpand(p)}
                     className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-colors cursor-pointer ${isExpanded ? 'bg-zinc-800' : 'bg-zinc-900/40 hover:bg-zinc-800/60'}`}>
-                    <span className="text-zinc-600 text-sm font-bold w-6 text-right shrink-0">{i + 1}</span>
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-zinc-800 shrink-0">
+                    <span className="text-zinc-600 text-sm font-bold w-7 text-right shrink-0">{i + 1}</span>
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-800 shrink-0">
                       {p.photo ? (
                         <img src={`https://image.tmdb.org/t/p/w185${p.photo}`} alt={p.name} className="w-full h-full object-cover" />
                       ) : (
@@ -206,11 +217,11 @@ export default function CastCrewPage() {
                       </div>
                       <p className="text-zinc-500 text-xs">{p.movieCount} películas</p>
                     </div>
-                    {/* Mini posters */}
-                    <div className="hidden sm:flex gap-1 shrink-0">
-                      {p.topMovies.slice(0, 3).map(m => (
-                        <div key={m.id} className="relative w-7 h-10 rounded overflow-hidden bg-zinc-800">
-                          {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" fill className="object-cover" sizes="28px" />}
+                    {/* Movie posters */}
+                    <div className="hidden sm:flex gap-1.5 shrink-0">
+                      {p.topMovies.slice(0, 5).map(m => (
+                        <div key={m.id} className="relative w-9 h-13 rounded-md overflow-hidden bg-zinc-800" style={{ height: '52px' }}>
+                          {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" fill className="object-cover" sizes="36px" />}
                         </div>
                       ))}
                     </div>

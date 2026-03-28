@@ -197,9 +197,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Cast con fotos */}
             {enr?.cast_json && (enr.cast_json as any[]).length > 0 && (
-              <div>
+              <div className="overflow-hidden min-w-0">
                 <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Reparto</p>
-                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-2 px-2">
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
                   {(enr.cast_json as any[]).map((actor: any, i: number) => (
                     <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-20 text-center group">
                       <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 mb-1.5 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
@@ -278,7 +278,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               return (
                 <div>
                   <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Si te gustó esta película</p>
-                  <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-2 px-2">
+                  <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
                     {simPels.map((sim: any) => (
                       <Link key={sim.id} href={`/pelicula/${sim.id}`} className="shrink-0 w-28">
                         <div className="relative w-28 h-40 rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">

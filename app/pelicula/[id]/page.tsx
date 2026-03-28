@@ -53,7 +53,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
   const titulo = pelicula.titulo_ingles || pelicula.titulo
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main className="min-h-screen bg-zinc-950 overflow-x-hidden">
       <Nav />
 
       {/* ── HERO: backdrop or blurred poster ── */}
@@ -119,8 +119,8 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* ── CONTENIDO: fondo negro ── */}
-      <div className="max-w-6xl mx-auto px-6 py-6">
-        <div className="grid md:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto px-6 py-6 overflow-hidden">
+        <div className="grid md:grid-cols-3 gap-8 overflow-hidden">
 
           {/* Columna principal */}
           <div className="md:col-span-2 space-y-8">

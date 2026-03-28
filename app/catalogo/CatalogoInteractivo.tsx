@@ -207,6 +207,9 @@ function PanelExpandido({
 
           {/* Info stacked */}
           <div className="px-4 pt-3 pb-4 space-y-3">
+            {/* Tagline */}
+            {p.tagline && <p className="text-zinc-400 text-xs italic">&ldquo;{p.tagline}&rdquo;</p>}
+
             {/* Ratings */}
             <div className="flex items-center gap-3 flex-wrap">
               {p.nota_imdb != null && (
@@ -306,16 +309,14 @@ function PanelExpandido({
               {p.director && <div><p className="text-white text-sm font-medium">{p.director}</p><p className="text-zinc-500 text-xs">Director</p></div>}
               {p.compositor && <div><p className="text-white text-sm font-medium">{p.compositor}</p><p className="text-zinc-500 text-xs">Compositor</p></div>}
             </div>
-            {/* Reparto se muestra con fotos en EnrichedDetails */}
+            {/* Enriched: tagline, cast, similar, keywords, budget */}
+            <EnrichedDetails peliculaId={p.id} />
 
-            {/* Badges */}
+            {/* Badges — after cast */}
             <div className="flex gap-2 flex-wrap">
               {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded">CB Review</span>}
               {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-2 py-0.5 rounded font-bold">★ Recomendada</span>}
             </div>
-
-            {/* Enriched: cast, similar, keywords, budget */}
-            <EnrichedDetails peliculaId={p.id} />
           </div>
         </div>
 
@@ -352,6 +353,7 @@ function PanelExpandido({
                   {p.anio && <span className="text-zinc-300 font-normal ml-2">({p.anio})</span>}
                 </h3>
                 {p.titulo_ingles && p.titulo !== p.titulo_ingles && <p className="text-zinc-400 text-sm mt-0.5 drop-shadow">{p.titulo}</p>}
+                {p.tagline && <p className="text-zinc-400 text-xs italic mt-1 drop-shadow">&ldquo;{p.tagline}&rdquo;</p>}
               </div>
 
               <div className="flex items-center gap-2 text-sm text-zinc-300 flex-wrap drop-shadow">
@@ -443,15 +445,13 @@ function PanelExpandido({
                 {p.director && <div><p className="text-white text-sm font-medium drop-shadow">{p.director}</p><p className="text-zinc-400 text-xs drop-shadow">Director</p></div>}
                 {p.compositor && <div><p className="text-white text-sm font-medium drop-shadow">{p.compositor}</p><p className="text-zinc-400 text-xs drop-shadow">Compositor</p></div>}
               </div>
-              {/* Reparto se muestra con fotos en EnrichedDetails */}
+              {/* Enriched: tagline, cast, similar, keywords, budget */}
+              <EnrichedDetails peliculaId={p.id} />
 
               <div className="flex gap-3 items-center flex-wrap">
                 {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
                 {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/30 px-2 py-0.5 rounded font-bold shadow">★ Recomendada</span>}
               </div>
-
-              {/* Enriched: cast, similar, keywords, budget */}
-              <EnrichedDetails peliculaId={p.id} />
             </div>
           </div>
         </div>

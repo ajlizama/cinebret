@@ -143,7 +143,7 @@ export default function CineReelsPage() {
           loop: 1, playlist: movies[0].videoId, disablekb: 1, fs: 0,
         },
         events: {
-          onReady: (e: any) => { if (!destroyed) { setPlayerReady(true); e.target.mute(); e.target.playVideo() } },
+          onReady: (e: any) => { if (!destroyed) { setPlayerReady(true); e.target.mute(); e.target.seekTo(5); e.target.playVideo() } },
           onStateChange: (e: any) => { setPlaying(e.data === 1) },
         },
       })
@@ -159,7 +159,7 @@ export default function CineReelsPage() {
     if (!movie) return
     setPlaying(false)
     try {
-      p.loadVideoById({ videoId: movie.videoId })
+      p.loadVideoById({ videoId: movie.videoId, startSeconds: 5 })
       if (muted) p.mute(); else p.unMute()
     } catch {}
   }, [current, playerReady])

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import Nav from '@/components/Nav'
 import BackButton from '@/components/BackButton'
+import { fetchPersonByName, calcAge } from '@/lib/tmdb-person'
 
 const GENEROS_NORMALIZE: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -102,11 +103,14 @@ export default async function DirectorPage({ params }: { params: Promise<{ name:
     ? moviesWithBackdrop[Math.floor(Math.random() * moviesWithBackdrop.length)].backdrop_path
     : null
 
+  const person = await fetchPersonByName(directorName)
+  const age = person?.birthday ? calcAge(person.birthday, person.deathday) : null
+
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav />
 
-      <div className="relative w-full overflow-hidden" style={{ minHeight: '220px' }}>
+      <div className="relative w-full overflow-hidden" style={{ minHeight: '260px' }}>
         {backdrop && (
           <>
             <img src={`https://image.tmdb.org/t/p/w1280${backdrop}`} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.3 }} />
@@ -116,20 +120,38 @@ export default async function DirectorPage({ params }: { params: Promise<{ name:
 
         <div className="relative max-w-5xl mx-auto px-6 pt-6 pb-8">
           <BackButton />
-          <div className="mt-4">
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-white">{directorName}</h1>
-            <div className="flex items-center gap-4 mt-2 text-sm text-zinc-400 flex-wrap">
+          <div className="mt-4 flex items-end gap-5">
+            {person?.profile_path && (
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-zinc-800 shrink-0 ring-4 ring-zinc-950">
+                <img src={`https://image.tmdb.org/t/p/w185${person.profile_path}`} alt={directorName} className="w-full h-full object-cover" />
+              </div>
+            )}
+            <div>
+              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{directorName}</h1>
+              {(age || person?.place_of_birth) && (
+                <div className="flex items-center gap-3 mt-1 text-sm text-zinc-400 flex-wrap">
+                  {age && <span>{person?.deathday ? `${age} años (fallecido)` : `${age} años`}</span>}
+                  {person?.place_of_birth && <span className="text-zinc-500">{person.place_of_birth}</span>}
+                </div>
+              )}
+              <div className="flex items-center gap-4 mt-1 text-sm text-zinc-400 flex-wrap">
               <span>{sorted.length} películas</span>
               {avgImdb && <span className="text-yellow-400 font-bold">⭐ {avgImdb} promedio</span>}
               {bestPicture > 0 && <span className="text-amber-400">🏆 {bestPicture} Mejor Película</span>}
               {dirOscars != null && dirOscars > 0 && <span className="text-amber-400">🎬 {dirOscars} Oscar{dirOscars > 1 ? 's' : ''} personales</span>}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-6">
+        {person?.biography && (
+          <div className="mb-8">
+            <p className="text-sm text-zinc-300 leading-relaxed line-clamp-6">{person.biography}</p>
+          </div>
+        )}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
             <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Actores frecuentes</p>

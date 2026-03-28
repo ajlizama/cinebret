@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import Nav from '@/components/Nav'
 import BackButton from '@/components/BackButton'
+import { fetchPersonByName, calcAge } from '@/lib/tmdb-person'
 
 const GENEROS_NORMALIZE: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -136,6 +137,11 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
     ? moviesWithBackdrop[Math.floor(Math.random() * moviesWithBackdrop.length)].backdrop_path
     : null
 
+  // TMDB person data
+  const person = await fetchPersonByName(actorName)
+  const tmdbPhoto = person?.profile_path ?? profilePath
+  const age = person?.birthday ? calcAge(person.birthday, person.deathday) : null
+
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav />
@@ -153,21 +159,25 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
         <div className="relative max-w-5xl mx-auto px-6 pt-6 pb-10">
           <BackButton />
           <div className="mt-4 flex items-end gap-5">
-            {/* Actor photo */}
+            {/* Photo */}
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden bg-zinc-800 shrink-0 ring-4 ring-zinc-950">
-              {profilePath ? (
-                <img src={`https://image.tmdb.org/t/p/w185${profilePath}`} alt={actorName} className="w-full h-full object-cover" />
+              {tmdbPhoto ? (
+                <img src={`https://image.tmdb.org/t/p/w185${tmdbPhoto}`} alt={actorName} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-zinc-600 text-4xl font-bold">{actorName[0]}</div>
               )}
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-white">{actorName}</h1>
-              <div className="flex items-center gap-4 mt-2 text-sm text-zinc-400">
+              <div className="flex items-center gap-3 mt-1.5 text-sm text-zinc-400 flex-wrap">
+                {age && <span>{person?.deathday ? `${age} años (fallecido)` : `${age} años`}</span>}
+                {person?.place_of_birth && <span className="text-zinc-500">{person.place_of_birth}</span>}
+              </div>
+              <div className="flex items-center gap-3 mt-1 text-sm text-zinc-400 flex-wrap">
                 <span>{sorted.length} películas en CineBret</span>
                 {avgImdb && <span className="text-yellow-400 font-bold">⭐ {avgImdb} promedio</span>}
                 {bestPictureCount > 0 && <span className="text-amber-400">🏆 {bestPictureCount} Mejor Película</span>}
-                {personalOscars > 0 && <span className="text-amber-400">🎭 {personalOscars} Oscar{personalOscars > 1 ? 's' : ''} personales</span>}
+                {personalOscars > 0 && <span className="text-amber-400">🎭 {personalOscars} Oscar{personalOscars > 1 ? 's' : ''}</span>}
               </div>
             </div>
           </div>
@@ -175,6 +185,13 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-6">
+        {/* Biografía */}
+        {person?.biography && (
+          <div className="mb-8">
+            <p className="text-sm text-zinc-300 leading-relaxed line-clamp-6">{person.biography}</p>
+          </div>
+        )}
+
         {/* Stats grid — modern glass style */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">

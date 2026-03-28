@@ -461,13 +461,17 @@ function PanelExpandido({
 }
 
 /* ─────────── Trending carousel ─────────── */
-function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect }: {
+function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro }: {
   peliculas: Pelicula[]; trendingIds: number[]; plataformas: typeof PLATAFORMAS; onSelect: (p: Pelicula) => void
+  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]
 }) {
   const trendingSet = new Set(trendingIds)
-  const trendingMovies = peliculas
+  let trendingMovies = peliculas
     .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path && p.plataformas.length > 0)
-    .sort((a, b) => trendingIds.indexOf(a.tmdb_id!) - trendingIds.indexOf(b.tmdb_id!))
+  if (categoriasFiltro.length > 0) trendingMovies = trendingMovies.filter(p => categoriasFiltro.includes(p.categoria ?? ''))
+  if (plataformasFiltro.length > 0) trendingMovies = trendingMovies.filter(p => plataformasFiltro.some(pl => p.plataformas.includes(pl)))
+  if (generosFiltro.length > 0) trendingMovies = trendingMovies.filter(p => p.generos.some(g => generosFiltro.includes(g)))
+  trendingMovies.sort((a, b) => trendingIds.indexOf(a.tmdb_id!) - trendingIds.indexOf(b.tmdb_id!))
 
   if (trendingMovies.length === 0) return null
 
@@ -760,6 +764,9 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           peliculas={peliculas}
           trendingIds={trendingIds}
           plataformas={PLATAFORMAS}
+          categoriasFiltro={categoriasFiltro}
+          plataformasFiltro={plataformasFiltro}
+          generosFiltro={generosFiltro}
           onSelect={p => { setTrendingMovie(prev => prev?.id === p.id ? null : p); setParaTiMovie(null); setExpandida(null) }}
         />
 

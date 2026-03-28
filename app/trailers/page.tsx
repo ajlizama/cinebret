@@ -71,10 +71,7 @@ export default function TrailersPage() {
       <Nav />
       <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
         <BackButton />
-        <div className="flex items-center justify-between mt-4 mb-1">
-          <h1 className="text-2xl font-bold text-white">Trailers & Clips</h1>
-          <img src="/YouBret.png" alt="YouBret" className="h-14 w-auto object-contain" style={{ mixBlendMode: 'lighten' }} />
-        </div>
+        <h1 className="text-2xl font-bold text-white mt-4 mb-1">Trailers & Clips</h1>
         <p className="text-zinc-500 text-sm mb-6">{movies.length} películas con video</p>
 
         {loading ? (

@@ -211,7 +211,7 @@ export default function Nav({ active, transparent }: Props) {
           {/* Logo — desktop: grande, ocupa ambas filas */}
           <Link href="/" className="shrink-0 hidden md:flex items-center pl-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-oficial.png" alt="CineBret" className="h-14 w-auto" />
+            <img src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-14 w-auto" />
           </Link>
 
           <div className="flex-1 min-w-0">
@@ -219,7 +219,7 @@ export default function Nav({ active, transparent }: Props) {
           <div className="flex items-center justify-between mb-2.5 gap-3">
             <Link href="/" className="shrink-0 md:hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-oficial.png" alt="CineBret" className="h-8 w-auto" />
+              <img src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
             </Link>
 
             {/* Buscador unificado */}

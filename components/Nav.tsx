@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
 
-type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'perfil' }
+type Props = { active?: 'inicio' | 'comunidad' | 'reel' | 'cinereels' | 'perfil' }
 
 type Notif = {
   id: string
@@ -497,17 +497,19 @@ export default function Nav({ active }: Props) {
               <span className="text-[10px] font-medium">Comunidad</span>
             </Link>
 
-            {/* Reel */}
+            {/* Tinder (ex-Reel) */}
             <Link href="/reel" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'reel' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
-                <circle cx="12" cy="12" r="9" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="3" />
-                <line x1="3" y1="9" x2="21" y2="9" strokeLinecap="round" />
-                <line x1="3" y1="15" x2="21" y2="15" strokeLinecap="round" />
-                <line x1="9" y1="3.5" x2="7.5" y2="20.5" strokeLinecap="round" />
-                <line x1="15" y1="3.5" x2="16.5" y2="20.5" strokeLinecap="round" />
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 23c-4.97 0-9-3.58-9-8 0-5.52 6-11.47 8.38-13.62a1 1 0 011.24 0C14.99 3.53 21 9.48 21 15c0 4.42-4.03 8-9 8zm0-19.46C9.82 5.7 5 10.6 5 15c0 3.31 3.13 6 7 6s7-2.69 7-6c0-4.4-4.82-9.3-7-11.46z"/>
+                <path d="M12 20c-2.76 0-5-1.79-5-4 0-2.76 3-5.73 4.47-7.04a.75.75 0 011.06 0C14 10.27 17 13.24 17 16c0 2.21-2.24 4-5 4z"/>
               </svg>
-              <span className="text-[10px] font-medium">Reel</span>
+              <span className="text-[10px] font-medium">Tinder</span>
+            </Link>
+
+            {/* CineReels */}
+            <Link href="/cinereels" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'cinereels' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+              <img src="/cinereels-icon.png" alt="CineReels" className={`w-5 h-5 object-contain ${active === 'cinereels' ? 'opacity-100' : 'opacity-50'}`} />
+              <span className="text-[10px] font-medium">CineReels</span>
             </Link>
 
             {/* Perfil */}
@@ -550,10 +552,6 @@ export default function Nav({ active }: Props) {
                     <Link href="/trailers" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors">
                       <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                       Trailers & Clips
-                    </Link>
-                    <Link href="/cinereels" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors">
-                      <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                      CineReels
                     </Link>
                     <div className="border-t border-zinc-800" />
                     <Link href="/estadisticas" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors">

@@ -43,11 +43,13 @@ const PLATAFORMAS = [
   { id: 'mubi', nombre: 'MUBI', logo: '/mubi.png' },
 ]
 
-export default function FilmographyGrid({ movies }: { movies: Movie[] }) {
+export default function FilmographyGrid({ movies, musicFirst = false }: { movies: Movie[]; musicFirst?: boolean }) {
   const { user } = useAuth()
   const [expanded, setExpanded] = useState<string | null>(null)
   const [fullData, setFullData] = useState<FullMovie | null>(null)
   const [loading, setLoading] = useState(false)
+  const [musicPlaying, setMusicPlaying] = useState<string | null>(null)
+  const [musicUrls, setMusicUrls] = useState<Record<string, string | null>>({})
 
   useEffect(() => {
     if (!expanded) { setFullData(null); return }
@@ -86,7 +88,28 @@ export default function FilmographyGrid({ movies }: { movies: Movie[] }) {
           return (
             <div key={m.id} className={isExpanded ? 'col-span-3 sm:col-span-4 md:col-span-5 lg:col-span-6' : ''}>
               {!isExpanded ? (
-                <div className="cursor-pointer group" onClick={() => setExpanded(m.id)}>
+                <div className="cursor-pointer group" onClick={async () => {
+                  if (musicFirst) {
+                    if (musicPlaying === m.id) {
+                      // Second click: expand detail
+                      setMusicPlaying(null)
+                      setExpanded(m.id)
+                    } else {
+                      // First click: play music
+                      setExpanded(null)
+                      setMusicPlaying(m.id)
+                      if (!musicUrls[m.id]) {
+                        try {
+                          const res = await fetch(`/api/spotify-search?q=${encodeURIComponent(m.titulo_ingles || m.titulo)}`)
+                          const data = await res.json()
+                          setMusicUrls(prev => ({ ...prev, [m.id]: data.album?.embedUrl ?? null }))
+                        } catch { setMusicUrls(prev => ({ ...prev, [m.id]: null })) }
+                      }
+                    }
+                  } else {
+                    setExpanded(m.id)
+                  }
+                }}>
                   <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
                     {m.poster_path ? (
                       <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="150px" />
@@ -98,9 +121,22 @@ export default function FilmographyGrid({ movies }: { movies: Movie[] }) {
                     {m.nota_imdb && (
                       <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {m.nota_imdb}</div>
                     )}
+                    {musicFirst && musicPlaying === m.id && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center animate-pulse">
+                          <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.622.622 0 01.207.857z"/></svg>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{m.titulo_ingles || m.titulo}</p>
                   <p className="text-zinc-500 text-[10px]">{m.anio}</p>
+                  {/* Mini Spotify embed */}
+                  {musicFirst && musicPlaying === m.id && musicUrls[m.id] && (
+                    <div className="mt-1 rounded-lg overflow-hidden">
+                      <iframe src={musicUrls[m.id]!} width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media" loading="lazy" className="rounded-lg" />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="bg-zinc-900 rounded-2xl overflow-hidden my-2 shadow-2xl">

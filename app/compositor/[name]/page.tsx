@@ -184,7 +184,7 @@ export default async function CompositorPage({ params }: { params: Promise<{ nam
           </div>
         </div>
 
-        <FilmographyGrid movies={sorted} />
+        <FilmographyGrid movies={sorted} musicFirst />
       </div>
     </main>
   )

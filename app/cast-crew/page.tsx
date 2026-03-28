@@ -138,6 +138,8 @@ export default function CastCrewPage() {
 
   const filtered = useMemo(() => people.filter(p => p.type === tab), [people, tab])
   const linkBase = tab === 'actor' ? '/actor' : tab === 'director' ? '/director' : '/compositor'
+  const [musicPlaying, setMusicPlaying] = useState<string | null>(null)
+  const [musicUrls, setMusicUrls] = useState<Record<string, string | null>>({})
 
   const handleExpand = async (person: Person) => {
     if (expanded === person.name) { setExpanded(null); setExpandedMovies([]); setExpandedMovie(null); return }
@@ -251,12 +253,39 @@ export default function CastCrewPage() {
                               return (
                                 <div key={m.id} className={isMovieExpanded ? 'col-span-4 sm:col-span-5 md:col-span-7' : ''}>
                                   {!isMovieExpanded ? (
-                                    <div className="cursor-pointer group" onClick={() => setExpandedMovie(m.id)}>
+                                    <div className="cursor-pointer group" onClick={async () => {
+                                      if (tab === 'compositor' && musicPlaying !== m.id) {
+                                        setMusicPlaying(m.id)
+                                        setExpandedMovie(null)
+                                        if (!musicUrls[m.id]) {
+                                          try {
+                                            const res = await fetch(`/api/spotify-search?q=${encodeURIComponent(m.titulo_ingles || m.titulo)}`)
+                                            const data = await res.json()
+                                            setMusicUrls(prev => ({ ...prev, [m.id]: data.album?.embedUrl ?? null }))
+                                          } catch {}
+                                        }
+                                      } else {
+                                        setMusicPlaying(null)
+                                        setExpandedMovie(m.id)
+                                      }
+                                    }}>
                                       <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 ring-1 ring-transparent group-hover:ring-yellow-400/50 transition-all">
                                         {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="100px" />}
                                         {m.nota_imdb && <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1 py-0.5 text-[8px] font-bold text-yellow-400">⭐{m.nota_imdb}</div>}
+                                        {tab === 'compositor' && musicPlaying === m.id && (
+                                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center animate-pulse">
+                                              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.5 14.424a.5.5 0 01-.7.17c-1.9-1.16-4.3-1.42-7.1-.78a.5.5 0 11-.22-.98c3.1-.7 5.7-.4 7.85.9a.5.5 0 01.17.66z"/></svg>
+                                            </div>
+                                          </div>
+                                        )}
                                       </div>
                                       <p className="text-white text-[9px] font-medium leading-tight line-clamp-2 mt-1">{m.titulo_ingles || m.titulo}</p>
+                                      {tab === 'compositor' && musicPlaying === m.id && musicUrls[m.id] && (
+                                        <div className="mt-1 rounded-lg overflow-hidden">
+                                          <iframe src={musicUrls[m.id]!} width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media" loading="lazy" className="rounded-lg" />
+                                        </div>
+                                      )}
                                     </div>
                                   ) : (
                                     <div className="bg-zinc-800 rounded-xl p-3 my-1">

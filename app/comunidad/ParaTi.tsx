@@ -518,222 +518,185 @@ export default function ParaTi({
     const pesoAct = perfil?.peso_actores ?? 0.5
     const wActores = 0.02 + pesoAct * 0.12             // [0.02, 0.14] — actor + cluster combined
 
-    // 9. Score todos los candidatos
-    const scored: Rec[] = candidatoIds
-      .filter(id => {
-        const movie = pelMap[id]
-        if (!movie) return false
-        return tituloValido(movie.titulo_ingles)
-      })
+    // ── 9. POOL-BASED SCORING (Spotify-style) ──
+    // Each pool picks the best movies for a specific reason.
+    // Then we interleave them for variety.
+
+    const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    const genPrefs = perfil?.generos_preferidos ?? []
+    const genPrefsNorm = genPrefs.map(genNorm)
+    const moodRanking = perfil?.mood_ranking ?? []
+
+    // Build all candidates as Rec objects first
+    const allRecs: Rec[] = candidatoIds
+      .filter(id => pelMap[id] && tituloValido(pelMap[id].titulo_ingles))
       .map(id => {
         const movie = pelMap[id]
         const enr = enrMap[id]
-        const generos: string[] = enr?.generos ?? []
-        const director: string | null = enr?.director ?? null
-        const razones: string[] = []
-
-        // Calidad IMDB normalizada 0-1
-        const calidadRaw = (movie.nota_imdb ?? 5) / 10
-
-        // Era score 0-1 (decae exponencialmente alejándose del año preferido)
-        const anioMovie = movie.anio ?? 2000
-        let eraScore = 0
-        if (hasHistory) {
-          eraScore = Math.exp(-Math.abs(anioMovie - eraAvg) / 20)
-        } else if (preferredYear !== null) {
-          eraScore = Math.exp(-Math.abs(anioMovie - preferredYear) / 20)
-        } else {
-          eraScore = anioMovie >= 2010 ? 1 : Math.exp(-(2010 - anioMovie) / 15)
-        }
-
-        // Followers score 0-1
-        const followersScore = (followersMap[id] ?? 0) / maxFollowers
-
-        // Mood desde questionnaire: el orden del ranking importa
-        const moodRanking = perfil?.mood_ranking ?? []
-        const catRankIdx = moodRanking.indexOf(movie.categoria ?? '')
-        const moodBonus = catRankIdx >= 0 ? MOOD_BONUS[catRankIdx] : 0
-
-        let score = 0
-
-        if (hasHistory) {
-          // ── Modo con historial de vistas ──
-          // Crítica (peso_critica controla entre 5% y 35%)
-          score += calidadRaw * wCritica * 10
-
-          // Género desde historial de vistas (5-15% según peso_historial)
-          const wHistorial = 0.05 + (perfil?.peso_historial ?? 0.5) * 0.10
-          const gsHistory = Math.min(generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0), 3) / 3
-          score += gsHistory * wHistorial * 10
-          if (gsHistory > 0.3) {
-            const matched = generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
-            if (matched.length) razones.push(matched.join(', '))
-          }
-
-          // Género desde cuestionario (20%)
-          const genPrefs = perfil?.generos_preferidos ?? []
-          // Normalize both sides for matching
-          const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-          const genPrefsNorm = genPrefs.map(genNorm)
-          const genMatchQ = generos.filter(g => genPrefsNorm.includes(genNorm(g))).length
-          const gsQ = genPrefs.length > 0 ? genMatchQ / genPrefs.length : 0
-          score += gsQ * 0.20 * 10
-          if (gsQ > 0 && !razones.length) {
-            razones.push(generos.filter(g => genPrefs.includes(g)).slice(0, 2).join(', '))
-          }
-
-          // Películas favoritas: género (10%) + director (dynamic)
-          const favGenreMatch = generos.filter(g => favGenres.includes(g)).length
-          const favGenreScore = favGenres.length > 0 ? favGenreMatch / Math.min(favGenres.length, 5) : 0
-          score += favGenreScore * 0.10 * 10
-
-          const favDirScore = director && favDirectors.includes(director) ? 1 : 0
-          score += favDirScore * (wDirector * 0.5) * 10
-          if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
-
-          // Director desde historial (dynamic)
-          if (director && directorAvg[director]) {
-            score += (directorAvg[director] / 10) * (wDirector * 0.3) * 10
-            if (!razones.some(r => r.startsWith('Dir.'))) razones.push(`Dir. ${director.split(' ').pop()}`)
-          }
-
-          // Director cluster affinity (dynamic)
-          if (director && clusterMap[director] !== undefined) {
-            const cid = clusterMap[director]
-            const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
-            const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
-            score += clusterAffinity * (wDirector * 0.2) * 10
-          }
-
-          // Actor cluster affinity (dynamic)
-          const movieActors = (enrMap[id]?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
-          if (movieActors.length > 0) {
-            const maxActClusterW = Math.max(...Object.values(userActorClusterWeights), 1)
-            let bestActorAffinity = 0
-            for (const a of movieActors) {
-              const acid = actorClusterMap[a]
-              if (acid !== undefined) {
-                const aff = (userActorClusterWeights[acid] ?? 0) / maxActClusterW
-                if (aff > bestActorAffinity) bestActorAffinity = aff
-              }
-            }
-            score += bestActorAffinity * wActores * 10
-          }
-
-          // Mood cuestionario (15%)
-          score += moodBonus * 0.15 * 10
-
-          // Era (8%)
-          score += eraScore * 0.08 * 10
-
-          // Seguidores (peso_seguidores controla entre 0% y 20%)
-          score += followersScore * wSeguidores * 10
-
-        } else if (tienePerfilCompleto && perfil) {
-          // ── Modo solo con perfil cuestionario ──
-          // Crítica (peso_critica controla entre 5% y 35%)
-          score += calidadRaw * wCritica * 10
-
-          // Género cuestionario (25%)
-          const genPrefs = perfil.generos_preferidos ?? []
-          const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-          const genPrefsNorm = genPrefs.map(genNorm)
-          const genMatch = generos.filter(g => genPrefsNorm.includes(genNorm(g))).length
-          const genScore = genPrefs.length > 0 ? genMatch / genPrefs.length : 0
-          score += genScore * 0.25 * 10
-          if (genMatch > 0) {
-            razones.push(generos.filter(g => genPrefsNorm.includes(genNorm(g))).slice(0, 2).join(', '))
-          }
-
-          // Películas favoritas: género (15%) + director (dynamic)
-          const favGenreMatch = generos.filter(g => favGenres.includes(g)).length
-          const favGenreScore = favGenres.length > 0 ? favGenreMatch / Math.min(favGenres.length, 5) : 0
-          score += favGenreScore * 0.15 * 10
-
-          const favDirScore = director && favDirectors.includes(director) ? 1 : 0
-          score += favDirScore * (wDirector * 0.6) * 10
-          if (favDirScore) razones.push(`Dir. ${director!.split(' ').pop()}`)
-
-          // Director cluster affinity (dynamic)
-          if (director && clusterMap[director] !== undefined) {
-            const cid = clusterMap[director]
-            const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
-            const clusterAffinity = (userClusterWeights[cid] ?? 0) / maxClusterW
-            score += clusterAffinity * (wDirector * 0.4) * 10
-          }
-
-          // Actor cluster affinity (dynamic — from fav movies)
-          const movieActorsQ = (enrMap[id]?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
-          if (movieActorsQ.length > 0) {
-            const maxActClusterW = Math.max(...Object.values(userActorClusterWeights), 1)
-            let bestActorAffinity = 0
-            for (const a of movieActorsQ) {
-              const acid = actorClusterMap[a]
-              if (acid !== undefined) {
-                const aff = (userActorClusterWeights[acid] ?? 0) / maxActClusterW
-                if (aff > bestActorAffinity) bestActorAffinity = aff
-              }
-            }
-            score += bestActorAffinity * wActores * 10
-          }
-
-          // Mood cuestionario (12%)
-          score += moodBonus * 0.12 * 10
-
-          // Era desde birth_year (8%)
-          score += eraScore * 0.08 * 10
-
-          // Seguidores (peso_seguidores controla entre 0% y 20%)
-          score += followersScore * wSeguidores * 10
-
-        } else {
-          // ── Sin datos: calidad + reciente + seguidores ──
-          score += calidadRaw * 0.50 * 10
-          score += eraScore * 0.20 * 10
-          score += followersScore * 0.30 * 10
-        }
-
-        if (!razones.length && movie.categoria) {
-          const cat = CATS.find(c => c.key === movie.categoria)
-          if (cat) razones.push(cat.short)
-        }
-
         return {
           id, titulo: movie.titulo, titulo_ingles: movie.titulo_ingles,
           anio: movie.anio, nota_imdb: movie.nota_imdb,
-          rt_score: movie.rt_score ?? null,
-          metacritic_score: movie.metacritic_score ?? null,
-          runtime: movie.runtime ?? null,
-          boxoffice: movie.boxoffice ?? null,
-          oscars: movie.oscars ?? null,
-          poster_path: movie.poster_path, categoria: movie.categoria,
-          director, actores: enr?.actores ?? null, compositor: enr?.compositor ?? null, generos,
-          sinopsis: enr?.sinopsis_chilensis ?? null,
-          razon: razones.join(' · ') || 'Recomendada por CineBret',
-          score, plataformas: [],
+          rt_score: movie.rt_score ?? null, metacritic_score: movie.metacritic_score ?? null,
+          runtime: movie.runtime ?? null, boxoffice: movie.boxoffice ?? null,
+          oscars: movie.oscars ?? null, poster_path: movie.poster_path, categoria: movie.categoria,
+          director: enr?.director ?? null, actores: enr?.actores ?? null,
+          compositor: enr?.compositor ?? null, generos: enr?.generos ?? [],
+          sinopsis: enr?.sinopsis_chilensis ?? null, razon: '', score: 0, plataformas: [],
           imdb_id: movie.imdb_id, youtube_trailer_key: enr?.youtube_trailer_key ?? null,
           esReviewAutor: enr?.es_review_autor ?? false,
         }
       })
 
-    // 9. Balancear por categoría (hasta 30 por cat), máx 150 total
-    const sortedAll = scored.sort((a, b) => b.score - a.score)
-    const byCat: Record<string, Rec[]> = {}
-    for (const r of sortedAll) {
-      const k = r.categoria ?? '__none__'
-      if (!byCat[k]) byCat[k] = []
-      byCat[k].push(r)
+    // Helper: quality score for sorting within pools
+    const qualityOf = (r: Rec) => {
+      const imdb = (r.nota_imdb ?? 5) / 10
+      const followers = (followersMap[r.id] ?? 0) / maxFollowers
+      return imdb * (0.5 + pesoCritica * 0.5) + followers * pesoSeguidores * 0.3
     }
-    const seen = new Set<string>()
-    const balanced: Rec[] = []
-    for (const list of Object.values(byCat)) {
-      for (const r of list.slice(0, 30)) {
-        if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
+
+    // ── POOL A: Géneros preferidos (del cuestionario)
+    // "Porque te gustan los thrillers"
+    const poolGenre: Rec[] = []
+    if (genPrefs.length > 0) {
+      for (const rec of allRecs) {
+        const matchCount = rec.generos.filter(g => genPrefsNorm.includes(genNorm(g))).length
+        if (matchCount > 0) {
+          const matched = rec.generos.filter(g => genPrefsNorm.includes(genNorm(g))).slice(0, 2)
+          poolGenre.push({ ...rec, score: matchCount * 3 + qualityOf(rec), razon: matched.join(', ') })
+        }
+      }
+      poolGenre.sort((a, b) => b.score - a.score)
+    }
+
+    // ── POOL B: Director/Actor afinidad (favs + clusters)
+    // "Porque te gusta Nolan" / "Porque te gusta Scorsese"
+    const poolDirector: Rec[] = []
+    const maxClusterW = Math.max(...Object.values(userClusterWeights), 1)
+    const maxActClusterW = Math.max(...Object.values(userActorClusterWeights), 1)
+    for (const rec of allRecs) {
+      let dirScore = 0
+      let reason = ''
+      // Fav director match
+      if (rec.director && favDirectors.includes(rec.director)) {
+        dirScore += 5
+        reason = `Dir. ${rec.director.split(' ').pop()}`
+      }
+      // Director cluster
+      if (rec.director && clusterMap[rec.director] !== undefined) {
+        const cid = clusterMap[rec.director]
+        dirScore += ((userClusterWeights[cid] ?? 0) / maxClusterW) * 3
+        if (!reason && dirScore > 1) reason = `Dir. ${rec.director.split(' ').pop()}`
+      }
+      // Actor cluster
+      const actors = (rec.actores ?? '').split(',').map(a => a.trim()).filter(Boolean)
+      for (const a of actors) {
+        const acid = actorClusterMap[a]
+        if (acid !== undefined) {
+          dirScore += ((userActorClusterWeights[acid] ?? 0) / maxActClusterW) * 2
+        }
+      }
+      // History director match
+      if (rec.director && directorAvg[rec.director]) {
+        dirScore += directorAvg[rec.director] / 5
+        if (!reason) reason = `Dir. ${rec.director.split(' ').pop()}`
+      }
+      if (dirScore > 0.5) {
+        poolDirector.push({ ...rec, score: dirScore + qualityOf(rec), razon: reason || 'Directores afines' })
       }
     }
-    for (const r of sortedAll) {
-      if (balanced.length >= 150) break
-      if (!seen.has(r.id)) { balanced.push(r); seen.add(r.id) }
+    poolDirector.sort((a, b) => b.score - a.score)
+
+    // ── POOL C: Mood preferido (del cuestionario)
+    // "Porque te gusta el cine cerebral"
+    const poolMood: Rec[] = []
+    if (moodRanking.length > 0) {
+      for (const rec of allRecs) {
+        const idx = moodRanking.indexOf(rec.categoria ?? '')
+        if (idx >= 0 && idx < 2) { // Top 2 moods
+          const cat = CATS.find(c => c.key === rec.categoria)
+          poolMood.push({ ...rec, score: (2 - idx) * 3 + qualityOf(rec), razon: cat?.short ?? '' })
+        }
+      }
+      poolMood.sort((a, b) => b.score - a.score)
+    }
+
+    // ── POOL D: Historial de vistas (géneros que has visto y disfrutado)
+    // "Porque te gustaron películas similares"
+    const poolHistory: Rec[] = []
+    if (hasHistory) {
+      for (const rec of allRecs) {
+        const histMatch = rec.generos.reduce((s: number, g: string) => s + (normGenre[g] ?? 0), 0)
+        if (histMatch > 0.3) {
+          const matched = rec.generos.filter(g => (normGenre[g] ?? 0) > 0.2).slice(0, 2)
+          poolHistory.push({ ...rec, score: histMatch * 2 + qualityOf(rec), razon: matched.length ? matched.join(', ') : 'Por tu historial' })
+        }
+      }
+      poolHistory.sort((a, b) => b.score - a.score)
+    }
+
+    // ── POOL E: Seguidores (lo que ven tus seguidos)
+    // "Porque tus amigos la vieron"
+    const poolFollowers: Rec[] = []
+    if (followingIds.length > 0) {
+      for (const rec of allRecs) {
+        const fCount = followersMap[rec.id] ?? 0
+        if (fCount > 0) {
+          poolFollowers.push({ ...rec, score: fCount * 3 + qualityOf(rec), razon: 'Tus seguidos la vieron' })
+        }
+      }
+      poolFollowers.sort((a, b) => b.score - a.score)
+    }
+
+    // ── POOL F: Descubrimiento (alta calidad, géneros diferentes)
+    // "Algo nuevo para ti"
+    const poolDiscovery: Rec[] = []
+    for (const rec of allRecs) {
+      const isNewGenre = genPrefs.length > 0 && !rec.generos.some(g => genPrefsNorm.includes(genNorm(g)))
+      const isHighQuality = (rec.nota_imdb ?? 0) >= 7.5
+      if (isNewGenre && isHighQuality) {
+        poolDiscovery.push({ ...rec, score: qualityOf(rec) * 2, razon: 'Algo nuevo para ti' })
+      }
+    }
+    poolDiscovery.sort((a, b) => b.score - a.score)
+
+    // ── INTERLEAVE: mezclar los pools
+    // Proporción: Genre(40%), Director(20%), Mood(15%), History(10%), Followers(10%), Discovery(5%)
+    const pools = [
+      { items: poolGenre.slice(0, 60), weight: 40 },
+      { items: poolDirector.slice(0, 30), weight: 20 },
+      { items: poolMood.slice(0, 25), weight: 15 },
+      { items: poolHistory.slice(0, 20), weight: 10 },
+      { items: poolFollowers.slice(0, 15), weight: 10 },
+      { items: poolDiscovery.slice(0, 10), weight: 5 },
+    ]
+    // Normalize weights for pools that have items
+    const activePools = pools.filter(p => p.items.length > 0)
+    const totalWeight = activePools.reduce((s, p) => s + p.weight, 0)
+
+    const seen = new Set<string>()
+    const balanced: Rec[] = []
+    const cursors = activePools.map(() => 0)
+    const maxTotal = 150
+
+    while (balanced.length < maxTotal) {
+      let added = false
+      for (let i = 0; i < activePools.length; i++) {
+        const pool = activePools[i]
+        // How many items this pool contributes per round
+        const take = Math.max(1, Math.round((pool.weight / totalWeight) * 5))
+        for (let t = 0; t < take && cursors[i] < pool.items.length; t++) {
+          const rec = pool.items[cursors[i]]
+          cursors[i]++
+          if (!seen.has(rec.id)) {
+            seen.add(rec.id)
+            balanced.push(rec)
+            added = true
+            if (balanced.length >= maxTotal) break
+          }
+        }
+        if (balanced.length >= maxTotal) break
+      }
+      if (!added) break // all pools exhausted
     }
 
     // 10. Plataformas

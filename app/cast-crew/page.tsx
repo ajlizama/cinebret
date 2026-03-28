@@ -181,7 +181,7 @@ export default function CastCrewPage() {
         <BackButton />
         <div className="flex items-center justify-between mt-4 mb-1">
           <h1 className="text-2xl font-bold text-white">Cast & Crew</h1>
-          <img src="/IMDbret.png" alt="IMDbret" className="h-10 w-auto object-contain" />
+          <img src="/IMDbret.png" alt="IMDbret" className="h-12 w-auto object-contain" style={{ mixBlendMode: 'lighten' }} />
         </div>
         <p className="text-zinc-500 text-sm mb-5">Ranking por IMDB promedio × raíz de películas</p>
 

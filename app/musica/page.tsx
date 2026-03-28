@@ -129,7 +129,7 @@ export default function MusicaPage() {
         <BackButton />
         <div className="flex items-center justify-between mt-4 mb-1">
           <h1 className="text-2xl font-bold text-white">Música & Soundtracks</h1>
-          <img src="/Spoty.png" alt="Spoty" className="h-10 w-auto object-contain" />
+          <img src="/Spoty.png" alt="Spoty" className="h-14 w-auto object-contain" style={{ mixBlendMode: 'lighten' }} />
         </div>
         <p className="text-zinc-500 text-sm mb-5">Escucha los soundtracks de las películas</p>
 

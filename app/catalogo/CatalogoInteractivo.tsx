@@ -10,6 +10,7 @@ import AgregarAListaButton from '@/app/pelicula/[id]/AgregarAListaButton'
 import ParaTi, { type RecExport } from '@/app/comunidad/ParaTi'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
+import EnrichedDetails from '@/components/EnrichedDetails'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
@@ -308,8 +309,10 @@ function PanelExpandido({
             <div className="flex gap-2 flex-wrap">
               {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded">CB Review</span>}
               {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-2 py-0.5 rounded font-bold">★ Recomendada</span>}
-              {p.boxoffice != null && <span className="text-xs text-zinc-400">Taquilla: ${(p.boxoffice / 1_000_000).toFixed(0)}M</span>}
             </div>
+
+            {/* Enriched: cast, similar, keywords, budget */}
+            <EnrichedDetails peliculaId={p.id} />
           </div>
         </div>
 
@@ -442,8 +445,10 @@ function PanelExpandido({
               <div className="flex gap-3 items-center flex-wrap">
                 {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
                 {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/30 px-2 py-0.5 rounded font-bold shadow">★ Recomendada</span>}
-                {p.boxoffice != null && <span className="text-xs text-zinc-400 drop-shadow">Taquilla: <span className="text-zinc-200">${(p.boxoffice / 1_000_000).toFixed(0)}M</span></span>}
               </div>
+
+              {/* Enriched: cast, similar, keywords, budget */}
+              <EnrichedDetails peliculaId={p.id} />
             </div>
           </div>
         </div>

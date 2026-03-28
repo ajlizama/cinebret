@@ -12,6 +12,7 @@ export type SmartFilters = {
   orden: string
   searchText: string // remaining text for regular search
   keywordSearch: string[] // search in keywords/taglines/sinopsis
+  response: string // conversational response message
   understood: boolean // whether we parsed anything useful
 }
 
@@ -129,6 +130,7 @@ export function parseSmartSearch(query: string): SmartFilters {
     orden: '',
     searchText: '',
     keywordSearch: [],
+    response: '',
     understood: false,
   }
 
@@ -184,6 +186,23 @@ export function parseSmartSearch(query: string): SmartFilters {
     result.anioDesde = exactYear[1]
     result.anioHasta = exactYear[1]
     result.understood = true
+  }
+
+  // Generate local response
+  if (result.understood) {
+    const parts: string[] = []
+    if (result.generos.length) parts.push(result.generos.join(' y '))
+    if (result.plataformas.length) {
+      const platNames: Record<string, string> = { netflix: 'Netflix', disney_plus: 'Disney+', hbo_max: 'HBO', amazon_prime: 'Prime', apple_tv: 'Apple TV+', paramount_plus: 'Paramount+', mubi: 'MUBI' }
+      parts.push(result.plataformas.map(p => platNames[p] ?? p).join(' y '))
+    }
+    if (result.categorias.length) parts.push('modo relax')
+    const responses = [
+      `Aquí van tus ${parts.join(' en ')} — a disfrutar 🎬`,
+      `${parts.join(', ')} — buena elección, cinéfilo 🍿`,
+      `Listo, filtrado por ${parts.join(' + ')} — que la pases bien`,
+    ]
+    result.response = responses[Math.floor(Math.random() * responses.length)]
   }
 
   return result

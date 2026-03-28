@@ -13,12 +13,37 @@ type Props = {
 export default function SmartSearchBar({ value, onChange, onSmartFilters, placeholder = 'Buscar película, director, actor...' }: Props) {
   const [listening, setListening] = useState(false)
   const [processing, setProcessing] = useState(false)
+  const [responseMsg, setResponseMsg] = useState<string | null>(null)
+  const [usedMic, setUsedMic] = useState(false)
   const recognitionRef = useRef<any>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [micSupported, setMicSupported] = useState(false)
 
   useEffect(() => {
     setMicSupported(!!(typeof window !== 'undefined' && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)))
+  }, [])
+
+  const showResponse = useCallback((msg: string, spokenByMic: boolean) => {
+    setResponseMsg(msg)
+    // Auto-scroll to catalog
+    setTimeout(() => {
+      const catalog = document.querySelector('[data-catalog]') || document.getElementById('catalogo')
+      if (catalog) catalog.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 300)
+    // Speak if mic was used
+    if (spokenByMic && 'speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(msg)
+      utterance.lang = 'es-CL'
+      utterance.rate = 1.1
+      utterance.pitch = 1.0
+      // Try to find a Spanish voice
+      const voices = window.speechSynthesis.getVoices()
+      const esVoice = voices.find(v => v.lang.startsWith('es'))
+      if (esVoice) utterance.voice = esVoice
+      window.speechSynthesis.speak(utterance)
+    }
+    // Auto-hide after 6 seconds
+    setTimeout(() => setResponseMsg(null), 6000)
   }, [])
 
   const processQuery = useCallback(async (query: string) => {
@@ -28,6 +53,8 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
     const local = parseSmartSearch(query)
     if (local.understood) {
       onSmartFilters(local)
+      if (local.response) showResponse(local.response, usedMic)
+      setUsedMic(false)
       return
     }
 
@@ -37,9 +64,11 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
       const ai = await aiParseSearch(query)
       if (ai && ai.understood) {
         onSmartFilters(ai)
+        if (ai.response) showResponse(ai.response, usedMic)
       }
     } finally {
       setProcessing(false)
+      setUsedMic(false)
     }
   }, [onSmartFilters])
 
@@ -93,6 +122,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
     recognitionRef.current = recognition
     recognition.start()
     setListening(true)
+    setUsedMic(true)
   }
 
   const stopListening = () => {
@@ -148,6 +178,17 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
           </svg>
         </button>
       </div>
+
+      {/* Response popup */}
+      {responseMsg && (
+        <div className="absolute top-full left-0 right-0 mt-2 z-50">
+          <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 shadow-2xl flex items-start gap-3 animate-fade-in">
+            <span className="text-lg shrink-0">🎬</span>
+            <p className="text-sm text-zinc-200 leading-relaxed">{responseMsg}</p>
+            <button onClick={() => setResponseMsg(null)} className="text-zinc-500 hover:text-white shrink-0 ml-auto">✕</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

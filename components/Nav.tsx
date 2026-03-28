@@ -499,9 +499,9 @@ export default function Nav({ active }: Props) {
 
             {/* Tinder (ex-Reel) */}
             <Link href="/reel" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'reel' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 23c-4.97 0-9-3.58-9-8 0-5.52 6-11.47 8.38-13.62a1 1 0 011.24 0C14.99 3.53 21 9.48 21 15c0 4.42-4.03 8-9 8zm0-19.46C9.82 5.7 5 10.6 5 15c0 3.31 3.13 6 7 6s7-2.69 7-6c0-4.4-4.82-9.3-7-11.46z"/>
-                <path d="M12 20c-2.76 0-5-1.79-5-4 0-2.76 3-5.73 4.47-7.04a.75.75 0 011.06 0C14 10.27 17 13.24 17 16c0 2.21-2.24 4-5 4z"/>
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z" />
+                <path d="M12 18a2 2 0 002-2c0-2-2-3-2-3s-2 1-2 3a2 2 0 002 2z" />
               </svg>
               <span className="text-[10px] font-medium">Tinder</span>
             </Link>

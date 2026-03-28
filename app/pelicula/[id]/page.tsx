@@ -78,9 +78,20 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
           <div className="mt-6 flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-1">{titulo}</h1>
-              {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                <p className="text-zinc-400 text-lg mb-1">{pelicula.titulo}</p>
+              {pelicula.logo_path ? (
+                <div className="mb-2">
+                  <img src={`https://image.tmdb.org/t/p/w500${pelicula.logo_path}`} alt={titulo} className="h-16 md:h-20 w-auto max-w-full object-contain drop-shadow-lg" />
+                  {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
+                    <p className="text-zinc-400 text-sm mt-1">{pelicula.titulo}</p>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <h1 className="text-4xl font-bold text-white mb-1">{titulo}</h1>
+                  {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
+                    <p className="text-zinc-400 text-lg mb-1">{pelicula.titulo}</p>
+                  )}
+                </>
               )}
               {pelicula.tagline && (
                 <p className="text-zinc-400 text-sm italic mb-3">&ldquo;{pelicula.tagline}&rdquo;</p>

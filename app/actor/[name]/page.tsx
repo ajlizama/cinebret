@@ -48,7 +48,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
   // Find all movies where this actor appears in cast_json or actores field
   const allEnr = await fetchAllPages((from, to) =>
     supabase.from('enriquecimiento')
-      .select('pelicula_id, cast_json, director, compositor, generos, actores')
+      .select('pelicula_id, cast_json, director, compositor, generos, actores, actores_oscars')
       .range(from, to)
   )
 
@@ -102,7 +102,8 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
   const composers: Record<string, number> = {}
   const genres: Record<string, number> = {}
   const categories: Record<string, number> = {}
-  let oscarMovies = 0
+  let bestPictureCount = 0
+  let personalOscars = 0
 
   for (const m of sorted) {
     const enr = enrMap[m.id]
@@ -116,7 +117,12 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
       const cat = CAT_SHORT[m.categoria] ?? m.categoria
       categories[cat] = (categories[cat] ?? 0) + 1
     }
-    if (m.oscars && m.oscars.toLowerCase().startsWith('ganó')) oscarMovies++
+    // Best Picture (excluding animated/documentary/international)
+    const osc = (m.oscars ?? '').toLowerCase()
+    if (osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('documental')) bestPictureCount++
+    // Personal Oscars
+    const actOscars = enr?.actores_oscars as Record<string, number> | null
+    if (actOscars && actOscars[actorName]) personalOscars = actOscars[actorName]
   }
 
   const topDirectors = Object.entries(directors).sort(([, a], [, b]) => b - a).slice(0, 5)
@@ -160,7 +166,8 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
               <div className="flex items-center gap-4 mt-2 text-sm text-zinc-400">
                 <span>{sorted.length} películas en CineBret</span>
                 {avgImdb && <span className="text-yellow-400 font-bold">⭐ {avgImdb} promedio</span>}
-                {oscarMovies > 0 && <span className="text-amber-400">🏆 {oscarMovies} ganadoras Oscar</span>}
+                {bestPictureCount > 0 && <span className="text-amber-400">🏆 {bestPictureCount} Mejor Película</span>}
+                {personalOscars > 0 && <span className="text-amber-400">🎭 {personalOscars} Oscar{personalOscars > 1 ? 's' : ''} personales</span>}
               </div>
             </div>
           </div>
@@ -168,46 +175,35 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-6">
-        {/* Stats grid */}
+        {/* Stats grid — modern glass style */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          {/* Directors */}
-          <div className="bg-zinc-900 rounded-xl p-4">
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Directores</p>
-            <div className="space-y-1">
-              {topDirectors.map(([d, count]) => (
-                <p key={d} className="text-sm text-zinc-300"><span className="text-white font-medium">{d}</span> <span className="text-zinc-600">({count})</span></p>
-              ))}
-            </div>
+          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Directores</p>
+            {topDirectors.map(([d, count]) => (
+              <Link key={d} href={`/director/${encodeURIComponent(d)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                {d} <span className="text-zinc-600">({count})</span>
+              </Link>
+            ))}
           </div>
-
-          {/* Composers */}
-          <div className="bg-zinc-900 rounded-xl p-4">
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Compositores</p>
-            <div className="space-y-1">
-              {topComposers.map(([c, count]) => (
-                <p key={c} className="text-sm text-zinc-300"><span className="text-white font-medium">{c}</span> <span className="text-zinc-600">({count})</span></p>
-              ))}
-            </div>
+          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Compositores</p>
+            {topComposers.map(([c, count]) => (
+              <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                {c} <span className="text-zinc-600">({count})</span>
+              </Link>
+            ))}
           </div>
-
-          {/* Genres */}
-          <div className="bg-zinc-900 rounded-xl p-4">
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Géneros</p>
-            <div className="space-y-1">
-              {topGenres.map(([g, count]) => (
-                <p key={g} className="text-sm text-zinc-300"><span className="text-white font-medium">{g}</span> <span className="text-zinc-600">({count})</span></p>
-              ))}
-            </div>
+          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Géneros</p>
+            {topGenres.map(([g, count]) => (
+              <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
+            ))}
           </div>
-
-          {/* Categories */}
-          <div className="bg-zinc-900 rounded-xl p-4">
-            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Categorías CineBret</p>
-            <div className="space-y-1">
-              {topCats.map(([c, count]) => (
-                <p key={c} className="text-sm text-zinc-300"><span className="text-white font-medium">{c}</span> <span className="text-zinc-600">({count})</span></p>
-              ))}
-            </div>
+          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Categorías CineBret</p>
+            {topCats.map(([c, count]) => (
+              <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
+            ))}
           </div>
         </div>
 

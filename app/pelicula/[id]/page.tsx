@@ -178,13 +178,13 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               {enr?.director && (
                 <div>
                   <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
-                  <p className="text-sm text-zinc-200">{enr.director}</p>
+                  <Link href={`/director/${encodeURIComponent(enr.director)}`} className="text-sm text-zinc-200 hover:text-yellow-400 transition-colors">{enr.director}</Link>
                 </div>
               )}
               {enr?.compositor && (
                 <div>
                   <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
-                  <p className="text-sm text-zinc-200">{enr.compositor}</p>
+                  <Link href={`/compositor/${encodeURIComponent(enr.compositor)}`} className="text-sm text-zinc-200 hover:text-yellow-400 transition-colors">{enr.compositor}</Link>
                 </div>
               )}
               {enr?.actores && !enr?.cast_json && (

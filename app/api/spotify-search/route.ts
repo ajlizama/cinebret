@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
         artist: album.artists[0]?.name ?? '',
         image: album.images?.[0]?.url ?? null,
         url: album.external_urls?.spotify ?? null,
-        embedUrl: `https://open.spotify.com/embed/album/${album.id}?theme=0`,
+        embedUrl: `https://open.spotify.com/embed/album/${album.id}?theme=0&autoplay=1`,
       }
     })
   } catch {

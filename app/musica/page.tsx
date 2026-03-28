@@ -127,7 +127,10 @@ export default function MusicaPage() {
       <Nav />
       <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
         <BackButton />
-        <h1 className="text-2xl font-bold text-white mt-4 mb-1">Música & Soundtracks</h1>
+        <div className="flex items-center justify-between mt-4 mb-1">
+          <h1 className="text-2xl font-bold text-white">Música & Soundtracks</h1>
+          <img src="/Spoty.png" alt="Spoty" className="h-10 w-auto object-contain" />
+        </div>
         <p className="text-zinc-500 text-sm mb-5">Escucha los soundtracks de las películas</p>
 
         {/* Search + filters */}

@@ -7,10 +7,11 @@ type Props = {
   value: string
   onChange: (text: string) => void
   onSmartFilters: (filters: SmartFilters) => void
+  onScrollToCatalog?: () => void
   placeholder?: string
 }
 
-export default function SmartSearchBar({ value, onChange, onSmartFilters, placeholder = 'Buscar película, director, actor...' }: Props) {
+export default function SmartSearchBar({ value, onChange, onSmartFilters, onScrollToCatalog, placeholder = 'Buscar película, director, actor...' }: Props) {
   const [listening, setListening] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [responseMsg, setResponseMsg] = useState<string | null>(null)
@@ -26,25 +27,26 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
   const showResponse = useCallback((msg: string, spokenByMic: boolean) => {
     setResponseMsg(msg)
     // Auto-scroll to catalog
-    setTimeout(() => {
-      const catalog = document.querySelector('[data-catalog]') || document.getElementById('catalogo')
-      if (catalog) catalog.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 300)
+    setTimeout(() => { onScrollToCatalog?.() }, 300)
     // Speak if mic was used
-    if (spokenByMic && 'speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(msg)
-      utterance.lang = 'es-CL'
-      utterance.rate = 1.1
-      utterance.pitch = 1.0
-      // Try to find a Spanish voice
-      const voices = window.speechSynthesis.getVoices()
-      const esVoice = voices.find(v => v.lang.startsWith('es'))
-      if (esVoice) utterance.voice = esVoice
-      window.speechSynthesis.speak(utterance)
+    if (spokenByMic && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      // Load voices first (needed on some browsers)
+      const speak = () => {
+        const utterance = new SpeechSynthesisUtterance(msg)
+        utterance.lang = 'es-CL'
+        utterance.rate = 1.0
+        utterance.pitch = 1.0
+        const voices = window.speechSynthesis.getVoices()
+        const esVoice = voices.find(v => v.lang.startsWith('es'))
+        if (esVoice) utterance.voice = esVoice
+        window.speechSynthesis.speak(utterance)
+      }
+      if (window.speechSynthesis.getVoices().length > 0) speak()
+      else window.speechSynthesis.onvoiceschanged = speak
     }
-    // Auto-hide after 6 seconds
-    setTimeout(() => setResponseMsg(null), 6000)
-  }, [])
+    // Auto-hide after 8 seconds
+    setTimeout(() => setResponseMsg(null), 8000)
+  }, [onScrollToCatalog])
 
   const processQuery = useCallback(async (query: string) => {
     if (!query || query.length < 3) return
@@ -179,13 +181,15 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
         </button>
       </div>
 
-      {/* Response popup */}
+      {/* Response popup — fixed center screen */}
       {responseMsg && (
-        <div className="absolute top-full left-0 right-0 mt-2 z-50">
-          <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 shadow-2xl flex items-start gap-3 animate-fade-in">
-            <span className="text-lg shrink-0">🎬</span>
-            <p className="text-sm text-zinc-200 leading-relaxed">{responseMsg}</p>
-            <button onClick={() => setResponseMsg(null)} className="text-zinc-500 hover:text-white shrink-0 ml-auto">✕</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-2xl px-6 py-4 shadow-2xl max-w-sm mx-4 pointer-events-auto">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl shrink-0">🎬</span>
+              <p className="text-sm text-zinc-200 leading-relaxed flex-1">{responseMsg}</p>
+              <button onClick={() => setResponseMsg(null)} className="text-zinc-500 hover:text-white shrink-0 text-lg">✕</button>
+            </div>
           </div>
         </div>
       )}

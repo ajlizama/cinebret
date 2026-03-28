@@ -533,6 +533,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   const [filtroVistas, setFiltroVistas] = useState<'todas' | 'vistas' | 'no_vistas'>('todas')
   const [soloWatchlist, setSoloWatchlist] = useState(false)
   const [smartKeywords, setSmartKeywords] = useState<string[]>([])
+  const catalogRef = useRef<HTMLDivElement>(null)
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
   const [pagina, setPagina] = useState(0)
@@ -689,6 +690,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
+            onScrollToCatalog={() => catalogRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             onSmartFilters={(f: SmartFilters) => {
               // Set platforms and categories (these also filter trending + para ti)
               setPlataformasFiltro(f.plataformas)
@@ -904,7 +906,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         )}
 
         {/* ── Catálogo ── */}
-        <div id="catalogo" className="border-t border-zinc-800 pt-4 mb-4">
+        <div className="border-t border-zinc-800 pt-4 mb-4 scroll-mt-4" ref={catalogRef}>
           {/* Row 1: title + toggle + badges */}
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <h2 className="text-xl md:text-2xl font-bold text-white">Catálogo</h2>

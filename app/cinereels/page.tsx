@@ -43,6 +43,7 @@ function ReelItem({ movie, isActive, onMuteToggle, isMuted }: {
   const containerRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const [ready, setReady] = useState(false)
+  const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
     let destroyed = false
@@ -51,32 +52,27 @@ function ReelItem({ movie, isActive, onMuteToggle, isMuted }: {
       playerRef.current = new (window as any).YT.Player(containerRef.current, {
         videoId: movie.videoId,
         playerVars: {
-          autoplay: 0, mute: 1, controls: 0, modestbranding: 1, rel: 0,
+          autoplay: 1, mute: 1, controls: 0, modestbranding: 1, rel: 0,
           showinfo: 0, iv_load_policy: 3, cc_load_policy: 0, playsinline: 1,
           loop: 1, playlist: movie.videoId, disablekb: 1, fs: 0,
+          origin: typeof window !== 'undefined' ? window.location.origin : '',
         },
         events: {
-          onReady: () => { if (!destroyed) setReady(true) },
+          onReady: (e: any) => {
+            if (destroyed) return
+            setReady(true)
+            e.target.mute()
+            e.target.playVideo()
+          },
+          onStateChange: (e: any) => {
+            if (e.data === 1) setPlaying(true) // PLAYING
+            else if (e.data === 2 || e.data === 0) setPlaying(false) // PAUSED or ENDED
+          },
         },
       })
     })
     return () => { destroyed = true; playerRef.current?.destroy?.() }
   }, [movie.videoId])
-
-  useEffect(() => {
-    const p = playerRef.current
-    if (!p || !ready) return
-    if (isActive) {
-      // Start after 3 seconds
-      const timer = setTimeout(() => {
-        p.seekTo(0)
-        p.playVideo()
-      }, 3000)
-      return () => clearTimeout(timer)
-    } else {
-      p.pauseVideo()
-    }
-  }, [isActive, ready])
 
   useEffect(() => {
     const p = playerRef.current
@@ -116,10 +112,10 @@ function ReelItem({ movie, isActive, onMuteToggle, isMuted }: {
         {isMuted ? '🔇' : '🔊'}
       </div>
 
-      {/* Thumbnail while loading */}
-      {!ready && movie.poster_path && (
+      {/* Poster + loading until video is actually playing */}
+      {!playing && (
         <div className="absolute inset-0 z-5 flex items-center justify-center bg-black">
-          <img src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`} alt="" className="h-full object-cover opacity-40" />
+          {movie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`} alt="" className="h-full object-cover opacity-50" />}
           <div className="absolute">
             <video src="/loading.mp4" autoPlay muted loop playsInline className="w-16 h-16 object-contain" style={{ mixBlendMode: 'lighten' }} />
           </div>

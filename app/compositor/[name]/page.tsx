@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import Nav from '@/components/Nav'
 import BackButton from '@/components/BackButton'
 import { fetchPersonByName, calcAge } from '@/lib/tmdb-person'
+import FilmographyGrid from '@/components/FilmographyGrid'
 
 const GENEROS_NORMALIZE: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -183,23 +184,7 @@ export default async function CompositorPage({ params }: { params: Promise<{ nam
           </div>
         </div>
 
-        <h2 className="text-lg font-bold text-white mb-4">Filmografía</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
-          {sorted.map(m => (
-            <Link key={m.id} href={`/pelicula/${m.id}`} className="group">
-              <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
-                {m.poster_path ? (
-                  <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="150px" />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center">{m.titulo_ingles || m.titulo}</span></div>
-                )}
-                {m.nota_imdb && <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {m.nota_imdb}</div>}
-              </div>
-              <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{m.titulo_ingles || m.titulo}</p>
-              <p className="text-zinc-500 text-[10px]">{m.anio}</p>
-            </Link>
-          ))}
-        </div>
+        <FilmographyGrid movies={sorted} />
       </div>
     </main>
   )

@@ -906,7 +906,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         )}
 
         {/* ── Catálogo ── */}
-        <div className="border-t border-zinc-800 pt-4 mb-4 scroll-mt-4" ref={catalogRef}>
+        <div className="border-t border-zinc-800 pt-4 mb-4" ref={catalogRef}>
           {/* Row 1: title + toggle + badges */}
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <h2 className="text-xl md:text-2xl font-bold text-white">Catálogo</h2>

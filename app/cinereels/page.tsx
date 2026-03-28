@@ -65,8 +65,8 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
 
       {/* Movie logo below nav */}
       {movie.logo_path && (
-        <div className="absolute top-20 left-4 z-20 pointer-events-none">
-          <img src={`https://image.tmdb.org/t/p/w300${movie.logo_path}`} alt="" className="h-10 md:h-14 w-auto max-w-[60vw] object-contain drop-shadow-2xl" />
+        <div className="absolute top-40 left-4 z-20 pointer-events-none">
+          <img src={`https://image.tmdb.org/t/p/w500${movie.logo_path}`} alt="" className="h-20 md:h-28 w-auto max-w-[75vw] object-contain drop-shadow-2xl" />
         </div>
       )}
 
@@ -141,6 +141,7 @@ export default function CineReelsPage() {
   const [slideOffset, setSlideOffset] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
+  const viewStartTime = useRef(Date.now())
   const [userStates, setUserStates] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
   const playerRef = useRef<any>(null)
   const playerDivRef = useRef<HTMLDivElement>(null)
@@ -200,10 +201,48 @@ export default function CineReelsPage() {
           })
         }
       }
-      for (let i = allMovies.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[allMovies[i], allMovies[j]] = [allMovies[j], allMovies[i]]
+      // Smart ordering
+      if (user) {
+        // Logged in: use preferences (genre + mood + fav directors)
+        const { data: prefs } = await supabase.from('perfil_preferencias')
+          .select('generos_preferidos, mood_ranking, fav_movies')
+          .eq('user_id', user.id).maybeSingle()
+
+        const genPrefs = (prefs?.generos_preferidos ?? []) as string[]
+        const moodRanking = (prefs?.mood_ranking ?? []) as string[]
+        const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        const genPrefsNorm = genPrefs.map(genNorm)
+
+        // Get genres for each movie
+        const enrGenres: Record<string, string[]> = {}
+        for (let i = 0; i < ids.length; i += 50) {
+          const chunk = ids.slice(i, i + 50)
+          const { data: eg } = await supabase.from('enriquecimiento').select('pelicula_id, generos').in('pelicula_id', chunk)
+          ;(eg ?? []).forEach((e: any) => { enrGenres[e.pelicula_id] = e.generos ?? [] })
+        }
+
+        allMovies.forEach(m => {
+          const genres = enrGenres[m.id] ?? []
+          const genMatch = genres.filter(g => genPrefsNorm.includes(genNorm(g))).length
+          const moodIdx = moodRanking.indexOf(m.categoria ?? '')
+          const moodScore = moodIdx >= 0 ? (4 - moodIdx) : 0
+          ;(m as any)._score = genMatch * 3 + moodScore * 2 + (m.nota_imdb ?? 5) + Math.random() * 2
+        })
+        allMovies.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+      } else {
+        // Not logged in: IMDB + random + engagement
+        const ENGAGEMENT_KEY = 'cinereels-engagement'
+        let engagement: Record<string, number> = {}
+        try { engagement = JSON.parse(localStorage.getItem(ENGAGEMENT_KEY) ?? '{}') } catch {}
+
+        allMovies.forEach(m => {
+          const imdbScore = (m.nota_imdb ?? 5) / 10
+          const engPenalty = engagement[m.id] ? Math.max(0, 1 - engagement[m.id] * 0.2) : 1
+          ;(m as any)._score = imdbScore * engPenalty + Math.random() * 0.3
+        })
+        allMovies.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
       }
+
       setMovies(allMovies)
       setLoading(false)
     })()
@@ -264,11 +303,25 @@ export default function CineReelsPage() {
 
   const goTo = useCallback((idx: number) => {
     if (idx < 0 || idx >= movies.length) return
+    // Track engagement for non-logged users
+    if (!user && movies[current]) {
+      const viewTime = (Date.now() - viewStartTime.current) / 1000
+      if (viewTime < 3) {
+        // Skipped quickly — penalize
+        try {
+          const KEY = 'cinereels-engagement'
+          const eng = JSON.parse(localStorage.getItem(KEY) ?? '{}')
+          eng[movies[current].id] = (eng[movies[current].id] ?? 0) + 1
+          localStorage.setItem(KEY, JSON.stringify(eng))
+        } catch {}
+      }
+    }
+    viewStartTime.current = Date.now()
     setTransitioning(true)
     setShowInfo(false)
     setCurrent(idx)
     setTimeout(() => setTransitioning(false), 400)
-  }, [movies.length])
+  }, [movies.length, current, user])
 
   // Touch handlers for TikTok-style drag
   const handleTouchStart = (e: React.TouchEvent) => {

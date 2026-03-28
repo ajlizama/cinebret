@@ -208,9 +208,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Cast con fotos */}
             {enr?.cast_json && (enr.cast_json as any[]).length > 0 && (
-              <div className="overflow-hidden min-w-0">
+              <div className="min-w-0">
                 <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Reparto</p>
-                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-6 px-6">
                   {(enr.cast_json as any[]).map((actor: any, i: number) => (
                     <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-20 text-center group">
                       <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 mb-1.5 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
@@ -257,9 +257,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             {enr?.video_clip_url && (() => {
               const url = enr.video_clip_url as string
               const ytId = extractYouTubeId(url)
-              if (ytId) return <YouTubeClip videoId={ytId} />
+              if (ytId) return <div className="-mx-6 px-6"><YouTubeClip videoId={ytId} /></div>
               return (
-                <div className="relative rounded-xl overflow-hidden bg-black">
+                <div className="relative rounded-xl overflow-hidden bg-black -mx-6">
                   <video src={url} autoPlay muted loop playsInline preload="metadata"
                     className="w-full max-h-80 object-contain"
                     onClick={(e: any) => { e.currentTarget.muted = !e.currentTarget.muted }} />

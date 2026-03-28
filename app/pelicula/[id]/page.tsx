@@ -12,6 +12,7 @@ import RecomendarButton from './RecomendarButton'
 import AgregarAListaButton from './AgregarAListaButton'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
+import SpotifyPlayer from '@/components/SpotifyPlayer'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -252,6 +253,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 <p className="text-sm text-zinc-600">No disponible en streaming actualmente</p>
               </div>
             )}
+
+            {/* Soundtrack */}
+            <SpotifyPlayer movieTitle={pelicula.titulo_ingles || pelicula.titulo} />
 
             {/* Video clip */}
             {enr?.video_clip_url && (() => {

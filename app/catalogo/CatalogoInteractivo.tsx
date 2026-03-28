@@ -686,7 +686,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               if (f.anioDesde) setAnioDesde(f.anioDesde)
               if (f.anioHasta) setAnioHasta(f.anioHasta)
               if (f.orden) setOrden(f.orden as any)
-              if (f.searchText) setBusqueda(f.searchText)
+              // Clear search text when smart filters are applied, unless there's a specific title to search
+              setBusqueda(f.searchText || '')
               setPagina(0)
             }}
             placeholder="Buscar película o pedir recomendación..."

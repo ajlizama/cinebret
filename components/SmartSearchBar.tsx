@@ -55,19 +55,35 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, placeh
     const recognition = new SpeechRecognition()
     recognition.lang = 'es-CL'
     recognition.interimResults = true
+    recognition.continuous = true
     recognition.maxAlternatives = 1
 
+    let finalTranscript = ''
+    let silenceTimer: ReturnType<typeof setTimeout> | null = null
+
     recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript
-      onChange(transcript)
-      if (event.results[0].isFinal) {
-        setListening(false)
-        processQuery(transcript)
+      let interim = ''
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript + ' '
+        } else {
+          interim = event.results[i][0].transcript
+        }
       }
+      onChange((finalTranscript + interim).trim())
+
+      // Reset silence timer — process after 2s of silence
+      if (silenceTimer) clearTimeout(silenceTimer)
+      silenceTimer = setTimeout(() => {
+        recognition.stop()
+        const text = finalTranscript.trim()
+        if (text) processQuery(text)
+        setListening(false)
+      }, 2000)
     }
 
-    recognition.onerror = () => setListening(false)
-    recognition.onend = () => setListening(false)
+    recognition.onerror = () => { if (silenceTimer) clearTimeout(silenceTimer); setListening(false) }
+    recognition.onend = () => { if (silenceTimer) clearTimeout(silenceTimer); setListening(false) }
 
     recognitionRef.current = recognition
     recognition.start()

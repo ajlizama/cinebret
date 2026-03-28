@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/context/AuthContext'
+import Nav from '@/components/Nav'
+import EnrichedDetails from '@/components/EnrichedDetails'
 
 type ReelMovie = {
   id: string
@@ -14,7 +17,18 @@ type ReelMovie = {
   poster_path: string | null
   director: string | null
   videoId: string
+  plataformas: string[]
 }
+
+const PLATAFORMAS = [
+  { id: 'netflix', logo: '/netflix.png' },
+  { id: 'disney_plus', logo: '/disney_plus.svg' },
+  { id: 'hbo_max', logo: '/hbo_max.png' },
+  { id: 'amazon_prime', logo: '/amazon_prime.png' },
+  { id: 'apple_tv', logo: '/apple_tv.png' },
+  { id: 'paramount_plus', logo: '/paramount_plus.svg' },
+  { id: 'mubi', logo: '/mubi.png' },
+]
 
 function extractYTId(url: string): string | null {
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
@@ -35,21 +49,20 @@ function loadYT(): Promise<void> {
   return ytPromise
 }
 
-function MovieOverlay({ movie, index, total, muted }: { movie: ReelMovie; index: number; total: number; muted: boolean }) {
+function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist, onVisto, onWatchlist }: {
+  movie: ReelMovie; index: number; total: number; muted: boolean; onShowInfo: () => void
+  visto: boolean; watchlist: boolean; onVisto: () => void; onWatchlist: () => void
+}) {
   return (
     <>
-      <div className="absolute top-4 left-4 z-30 bg-black/50 rounded-full w-9 h-9 flex items-center justify-center">
-        <Link href="/catalogo" className="text-white">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </Link>
-      </div>
-      <div className="absolute top-4 right-4 z-30 bg-black/50 rounded-full px-3 py-1 text-white text-xs">
-        {index + 1} / {total}
-      </div>
-      <div className="absolute top-14 right-4 z-30 bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
-        {muted ? '🔇' : '🔊'}
+      {/* Counter + mute below nav */}
+      <div className="absolute top-24 right-4 z-30 flex flex-col items-end gap-2">
+        <div className="bg-black/50 rounded-full px-3 py-1 text-white text-xs">
+          {index + 1} / {total}
+        </div>
+        <div className="bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
+          {muted ? '🔇' : '🔊'}
+        </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}>
@@ -66,21 +79,61 @@ function MovieOverlay({ movie, index, total, muted }: { movie: ReelMovie; index:
             {movie.director && <span className="text-zinc-400">Dir. {movie.director}</span>}
           </div>
           {movie.categoria && <p className="text-zinc-500 text-xs mt-1">{movie.categoria}</p>}
+          {/* Platform logos */}
+          {movie.plataformas.length > 0 && (
+            <div className="flex gap-1.5 mt-2">
+              {PLATAFORMAS.filter(pl => movie.plataformas.includes(pl.id)).map(pl => (
+                <div key={pl.id} className="bg-white/90 rounded px-1 py-0.5">
+                  <img src={pl.logo} alt="" className="h-3 w-auto object-contain" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+      </div>
+      {/* Right side action buttons (TikTok style) */}
+      <div className="absolute right-3 bottom-40 z-30 flex flex-col items-center gap-4">
+        <button onClick={onVisto} className="flex flex-col items-center gap-1">
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${visto ? 'bg-emerald-500' : 'bg-black/50'}`}>
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <span className="text-white text-[9px]">{visto ? 'Vista' : 'Ya la vi'}</span>
+        </button>
+        <button onClick={onWatchlist} className="flex flex-col items-center gap-1">
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${watchlist ? 'bg-yellow-400' : 'bg-black/50'}`}>
+            <svg className={`w-5 h-5 ${watchlist ? 'text-zinc-950' : 'text-white'}`} fill={watchlist ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+          </div>
+          <span className="text-white text-[9px]">{watchlist ? 'Guardada' : 'Watchlist'}</span>
+        </button>
+        <button onClick={onShowInfo} className="flex flex-col items-center gap-1">
+          <div className="w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <span className="text-white text-[9px]">Info</span>
+        </button>
       </div>
     </>
   )
 }
 
 export default function CineReelsPage() {
+  const { user } = useAuth()
   const [movies, setMovies] = useState<ReelMovie[]>([])
   const [current, setCurrent] = useState(0)
   const [muted, setMuted] = useState(true)
   const [loading, setLoading] = useState(true)
   const [playing, setPlaying] = useState(false)
   const [playerReady, setPlayerReady] = useState(false)
-  const [slideOffset, setSlideOffset] = useState(0) // px offset during drag
+  const [slideOffset, setSlideOffset] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
+  const [showInfo, setShowInfo] = useState(false)
+  const [userStates, setUserStates] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
   const playerRef = useRef<any>(null)
   const playerDivRef = useRef<HTMLDivElement>(null)
   const touchStartY = useRef(0)
@@ -106,6 +159,25 @@ export default function CineReelsPage() {
       const ids = ytEnr.map(e => e.pelicula_id)
       const clipMap: Record<string, any> = {}
       ytEnr.forEach(e => { clipMap[e.pelicula_id] = e })
+      // Fetch platform catalog for today
+      const hoy = new Date().toISOString().split('T')[0]
+      const { data: fechaRow } = await supabase.from('catalogos').select('fecha').eq('activo', true).order('fecha', { ascending: false }).limit(1).maybeSingle()
+      const fecha = (fechaRow as any)?.fecha ?? hoy
+      const platData: any[] = []
+      let pOffset = 0
+      while (true) {
+        const { data } = await supabase.from('catalogos').select('pelicula_id, plataforma').eq('fecha', fecha).eq('activo', true).range(pOffset, pOffset + 999)
+        if (!data || data.length === 0) break
+        platData.push(...data)
+        if (data.length < 1000) break
+        pOffset += 1000
+      }
+      const platMap: Record<string, string[]> = {}
+      platData.forEach((c: any) => {
+        if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
+        if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
+      })
+
       const allMovies: ReelMovie[] = []
       for (let i = 0; i < ids.length; i += 50) {
         const chunk = ids.slice(i, i + 50)
@@ -116,7 +188,7 @@ export default function CineReelsPage() {
           data.forEach((m: any) => {
             const enr = clipMap[m.id]
             const videoId = extractYTId(enr.video_clip_url)
-            if (videoId) allMovies.push({ ...m, director: enr.director, videoId })
+            if (videoId) allMovies.push({ ...m, director: enr.director, videoId, plataformas: platMap[m.id] ?? [] })
           })
         }
       }
@@ -170,9 +242,22 @@ export default function CineReelsPage() {
     if (muted) p.mute(); else p.unMute()
   }, [muted, playerReady])
 
+  const toggleVisto = useCallback((movieId: string) => {
+    const cur = userStates[movieId]?.visto ?? false
+    setUserStates(prev => ({ ...prev, [movieId]: { ...prev[movieId], visto: !cur, watchlist: prev[movieId]?.watchlist ?? false } }))
+    if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: movieId, visto: !cur }, { onConflict: 'user_id,pelicula_id' })
+  }, [user, userStates])
+
+  const toggleWatchlist = useCallback((movieId: string) => {
+    const cur = userStates[movieId]?.watchlist ?? false
+    setUserStates(prev => ({ ...prev, [movieId]: { visto: prev[movieId]?.visto ?? false, watchlist: !cur } }))
+    if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: movieId, watchlist: !cur }, { onConflict: 'user_id,pelicula_id' })
+  }, [user, userStates])
+
   const goTo = useCallback((idx: number) => {
     if (idx < 0 || idx >= movies.length) return
     setTransitioning(true)
+    setShowInfo(false)
     setCurrent(idx)
     setTimeout(() => setTransitioning(false), 400)
   }, [movies.length])
@@ -227,6 +312,8 @@ export default function CineReelsPage() {
   const nextMovie = current < movies.length - 1 ? movies[current + 1] : null
   if (!movie) return null
 
+  const up = userStates[movie.id] ?? { visto: false, watchlist: false }
+
   return (
     <div className="fixed inset-0 bg-black z-50 overflow-hidden"
       onTouchStart={handleTouchStart}
@@ -261,7 +348,10 @@ export default function CineReelsPage() {
           {/* Tap for mute */}
           <div className="absolute inset-0 z-10" onClick={() => setMuted(v => !v)} />
 
-          <MovieOverlay movie={movie} index={current} total={movies.length} muted={muted} />
+          <MovieOverlay movie={movie} index={current} total={movies.length} muted={muted}
+            visto={up.visto} watchlist={up.watchlist}
+            onVisto={() => toggleVisto(movie.id)} onWatchlist={() => toggleWatchlist(movie.id)}
+            onShowInfo={() => setShowInfo(v => !v)} />
 
           {/* Poster + loading */}
           {!playing && (
@@ -284,6 +374,37 @@ export default function CineReelsPage() {
           </div>
         )}
       </div>
+
+      {/* Nav overlay */}
+      <div className="absolute top-0 left-0 right-0 z-40">
+        <Nav active="cinereels" />
+      </div>
+
+      {/* Info panel (slides up like TikTok comments) */}
+      {showInfo && (
+        <>
+          <div className="fixed inset-0 z-50" onClick={() => setShowInfo(false)} />
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-zinc-900 rounded-t-2xl max-h-[60vh] overflow-y-auto"
+            style={{ animation: 'slideUp 0.3s ease-out' }}>
+            <div className="sticky top-0 bg-zinc-900 px-4 pt-3 pb-2 flex items-center justify-between border-b border-zinc-800">
+              <h3 className="text-white font-bold text-sm">{movie.titulo_ingles || movie.titulo}</h3>
+              <button onClick={() => setShowInfo(false)} className="text-zinc-500 hover:text-white text-lg">✕</button>
+            </div>
+            <div className="px-4 py-3">
+              <EnrichedDetails peliculaId={movie.id} />
+              <Link href={`/pelicula/${movie.id}`} className="inline-block mt-3 text-xs text-yellow-400 hover:text-yellow-300 font-medium">
+                Ver ficha completa →
+              </Link>
+            </div>
+          </div>
+          <style jsx>{`
+            @keyframes slideUp {
+              from { transform: translateY(100%); }
+              to { transform: translateY(0); }
+            }
+          `}</style>
+        </>
+      )}
     </div>
   )
 }

@@ -242,20 +242,17 @@ export default function CineReelsPage() {
         {current + 1} / {movies.length}
       </div>
 
-      {/* Scroll container */}
-      <div ref={scrollRef} className="h-full w-full overflow-hidden">
-        <div className="h-full w-full" style={{ transform: `translateY(-${current * 100}%)`, transition: 'transform 0.4s ease-out' }}>
-          {movies.map((m, i) => (
-            <div key={m.id} className="h-full w-full">
-              <ReelItem
-                movie={m}
-                isActive={i === current}
-                isMuted={muted}
-                onMuteToggle={() => setMuted(v => !v)}
-              />
-            </div>
-          ))}
-        </div>
+      {/* Single active reel — only renders current video */}
+      <div className="h-full w-full">
+        {movies[current] && (
+          <ReelItem
+            key={movies[current].id}
+            movie={movies[current]}
+            isActive={true}
+            isMuted={muted}
+            onMuteToggle={() => setMuted(v => !v)}
+          />
+        )}
       </div>
     </div>
   )

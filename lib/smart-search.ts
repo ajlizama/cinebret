@@ -12,6 +12,8 @@ export type SmartFilters = {
   orden: string
   searchText: string // remaining text for regular search
   keywordSearch: string[] // search in keywords/taglines/sinopsis
+  certification: string[] // include these ratings (PG-13, R, etc.)
+  excludeCertification: string[] // exclude these ratings
   response: string // conversational response message
   understood: boolean // whether we parsed anything useful
 }
@@ -130,6 +132,8 @@ export function parseSmartSearch(query: string): SmartFilters {
     orden: '',
     searchText: '',
     keywordSearch: [],
+    certification: [],
+    excludeCertification: [],
     response: '',
     understood: false,
   }

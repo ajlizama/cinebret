@@ -38,7 +38,7 @@ export type Pelicula = {
   compositor_oscars: number | null; generos: string[]; poster_path: string | null
   oscars: string | null; imdb_id: string | null; youtube_trailer_key: string | null
   sinopsis: string | null; video_clip_url: string | null
-  keywords: string[]; tagline: string | null
+  keywords: string[]; tagline: string | null; certification: string | null
 }
 
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
@@ -534,6 +534,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   const [filtroVistas, setFiltroVistas] = useState<'todas' | 'vistas' | 'no_vistas'>('todas')
   const [soloWatchlist, setSoloWatchlist] = useState(false)
   const [smartKeywords, setSmartKeywords] = useState<string[]>([])
+  const [certFiltro, setCertFiltro] = useState<string[]>([])
+  const [certExclude, setCertExclude] = useState<string[]>([])
   const catalogRef = useRef<HTMLDivElement>(null)
   const [expandida, setExpandida] = useState<string | null>(null)
   const [orden, setOrden] = useState<Orden>('imdb')
@@ -564,7 +566,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
     generos: rec.generos, poster_path: rec.poster_path, oscars: rec.oscars,
     imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
     video_clip_url: (rec as any).video_clip_url ?? null,
-    keywords: [], tagline: null,
+    keywords: [], tagline: null, certification: null,
   })
   const gridRef = useRef<HTMLDivElement>(null)
 
@@ -629,6 +631,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         matchOscarFiltro(p, oscarsFiltro) &&
         (!anioDesde || (p.anio ?? 0) >= Number(anioDesde)) &&
         (!anioHasta || (p.anio ?? 9999) <= Number(anioHasta)) &&
+        (certFiltro.length === 0 || certFiltro.includes(p.certification ?? '')) &&
+        (certExclude.length === 0 || !certExclude.includes(p.certification ?? '')) &&
         (smartKeywords.length === 0 || smartKeywords.some(kw => {
           const kwl = kw.toLowerCase()
           return p.keywords.some(k => k.toLowerCase().includes(kwl)) ||
@@ -659,7 +663,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   const limpiarFiltros = () => {
     setBusqueda(''); setPlataformasFiltro([]); setCategoriasFiltro([]); setGenerosFiltro([])
     setDirectoresFiltro([]); setActoresFiltro([]); setCompositoresFiltro([])
-    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setFiltroVistas('todas'); setSoloWatchlist(false); setAnioDesde(''); setAnioHasta(''); setSmartKeywords([]); setPagina(0)
+    setOscarsFiltro([]); setSoloReviews(false); setSoloSello(false); setFiltroVistas('todas'); setSoloWatchlist(false); setAnioDesde(''); setAnioHasta(''); setSmartKeywords([]); setCertFiltro([]); setCertExclude([]); setPagina(0)
   }
 
   const POR_PAGINA = 200
@@ -709,6 +713,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               setAnioDesde(f.anioDesde || '')
               setAnioHasta(f.anioHasta || '')
               if (f.orden) setOrden(f.orden as any)
+              setCertFiltro(f.certification ?? [])
+              setCertExclude(f.excludeCertification ?? [])
               setBusqueda(f.searchText || '')
               setPagina(0)
             }}

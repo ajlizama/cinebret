@@ -136,7 +136,15 @@ export default function CastCrewPage() {
     })()
   }, [])
 
-  const filtered = useMemo(() => people.filter(p => p.type === tab), [people, tab])
+  const [searchCrew, setSearchCrew] = useState('')
+  const filtered = useMemo(() => {
+    let list = people.filter(p => p.type === tab)
+    if (searchCrew) {
+      const q = searchCrew.toLowerCase()
+      list = list.filter(p => p.name.toLowerCase().includes(q))
+    }
+    return list
+  }, [people, tab, searchCrew])
   const linkBase = tab === 'actor' ? '/actor' : tab === 'director' ? '/director' : '/compositor'
   const [musicPlaying, setMusicPlaying] = useState<string | null>(null)
   const [musicUrls, setMusicUrls] = useState<Record<string, string | null>>({})
@@ -182,14 +190,23 @@ export default function CastCrewPage() {
         <h1 className="text-2xl font-bold text-white mt-4 mb-1">Cast & Crew</h1>
         <p className="text-zinc-500 text-sm mb-5">Ranking por IMDB promedio × raíz de películas</p>
 
-        <div className="flex rounded-xl border border-zinc-700 overflow-hidden text-sm font-medium mb-6 w-fit">
+        <div className="flex rounded-xl border border-zinc-700 overflow-hidden text-sm font-medium mb-4 w-fit">
           {([['actor', 'Actores'], ['director', 'Directores'], ['compositor', 'Compositores']] as const).map(([key, label]) => (
-            <button key={key} onClick={() => { setTab(key); setExpanded(null) }}
+            <button key={key} onClick={() => { setTab(key); setExpanded(null); setSearchCrew('') }}
               className={`px-5 py-2 transition-colors ${tab === key ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
               {label}
             </button>
           ))}
         </div>
+
+        {/* Buscador */}
+        <input
+          type="text"
+          placeholder={`Buscar ${tab === 'actor' ? 'actor' : tab === 'director' ? 'director' : 'compositor'}...`}
+          value={searchCrew}
+          onChange={e => setSearchCrew(e.target.value)}
+          className="w-full max-w-md bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 mb-4"
+        />
 
         {loading ? (
           <div className="flex justify-center py-12">
@@ -215,12 +232,12 @@ export default function CastCrewPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-white text-sm font-medium truncate">{p.name}</p>
-                        {p.oscars > 0 && <span className="text-amber-400 text-xs shrink-0">🏆 {p.oscars}</span>}
+                        {p.oscars > 0 && <span className="flex items-center gap-0.5 shrink-0"><img src="/oscar.png" alt="Oscar" className="h-4 w-auto" /><span className="text-amber-400 text-xs font-bold">{p.oscars}</span></span>}
                       </div>
                       <p className="text-zinc-500 text-xs">{p.movieCount} películas</p>
                     </div>
                     {/* Movie posters */}
-                    <div className="hidden sm:flex gap-1.5 shrink-0">
+                    <div className="flex gap-1 sm:gap-1.5 shrink-0">
                       {p.topMovies.slice(0, 5).map(m => (
                         <div key={m.id} className="relative w-9 h-13 rounded-md overflow-hidden bg-zinc-800" style={{ height: '52px' }}>
                           {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" fill className="object-cover" sizes="36px" />}
@@ -237,7 +254,7 @@ export default function CastCrewPage() {
                         <Link href={`${linkBase}/${encodeURIComponent(p.name)}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium">
                           Ver ficha completa →
                         </Link>
-                        <p className="text-zinc-500 text-xs">{p.movieCount} películas · ⭐ {p.avgImdb} promedio{p.oscars > 0 ? ` · 🏆 ${p.oscars} Oscar${p.oscars > 1 ? 's' : ''}` : ''}</p>
+                        <p className="text-zinc-500 text-xs">{p.movieCount} películas · ⭐ {p.avgImdb} promedio{p.oscars > 0 ? ` · ${p.oscars} Oscar${p.oscars > 1 ? 's' : ''}` : ''}</p>
                       </div>
 
                       {loadingExpand ? (

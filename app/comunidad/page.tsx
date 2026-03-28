@@ -567,16 +567,6 @@ export default function ComunidadPage() {
 
       <div className="max-w-5xl mx-auto px-4 md:px-6 py-3">
 
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <Link href="/cambios" className="text-xs text-zinc-600 hover:text-zinc-400 italic transition-colors">
-            Update de plataformas
-          </Link>
-          <Link href="/estadisticas" className="text-xs text-zinc-500 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">
-            Ver estadísticas →
-          </Link>
-        </div>
-
         {/* Contenido principal — ancho completo */}
         <div>
             {/* Explorar todos los perfiles */}

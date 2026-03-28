@@ -23,6 +23,7 @@ export default function TrailersPage() {
   const [movies, setMovies] = useState<TrailerMovie[]>([])
   const [loading, setLoading] = useState(true)
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [searchTrailer, setSearchTrailer] = useState('')
 
   useEffect(() => {
     ;(async () => {
@@ -72,7 +73,15 @@ export default function TrailersPage() {
       <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
         <BackButton />
         <h1 className="text-2xl font-bold text-white mt-4 mb-1">Trailers & Clips</h1>
-        <p className="text-zinc-500 text-sm mb-6">{movies.length} películas con video</p>
+        <p className="text-zinc-500 text-sm mb-4">{movies.length} películas con video</p>
+
+        <input
+          type="text"
+          placeholder="Buscar película..."
+          value={searchTrailer}
+          onChange={e => setSearchTrailer(e.target.value)}
+          className="w-full max-w-md bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 mb-4"
+        />
 
         {loading ? (
           <div className="flex justify-center py-12">
@@ -80,7 +89,11 @@ export default function TrailersPage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {movies.map(m => {
+            {movies.filter(m => {
+              if (!searchTrailer) return true
+              const q = searchTrailer.toLowerCase()
+              return m.titulo.toLowerCase().includes(q) || (m.titulo_ingles || '').toLowerCase().includes(q)
+            }).map(m => {
               const ytId = extractYouTubeId(m.video_clip_url)
               const isExpanded = expandedId === m.id
               return (

@@ -12,6 +12,8 @@ import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
 import EnrichedDetails from '@/components/EnrichedDetails'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
+import SmartSearchBar from '@/components/SmartSearchBar'
+import type { SmartFilters } from '@/lib/smart-search'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
 
@@ -672,14 +674,23 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           <p className="text-zinc-300 text-sm md:text-lg text-center mb-4 max-w-md">
             Buscador y recomendador de películas
           </p>
-          <div className="relative w-full max-w-xl">
-            <input type="text" placeholder="Buscar película, director, actor..." value={busqueda}
-              onChange={e => { setBusqueda(e.target.value); setPagina(0) }}
-              className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-sm shadow-lg" />
-            <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
-            </svg>
-          </div>
+          <SmartSearchBar
+            value={busqueda}
+            onChange={v => { setBusqueda(v); setPagina(0) }}
+            onSmartFilters={(f: SmartFilters) => {
+              if (f.plataformas.length) setPlataformasFiltro(f.plataformas)
+              if (f.categorias.length) setCategoriasFiltro(f.categorias)
+              if (f.generos.length) setGenerosFiltro(f.generos)
+              if (f.directores.length) setDirectoresFiltro(f.directores)
+              if (f.actores.length) setActoresFiltro(f.actores)
+              if (f.anioDesde) setAnioDesde(f.anioDesde)
+              if (f.anioHasta) setAnioHasta(f.anioHasta)
+              if (f.orden) setOrden(f.orden as any)
+              if (f.searchText) setBusqueda(f.searchText)
+              setPagina(0)
+            }}
+            placeholder="Buscar película o pedir recomendación..."
+          />
         </div>
       </div>
 

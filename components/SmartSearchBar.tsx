@@ -37,11 +37,12 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
         utterance.rate = 1.05
         utterance.pitch = 1.0
         const voices = window.speechSynthesis.getVoices()
-        // Prefer: Paulina (MX) > Google español > any es-*
+        // Prefer: Rocko MX > Paulina > Google español > any es-*
+        const rocko = voices.find(v => v.name.includes('Rocko') && v.lang.includes('MX'))
         const paulina = voices.find(v => v.name.includes('Paulina'))
         const google = voices.find(v => v.name.includes('Google español'))
         const anyEs = voices.find(v => v.lang.startsWith('es'))
-        utterance.voice = paulina ?? google ?? anyEs ?? null
+        utterance.voice = rocko ?? paulina ?? google ?? anyEs ?? null
         window.speechSynthesis.cancel() // cancel any pending
         window.speechSynthesis.speak(utterance)
       }

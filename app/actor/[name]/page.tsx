@@ -1,0 +1,239 @@
+import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
+import Image from 'next/image'
+import { notFound } from 'next/navigation'
+import Nav from '@/components/Nav'
+import BackButton from '@/components/BackButton'
+
+const GENEROS_NORMALIZE: Record<string, string> = {
+  'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
+  'Comedy': 'Comedia', 'Crime': 'Crimen', 'Documentary': 'Documental',
+  'Drama': 'Drama', 'Fantasy': 'Fantasía', 'History': 'Historia',
+  'Horror': 'Terror', 'Music': 'Música', 'Mystery': 'Misterio',
+  'Romance': 'Romance', 'Science Fiction': 'Ciencia ficción', 'Sci-Fi': 'Ciencia ficción',
+  'Thriller': 'Thriller', 'War': 'Guerra', 'Western': 'Western',
+  'Family': 'Familia', 'Biography': 'Biografía', 'Sport': 'Deporte',
+  'Accion': 'Acción', 'Animacion': 'Animación', 'Biografia': 'Biografía',
+  'Fantasia': 'Fantasía', 'Familiar': 'Familia', 'Ciencia Ficción': 'Ciencia ficción',
+}
+const norm = (g: string) => GENEROS_NORMALIZE[g] ?? g
+
+const CAT_SHORT: Record<string, string> = {
+  "Pa'l domingo de bajón": 'Domingo de bajón',
+  "Pa' saltar del sillón": 'Saltar del sillón',
+  "Pa' quedar con el cerebro como licuadora": 'Cerebro licuadora',
+  "Pa' llorar a moco tendido": 'Llorar a moco tendido',
+}
+
+async function fetchAllPages<T>(
+  queryFn: (from: number, to: number) => PromiseLike<{ data: T[] | null }>,
+  pageSize = 1000,
+): Promise<T[]> {
+  const results: T[] = []
+  let from = 0
+  while (true) {
+    const { data } = await queryFn(from, from + pageSize - 1)
+    if (!data || data.length === 0) break
+    results.push(...data)
+    if (data.length < pageSize) break
+    from += pageSize
+  }
+  return results
+}
+
+export default async function ActorPage({ params }: { params: Promise<{ name: string }> }) {
+  const { name } = await params
+  const actorName = decodeURIComponent(name)
+
+  // Find all movies where this actor appears in cast_json or actores field
+  const allEnr = await fetchAllPages((from, to) =>
+    supabase.from('enriquecimiento')
+      .select('pelicula_id, cast_json, director, compositor, generos, actores')
+      .range(from, to)
+  )
+
+  // Filter movies that have this actor
+  const actorMovieIds: string[] = []
+  const actorPhoto: string | null = null
+  let profilePath: string | null = null
+
+  for (const enr of allEnr) {
+    const cast = enr.cast_json as any[] | null
+    if (cast) {
+      const match = cast.find((c: any) => c.name === actorName)
+      if (match) {
+        actorMovieIds.push(enr.pelicula_id)
+        if (!profilePath && match.profile_path) profilePath = match.profile_path
+        continue
+      }
+    }
+    // Fallback: check actores text field
+    const actores = (enr.actores as string || '').split(',').map(a => a.trim())
+    if (actores.includes(actorName)) {
+      actorMovieIds.push(enr.pelicula_id)
+    }
+  }
+
+  if (actorMovieIds.length === 0) notFound()
+
+  // Fetch movie details
+  const { data: movies } = await supabase
+    .from('peliculas')
+    .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, categoria, backdrop_path, oscars')
+    .in('id', actorMovieIds)
+
+  if (!movies || movies.length === 0) notFound()
+
+  // Build enrichment map for these movies
+  const enrMap: Record<string, any> = {}
+  for (const enr of allEnr) {
+    if (actorMovieIds.includes(enr.pelicula_id)) enrMap[enr.pelicula_id] = enr
+  }
+
+  // Sort by IMDB desc
+  const sorted = [...movies].sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+
+  // Stats
+  const conImdb = sorted.filter(m => m.nota_imdb)
+  const avgImdb = conImdb.length > 0 ? (conImdb.reduce((s, m) => s + m.nota_imdb!, 0) / conImdb.length).toFixed(1) : null
+
+  // Directors worked with
+  const directors: Record<string, number> = {}
+  const composers: Record<string, number> = {}
+  const genres: Record<string, number> = {}
+  const categories: Record<string, number> = {}
+  let oscarMovies = 0
+
+  for (const m of sorted) {
+    const enr = enrMap[m.id]
+    if (enr?.director) directors[enr.director] = (directors[enr.director] ?? 0) + 1
+    if (enr?.compositor) composers[enr.compositor] = (composers[enr.compositor] ?? 0) + 1
+    for (const g of (enr?.generos ?? [])) {
+      const ng = norm(g)
+      genres[ng] = (genres[ng] ?? 0) + 1
+    }
+    if (m.categoria) {
+      const cat = CAT_SHORT[m.categoria] ?? m.categoria
+      categories[cat] = (categories[cat] ?? 0) + 1
+    }
+    if (m.oscars && m.oscars.toLowerCase().startsWith('ganó')) oscarMovies++
+  }
+
+  const topDirectors = Object.entries(directors).sort(([, a], [, b]) => b - a).slice(0, 5)
+  const topComposers = Object.entries(composers).sort(([, a], [, b]) => b - a).slice(0, 5)
+  const topGenres = Object.entries(genres).sort(([, a], [, b]) => b - a).slice(0, 6)
+  const topCats = Object.entries(categories).sort(([, a], [, b]) => b - a)
+
+  // Random backdrop from one of their movies
+  const moviesWithBackdrop = sorted.filter(m => m.backdrop_path)
+  const backdrop = moviesWithBackdrop.length > 0
+    ? moviesWithBackdrop[Math.floor(Math.random() * moviesWithBackdrop.length)].backdrop_path
+    : null
+
+  return (
+    <main className="min-h-screen bg-zinc-950">
+      <Nav />
+
+      {/* Hero */}
+      <div className="relative w-full overflow-hidden" style={{ minHeight: '260px' }}>
+        {backdrop && (
+          <>
+            <img src={`https://image.tmdb.org/t/p/w1280${backdrop}`} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover object-center" style={{ opacity: 0.3 }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(9,9,11,0.3) 0%, rgba(9,9,11,1) 100%)' }} />
+          </>
+        )}
+        {!backdrop && <div className="absolute inset-0 bg-zinc-950" />}
+
+        <div className="relative max-w-5xl mx-auto px-6 pt-6 pb-10">
+          <BackButton />
+          <div className="mt-4 flex items-end gap-5">
+            {/* Actor photo */}
+            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden bg-zinc-800 shrink-0 ring-4 ring-zinc-950">
+              {profilePath ? (
+                <img src={`https://image.tmdb.org/t/p/w185${profilePath}`} alt={actorName} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-zinc-600 text-4xl font-bold">{actorName[0]}</div>
+              )}
+            </div>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{actorName}</h1>
+              <div className="flex items-center gap-4 mt-2 text-sm text-zinc-400">
+                <span>{sorted.length} películas en CineBret</span>
+                {avgImdb && <span className="text-yellow-400 font-bold">⭐ {avgImdb} promedio</span>}
+                {oscarMovies > 0 && <span className="text-amber-400">🏆 {oscarMovies} ganadoras Oscar</span>}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 py-6">
+        {/* Stats grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+          {/* Directors */}
+          <div className="bg-zinc-900 rounded-xl p-4">
+            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Directores</p>
+            <div className="space-y-1">
+              {topDirectors.map(([d, count]) => (
+                <p key={d} className="text-sm text-zinc-300"><span className="text-white font-medium">{d}</span> <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+          </div>
+
+          {/* Composers */}
+          <div className="bg-zinc-900 rounded-xl p-4">
+            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Compositores</p>
+            <div className="space-y-1">
+              {topComposers.map(([c, count]) => (
+                <p key={c} className="text-sm text-zinc-300"><span className="text-white font-medium">{c}</span> <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+          </div>
+
+          {/* Genres */}
+          <div className="bg-zinc-900 rounded-xl p-4">
+            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Géneros</p>
+            <div className="space-y-1">
+              {topGenres.map(([g, count]) => (
+                <p key={g} className="text-sm text-zinc-300"><span className="text-white font-medium">{g}</span> <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div className="bg-zinc-900 rounded-xl p-4">
+            <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Categorías CineBret</p>
+            <div className="space-y-1">
+              {topCats.map(([c, count]) => (
+                <p key={c} className="text-sm text-zinc-300"><span className="text-white font-medium">{c}</span> <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Filmography */}
+        <h2 className="text-lg font-bold text-white mb-4">Filmografía</h2>
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+          {sorted.map(m => (
+            <Link key={m.id} href={`/pelicula/${m.id}`} className="group">
+              <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
+                {m.poster_path ? (
+                  <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="150px" />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center p-2">
+                    <span className="text-zinc-600 text-xs text-center">{m.titulo_ingles || m.titulo}</span>
+                  </div>
+                )}
+                {m.nota_imdb && (
+                  <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {m.nota_imdb}</div>
+                )}
+              </div>
+              <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{m.titulo_ingles || m.titulo}</p>
+              <p className="text-zinc-500 text-[10px]">{m.anio}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </main>
+  )
+}

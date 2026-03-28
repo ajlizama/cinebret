@@ -56,39 +56,41 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
     <main className="min-h-screen bg-zinc-950">
       <Nav />
 
-      {/* ── HERO: poster de fondo con blur cinematográfico ── */}
-      <div className="relative w-full overflow-hidden" style={{ minHeight: '280px' }}>
-        {pelicula.poster_path && (
+      {/* ── HERO: backdrop or blurred poster ── */}
+      <div className="relative w-full overflow-hidden" style={{ minHeight: '300px' }}>
+        {(pelicula.backdrop_path || pelicula.poster_path) && (
           <>
-            {/* Poster como fondo: escalado y con blur para efecto cinematográfico */}
             <img
-              src={`https://image.tmdb.org/t/p/w1280${pelicula.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w1280${pelicula.backdrop_path || pelicula.poster_path}`}
               alt=""
               aria-hidden
-              className="absolute inset-0 w-full h-full object-cover object-top scale-110"
-              style={{ opacity: 0.3, filter: 'blur(12px)' }}
+              className={`absolute inset-0 w-full h-full object-cover ${pelicula.backdrop_path ? 'object-center' : 'object-top scale-110'}`}
+              style={{ opacity: pelicula.backdrop_path ? 0.45 : 0.3, filter: pelicula.backdrop_path ? undefined : 'blur(12px)' }}
             />
-            {/* Capa de color sólido para reforzar contraste */}
-            <div className="absolute inset-0 bg-zinc-950/40" />
-            {/* Gradiente lateral (oscurece los bordes) */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(9,9,11,0.8) 0%, rgba(9,9,11,0.3) 40%, rgba(9,9,11,0.3) 60%, rgba(9,9,11,0.8) 100%)' }} />
-            {/* Gradiente vertical: transparente arriba → zinc-950 sólido abajo */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(9,9,11,0.1) 0%, rgba(9,9,11,0.4) 50%, rgba(9,9,11,1) 100%)' }} />
+            <div className="absolute inset-0 bg-zinc-950/30" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(9,9,11,0.85) 0%, rgba(9,9,11,0.2) 50%, rgba(9,9,11,0.85) 100%)' }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(9,9,11,0) 0%, rgba(9,9,11,0.5) 60%, rgba(9,9,11,1) 100%)' }} />
           </>
         )}
 
-        {/* Contenido del header */}
         <div className="relative max-w-6xl mx-auto px-6 pt-6 pb-16">
           <BackButton />
 
           <div className="mt-6 flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">{titulo}</h1>
+              <h1 className="text-4xl font-bold text-white mb-1">{titulo}</h1>
               {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                <p className="text-zinc-400 text-lg mb-3">{pelicula.titulo}</p>
+                <p className="text-zinc-400 text-lg mb-1">{pelicula.titulo}</p>
+              )}
+              {pelicula.tagline && (
+                <p className="text-zinc-400 text-sm italic mb-3">&ldquo;{pelicula.tagline}&rdquo;</p>
               )}
               <div className="flex items-center gap-4 text-sm text-zinc-400 flex-wrap">
                 {pelicula.anio && <span>{pelicula.anio}</span>}
+                {pelicula.runtime && <span>{pelicula.runtime} min</span>}
+                {pelicula.certification && (
+                  <span className="border border-zinc-600 rounded px-1.5 py-0.5 text-xs font-medium">{pelicula.certification}</span>
+                )}
                 {pelicula.nota_imdb && (
                   <span className="text-yellow-400 font-bold text-base">⭐ {pelicula.nota_imdb}</span>
                 )}
@@ -99,9 +101,11 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                   </span>
                 )}
               </div>
+              {pelicula.collection_name && (
+                <p className="text-xs text-zinc-500 mt-2">Parte de: <span className="text-zinc-300">{pelicula.collection_name}</span></p>
+              )}
             </div>
 
-            {/* Categoría */}
             {pelicula.categoria && (
               <div className="shrink-0 border border-zinc-700 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
                 <p className="text-xs text-zinc-500 mb-1">Categoría CineBret</p>
@@ -183,13 +187,35 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                   <p className="text-sm text-zinc-200">{enr.compositor}</p>
                 </div>
               )}
-              {enr?.actores && (
+              {enr?.actores && !enr?.cast_json && (
                 <div className="col-span-2">
                   <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
                   <p className="text-sm text-zinc-200">{enr.actores}</p>
                 </div>
               )}
             </div>
+
+            {/* Cast con fotos */}
+            {enr?.cast_json && (enr.cast_json as any[]).length > 0 && (
+              <div>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Reparto</p>
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-2 px-2">
+                  {(enr.cast_json as any[]).map((actor: any, i: number) => (
+                    <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-20 text-center group">
+                      <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 mb-1.5 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
+                        {actor.profile_path ? (
+                          <img src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} alt={actor.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-zinc-600 text-lg font-bold">{actor.name[0]}</div>
+                        )}
+                      </div>
+                      <p className="text-white text-[10px] font-semibold leading-tight line-clamp-2">{actor.name}</p>
+                      {actor.character && <p className="text-zinc-500 text-[9px] leading-tight line-clamp-1 mt-0.5">{actor.character}</p>}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Dónde ver — solo plataformas activas */}
             {PLATAFORMAS.some(plat => plataformasHoy.includes(plat.id)) ? (
@@ -235,6 +261,69 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Reviews */}
             <ReviewSection peliculaId={id} />
+
+            {/* Películas similares */}
+            {enr?.similar_ids && (enr.similar_ids as number[]).length > 0 && await (async () => {
+              const simIds = enr.similar_ids as number[]
+              const { data: simPels } = await supabase
+                .from('peliculas')
+                .select('id, titulo, titulo_ingles, poster_path, nota_imdb, tmdb_id')
+                .in('tmdb_id', simIds)
+                .not('poster_path', 'is', null)
+                .limit(15)
+              if (!simPels || simPels.length === 0) return null
+              // Sort by similar_ids order
+              const orderMap = new Map(simIds.map((id, i) => [id, i]))
+              simPels.sort((a: any, b: any) => (orderMap.get(a.tmdb_id) ?? 99) - (orderMap.get(b.tmdb_id) ?? 99))
+              return (
+                <div>
+                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Si te gustó esta película</p>
+                  <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-2 px-2">
+                    {simPels.map((sim: any) => (
+                      <Link key={sim.id} href={`/pelicula/${sim.id}`} className="shrink-0 w-28">
+                        <div className="relative w-28 h-40 rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
+                          <Image src={`https://image.tmdb.org/t/p/w185${sim.poster_path}`} alt={sim.titulo_ingles || sim.titulo} fill className="object-cover" sizes="112px" />
+                          {sim.nota_imdb && (
+                            <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {sim.nota_imdb}</div>
+                          )}
+                        </div>
+                        <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{sim.titulo_ingles || sim.titulo}</p>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )
+            })()}
+
+            {/* Keywords */}
+            {enr?.keywords && (enr.keywords as string[]).length > 0 && (
+              <div>
+                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Tags</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {(enr.keywords as string[]).map((kw: string) => (
+                    <span key={kw} className="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full">{kw}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Budget / Revenue */}
+            {(pelicula.budget || pelicula.revenue) && (
+              <div className="flex gap-6">
+                {pelicula.budget > 0 && (
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Presupuesto</p>
+                    <p className="text-sm text-zinc-300">${(pelicula.budget / 1_000_000).toFixed(0)}M USD</p>
+                  </div>
+                )}
+                {pelicula.revenue > 0 && (
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Recaudación</p>
+                    <p className="text-sm text-zinc-300">${(pelicula.revenue / 1_000_000).toFixed(0)}M USD</p>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Links externos */}
             <div className="flex flex-wrap gap-3">

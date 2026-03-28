@@ -65,7 +65,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
 
       {/* Movie logo below nav */}
       {movie.logo_path && (
-        <div className="absolute top-40 left-4 z-20 pointer-events-none">
+        <div className="absolute top-36 left-4 z-20 pointer-events-none">
           <img src={`https://image.tmdb.org/t/p/w500${movie.logo_path}`} alt="" className="h-20 md:h-28 w-auto max-w-[75vw] object-contain drop-shadow-2xl" />
         </div>
       )}

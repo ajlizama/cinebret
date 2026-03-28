@@ -90,16 +90,36 @@ export default function MusicaPage() {
     return list
   }, [movies, search, genreFilter])
 
-  const handleExpand = async (movie: MovieMusic) => {
-    if (expandedId === movie.id) { setExpandedId(null); setEmbedUrl(null); return }
-    setExpandedId(movie.id)
-    setLoadingEmbed(true)
+  const [albumCache, setAlbumCache] = useState<Record<string, string | null>>({})
+  const [playingInline, setPlayingInline] = useState<string | null>(null)
+
+  const fetchAlbum = async (movie: MovieMusic): Promise<string | null> => {
+    if (albumCache[movie.id] !== undefined) return albumCache[movie.id]
     try {
       const res = await fetch(`/api/spotify-search?q=${encodeURIComponent(movie.titulo_ingles || movie.titulo)}`)
       const data = await res.json()
-      setEmbedUrl(data.album?.embedUrl ?? null)
-    } catch { setEmbedUrl(null) }
+      const url = data.album?.embedUrl ?? null
+      setAlbumCache(prev => ({ ...prev, [movie.id]: url }))
+      return url
+    } catch { return null }
+  }
+
+  const handleExpand = async (movie: MovieMusic) => {
+    if (expandedId === movie.id) { setExpandedId(null); setEmbedUrl(null); return }
+    setPlayingInline(null)
+    setExpandedId(movie.id)
+    setLoadingEmbed(true)
+    const url = await fetchAlbum(movie)
+    setEmbedUrl(url)
     setLoadingEmbed(false)
+  }
+
+  const handleQuickPlay = async (e: React.MouseEvent, movie: MovieMusic) => {
+    e.stopPropagation()
+    if (playingInline === movie.id) { setPlayingInline(null); return }
+    setExpandedId(null)
+    setPlayingInline(movie.id)
+    await fetchAlbum(movie)
   }
 
   return (
@@ -139,14 +159,22 @@ export default function MusicaPage() {
               <div key={m.id}>
                 <div
                   onClick={() => handleExpand(m)}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors cursor-pointer ${expandedId === m.id ? 'bg-zinc-800' : 'bg-zinc-900/40 hover:bg-zinc-800/60'}`}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-3 transition-colors cursor-pointer ${expandedId === m.id ? 'bg-zinc-800' : 'bg-zinc-900/40 hover:bg-zinc-800/60'}`}
                 >
-                  <div className="relative w-10 h-14 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
-                    {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" fill className="object-cover" sizes="40px" />}
+                  {/* Play button */}
+                  <button onClick={(e) => handleQuickPlay(e, m)} className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${playingInline === m.id ? 'bg-green-500' : 'bg-zinc-700 hover:bg-green-500'}`}>
+                    {playingInline === m.id ? (
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    )}
+                  </button>
+                  <div className="relative w-14 h-20 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
+                    {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" fill className="object-cover" sizes="56px" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     {m.logo_path ? (
-                      <img src={`https://image.tmdb.org/t/p/w200${m.logo_path}`} alt={m.titulo_ingles || m.titulo} className="h-5 w-auto max-w-[200px] object-contain" />
+                      <img src={`https://image.tmdb.org/t/p/w200${m.logo_path}`} alt={m.titulo_ingles || m.titulo} className="h-6 w-auto max-w-[200px] object-contain" />
                     ) : (
                       <p className="text-white text-sm font-medium truncate">{m.titulo_ingles || m.titulo}</p>
                     )}
@@ -184,6 +212,21 @@ export default function MusicaPage() {
                       <p className="text-zinc-500 text-sm text-center py-4">Soundtrack no encontrado en Spotify</p>
                     )}
                     <Link href={`/pelicula/${m.id}`} className="inline-block mt-2 text-xs text-yellow-400 hover:text-yellow-300 font-medium">Ver ficha →</Link>
+                  </div>
+                )}
+
+                {/* Inline mini player (quick play) */}
+                {playingInline === m.id && albumCache[m.id] && (
+                  <div className="rounded-xl overflow-hidden mt-1 mb-2">
+                    <iframe
+                      src={albumCache[m.id]!}
+                      width="100%"
+                      height="152"
+                      frameBorder="0"
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                      className="rounded-xl"
+                    />
                   </div>
                 )}
               </div>

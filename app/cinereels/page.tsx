@@ -15,6 +15,7 @@ type ReelMovie = {
   anio: number | null
   categoria: string | null
   poster_path: string | null
+  logo_path: string | null
   director: string | null
   videoId: string
   plataformas: string[]
@@ -55,20 +56,27 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
 }) {
   return (
     <>
-      {/* Counter + mute below nav */}
-      <div className="absolute top-24 right-4 z-30 flex flex-col items-end gap-2">
-        <div className="bg-black/50 rounded-full px-3 py-1 text-white text-xs">
-          {index + 1} / {total}
-        </div>
+      {/* Mute indicator */}
+      <div className="absolute top-24 right-4 z-30">
         <div className="bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
           {muted ? '🔇' : '🔊'}
         </div>
       </div>
+
+      {/* Movie logo below nav */}
+      {movie.logo_path && (
+        <div className="absolute top-20 left-4 z-20 pointer-events-none">
+          <img src={`https://image.tmdb.org/t/p/w300${movie.logo_path}`} alt="" className="h-10 md:h-14 w-auto max-w-[60vw] object-contain drop-shadow-2xl" />
+        </div>
+      )}
+
+      {/* Bottom info */}
       <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}>
         <div className="p-5 pb-8">
           <Link href={`/pelicula/${movie.id}`} className="pointer-events-auto">
-            <h3 className="text-white font-bold text-xl drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>
+            {!movie.logo_path && <h3 className="text-white font-bold text-xl drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
+            {movie.logo_path && <h3 className="text-white font-bold text-lg drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
           </Link>
           {movie.titulo_ingles && movie.titulo !== movie.titulo_ingles && (
             <p className="text-zinc-400 text-sm mt-0.5">{movie.titulo}</p>
@@ -79,12 +87,12 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
             {movie.director && <span className="text-zinc-400">Dir. {movie.director}</span>}
           </div>
           {movie.categoria && <p className="text-zinc-500 text-xs mt-1">{movie.categoria}</p>}
-          {/* Platform logos */}
+          {/* Platform logos — double size */}
           {movie.plataformas.length > 0 && (
-            <div className="flex gap-1.5 mt-2">
+            <div className="flex gap-2 mt-2">
               {PLATAFORMAS.filter(pl => movie.plataformas.includes(pl.id)).map(pl => (
-                <div key={pl.id} className="bg-white/90 rounded px-1 py-0.5">
-                  <img src={pl.logo} alt="" className="h-3 w-auto object-contain" />
+                <div key={pl.id} className="bg-white/90 rounded-md px-1.5 py-1">
+                  <img src={pl.logo} alt="" className="h-6 w-auto object-contain" />
                 </div>
               ))}
             </div>
@@ -182,7 +190,7 @@ export default function CineReelsPage() {
       for (let i = 0; i < ids.length; i += 50) {
         const chunk = ids.slice(i, i + 50)
         const { data } = await supabase.from('peliculas')
-          .select('id, titulo, titulo_ingles, nota_imdb, anio, categoria, poster_path')
+          .select('id, titulo, titulo_ingles, nota_imdb, anio, categoria, poster_path, logo_path')
           .in('id', chunk)
         if (data) {
           data.forEach((m: any) => {

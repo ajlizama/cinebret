@@ -224,7 +224,7 @@ export default function CastCrewPage() {
                     <span className="text-zinc-600 text-sm font-bold w-7 text-right shrink-0">{i + 1}</span>
                     <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-800 shrink-0">
                       {p.photo ? (
-                        <img src={`https://image.tmdb.org/t/p/w185${p.photo}`} alt={p.name} className="w-full h-full object-cover" />
+                        <img loading="lazy" src={`https://image.tmdb.org/t/p/w185${p.photo}`} alt={p.name} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-zinc-600 text-sm font-bold">{p.name[0]}</div>
                       )}
@@ -232,7 +232,7 @@ export default function CastCrewPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-white text-sm font-medium truncate">{p.name}</p>
-                        {p.oscars > 0 && <span className="flex items-center gap-0.5 shrink-0"><img src="/oscar.png" alt="Oscar" className="h-4 w-auto" /><span className="text-amber-400 text-xs font-bold">{p.oscars}</span></span>}
+                        {p.oscars > 0 && <span className="flex items-center gap-0.5 shrink-0"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /><span className="text-amber-400 text-xs font-bold">{p.oscars}</span></span>}
                       </div>
                       <p className="text-zinc-500 text-xs">{p.movieCount} películas</p>
                     </div>

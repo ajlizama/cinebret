@@ -218,7 +218,7 @@ export default function AdminPage() {
                 {recentProfiles.map(p => (
                   <div key={p.user_id} className="flex items-center gap-3">
                     {p.avatar_url ? (
-                      <img src={p.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+                      <img loading="lazy" src={p.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300">
                         {p.username[0]?.toUpperCase()}

@@ -76,7 +76,7 @@ export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) 
               <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-14 text-center group">
                 <div className="w-14 h-14 rounded-full overflow-hidden bg-zinc-800 mb-1 ring-1 ring-transparent group-hover:ring-yellow-400/50 transition-all">
                   {actor.profile_path ? (
-                    <img src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} alt={actor.name} className="w-full h-full object-cover" />
+                    <img loading="lazy" src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} alt={actor.name} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-zinc-600 text-sm font-bold">{actor.name[0]}</div>
                   )}

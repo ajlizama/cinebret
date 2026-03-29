@@ -52,7 +52,7 @@ function tiempoRelativo(iso: string) {
 }
 
 function MiniAvatar({ url, username }: { url: string | null; username: string }) {
-  if (url) return <img src={url} alt={username} className="w-7 h-7 rounded-full object-cover shrink-0" />
+  if (url) return <img loading="lazy" src={url} alt={username} className="w-7 h-7 rounded-full object-cover shrink-0" />
   return (
     <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0">
       {username[0]?.toUpperCase()}
@@ -211,7 +211,7 @@ export default function Nav({ active, transparent }: Props) {
           {/* Logo — desktop: grande, ocupa ambas filas */}
           <Link href="/" className="shrink-0 hidden md:flex items-center pl-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-14 w-auto" />
+            <img loading="lazy" src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-14 w-auto" />
           </Link>
 
           <div className="flex-1 min-w-0">
@@ -219,7 +219,7 @@ export default function Nav({ active, transparent }: Props) {
           <div className="flex items-center justify-between mb-2.5 gap-3">
             <Link href="/" className="shrink-0 md:hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
+              <img loading="lazy" src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
             </Link>
 
             {/* Buscador unificado */}
@@ -508,7 +508,7 @@ export default function Nav({ active, transparent }: Props) {
 
             {/* CineReels */}
             <Link href="/cinereels" className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'cinereels' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
-              <img src="/cinereels-icon.png" alt="CineReels" className={`w-5 h-5 object-contain ${active === 'cinereels' ? 'opacity-100' : 'opacity-50'}`} />
+              <img loading="lazy" src="/cinereels-icon.png" alt="CineReels" className={`w-5 h-5 object-contain ${active === 'cinereels' ? 'opacity-100' : 'opacity-50'}`} />
               <span className="text-[10px] font-medium">CineReels</span>
             </Link>
 
@@ -516,7 +516,7 @@ export default function Nav({ active, transparent }: Props) {
             {user && username ? (
               <Link href={`/perfil/${username}`} className={`flex flex-col items-center gap-0.5 transition-colors ${active === 'perfil' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt={username} className={`w-5 h-5 rounded-full object-cover ${active === 'perfil' ? 'ring-2 ring-white' : ''}`} />
+                  <img loading="lazy" src={avatarUrl} alt={username} className={`w-5 h-5 rounded-full object-cover ${active === 'perfil' ? 'ring-2 ring-white' : ''}`} />
                 ) : (
                   <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${active === 'perfil' ? 'bg-white text-zinc-950' : 'bg-zinc-700 text-zinc-300'}`}>
                     {username[0]?.toUpperCase()}

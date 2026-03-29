@@ -265,7 +265,7 @@ export default function ListaComentarioModal({
                 comentarios.map(c => (
                   <div key={c.id} className="flex items-start gap-2">
                     {c.from_avatar ? (
-                      <img src={c.from_avatar} alt={c.from_username} className="w-6 h-6 rounded-full object-cover shrink-0 mt-0.5" />
+                      <img loading="lazy" src={c.from_avatar} alt={c.from_username} className="w-6 h-6 rounded-full object-cover shrink-0 mt-0.5" />
                     ) : (
                       <div className="w-6 h-6 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 mt-0.5">
                         {c.from_username[0]?.toUpperCase()}

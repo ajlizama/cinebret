@@ -782,7 +782,7 @@ export default function ParaTi({
                           {platsActivas.map(p => (
                             <div key={p.id} className="bg-white rounded px-1 py-0.5">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={p.logo} alt={p.nombre} className="h-3 w-auto object-contain block" />
+                              <img loading="lazy" src={p.logo} alt={p.nombre} className="h-3 w-auto object-contain block" />
                             </div>
                           ))}
                         </div>

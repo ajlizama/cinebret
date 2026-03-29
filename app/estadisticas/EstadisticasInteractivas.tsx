@@ -187,7 +187,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
               return (
                 <div key={plat.id} className="flex items-start gap-3 bg-zinc-900 rounded-xl p-4">
                   <div className="bg-white rounded-lg px-2 py-1 shrink-0">
-                    <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
+                    <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
                   </div>
                   <p className="text-sm text-zinc-300 leading-relaxed">{frase}</p>
                 </div>
@@ -214,7 +214,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
               className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${selectedPlat === pd.id ? 'bg-white text-zinc-900' : 'bg-zinc-800 text-zinc-400'}`}
             >
               <div className={`rounded px-1 py-0.5 ${selectedPlat === pd.id ? '' : 'bg-white'}`}>
-                <img src={pd.logo} alt={pd.nombre} className="h-3.5 w-auto object-contain" />
+                <img loading="lazy" src={pd.logo} alt={pd.nombre} className="h-3.5 w-auto object-contain" />
               </div>
               {pd.nombre}
             </button>
@@ -227,7 +227,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
         {(selectedPlat ? platData.filter(p => p.id === selectedPlat) : sortedByCount).map(pd => (
           <div key={pd.id} className="bg-zinc-900 rounded-xl p-3 text-center">
             <div className="bg-white rounded-lg px-2 py-1 mx-auto w-fit mb-2">
-              <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
+              <img loading="lazy" src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
             </div>
             <p className="text-xl font-bold text-white">{pd.count}</p>
             <p className="text-[10px] text-zinc-500">películas</p>
@@ -248,7 +248,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
             return (
               <div key={pd.id} className={`flex items-center gap-3 transition-opacity ${highlighted ? 'opacity-100' : 'opacity-30'}`}>
                 <div className="bg-white rounded px-1.5 py-0.5 shrink-0 w-14 flex items-center justify-center">
-                  <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
+                  <img loading="lazy" src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
                 </div>
                 <div className="flex-1 h-5 bg-zinc-800 rounded-full overflow-hidden">
                   <div
@@ -280,7 +280,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
               <div key={pd.id}>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="bg-white rounded px-1.5 py-0.5">
-                    <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
+                    <img loading="lazy" src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
                   </div>
                   <span className="text-sm text-zinc-300 font-medium">{pd.nombre}</span>
                 </div>
@@ -326,7 +326,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
               <div key={pd.id}>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="bg-white rounded px-1.5 py-0.5">
-                    <img src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
+                    <img loading="lazy" src={pd.logo} alt={pd.nombre} className="h-4 w-auto object-contain" />
                   </div>
                   <span className="text-sm text-zinc-300 font-medium">{pd.nombre}</span>
                 </div>
@@ -344,7 +344,7 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
           {sortedByCount.map(pd => (
             <div key={pd.id} className="flex items-center gap-2">
               <div className="bg-white rounded px-1 py-0.5">
-                <img src={pd.logo} alt={pd.nombre} className="h-3 w-auto object-contain" />
+                <img loading="lazy" src={pd.logo} alt={pd.nombre} className="h-3 w-auto object-contain" />
               </div>
               <span className="text-xs text-zinc-500">{pd.count}</span>
             </div>

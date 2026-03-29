@@ -325,14 +325,14 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
               key={m.user_id}
               className="flex items-center gap-1.5 bg-zinc-800 border border-zinc-700 rounded-full px-3 py-1"
             >
-              <div className="w-5 h-5 rounded-full bg-zinc-600 overflow-hidden flex items-center justify-center text-[9px] font-bold text-zinc-300 shrink-0">
+              <div className="w-5 h-5 rounded-full bg-zinc-600 overflow-hidden flex items-center justify-center text-[11px] font-bold text-zinc-300 shrink-0">
                 {m.avatar_url
-                  ? <img src={m.avatar_url} alt={m.username} className="w-full h-full object-cover" />
+                  ? <img loading="lazy" src={m.avatar_url} alt={m.username} className="w-full h-full object-cover" />
                   : m.username[0]?.toUpperCase()
                 }
               </div>
               <span className="text-xs text-zinc-300">@{m.username}</span>
-              {m.rol === 'owner' && <span className="text-yellow-400 text-[10px]">★</span>}
+              {m.rol === 'owner' && <span className="text-yellow-400 text-xs">★</span>}
             </div>
           ))}
         </div>
@@ -407,7 +407,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
                       ✕
                     </button>
                   )}
-                  <p className="text-zinc-500 text-[10px] mt-1 text-center truncate">@{p.added_by_username}</p>
+                  <p className="text-zinc-500 text-xs mt-1 text-center truncate">@{p.added_by_username}</p>
                 </div>
               )
             })}
@@ -473,7 +473,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
                 onChange={e => setBusqueda(e.target.value)}
                 placeholder="Buscar por título..."
                 autoFocus
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-base md:text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
               />
             </div>
             <div className="overflow-y-auto flex-1 px-5 pb-5">
@@ -500,7 +500,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
                     >
                       <div className="w-9 rounded-lg overflow-hidden bg-zinc-700 shrink-0" style={{ aspectRatio: '2/3' }}>
                         {p.poster_path && (
-                          <img src={`https://image.tmdb.org/t/p/w92${p.poster_path}`} alt={titulo} className="w-full h-full object-cover" />
+                          <img loading="lazy" src={`https://image.tmdb.org/t/p/w92${p.poster_path}`} alt={titulo} className="w-full h-full object-cover" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -544,7 +544,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
                   >
                     <div className="w-9 h-9 rounded-full bg-zinc-600 shrink-0 overflow-hidden flex items-center justify-center text-xs font-bold text-zinc-300">
                       {s.avatar_url
-                        ? <img src={s.avatar_url} alt={s.username} className="w-full h-full object-cover" />
+                        ? <img loading="lazy" src={s.avatar_url} alt={s.username} className="w-full h-full object-cover" />
                         : s.username[0]?.toUpperCase()
                       }
                     </div>

@@ -102,7 +102,7 @@ export default function TrailersPage() {
                     <div className="cursor-pointer group" onClick={() => setExpandedId(m.id)}>
                       <div className="relative aspect-video rounded-xl overflow-hidden bg-zinc-800 mb-2">
                         {ytId ? (
-                          <img src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                          <img loading="lazy" src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                         ) : m.poster_path ? (
                           <Image src={`https://image.tmdb.org/t/p/w342${m.poster_path}`} alt="" fill className="object-cover" />
                         ) : null}
@@ -122,7 +122,7 @@ export default function TrailersPage() {
                     <div className="bg-zinc-900 rounded-2xl overflow-hidden my-2">
                       <div className="relative">
                         {ytId && <YouTubeClip videoId={ytId} />}
-                        <button onClick={() => setExpandedId(null)} className="absolute top-3 right-3 z-30 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">✕</button>
+                        <button onClick={() => setExpandedId(null)} className="absolute top-3 right-3 z-30 bg-black/60 hover:bg-black/80 text-white rounded-full w-11 h-11 flex items-center justify-center text-sm">✕</button>
                       </div>
                       <div className="p-4 flex items-center gap-3">
                         {m.poster_path && (

@@ -51,7 +51,7 @@ function AvatarCineBret({ size = 36 }: { size?: number }) {
 }
 
 function Avatar({ url, username, size = 36 }: { url: string | null; username: string; size?: number }) {
-  if (url) return <img src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: size, height: size }} />
+  if (url) return <img loading="lazy" src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: size, height: size }} />
   return (
     <div className="rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 shrink-0" style={{ width: size, height: size }}>
       {username[0]?.toUpperCase()}

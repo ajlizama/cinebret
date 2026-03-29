@@ -146,7 +146,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
         value={value}
         onChange={e => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-24 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-sm shadow-lg"
+        className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-24 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-base md:text-sm shadow-lg"
       />
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
         {/* Processing indicator */}
@@ -159,7 +159,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
           <button
             type="button"
             onClick={listening ? stopListening : startListening}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
               listening
                 ? 'bg-red-500 text-white animate-pulse'
                 : 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -177,7 +177,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
         <button
           type="button"
           onClick={() => processQuery(value)}
-          className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 flex items-center justify-center transition-all"
+          className="w-11 h-11 rounded-full bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 flex items-center justify-center transition-all"
           title="Buscar"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

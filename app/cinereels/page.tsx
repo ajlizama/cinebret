@@ -66,7 +66,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
       {/* Movie logo below nav */}
       {movie.logo_path && (
         <div className="absolute top-36 left-4 z-20 pointer-events-none">
-          <img src={`https://image.tmdb.org/t/p/w500${movie.logo_path}`} alt="" className="h-20 md:h-28 w-auto max-w-[75vw] object-contain drop-shadow-2xl" />
+          <img loading="lazy" src={`https://image.tmdb.org/t/p/w500${movie.logo_path}`} alt="" className="h-20 md:h-28 w-auto max-w-[75vw] object-contain drop-shadow-2xl" />
         </div>
       )}
 
@@ -92,7 +92,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
             <div className="flex gap-2 mt-2">
               {PLATAFORMAS.filter(pl => movie.plataformas.includes(pl.id)).map(pl => (
                 <div key={pl.id} className="bg-white/90 rounded-md px-1.5 py-1">
-                  <img src={pl.logo} alt="" className="h-6 w-auto object-contain" />
+                  <img loading="lazy" src={pl.logo} alt="" className="h-6 w-auto object-contain" />
                 </div>
               ))}
             </div>
@@ -102,20 +102,20 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
       {/* Right side action buttons (TikTok style) */}
       <div className="absolute right-3 bottom-40 z-30 flex flex-col items-center gap-4">
         <button onClick={onVisto} className="flex flex-col items-center gap-1">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${visto ? 'bg-emerald-500' : 'bg-black/50'}`}>
+          <div className={`w-10 h-10 min-h-[44px] min-w-[44px] rounded-full flex items-center justify-center ${visto ? 'bg-emerald-500' : 'bg-black/50'}`}>
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <span className="text-white text-[9px]">{visto ? 'Vista' : 'Ya la vi'}</span>
+          <span className="text-white text-[11px]">{visto ? 'Vista' : 'Ya la vi'}</span>
         </button>
         <button onClick={onWatchlist} className="flex flex-col items-center gap-1">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${watchlist ? 'bg-yellow-400' : 'bg-black/50'}`}>
+          <div className={`w-10 h-10 min-h-[44px] min-w-[44px] rounded-full flex items-center justify-center ${watchlist ? 'bg-yellow-400' : 'bg-black/50'}`}>
             <svg className={`w-5 h-5 ${watchlist ? 'text-zinc-950' : 'text-white'}`} fill={watchlist ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
           </div>
-          <span className="text-white text-[9px]">{watchlist ? 'Guardada' : 'Watchlist'}</span>
+          <span className="text-white text-[11px]">{watchlist ? 'Guardada' : 'Watchlist'}</span>
         </button>
         <button onClick={onShowInfo} className="flex flex-col items-center gap-1">
           <div className="w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
@@ -123,7 +123,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <span className="text-white text-[9px]">Info</span>
+          <span className="text-white text-[11px]">Info</span>
         </button>
       </div>
     </>
@@ -392,7 +392,7 @@ export default function CineReelsPage() {
         {/* Previous movie poster (peeking from top) */}
         {prevMovie && slideOffset < 0 && (
           <div className="absolute inset-x-0 bg-black flex items-center justify-center" style={{ bottom: '100%', height: '100%' }}>
-            {prevMovie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${prevMovie.poster_path}`} alt="" className="h-full object-cover opacity-60" />}
+            {prevMovie.poster_path && <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${prevMovie.poster_path}`} alt="" className="h-full object-cover opacity-60" />}
             <div className="absolute bottom-6 left-5 z-10">
               <p className="text-white font-bold text-lg drop-shadow-lg">{prevMovie.titulo_ingles || prevMovie.titulo}</p>
             </div>
@@ -417,7 +417,7 @@ export default function CineReelsPage() {
           {/* Poster + loading */}
           {!playing && (
             <div className="absolute inset-0 z-5 flex items-center justify-center bg-black">
-              {movie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`} alt="" className="h-full object-cover opacity-50" />}
+              {movie.poster_path && <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`} alt="" className="h-full object-cover opacity-50" />}
               <div className="absolute">
                 <video src="/loading.mp4" autoPlay muted loop playsInline className="w-16 h-16 object-contain" style={{ mixBlendMode: 'lighten' }} />
               </div>
@@ -428,7 +428,7 @@ export default function CineReelsPage() {
         {/* Next movie poster (peeking from bottom) */}
         {nextMovie && slideOffset > 0 && (
           <div className="absolute inset-x-0 bg-black flex items-center justify-center" style={{ top: '100%', height: '100%' }}>
-            {nextMovie.poster_path && <img src={`https://image.tmdb.org/t/p/w780${nextMovie.poster_path}`} alt="" className="h-full object-cover opacity-60" />}
+            {nextMovie.poster_path && <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${nextMovie.poster_path}`} alt="" className="h-full object-cover opacity-60" />}
             <div className="absolute bottom-6 left-5 z-10">
               <p className="text-white font-bold text-lg drop-shadow-lg">{nextMovie.titulo_ingles || nextMovie.titulo}</p>
             </div>
@@ -445,7 +445,7 @@ export default function CineReelsPage() {
       {showInfo && (
         <>
           <div className="fixed inset-0 z-50" onClick={() => setShowInfo(false)} />
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-zinc-900 rounded-t-2xl max-h-[60vh] overflow-y-auto"
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-zinc-900 rounded-t-2xl max-h-[60vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
             style={{ animation: 'slideUp 0.3s ease-out' }}>
             <div className="sticky top-0 bg-zinc-900 px-4 pt-3 pb-2 flex items-center justify-between border-b border-zinc-800">
               <h3 className="text-white font-bold text-sm">{movie.titulo_ingles || movie.titulo}</h3>

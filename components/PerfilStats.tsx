@@ -211,7 +211,7 @@ export function VibeMapa({
             >
               <div className="w-5 h-5 rounded-full bg-zinc-700 overflow-hidden flex items-center justify-center shrink-0">
                 {chip.avatar
-                  ? <img src={chip.avatar} alt={chip.label} className="w-full h-full object-cover" />
+                  ? <img loading="lazy" src={chip.avatar} alt={chip.label} className="w-full h-full object-cover" />
                   : <span className="text-zinc-300 text-xs font-bold">{chip.label[0]?.toUpperCase()}</span>
                 }
               </div>

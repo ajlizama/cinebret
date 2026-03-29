@@ -135,7 +135,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
   // Random backdrop from one of their movies
   const moviesWithBackdrop = sorted.filter(m => m.backdrop_path)
   const backdrop = moviesWithBackdrop.length > 0
-    ? moviesWithBackdrop[Math.floor(Math.random() * moviesWithBackdrop.length)].backdrop_path
+    ? moviesWithBackdrop[0].backdrop_path
     : null
 
   // TMDB person data
@@ -151,7 +151,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
       <div className="relative w-full overflow-hidden" style={{ minHeight: '260px' }}>
         {backdrop && (
           <>
-            <img src={`https://image.tmdb.org/t/p/w1280${backdrop}`} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover object-center" style={{ opacity: 0.3 }} />
+            <img loading="lazy" src={`https://image.tmdb.org/t/p/w1280${backdrop}`} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover object-center" style={{ opacity: 0.3 }} />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(9,9,11,0.3) 0%, rgba(9,9,11,1) 100%)' }} />
           </>
         )}
@@ -163,7 +163,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
             {/* Photo */}
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden bg-zinc-800 shrink-0 ring-4 ring-zinc-950">
               {tmdbPhoto ? (
-                <img src={`https://image.tmdb.org/t/p/w185${tmdbPhoto}`} alt={actorName} className="w-full h-full object-cover" />
+                <img loading="lazy" src={`https://image.tmdb.org/t/p/w185${tmdbPhoto}`} alt={actorName} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-zinc-600 text-4xl font-bold">{actorName[0]}</div>
               )}
@@ -196,7 +196,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
         {/* Stats grid — modern glass style */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Directores</p>
+            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Directores</p>
             {topDirectors.map(([d, count]) => (
               <Link key={d} href={`/director/${encodeURIComponent(d)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
                 {d} <span className="text-zinc-600">({count})</span>
@@ -204,7 +204,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
             ))}
           </div>
           <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Compositores</p>
+            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Compositores</p>
             {topComposers.map(([c, count]) => (
               <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
                 {c} <span className="text-zinc-600">({count})</span>
@@ -212,13 +212,13 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
             ))}
           </div>
           <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Géneros</p>
+            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Géneros</p>
             {topGenres.map(([g, count]) => (
               <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
             ))}
           </div>
           <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Categorías CineBret</p>
+            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Categorías CineBret</p>
             {topCats.map(([c, count]) => (
               <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
             ))}

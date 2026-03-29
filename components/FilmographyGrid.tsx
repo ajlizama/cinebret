@@ -119,7 +119,7 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                       </div>
                     )}
                     {m.nota_imdb && (
-                      <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {m.nota_imdb}</div>
+                      <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {m.nota_imdb}</div>
                     )}
                     {musicFirst && musicPlaying === m.id && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -130,7 +130,7 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                     )}
                   </div>
                   <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{m.titulo_ingles || m.titulo}</p>
-                  <p className="text-zinc-500 text-[10px]">{m.anio}</p>
+                  <p className="text-zinc-500 text-xs">{m.anio}</p>
                   {/* Mini Spotify embed */}
                   {musicFirst && musicPlaying === m.id && musicUrls[m.id] && (
                     <div className="mt-1 rounded-lg overflow-hidden">
@@ -144,11 +144,11 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                   <div className="relative h-32 md:h-44 overflow-hidden">
                     {(fullData?.backdrop_path || m.poster_path) && (
                       <>
-                        <img src={`https://image.tmdb.org/t/p/w780${fullData?.backdrop_path || m.poster_path}`} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${fullData?.backdrop_path || m.poster_path}`} alt="" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-900" />
                       </>
                     )}
-                    <button onClick={() => setExpanded(null)} className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">✕</button>
+                    <button onClick={() => setExpanded(null)} className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-11 h-11 flex items-center justify-center text-sm">✕</button>
                   </div>
 
                   {/* Content */}
@@ -181,7 +181,7 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                               <div className="w-9 h-9 rounded-full border-2 border-yellow-400 flex items-center justify-center">
                                 <span className="text-yellow-400 font-bold text-xs">{fullData.nota_imdb}</span>
                               </div>
-                              <span className="text-zinc-500 text-[10px]">IMDB</span>
+                              <span className="text-zinc-500 text-xs">IMDB</span>
                             </div>
                           )}
                           {fullData.rt_score != null && (
@@ -189,12 +189,12 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                               <div className="w-9 h-9 rounded-full border-2 border-red-400 flex items-center justify-center">
                                 <span className="text-red-400 font-bold text-xs">{fullData.rt_score}%</span>
                               </div>
-                              <span className="text-zinc-500 text-[10px]">RT</span>
+                              <span className="text-zinc-500 text-xs">RT</span>
                             </div>
                           )}
                           {fullData.oscars && fullData.oscars !== 'N/A' && (
                             <div className="flex items-center gap-1">
-                              <img src="/oscar.png" alt="Oscar" className="h-8 w-auto" />
+                              <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-8 w-auto" />
                               <span className="text-xs font-bold text-yellow-400">{fullData.oscars.match(/\d+/)?.[0]}</span>
                             </div>
                           )}
@@ -212,7 +212,7 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                           <div className="flex gap-1.5 flex-wrap">
                             {PLATAFORMAS.filter(pl => fullData.plataformas.includes(pl.id)).map(pl => (
                               <div key={pl.id} className="rounded-md bg-white px-1.5 py-0.5 flex items-center">
-                                <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
+                                <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
                               </div>
                             ))}
                           </div>
@@ -247,7 +247,7 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                           )}
                           {fullData.imdb_id && (
                             <a href={`https://www.imdb.com/title/${fullData.imdb_id}/`} target="_blank" rel="noopener noreferrer"
-                              className="inline-flex items-center bg-yellow-400 text-zinc-950 font-black text-[10px] px-1.5 py-0.5 rounded">IMDb</a>
+                              className="inline-flex items-center bg-yellow-400 text-zinc-950 font-black text-xs px-1.5 py-0.5 rounded">IMDb</a>
                           )}
                           <Link href={`/pelicula/${m.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium px-3 py-1.5">Ver ficha completa →</Link>
                         </div>

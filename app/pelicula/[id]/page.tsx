@@ -112,7 +112,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             <div>
               {pelicula.logo_path ? (
                 <div className="mb-2">
-                  <img src={`https://image.tmdb.org/t/p/w500${pelicula.logo_path}`} alt={titulo} className="h-16 md:h-20 w-auto max-w-full object-contain drop-shadow-lg" />
+                  <img loading="lazy" src={`https://image.tmdb.org/t/p/w500${pelicula.logo_path}`} alt={titulo} className="h-16 md:h-20 w-auto max-w-full object-contain drop-shadow-lg" />
                   {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
                     <p className="text-zinc-400 text-sm mt-1">{pelicula.titulo}</p>
                   )}
@@ -139,7 +139,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 )}
                 {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                   <span className="flex items-center gap-1.5 text-yellow-500">
-                    <img src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
+                    <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
                     {pelicula.oscars}
                   </span>
                 )}
@@ -247,7 +247,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                     <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-20 text-center group">
                       <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 mb-1.5 ring-2 ring-transparent group-hover:ring-yellow-400/50 transition-all">
                         {actor.profile_path ? (
-                          <img src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} alt={actor.name} className="w-full h-full object-cover" />
+                          <img loading="lazy" src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`} alt={actor.name} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-zinc-600 text-lg font-bold">{actor.name[0]}</div>
                         )}
@@ -271,7 +271,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                       className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 min-h-[44px]"
                     >
                       <div className="bg-white rounded px-1.5 py-1 shrink-0">
-                        <img src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
+                        <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
                       </div>
                       <span className="text-sm text-white">{plat.nombre}</span>
                     </div>

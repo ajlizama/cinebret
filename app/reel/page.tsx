@@ -310,7 +310,7 @@ function ReelCard({
                 const logo = PLATFORM_LOGOS[p]
                 return logo ? (
                   <div key={p} className="w-10 h-10 rounded-xl bg-black/50 backdrop-blur-sm flex items-center justify-center p-1.5">
-                    <img src={logo} alt={p} className="w-full h-full object-contain" />
+                    <img loading="lazy" src={logo} alt={p} className="w-full h-full object-contain" />
                   </div>
                 ) : null
               })}
@@ -331,7 +331,7 @@ function ReelCard({
           {pelicula.generos.length > 0 && (
             <div className="flex gap-1.5 flex-wrap">
               {pelicula.generos.slice(0, 3).map(g => (
-                <span key={g} className="bg-white/10 text-zinc-300 text-[10px] px-2 py-0.5 rounded-full">{g}</span>
+                <span key={g} className="bg-white/10 text-zinc-300 text-xs px-2 py-0.5 rounded-full">{g}</span>
               ))}
             </div>
           )}
@@ -353,7 +353,7 @@ function ReelCard({
                 <div className="w-9 h-9 rounded-full border-2 border-yellow-400 bg-black/40 flex items-center justify-center">
                   <span className="text-yellow-400 font-bold text-xs">{pelicula.nota_imdb}</span>
                 </div>
-                <span className="text-zinc-500 text-[10px]">IMDB</span>
+                <span className="text-zinc-500 text-xs">IMDB</span>
               </div>
             )}
             {pelicula.rt_score != null && (
@@ -361,7 +361,7 @@ function ReelCard({
                 <div className="w-9 h-9 rounded-full border-2 border-red-400 bg-black/40 flex items-center justify-center">
                   <span className="text-red-400 font-bold text-xs">{pelicula.rt_score}%</span>
                 </div>
-                <span className="text-zinc-500 text-[10px]">RT</span>
+                <span className="text-zinc-500 text-xs">RT</span>
               </div>
             )}
             {pelicula.metacritic_score != null && (
@@ -369,7 +369,7 @@ function ReelCard({
                 <div className="w-9 h-9 rounded-full border-2 border-green-400 bg-black/40 flex items-center justify-center">
                   <span className="text-green-400 font-bold text-xs">{pelicula.metacritic_score}</span>
                 </div>
-                <span className="text-zinc-500 text-[10px]">MC</span>
+                <span className="text-zinc-500 text-xs">MC</span>
               </div>
             )}
           </div>
@@ -385,7 +385,7 @@ function ReelCard({
           {pelicula.generos.length > 0 && (
             <div className="flex gap-1.5 flex-wrap mb-3">
               {pelicula.generos.map(g => (
-                <span key={g} className="bg-white/10 text-zinc-300 text-[10px] px-2 py-0.5 rounded-full">{g}</span>
+                <span key={g} className="bg-white/10 text-zinc-300 text-xs px-2 py-0.5 rounded-full">{g}</span>
               ))}
             </div>
           )}
@@ -398,7 +398,7 @@ function ReelCard({
           {/* Sinopsis */}
           {pelicula.sinopsis && (
             <div className="mb-3">
-              <p className="text-zinc-500 text-[10px] uppercase tracking-wide mb-1 font-medium">Sinopsis</p>
+              <p className="text-zinc-500 text-xs uppercase tracking-wide mb-1 font-medium">Sinopsis</p>
               <p className="text-zinc-300 text-sm leading-relaxed italic">{pelicula.sinopsis}</p>
             </div>
           )}
@@ -406,25 +406,25 @@ function ReelCard({
           {/* Team */}
           {pelicula.director && (
             <div className="mb-2">
-              <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Director: </span>
+              <span className="text-zinc-500 text-xs uppercase tracking-wide">Director: </span>
               <span className="text-zinc-200 text-sm">{pelicula.director}</span>
             </div>
           )}
           {pelicula.actores && (
             <div className="mb-2">
-              <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Reparto: </span>
+              <span className="text-zinc-500 text-xs uppercase tracking-wide">Reparto: </span>
               <span className="text-zinc-200 text-sm">{pelicula.actores}</span>
             </div>
           )}
           {pelicula.compositor && (
             <div className="mb-2">
-              <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Compositor: </span>
+              <span className="text-zinc-500 text-xs uppercase tracking-wide">Compositor: </span>
               <span className="text-zinc-200 text-sm">{pelicula.compositor}</span>
             </div>
           )}
           {pelicula.boxoffice != null && (
             <div className="mb-2">
-              <span className="text-zinc-500 text-[10px] uppercase tracking-wide">Taquilla: </span>
+              <span className="text-zinc-500 text-xs uppercase tracking-wide">Taquilla: </span>
               <span className="text-zinc-200 text-sm">${(pelicula.boxoffice / 1_000_000).toFixed(0)}M</span>
             </div>
           )}
@@ -436,7 +436,7 @@ function ReelCard({
                 const logo = PLATFORM_LOGOS[p]
                 return logo ? (
                   <div key={p} className="w-9 h-9 rounded-lg bg-black/40 flex items-center justify-center p-1">
-                    <img src={logo} alt={p} className="w-full h-full object-contain" />
+                    <img loading="lazy" src={logo} alt={p} className="w-full h-full object-contain" />
                   </div>
                 ) : null
               })}
@@ -463,13 +463,13 @@ function ReelCard({
                 ) : (
                   <>
                     <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 overflow-hidden">
-                      {r.avatar_url ? <img src={r.avatar_url} alt={r.username} className="w-full h-full object-cover" /> : r.username[0]?.toUpperCase()}
+                      {r.avatar_url ? <img loading="lazy" src={r.avatar_url} alt={r.username} className="w-full h-full object-cover" /> : r.username[0]?.toUpperCase()}
                     </div>
                     <span className="text-white text-xs font-medium">@{r.username}</span>
                   </>
                 )}
-                {r.rating && <span className="text-yellow-400 text-[10px]">{r.rating}/10</span>}
-                {r.created_at && <span className="text-zinc-600 text-[10px]">{tiempoRelativo(r.created_at)}</span>}
+                {r.rating && <span className="text-yellow-400 text-xs">{r.rating}/10</span>}
+                {r.created_at && <span className="text-zinc-600 text-xs">{tiempoRelativo(r.created_at)}</span>}
               </div>
               <p className="text-zinc-300 text-sm leading-relaxed">{r.review_text}</p>
             </div>
@@ -687,7 +687,7 @@ export default function ReelPage() {
         <div className="flex items-start gap-6 -mt-20 relative z-10">
           <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-1">
             <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-3xl shadow-lg backdrop-blur-sm">✕</div>
-            <span className="text-red-400 text-[10px] font-semibold leading-tight text-center">No me<br/>interesa</span>
+            <span className="text-red-400 text-xs font-semibold leading-tight text-center">No me<br/>interesa</span>
           </button>
           <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-1">
             <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm">
@@ -696,15 +696,15 @@ export default function ReelPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </div>
-            <span className="text-blue-400 text-[10px] font-semibold">Ya la vi</span>
+            <span className="text-blue-400 text-xs font-semibold">Ya la vi</span>
           </button>
           <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-1">
             <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-3xl shadow-lg backdrop-blur-sm">♥</div>
-            <span className="text-pink-400 text-[10px] font-semibold">Watchlist</span>
+            <span className="text-pink-400 text-xs font-semibold">Watchlist</span>
           </button>
         </div>
         <button onClick={handleUndo} disabled={!lastAction}
-          className="mt-1 text-zinc-600 text-[10px] disabled:opacity-20 hover:text-zinc-400 transition-colors">↩ Deshacer</button>
+          className="mt-1 text-zinc-600 text-xs disabled:opacity-20 hover:text-zinc-400 transition-colors">↩ Deshacer</button>
       </div>
     </main>
   )

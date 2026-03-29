@@ -166,7 +166,7 @@ function PanelExpandido({
       <div className="bg-zinc-900 relative">
         {/* Close button */}
         <button onClick={() => setExpandida(null)}
-          className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm transition-colors">✕</button>
+          className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-11 h-11 flex items-center justify-center text-sm transition-colors">✕</button>
 
         {/* ══ MOBILE layout ══ */}
         <div className="md:hidden">
@@ -175,7 +175,7 @@ function PanelExpandido({
             {p.poster_path && (
               <>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-top" />
+                <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-top" />
                 <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-900" />
               </>
             )}
@@ -192,7 +192,7 @@ function PanelExpandido({
                     <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-2xl">🎬</span></div>
                   )}
                 </Link>
-                <Link href={`/pelicula/${p.id}`} className="text-[10px] text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
+                <Link href={`/pelicula/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
               </div>
               <div className="flex-1 min-w-0 pb-1">
                 <h3 className="text-lg font-bold text-white leading-tight">
@@ -218,7 +218,7 @@ function PanelExpandido({
                   <div className="w-9 h-9 rounded-full border-2 border-yellow-400 flex items-center justify-center">
                     <span className="text-yellow-400 font-bold text-xs">{p.nota_imdb}</span>
                   </div>
-                  <span className="text-zinc-500 text-[10px]">IMDB</span>
+                  <span className="text-zinc-500 text-xs">IMDB</span>
                 </div>
               )}
               {p.rt_score != null && (
@@ -226,7 +226,7 @@ function PanelExpandido({
                   <div className="w-9 h-9 rounded-full border-2 border-red-400 flex items-center justify-center">
                     <span className="text-red-400 font-bold text-xs">{p.rt_score}%</span>
                   </div>
-                  <span className="text-zinc-500 text-[10px]">RT</span>
+                  <span className="text-zinc-500 text-xs">RT</span>
                 </div>
               )}
               {p.metacritic_score != null && (
@@ -234,13 +234,13 @@ function PanelExpandido({
                   <div className="w-9 h-9 rounded-full border-2 border-green-400 flex items-center justify-center">
                     <span className="text-green-400 font-bold text-xs">{p.metacritic_score}</span>
                   </div>
-                  <span className="text-zinc-500 text-[10px]">MC</span>
+                  <span className="text-zinc-500 text-xs">MC</span>
                 </div>
               )}
               {p.oscars && p.oscars !== 'N/A' && (
                 <div className="flex items-center gap-1">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/oscar.png" alt="Oscar" className={`h-8 w-auto ${oscarGano ? '' : 'opacity-30'}`} />
+                  <img loading="lazy" src="/oscar.png" alt="Oscar" className={`h-8 w-auto ${oscarGano ? '' : 'opacity-30'}`} />
                   {oscarNum && <span className={`text-xs font-bold ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
                 </div>
               )}
@@ -259,7 +259,7 @@ function PanelExpandido({
                 {platsActivas.map(pl => (
                   <div key={pl.id} className="rounded-md bg-white px-1.5 py-0.5 flex items-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
+                    <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
                   </div>
                 ))}
               </div>
@@ -288,7 +288,7 @@ function PanelExpandido({
 
             {/* Links */}
             <div className="flex flex-wrap gap-3 items-center">
-              {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-yellow-400 text-zinc-950 font-black text-[10px] px-1.5 py-0.5 rounded hover:bg-yellow-300 transition-colors tracking-tight">IMDb</a>}
+              {p.imdb_id && <a href={`https://www.imdb.com/title/${p.imdb_id}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-yellow-400 text-zinc-950 font-black text-xs px-1.5 py-0.5 rounded hover:bg-yellow-300 transition-colors tracking-tight">IMDb</a>}
               <AgregarAListaButton peliculaId={p.id} />
             </div>
 
@@ -322,7 +322,7 @@ function PanelExpandido({
           {p.poster_path && (
             <div className="absolute inset-y-0 right-0 w-[55%]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-center" />
+              <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-center" />
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/80 to-zinc-900/50" />
               <div className="absolute inset-0 bg-zinc-900/40" />
             </div>
@@ -380,10 +380,10 @@ function PanelExpandido({
                 {p.oscars && p.oscars !== 'N/A' && (
                   <div className="flex items-center gap-1.5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/oscar.png" alt="Oscar" className={`h-10 w-auto drop-shadow-lg ${oscarGano ? '' : 'opacity-30'}`} />
+                    <img loading="lazy" src="/oscar.png" alt="Oscar" className={`h-10 w-auto drop-shadow-lg ${oscarGano ? '' : 'opacity-30'}`} />
                     <div>
                       {oscarNum && <span className={`text-sm font-bold drop-shadow ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
-                      <p className="text-zinc-400 text-[10px] leading-none drop-shadow">{oscarGano ? 'Ganó' : 'Nom.'}</p>
+                      <p className="text-zinc-400 text-xs leading-none drop-shadow">{oscarGano ? 'Ganó' : 'Nom.'}</p>
                     </div>
                   </div>
                 )}
@@ -394,7 +394,7 @@ function PanelExpandido({
                   {platsActivas.map(pl => (
                     <div key={pl.id} className="rounded-lg bg-white px-2 py-1 flex items-center shadow">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={pl.logo} alt={pl.nombre} className="h-4 w-auto object-contain" />
+                      <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-4 w-auto object-contain" />
                     </div>
                   ))}
                 </div>
@@ -500,14 +500,14 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                   <div className="flex items-center gap-0.5">
                     {plataformas.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
                       <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
-                        <img src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
+                        <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
                       </div>
                     ))}
                   </div>
                 </div>
               )}
             </div>
-            <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
+            <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
           </div>
         ))}
       </div>
@@ -733,7 +733,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-2.5 md:py-3.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-1 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
+                  className={`py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold flex flex-col items-center justify-center gap-1 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
                   <span className="text-lg md:text-xl leading-none">{cat.emoji}</span>
                   <span className="text-center leading-tight">{cat.label}</span>
                 </button>
@@ -753,7 +753,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
                   className={`h-10 w-16 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all ${activa ? 'bg-white border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.6)] scale-110 ring-2 ring-yellow-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={plat.logo} alt={plat.nombre} className="h-4 md:h-4.5 w-auto object-contain" />
+                  <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-4 md:h-4.5 w-auto object-contain" />
                 </button>
               )
             })}
@@ -865,21 +865,21 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                       <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
                         <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
                         {p.nota_imdb && (
-                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {p.nota_imdb}</div>
+                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {p.nota_imdb}</div>
                         )}
                         {p.plataformas.length > 0 && (
                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
                             <div className="flex items-center gap-0.5">
                               {PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
                                 <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
-                                  <img src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
+                                  <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
                                 </div>
                               ))}
                             </div>
                           </div>
                         )}
                       </div>
-                      <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
+                      <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
                     </div>
                   ))
                 })()}
@@ -928,10 +928,10 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               </button>
             </div>
             <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-              <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-[10px] ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
+              <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-xs ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
             </button>
             <button onClick={() => setSoloSello(!soloSello)} className={`flex items-center gap-1 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-              <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-[10px] ${soloSello ? 'border-emerald-400 text-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★</span>
+              <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-xs ${soloSello ? 'border-emerald-400 text-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★</span>
             </button>
             <select value={orden} onChange={e => setOrden(e.target.value as Orden)}
               className="ml-auto bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-zinc-500 shrink-0">
@@ -981,9 +981,9 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                     {user && (
                       <div className="absolute top-2 right-2 flex flex-col gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={e => e.stopPropagation()}>
                         <button onClick={e => toggleVisto(pelicula.id, e)}
-                          className={`w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-white/70 bg-black/60 text-white hover:border-emerald-400'}`}>✓</button>
+                          className={`w-11 h-11 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-white/70 bg-black/60 text-white hover:border-emerald-400'}`}>✓</button>
                         <button onClick={e => toggleWatchlist(pelicula.id, e)}
-                          className={`w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-white/70 bg-black/60 text-white hover:border-yellow-400'}`}>★</button>
+                          className={`w-11 h-11 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-white/70 bg-black/60 text-white hover:border-yellow-400'}`}>★</button>
                       </div>
                     )}
                     <div className="absolute inset-x-0 bottom-0 p-3 z-10">
@@ -994,7 +994,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                               {platsActivas.map(pl => (
                                 <div key={pl.id} className="rounded bg-white px-1 py-0.5 flex items-center">
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
+                                  <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
                                 </div>
                               ))}
                             </div>
@@ -1005,7 +1005,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                             {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs md:text-sm">⭐ {pelicula.nota_imdb}</span>}
                           </div>
                           {pelicula.categoria && (
-                            <span className="inline-block mt-1.5 text-[10px] md:text-[11px] bg-white/15 backdrop-blur-sm text-zinc-200 px-2 py-0.5 rounded-full leading-tight">
+                            <span className="inline-block mt-1.5 text-xs md:text-[11px] bg-white/15 backdrop-blur-sm text-zinc-200 px-2 py-0.5 rounded-full leading-tight">
                               {pelicula.categoria}
                             </span>
                           )}
@@ -1013,7 +1013,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                         {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                           <div className="shrink-0 self-end flex flex-col items-center">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/oscar.png" alt="Oscar" className={`h-9 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
+                            <img loading="lazy" src="/oscar.png" alt="Oscar" className={`h-9 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
                             {oscarNum && <span className={`text-xs font-bold leading-none -mt-1 ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
                           </div>
                         )}
@@ -1067,8 +1067,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                               </div>
                               <div className="min-w-0">
                                 <div className="flex items-center gap-1.5 mb-0.5">
-                                  {pelicula.es_review_autor && <span className="font-serif italic font-bold text-[10px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none">CB</span>}
-                                  {pelicula.sello_bret && <span className="text-[10px] border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded leading-none font-bold">★</span>}
+                                  {pelicula.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none">CB</span>}
+                                  {pelicula.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded leading-none font-bold">★</span>}
                                 </div>
                                 <span className="text-white font-semibold text-sm truncate max-w-52 block">{pelicula.titulo_ingles || pelicula.titulo}</span>
                                 {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
@@ -1093,7 +1093,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                               {PLATAFORMAS.map(plat => (
                                 <div key={plat.id} className={`rounded px-1 py-0.5 bg-white flex items-center justify-center transition-opacity ${pelicula.plataformas.includes(plat.id) ? 'opacity-100' : 'opacity-20'}`}>
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
+                                  <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-4 w-auto object-contain" />
                                 </div>
                               ))}
                             </div>
@@ -1102,7 +1102,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                             {pelicula.oscars && pelicula.oscars !== 'N/A' ? (
                               <span className="flex items-center justify-center gap-0.5">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src="/oscar.png" alt="Oscar" className={`h-7 w-auto ${oscarGano ? '' : 'opacity-25'}`} />
+                                <img loading="lazy" src="/oscar.png" alt="Oscar" className={`h-7 w-auto ${oscarGano ? '' : 'opacity-25'}`} />
                                 <span className={`text-sm font-bold ${oscarGano ? 'text-yellow-400' : 'text-zinc-600'}`}>{oscarNum}</span>
                               </span>
                             ) : <span className="text-zinc-700">—</span>}
@@ -1163,7 +1163,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                         {PLATAFORMAS.map(plat => (
                           <div key={plat.id} className={`rounded px-1 py-0.5 bg-white flex items-center justify-center transition-opacity ${pelicula.plataformas.includes(plat.id) ? 'opacity-100' : 'opacity-20'}`} style={{ height: 20 }}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
+                            <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-3.5 w-auto object-contain" />
                           </div>
                         ))}
                       </div>

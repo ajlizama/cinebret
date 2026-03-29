@@ -251,7 +251,7 @@ export default function MiPerfilPage() {
           <div className="relative group cursor-pointer" onClick={() => fileRef.current?.click()}>
             <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 flex items-center justify-center border-2 border-zinc-700 group-hover:border-yellow-400 transition-colors">
               {avatarUrl
-                ? <img src={avatarUrl} alt={username ?? ''} className="w-full h-full object-cover" />
+                ? <img loading="lazy" src={avatarUrl} alt={username ?? ''} className="w-full h-full object-cover" />
                 : <span className="text-2xl font-bold text-zinc-400">{username?.[0]?.toUpperCase() ?? '?'}</span>
               }
             </div>
@@ -361,7 +361,7 @@ export default function MiPerfilPage() {
                             <div className="flex items-center gap-0.5 flex-wrap">
                               {PLATAFORMAS.filter(pl => entrada.plataformas.includes(pl.id)).map(pl => (
                                 <div key={pl.id} className="rounded px-0.5 py-0.5 bg-white/90" style={{ height: 14 }}>
-                                  <img src={pl.logo} alt={pl.nombre} className="h-2.5 w-auto object-contain" />
+                                  <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-2.5 w-auto object-contain" />
                                 </div>
                               ))}
                             </div>
@@ -379,7 +379,7 @@ export default function MiPerfilPage() {
                         <div className="flex flex-wrap gap-1 mt-1.5">
                           {PLATAFORMAS.filter(pl => entrada.plataformas.includes(pl.id)).map(pl => (
                             <div key={pl.id} className="rounded px-1 py-0.5 bg-white flex items-center justify-center" style={{ height: 16 }}>
-                              <img src={pl.logo} alt={pl.nombre} className="h-3 w-auto object-contain" />
+                              <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-3 w-auto object-contain" />
                             </div>
                           ))}
                         </div>

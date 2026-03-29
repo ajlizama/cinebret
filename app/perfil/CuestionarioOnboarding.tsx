@@ -128,7 +128,7 @@ function MovieSearchSlot({
             if (slot.selected) clear()
             onChange({ ...slot, query: e.target.value, selected: null })
           }}
-          className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-yellow-400 transition-colors"
+          className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-base md:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-yellow-400 transition-colors"
         />
         {slot.selected && (
           <button
@@ -314,7 +314,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
               max={2010}
               value={birthYear}
               onChange={e => setBirthYear(e.target.value)}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-yellow-400 transition-colors"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-base md:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-yellow-400 transition-colors"
             />
           </section>
 
@@ -385,7 +385,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
                         type="button"
                         onClick={() => moveMood(index, -1)}
                         disabled={index === 0}
-                        className="w-6 h-6 rounded flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs"
+                        className="w-11 h-11 rounded flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs"
                         title="Subir"
                       >
                         ↑
@@ -394,7 +394,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
                         type="button"
                         onClick={() => moveMood(index, 1)}
                         disabled={index === moods.length - 1}
-                        className="w-6 h-6 rounded flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs"
+                        className="w-11 h-11 rounded flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs"
                         title="Bajar"
                       >
                         ↓

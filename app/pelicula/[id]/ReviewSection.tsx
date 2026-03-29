@@ -21,7 +21,7 @@ type Review = {
 
 function Avatar({ url, username, size = 8 }: { url: string | null; username: string; size?: number }) {
   const px = size * 4
-  if (url) return <img src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: px, height: px }} />
+  if (url) return <img loading="lazy" src={url} alt={username} className="rounded-full object-cover shrink-0" style={{ width: px, height: px }} />
   return (
     <div className="rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0" style={{ width: px, height: px }}>
       {username[0]?.toUpperCase()}

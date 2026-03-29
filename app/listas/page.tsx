@@ -23,11 +23,20 @@ type Seguido = {
   avatar_url: string | null
 }
 
+const sizeClasses: Record<number, string> = {
+  6: 'w-6 h-6',
+  7: 'w-7 h-7',
+  8: 'w-8 h-8',
+  10: 'w-10 h-10',
+  12: 'w-12 h-12',
+}
+
 function MiniAvatar({ url, username, size = 7 }: { url: string | null; username: string; size?: number }) {
-  const cls = `w-${size} h-${size} rounded-full object-cover ring-2 ring-zinc-950`
-  if (url) return <img src={url} alt={username} className={cls} />
+  const wh = sizeClasses[size] ?? 'w-7 h-7'
+  const cls = `${wh} rounded-full object-cover ring-2 ring-zinc-950`
+  if (url) return <img loading="lazy" src={url} alt={username} className={cls} />
   return (
-    <div className={`w-${size} h-${size} rounded-full bg-zinc-700 ring-2 ring-zinc-950 flex items-center justify-center text-[10px] font-bold text-zinc-300`}>
+    <div className={`${wh} rounded-full bg-zinc-700 ring-2 ring-zinc-950 flex items-center justify-center text-[10px] font-bold text-zinc-300`}>
       {username[0]?.toUpperCase()}
     </div>
   )
@@ -368,7 +377,7 @@ export default function ListasPage() {
                       >
                         <div className="w-8 h-8 rounded-full bg-zinc-600 shrink-0 overflow-hidden flex items-center justify-center text-xs font-bold text-zinc-300">
                           {s.avatar_url
-                            ? <img src={s.avatar_url} alt={s.username} className="w-full h-full object-cover" />
+                            ? <img loading="lazy" src={s.avatar_url} alt={s.username} className="w-full h-full object-cover" />
                             : s.username[0]?.toUpperCase()
                           }
                         </div>

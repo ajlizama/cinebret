@@ -334,7 +334,7 @@ export default function PerfilPage() {
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full overflow-hidden bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0">
               {avatarUrl
-                ? <img src={avatarUrl} alt={username} className="w-full h-full object-cover" />
+                ? <img loading="lazy" src={avatarUrl} alt={username} className="w-full h-full object-cover" />
                 : <span className="text-2xl font-bold text-zinc-400">{username?.[0]?.toUpperCase()}</span>
               }
             </div>
@@ -603,7 +603,7 @@ export default function PerfilPage() {
                 >
                   <div className="w-9 h-9 rounded-full bg-zinc-700 overflow-hidden shrink-0 flex items-center justify-center text-sm font-bold text-zinc-300">
                     {u.avatar_url
-                      ? <img src={u.avatar_url} alt={u.username} className="w-full h-full object-cover" />
+                      ? <img loading="lazy" src={u.avatar_url} alt={u.username} className="w-full h-full object-cover" />
                       : u.username[0]?.toUpperCase()
                     }
                   </div>

@@ -174,7 +174,7 @@ export default function MusicaPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     {m.logo_path ? (
-                      <img src={`https://image.tmdb.org/t/p/w200${m.logo_path}`} alt={m.titulo_ingles || m.titulo} className="h-6 w-auto max-w-[200px] object-contain" />
+                      <img loading="lazy" src={`https://image.tmdb.org/t/p/w200${m.logo_path}`} alt={m.titulo_ingles || m.titulo} className="h-6 w-auto max-w-[200px] object-contain" />
                     ) : (
                       <p className="text-white text-sm font-medium truncate">{m.titulo_ingles || m.titulo}</p>
                     )}

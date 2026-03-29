@@ -93,7 +93,7 @@ export default function AuthModal({ onClose }: Props) {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-base md:text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
               placeholder="tu@correo.com"
             />
           </div>
@@ -105,7 +105,7 @@ export default function AuthModal({ onClose }: Props) {
               onChange={e => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-base md:text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
               placeholder="Mínimo 6 caracteres"
             />
           </div>

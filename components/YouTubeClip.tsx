@@ -160,7 +160,7 @@ export default function YouTubeClip({ videoId, className = '' }: Props) {
       {/* Thumbnail before autoplay */}
       {!playing && !ready && (
         <div className="absolute inset-0 z-5">
-          <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="" className="w-full h-full object-cover" />
+          <img loading="lazy" src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="" className="w-full h-full object-cover" />
         </div>
       )}
     </div>

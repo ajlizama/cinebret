@@ -244,156 +244,162 @@ export async function GET(request: NextRequest) {
     return count
   }
 
-  // Build achievements (~25)
+  // Build achievements
   const achievements: Achievement[] = [
-    // 1. Maratonista
-    tiered('maratonista', 'Maratonista', 'film', totalWatched, 25, 100, 250,
-      'Has visto 25+ peliculas. La maraton recien empieza.',
-      'Has visto 100+ peliculas. Maquina imparable.',
-      'Has visto 250+ peliculas. Leyenda total.',
+    // --- GENERAL ---
+    tiered('maratonista', 'Maratonista', 'film', totalWatched, 50, 200, 500,
+      '50+ peliculas vistas. La maraton recien empieza.',
+      '200+ peliculas. Maquina imparable del cine.',
+      '500+ peliculas. Leyenda viviente.',
     ),
-
-    // 2. Cinefilo de culto
-    tiered('cinefilo_culto', 'Cinefilo de culto', 'mask', cultCount, 5, 15, 30,
-      '5+ peliculas con IMDB menor a 6.5.',
-      '15+ peliculas de culto. El mainstream no es lo tuyo.',
-      '30+ peliculas de culto. Visionario del cine marginal.',
+    tiered('cinefilo_culto', 'Cinefilo de culto', 'mask', cultCount, 10, 30, 75,
+      '10+ peliculas con IMDB menor a 6.5.',
+      '30+ peliculas de culto. El mainstream no es lo tuyo.',
+      '75+ peliculas de culto. Visionario del cine marginal.',
     ),
-
-    // 3. Explorador de decadas
     tiered('explorador', 'Explorador', 'compass', decades.size, 5, 8, 10,
       'Peliculas de 5+ decadas diferentes.',
       'Peliculas de 8+ decadas. Viajero del tiempo.',
       'Peliculas de 10+ decadas. Historiador cinematografico.',
     ),
-
-    // 4. Nostalgico
-    tiered('nostalgico', 'Nostalgico', 'clock', pre2000, 10, 30, 60,
-      '10+ peliculas de antes del 2000.',
-      '30+ peliculas clasicas. El cine clasico no muere.',
-      '60+ peliculas clasicas. Guardian de la memoria.',
+    tiered('nostalgico', 'Nostalgico', 'clock', pre2000, 20, 60, 150,
+      '20+ peliculas de antes del 2000.',
+      '60+ peliculas clasicas. El cine clasico no muere.',
+      '150+ clasicas. Guardian de la memoria cinematografica.',
     ),
-
-    // 5. Al dia
-    tiered('al_dia', 'Al dia', 'calendar', currentYearCount, 5, 15, 30,
-      `5+ peliculas del ${currentYear}.`,
-      `15+ peliculas del ${currentYear}. Siempre al tanto.`,
-      `30+ peliculas del ${currentYear}. Enciclopedia viviente.`,
+    tiered('al_dia', 'Al dia', 'calendar', currentYearCount, 10, 30, 60,
+      `10+ peliculas del ${currentYear}.`,
+      `30+ peliculas del ${currentYear}. Siempre al tanto.`,
+      `60+ peliculas del ${currentYear}. Enciclopedia viviente.`,
     ),
-
-    // 6. Eclectico
-    tiered('eclectico', 'Eclectico', 'palette', uniqueGenres.length, 5, 8, 12,
-      '5+ generos diferentes explorados.',
-      '8+ generos. Paladar cinematografico amplio.',
-      '12+ generos. Sin limites ni prejuicios.',
+    tiered('eclectico', 'Eclectico', 'palette', uniqueGenres.length, 6, 10, 14,
+      '6+ generos diferentes explorados.',
+      '10+ generos. Paladar cinematografico amplio.',
+      '14+ generos. Sin limites ni prejuicios.',
     ),
-
-    // 7. Terror nocturno
-    tiered('terror_nocturno', 'Terror nocturno', 'skull', genreCounts['Terror'] ?? 0, 10, 25, 50,
-      '10+ peliculas de terror vistas.',
-      '25+ peliculas de terror. Las pesadillas son tu zona de confort.',
-      '50+ peliculas de terror. Maestro del miedo.',
-    ),
-
-    // 8. Comedia lover
-    tiered('comedia_lover', 'Comedia lover', 'laugh', genreCounts['Comedia'] ?? 0, 10, 25, 50,
-      '10+ comedias vistas.',
-      '25+ comedias. La risa es tu terapia.',
-      '50+ comedias. Embajador de la comedia.',
-    ),
-
-    // 9. Drama queen
-    tiered('drama_queen', 'Drama queen', 'heart', genreCounts['Drama'] ?? 0, 10, 25, 50,
-      '10+ dramas vistos.',
-      '25+ dramas. Las lagrimas son arte.',
-      '50+ dramas. Corazon de celuloide.',
-    ),
-
-    // 10. Accion total
-    tiered('accion_total', 'Accion total', 'lightning', genreCounts['Accion'] ?? 0, 10, 25, 50,
-      '10+ peliculas de accion.',
-      '25+ peliculas de accion. Adicto a la adrenalina.',
-      '50+ peliculas de accion. Heroe de accion.',
-    ),
-
-    // 11. Mente maestra (Thriller)
-    tiered('mente_maestra', 'Mente maestra', 'brain', genreCounts['Thriller'] ?? 0, 10, 25, 50,
-      '10+ thrillers vistos.',
-      '25+ thrillers. Analista del suspenso.',
-      '50+ thrillers. Cerebro de acero.',
-    ),
-
-    // 12. Documentalista
-    tiered('documentalista', 'Documentalista', 'eye', genreCounts['Documental'] ?? 0, 5, 15, 30,
-      '5+ documentales vistos.',
-      '15+ documentales. Buscador de la verdad.',
-      '30+ documentales. La realidad supera la ficcion.',
-    ),
-
-    // 13. Ciencia ficcion
-    tiered('sci_fi_fan', 'Viajero espacial', 'rocket', genreCounts['Ciencia ficcion'] ?? 0, 10, 25, 50,
-      '10+ peliculas de ciencia ficcion.',
-      '25+ peliculas de sci-fi. Explorador de galaxias.',
-      '50+ peliculas de sci-fi. Ciudadano del cosmos.',
-    ),
-
-    // 14-18. Director fans (tiered)
-    ...([
-      { key: 'kubrick', name: 'Kubrick Fan', director: 'Kubrick', icon: 'clapperboard' },
-      { key: 'nolan', name: 'Nolan Fan', director: 'Nolan', icon: 'clapperboard' },
-      { key: 'spielberg', name: 'Spielberg Fan', director: 'Spielberg', icon: 'clapperboard' },
-      { key: 'tarantino', name: 'Tarantino Fan', director: 'Tarantino', icon: 'clapperboard' },
-      { key: 'scorsese', name: 'Scorsese Fan', director: 'Scorsese', icon: 'clapperboard' },
-    ] as const).map(({ key, name, director, icon }) => {
-      const count = directorFan(director)
-      return tiered(`fan_${key}`, name, icon, count, 3, 5, 8,
-        `3+ peliculas de ${director}.`,
-        `5+ peliculas de ${director}. Verdadero discipulo.`,
-        `8+ peliculas de ${director}. Conocedor absoluto.`,
-      )
-    }),
-
-    // 19. Binge Watcher
-    tiered('binge_watcher', 'Binge Watcher', 'bolt', maxInWeek, 5, 8, 12,
+    tiered('binge_watcher', 'Binge Watcher', 'bolt', maxInWeek, 5, 10, 15,
       '5+ peliculas en una semana.',
-      '8+ peliculas en una semana. Maraton extrema.',
-      '12+ peliculas en una semana. Sin frenos.',
+      '10+ peliculas en una semana. Maraton extrema.',
+      '15+ peliculas en una semana. Ritmo sobrehumano.',
     ),
-
-    // 20. Decada completa
     tiered('decada_completa', 'Decada completa', 'globe', coveredDecades, 5, 8, 11,
       'Peliculas de 5+ decadas clave (1920s-2020s).',
-      'Peliculas de 8+ decadas clave. Casi completo.',
+      'Peliculas de 8+ decadas clave.',
       'Todas las decadas cubiertas. Historiador total.',
     ),
-
-    // 21. Oscar Obsession
-    tiered('oscar_obsession', 'Oscar Obsession', 'trophy', oscarCount, 10, 25, 50,
-      '10+ peliculas ganadoras de Oscar.',
-      '25+ peliculas con Oscar. Votante de la academia.',
-      '50+ peliculas con Oscar. Archivista del Oscar.',
+    tiered('oscar_obsession', 'Oscar Obsession', 'trophy', oscarCount, 15, 50, 100,
+      '15+ peliculas ganadoras de Oscar.',
+      '50+ peliculas con Oscar. Votante de la academia.',
+      '100+ peliculas con Oscar. Archivista del Oscar.',
     ),
-
-    // 22. Saga Master
-    tiered('saga_master', 'Saga Master', 'collection', maxCollectionCount, 3, 5, 8,
+    tiered('saga_master', 'Saga Master', 'collection', maxCollectionCount, 3, 6, 10,
       '3+ peliculas de una misma saga.',
-      '5+ peliculas de una saga. Fan dedicado.',
-      '8+ peliculas de una saga. Completista absoluto.',
+      '6+ peliculas de una saga. Fan dedicado.',
+      '10+ peliculas de una saga. Completista absoluto.',
+    ),
+    tiered('rating_machine', 'Rating Machine', 'star', ratings.length, 50, 150, 300,
+      '50+ peliculas calificadas.',
+      '150+ peliculas calificadas. Maquina de ratings.',
+      '300+ peliculas calificadas. Critico profesional.',
+    ),
+    tiered('watchlist_warrior', 'Watchlist Warrior', 'bookmark', watchlistCount ?? 0, 30, 100, 250,
+      '30+ peliculas en tu watchlist.',
+      '100+ en watchlist. Acaparador cinematografico.',
+      '250+ en watchlist. Coleccionista infinito.',
     ),
 
-    // 23. Rating Machine
-    tiered('rating_machine', 'Rating Machine', 'star', ratings.length, 25, 50, 100,
-      '25+ peliculas calificadas.',
-      '50+ peliculas calificadas. Maquina de ratings.',
-      '100+ peliculas calificadas. Critico profesional.',
+    // --- GENEROS ---
+    tiered('terror_nocturno', 'Terror nocturno', 'skull', genreCounts['Terror'] ?? 0, 15, 40, 80,
+      '15+ peliculas de terror vistas.',
+      '40+ peliculas de terror. Las pesadillas son tu zona de confort.',
+      '80+ peliculas de terror. Maestro del miedo.',
+    ),
+    tiered('comedia_lover', 'Comedia lover', 'laugh', genreCounts['Comedia'] ?? 0, 15, 40, 80,
+      '15+ comedias vistas.',
+      '40+ comedias. La risa es tu terapia.',
+      '80+ comedias. Embajador de la comedia.',
+    ),
+    tiered('drama_queen', 'Drama queen', 'heart', genreCounts['Drama'] ?? 0, 15, 50, 100,
+      '15+ dramas vistos.',
+      '50+ dramas. Las lagrimas son arte.',
+      '100+ dramas. Corazon de celuloide.',
+    ),
+    tiered('accion_total', 'Accion total', 'lightning', genreCounts['Accion'] ?? 0, 15, 40, 80,
+      '15+ peliculas de accion.',
+      '40+ peliculas de accion. Adicto a la adrenalina.',
+      '80+ peliculas de accion. Heroe de accion.',
+    ),
+    tiered('mente_maestra', 'Mente maestra', 'brain', genreCounts['Thriller'] ?? 0, 15, 40, 80,
+      '15+ thrillers vistos.',
+      '40+ thrillers. Analista del suspenso.',
+      '80+ thrillers. Cerebro de acero.',
+    ),
+    tiered('documentalista', 'Documentalista', 'eye', genreCounts['Documental'] ?? 0, 10, 30, 60,
+      '10+ documentales vistos.',
+      '30+ documentales. Buscador de la verdad.',
+      '60+ documentales. La realidad supera la ficcion.',
+    ),
+    tiered('sci_fi_fan', 'Viajero espacial', 'rocket', genreCounts['Ciencia ficcion'] ?? 0, 15, 40, 80,
+      '15+ peliculas de ciencia ficcion.',
+      '40+ peliculas de sci-fi. Explorador de galaxias.',
+      '80+ peliculas de sci-fi. Ciudadano del cosmos.',
+    ),
+    tiered('romantico', 'Romantico empedernido', 'heart', genreCounts['Romance'] ?? 0, 10, 30, 60,
+      '10+ peliculas de romance.',
+      '30+ romances. Creyente del amor cinematografico.',
+      '60+ romances. El amor es tu genero.',
+    ),
+    tiered('aventurero', 'Aventurero', 'compass', genreCounts['Aventura'] ?? 0, 15, 40, 80,
+      '15+ peliculas de aventura.',
+      '40+ aventuras. Explorador incansable.',
+      '80+ aventuras. Indiana Jones seria tu aprendiz.',
+    ),
+    tiered('animacion_fan', 'Mundo animado', 'palette', genreCounts['Animacion'] ?? 0, 10, 25, 50,
+      '10+ peliculas de animacion.',
+      '25+ animadas. El arte no tiene edad.',
+      '50+ animadas. Maestro de la animacion.',
+    ),
+    tiered('guerra_fan', 'Soldado de cine', 'badge', genreCounts['Guerra'] ?? 0, 5, 15, 30,
+      '5+ peliculas de guerra.',
+      '15+ belicas. Estratega de butaca.',
+      '30+ belicas. General del cine belico.',
+    ),
+    tiered('crimen_fan', 'Mente criminal', 'eye', genreCounts['Crimen'] ?? 0, 10, 30, 60,
+      '10+ peliculas de crimen.',
+      '30+ de crimen. Conoces todos los trucos.',
+      '60+ de crimen. El padrino te pediria consejo.',
     ),
 
-    // 24. Watchlist Warrior
-    tiered('watchlist_warrior', 'Watchlist Warrior', 'bookmark', watchlistCount ?? 0, 20, 50, 100,
-      '20+ peliculas en tu watchlist.',
-      '50+ en watchlist. Acaparador cinematografico.',
-      '100+ en watchlist. Coleccionista infinito.',
-    ),
+    // --- DIRECTORES ---
+    ...([
+      { key: 'kubrick', name: 'Kubrick Fan', director: 'Kubrick' },
+      { key: 'nolan', name: 'Nolan Fan', director: 'Nolan' },
+      { key: 'spielberg', name: 'Spielberg Fan', director: 'Spielberg' },
+      { key: 'tarantino', name: 'Tarantino Fan', director: 'Tarantino' },
+      { key: 'scorsese', name: 'Scorsese Fan', director: 'Scorsese' },
+      { key: 'fincher', name: 'Fincher Fan', director: 'Fincher' },
+      { key: 'villeneuve', name: 'Villeneuve Fan', director: 'Villeneuve' },
+      { key: 'coppola', name: 'Coppola Fan', director: 'Coppola' },
+      { key: 'hitchcock', name: 'Hitchcock Fan', director: 'Hitchcock' },
+      { key: 'wes_anderson', name: 'Wes Anderson Fan', director: 'Wes Anderson' },
+      { key: 'ridley_scott', name: 'Ridley Scott Fan', director: 'Ridley Scott' },
+      { key: 'coen', name: 'Coen Fan', director: 'Coen' },
+      { key: 'park_chanwook', name: 'Park Chan-wook Fan', director: 'Park Chan' },
+      { key: 'miyazaki', name: 'Miyazaki Fan', director: 'Miyazaki' },
+      { key: 'denis', name: 'Denis Villeneuve Fan', director: 'Denis Villeneuve' },
+      { key: 'zemeckis', name: 'Zemeckis Fan', director: 'Zemeckis' },
+      { key: 'cameron', name: 'James Cameron Fan', director: 'Cameron' },
+      { key: 'lynch', name: 'David Lynch Fan', director: 'Lynch' },
+      { key: 'woody_allen', name: 'Woody Allen Fan', director: 'Woody Allen' },
+      { key: 'clint', name: 'Clint Eastwood Fan', director: 'Eastwood' },
+    ] as const).map(({ key, name, director }) => {
+      const count = directorFan(director)
+      return tiered(`fan_${key}`, name, 'clapperboard', count, 3, 6, 10,
+        `3+ peliculas de ${director}.`,
+        `6+ peliculas de ${director}. Verdadero discipulo.`,
+        `10+ peliculas de ${director}. Conocedor absoluto.`,
+      )
+    }),
 
     // 25. Top Critic (aligned with IMDB)
     (() => {
@@ -485,10 +491,10 @@ export async function GET(request: NextRequest) {
   }, 0)
 
   let overallLevel: string
-  if (tierCount >= 50) overallLevel = 'Dios del celuloide'
-  else if (tierCount >= 31) overallLevel = 'Leyenda del cine'
-  else if (tierCount >= 16) overallLevel = 'Cinefilo veterano'
-  else if (tierCount >= 6) overallLevel = 'Cinefilo en formacion'
+  if (tierCount >= 80) overallLevel = 'Dios del celuloide'
+  else if (tierCount >= 55) overallLevel = 'Leyenda del cine'
+  else if (tierCount >= 35) overallLevel = 'Cinefilo veterano'
+  else if (tierCount >= 15) overallLevel = 'Cinefilo en formacion'
   else overallLevel = 'Espectador casual'
 
   return NextResponse.json({

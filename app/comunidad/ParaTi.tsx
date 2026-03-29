@@ -318,7 +318,7 @@ export default function ParaTi({
   const [cargando, setCargando] = useState(false)
   const [catFiltro, setCatFiltro] = useState<string | null>(null)
   const [page, setPage] = useState(0)
-  const [visibleCount, setVisibleCount] = useState(20)
+  const [visibleCount, setVisibleCount] = useState(150)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [userMap, setUserMap] = useState<Record<string, UserState>>({})
   const [sinPerfil, setSinPerfil] = useState(false)
@@ -801,7 +801,7 @@ export default function ParaTi({
   const cambiarFiltro = (key: string | null) => {
     setCatFiltro(key === catFiltro ? null : key)
     setPage(0)
-    setVisibleCount(20)
+    setVisibleCount(150)
     setExpandedId(null)
   }
 
@@ -833,47 +833,43 @@ export default function ParaTi({
         <p className="text-zinc-500 text-sm">Sin películas recomendadas aún.</p>
       ) : (
         <>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+          <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
             {displayed.map(rec => {
               const platsActivas = PLATAFORMAS.filter(p => rec.plataformas.includes(p.id))
               return (
                 <TrackedCard key={rec.id} movieId={rec.id}
                   onClick={() => { recordEngagement(rec.id); onMovieExpand?.(rec) }}>
-                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
-                    {rec.poster_path
-                      ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, 16vw" />
-                      : <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center">{rec.titulo_ingles || rec.titulo}</span></div>
-                    }
-                    {rec.nota_imdb && (
-                      <div className="absolute top-2 left-2 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {rec.nota_imdb}</div>
-                    )}
-                    {platsActivas.length > 0 && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-6 pb-2 px-2">
-                        <div className="flex items-center gap-1 flex-wrap">
-                          {platsActivas.map(p => (
-                            <div key={p.id} className="bg-white rounded px-1 py-0.5">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img loading="lazy" src={p.logo} alt={p.nombre} className="h-3 w-auto object-contain block" />
-                            </div>
-                          ))}
+                  <div className="shrink-0 w-32">
+                    <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
+                      {rec.poster_path
+                        ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" sizes="128px" />
+                        : <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center">{rec.titulo_ingles || rec.titulo}</span></div>
+                      }
+                      {rec.nota_imdb && (
+                        <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {rec.nota_imdb}</div>
+                      )}
+                      {platsActivas.length > 0 ? (
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+                          <div className="flex items-center gap-0.5">
+                            {platsActivas.slice(0, 3).map(p => (
+                              <div key={p.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
+                                <img loading="lazy" src={p.logo} alt={p.nombre} className="h-2 w-auto object-contain" />
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+                          <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-white text-xs font-semibold leading-snug line-clamp-2 mb-0.5">{rec.titulo_ingles || rec.titulo}</p>
+                    <p className="text-zinc-500 text-[11px] leading-snug line-clamp-1">{rec.razon}</p>
                   </div>
-                  <p className="text-white text-xs font-semibold leading-snug line-clamp-2 mb-0.5">{rec.titulo_ingles || rec.titulo}</p>
-                  <p className="text-zinc-500 text-xs leading-snug line-clamp-1">{rec.razon}</p>
                 </TrackedCard>
               )
             })}
-          </div>
-          <div className="flex items-center justify-between mt-3">
-            <p className="text-zinc-600 text-xs">Mostrando {displayed.length} de {filtered.length}</p>
-            {hayMas && (
-              <button type="button" onClick={() => setVisibleCount(prev => prev + 20)}
-                className="text-sm text-yellow-400 hover:text-yellow-300 border border-zinc-700 hover:border-yellow-400/50 rounded-xl px-4 py-2 transition-colors">
-                Cargar más
-              </button>
-            )}
           </div>
         </>
       )}

@@ -78,11 +78,6 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
   if (!pelicula) notFound()
 
   const enr = pelicula.enriquecimiento
-  const hoy = new Date().toISOString().split('T')[0]
-  const plataformasHoy = pelicula.catalogos
-    .filter((c: any) => c.fecha === hoy && c.activo)
-    .map((c: any) => c.plataforma)
-
   const tieneReviewAutor = enr?.review_autor
   const titulo = pelicula.titulo_ingles || pelicula.titulo
 
@@ -262,32 +257,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               </div>
             )}
 
-            {/* Dónde ver — solo plataformas activas */}
-            {PLATAFORMAS.some(plat => plataformasHoy.includes(plat.id)) ? (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
-                <div className="flex flex-wrap gap-2">
-                  {PLATAFORMAS.filter(plat => plataformasHoy.includes(plat.id)).map(plat => (
-                    <div
-                      key={plat.id}
-                      className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 min-h-[44px]"
-                    >
-                      <div className="bg-white rounded px-1.5 py-1 shrink-0">
-                        <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-5 w-auto object-contain" />
-                      </div>
-                      <span className="text-sm text-white">{plat.nombre}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Disponible en</p>
-                <p className="text-sm text-zinc-600">No disponible en streaming actualmente</p>
-              </div>
-            )}
-
-            {/* Watch providers (TMDB deep links) */}
+            {/* Dónde ver — TMDB watch providers como fuente principal */}
             <WatchProviderButtons peliculaId={pelicula.id} />
 
             {/* Soundtrack */}

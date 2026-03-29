@@ -11,7 +11,6 @@ const TMDB_GENRE_MAP: Record<number, string> = {
   10770: 'TV Movie',
 }
 
-// Languages that a Chilean audience would care about
 const ALLOWED_LANGUAGES = 'en|es|fr|de|it|ja|ko|pt|zh'
 
 type RawMovie = {
@@ -29,6 +28,7 @@ type RawMovie = {
 
 async function fetchJSON(url: string) {
   const res = await fetch(url, { next: { revalidate: 3600 } })
+  if (!res.ok) return { results: [] }
   return res.json()
 }
 
@@ -44,68 +44,54 @@ export async function GET() {
   const sixMonthsLater = sixMonths.toISOString().split('T')[0]
 
   const base = 'https://api.themoviedb.org/3'
-
-  // Common quality filters for discover endpoints
-  const qualityParams = `&include_adult=false&vote_count.gte=50&with_original_language=${ALLOWED_LANGUAGES}`
+  const qualityParams = `&include_adult=false&vote_count.gte=20&with_original_language=${ALLOWED_LANGUAGES}`
 
   try {
-    // Fetch upcoming (2 pages) - upcoming endpoint has its own filters
+    // 1. Now playing in Chile (currently in theaters)
+    const nowPlayingUrls = [1, 2].map(
+      p => `${base}/movie/now_playing?api_key=${tmdbKey}&language=es-CL&region=CL&page=${p}`
+    )
+
+    // 2. Upcoming in Chile
     const upcomingUrls = [1, 2].map(
       p => `${base}/movie/upcoming?api_key=${tmdbKey}&language=es-CL&region=CL&page=${p}`
     )
 
-    // Discover theatrical releases (type=3) - sorted by popularity
+    // 3. Theatrical releases (type=3)
     const theatricalUrls = [1, 2].map(
       p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=popularity.desc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=3${qualityParams}&page=${p}`
     )
 
-    // Discover digital/streaming releases (type=4) - sorted by popularity
+    // 4. Digital/streaming releases (type=4)
     const digitalUrls = [1, 2].map(
       p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=popularity.desc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=4${qualityParams}&page=${p}`
     )
 
-    // Discover broad (types 2,3,4,5,6) for Chile - sorted by popularity
-    const broadUrls = [1, 2].map(
-      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=popularity.desc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=2|3|4|5|6${qualityParams}&page=${p}`
-    )
-
-    const allUrls = [...upcomingUrls, ...theatricalUrls, ...digitalUrls, ...broadUrls]
+    const allUrls = [...nowPlayingUrls, ...upcomingUrls, ...theatricalUrls, ...digitalUrls]
     const allResponses = await Promise.all(allUrls.map(fetchJSON))
 
-    // Parse results by category
+    // Parse by category
+    const nowPlayingResults: RawMovie[] = []
+    for (let i = 0; i < 2; i++) nowPlayingResults.push(...(allResponses[i].results ?? []))
+
     const upcomingResults: RawMovie[] = []
-    for (let i = 0; i < 2; i++) {
-      upcomingResults.push(...(allResponses[i].results ?? []))
-    }
+    for (let i = 2; i < 4; i++) upcomingResults.push(...(allResponses[i].results ?? []))
 
     const theatricalResults: RawMovie[] = []
-    for (let i = 2; i < 4; i++) {
-      theatricalResults.push(...(allResponses[i].results ?? []))
-    }
+    for (let i = 4; i < 6; i++) theatricalResults.push(...(allResponses[i].results ?? []))
 
     const digitalResults: RawMovie[] = []
-    for (let i = 4; i < 6; i++) {
-      digitalResults.push(...(allResponses[i].results ?? []))
-    }
+    for (let i = 6; i < 8; i++) digitalResults.push(...(allResponses[i].results ?? []))
 
-    const broadResults: RawMovie[] = []
-    for (let i = 6; i < 8; i++) {
-      broadResults.push(...(allResponses[i].results ?? []))
-    }
-
-    // Build a map of movie id -> release types
+    // Build release type sets
+    const nowPlayingIds = new Set(nowPlayingResults.map(m => m.id))
     const theatricalIds = new Set(theatricalResults.map(m => m.id))
     const digitalIds = new Set(digitalResults.map(m => m.id))
+    // upcoming = usually theatrical
+    upcomingResults.forEach(m => theatricalIds.add(m.id))
 
-    // Collect all movies
-    const allMovies = [
-      ...upcomingResults,
-      ...theatricalResults,
-      ...digitalResults,
-      ...broadResults,
-    ]
-
-    // Deduplicate keeping first occurrence
+    // Collect all, deduplicate
+    const allMovies = [...nowPlayingResults, ...upcomingResults, ...theatricalResults, ...digitalResults]
     const seen = new Set<number>()
     const unique = allMovies.filter((m) => {
       if (seen.has(m.id)) return false
@@ -113,34 +99,39 @@ export async function GET() {
       return true
     })
 
-    // Filter: must have poster, release date >= today, and meet quality bar
-    // For upcoming movies (no vote_count filter from API), apply a softer filter
+    // Filter quality
     const filtered = unique.filter((m) => {
-      if (!m.release_date || m.release_date < today) return false
       if (!m.poster_path) return false
-      // Filter out adult-looking or very low quality content
       if (m.vote_average > 0 && m.vote_average < 3) return false
       return true
     })
 
-    // Sort by popularity descending (most anticipated first)
-    const sorted = filtered.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0))
+    // Sort: now playing first, then by popularity
+    const sorted = filtered.sort((a, b) => {
+      const aPlaying = nowPlayingIds.has(a.id) ? 1 : 0
+      const bPlaying = nowPlayingIds.has(b.id) ? 1 : 0
+      if (bPlaying !== aPlaying) return bPlaying - aPlaying
+      return (b.popularity ?? 0) - (a.popularity ?? 0)
+    })
 
-    // Limit to top 40 movies
-    const top = sorted.slice(0, 40)
+    const top = sorted.slice(0, 50)
 
     const movies = top.map((m) => {
-      // Determine release type
+      const isNowPlaying = nowPlayingIds.has(m.id)
       const isTheatrical = theatricalIds.has(m.id)
       const isDigital = digitalIds.has(m.id)
 
-      let release_type: 'cine' | 'streaming' | 'ambos' | null = null
-      if (isTheatrical && isDigital) {
+      // Determine release type - always assign one
+      let release_type: 'en_cines' | 'cine' | 'streaming' | 'ambos'
+      if (isNowPlaying) {
+        release_type = isDigital ? 'ambos' : 'en_cines'
+      } else if (isTheatrical && isDigital) {
         release_type = 'ambos'
-      } else if (isTheatrical) {
-        release_type = 'cine'
       } else if (isDigital) {
         release_type = 'streaming'
+      } else {
+        // Default: upcoming/theatrical = cine
+        release_type = 'cine'
       }
 
       return {
@@ -153,6 +144,7 @@ export async function GET() {
         vote_average: m.vote_average,
         genres: (m.genre_ids ?? []).map((id: number) => TMDB_GENRE_MAP[id]).filter(Boolean),
         release_type,
+        now_playing: isNowPlaying,
       }
     })
 

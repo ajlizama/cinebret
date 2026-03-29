@@ -13,7 +13,8 @@ type Movie = {
   release_date: string
   vote_average: number
   genres: string[]
-  release_type: 'cine' | 'streaming' | 'ambos' | null
+  release_type: 'en_cines' | 'cine' | 'streaming' | 'ambos' | null
+  now_playing?: boolean
 }
 
 type MonthGroup = {
@@ -55,16 +56,28 @@ function groupByMonth(movies: Movie[]): MonthGroup[] {
   })
 }
 
-function ReleaseBadge({ type }: { type: Movie['release_type'] }) {
+function ReleaseBadge({ type, nowPlaying }: { type: Movie['release_type']; nowPlaying?: boolean }) {
   if (!type) return null
+
+  if (type === 'en_cines' || (type === 'cine' && nowPlaying)) {
+    return (
+      <div className="absolute bottom-2 left-2">
+        <span className="bg-amber-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h2v2H4V5zm4 0h4v2H8V5zm6 0h2v2h-2V5zM4 9h2v2H4V9zm6 0h4v2h-4V9zm4 0h2v2h-2V9zM4 13h2v2H4v-2zm4 0h4v2H8v-2zm6 0h2v2h-2v-2z"/></svg>
+          En cines
+        </span>
+      </div>
+    )
+  }
 
   if (type === 'ambos') {
     return (
       <div className="absolute bottom-2 left-2 flex gap-1">
-        <span className="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+        <span className="bg-amber-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h2v2H4V5zm4 0h4v2H8V5zm6 0h2v2h-2V5zM4 9h2v2H4V9zm6 0h4v2h-4V9zm4 0h2v2h-2V9zM4 13h2v2H4v-2zm4 0h4v2H8v-2zm6 0h2v2h-2v-2z"/></svg>
           Cine
         </span>
-        <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+        <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
           Streaming
         </span>
       </div>
@@ -74,8 +87,8 @@ function ReleaseBadge({ type }: { type: Movie['release_type'] }) {
   if (type === 'cine') {
     return (
       <div className="absolute bottom-2 left-2">
-        <span className="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
-          Cine
+        <span className="bg-red-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
+          Pronto en cines
         </span>
       </div>
     )
@@ -83,7 +96,7 @@ function ReleaseBadge({ type }: { type: Movie['release_type'] }) {
 
   return (
     <div className="absolute bottom-2 left-2">
-      <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+      <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
         Streaming
       </span>
     </div>
@@ -138,14 +151,14 @@ export default function EstRenosPage() {
   const filteredMovies = filter === 'todos'
     ? movies
     : movies.filter(m => {
-        if (filter === 'cine') return m.release_type === 'cine' || m.release_type === 'ambos'
+        if (filter === 'cine') return m.release_type === 'cine' || m.release_type === 'en_cines' || m.release_type === 'ambos'
         if (filter === 'streaming') return m.release_type === 'streaming' || m.release_type === 'ambos'
         return true
       })
 
   const monthGroups = groupByMonth(filteredMovies)
 
-  const cineCount = movies.filter(m => m.release_type === 'cine' || m.release_type === 'ambos').length
+  const cineCount = movies.filter(m => m.release_type === 'cine' || m.release_type === 'en_cines' || m.release_type === 'ambos').length
   const streamingCount = movies.filter(m => m.release_type === 'streaming' || m.release_type === 'ambos').length
 
   return (
@@ -279,7 +292,7 @@ export default function EstRenosPage() {
                       )}
 
                       {/* Release type badge */}
-                      <ReleaseBadge type={movie.release_type} />
+                      <ReleaseBadge type={movie.release_type} nowPlaying={movie.now_playing} />
                     </div>
 
                     {/* Info */}

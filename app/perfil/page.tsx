@@ -8,6 +8,7 @@ import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
 import Loading from '@/components/Loading'
+import MisPlataformas from '@/components/MisPlataformas'
 import {
   type PeliculaConStats,
   type Stats,
@@ -288,6 +289,11 @@ export default function MiPerfilPage() {
         {stats && vistas.length > 0 && (
           <StatsCards stats={stats} total={vistas.length} />
         )}
+
+        {/* ── Mis Plataformas ── */}
+        <div className="mb-8 bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+          <MisPlataformas />
+        </div>
 
         {/* ── Tabs ── */}
         <div className="flex gap-2 mb-6 flex-wrap">

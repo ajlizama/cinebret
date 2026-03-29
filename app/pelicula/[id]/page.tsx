@@ -14,6 +14,8 @@ import AgregarAListaButton from './AgregarAListaButton'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
 import SpotifyPlayer from '@/components/SpotifyPlayer'
+import WatchProviderButtons from '@/components/WatchProviderButtons'
+import ShareButton from '@/components/ShareButton'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -285,6 +287,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               </div>
             )}
 
+            {/* Watch providers (TMDB deep links) */}
+            <WatchProviderButtons peliculaId={pelicula.id} />
+
             {/* Soundtrack */}
             <SpotifyPlayer movieTitle={pelicula.titulo_ingles || pelicula.titulo} />
 
@@ -398,6 +403,14 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 </svg>
                 Soundtrack
               </a>
+              <ShareButton
+                data={{
+                  title: pelicula.titulo,
+                  text: `Mira "${pelicula.titulo}" en CineBret`,
+                  url: `https://cinebret.cl/pelicula/${pelicula.id}`,
+                }}
+                className="flex items-center gap-2 bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors rounded-lg px-4 py-2 text-sm font-medium"
+              />
             </div>
           </div>
 

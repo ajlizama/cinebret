@@ -37,6 +37,41 @@ function extractYTId(url: string): string | null {
   return m ? m[1] : null
 }
 
+// Seeded PRNG (mulberry32)
+function mulberry32(seed: number) {
+  return function () {
+    let t = (seed += 0x6d2b79f5)
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function getSessionSeed(): number {
+  if (typeof window === 'undefined') return Date.now()
+  const key = 'cinereels-session-seed'
+  const stored = sessionStorage.getItem(key)
+  if (stored) return parseInt(stored, 10)
+  const seed = Date.now() ^ Math.floor(Math.random() * 1000000)
+  sessionStorage.setItem(key, seed.toString())
+  return seed
+}
+
+function getDaySeed(): number {
+  const d = new Date()
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate()
+}
+
+// Fisher-Yates shuffle with seeded PRNG
+function seededShuffle<T>(arr: T[], rng: () => number): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 let ytReady = false
 let ytPromise: Promise<void> | null = null
 function loadYT(): Promise<void> {
@@ -219,46 +254,87 @@ export default function CineReelsPage() {
           })
         }
       }
-      // Smart ordering
+      // Smart ordering — randomized per session, personalized for logged-in users
+      const sessionSeed = getSessionSeed()
+      const rng = mulberry32(sessionSeed)
+
       if (user) {
-        // Logged in: use preferences (genre + mood + fav directors)
-        const { data: prefs } = await supabase.from('perfil_preferencias')
-          .select('generos_preferidos, mood_ranking, fav_movies')
-          .eq('user_id', user.id).maybeSingle()
+        // Logged in: preferences + watch history genres + random factor
+        const [{ data: prefs }, { data: watchedRows }] = await Promise.all([
+          supabase.from('perfil_preferencias')
+            .select('generos_preferidos, mood_ranking, fav_movies')
+            .eq('user_id', user.id).maybeSingle(),
+          supabase.from('user_peliculas')
+            .select('pelicula_id')
+            .eq('user_id', user.id).eq('visto', true)
+            .limit(200),
+        ])
 
         const genPrefs = (prefs?.generos_preferidos ?? []) as string[]
         const moodRanking = (prefs?.mood_ranking ?? []) as string[]
         const genNorm = (g: string) => g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        const genPrefsNorm = genPrefs.map(genNorm)
+        const genPrefsNorm = new Set(genPrefs.map(genNorm))
 
-        // Get genres for each movie
+        // Get genres for reel movies AND watched movies to learn history preferences
+        const watchedIds = (watchedRows ?? []).map((r: any) => r.pelicula_id)
+        const allIdsForGenres = [...new Set([...ids, ...watchedIds])]
         const enrGenres: Record<string, string[]> = {}
-        for (let i = 0; i < ids.length; i += 50) {
-          const chunk = ids.slice(i, i + 50)
+        for (let i = 0; i < allIdsForGenres.length; i += 50) {
+          const chunk = allIdsForGenres.slice(i, i + 50)
           const { data: eg } = await supabase.from('enriquecimiento').select('pelicula_id, generos').in('pelicula_id', chunk)
           ;(eg ?? []).forEach((e: any) => { enrGenres[e.pelicula_id] = e.generos ?? [] })
         }
 
+        // Build genre frequency from watch history
+        const historyGenreCount: Record<string, number> = {}
+        watchedIds.forEach((wid: string) => {
+          ;(enrGenres[wid] ?? []).forEach(g => {
+            const key = genNorm(g)
+            historyGenreCount[key] = (historyGenreCount[key] ?? 0) + 1
+          })
+        })
+        const maxHistCount = Math.max(1, ...Object.values(historyGenreCount))
+
+        // Score each reel movie
         allMovies.forEach(m => {
           const genres = enrGenres[m.id] ?? []
-          const genMatch = genres.filter(g => genPrefsNorm.includes(genNorm(g))).length
+          // Explicit preference match (0-1 normalized)
+          const prefMatch = genres.length > 0
+            ? genres.filter(g => genPrefsNorm.has(genNorm(g))).length / Math.max(1, genres.length)
+            : 0
+          // History-based genre affinity (0-1 normalized)
+          const histAffinity = genres.length > 0
+            ? genres.reduce((sum, g) => sum + ((historyGenreCount[genNorm(g)] ?? 0) / maxHistCount), 0) / genres.length
+            : 0
+          const genreScore = prefMatch * 0.7 + histAffinity * 0.3
           const moodIdx = moodRanking.indexOf(m.categoria ?? '')
-          const moodScore = moodIdx >= 0 ? (4 - moodIdx) : 0
-          ;(m as any)._score = genMatch * 3 + moodScore * 2 + (m.nota_imdb ?? 5) + Math.random() * 2
+          const moodBonus = moodIdx >= 0 ? (4 - moodIdx) * 0.05 : 0
+          // Final: genre match * 0.6 + random * 0.4 (+ small mood bonus)
+          ;(m as any)._score = (genreScore + moodBonus) * 0.6 + rng() * 0.4
         })
         allMovies.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
       } else {
-        // Not logged in: IMDB + random + engagement
+        // Not logged in: date-seeded shuffle weighted by IMDB quality
+        const dayRng = mulberry32(getDaySeed() ^ sessionSeed)
+
         const ENGAGEMENT_KEY = 'cinereels-engagement'
         let engagement: Record<string, number> = {}
         try { engagement = JSON.parse(localStorage.getItem(ENGAGEMENT_KEY) ?? '{}') } catch {}
 
+        // Score by IMDB + engagement penalty + random
         allMovies.forEach(m => {
-          const imdbScore = (m.nota_imdb ?? 5) / 10
+          const imdbNorm = ((m.nota_imdb ?? 5) - 4) / 6 // normalize ~4-10 to 0-1
           const engPenalty = engagement[m.id] ? Math.max(0, 1 - engagement[m.id] * 0.2) : 1
-          ;(m as any)._score = imdbScore * engPenalty + Math.random() * 0.3
+          ;(m as any)._score = imdbNorm * 0.4 * engPenalty + dayRng() * 0.6
         })
         allMovies.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+      }
+
+      // Ensure first reel is high quality (IMDB >= 7.5) to hook the user
+      const highQualityIdx = allMovies.findIndex(m => (m.nota_imdb ?? 0) >= 7.5)
+      if (highQualityIdx > 0) {
+        const [hq] = allMovies.splice(highQualityIdx, 1)
+        allMovies.unshift(hq)
       }
 
       setMovies(allMovies)

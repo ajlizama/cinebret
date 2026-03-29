@@ -26,23 +26,34 @@ type PlatformResult = {
   totalMovies: number
   matchScore: number
   recommendation: string
+  unseenGems: number
+  avgImdb: number | null
+  topGenre: string | null
+  // Sub-scores for debugging / transparency
+  watchlistValue: number
+  catalogQuality: number
+  tasteMatch: number
+  unseenGemsScore: number
 }
 
 function getRecommendation(score: number): string {
-  if (score >= 70) return 'Altamente recomendada'
-  if (score >= 40) return 'Buena opcion'
+  if (score >= 70) return 'Imprescindible'
+  if (score >= 50) return 'Muy recomendada'
+  if (score >= 30) return 'Buena opcion'
   return 'Podrias prescindir'
 }
 
 function getRecommendationColor(rec: string): string {
-  if (rec === 'Altamente recomendada') return 'text-yellow-400'
-  if (rec === 'Buena opcion') return 'text-emerald-400'
+  if (rec === 'Imprescindible') return 'text-yellow-400'
+  if (rec === 'Muy recomendada') return 'text-emerald-400'
+  if (rec === 'Buena opcion') return 'text-blue-400'
   return 'text-zinc-500'
 }
 
 function getBarColor(rec: string): string {
-  if (rec === 'Altamente recomendada') return 'bg-yellow-400'
-  if (rec === 'Buena opcion') return 'bg-emerald-500'
+  if (rec === 'Imprescindible') return 'bg-yellow-400'
+  if (rec === 'Muy recomendada') return 'bg-emerald-500'
+  if (rec === 'Buena opcion') return 'bg-blue-500'
   return 'bg-zinc-600'
 }
 
@@ -87,7 +98,7 @@ export default function CalculadoraPage() {
 
     const fechaCatalogo = (fechaRow as any)?.fecha ?? new Date().toISOString().split('T')[0]
 
-    // Fetch all active catalog entries for this date (paginated to avoid 1000-row default limit)
+    // Fetch all active catalog entries for this date (paginated)
     const allCats = await fetchAllPages<{ pelicula_id: string; plataforma: string }>((from, to) =>
       supabase
         .from('catalogos')
@@ -106,58 +117,27 @@ export default function CalculadoraPage() {
       }
     })
 
-    if (!user) {
-      // Non-logged-in: just show total movies per platform
-      const platformResults: PlatformResult[] = PLATAFORMAS.map(p => ({
-        id: p.id,
-        nombre: p.nombre,
-        logo: p.logo,
-        watchlistCount: 0,
-        totalMovies: platMovies[p.id].size,
-        matchScore: 0,
-        recommendation: '',
-      })).sort((a, b) => b.totalMovies - a.totalMovies)
-
-      setResults(platformResults)
-      setLoading(false)
-      return
-    }
-
-    // Logged-in user: fetch watchlist + watched movies with genres
-    const { data: userRows } = await supabase
-      .from('user_peliculas')
-      .select('pelicula_id, visto, watchlist, peliculas(categoria, enriquecimiento(generos))')
-      .eq('user_id', user.id)
-
-    const watchlistIds = new Set<string>()
-    const genreCount: Record<string, number> = {}
-
-    ;(userRows ?? []).forEach((r: any) => {
-      if (r.watchlist) watchlistIds.add(r.pelicula_id)
-
-      // Count genres from watched movies to build taste profile
-      if (r.visto && r.peliculas) {
-        const generos: string[] = r.peliculas?.enriquecimiento?.generos ?? []
-        generos.forEach((g: string) => {
-          genreCount[g] = (genreCount[g] ?? 0) + 1
-        })
-        // Also count categoria
-        if (r.peliculas.categoria) {
-          genreCount[r.peliculas.categoria] = (genreCount[r.peliculas.categoria] ?? 0) + 1
-        }
-      }
-    })
-
-    setWatchlistTotal(watchlistIds.size)
-    setUserGenres(genreCount)
-
-    // For genre matching, we need genres per movie on each platform
-    // Fetch genres for all movies that are in at least one catalog
+    // Collect all movie IDs across all platforms
     const allMovieIds = new Set<string>()
     Object.values(platMovies).forEach(s => s.forEach(id => allMovieIds.add(id)))
 
-    // Fetch in batches of 500
+    // Fetch IMDB ratings for all catalog movies (from peliculas table)
     const movieIdArr = Array.from(allMovieIds)
+    const imdbMap: Record<string, number> = {}
+
+    for (let i = 0; i < movieIdArr.length; i += 500) {
+      const batch = movieIdArr.slice(i, i + 500)
+      const { data: pelRows } = await supabase
+        .from('peliculas')
+        .select('id, nota_imdb')
+        .in('id', batch)
+
+      ;(pelRows ?? []).forEach((r: any) => {
+        if (r.nota_imdb != null) imdbMap[r.id] = r.nota_imdb
+      })
+    }
+
+    // Fetch genres for all catalog movies (from enriquecimiento table)
     const genreMap: Record<string, string[]> = {}
 
     for (let i = 0; i < movieIdArr.length; i += 500) {
@@ -172,22 +152,96 @@ export default function CalculadoraPage() {
       })
     }
 
+    if (!user) {
+      // Non-logged-in: show total movies and avg IMDB per platform
+      const platformResults: PlatformResult[] = PLATAFORMAS.map(p => {
+        const movieSet = platMovies[p.id]
+        const ratings = Array.from(movieSet).map(id => imdbMap[id]).filter(Boolean)
+        const avg = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null
+
+        return {
+          id: p.id,
+          nombre: p.nombre,
+          logo: p.logo,
+          watchlistCount: 0,
+          totalMovies: movieSet.size,
+          matchScore: 0,
+          recommendation: '',
+          unseenGems: 0,
+          avgImdb: avg ? parseFloat(avg.toFixed(1)) : null,
+          topGenre: null,
+          watchlistValue: 0,
+          catalogQuality: 0,
+          tasteMatch: 0,
+          unseenGemsScore: 0,
+        }
+      }).sort((a, b) => b.totalMovies - a.totalMovies)
+
+      setResults(platformResults)
+      setLoading(false)
+      return
+    }
+
+    // Logged-in user: fetch watchlist + watched movies with genres
+    const { data: userRows } = await supabase
+      .from('user_peliculas')
+      .select('pelicula_id, visto, watchlist, peliculas(categoria, nota_imdb, enriquecimiento(generos))')
+      .eq('user_id', user.id)
+
+    const watchlistIds = new Set<string>()
+    const watchedIds = new Set<string>()
+    const genreCount: Record<string, number> = {}
+
+    ;(userRows ?? []).forEach((r: any) => {
+      if (r.watchlist) watchlistIds.add(r.pelicula_id)
+      if (r.visto) watchedIds.add(r.pelicula_id)
+
+      // Count genres from watched movies to build taste profile
+      if (r.visto && r.peliculas) {
+        const generos: string[] = r.peliculas?.enriquecimiento?.generos ?? []
+        generos.forEach((g: string) => {
+          genreCount[g] = (genreCount[g] ?? 0) + 1
+        })
+        if (r.peliculas.categoria) {
+          genreCount[r.peliculas.categoria] = (genreCount[r.peliculas.categoria] ?? 0) + 1
+        }
+      }
+    })
+
+    setWatchlistTotal(watchlistIds.size)
+    setUserGenres(genreCount)
+
     // Calculate scores per platform
     const totalUserGenreCount = Object.values(genreCount).reduce((a, b) => a + b, 0)
     const hasGenreData = totalUserGenreCount > 0
 
-    const platformResults: PlatformResult[] = PLATAFORMAS.map(p => {
+    // Find the max possible values for normalization
+    const platformRawScores = PLATAFORMAS.map(p => {
       const movieSet = platMovies[p.id]
       const total = movieSet.size
 
-      // Watchlist overlap
+      // --- 1. WATCHLIST VALUE (40%) ---
+      // Each watchlist movie on this platform scores (nota_imdb / 10) * 10 = nota_imdb points
+      let watchlistValue = 0
       let wlCount = 0
-      watchlistIds.forEach(id => { if (movieSet.has(id)) wlCount++ })
+      watchlistIds.forEach(id => {
+        if (movieSet.has(id)) {
+          wlCount++
+          const rating = imdbMap[id]
+          watchlistValue += rating ? rating : 5 // default 5 if no IMDB rating
+        }
+      })
 
-      // Genre match score: how well does this platform's catalog match user's taste?
+      // --- 2. CATALOG QUALITY (20%) ---
+      // Average IMDB of all movies on this platform
+      const ratings = Array.from(movieSet).map(id => imdbMap[id]).filter(Boolean)
+      const avgImdb = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0
+
+      // --- 3. TASTE MATCH (25%) ---
+      // Genre cosine similarity (same as before)
       let genreScore = 0
+      let topGenre: string | null = null
       if (hasGenreData) {
-        // Build platform genre distribution
         const platGenreCount: Record<string, number> = {}
         let platGenreTotal = 0
         movieSet.forEach(id => {
@@ -198,7 +252,6 @@ export default function CalculadoraPage() {
           })
         })
 
-        // Cosine-ish similarity: for each genre the user watches, how represented is it on this platform?
         if (platGenreTotal > 0) {
           let dotProduct = 0
           let userMag = 0
@@ -216,22 +269,93 @@ export default function CalculadoraPage() {
           const magnitude = Math.sqrt(userMag) * Math.sqrt(platMag)
           genreScore = magnitude > 0 ? (dotProduct / magnitude) * 100 : 0
         }
+
+        // Find the top genre match for the "why" explanation
+        // Which user genre is most over-represented on this platform?
+        let bestGenreScore = 0
+        const platGenreCount2: Record<string, number> = {}
+        movieSet.forEach(id => {
+          const genres = genreMap[id] ?? []
+          genres.forEach(g => { platGenreCount2[g] = (platGenreCount2[g] ?? 0) + 1 })
+        })
+
+        Object.entries(genreCount).forEach(([genre, userCount]) => {
+          const platCount = platGenreCount2[genre] ?? 0
+          // Score = user affinity * platform availability
+          const score = (userCount / totalUserGenreCount) * platCount
+          if (score > bestGenreScore) {
+            bestGenreScore = score
+            topGenre = genre
+          }
+        })
       }
 
-      // Combined match score: weighted blend of watchlist hit rate + genre similarity
-      const watchlistScore = watchlistIds.size > 0 ? (wlCount / watchlistIds.size) * 100 : 0
-      const matchScore = hasGenreData
-        ? Math.round(watchlistScore * 0.6 + genreScore * 0.4)
-        : Math.round(watchlistScore)
+      // --- 4. UNSEEN GEMS (15%) ---
+      // Movies with IMDB >= 7.5 that user hasn't watched and aren't in watchlist
+      let unseenGems = 0
+      movieSet.forEach(id => {
+        if (!watchedIds.has(id) && !watchlistIds.has(id)) {
+          const rating = imdbMap[id]
+          if (rating && rating >= 7.5) unseenGems++
+        }
+      })
 
       return {
         id: p.id,
         nombre: p.nombre,
         logo: p.logo,
-        watchlistCount: wlCount,
+        wlCount,
         totalMovies: total,
-        matchScore: Math.min(matchScore, 100),
-        recommendation: getRecommendation(matchScore),
+        watchlistValue,
+        avgImdb,
+        genreScore,
+        topGenre,
+        unseenGems,
+      }
+    })
+
+    // Normalize each dimension to 0-100 and compute final score
+    const maxWatchlistValue = Math.max(...platformRawScores.map(p => p.watchlistValue), 1)
+    const maxUnseenGems = Math.max(...platformRawScores.map(p => p.unseenGems), 1)
+
+    const platformResults: PlatformResult[] = platformRawScores.map(p => {
+      // Normalize watchlist value: relative to best platform (0-100)
+      const normWatchlistValue = (p.watchlistValue / maxWatchlistValue) * 100
+
+      // Normalize catalog quality: scale IMDB avg (5.0 = 0, 8.5 = 100)
+      const normCatalogQuality = Math.min(Math.max(((p.avgImdb - 5.0) / 3.5) * 100, 0), 100)
+
+      // Genre score is already 0-100
+      const normTasteMatch = p.genreScore
+
+      // Normalize unseen gems: relative to best platform (0-100)
+      const normUnseenGems = (p.unseenGems / maxUnseenGems) * 100
+
+      // Weighted combination
+      const matchScore = Math.round(
+        normWatchlistValue * 0.40 +
+        normCatalogQuality * 0.20 +
+        normTasteMatch * 0.25 +
+        normUnseenGems * 0.15
+      )
+
+      const clampedScore = Math.min(matchScore, 100)
+
+      return {
+        id: p.id,
+        nombre: p.nombre,
+        logo: p.logo,
+        watchlistCount: p.wlCount,
+        totalMovies: p.totalMovies,
+        matchScore: clampedScore,
+        recommendation: getRecommendation(clampedScore),
+        unseenGems: p.unseenGems,
+        avgImdb: p.avgImdb > 0 ? parseFloat(p.avgImdb.toFixed(1)) : null,
+        topGenre: p.topGenre,
+        watchlistValue: Math.round(normWatchlistValue),
+        catalogQuality: Math.round(normCatalogQuality),
+        tasteMatch: Math.round(normTasteMatch),
+        unseenGemsScore: Math.round(normUnseenGems),
       }
     }).sort((a, b) => b.matchScore - a.matchScore)
 
@@ -239,13 +363,24 @@ export default function CalculadoraPage() {
     setLoading(false)
   }
 
-  // Top 2 recommendation
+  // Top 2 recommendation with "why"
   const top2 = useMemo(() => {
     if (!user || results.length < 2) return null
     const top = results.filter(r => r.matchScore > 0).slice(0, 2)
     if (top.length < 2) return null
     return top
   }, [results, user])
+
+  function getWhyText(p: PlatformResult): string {
+    if (p.topGenre) {
+      // Clean genre name for display
+      const genre = p.topGenre.toLowerCase()
+      return `por tu ${genre}`
+    }
+    if (p.watchlistCount > 0) return `por tu watchlist`
+    if (p.unseenGems > 0) return `por sus joyas sin ver`
+    return 'por su catalogo'
+  }
 
   if (loading || authLoading) {
     return (
@@ -270,7 +405,7 @@ export default function CalculadoraPage() {
           </h1>
           <p className="text-zinc-400 mt-3 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
             {user
-              ? 'Analizamos tu watchlist y gustos para decirte en que plataformas vale la pena gastar.'
+              ? 'Analizamos tu watchlist, gustos y la calidad de cada catalogo para decirte en que plataformas vale la pena gastar.'
               : 'Mira cuantas peliculas tiene cada plataforma en nuestro catalogo. Inicia sesion para un analisis personalizado.'}
           </p>
         </div>
@@ -289,8 +424,13 @@ export default function CalculadoraPage() {
                     <div className="w-7 h-7 bg-white rounded-lg flex items-center justify-center p-0.5 shrink-0">
                       <Image src={p.logo} alt={p.nombre} width={24} height={24} className="object-contain" />
                     </div>
-                    <span className="text-white font-bold text-sm">{p.nombre}</span>
-                    <span className="text-yellow-400 text-xs font-semibold">{p.matchScore}%</span>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="text-white font-bold text-sm">{p.nombre}</span>
+                        <span className="text-yellow-400 text-xs font-semibold">{p.matchScore}/100</span>
+                      </div>
+                      <span className="text-zinc-400 text-[11px]">{getWhyText(p)}</span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -336,21 +476,36 @@ export default function CalculadoraPage() {
                       </h3>
                       {user && p.matchScore > 0 && (
                         <span className={`text-2xl font-black tabular-nums ${isTop ? 'text-yellow-400' : 'text-zinc-400'}`}>
-                          {p.matchScore}%
+                          {p.matchScore}<span className="text-sm font-bold opacity-50">/100</span>
                         </span>
                       )}
                     </div>
 
                     {/* Stats row */}
-                    <div className="flex items-center gap-4 mt-1 flex-wrap">
+                    <div className="flex items-center gap-3 mt-1.5 flex-wrap">
                       {user && watchlistTotal > 0 && (
                         <span className="text-sm text-zinc-400">
                           <span className="text-white font-semibold">{p.watchlistCount}</span>{' '}
                           {p.watchlistCount === 1 ? 'pelicula' : 'peliculas'} de tu watchlist
                         </span>
                       )}
-                      <span className="text-sm text-zinc-500">
-                        <span className="text-zinc-300 font-medium">{p.totalMovies.toLocaleString()}</span> peliculas en catalogo
+                      {user && p.unseenGems > 0 && (
+                        <span className="text-sm text-zinc-400">
+                          <span className="text-emerald-400 font-semibold">{p.unseenGems}</span>{' '}
+                          {p.unseenGems === 1 ? 'joya' : 'joyas'} sin ver (IMDB 7.5+)
+                        </span>
+                      )}
+                      {p.avgImdb && (
+                        <span className="text-sm text-zinc-500">
+                          Promedio IMDB: <span className="text-zinc-300 font-medium">{p.avgImdb}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Catalog size (subtle) */}
+                    <div className="mt-1">
+                      <span className="text-xs text-zinc-600">
+                        {p.totalMovies.toLocaleString()} peliculas en catalogo
                       </span>
                     </div>
 

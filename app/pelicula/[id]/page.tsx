@@ -263,18 +263,21 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             {/* Soundtrack */}
             <SpotifyPlayer movieTitle={pelicula.titulo_ingles || pelicula.titulo} />
 
-            {/* Video clip */}
-            {enr?.video_clip_url && (() => {
-              const url = enr.video_clip_url as string
-              const ytId = extractYouTubeId(url)
+            {/* Video clip or trailer */}
+            {(() => {
+              // Priority: manual video_clip_url > youtube_trailer_key
+              const clipUrl = enr?.video_clip_url as string | undefined
+              const trailerKey = pelicula.youtube_trailer_key as string | undefined
+              const ytId = clipUrl ? extractYouTubeId(clipUrl) : trailerKey
               if (ytId) return <YouTubeClip videoId={ytId} />
-              return (
+              if (clipUrl) return (
                 <div className="relative rounded-xl overflow-hidden bg-black">
-                  <video src={url} autoPlay muted loop playsInline preload="metadata"
+                  <video src={clipUrl} autoPlay muted loop playsInline preload="metadata"
                     className="w-full max-h-80 object-contain"
                     onClick={(e: any) => { e.currentTarget.muted = !e.currentTarget.muted }} />
                 </div>
               )
+              return null
             })()}
 
             {/* Seguidos que ya la vieron */}

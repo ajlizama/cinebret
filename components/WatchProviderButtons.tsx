@@ -109,28 +109,23 @@ export default function WatchProviderButtons({ peliculaId }: { peliculaId: strin
           <div className="flex flex-wrap gap-2">
             {streaming.map((p) => {
               const key = p.platform_key || ''
-              const logo = PLATFORM_LOGOS[key]
               const name = PLATFORM_NAMES[key] || p.provider_name
               return (
                 <button
                   key={p.provider_name}
                   onClick={() => handleClick(p)}
-                  className={`flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-white text-sm font-semibold transition-all min-h-[44px]
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-white text-sm font-semibold transition-all min-h-[44px]
                     ${PLATFORM_COLORS[key] || 'bg-zinc-700 hover:bg-zinc-600'}
                   `}
                 >
-                  {logo ? (
-                    <div className="bg-white rounded px-1.5 py-1 shrink-0">
-                      <img loading="lazy" src={logo} alt={name} className="h-5 w-auto object-contain" />
-                    </div>
-                  ) : p.logo_path ? (
+                  {p.logo_path && (
                     <img
                       loading="lazy"
                       src={`https://image.tmdb.org/t/p/w45${p.logo_path}`}
                       alt={name}
                       className="w-5 h-5 rounded"
                     />
-                  ) : null}
+                  )}
                   Ver en {name}
                 </button>
               )

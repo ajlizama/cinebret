@@ -63,6 +63,22 @@ function getSkipPenalty(movieId: string): number {
   return Math.max(penalty, 0.5) // never penalize more than 50%
 }
 
+/** Pick top `topN` items + `randomN` random picks from positions topN..maxDepth for diversity */
+function diverseSample<T>(sorted: T[], topN: number, randomN: number, maxDepth: number): T[] {
+  const top = sorted.slice(0, topN)
+  const deeper = sorted.slice(topN, maxDepth)
+  if (deeper.length === 0 || randomN <= 0) return top
+  // Fisher-Yates partial shuffle to pick randomN from deeper
+  const picks: T[] = []
+  const indices = deeper.map((_, i) => i)
+  for (let i = 0; i < Math.min(randomN, indices.length); i++) {
+    const j = i + Math.floor(Math.random() * (indices.length - i))
+    ;[indices[i], indices[j]] = [indices[j], indices[i]]
+    picks.push(deeper[indices[i]])
+  }
+  return [...top, ...picks]
+}
+
 const PLATAFORMAS = [
   { id: 'netflix',         nombre: 'Netflix',     logo: '/netflix.png' },
   { id: 'disney_plus',    nombre: 'Disney+',     logo: '/disney_plus.svg' },
@@ -278,7 +294,7 @@ function TrackedCard({ movieId, onClick, children }: {
   return (
     <div ref={ref}
       onClick={() => { clicked.current = true; onClick() }}
-      className="shrink-0 w-36 text-left cursor-pointer">
+      className="text-left cursor-pointer">
       {children}
     </div>
   )
@@ -302,6 +318,7 @@ export default function ParaTi({
   const [cargando, setCargando] = useState(false)
   const [catFiltro, setCatFiltro] = useState<string | null>(null)
   const [page, setPage] = useState(0)
+  const [visibleCount, setVisibleCount] = useState(20)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [userMap, setUserMap] = useState<Record<string, UserState>>({})
   const [sinPerfil, setSinPerfil] = useState(false)
@@ -716,13 +733,14 @@ export default function ParaTi({
 
     // ── INTERLEAVE: mezclar los pools
     // Proporción: Genre(40%), Director(20%), Mood(15%), History(10%), Followers(10%), Discovery(5%)
+    // Each pool uses diverseSample: top deterministic picks + random picks from deeper for variety
     const pools = [
-      { items: poolGenre.slice(0, 60), weight: 40 },
-      { items: poolDirector.slice(0, 30), weight: 20 },
-      { items: poolMood.slice(0, 25), weight: 15 },
-      { items: poolHistory.slice(0, 20), weight: 10 },
-      { items: poolFollowers.slice(0, 15), weight: 10 },
-      { items: poolDiscovery.slice(0, 10), weight: 5 },
+      { items: diverseSample(poolGenre, 20, 20, 80), weight: 40 },
+      { items: diverseSample(poolDirector, 15, 10, 50), weight: 20 },
+      { items: diverseSample(poolMood, 12, 8, 40), weight: 15 },
+      { items: diverseSample(poolHistory, 10, 8, 40), weight: 10 },
+      { items: diverseSample(poolFollowers, 8, 7, 30), weight: 10 },
+      { items: diverseSample(poolDiscovery, 5, 10, 30), weight: 5 },
     ]
     // Normalize weights for pools that have items
     const activePools = pools.filter(p => p.items.length > 0)
@@ -776,14 +794,14 @@ export default function ParaTi({
     if (filtrosPlataformas && filtrosPlataformas.length > 0 && !filtrosPlataformas.some(pl => r.plataformas.includes(pl))) return false
     return true
   })
-  const PAGE_SIZE = 100
-  const displayed = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
-  const hayMas = filtered.length > (page + 1) * PAGE_SIZE
+  const displayed = filtered.slice(0, visibleCount)
+  const hayMas = filtered.length > visibleCount
   const expandedRec = expandedId ? displayed.find(r => r.id === expandedId) ?? null : null
 
   const cambiarFiltro = (key: string | null) => {
     setCatFiltro(key === catFiltro ? null : key)
     setPage(0)
+    setVisibleCount(20)
     setExpandedId(null)
   }
 
@@ -815,17 +833,15 @@ export default function ParaTi({
         <p className="text-zinc-500 text-sm">Sin películas recomendadas aún.</p>
       ) : (
         <>
-          <div ref={scrollRef} onScroll={() => {
-            try { if (scrollRef.current) sessionStorage.setItem(scrollKey, String(scrollRef.current.scrollLeft)) } catch {}
-          }} className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
             {displayed.map(rec => {
               const platsActivas = PLATAFORMAS.filter(p => rec.plataformas.includes(p.id))
               return (
                 <TrackedCard key={rec.id} movieId={rec.id}
                   onClick={() => { recordEngagement(rec.id); onMovieExpand?.(rec) }}>
-                  <div className="relative w-36 h-52 rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
+                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-800 mb-2 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
                     {rec.poster_path
-                      ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" sizes="144px" />
+                      ? <Image src={`https://image.tmdb.org/t/p/w185${rec.poster_path}`} alt={rec.titulo_ingles || rec.titulo} fill className="object-cover" sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, 16vw" />
                       : <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center">{rec.titulo_ingles || rec.titulo}</span></div>
                     }
                     {rec.nota_imdb && (
@@ -850,18 +866,14 @@ export default function ParaTi({
               )
             })}
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <p className="text-zinc-600 text-xs">{filtered.length} películas</p>
-            <div className="flex gap-2">
-              {page > 0 && (
-                <button type="button" onClick={() => { setPage(p => { const np = p - 1; try { sessionStorage.setItem(`${cacheKey}-page`, String(np)) } catch {}; return np }) }}
-                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">← Anteriores</button>
-              )}
-              {hayMas && (
-                <button type="button" onClick={() => { setPage(p => { const np = p + 1; try { sessionStorage.setItem(`${cacheKey}-page`, String(np)) } catch {}; return np }) }}
-                  className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-1.5 transition-colors">Ver otras 100 →</button>
-              )}
-            </div>
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-zinc-600 text-xs">Mostrando {displayed.length} de {filtered.length}</p>
+            {hayMas && (
+              <button type="button" onClick={() => setVisibleCount(prev => prev + 20)}
+                className="text-sm text-yellow-400 hover:text-yellow-300 border border-zinc-700 hover:border-yellow-400/50 rounded-xl px-4 py-2 transition-colors">
+                Cargar más
+              </button>
+            )}
           </div>
         </>
       )}

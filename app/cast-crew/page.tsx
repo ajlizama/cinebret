@@ -213,7 +213,7 @@ export default function CastCrewPage() {
             <video src="/loading.mp4" autoPlay muted loop playsInline className="w-14 h-14 object-contain" style={{ mixBlendMode: 'lighten' }} />
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-2 sm:space-y-1">
             {filtered.slice(0, 100).map((p, i) => {
               const isExpanded = expanded === p.name
               return (
@@ -222,11 +222,11 @@ export default function CastCrewPage() {
                     onClick={() => handleExpand(p)}
                     className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-colors cursor-pointer ${isExpanded ? 'bg-zinc-800' : 'bg-zinc-900/40 hover:bg-zinc-800/60'}`}>
                     <span className="text-zinc-600 text-sm font-bold w-7 text-right shrink-0">{i + 1}</span>
-                    <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-800 shrink-0">
+                    <div className="w-14 h-14 rounded-full overflow-hidden bg-zinc-800 shrink-0">
                       {p.photo ? (
                         <img loading="lazy" src={`https://image.tmdb.org/t/p/w185${p.photo}`} alt={p.name} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-600 text-sm font-bold">{p.name[0]}</div>
+                        <div className="w-full h-full flex items-center justify-center text-zinc-600 text-base font-bold">{p.name[0]}</div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -234,17 +234,17 @@ export default function CastCrewPage() {
                         <p className="text-white text-sm font-medium truncate">{p.name}</p>
                         {p.oscars > 0 && <span className="flex items-center gap-0.5 shrink-0"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /><span className="text-amber-400 text-xs font-bold">{p.oscars}</span></span>}
                       </div>
-                      <p className="text-zinc-500 text-xs">{p.movieCount} películas</p>
+                      <p className="text-zinc-500 text-sm">{p.movieCount} películas · ⭐ {p.avgImdb}</p>
                     </div>
-                    {/* Movie posters */}
-                    <div className="flex gap-1 sm:gap-1.5 shrink-0">
+                    {/* Movie posters - hidden on small screens */}
+                    <div className="hidden sm:flex gap-1.5 shrink-0">
                       {p.topMovies.slice(0, 5).map(m => (
                         <div key={m.id} className="relative w-9 h-13 rounded-md overflow-hidden bg-zinc-800" style={{ height: '52px' }}>
                           {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" fill className="object-cover" sizes="36px" />}
                         </div>
                       ))}
                     </div>
-                    <span className="text-yellow-400 font-bold text-sm shrink-0">⭐ {p.avgImdb}</span>
+                    <span className="hidden sm:inline text-yellow-400 font-bold text-sm shrink-0">⭐ {p.avgImdb}</span>
                   </div>
 
                   {/* Expanded section */}
@@ -264,11 +264,11 @@ export default function CastCrewPage() {
                       ) : (
                         <>
                           {/* Movie grid */}
-                          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 sm:gap-2">
                             {expandedMovies.map(m => {
                               const isMovieExpanded = expandedMovie === m.id
                               return (
-                                <div key={m.id} className={isMovieExpanded ? 'col-span-4 sm:col-span-5 md:col-span-7' : ''}>
+                                <div key={m.id} className={isMovieExpanded ? 'col-span-2 sm:col-span-4 md:col-span-5 lg:col-span-7' : ''}>
                                   {!isMovieExpanded ? (
                                     <div className="cursor-pointer group" onClick={async () => {
                                       if (tab === 'compositor' && musicPlaying !== m.id) {
@@ -288,7 +288,7 @@ export default function CastCrewPage() {
                                     }}>
                                       <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 ring-1 ring-transparent group-hover:ring-yellow-400/50 transition-all">
                                         {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="100px" />}
-                                        {m.nota_imdb && <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1 py-0.5 text-[8px] font-bold text-yellow-400">⭐{m.nota_imdb}</div>}
+                                        {m.nota_imdb && <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐{m.nota_imdb}</div>}
                                         {tab === 'compositor' && musicPlaying === m.id && (
                                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                                             <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center animate-pulse">
@@ -297,10 +297,10 @@ export default function CastCrewPage() {
                                           </div>
                                         )}
                                       </div>
-                                      <p className="text-white text-[9px] font-medium leading-tight line-clamp-2 mt-1">{m.titulo_ingles || m.titulo}</p>
+                                      <p className="text-white text-xs sm:text-[10px] font-medium leading-tight line-clamp-2 mt-1.5">{m.titulo_ingles || m.titulo}</p>
                                       {tab === 'compositor' && musicPlaying === m.id && musicUrls[m.id] && (
-                                        <div className="mt-1 rounded-lg overflow-hidden">
-                                          <iframe src={musicUrls[m.id]!} width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media" loading="lazy" className="rounded-lg" />
+                                        <div className="mt-2 rounded-xl overflow-hidden w-full">
+                                          <iframe src={musicUrls[m.id]!} width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="rounded-xl w-full" />
                                         </div>
                                       )}
                                     </div>

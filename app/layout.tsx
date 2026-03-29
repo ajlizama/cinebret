@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   description: "Buscador y recomendador de películas y series en streaming en Chile. Recomendaciones personalizadas, reviews y comunidad cinéfila.",
   metadataBase: new URL("https://cinebret.cl"),
   manifest: "/manifest.json",
-  themeColor: "#d4a017",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -55,6 +54,10 @@ export const metadata: Metadata = {
   other: {
     "mobile-web-app-capable": "yes",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#d4a017',
 };
 
 export default function RootLayout({

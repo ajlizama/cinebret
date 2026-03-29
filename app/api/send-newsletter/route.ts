@@ -1,11 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { createClient } from '@supabase/supabase-js'
 
 function getResend() {
   const key = process.env.RESEND_API_KEY
   if (!key) throw new Error('RESEND_API_KEY not configured')
   return new Resend(key)
 }
+
+let _supabaseAdmin: ReturnType<typeof createClient> | null = null
+function getSupabaseAdmin() {
+  if (!_supabaseAdmin) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.SUPABASE_SECRET_KEY
+    if (!url || !key) throw new Error('Supabase credentials not configured')
+    _supabaseAdmin = createClient(url, key)
+  }
+  return _supabaseAdmin
+}
+
 const ADMIN_ID = 'b5eafe05-9ec8-4b23-b0b4-137148ecbac2'
 
 type MovieCard = {
@@ -146,31 +159,100 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
-    const trending: MovieCard[] = [
-      { titulo: 'Origen', poster: '/tXQvtRWfkUUnWJAn2tN3jERIUG.jpg', nota: 8.8, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'El caballero oscuro', poster: '/8QDQExnfNFOtabLDKqfDQuHDsIg.jpg', nota: 9.0, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'Interestellar', poster: '/fbUwSqYIP0isCiJXey3staY3DNn.jpg', nota: 8.6, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'Pulp Fiction', poster: '/hNcQAuquJxTxl2fJFs1R42DrWcf.jpg', nota: 8.9, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'Matrix', poster: '/ejmTPNAkgZaVJ4AI9zb9SehAYU0.jpg', nota: 8.7, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'El club de la lucha', poster: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg', nota: 8.8, url: 'https://cinebret.cl/catalogo' },
-    ]
+    const sb = getSupabaseAdmin()
 
-    const recomendadas: MovieCard[] = [
-      { titulo: 'Seven', poster: '/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg', nota: 8.6, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'El Prestigio', poster: '/lIl2CrnWohGrZSO9eyKRptxZ7Hs.jpg', nota: 8.5, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'Memento', poster: '/neHrQLVfT3KPqvv30pNPyRb6chQ.jpg', nota: 8.4, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'Whiplash', poster: '/uy36CPy5ARuC8qrH8Esg2ndFyJ5.jpg', nota: 8.5, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'Gladiator', poster: '/90QFOG5zSN4cbrIVs4DL4ePAuA5.jpg', nota: 8.5, url: 'https://cinebret.cl/catalogo' },
-      { titulo: 'El padrino', poster: '/ApiEfzSkrqS4m1L5a2GwWXzIiAs.jpg', nota: 9.2, url: 'https://cinebret.cl/catalogo' },
-    ]
+    // --- Trending: fetch from TMDB API ---
+    let trending: MovieCard[] = []
+    let heroBackdrop: string | undefined
+    const tmdbKey = process.env.TMDB_API_KEY
+    if (tmdbKey) {
+      try {
+        const tmdbRes = await fetch(
+          `https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL`
+        )
+        if (tmdbRes.ok) {
+          const tmdbData = await tmdbRes.json()
+          const results = (tmdbData.results ?? []).slice(0, 6)
+          trending = results.map((m: any) => ({
+            titulo: m.title ?? m.original_title,
+            poster: m.poster_path ?? '',
+            nota: m.vote_average ? Math.round(m.vote_average * 10) / 10 : null,
+            url: `https://cinebret.cl/pelicula/${m.id}`,
+          }))
+          heroBackdrop = results[0]?.backdrop_path ?? undefined
+        }
+      } catch {
+        // TMDB unavailable, trending stays empty
+      }
+    }
+
+    // --- User stats: visto count and average rating ---
+    let vistasCount = 0
+    let avgRating: string | null = null
+    if (userId) {
+      const { data: userPelis } = await sb
+        .from('user_peliculas')
+        .select('rating')
+        .eq('user_id', userId)
+        .eq('visto', true)
+
+      if (userPelis && userPelis.length > 0) {
+        vistasCount = userPelis.length
+        const rated = userPelis.filter((p: any) => p.rating != null)
+        if (rated.length > 0) {
+          const avg = rated.reduce((sum: number, p: any) => sum + Number(p.rating), 0) / rated.length
+          avgRating = avg.toFixed(1)
+        }
+      }
+    }
+
+    // --- Recommendations: highest nota_imdb the user hasn't seen ---
+    let recomendadas: MovieCard[] = []
+    if (userId) {
+      // Get IDs of movies the user has already seen
+      const { data: seenRows } = await sb
+        .from('user_peliculas')
+        .select('pelicula_id')
+        .eq('user_id', userId)
+        .eq('visto', true)
+
+      const seenIds = (seenRows ?? []).map((r: any) => r.pelicula_id)
+
+      let query = sb
+        .from('peliculas')
+        .select('id, titulo, nota_imdb, enriquecimiento(poster_path)')
+        .not('nota_imdb', 'is', null)
+        .order('nota_imdb', { ascending: false })
+        .limit(seenIds.length > 0 ? 50 : 6)
+
+      const { data: pelisData } = await query
+
+      if (pelisData) {
+        const filtered = seenIds.length > 0
+          ? pelisData.filter((p: any) => !seenIds.includes(p.id)).slice(0, 6)
+          : pelisData.slice(0, 6)
+
+        recomendadas = filtered.map((p: any) => {
+          const posterPath = Array.isArray(p.enriquecimiento)
+            ? p.enriquecimiento[0]?.poster_path
+            : p.enriquecimiento?.poster_path
+          return {
+            titulo: p.titulo,
+            poster: posterPath ?? '',
+            nota: p.nota_imdb,
+            url: `https://cinebret.cl/pelicula/${p.id}`,
+          }
+        })
+      }
+    }
 
     const html = buildEmailHtml({
       username: username || 'Cinéfilo',
-      vistasCount: 12,
-      avgRating: '8.3',
+      vistasCount,
+      avgRating,
       trending,
       recomendadas,
-      heroBackdrop: '/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg', // Inception backdrop
+      heroBackdrop,
     })
 
     const { data, error } = await getResend().emails.send({

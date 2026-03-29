@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  const key = process.env.RESEND_API_KEY
+  if (!key) throw new Error('RESEND_API_KEY not configured')
+  return new Resend(key)
+}
 const ADMIN_ID = 'b5eafe05-9ec8-4b23-b0b4-137148ecbac2'
 
 type MovieCard = {
@@ -169,7 +173,7 @@ export async function POST(req: NextRequest) {
       heroBackdrop: '/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg', // Inception backdrop
     })
 
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: 'CineBret <noreply@cinebret.cl>',
       to: email,
       subject: 'Tu resumen quincenal — CineBret',

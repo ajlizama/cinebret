@@ -295,6 +295,30 @@ export default function MiPerfilPage() {
           <MisPlataformas />
         </div>
 
+        {/* ── Quick Access ── */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          <Link href="/estadisticas/wrapped" className="bg-gradient-to-br from-amber-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-amber-600/50 transition-all group">
+            <span className="text-2xl mb-2 block">🎬</span>
+            <span className="text-white font-semibold text-sm group-hover:text-amber-300 transition-colors">Mi Wrapped</span>
+            <span className="text-zinc-400 text-xs block mt-0.5">Tu año en películas</span>
+          </Link>
+          <Link href="/cinequest" className="bg-gradient-to-br from-purple-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-purple-600/50 transition-all group">
+            <span className="text-2xl mb-2 block">⭐</span>
+            <span className="text-white font-semibold text-sm group-hover:text-purple-300 transition-colors">CineQuest</span>
+            <span className="text-zinc-400 text-xs block mt-0.5">Logros y desafíos</span>
+          </Link>
+          <Link href="/calculadora" className="bg-gradient-to-br from-emerald-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-emerald-600/50 transition-all group">
+            <span className="text-2xl mb-2 block">🧮</span>
+            <span className="text-white font-semibold text-sm group-hover:text-emerald-300 transition-colors">Calculadora</span>
+            <span className="text-zinc-400 text-xs block mt-0.5">¿Qué plataforma te conviene?</span>
+          </Link>
+          <Link href="/juntos" className="bg-gradient-to-br from-sky-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-sky-600/50 transition-all group">
+            <span className="text-2xl mb-2 block">👥</span>
+            <span className="text-white font-semibold text-sm group-hover:text-sky-300 transition-colors">Juntos</span>
+            <span className="text-zinc-400 text-xs block mt-0.5">¿Qué vemos juntos?</span>
+          </Link>
+        </div>
+
         {/* ── Tabs ── */}
         <div className="flex gap-2 mb-6 flex-wrap">
           <button

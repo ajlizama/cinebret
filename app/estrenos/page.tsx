@@ -298,12 +298,12 @@ export default function EstRenosPage() {
                     {/* Info */}
                     <div className="p-3">
                       <h3 className="text-sm font-semibold text-white leading-tight line-clamp-2 mb-1.5">
-                        {movie.title}
+                        {movie.original_title || movie.title}
                       </h3>
 
-                      {movie.original_title !== movie.title && (
+                      {movie.original_title && movie.original_title !== movie.title && (
                         <p className="text-[11px] text-zinc-500 leading-tight line-clamp-1 mb-1.5 italic">
-                          {movie.original_title}
+                          {movie.title}
                         </p>
                       )}
 

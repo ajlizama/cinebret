@@ -83,12 +83,11 @@ export async function GET() {
     const digitalResults: RawMovie[] = []
     for (let i = 6; i < 8; i++) digitalResults.push(...(allResponses[i].results ?? []))
 
-    // Build release type sets
+    // Build release type sets — keep each source separate
     const nowPlayingIds = new Set(nowPlayingResults.map(m => m.id))
-    const theatricalIds = new Set(theatricalResults.map(m => m.id))
-    const digitalIds = new Set(digitalResults.map(m => m.id))
-    // upcoming = usually theatrical
-    upcomingResults.forEach(m => theatricalIds.add(m.id))
+    const upcomingIds = new Set(upcomingResults.map(m => m.id))
+    const theatricalOnlyIds = new Set(theatricalResults.map(m => m.id))
+    const digitalOnlyIds = new Set(digitalResults.map(m => m.id))
 
     // Collect all, deduplicate
     const allMovies = [...nowPlayingResults, ...upcomingResults, ...theatricalResults, ...digitalResults]
@@ -118,19 +117,24 @@ export async function GET() {
 
     const movies = top.map((m) => {
       const isNowPlaying = nowPlayingIds.has(m.id)
-      const isTheatrical = theatricalIds.has(m.id)
-      const isDigital = digitalIds.has(m.id)
+      const isUpcoming = upcomingIds.has(m.id)
+      const isTheatrical = theatricalOnlyIds.has(m.id)
+      const isDigitalOnly = digitalOnlyIds.has(m.id) && !isNowPlaying && !isUpcoming && !isTheatrical
 
-      // Determine release type - always assign one
+      // Determine release type with clear priority:
+      // 1. Now playing = en cines (definitive)
+      // 2. Upcoming from TMDB = pronto en cines (these are theatrical releases)
+      // 3. Theatrical discover = pronto en cines
+      // 4. Digital-only (not in any theatrical/upcoming source) = streaming
       let release_type: 'en_cines' | 'cine' | 'streaming' | 'ambos'
       if (isNowPlaying) {
-        release_type = isDigital ? 'ambos' : 'en_cines'
-      } else if (isTheatrical && isDigital) {
-        release_type = 'ambos'
-      } else if (isDigital) {
+        release_type = 'en_cines'
+      } else if (isUpcoming || isTheatrical) {
+        release_type = isDigitalOnly ? 'ambos' : 'cine'
+      } else if (isDigitalOnly) {
         release_type = 'streaming'
       } else {
-        // Default: upcoming/theatrical = cine
+        // Default for anything else: pronto en cines
         release_type = 'cine'
       }
 

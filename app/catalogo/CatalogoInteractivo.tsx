@@ -476,7 +476,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }) {
   const trendingSet = new Set(trendingIds)
   let trendingMovies = peliculas
-    .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path && p.plataformas.length > 0)
+    .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path)
   if (categoriasFiltro.length > 0) trendingMovies = trendingMovies.filter(p => categoriasFiltro.includes(p.categoria ?? ''))
   if (plataformasFiltro.length > 0) trendingMovies = trendingMovies.filter(p => plataformasFiltro.some(pl => p.plataformas.includes(pl)))
   if (generosFiltro.length > 0) trendingMovies = trendingMovies.filter(p => p.generos.some(g => generosFiltro.includes(g)))
@@ -495,8 +495,8 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
               <div className="absolute top-0 left-0 bg-zinc-950/80 rounded-br-lg px-2 py-1">
                 <span className="text-white font-black text-lg leading-none">{i + 1}</span>
               </div>
-              {p.plataformas.length > 0 && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+                {p.plataformas.length > 0 ? (
                   <div className="flex items-center gap-0.5">
                     {plataformas.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
                       <div key={pl.id} className="bg-white rounded px-0.5 py-0.5" style={{ height: 12 }}>
@@ -504,8 +504,10 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
+                )}
+              </div>
             </div>
             <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>
           </div>

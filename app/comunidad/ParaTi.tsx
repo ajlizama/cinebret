@@ -151,6 +151,28 @@ async function fetchCatalogosHoy(ids: string[]): Promise<Record<string, string[]
   if (ids.length === 0) return {}
   const fecha = await getFechaCatalogo()
   const platMap: Record<string, string[]> = {}
+  const moviesWithTmdbProviders = new Set<string>()
+
+  // Primary source: watch_providers (TMDB — more accurate)
+  for (let i = 0; i < ids.length; i += 50) {
+    const chunk = ids.slice(i, i + 50)
+    const { data } = await supabase
+      .from('watch_providers')
+      .select('pelicula_id, platform_key')
+      .eq('provider_type', 'flatrate')
+      .not('platform_key', 'is', null)
+      .in('pelicula_id', chunk)
+    ;(data ?? []).forEach((wp: any) => {
+      if (!wp.platform_key) return
+      if (!platMap[wp.pelicula_id]) platMap[wp.pelicula_id] = []
+      if (!platMap[wp.pelicula_id].includes(wp.platform_key)) {
+        platMap[wp.pelicula_id].push(wp.platform_key)
+      }
+      moviesWithTmdbProviders.add(wp.pelicula_id)
+    })
+  }
+
+  // Fallback: catalogos (scraping) only for movies WITHOUT TMDB data
   for (let i = 0; i < ids.length; i += 50) {
     const chunk = ids.slice(i, i + 50)
     const { data } = await supabase
@@ -160,20 +182,23 @@ async function fetchCatalogosHoy(ids: string[]): Promise<Record<string, string[]
       .eq('activo', true)
       .in('pelicula_id', chunk)
     ;(data ?? []).forEach((c: any) => {
-      const prev = platMap[c.pelicula_id] ?? []
-      if (!prev.includes(c.plataforma)) platMap[c.pelicula_id] = [...prev, c.plataforma]
-      else platMap[c.pelicula_id] = prev
+      if (moviesWithTmdbProviders.has(c.pelicula_id)) return
+      if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
+      if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
     })
   }
+
   return platMap
 }
 
-/** Fetch candidate IDs from today's catalog */
+/** Fetch candidate IDs from catalogos + watch_providers + recent quality movies */
 async function fetchCandidatosHoy(): Promise<string[]> {
   const fecha = await getFechaCatalogo()
-  const ids: string[] = []
-  let offset = 0
+  const ids = new Set<string>()
   const batchSize = 1000
+
+  // Source 1: catalogos (streaming platforms — scraping)
+  let offset = 0
   while (true) {
     const { data } = await supabase
       .from('catalogos')
@@ -182,12 +207,41 @@ async function fetchCandidatosHoy(): Promise<string[]> {
       .eq('activo', true)
       .range(offset, offset + batchSize - 1)
     if (!data || data.length === 0) break
-    data.forEach((r: any) => ids.push(r.pelicula_id))
+    data.forEach((r: any) => ids.add(r.pelicula_id))
     if (data.length < batchSize) break
     offset += batchSize
   }
-  // Deduplicate
-  return Array.from(new Set(ids))
+
+  // Source 2: watch_providers (TMDB — includes rent/buy/flatrate)
+  offset = 0
+  while (true) {
+    const { data } = await supabase
+      .from('watch_providers')
+      .select('pelicula_id')
+      .range(offset, offset + batchSize - 1)
+    if (!data || data.length === 0) break
+    data.forEach((r: any) => ids.add(r.pelicula_id))
+    if (data.length < batchSize) break
+    offset += batchSize
+  }
+
+  // Source 3: recent quality movies (theaters / now playing)
+  const currentYear = new Date().getFullYear()
+  offset = 0
+  while (true) {
+    const { data } = await supabase
+      .from('peliculas')
+      .select('id')
+      .gte('nota_imdb', 7.0)
+      .gte('anio', currentYear)
+      .range(offset, offset + batchSize - 1)
+    if (!data || data.length === 0) break
+    data.forEach((r: any) => ids.add(r.id))
+    if (data.length < batchSize) break
+    offset += batchSize
+  }
+
+  return Array.from(ids)
 }
 
 export type RecExport = Rec

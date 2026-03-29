@@ -39,6 +39,7 @@ export type Pelicula = {
   oscars: string | null; imdb_id: string | null; youtube_trailer_key: string | null
   sinopsis: string | null; video_clip_url: string | null
   keywords: string[]; tagline: string | null; certification: string | null
+  backdrop_path: string | null
 }
 
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
@@ -172,10 +173,10 @@ function PanelExpandido({
         <div className="md:hidden">
           {/* Banner backdrop */}
           <div className="relative h-44 overflow-hidden">
-            {p.poster_path && (
+            {(p.backdrop_path || p.poster_path) && (
               <>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-top" />
+                <img loading="lazy" src={p.backdrop_path ? `https://image.tmdb.org/t/p/w1280${p.backdrop_path}` : `https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className={`w-full h-full object-cover ${p.backdrop_path ? 'object-center' : 'object-top'}`} />
                 <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-900" />
               </>
             )}
@@ -318,11 +319,11 @@ function PanelExpandido({
 
         {/* ══ DESKTOP layout ══ */}
         <div className="hidden md:block relative overflow-hidden">
-          {/* Background poster — right 55% */}
-          {p.poster_path && (
+          {/* Background backdrop — right 55% */}
+          {(p.backdrop_path || p.poster_path) && (
             <div className="absolute inset-y-0 right-0 w-[55%]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img loading="lazy" src={`https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className="w-full h-full object-cover object-center" />
+              <img loading="lazy" src={p.backdrop_path ? `https://image.tmdb.org/t/p/w1280${p.backdrop_path}` : `https://image.tmdb.org/t/p/w780${p.poster_path}`} alt="" className={`w-full h-full object-cover object-center ${!p.backdrop_path ? 'blur-sm scale-105' : ''}`} />
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/80 to-zinc-900/50" />
               <div className="absolute inset-0 bg-zinc-900/40" />
             </div>
@@ -569,6 +570,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
     imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
     video_clip_url: (rec as any).video_clip_url ?? null,
     keywords: [], tagline: null, certification: null,
+    backdrop_path: null,
   })
   const gridRef = useRef<HTMLDivElement>(null)
 

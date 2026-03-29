@@ -95,6 +95,7 @@ type Rec = {
   boxoffice: number | null
   oscars: string | null
   poster_path: string | null
+  backdrop_path: string | null
   categoria: string | null
   director: string | null
   actores: string | null
@@ -418,7 +419,7 @@ export default function ParaTi({
       const chunk = candidatoIds.slice(i, i + 50)
       const [{ data: pels }, { data: enrs }] = await Promise.all([
         supabase.from('peliculas')
-          .select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, poster_path, categoria, imdb_id')
+          .select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, poster_path, backdrop_path, categoria, imdb_id')
           .in('id', chunk),
         supabase.from('enriquecimiento')
           .select('pelicula_id, generos, director, actores, compositor, sinopsis_chilensis, youtube_trailer_key, es_review_autor')
@@ -592,7 +593,7 @@ export default function ParaTi({
           anio: movie.anio, nota_imdb: movie.nota_imdb,
           rt_score: movie.rt_score ?? null, metacritic_score: movie.metacritic_score ?? null,
           runtime: movie.runtime ?? null, boxoffice: movie.boxoffice ?? null,
-          oscars: movie.oscars ?? null, poster_path: movie.poster_path, categoria: movie.categoria,
+          oscars: movie.oscars ?? null, poster_path: movie.poster_path, backdrop_path: movie.backdrop_path ?? null, categoria: movie.categoria,
           director: enr?.director ?? null, actores: enr?.actores ?? null,
           compositor: enr?.compositor ?? null, generos: enr?.generos ?? [],
           sinopsis: enr?.sinopsis_chilensis ?? null, razon: '', score: 0, plataformas: [],

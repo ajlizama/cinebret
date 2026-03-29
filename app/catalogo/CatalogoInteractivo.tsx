@@ -570,7 +570,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
     imdb_id: rec.imdb_id, youtube_trailer_key: rec.youtube_trailer_key, sinopsis: rec.sinopsis,
     video_clip_url: (rec as any).video_clip_url ?? null,
     keywords: [], tagline: null, certification: null,
-    backdrop_path: null,
+    backdrop_path: (rec as any).backdrop_path ?? null,
   })
   const gridRef = useRef<HTMLDivElement>(null)
 

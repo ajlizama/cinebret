@@ -454,7 +454,7 @@ function PanelExpandido({
         </div>
 
         {/* Spotify */}
-        <div className="px-4 md:px-6">
+        <div className="px-4 md:px-6 w-full" style={{ minWidth: 0 }}>
           <SpotifyPlayer movieTitle={p.titulo_ingles || p.titulo} />
         </div>
 

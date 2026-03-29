@@ -26,9 +26,9 @@ export default function SpotifyPlayer({ movieTitle }: { movieTitle: string }) {
   if (loading || !album) return null
 
   return (
-    <div className="w-full">
+    <div style={{ width: '100%', boxSizing: 'border-box' }}>
       <div
-        className="flex items-center gap-3 bg-zinc-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-zinc-800 transition-colors"
+        className="flex items-center gap-3 bg-zinc-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-zinc-800 transition-colors min-h-[44px]"
         onClick={() => setExpanded(v => !v)}
       >
         <svg className="w-6 h-6 text-green-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
@@ -41,16 +41,26 @@ export default function SpotifyPlayer({ movieTitle }: { movieTitle: string }) {
         <span className="text-zinc-500 text-sm">{expanded ? '▲' : '▼'}</span>
       </div>
       {expanded && (
-        <div className="mt-2 rounded-xl overflow-hidden w-full">
+        <div
+          className="mt-2 rounded-xl overflow-hidden"
+          style={{
+            width: 'calc(100% + 0px)',
+            marginLeft: 0,
+            marginRight: 0,
+          }}
+        >
           <iframe
             src={album.embedUrl}
-            width="100%"
-            height="352"
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"
-            className="rounded-xl w-full"
-            style={{ minWidth: '100%' }}
+            className="rounded-xl border-0"
+            style={{
+              width: '100%',
+              height: '380px',
+              display: 'block',
+              border: 'none',
+            }}
           />
         </div>
       )}

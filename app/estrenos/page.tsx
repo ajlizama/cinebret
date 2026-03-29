@@ -13,6 +13,7 @@ type Movie = {
   release_date: string
   vote_average: number
   genres: string[]
+  release_type: 'cine' | 'streaming' | 'ambos' | null
 }
 
 type MonthGroup = {
@@ -54,11 +55,47 @@ function groupByMonth(movies: Movie[]): MonthGroup[] {
   })
 }
 
+function ReleaseBadge({ type }: { type: Movie['release_type'] }) {
+  if (!type) return null
+
+  if (type === 'ambos') {
+    return (
+      <div className="absolute bottom-2 left-2 flex gap-1">
+        <span className="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+          Cine
+        </span>
+        <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+          Streaming
+        </span>
+      </div>
+    )
+  }
+
+  if (type === 'cine') {
+    return (
+      <div className="absolute bottom-2 left-2">
+        <span className="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+          Cine
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="absolute bottom-2 left-2">
+      <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+        Streaming
+      </span>
+    </div>
+  )
+}
+
 export default function EstRenosPage() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [reminders, setReminders] = useState<Set<number>>(new Set())
+  const [filter, setFilter] = useState<'todos' | 'cine' | 'streaming'>('todos')
 
   // Load reminders from localStorage
   useEffect(() => {
@@ -98,14 +135,25 @@ export default function EstRenosPage() {
     })
   }
 
-  const monthGroups = groupByMonth(movies)
+  const filteredMovies = filter === 'todos'
+    ? movies
+    : movies.filter(m => {
+        if (filter === 'cine') return m.release_type === 'cine' || m.release_type === 'ambos'
+        if (filter === 'streaming') return m.release_type === 'streaming' || m.release_type === 'ambos'
+        return true
+      })
+
+  const monthGroups = groupByMonth(filteredMovies)
+
+  const cineCount = movies.filter(m => m.release_type === 'cine' || m.release_type === 'ambos').length
+  const streamingCount = movies.filter(m => m.release_type === 'streaming' || m.release_type === 'ambos').length
 
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav />
       <div className="max-w-6xl mx-auto px-4 pt-6 pb-16">
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
             Calendario de Estrenos
           </h1>
@@ -113,6 +161,44 @@ export default function EstRenosPage() {
             Proximamente en streaming y cines en Chile
           </p>
         </div>
+
+        {/* Filter tabs */}
+        {!loading && !error && movies.length > 0 && (
+          <div className="flex gap-2 mb-8">
+            <button
+              onClick={() => setFilter('todos')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                filter === 'todos'
+                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  : 'bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700 hover:text-zinc-300'
+              }`}
+            >
+              Todos ({movies.length})
+            </button>
+            <button
+              onClick={() => setFilter('cine')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                filter === 'cine'
+                  ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  : 'bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700 hover:text-zinc-300'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-red-500" />
+              Cine ({cineCount})
+            </button>
+            <button
+              onClick={() => setFilter('streaming')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                filter === 'streaming'
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                  : 'bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700 hover:text-zinc-300'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-blue-500" />
+              Streaming ({streamingCount})
+            </button>
+          </div>
+        )}
 
         {/* Loading */}
         {loading && (
@@ -191,6 +277,9 @@ export default function EstRenosPage() {
                           {movie.vote_average.toFixed(1)}
                         </div>
                       )}
+
+                      {/* Release type badge */}
+                      <ReleaseBadge type={movie.release_type} />
                     </div>
 
                     {/* Info */}

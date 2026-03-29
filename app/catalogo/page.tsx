@@ -51,7 +51,15 @@ export default async function CatalogoPage() {
   const chileDate = new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString().split('T')[0]
   const fechaCatalogo = ultimaFechaRow?.fecha ?? chileDate
 
-  const [catalogosRaw, peliculasRaw] = await Promise.all([
+  const [watchProvidersRaw, catalogosRaw, peliculasRaw] = await Promise.all([
+    // Primary source: TMDB watch_providers (more accurate)
+    fetchAllPages((from, to) =>
+      supabase.from('watch_providers').select('pelicula_id, platform_key')
+        .eq('provider_type', 'flatrate')
+        .not('platform_key', 'is', null)
+        .range(from, to)
+    ),
+    // Fallback: catalogos (scraping, less accurate)
     fetchAllPages((from, to) =>
       supabase.from('catalogos').select('pelicula_id, plataforma')
         .eq('fecha', fechaCatalogo).eq('activo', true).range(from, to)
@@ -64,8 +72,23 @@ export default async function CatalogoPage() {
     ),
   ])
 
+  // Build platform map: prefer watch_providers (TMDB), fallback to catalogos
   const platMap: Record<string, string[]> = {}
+
+  // First load watch_providers (TMDB - accurate)
+  const moviesWithTmdbProviders = new Set<string>()
+  watchProvidersRaw.forEach((wp: any) => {
+    if (!wp.platform_key) return
+    if (!platMap[wp.pelicula_id]) platMap[wp.pelicula_id] = []
+    if (!platMap[wp.pelicula_id].includes(wp.platform_key)) {
+      platMap[wp.pelicula_id].push(wp.platform_key)
+    }
+    moviesWithTmdbProviders.add(wp.pelicula_id)
+  })
+
+  // Then fill gaps with catalogos only for movies WITHOUT TMDB data
   catalogosRaw.forEach((c: any) => {
+    if (moviesWithTmdbProviders.has(c.pelicula_id)) return // TMDB data takes priority
     if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
     if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
   })

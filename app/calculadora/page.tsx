@@ -46,6 +46,22 @@ function getBarColor(rec: string): string {
   return 'bg-zinc-600'
 }
 
+async function fetchAllPages<T>(
+  queryFn: (from: number, to: number) => PromiseLike<{ data: T[] | null }>,
+  pageSize = 1000,
+): Promise<T[]> {
+  const results: T[] = []
+  let from = 0
+  while (true) {
+    const { data } = await queryFn(from, from + pageSize - 1)
+    if (!data || data.length === 0) break
+    results.push(...data)
+    if (data.length < pageSize) break
+    from += pageSize
+  }
+  return results
+}
+
 export default function CalculadoraPage() {
   const { user, loading: authLoading } = useAuth()
   const [results, setResults] = useState<PlatformResult[]>([])
@@ -71,17 +87,20 @@ export default function CalculadoraPage() {
 
     const fechaCatalogo = (fechaRow as any)?.fecha ?? new Date().toISOString().split('T')[0]
 
-    // Fetch all active catalog entries for this date
-    const { data: allCats } = await supabase
-      .from('catalogos')
-      .select('pelicula_id, plataforma')
-      .eq('fecha', fechaCatalogo)
-      .eq('activo', true)
+    // Fetch all active catalog entries for this date (paginated to avoid 1000-row default limit)
+    const allCats = await fetchAllPages<{ pelicula_id: string; plataforma: string }>((from, to) =>
+      supabase
+        .from('catalogos')
+        .select('pelicula_id, plataforma')
+        .eq('fecha', fechaCatalogo)
+        .eq('activo', true)
+        .range(from, to)
+    )
 
     // Build platform -> set of pelicula_ids
     const platMovies: Record<string, Set<string>> = {}
     PLATAFORMAS.forEach(p => { platMovies[p.id] = new Set() })
-    ;(allCats ?? []).forEach((c: any) => {
+    allCats.forEach((c: any) => {
       if (platMovies[c.plataforma]) {
         platMovies[c.plataforma].add(c.pelicula_id)
       }

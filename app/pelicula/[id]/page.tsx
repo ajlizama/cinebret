@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -36,6 +37,36 @@ async function getPelicula(id: string) {
     .single()
 
   return data
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params
+  const p = await getPelicula(id)
+  if (!p) return { title: 'Película no encontrada' }
+
+  const title = `${p.titulo} (${p.anio}) — CineBret`
+  const description = p.enriquecimiento?.sinopsis_chilensis || `Descubre ${p.titulo} en CineBret`
+  const director = p.enriquecimiento?.director || ''
+  const ogUrl = `https://cinebret.cl/api/og?title=${encodeURIComponent(p.titulo)}&poster=${encodeURIComponent(p.poster_path || '')}&rating=${p.nota_imdb || ''}&year=${p.anio || ''}&director=${encodeURIComponent(director)}`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://cinebret.cl/pelicula/${id}`,
+      siteName: 'CineBret',
+      type: 'website',
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogUrl],
+    },
+  }
 }
 
 export default async function PeliculaPage({ params }: { params: Promise<{ id: string }> }) {

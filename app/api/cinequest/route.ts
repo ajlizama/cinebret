@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY!
+const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.NEXT_PUBLIC_SUPABASE_KEY!
 
 const GENEROS_NORMALIZE: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -43,12 +43,16 @@ export async function GET(request: NextRequest) {
   let from = 0
   const pageSize = 1000
   while (true) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_peliculas')
       .select('pelicula_id, rating, peliculas(titulo, anio, nota_imdb, enriquecimiento(director, generos))')
       .eq('user_id', userId)
       .eq('visto', true)
       .range(from, from + pageSize - 1)
+    if (error) {
+      console.error('[CineQuest] Supabase error:', error.message)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
     if (!data || data.length === 0) break
     allRows.push(...data)
     if (data.length < pageSize) break

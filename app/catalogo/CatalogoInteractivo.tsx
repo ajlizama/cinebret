@@ -458,8 +458,15 @@ function PanelExpandido({
           <SpotifyPlayer movieTitle={p.titulo_ingles || p.titulo} />
         </div>
 
-        {/* Video clip */}
-        {p.video_clip_url && <ClickToPlayClip url={p.video_clip_url} />}
+        {/* Video clip or trailer */}
+        {p.video_clip_url
+          ? <ClickToPlayClip url={p.video_clip_url} />
+          : p.youtube_trailer_key && (
+            <div className="px-4 md:px-6 py-3">
+              <YouTubeClip videoId={p.youtube_trailer_key} />
+            </div>
+          )
+        }
 
         {/* Reviews — both layouts */}
         <div className="px-4 md:px-6 pb-5 pt-2 border-t border-zinc-800">

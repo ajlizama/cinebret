@@ -11,6 +11,9 @@ const TMDB_GENRE_MAP: Record<number, string> = {
   10770: 'TV Movie',
 }
 
+// Languages that a Chilean audience would care about
+const ALLOWED_LANGUAGES = 'en|es|fr|de|it|ja|ko|pt|zh'
+
 type RawMovie = {
   id: number
   title: string
@@ -19,6 +22,8 @@ type RawMovie = {
   poster_path: string | null
   release_date: string
   vote_average: number
+  vote_count: number
+  popularity: number
   genre_ids: number[]
 }
 
@@ -40,25 +45,28 @@ export async function GET() {
 
   const base = 'https://api.themoviedb.org/3'
 
+  // Common quality filters for discover endpoints
+  const qualityParams = `&include_adult=false&vote_count.gte=50&with_original_language=${ALLOWED_LANGUAGES}`
+
   try {
-    // Fetch upcoming (3 pages)
-    const upcomingUrls = [1, 2, 3].map(
+    // Fetch upcoming (2 pages) - upcoming endpoint has its own filters
+    const upcomingUrls = [1, 2].map(
       p => `${base}/movie/upcoming?api_key=${tmdbKey}&language=es-CL&region=CL&page=${p}`
     )
 
-    // Discover theatrical releases (type=3) - 3 pages
-    const theatricalUrls = [1, 2, 3].map(
-      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=primary_release_date.asc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=3&page=${p}`
+    // Discover theatrical releases (type=3) - sorted by popularity
+    const theatricalUrls = [1, 2].map(
+      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=popularity.desc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=3${qualityParams}&page=${p}`
     )
 
-    // Discover digital/streaming releases (type=4) - 3 pages
-    const digitalUrls = [1, 2, 3].map(
-      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=primary_release_date.asc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=4&page=${p}`
+    // Discover digital/streaming releases (type=4) - sorted by popularity
+    const digitalUrls = [1, 2].map(
+      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=popularity.desc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=4${qualityParams}&page=${p}`
     )
 
-    // Discover broad (types 2,3,4,5,6) for Chile - 3 pages
-    const broadUrls = [1, 2, 3].map(
-      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=primary_release_date.asc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=2|3|4|5|6&page=${p}`
+    // Discover broad (types 2,3,4,5,6) for Chile - sorted by popularity
+    const broadUrls = [1, 2].map(
+      p => `${base}/discover/movie?api_key=${tmdbKey}&language=es-CL&region=CL&sort_by=popularity.desc&primary_release_date.gte=${today}&primary_release_date.lte=${sixMonthsLater}&with_release_type=2|3|4|5|6${qualityParams}&page=${p}`
     )
 
     const allUrls = [...upcomingUrls, ...theatricalUrls, ...digitalUrls, ...broadUrls]
@@ -66,22 +74,22 @@ export async function GET() {
 
     // Parse results by category
     const upcomingResults: RawMovie[] = []
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       upcomingResults.push(...(allResponses[i].results ?? []))
     }
 
     const theatricalResults: RawMovie[] = []
-    for (let i = 3; i < 6; i++) {
+    for (let i = 2; i < 4; i++) {
       theatricalResults.push(...(allResponses[i].results ?? []))
     }
 
     const digitalResults: RawMovie[] = []
-    for (let i = 6; i < 9; i++) {
+    for (let i = 4; i < 6; i++) {
       digitalResults.push(...(allResponses[i].results ?? []))
     }
 
     const broadResults: RawMovie[] = []
-    for (let i = 9; i < 12; i++) {
+    for (let i = 6; i < 8; i++) {
       broadResults.push(...(allResponses[i].results ?? []))
     }
 
@@ -105,36 +113,48 @@ export async function GET() {
       return true
     })
 
-    // Filter to movies with release date >= today, sort by date
-    const movies = unique
-      .filter((m) => m.release_date && m.release_date >= today)
-      .sort((a, b) => a.release_date.localeCompare(b.release_date))
-      .map((m) => {
-        // Determine release type
-        const isTheatrical = theatricalIds.has(m.id)
-        const isDigital = digitalIds.has(m.id)
+    // Filter: must have poster, release date >= today, and meet quality bar
+    // For upcoming movies (no vote_count filter from API), apply a softer filter
+    const filtered = unique.filter((m) => {
+      if (!m.release_date || m.release_date < today) return false
+      if (!m.poster_path) return false
+      // Filter out adult-looking or very low quality content
+      if (m.vote_average > 0 && m.vote_average < 3) return false
+      return true
+    })
 
-        let release_type: 'cine' | 'streaming' | 'ambos' | null = null
-        if (isTheatrical && isDigital) {
-          release_type = 'ambos'
-        } else if (isTheatrical) {
-          release_type = 'cine'
-        } else if (isDigital) {
-          release_type = 'streaming'
-        }
+    // Sort by popularity descending (most anticipated first)
+    const sorted = filtered.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0))
 
-        return {
-          id: m.id,
-          title: m.title,
-          original_title: m.original_title,
-          overview: m.overview,
-          poster_path: m.poster_path,
-          release_date: m.release_date,
-          vote_average: m.vote_average,
-          genres: (m.genre_ids ?? []).map((id: number) => TMDB_GENRE_MAP[id]).filter(Boolean),
-          release_type,
-        }
-      })
+    // Limit to top 40 movies
+    const top = sorted.slice(0, 40)
+
+    const movies = top.map((m) => {
+      // Determine release type
+      const isTheatrical = theatricalIds.has(m.id)
+      const isDigital = digitalIds.has(m.id)
+
+      let release_type: 'cine' | 'streaming' | 'ambos' | null = null
+      if (isTheatrical && isDigital) {
+        release_type = 'ambos'
+      } else if (isTheatrical) {
+        release_type = 'cine'
+      } else if (isDigital) {
+        release_type = 'streaming'
+      }
+
+      return {
+        id: m.id,
+        title: m.title,
+        original_title: m.original_title,
+        overview: m.overview,
+        poster_path: m.poster_path,
+        release_date: m.release_date,
+        vote_average: m.vote_average,
+        genres: (m.genre_ids ?? []).map((id: number) => TMDB_GENRE_MAP[id]).filter(Boolean),
+        release_type,
+      }
+    })
 
     return NextResponse.json({ movies })
   } catch (err) {

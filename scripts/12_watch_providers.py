@@ -11,10 +11,23 @@ import json
 import urllib.request
 import urllib.error
 
-# Config
-TMDB_API_KEY = "8719f94b3bcb11052c5c509fe9fd62f6"
-SUPABASE_URL = "https://gidiwfpkmzhmqpevuogz.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpZGl3ZnBrbXpobXFwZXZ1b2d6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzg1NDA3MCwiZXhwIjoyMDg5NDMwMDcwfQ.28Upeigg8LEiopzUc_ul_d2KHyyx1VvIyjy4IdXOK3k"
+# Config - reads from .env.local or environment variables
+from pathlib import Path
+import re as _re
+
+def _load_env():
+    """Load vars from ../.env.local"""
+    env_file = Path(__file__).parent.parent / '.env.local'
+    if env_file.exists():
+        for line in env_file.read_text().splitlines():
+            m = _re.match(r'^([A-Z_]+)=(.+)$', line.strip())
+            if m:
+                os.environ.setdefault(m.group(1), m.group(2))
+
+_load_env()
+TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", os.environ.get("NEXT_PUBLIC_SUPABASE_URL", ""))
+SUPABASE_KEY = os.environ.get("SUPABASE_SECRET_KEY", "")
 REGION = "CL"
 
 # TMDB provider_id -> our platform key mapping

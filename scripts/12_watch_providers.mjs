@@ -1,9 +1,23 @@
 // Fetch TMDB watch/providers for all CineBret movies (Chile region)
 // Uses Node.js fetch (no Python dependency issues)
 
-const TMDB_API_KEY = '8719f94b3bcb11052c5c509fe9fd62f6'
-const SUPABASE_URL = 'https://gidiwfpkmzhmqpevuogz.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpZGl3ZnBrbXpobXFwZXZ1b2d6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzg1NDA3MCwiZXhwIjoyMDg5NDMwMDcwfQ.28Upeigg8LEiopzUc_ul_d2KHyyx1VvIyjy4IdXOK3k'
+// Load env vars from ../.env.local
+import { readFileSync } from 'fs'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+try {
+  const envFile = readFileSync(join(__dirname, '..', '.env.local'), 'utf-8')
+  for (const line of envFile.split('\n')) {
+    const match = line.match(/^([A-Z_]+)=(.+)$/)
+    if (match && !process.env[match[1]]) process.env[match[1]] = match[2]
+  }
+} catch {}
+
+const TMDB_API_KEY = process.env.TMDB_API_KEY || ''
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const SUPABASE_KEY = process.env.SUPABASE_SECRET_KEY || ''
 const REGION = 'CL'
 
 const PROVIDER_MAP = {

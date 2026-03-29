@@ -2,9 +2,15 @@
 # Fetch TMDB watch/providers for all CineBret movies (Chile region)
 # Uses curl instead of Python (Python 3.14 has httpcore issues)
 
-TMDB_API_KEY="8719f94b3bcb11052c5c509fe9fd62f6"
-SUPABASE_URL="https://gidiwfpkmzhmqpevuogz.supabase.co"
-SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpZGl3ZnBrbXpobXFwZXZ1b2d6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzg1NDA3MCwiZXhwIjoyMDg5NDMwMDcwfQ.28Upeigg8LEiopzUc_ul_d2KHyyx1VvIyjy4IdXOK3k"
+# Load from .env.local
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env.local" ]; then
+  export $(grep -E '^[A-Z_]+=' "$SCRIPT_DIR/../.env.local" | xargs)
+fi
+
+TMDB_API_KEY="${TMDB_API_KEY}"
+SUPABASE_URL="${NEXT_PUBLIC_SUPABASE_URL}"
+SUPABASE_KEY="${SUPABASE_SECRET_KEY}"
 REGION="CL"
 
 # Fetch all movies with tmdb_id from Supabase

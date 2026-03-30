@@ -961,8 +961,14 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           </div>
         </div>
 
-        {/* ── Genre pills + Más filtros in one row ── */}
+        {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">
+          <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
+            className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
+            Mas filtros
+            {filtrosAvanzadosCount > 0 && <span className="bg-amber-500 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
+          </button>
           <div className="flex-1 overflow-x-auto flex gap-1.5 scrollbar-none">
             {generosDisponibles.map(g => (
               <button key={g}
@@ -975,12 +981,6 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               </button>
             ))}
           </div>
-          <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
-            className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
-            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
-            Mas filtros
-            {filtrosAvanzadosCount > 0 && <span className="bg-amber-500 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
-          </button>
         </div>
 
         {/* ── Active non-genre filters ── */}

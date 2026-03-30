@@ -395,17 +395,71 @@ export default function ParaTi({
     const allCandidatoIds = await fetchCandidatosHoy()
     if (allCandidatoIds.length === 0) { setCargando(false); return }
 
-    // 2. Vistas del usuario para excluir
+    // 2. Vistas del usuario para excluir + collect high-rated and recent
     let vistasRaw: any[] = []
     if (user) {
       const { data } = await supabase
         .from('user_peliculas')
-        .select('pelicula_id, rating')
+        .select('pelicula_id, rating, created_at')
         .eq('user_id', user.id)
         .eq('visto', true)
       vistasRaw = data ?? []
     }
     const vistasSet = new Set(vistasRaw.map((v: any) => v.pelicula_id))
+
+    // 2b. Fetch similar_ids for user's top-rated + most recent movies
+    let userSimilarTmdbIds: number[] = []
+    const userSimilarReasons: Record<string, string> = {} // tmdb_id -> reason
+    if (vistasRaw.length > 0) {
+      // Top rated (rating >= 8) + last 10 watched (by created_at)
+      const highRated = vistasRaw.filter((v: any) => v.rating && v.rating >= 8).map((v: any) => v.pelicula_id)
+      const recentSorted = [...vistasRaw].sort((a: any, b: any) =>
+        (b.created_at || '').localeCompare(a.created_at || '')
+      ).slice(0, 10).map((v: any) => v.pelicula_id)
+      const seedIds = [...new Set([...highRated, ...recentSorted])]
+
+      if (seedIds.length > 0) {
+        // Fetch similar_ids + titles for these seed movies
+        const { data: seedEnr } = await supabase
+          .from('enriquecimiento')
+          .select('pelicula_id, similar_ids')
+          .in('pelicula_id', seedIds.slice(0, 30))
+          .not('similar_ids', 'is', null)
+
+        if (seedEnr && seedEnr.length > 0) {
+          // Get seed movie titles for the "reason" text
+          const { data: seedMovies } = await supabase
+            .from('peliculas')
+            .select('id, titulo_ingles, titulo')
+            .in('id', seedEnr.map((e: any) => e.pelicula_id))
+          const seedTitleMap = new Map((seedMovies || []).map((m: any) => [m.id, m.titulo_ingles || m.titulo]))
+
+          for (const enr of seedEnr as any[]) {
+            const seedTitle = seedTitleMap.get(enr.pelicula_id) || ''
+            for (const tmdbId of (enr.similar_ids || []) as number[]) {
+              if (!userSimilarTmdbIds.includes(tmdbId)) {
+                userSimilarTmdbIds.push(tmdbId)
+                userSimilarReasons[tmdbId] = `Similar a ${seedTitle}`
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Add similar movies to candidate pool (they might not be in catalogos)
+    if (userSimilarTmdbIds.length > 0) {
+      const { data: simPels } = await supabase
+        .from('peliculas')
+        .select('id')
+        .in('tmdb_id', userSimilarTmdbIds.slice(0, 500))
+      if (simPels) {
+        for (const p of simPels) {
+          if (!allCandidatoIds.includes(p.id)) allCandidatoIds.push(p.id)
+        }
+      }
+    }
+
     const candidatoIds = allCandidatoIds.filter(id => !vistasSet.has(id))
     if (candidatoIds.length === 0) { setCargando(false); return }
 
@@ -731,16 +785,29 @@ export default function ParaTi({
     }
     poolDiscovery.sort((a, b) => b.score - a.score)
 
+    // ── POOL G: Similar a tus favoritas (based on similar_ids)
+    // "Similar a Inception" / "Similar a The Dark Knight"
+    const poolSimilar: Rec[] = []
+    if (userSimilarTmdbIds.length > 0) {
+      for (const rec of allRecs) {
+        const tmdbId = pelMap[rec.id]?.tmdb_id
+        if (tmdbId && userSimilarReasons[tmdbId]) {
+          poolSimilar.push({ ...rec, score: qualityOf(rec) * 2.5, razon: userSimilarReasons[tmdbId] })
+        }
+      }
+      poolSimilar.sort((a, b) => b.score - a.score)
+    }
+
     // ── INTERLEAVE: mezclar los pools
-    // Proporción: Genre(40%), Director(20%), Mood(15%), History(10%), Followers(10%), Discovery(5%)
-    // Each pool uses diverseSample: top deterministic picks + random picks from deeper for variety
+    // Proporción: Genre(30%), Similar(20%), Director(15%), Mood(10%), History(10%), Followers(10%), Discovery(5%)
     const pools = [
-      { items: diverseSample(poolGenre, 20, 20, 80), weight: 40 },
-      { items: diverseSample(poolDirector, 15, 10, 50), weight: 20 },
-      { items: diverseSample(poolMood, 12, 8, 40), weight: 15 },
-      { items: diverseSample(poolHistory, 10, 8, 40), weight: 10 },
+      { items: diverseSample(poolGenre, 18, 15, 80), weight: 30 },
+      { items: diverseSample(poolSimilar, 20, 15, 60), weight: 20 },
+      { items: diverseSample(poolDirector, 12, 8, 50), weight: 15 },
+      { items: diverseSample(poolMood, 10, 6, 40), weight: 10 },
+      { items: diverseSample(poolHistory, 8, 6, 40), weight: 10 },
       { items: diverseSample(poolFollowers, 8, 7, 30), weight: 10 },
-      { items: diverseSample(poolDiscovery, 5, 10, 30), weight: 5 },
+      { items: diverseSample(poolDiscovery, 5, 8, 30), weight: 5 },
     ]
     // Normalize weights for pools that have items
     const activePools = pools.filter(p => p.items.length > 0)

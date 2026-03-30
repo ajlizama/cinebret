@@ -858,10 +858,6 @@ export default function ParaTi({
                             ))}
                           </div>
                         </div>
-                      ) : rec.anio && rec.anio >= 2025 ? (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
-                          <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
-                        </div>
                       ) : null}
                     </div>
                     <p className="text-white text-xs font-semibold leading-snug line-clamp-2 mb-0.5">{rec.titulo_ingles || rec.titulo}</p>

@@ -130,26 +130,34 @@ export default async function CatalogoPage() {
     }
   })
 
-  // Fetch TMDB trending (20 pages = 400 movies)
+  // Fetch TMDB trending + now_playing
   let trendingIds: number[] = []
+  let nowPlayingIds: number[] = []
   try {
     const tmdbKey = process.env.TMDB_API_KEY
     if (tmdbKey) {
       const pageNums = Array.from({ length: 20 }, (_, i) => i + 1)
-      const pages = await Promise.all(
-        pageNums.map(p =>
-          fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
-            .then(r => r.json()).catch(() => ({ results: [] }))
-        )
-      )
-      trendingIds = pages.flatMap((d: any) => (d.results ?? []).map((m: any) => m.id as number))
+      const [trendingPages, np1, np2] = await Promise.all([
+        Promise.all(
+          pageNums.map(p =>
+            fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
+              .then(r => r.json()).catch(() => ({ results: [] }))
+          )
+        ),
+        fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbKey}&region=CL&page=1`, { next: { revalidate: 3600 } })
+          .then(r => r.json()).catch(() => ({ results: [] })),
+        fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbKey}&region=CL&page=2`, { next: { revalidate: 3600 } })
+          .then(r => r.json()).catch(() => ({ results: [] })),
+      ])
+      trendingIds = trendingPages.flatMap((d: any) => (d.results ?? []).map((m: any) => m.id as number))
+      nowPlayingIds = [...(np1.results ?? []), ...(np2.results ?? [])].map((m: any) => m.id as number)
     }
   } catch {}
 
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="inicio" />
-      <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} />
+      <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} nowPlayingIds={nowPlayingIds} />
     </main>
   )
 }

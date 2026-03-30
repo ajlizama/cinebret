@@ -669,11 +669,12 @@ function PanelExpandido({
 }
 
 /* ─────────── Trending carousel ─────────── */
-function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro }: {
+function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro, nowPlayingIds = [] }: {
   peliculas: Pelicula[]; trendingIds: number[]; plataformas: typeof PLATAFORMAS; onSelect: (p: Pelicula) => void
-  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]
+  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; nowPlayingIds?: number[]
 }) {
   const trendingSet = new Set(trendingIds)
+  const nowPlayingSet = new Set(nowPlayingIds)
   let trendingMovies = peliculas
     .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path)
   if (categoriasFiltro.length > 0) trendingMovies = trendingMovies.filter(p => categoriasFiltro.includes(p.categoria ?? ''))
@@ -703,7 +704,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                       </div>
                     ))}
                   </div>
-                ) : p.anio && p.anio >= 2025 ? (
+                ) : (p.tmdb_id && nowPlayingSet.has(p.tmdb_id)) ? (
                   <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
                 ) : null}
               </div>
@@ -717,7 +718,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[] }) {
+export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPlayingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[]; nowPlayingIds?: number[] }) {
   const { user } = useAuth()
   const [userPeliculas, setUserPeliculas] = useState<Record<string, UserPelicula>>({})
   const [busqueda, setBusqueda] = useState('')
@@ -1099,6 +1100,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         <TrendingCarousel
           peliculas={peliculas}
           trendingIds={trendingIds}
+          nowPlayingIds={nowPlayingIds}
           plataformas={PLATAFORMAS}
           categoriasFiltro={categoriasFiltro}
           plataformasFiltro={plataformasFiltro}

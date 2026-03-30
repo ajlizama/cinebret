@@ -29,7 +29,31 @@ type Stats = {
 /* ───────────────────────────────────────────
    SVG Icon Component - replaces all emojis
    ─────────────────────────────────────────── */
+const DIRECTOR_IMAGES: Record<string, string> = {
+  dir_nolan: '/directors/nolan.jpg',
+  dir_kubrick: '/directors/kubrick.png',
+  dir_spielberg: '/directors/spielberg.jpg',
+  dir_tarantino: '/directors/tarantino.png',
+  dir_scorsese: '/directors/scorsese.jpg',
+  dir_fincher: '/directors/fincher.jpg',
+  dir_cameron: '/directors/cameron.jpg',
+}
+
 function QuestIcon({ name, className = '' }: { name: string; className?: string }) {
+  // Director portrait images
+  const dirImg = DIRECTOR_IMAGES[name]
+  if (dirImg) {
+    return (
+      <img
+        src={dirImg}
+        alt=""
+        className={`inline-block rounded-lg object-cover ${className}`}
+        style={{ mixBlendMode: 'lighten' }}
+        loading="lazy"
+      />
+    )
+  }
+
   const cls = `inline-block ${className}`
   const svgProps = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 

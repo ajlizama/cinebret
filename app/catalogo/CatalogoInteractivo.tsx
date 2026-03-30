@@ -703,9 +703,9 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                       </div>
                     ))}
                   </div>
-                ) : (
+                ) : p.anio && p.anio >= 2025 ? (
                   <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
-                )}
+                ) : null}
               </div>
             </div>
             <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{p.titulo_ingles || p.titulo}</p>

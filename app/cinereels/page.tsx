@@ -20,6 +20,7 @@ type ReelMovie = {
   director: string | null
   videoId: string
   plataformas: string[]
+  source: 'upcoming' | 'trending' | 'catalog'
 }
 
 const PLATAFORMAS = [
@@ -90,6 +91,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
   movie: ReelMovie; index: number; total: number; muted: boolean; onShowInfo: () => void
   visto: boolean; watchlist: boolean; onVisto: () => void; onWatchlist: () => void
 }) {
+  const isUpcoming = movie.source === 'upcoming'
   return (
     <>
       {/* Mute indicator */}
@@ -110,6 +112,11 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
       <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}>
         <div className="p-5 pb-8">
+          {isUpcoming && (
+            <span className="inline-block mb-1.5 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide bg-yellow-400 text-zinc-950 rounded-sm">
+              Proximamente
+            </span>
+          )}
           <Link href={`/pelicula/${movie.id}`} className="pointer-events-auto">
             {!movie.logo_path && <h3 className="text-white font-bold text-xl drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
             {movie.logo_path && <h3 className="text-white font-bold text-lg drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
@@ -240,7 +247,7 @@ export default function CineReelsPage() {
         if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
       })
 
-      const allMovies: ReelMovie[] = []
+      const catalogMovies: ReelMovie[] = []
       for (let i = 0; i < ids.length; i += 50) {
         const chunk = ids.slice(i, i + 50)
         const { data } = await supabase.from('peliculas')
@@ -250,13 +257,55 @@ export default function CineReelsPage() {
           data.forEach((m: any) => {
             const enr = clipMap[m.id]
             const videoId = extractYTId(enr.video_clip_url)
-            if (videoId) allMovies.push({ ...m, director: enr.director, videoId, plataformas: platMap[m.id] ?? [] })
+            if (videoId) catalogMovies.push({ ...m, director: enr.director, videoId, plataformas: platMap[m.id] ?? [], source: 'catalog' as const })
           })
         }
       }
+
+      // Fetch upcoming movies (anio >= 2026 with youtube_trailer_key)
+      const upcomingMovies: ReelMovie[] = []
+      {
+        const { data: upRows } = await supabase.from('peliculas')
+          .select('id, titulo, titulo_ingles, nota_imdb, anio, categoria, poster_path, logo_path, youtube_trailer_key')
+          .gte('anio', 2026)
+          .not('youtube_trailer_key', 'is', null)
+          .order('anio', { ascending: false })
+          .limit(50)
+        if (upRows) {
+          // Get directors from enriquecimiento for upcoming movies
+          const upIds = upRows.map((m: any) => m.id)
+          const upDirMap: Record<string, string | null> = {}
+          for (let i = 0; i < upIds.length; i += 50) {
+            const chunk = upIds.slice(i, i + 50)
+            const { data: enrData } = await supabase.from('enriquecimiento').select('pelicula_id, director').in('pelicula_id', chunk)
+            ;(enrData ?? []).forEach((e: any) => { upDirMap[e.pelicula_id] = e.director })
+          }
+          upRows.forEach((m: any) => {
+            const videoId = m.youtube_trailer_key
+            if (videoId && !ids.includes(m.id)) {
+              upcomingMovies.push({
+                id: m.id, titulo: m.titulo, titulo_ingles: m.titulo_ingles,
+                nota_imdb: m.nota_imdb, anio: m.anio, categoria: m.categoria,
+                poster_path: m.poster_path, logo_path: m.logo_path,
+                director: upDirMap[m.id] ?? null, videoId,
+                plataformas: platMap[m.id] ?? [], source: 'upcoming' as const,
+              })
+            }
+          })
+        }
+      }
+
       // Smart ordering — randomized per session, personalized for logged-in users
       const sessionSeed = getSessionSeed()
       const rng = mulberry32(sessionSeed)
+
+      // Separate trending pool: high IMDB recent movies from catalog
+      const trendingPool = catalogMovies
+        .filter(m => (m.nota_imdb ?? 0) >= 7.0 && (m.anio ?? 0) >= 2020)
+        .map(m => ({ ...m, source: 'trending' as const }))
+      const catalogOnly = catalogMovies.filter(m =>
+        !trendingPool.some(t => t.id === m.id)
+      )
 
       if (user) {
         // Logged in: preferences + watch history genres + random factor
@@ -295,24 +344,24 @@ export default function CineReelsPage() {
         })
         const maxHistCount = Math.max(1, ...Object.values(historyGenreCount))
 
-        // Score each reel movie
-        allMovies.forEach(m => {
+        // Score personalized catalog movies
+        const scoreMovie = (m: ReelMovie) => {
           const genres = enrGenres[m.id] ?? []
-          // Explicit preference match (0-1 normalized)
           const prefMatch = genres.length > 0
             ? genres.filter(g => genPrefsNorm.has(genNorm(g))).length / Math.max(1, genres.length)
             : 0
-          // History-based genre affinity (0-1 normalized)
           const histAffinity = genres.length > 0
             ? genres.reduce((sum, g) => sum + ((historyGenreCount[genNorm(g)] ?? 0) / maxHistCount), 0) / genres.length
             : 0
           const genreScore = prefMatch * 0.7 + histAffinity * 0.3
           const moodIdx = moodRanking.indexOf(m.categoria ?? '')
           const moodBonus = moodIdx >= 0 ? (4 - moodIdx) * 0.05 : 0
-          // Final: genre match * 0.6 + random * 0.4 (+ small mood bonus)
-          ;(m as any)._score = (genreScore + moodBonus) * 0.6 + rng() * 0.4
-        })
-        allMovies.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+          return (genreScore + moodBonus) * 0.6 + rng() * 0.4
+        }
+        catalogOnly.forEach(m => { (m as any)._score = scoreMovie(m) })
+        catalogOnly.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+        trendingPool.forEach(m => { (m as any)._score = scoreMovie(m) })
+        trendingPool.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
       } else {
         // Not logged in: date-seeded shuffle weighted by IMDB quality
         const dayRng = mulberry32(getDaySeed() ^ sessionSeed)
@@ -321,13 +370,53 @@ export default function CineReelsPage() {
         let engagement: Record<string, number> = {}
         try { engagement = JSON.parse(localStorage.getItem(ENGAGEMENT_KEY) ?? '{}') } catch {}
 
-        // Score by IMDB + engagement penalty + random
-        allMovies.forEach(m => {
-          const imdbNorm = ((m.nota_imdb ?? 5) - 4) / 6 // normalize ~4-10 to 0-1
+        const scoreMovie = (m: ReelMovie) => {
+          const imdbNorm = ((m.nota_imdb ?? 5) - 4) / 6
           const engPenalty = engagement[m.id] ? Math.max(0, 1 - engagement[m.id] * 0.2) : 1
-          ;(m as any)._score = imdbNorm * 0.4 * engPenalty + dayRng() * 0.6
-        })
-        allMovies.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+          return imdbNorm * 0.4 * engPenalty + dayRng() * 0.6
+        }
+        catalogOnly.forEach(m => { (m as any)._score = scoreMovie(m) })
+        catalogOnly.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+        trendingPool.forEach(m => { (m as any)._score = scoreMovie(m) })
+        trendingPool.sort((a, b) => ((b as any)._score ?? 0) - ((a as any)._score ?? 0))
+      }
+
+      // Shuffle upcoming with seeded RNG
+      const shuffledUpcoming = seededShuffle(upcomingMovies, rng)
+
+      // Interleave: 20% upcoming, 40% trending, 40% catalog
+      // Calculate target counts based on total available
+      const totalAvailable = shuffledUpcoming.length + trendingPool.length + catalogOnly.length
+      const targetUpcoming = Math.min(shuffledUpcoming.length, Math.ceil(totalAvailable * 0.2))
+      const targetTrending = Math.min(trendingPool.length, Math.ceil(totalAvailable * 0.4))
+      const targetCatalog = Math.min(catalogOnly.length, totalAvailable - targetUpcoming - targetTrending)
+
+      const upcomingSlice = shuffledUpcoming.slice(0, targetUpcoming)
+      const trendingSlice = trendingPool.slice(0, targetTrending)
+      const catalogSlice = catalogOnly.slice(0, targetCatalog)
+
+      // Interleave: place upcoming roughly every 5th reel, trending and catalog alternate otherwise
+      const allMovies: ReelMovie[] = []
+      let uIdx = 0, tIdx = 0, cIdx = 0
+      let slotCount = 0
+      const totalSlots = upcomingSlice.length + trendingSlice.length + catalogSlice.length
+      while (allMovies.length < totalSlots) {
+        slotCount++
+        // Every 5th slot is upcoming (if available)
+        if (slotCount % 5 === 0 && uIdx < upcomingSlice.length) {
+          allMovies.push(upcomingSlice[uIdx++])
+        } else {
+          // Alternate trending and catalog for remaining slots
+          if (tIdx < trendingSlice.length && (cIdx >= catalogSlice.length || slotCount % 2 === 0)) {
+            allMovies.push(trendingSlice[tIdx++])
+          } else if (cIdx < catalogSlice.length) {
+            allMovies.push(catalogSlice[cIdx++])
+          } else if (tIdx < trendingSlice.length) {
+            allMovies.push(trendingSlice[tIdx++])
+          } else if (uIdx < upcomingSlice.length) {
+            allMovies.push(upcomingSlice[uIdx++])
+          }
+        }
       }
 
       // Ensure first reel is high quality (IMDB >= 7.5) to hook the user

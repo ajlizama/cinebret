@@ -266,7 +266,7 @@ export default function Nav({ active, transparent }: Props) {
                                   <p className="text-white text-xs font-medium leading-snug line-clamp-1">{p.titulo_ingles ?? p.titulo}</p>
                                   <div className="flex items-center gap-2 mt-0.5">
                                     {p.anio && <span className="text-zinc-500 text-[10px]">{p.anio}</span>}
-                                    {p.nota_imdb && <span className="text-yellow-400 text-[10px]">⭐ {p.nota_imdb}</span>}
+                                    {p.nota_imdb && <span className="text-yellow-400 text-[10px] flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {p.nota_imdb}</span>}
                                   </div>
                                 </div>
                               </Link>
@@ -382,15 +382,15 @@ export default function Nav({ active, transparent }: Props) {
                                     className={`w-full flex items-start gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 text-left transition-colors hover:bg-zinc-800/70 ${!n.read ? 'bg-zinc-800/50' : ''}`}
                                   >
                                     {n.type === 'personalizar' ? (
-                                      <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center text-sm shrink-0">✨</div>
+                                      <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center shrink-0"><svg className="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 2l1.09 3.26L16 6l-2.91.74L12 10l-1.09-3.26L8 6l2.91-.74L12 2zm5 7l.72 2.18L20 12l-2.28.82L17 15l-.72-2.18L14 12l2.28-.82L17 9zM7 13l.72 2.18L10 16l-2.28.82L7 19l-.72-2.18L4 16l2.28-.82L7 13z" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
                                     ) : n.type === 'lista_comentario' ? (
-                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">💬</div>
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center shrink-0"><svg className="w-4 h-4 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
                                     ) : n.type === 'lista_pelicula' ? (
-                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">🎬</div>
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center shrink-0"><svg className="w-4 h-4 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                                     ) : n.type === 'lista_invitacion' ? (
-                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">📋</div>
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center shrink-0"><svg className="w-4 h-4 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
                                     ) : n.type === 'recomendacion' ? (
-                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-sm shrink-0">✈️</div>
+                                      <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center shrink-0"><svg className="w-4 h-4 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
                                     ) : (
                                       <MiniAvatar url={n.from_avatar} username={n.from_username ?? '?'} />
                                     )}

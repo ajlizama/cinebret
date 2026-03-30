@@ -38,7 +38,7 @@ export default function SpotifyPlayer({ movieTitle }: { movieTitle: string }) {
           <p className="text-white text-sm font-medium truncate">{album.name}</p>
           <p className="text-zinc-500 text-xs truncate">{album.artist}</p>
         </div>
-        <span className="text-zinc-500 text-sm">{expanded ? '▲' : '▼'}</span>
+        <span className="text-zinc-500 text-sm">{expanded ? <svg className="w-3.5 h-3.5 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 12.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414 0z"/></svg> : <svg className="w-3.5 h-3.5 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 7.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 10.586l3.293-3.293a1 1 0 011.414 0z"/></svg>}</span>
       </div>
       {expanded && (
         <div

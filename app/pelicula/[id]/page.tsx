@@ -132,7 +132,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                   <span className="border border-zinc-600 rounded px-1.5 py-0.5 text-xs font-medium">{pelicula.certification}</span>
                 )}
                 {pelicula.nota_imdb && (
-                  <span className="text-yellow-400 font-bold text-base">⭐ {pelicula.nota_imdb}</span>
+                  <span className="text-yellow-400 font-bold text-base flex items-center gap-1"><svg className="w-4 h-4 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>
                 )}
                 {pelicula.oscars && pelicula.oscars !== 'N/A' && (
                   <span className="flex items-center gap-1.5 text-yellow-500">
@@ -171,7 +171,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 <>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-1 rounded-full">
-                      ✍️ Review CineBret
+                      Review CineBret
                     </span>
                   </div>
                   {enr.sinopsis_chilensis && (
@@ -188,7 +188,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 <>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-1 rounded-full font-medium">
-                      🤖 Sinopsis IA
+                      Sinopsis IA
                     </span>
                     <span className="text-xs text-zinc-600">— review de autor próximamente</span>
                   </div>
@@ -308,7 +308,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                         <div className="relative w-28 h-40 rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
                           <Image src={`https://image.tmdb.org/t/p/w185${sim.poster_path}`} alt={sim.titulo_ingles || sim.titulo} fill className="object-cover" sizes="112px" />
                           {sim.nota_imdb && (
-                            <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐ {sim.nota_imdb}</div>
+                            <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400 flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {sim.nota_imdb}</div>
                           )}
                         </div>
                         <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{sim.titulo_ingles || sim.titulo}</p>

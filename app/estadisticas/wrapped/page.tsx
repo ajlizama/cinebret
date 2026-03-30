@@ -252,7 +252,7 @@ export default function WrappedPage() {
       <Nav />
       <div className="flex items-center justify-center h-[70vh]">
         <div className="text-center max-w-sm mx-auto px-6">
-          <div className="text-6xl mb-6">🎬</div>
+          <div className="mb-6"><svg className="w-16 h-16 mx-auto text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
           <h1 className="text-2xl font-bold text-white mb-3">Tu Wrapped te espera</h1>
           <p className="text-zinc-400 text-sm mb-6">
             Inicia sesion para descubrir tus estadisticas de cine personalizadas.
@@ -274,7 +274,7 @@ export default function WrappedPage() {
       <Nav />
       <div className="flex items-center justify-center h-[70vh]">
         <div className="text-center max-w-sm mx-auto px-6">
-          <div className="text-6xl mb-6">🍿</div>
+          <div className="mb-6"><svg className="w-16 h-16 mx-auto text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
           <h1 className="text-2xl font-bold text-white mb-3">Aun no hay datos</h1>
           <p className="text-zinc-400 text-sm mb-6">
             Marca peliculas como vistas en el catalogo para desbloquear tu Wrapped.

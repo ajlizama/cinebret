@@ -128,7 +128,7 @@ export default function BuscarPage() {
                       <Image src={`https://image.tmdb.org/t/p/w92${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-zinc-600 text-[10px]">🎬</span>
+                        <svg className="w-3 h-3 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg>
                       </div>
                     )}
                   </div>
@@ -139,7 +139,7 @@ export default function BuscarPage() {
                     )}
                     <p className="text-zinc-600 text-xs">
                       {p.anio ?? '—'}
-                      {p.nota_imdb != null && <span className="ml-2 text-yellow-500">⭐ {p.nota_imdb}</span>}
+                      {p.nota_imdb != null && <span className="ml-2 text-yellow-500 inline-flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-500" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {p.nota_imdb}</span>}
                     </p>
                   </div>
                   <span className="text-zinc-600 text-xs shrink-0">→</span>

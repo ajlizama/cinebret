@@ -112,7 +112,7 @@ export default function TrailersPage() {
                           </div>
                         </div>
                         {m.nota_imdb && (
-                          <div className="absolute top-2 left-2 bg-zinc-900/90 rounded-full px-2 py-0.5 text-xs font-bold text-yellow-400">⭐ {m.nota_imdb}</div>
+                          <div className="absolute top-2 left-2 bg-zinc-900/90 rounded-full px-2 py-0.5 text-xs font-bold text-yellow-400 flex items-center gap-0.5"><svg className="w-3 h-3 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {m.nota_imdb}</div>
                         )}
                       </div>
                       <p className="text-white text-sm font-semibold line-clamp-1">{m.titulo_ingles || m.titulo}</p>
@@ -134,7 +134,7 @@ export default function TrailersPage() {
                           <p className="text-white font-semibold text-sm">{m.titulo_ingles || m.titulo}</p>
                           <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
                             {m.anio && <span>{m.anio}</span>}
-                            {m.nota_imdb && <span className="text-yellow-400 font-bold">⭐ {m.nota_imdb}</span>}
+                            {m.nota_imdb && <span className="text-yellow-400 font-bold flex items-center gap-0.5"><svg className="w-3 h-3 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {m.nota_imdb}</span>}
                           </div>
                         </div>
                         <Link href={`/pelicula/${m.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium shrink-0">Ver ficha →</Link>

@@ -138,9 +138,9 @@ export default async function CompositorPage({ params }: { params: Promise<{ nam
               )}
               <div className="flex items-center gap-4 mt-1 text-sm text-zinc-400 flex-wrap">
                 <span>{sorted.length} películas</span>
-                {avgImdb && <span className="text-yellow-400 font-bold">⭐ {avgImdb} promedio</span>}
-                {bestPicture > 0 && <span className="text-amber-400">🏆 {bestPicture} Mejor Película</span>}
-                {compOscars != null && compOscars > 0 && <span className="text-amber-400">🎵 {compOscars} Oscar{compOscars > 1 ? 's' : ''}</span>}
+                {avgImdb && <span className="text-yellow-400 font-bold flex items-center gap-1"><svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {avgImdb} promedio</span>}
+                {bestPicture > 0 && <span className="text-amber-400 flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /> {bestPicture} Mejor Pelicula</span>}
+                {compOscars != null && compOscars > 0 && <span className="text-amber-400">{compOscars} Oscar{compOscars > 1 ? 's' : ''}</span>}
               </div>
             </div>
           </div>

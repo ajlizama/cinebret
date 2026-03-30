@@ -11,10 +11,10 @@ const GENEROS_OPCIONES = [
 ]
 
 const MOODS_DEFAULT = [
-  { key: "Pa'l domingo de bajón",                     emoji: '🛋️', label: "Pa'l domingo de bajón" },
-  { key: "Pa' saltar del sillón",                     emoji: '⚡', label: "Pa' saltar del sillón" },
-  { key: "Pa' quedar con el cerebro como licuadora",  emoji: '🤯', label: "Pa' quedar con el cerebro como licuadora" },
-  { key: "Pa' llorar a moco tendido",                 emoji: '😭', label: "Pa' llorar a moco tendido" },
+  { key: "Pa'l domingo de bajón",                     label: "Pa'l domingo de bajón" },
+  { key: "Pa' saltar del sillón",                     label: "Pa' saltar del sillón" },
+  { key: "Pa' quedar con el cerebro como licuadora",  label: "Pa' quedar con el cerebro como licuadora" },
+  { key: "Pa' llorar a moco tendido",                 label: "Pa' llorar a moco tendido" },
 ]
 
 type MovieSuggestion = {
@@ -378,7 +378,6 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
                 return (
                   <li key={moodKey} className="flex items-center gap-3 bg-zinc-800 rounded-lg px-3 py-2.5">
                     <span className="text-yellow-400 font-bold text-sm w-4 shrink-0">{index + 1}</span>
-                    <span className="text-sm mr-1">{moodObj?.emoji}</span>
                     <span className="text-sm text-white flex-1">{moodObj?.label}</span>
                     <div className="flex gap-1">
                       <button
@@ -475,7 +474,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
           <section>
             <button type="button" onClick={() => setShowDetalleExtra(v => !v)}
               className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors w-full">
-              <span className="text-xs">{showDetalleExtra ? '▲' : '▼'}</span>
+              <span className="text-xs">{showDetalleExtra ? <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 12.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414 0z"/></svg> : <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 7.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 10.586l3.293-3.293a1 1 0 011.414 0z"/></svg>}</span>
               <span className="font-medium">Detalle extra</span>
             </button>
             {showDetalleExtra && (

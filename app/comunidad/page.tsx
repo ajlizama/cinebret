@@ -134,7 +134,7 @@ function AutoplayClip({ url }: { url: string }) {
         onClick={e => { e.stopPropagation(); setMuted(m => !m) }}
         className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center text-white text-xs"
       >
-        {muted ? '🔇' : '🔊'}
+        {muted ? <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><line x1="23" y1="9" x2="17" y2="15" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" strokeLinecap="round"/></svg> : <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" strokeLinecap="round" strokeLinejoin="round"/></svg>}
       </button>
     </div>
   )
@@ -160,7 +160,7 @@ function FeedCard({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="text-white text-sm font-semibold">CineBret</span>
-                <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-1.5 py-0.5 rounded-full leading-none">✍️ Autor</span>
+                <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-1.5 py-0.5 rounded-full leading-none">Autor</span>
               </div>
               <p className="text-zinc-500 text-xs">Review oficial</p>
             </div>
@@ -564,7 +564,7 @@ export default function ComunidadPage() {
                 onClick={() => setMostrarTodos(v => !v)}
                 className="flex items-center gap-2 w-full text-left text-sm text-zinc-400 hover:text-white transition-colors mb-3"
               >
-                <span className="text-xs">{mostrarTodos ? '▲' : '▼'}</span>
+                <span className="text-xs">{mostrarTodos ? <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 12.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414 0z"/></svg> : <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 7.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 10.586l3.293-3.293a1 1 0 011.414 0z"/></svg>}</span>
                 <span className="font-medium">Explorar perfiles</span>
                 {!cargandoTodos && <span className="text-zinc-600 text-xs">({todosPerfiles.length})</span>}
               </button>

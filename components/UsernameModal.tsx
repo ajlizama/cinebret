@@ -52,7 +52,7 @@ export default function UsernameModal({ onClose, forced = false }: { onClose: ()
       <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
         {forced ? (
           <>
-            <div className="text-3xl mb-3 text-center">🎬</div>
+            <div className="mb-3 text-center"><svg className="w-8 h-8 mx-auto text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
             <h2 className="text-white font-bold text-xl mb-1 text-center">¡Activa tu perfil y sigue a tus amigos!</h2>
             <p className="text-zinc-500 text-sm mb-6 text-center">Elige un username para tener perfil público, dar likes y seguir a otros.</p>
           </>

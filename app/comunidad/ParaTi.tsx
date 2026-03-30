@@ -90,10 +90,10 @@ const PLATAFORMAS = [
 ]
 
 const CATS = [
-  { key: "Pa'l domingo de bajón",                       emoji: '😔', short: 'Bajón' },
-  { key: "Pa' saltar del sillón",                       emoji: '🎢', short: 'Del sillón' },
-  { key: "Pa' quedar con el cerebro como licuadora",    emoji: '🧠', short: 'Licuadora' },
-  { key: "Pa' llorar a moco tendido",                   emoji: '😭', short: 'A moco tendido' },
+  { key: "Pa'l domingo de bajón",                       short: 'Bajón' },
+  { key: "Pa' saltar del sillón",                       short: 'Del sillón' },
+  { key: "Pa' quedar con el cerebro como licuadora",    short: 'Licuadora' },
+  { key: "Pa' llorar a moco tendido",                   short: 'A moco tendido' },
 ]
 
 // Mood bonus multipliers by rank position
@@ -808,18 +808,18 @@ export default function ParaTi({
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-base font-bold text-white">🎬 Para ti</h2>
+        <h2 className="text-base font-bold text-white">Para ti</h2>
         {onEditPreferences && (
           <button type="button" onClick={onEditPreferences}
             className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors">
-            ⚙️ Editar recomendaciones
+            Editar recomendaciones
           </button>
         )}
       </div>
 
       {sinPerfil && miUsername && (
         <div className="mb-3 flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
-          <span className="text-sm text-zinc-300">✨ Completa tu perfil para mejores recomendaciones</span>
+          <span className="text-sm text-zinc-300">Completa tu perfil para mejores recomendaciones</span>
           <Link href={`/perfil/${miUsername}`}
             className="text-xs font-medium text-yellow-400 hover:text-yellow-300 transition-colors whitespace-nowrap ml-auto">
             Personalizar →
@@ -846,7 +846,7 @@ export default function ParaTi({
                         : <div className="absolute inset-0 flex items-center justify-center p-2"><span className="text-zinc-600 text-xs text-center">{rec.titulo_ingles || rec.titulo}</span></div>
                       }
                       {rec.nota_imdb && (
-                        <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {rec.nota_imdb}</div>
+                        <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400 flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {rec.nota_imdb}</div>
                       )}
                       {platsActivas.length > 0 ? (
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">

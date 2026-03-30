@@ -202,7 +202,7 @@ export default function JuntosPage() {
       <main className="min-h-screen bg-zinc-950">
         <Nav />
         <div className="flex flex-col items-center justify-center h-[60vh] px-6 text-center">
-          <div className="text-5xl mb-4">🍿</div>
+          <div className="mb-4"><svg className="w-12 h-12 mx-auto text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
           <h1 className="text-2xl font-bold text-white mb-2">Inicia sesión</h1>
           <p className="text-zinc-400 text-sm max-w-xs">
             Necesitas una cuenta para usar "¿Qué vemos juntos?"
@@ -427,7 +427,7 @@ export default function JuntosPage() {
 
             {!loadingResults && !error && results.length === 0 && (
               <div className="text-center py-12">
-                <div className="text-4xl mb-3">😢</div>
+                <div className="mb-3"><svg className="w-10 h-10 mx-auto text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2M9 9h.01M15 9h.01" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
                 <p className="text-zinc-400 text-sm">
                   No encontramos películas que le gusten a todos en esas plataformas.
                 </p>
@@ -500,7 +500,7 @@ export default function JuntosPage() {
                         <p className="text-white text-xs font-semibold leading-snug line-clamp-2">{titulo}</p>
                         <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                           {movie.anio && <span className="text-zinc-500 text-xs">{movie.anio}</span>}
-                          {movie.nota_imdb && <span className="text-yellow-400 text-xs">⭐ {movie.nota_imdb}</span>}
+                          {movie.nota_imdb && <span className="text-yellow-400 text-xs flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {movie.nota_imdb}</span>}
                         </div>
                         {movie.generos.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-1.5">

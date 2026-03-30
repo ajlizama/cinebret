@@ -95,7 +95,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
       {/* Mute indicator */}
       <div className="absolute top-24 right-4 z-30">
         <div className="bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
-          {muted ? '🔇' : '🔊'}
+          {muted ? <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><line x1="23" y1="9" x2="17" y2="15" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" strokeLinecap="round"/></svg> : <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" strokeLinecap="round" strokeLinejoin="round"/></svg>}
         </div>
       </div>
 
@@ -119,7 +119,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
           )}
           <div className="flex items-center gap-3 mt-1.5 text-sm text-zinc-300">
             {movie.anio && <span>{movie.anio}</span>}
-            {movie.nota_imdb && <span className="text-yellow-400 font-bold">⭐ {movie.nota_imdb}</span>}
+            {movie.nota_imdb && <span className="text-yellow-400 font-bold flex items-center gap-0.5"><svg className="w-3 h-3 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {movie.nota_imdb}</span>}
             {movie.director && <span className="text-zinc-400">Dir. {movie.director}</span>}
           </div>
           {movie.categoria && <p className="text-zinc-500 text-xs mt-1">{movie.categoria}</p>}

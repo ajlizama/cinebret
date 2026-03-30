@@ -98,7 +98,7 @@ export default function RecomendarModal({ peliculaId, peliculaTitulo, onClose }:
         {exito ? (
           <div className="flex-1 flex items-center justify-center py-12">
             <div className="text-center">
-              <p className="text-3xl mb-3">✈️</p>
+              <p className="mb-3"><svg className="w-8 h-8 mx-auto text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round"/></svg></p>
               <p className="text-white font-semibold">¡Recomendación enviada!</p>
             </div>
           </div>

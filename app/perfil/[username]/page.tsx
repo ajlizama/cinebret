@@ -294,7 +294,7 @@ export default function PerfilPage() {
           {recomendadores && recomendadores.length > 0 && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent px-1.5 pt-5 pb-1.5">
               <p className="text-[8px] leading-tight text-zinc-300 truncate">
-                ✈️ <span className="text-white font-medium">@{recomendadores[0]}</span>
+                <svg className="w-2.5 h-2.5 inline text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round"/></svg> <span className="text-white font-medium">@{recomendadores[0]}</span>
                 {recomendadores.length > 1 && (
                   <span className="text-zinc-400"> +{recomendadores.length - 1}</span>
                 )}
@@ -497,7 +497,7 @@ export default function PerfilPage() {
                             <span className="text-yellow-400 text-xs font-bold">{r.rating}/10</span>
                           )}
                           {esMiPerfil && r.publica !== null && (
-                            <span className="text-zinc-600 text-xs">{r.publica ? '🌐' : '🔒'}</span>
+                            <span className="text-zinc-600 text-xs">{r.publica ? 'Publica' : 'Privada'}</span>
                           )}
                         </div>
                       </div>

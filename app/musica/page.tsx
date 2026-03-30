@@ -180,10 +180,10 @@ export default function MusicaPage() {
                     )}
                     <div className="flex items-center gap-2 text-xs text-zinc-500 mt-0.5">
                       {m.anio && <span>{m.anio}</span>}
-                      {m.compositor && <span>🎵 {m.compositor}</span>}
+                      {m.compositor && <span>{m.compositor}</span>}
                     </div>
                   </div>
-                  {m.nota_imdb && <span className="text-yellow-400 font-bold text-sm shrink-0">⭐ {m.nota_imdb}</span>}
+                  {m.nota_imdb && <span className="text-yellow-400 font-bold text-sm shrink-0 flex items-center gap-1"><svg className="w-3 h-3 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {m.nota_imdb}</span>}
                   <svg className="w-5 h-5 text-green-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.077-.496 9.712 1.115a.622.622 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.519.781.781 0 01.519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 01.257 1.072z"/>
                   </svg>

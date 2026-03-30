@@ -119,7 +119,7 @@ export default function FilmographyGrid({ movies, musicFirst = false }: { movies
                       </div>
                     )}
                     {m.nota_imdb && (
-                      <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {m.nota_imdb}</div>
+                      <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400 flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {m.nota_imdb}</div>
                     )}
                     {musicFirst && musicPlaying === m.id && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">

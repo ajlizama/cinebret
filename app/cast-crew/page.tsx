@@ -234,7 +234,7 @@ export default function CastCrewPage() {
                         <p className="text-white text-sm font-medium truncate">{p.name}</p>
                         {p.oscars > 0 && <span className="flex items-center gap-0.5 shrink-0"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /><span className="text-amber-400 text-xs font-bold">{p.oscars}</span></span>}
                       </div>
-                      <p className="text-zinc-500 text-sm">{p.movieCount} películas · ⭐ {p.avgImdb}</p>
+                      <p className="text-zinc-500 text-sm">{p.movieCount} películas · {p.avgImdb}</p>
                     </div>
                     {/* Movie posters - hidden on small screens */}
                     <div className="hidden sm:flex gap-1.5 shrink-0">
@@ -244,7 +244,7 @@ export default function CastCrewPage() {
                         </div>
                       ))}
                     </div>
-                    <span className="hidden sm:inline text-yellow-400 font-bold text-sm shrink-0">⭐ {p.avgImdb}</span>
+                    <span className="hidden sm:inline text-yellow-400 font-bold text-sm shrink-0">{p.avgImdb}</span>
                   </div>
 
                   {/* Expanded section */}
@@ -254,7 +254,7 @@ export default function CastCrewPage() {
                         <Link href={`${linkBase}/${encodeURIComponent(p.name)}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium">
                           Ver ficha completa →
                         </Link>
-                        <p className="text-zinc-500 text-xs">{p.movieCount} películas · ⭐ {p.avgImdb} promedio{p.oscars > 0 ? ` · ${p.oscars} Oscar${p.oscars > 1 ? 's' : ''}` : ''}</p>
+                        <p className="text-zinc-500 text-xs">{p.movieCount} películas · {p.avgImdb} promedio{p.oscars > 0 ? ` · ${p.oscars} Oscar${p.oscars > 1 ? 's' : ''}` : ''}</p>
                       </div>
 
                       {loadingExpand ? (
@@ -288,7 +288,7 @@ export default function CastCrewPage() {
                                     }}>
                                       <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 ring-1 ring-transparent group-hover:ring-yellow-400/50 transition-all">
                                         {m.poster_path && <Image src={`https://image.tmdb.org/t/p/w185${m.poster_path}`} alt={m.titulo_ingles || m.titulo} fill className="object-cover" sizes="100px" />}
-                                        {m.nota_imdb && <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">⭐{m.nota_imdb}</div>}
+                                        {m.nota_imdb && <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400">{m.nota_imdb}</div>}
                                         {tab === 'compositor' && musicPlaying === m.id && (
                                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                                             <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center animate-pulse">
@@ -319,7 +319,7 @@ export default function CastCrewPage() {
                                               {m.titulo_ingles && m.titulo !== m.titulo_ingles && <p className="text-zinc-500 text-xs">{m.titulo}</p>}
                                               <div className="flex items-center gap-2 mt-1 text-xs text-zinc-400">
                                                 {m.anio && <span>{m.anio}</span>}
-                                                {m.nota_imdb && <span className="text-yellow-400 font-bold">⭐ {m.nota_imdb}</span>}
+                                                {m.nota_imdb && <span className="text-yellow-400 font-bold">{m.nota_imdb}</span>}
                                               </div>
                                             </div>
                                             <button onClick={() => setExpandedMovie(null)} className="text-zinc-500 hover:text-white text-sm">✕</button>

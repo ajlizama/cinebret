@@ -152,7 +152,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
                                   <span className="text-emerald-500 text-sm shrink-0">+</span>
                                   <span className="text-sm text-zinc-200 flex-1 truncate">{titulo}</span>
                                   {c.peliculas?.nota_imdb && (
-                                    <span className="text-xs text-yellow-400 shrink-0">⭐ {c.peliculas.nota_imdb}</span>
+                                    <span className="text-xs text-yellow-400 shrink-0 flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {c.peliculas.nota_imdb}</span>
                                   )}
                                   {plat && (
                                     <span className={`text-xs px-2 py-0.5 rounded border shrink-0 ${plat.bg} ${plat.color}`}>
@@ -180,7 +180,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
                                   <span className="text-red-500 text-sm shrink-0">−</span>
                                   <span className="text-sm text-zinc-400 flex-1 truncate">{titulo}</span>
                                   {c.peliculas?.nota_imdb && (
-                                    <span className="text-xs text-zinc-500 shrink-0">⭐ {c.peliculas.nota_imdb}</span>
+                                    <span className="text-xs text-zinc-500 shrink-0 flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-zinc-500" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {c.peliculas.nota_imdb}</span>
                                   )}
                                   {plat && (
                                     <span className={`text-xs px-2 py-0.5 rounded border shrink-0 ${plat.bg} ${plat.color}`}>

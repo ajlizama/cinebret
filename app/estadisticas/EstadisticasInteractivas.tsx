@@ -232,8 +232,8 @@ export default function EstadisticasInteractivas({ peliculas, plataformas, anali
             <p className="text-xl font-bold text-white">{pd.count}</p>
             <p className="text-[10px] text-zinc-500">películas</p>
             <div className="flex items-center justify-center gap-2 mt-1.5">
-              {pd.avgImdb && <span className="text-xs font-bold text-yellow-400">⭐{pd.avgImdb}</span>}
-              {pd.oscarWinners > 0 && <span className="text-xs text-amber-400">🏆{pd.oscarWinners}</span>}
+              {pd.avgImdb && <span className="text-xs font-bold text-yellow-400 flex items-center gap-px"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>{pd.avgImdb}</span>}
+              {pd.oscarWinners > 0 && <span className="text-xs text-amber-400 flex items-center gap-px"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-3 w-auto" />{pd.oscarWinners}</span>}
             </div>
           </div>
         ))}

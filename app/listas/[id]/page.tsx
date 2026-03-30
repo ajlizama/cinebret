@@ -395,7 +395,7 @@ export default function ListaDetallePage({ params }: { params: Promise<{ id: str
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-3xl">🎬</div>
+                        <div className="w-full h-full flex items-center justify-center"><svg className="w-8 h-8 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                       )}
                     </div>
                   </Link>

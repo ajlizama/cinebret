@@ -136,7 +136,7 @@ export async function GET(req: NextRequest) {
                   padding: '8px 16px',
                 }}
               >
-                <span style={{ fontSize: '24px', display: 'flex' }}>⭐</span>
+                <span style={{ fontSize: '24px', display: 'flex', color: '#d4a017' }}>★</span>
                 <span style={{ color: '#d4a017', fontSize: '28px', fontWeight: 800, display: 'flex' }}>
                   {rating}
                 </span>

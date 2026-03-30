@@ -37,7 +37,7 @@ export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa,
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">
-              ✍️ Review CineBret
+              Review CineBret
             </span>
           </div>
           {sinopsis && (
@@ -56,7 +56,7 @@ export default function PeliculaDetalle({ peliculaId, esReviewAutor, sinopsisIa,
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full font-medium">
-              🤖 Sinopsis IA
+              Sinopsis IA
             </span>
           </div>
           <p className="text-zinc-300 text-sm leading-relaxed italic">{sinopsis}</p>

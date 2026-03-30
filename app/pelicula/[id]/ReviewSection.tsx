@@ -211,7 +211,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
                     esPublica ? 'bg-yellow-400/20 border-yellow-500 text-yellow-300' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'
                   }`}
                 >
-                  🌐 Pública
+                  Publica
                 </button>
                 <button
                   type="button"
@@ -220,7 +220,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
                     !esPublica ? 'bg-zinc-700 border-zinc-500 text-zinc-300' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'
                   }`}
                 >
-                  🔒 Solo seguidores
+                  Solo seguidores
                 </button>
               </div>
               <div className="flex gap-2 justify-end">
@@ -239,7 +239,7 @@ export default function ReviewSection({ peliculaId }: { peliculaId: string }) {
           ) : (
             <>
               <p className="text-zinc-300 text-sm leading-relaxed">{miReviewObj.review_text}</p>
-              <p className="text-xs text-zinc-600 mt-2">{miReviewObj.publica ? '🌐 Pública' : '🔒 Solo seguidores'}</p>
+              <p className="text-xs text-zinc-600 mt-2">{miReviewObj.publica ? 'Publica' : 'Solo seguidores'}</p>
             </>
           )}
         </div>

@@ -98,7 +98,7 @@ export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) 
                 <div className="relative w-20 h-28 rounded-lg overflow-hidden bg-zinc-800 mb-1 ring-1 ring-transparent hover:ring-yellow-400/50 transition-all">
                   <Image src={`https://image.tmdb.org/t/p/w185${sim.poster_path}`} alt={sim.titulo_ingles || sim.titulo} fill className="object-cover" sizes="80px" />
                   {sim.nota_imdb && (
-                    <div className="absolute top-0.5 left-0.5 bg-zinc-900/90 rounded-full px-1 py-0.5 text-[8px] font-bold text-yellow-400">⭐{sim.nota_imdb}</div>
+                    <div className="absolute top-0.5 left-0.5 bg-zinc-900/90 rounded-full px-1 py-0.5 text-[8px] font-bold text-yellow-400 flex items-center gap-px"><svg className="w-2 h-2 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>{sim.nota_imdb}</div>
                   )}
                 </div>
                 <p className="text-white text-[8px] font-medium leading-snug line-clamp-2">{sim.titulo_ingles || sim.titulo}</p>

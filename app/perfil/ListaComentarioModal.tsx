@@ -211,11 +211,11 @@ export default function ListaComentarioModal({
               {(detalle?.nota_imdb || detalle?.rt_score || detalle?.metacritic_score) && (
                 <div className="flex gap-3 mt-2 flex-wrap">
                   {detalle.nota_imdb && (
-                    <span className="text-xs text-yellow-400 font-semibold">⭐ {detalle.nota_imdb}</span>
+                    <span className="text-xs text-yellow-400 font-semibold flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {detalle.nota_imdb}</span>
                   )}
                   {detalle.rt_score != null && (
                     <span className={`text-xs font-semibold ${detalle.rt_score >= 60 ? 'text-green-400' : 'text-red-400'}`}>
-                      🍅 {detalle.rt_score}%
+                      RT {detalle.rt_score}%
                     </span>
                   )}
                   {detalle.metacritic_score != null && (

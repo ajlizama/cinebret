@@ -65,10 +65,10 @@ function tiempoRelativo(iso: string) {
 function OnboardingOverlay({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0)
   const pasos = [
-    { emoji: '👉', color: 'text-pink-400', label: 'Desliza → Watchlist' },
-    { emoji: '👈', color: 'text-red-400', label: 'Desliza ← No me interesa' },
-    { emoji: '👆', color: 'text-blue-400', label: 'Desliza ↑ Ya la vi' },
-    { emoji: '👇', color: 'text-zinc-300', label: 'Desliza ↓ Otra película' },
+    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-pink-400', label: 'Desliza → Watchlist' },
+    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-red-400', label: 'Desliza ← No me interesa' },
+    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 19V5M5 12l7-7 7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-blue-400', label: 'Desliza ↑ Ya la vi' },
+    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-zinc-300', label: 'Desliza ↓ Otra película' },
   ]
   useEffect(() => {
     if (step >= pasos.length) { onDone(); return }
@@ -81,7 +81,7 @@ function OnboardingOverlay({ onDone }: { onDone: () => void }) {
     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm rounded-2xl cursor-pointer"
       onClick={() => { setStep(pasos.length); onDone() }}>
       <div className="flex flex-col items-center gap-3 animate-pulse">
-        <span className="text-6xl">{p.emoji}</span>
+        <span className={`${p.color}`}>{p.icon}</span>
         <span className={`text-lg font-semibold ${p.color}`}>{p.label}</span>
       </div>
       <p className="text-zinc-500 text-xs mt-8">Toca para saltar</p>
@@ -265,7 +265,7 @@ function ReelCard({
       {pelicula.poster_path ? (
         <Image src={`https://image.tmdb.org/t/p/w500${pelicula.poster_path}`} alt={titulo} fill className="object-cover" draggable={false} />
       ) : (
-        <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-5xl">🎬</span></div>
+        <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><svg className="w-14 h-14 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
       )}
 
       {/* Dark overlay — stronger for slides 1 & 2 */}
@@ -322,8 +322,8 @@ function ReelCard({
           )}
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             {pelicula.anio && <span className="text-zinc-400 text-sm">{pelicula.anio}</span>}
-            {pelicula.nota_imdb && <span className="text-yellow-400 text-sm font-medium">⭐ {pelicula.nota_imdb}</span>}
-            {pelicula.oscars && pelicula.oscars !== 'N/A' && <span className="text-amber-300 text-xs">🏆 {pelicula.oscars}</span>}
+            {pelicula.nota_imdb && <span className="text-yellow-400 text-sm font-medium flex items-center gap-1"><svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>}
+            {pelicula.oscars && pelicula.oscars !== 'N/A' && <span className="text-amber-300 text-xs flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-3.5 w-auto" /> {pelicula.oscars}</span>}
           </div>
           {pelicula.categoria && (
             <span className="inline-block bg-white/10 backdrop-blur-sm text-zinc-300 text-xs px-2.5 py-1 rounded-full mb-2">{pelicula.categoria}</span>
@@ -392,7 +392,7 @@ function ReelCard({
 
           {/* Oscars */}
           {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-            <p className="text-amber-300 text-xs mb-3">🏆 {pelicula.oscars}</p>
+            <p className="text-amber-300 text-xs mb-3 flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-3.5 w-auto" /> {pelicula.oscars}</p>
           )}
 
           {/* Sinopsis */}
@@ -459,7 +459,7 @@ function ReelCard({
             <div key={r.id} className="mb-4">
               <div className="flex items-center gap-2 mb-1.5">
                 {r.isAutor ? (
-                  <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">✍️ CineBret</span>
+                  <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">Review CineBret</span>
                 ) : (
                   <>
                     <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 overflow-hidden">

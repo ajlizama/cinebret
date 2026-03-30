@@ -191,7 +191,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
         <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
           <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-2xl px-6 py-4 shadow-2xl max-w-sm mx-4 pointer-events-auto">
             <div className="flex items-start gap-3">
-              <span className="text-2xl shrink-0">🎬</span>
+              <svg className="w-6 h-6 text-yellow-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg>
               <p className="text-sm text-zinc-200 leading-relaxed flex-1">{responseMsg}</p>
               <button onClick={() => setResponseMsg(null)} className="text-zinc-500 hover:text-white shrink-0 text-lg">✕</button>
             </div>

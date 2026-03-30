@@ -298,22 +298,22 @@ export default function MiPerfilPage() {
         {/* ── Quick Access ── */}
         <div className="grid grid-cols-2 gap-3 mb-8">
           <Link href="/estadisticas/wrapped" className="bg-gradient-to-br from-amber-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-amber-600/50 transition-all group">
-            <span className="text-2xl mb-2 block">🎬</span>
+            <span className="mb-2 block"><svg className="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></span>
             <span className="text-white font-semibold text-sm group-hover:text-amber-300 transition-colors">Mi Wrapped</span>
             <span className="text-zinc-400 text-xs block mt-0.5">Tu año en películas</span>
           </Link>
           <Link href="/cinequest" className="bg-gradient-to-br from-purple-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-purple-600/50 transition-all group">
-            <span className="text-2xl mb-2 block">⭐</span>
+            <span className="mb-2 block"><svg className="w-6 h-6 text-purple-400" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg></span>
             <span className="text-white font-semibold text-sm group-hover:text-purple-300 transition-colors">CineQuest</span>
             <span className="text-zinc-400 text-xs block mt-0.5">Logros y desafíos</span>
           </Link>
           <Link href="/calculadora" className="bg-gradient-to-br from-emerald-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-emerald-600/50 transition-all group">
-            <span className="text-2xl mb-2 block">🧮</span>
+            <span className="mb-2 block"><svg className="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21" strokeLinecap="round"/></svg></span>
             <span className="text-white font-semibold text-sm group-hover:text-emerald-300 transition-colors">Calculadora</span>
             <span className="text-zinc-400 text-xs block mt-0.5">¿Qué plataforma te conviene?</span>
           </Link>
           <Link href="/juntos" className="bg-gradient-to-br from-sky-900/30 to-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-sky-600/50 transition-all group">
-            <span className="text-2xl mb-2 block">👥</span>
+            <span className="mb-2 block"><svg className="w-6 h-6 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             <span className="text-white font-semibold text-sm group-hover:text-sky-300 transition-colors">Juntos</span>
             <span className="text-zinc-400 text-xs block mt-0.5">¿Qué vemos juntos?</span>
           </Link>
@@ -343,7 +343,7 @@ export default function MiPerfilPage() {
               tab === 'estadisticas' ? 'bg-zinc-700 border-zinc-500 text-white' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
             }`}
           >
-            📊 Estadísticas
+            Estadisticas
           </button>
         </div>
 
@@ -403,7 +403,7 @@ export default function MiPerfilPage() {
                       <p className="text-white text-xs font-semibold leading-snug truncate">{titulo}</p>
                       <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                         {p.anio && <span className="text-zinc-500 text-xs">{p.anio}</span>}
-                        {p.nota_imdb && <span className="text-yellow-400 text-xs">⭐ {p.nota_imdb}</span>}
+                        {p.nota_imdb && <span className="text-yellow-400 text-xs flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {p.nota_imdb}</span>}
                       </div>
                       {entrada.plataformas.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-1.5">

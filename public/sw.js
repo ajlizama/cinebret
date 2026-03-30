@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cinebret-v5'
+const CACHE_NAME = 'cinebret-v6'
 const STATIC_ASSETS = [
   '/',
   '/catalogo',

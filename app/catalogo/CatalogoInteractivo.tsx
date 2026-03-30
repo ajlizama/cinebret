@@ -76,6 +76,43 @@ function matchOscarFiltro(p: Pelicula, filtros: string[]): boolean {
 
 const CERT_OPTIONS = ['G', 'PG', 'PG-13', 'R', 'NC-17', 'TE', 'TE+7']
 
+const ALLOWED_GENRES = [
+  'Acción', 'Aventura', 'Animación', 'Comedia', 'Crimen', 'Documental',
+  'Drama', 'Fantasía', 'Familia', 'Guerra', 'Historia', 'Misterio',
+  'Música', 'Romance', 'Ciencia ficción', 'Thriller', 'Terror', 'Western', 'Biografía',
+]
+
+const GENRE_NORMALIZE: Record<string, string> = {
+  'Biografico': 'Biografía',
+  'Biografia': 'Biografía',
+  'Bélico': 'Guerra',
+  'Belico': 'Guerra',
+  'Ciencia': 'Ciencia ficción',
+  'Sci-Fi': 'Ciencia ficción',
+  'Science Fiction': 'Ciencia ficción',
+  'Action': 'Acción',
+  'Adventure': 'Aventura',
+  'Animation': 'Animación',
+  'Comedy': 'Comedia',
+  'Crime': 'Crimen',
+  'Documentary': 'Documental',
+  'Fantasy': 'Fantasía',
+  'Family': 'Familia',
+  'War': 'Guerra',
+  'History': 'Historia',
+  'Mystery': 'Misterio',
+  'Music': 'Música',
+  'Horror': 'Terror',
+  'Biography': 'Biografía',
+}
+
+function normalizeGenre(g: string): string | null {
+  if (ALLOWED_GENRES.includes(g)) return g
+  const mapped = GENRE_NORMALIZE[g]
+  if (mapped) return mapped
+  return null
+}
+
 const POPULAR_KEYWORDS = [
   'prison', 'friendship', 'corruption', 'based on novel or book', 'freedom', 'hope',
   'time travel', 'revenge', 'love', 'family', 'heist', 'war', 'dystopia', 'survival',
@@ -272,10 +309,10 @@ function CertFilter({ selected, onChange }: { selected: string[]; onChange: (s: 
 }
 
 const MOOD_CATS = [
-  { id: "Pa'l domingo de bajón", emoji: '🛋️', label: 'Domingo de bajón' },
-  { id: "Pa' saltar del sillón", emoji: '⚡', label: 'Saltar del sillón' },
-  { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', label: 'Quedar con el cerebro como licuadora' },
-  { id: "Pa' llorar a moco tendido", emoji: '😭', label: 'Llorar a moco tendido' },
+  { id: "Pa'l domingo de bajón", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M3 18h18M4 18V9a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v9m12 0V9a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v9M7 13h10a1 1 0 0 1 1 1v4H6v-4a1 1 0 0 1 1-1z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Domingo de bajón' },
+  { id: "Pa' saltar del sillón", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Saltar del sillón' },
+  { id: "Pa' quedar con el cerebro como licuadora", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 21h6M10 17v4M14 17v4M8.5 11c.5-1 1.5-2 3.5-2s3 1 3.5 2" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Quedar con el cerebro como licuadora' },
+  { id: "Pa' llorar a moco tendido", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 2c-1.5 4-6 7-6 11a6 6 0 0 0 12 0c0-4-4.5-7-6-11z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Llorar a moco tendido' },
 ]
 
 /* ─────────── Click-to-play video clip ─────────── */
@@ -344,7 +381,7 @@ function PanelExpandido({
                   {p.poster_path ? (
                     <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="96px" />
                   ) : (
-                    <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-2xl">🎬</span></div>
+                    <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><svg className="w-8 h-8 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                   )}
                 </Link>
                 <Link href={`/pelicula/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
@@ -490,7 +527,7 @@ function PanelExpandido({
                 {p.poster_path ? (
                   <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
                 ) : (
-                  <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><span className="text-4xl">🎬</span></div>
+                  <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><svg className="w-12 h-12 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                 )}
               </Link>
               <Link href={`/pelicula/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
@@ -648,7 +685,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 
   return (
     <div className="mb-4">
-      <h2 className="text-base md:text-xl font-bold text-white mb-2">🔥 Trending</h2>
+      <h2 className="text-base md:text-xl font-bold text-white mb-2">Trending</h2>
       <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
         {trendingMovies.map((p, i) => (
           <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => onSelect(p)}>
@@ -770,7 +807,9 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
     upsertUserPelicula(peliculaId, { visto: true, rating })
   }
 
-  const generosDisponibles = [...new Set(peliculas.flatMap(p => p.generos))].sort()
+  const generosDisponibles = ALLOWED_GENRES.filter(g =>
+    peliculas.some(p => p.generos.some(pg => pg === g || normalizeGenre(pg) === g))
+  )
   const directoresDisponibles = [...new Set(peliculas.map(p => p.director).filter(Boolean) as string[])].sort()
   const actoresDisponibles = [...new Set(peliculas.flatMap(p => (p.actores || '').split(',').map(a => a.trim()).filter(Boolean)))].sort()
   const compositoresDisponibles = [...new Set(peliculas.map(p => p.compositor).filter(Boolean) as string[])].sort()
@@ -786,7 +825,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
       return matchBusqueda &&
         (plataformasFiltro.length === 0 || plataformasFiltro.some(plat => p.plataformas.includes(plat))) &&
         (categoriasFiltro.length === 0 || categoriasFiltro.includes(p.categoria || '')) &&
-        (generosFiltro.length === 0 || generosFiltro.every(g => p.generos.includes(g))) &&
+        (generosFiltro.length === 0 || generosFiltro.every(g => p.generos.some(pg => pg === g || normalizeGenre(pg) === g))) &&
         (directoresFiltro.length === 0 || directoresFiltro.includes(p.director || '')) &&
         (actoresFiltro.length === 0 || actoresFiltro.some(a => (p.actores || '').includes(a))) &&
         (compositoresFiltro.length === 0 || compositoresFiltro.includes(p.compositor || '')) &&
@@ -851,14 +890,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950" style={{ height: '180px' }}>
-        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-1">
-          <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-1.5 tracking-tight">
-            Bienvenido a <span className="text-yellow-400">CineBret</span>
-          </h1>
-          <p className="text-zinc-300 text-sm md:text-lg text-center mb-4 max-w-md">
-            Buscador y recomendador de películas
-          </p>
+      <div className="relative overflow-hidden bg-zinc-950 pt-6 pb-4">
+        <div className="relative flex flex-col items-center justify-center px-4">
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
@@ -901,7 +934,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
                   className={`py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold flex flex-col items-center justify-center gap-1 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
-                  <span className="text-lg md:text-xl leading-none">{cat.emoji}</span>
+                  <span className="text-lg md:text-xl leading-none">{cat.icon}</span>
                   <span className="text-center leading-tight">{cat.label}</span>
                 </button>
               )
@@ -1106,7 +1139,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : (
             <div>
-              <h2 className="text-base md:text-xl font-bold text-white mb-2">🎬 Para Ti</h2>
+              <h2 className="text-base md:text-xl font-bold text-white mb-2">Para Ti</h2>
               {/* Carrusel para usuarios sin cuestionario — solo películas con plataforma, con filtros */}
               <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
                 {(() => {
@@ -1132,7 +1165,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                       <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
                         <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
                         {p.nota_imdb && (
-                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400">⭐ {p.nota_imdb}</div>
+                          <div className="absolute top-1.5 left-1.5 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-xs font-bold text-yellow-400"><svg className="w-3 h-3 inline-block fill-yellow-400 -mt-px" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {p.nota_imdb}</div>
                         )}
                         {p.plataformas.length > 0 && (
                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
@@ -1154,7 +1187,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               {/* CTA compacto */}
               <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent rounded-xl px-4 py-3 flex items-center gap-3 mt-1">
                 <p className="text-zinc-300 text-xs flex-1">
-                  ✨ Completa el cuestionario para recomendaciones personalizadas
+                  Completa el cuestionario para recomendaciones personalizadas
                 </p>
                 <button
                   onClick={() => setShowCuestionario(true)}
@@ -1238,7 +1271,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                       <Image src={`https://image.tmdb.org/t/p/w342${pelicula.poster_path}`} alt={pelicula.titulo_ingles || pelicula.titulo} fill
                         className={`object-cover transition-transform duration-500 ${isExpanded ? '' : 'group-hover:scale-105'}`} sizes="(max-width: 768px) 50vw, 25vw" />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-zinc-800"><span className="text-zinc-600 text-5xl">🎬</span></div>
+                      <div className="absolute inset-0 flex items-center justify-center bg-zinc-800"><svg className="w-14 h-14 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent" />
                     <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
@@ -1269,7 +1302,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                           <p className="text-white font-bold text-sm md:text-base leading-tight line-clamp-2">{pelicula.titulo_ingles || pelicula.titulo}</p>
                           <div className="flex items-center gap-2 mt-1 flex-wrap">
                             {pelicula.anio && <span className="text-zinc-300 text-xs md:text-sm">{pelicula.anio}</span>}
-                            {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs md:text-sm">⭐ {pelicula.nota_imdb}</span>}
+                            {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs md:text-sm"><svg className="w-3 h-3 inline-block fill-yellow-400 -mt-px" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>}
                           </div>
                           {pelicula.categoria && (
                             <span className="inline-block mt-1.5 text-xs md:text-[11px] bg-white/15 backdrop-blur-sm text-zinc-200 px-2 py-0.5 rounded-full leading-tight">
@@ -1328,7 +1361,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                         >
                           <td className="px-4 py-2">
                             <div className="flex items-center gap-3">
-                              <span className="text-zinc-600 text-xs">{isExpanded ? '▲' : '▼'}</span>
+                              <span className="text-zinc-600 text-xs">{isExpanded ? <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 12.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414 0z"/></svg> : <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 7.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 10.586l3.293-3.293a1 1 0 011.414 0z"/></svg>}</span>
                               <div className="relative w-[72px] shrink-0 rounded-lg overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
                                 {pelicula.poster_path && <Image src={`https://image.tmdb.org/t/p/w154${pelicula.poster_path}`} alt="" fill className="object-cover" sizes="72px" />}
                               </div>
@@ -1346,7 +1379,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                           </td>
                           <td className="px-2 py-2.5 text-center text-zinc-400 text-xs">{pelicula.anio || '—'}</td>
                           <td className="px-2 py-2.5 text-center">
-                            {pelicula.nota_imdb != null ? <span className="font-bold text-yellow-400">⭐ {pelicula.nota_imdb}</span> : <span className="text-zinc-700">—</span>}
+                            {pelicula.nota_imdb != null ? <span className="font-bold text-yellow-400"><svg className="w-3 h-3 inline-block fill-yellow-400 -mt-px" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span> : <span className="text-zinc-700">—</span>}
                           </td>
                           <td className="px-3 py-2.5">
                             <div className="flex flex-wrap gap-1 justify-center">
@@ -1416,11 +1449,11 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                                 <p className="text-zinc-500 text-xs mt-0.5">{pelicula.titulo}</p>
                               )}
                             </div>
-                            <span className="text-zinc-600 text-xs shrink-0 mt-1">{isExpanded ? '▲' : '▼'}</span>
+                            <span className="text-zinc-600 text-xs shrink-0 mt-1">{isExpanded ? <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 12.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414 0z"/></svg> : <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 7.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 10.586l3.293-3.293a1 1 0 011.414 0z"/></svg>}</span>
                           </div>
                           <div className="flex items-center gap-2 text-sm mt-1.5 flex-wrap">
                             {pelicula.anio && <span className="text-zinc-400">{pelicula.anio}</span>}
-                            {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold">⭐ {pelicula.nota_imdb}</span>}
+                            {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold"><svg className="w-3 h-3 inline-block fill-yellow-400 -mt-px" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>}
                           </div>
                           {pelicula.categoria && <p className="text-zinc-500 text-xs mt-1">{pelicula.categoria}</p>}
                         </div>

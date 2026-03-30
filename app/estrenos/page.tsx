@@ -181,7 +181,7 @@ export default function EstRenosPage() {
             Calendario de Estrenos
           </h1>
           <p className="text-zinc-400 mt-2 text-sm md:text-base">
-            En cartelera y proximamente en Chile
+            Cine y streaming en Chile
           </p>
         </div>
 

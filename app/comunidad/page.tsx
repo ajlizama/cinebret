@@ -546,22 +546,11 @@ export default function ComunidadPage() {
       <Nav active="comunidad" />
 
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950" style={{ height: '200px' }}>
-        <div className="relative h-full flex flex-col items-center justify-center px-4 pb-6">
-          <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-1.5 tracking-tight">
+      <div className="relative overflow-hidden bg-zinc-950 pt-6 pb-4">
+        <div className="relative flex flex-col items-center justify-center px-4">
+          <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-4 tracking-tight">
             Comunidad <span className="text-yellow-400">CineBret</span>
           </h1>
-          <p className="text-zinc-300 text-sm md:text-base text-center mb-6 max-w-md">
-            Busca, escribe y comparte tus reviews con tus amigos
-          </p>
-          <div className="relative w-full max-w-xl">
-            <input type="text" placeholder="Buscar película o usuario..." readOnly
-              onClick={() => { const el = document.querySelector('nav input') as HTMLInputElement; el?.focus() }}
-              className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-12 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-sm cursor-pointer shadow-lg" />
-            <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
-            </svg>
-          </div>
         </div>
       </div>
 

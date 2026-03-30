@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import Loading from '@/components/Loading'
@@ -581,7 +580,6 @@ function LevelIcon({ level }: { level: string }) {
    ─────────────────────────────────────────── */
 export default function CineQuestPage() {
   const { user, loading } = useAuth()
-  const router = useRouter()
   const [achievements, setAchievements] = useState<Achievement[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [tierCount, setTierCount] = useState(0)
@@ -589,7 +587,7 @@ export default function CineQuestPage() {
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
-    if (!loading && !user) { router.replace('/catalogo'); return }
+    if (!loading && !user) return
     if (!user) return
 
     fetch(`/api/cinequest?userId=${user.id}`)
@@ -604,7 +602,39 @@ export default function CineQuestPage() {
       .catch(() => setCargando(false))
   }, [user, loading])
 
-  if (loading || cargando) return (
+  if (loading) return (
+    <main className="min-h-screen bg-zinc-950">
+      <Nav />
+      <div className="flex items-center justify-center h-64">
+        <Loading text="Cargando logros..." />
+      </div>
+    </main>
+  )
+
+  if (!user) return (
+    <main className="min-h-screen bg-zinc-950">
+      <Nav />
+      <div className="flex items-center justify-center h-[60vh] px-6">
+        <div className="text-center max-w-sm">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-zinc-800 flex items-center justify-center">
+            <QuestIcon name="trophy" className="w-8 h-8 text-amber-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">CineQuest</h1>
+          <p className="text-zinc-400 text-sm mb-6">
+            Inicia sesion para desbloquear logros y desafios cinematograficos.
+          </p>
+          <a
+            href="/catalogo"
+            className="inline-block bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-3 rounded-xl transition-colors text-sm"
+          >
+            Ir al catalogo
+          </a>
+        </div>
+      </div>
+    </main>
+  )
+
+  if (cargando) return (
     <main className="min-h-screen bg-zinc-950">
       <Nav />
       <div className="flex items-center justify-center h-64">

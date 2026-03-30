@@ -669,12 +669,11 @@ function PanelExpandido({
 }
 
 /* ─────────── Trending carousel ─────────── */
-function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro, nowPlayingIds = [] }: {
+function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro, nowPlayingIds = [], cinemaBadges = {} }: {
   peliculas: Pelicula[]; trendingIds: number[]; plataformas: typeof PLATAFORMAS; onSelect: (p: Pelicula) => void
-  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; nowPlayingIds?: number[]
+  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; nowPlayingIds?: number[]; cinemaBadges?: Record<number, string>
 }) {
   const trendingSet = new Set(trendingIds)
-  const nowPlayingSet = new Set(nowPlayingIds)
   let trendingMovies = peliculas
     .filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.poster_path)
   if (categoriasFiltro.length > 0) trendingMovies = trendingMovies.filter(p => categoriasFiltro.includes(p.categoria ?? ''))
@@ -704,8 +703,12 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                       </div>
                     ))}
                   </div>
-                ) : (p.tmdb_id && nowPlayingSet.has(p.tmdb_id)) ? (
+                ) : p.tmdb_id && cinemaBadges[p.tmdb_id] === 'en_cines' ? (
                   <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
+                ) : p.tmdb_id && cinemaBadges[p.tmdb_id] === 'estreno' ? (
+                  <span className="bg-red-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Estreno</span>
+                ) : p.tmdb_id && cinemaBadges[p.tmdb_id] === 'proximamente' ? (
+                  <span className="bg-blue-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Pronto</span>
                 ) : null}
               </div>
             </div>
@@ -718,7 +721,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPlayingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[]; nowPlayingIds?: number[] }) {
+export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPlayingIds = [], cinemaBadges = {} }: { peliculas: Pelicula[]; trendingIds?: number[]; nowPlayingIds?: number[]; cinemaBadges?: Record<number, string> }) {
   const { user } = useAuth()
   const [userPeliculas, setUserPeliculas] = useState<Record<string, UserPelicula>>({})
   const [busqueda, setBusqueda] = useState('')
@@ -1101,6 +1104,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPl
           peliculas={peliculas}
           trendingIds={trendingIds}
           nowPlayingIds={nowPlayingIds}
+          cinemaBadges={cinemaBadges}
           plataformas={PLATAFORMAS}
           categoriasFiltro={categoriasFiltro}
           plataformasFiltro={plataformasFiltro}

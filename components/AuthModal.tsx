@@ -45,7 +45,11 @@ export default function AuthModal({ onClose }: Props) {
       if (error) setError('Correo o contraseña incorrectos')
       else onClose()
     } else {
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      })
       if (error) setError(error.message)
       else setMensaje('Revisa tu correo para confirmar tu cuenta')
     }

@@ -13,9 +13,13 @@ export async function GET() {
       fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbKey}&region=CL&page=2`, { next: { revalidate: 3600 } }).then(r => r.json()),
     ])
 
+    // Only include movies already released (filter out future dates)
+    const today = new Date().toISOString().split('T')[0]
     const ids = new Set<number>()
     for (const r of [...(page1.results ?? []), ...(page2.results ?? [])]) {
-      ids.add(r.id)
+      if (r.release_date && r.release_date <= today) {
+        ids.add(r.id)
+      }
     }
 
     return NextResponse.json({ tmdbIds: Array.from(ids) })

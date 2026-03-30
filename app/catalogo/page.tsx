@@ -150,7 +150,11 @@ export default async function CatalogoPage() {
           .then(r => r.json()).catch(() => ({ results: [] })),
       ])
       trendingIds = trendingPages.flatMap((d: any) => (d.results ?? []).map((m: any) => m.id as number))
-      nowPlayingIds = [...(np1.results ?? []), ...(np2.results ?? [])].map((m: any) => m.id as number)
+      // Only include movies that have ACTUALLY been released (not future dates)
+      const today = new Date().toISOString().split('T')[0]
+      nowPlayingIds = [...(np1.results ?? []), ...(np2.results ?? [])]
+        .filter((m: any) => m.release_date && m.release_date <= today)
+        .map((m: any) => m.id as number)
     }
   } catch {}
 

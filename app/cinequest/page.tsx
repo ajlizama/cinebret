@@ -150,6 +150,203 @@ function QuestIcon({ name, className = '' }: { name: string; className?: string 
           <path d="M2 4h20v3H2z" />
         </svg>
       )
+    // ── Director-specific icons ──
+    case 'dir_nolan': // Trompo de Inception
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M12 3L8 19h8L12 3z" fill="currentColor" opacity="0.15" />
+          <path d="M12 3L8 19h8L12 3z" />
+          <ellipse cx="12" cy="19" rx="4" ry="1.5" />
+          <line x1="12" y1="3" x2="12" y2="1" />
+        </svg>
+      )
+    case 'dir_kubrick': // Ojo de 2001/Clockwork Orange
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+          <path d="M12 4v-2M12 22v-2" strokeWidth="2" />
+        </svg>
+      )
+    case 'dir_spielberg': // ET / alien hand reaching
+      return (
+        <svg className={cls} {...svgProps}>
+          <circle cx="16" cy="6" r="4" />
+          <path d="M4 20c0-4 3-7 7-8" />
+          <path d="M11 12l5-3" />
+          <circle cx="15" cy="5" r="0.5" fill="currentColor" />
+          <circle cx="17" cy="5" r="0.5" fill="currentColor" />
+          <path d="M6 22l2-6M10 22l-1-4" />
+        </svg>
+      )
+    case 'dir_tarantino': // Katana (Kill Bill)
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M5 19L18 4" strokeWidth="2" />
+          <path d="M18 4l2 1-1 2" />
+          <path d="M5 19l-1 2 2 1" fill="currentColor" opacity="0.3" />
+          <line x1="7" y1="15" x2="4" y2="18" strokeWidth="3" />
+        </svg>
+      )
+    case 'dir_scorsese': // Fedora hat (mafia)
+      return (
+        <svg className={cls} {...svgProps}>
+          <ellipse cx="12" cy="16" rx="10" ry="3" />
+          <path d="M6 16c0-5 2-10 6-12 4 2 6 7 6 12" fill="currentColor" opacity="0.15" />
+          <path d="M6 16c0-5 2-10 6-12 4 2 6 7 6 12" />
+          <line x1="2" y1="16" x2="22" y2="16" />
+        </svg>
+      )
+    case 'dir_fincher': // Crosshair/target (Zodiac, Se7en)
+      return (
+        <svg className={cls} {...svgProps}>
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="12" cy="12" r="1" fill="currentColor" />
+          <line x1="12" y1="1" x2="12" y2="5" />
+          <line x1="12" y1="19" x2="12" y2="23" />
+          <line x1="1" y1="12" x2="5" y2="12" />
+          <line x1="19" y1="12" x2="23" y2="12" />
+        </svg>
+      )
+    case 'dir_villeneuve': // Sandworm/dune (Dune)
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M2 18c4-8 6-12 10-12s6 4 10 12" />
+          <path d="M6 18c2-4 3-6 6-6s4 2 6 6" fill="currentColor" opacity="0.1" />
+          <circle cx="12" cy="8" r="2" />
+          <path d="M10 8c0-3 4-3 4 0" />
+        </svg>
+      )
+    case 'dir_coppola': // Puppet strings (The Godfather)
+      return (
+        <svg className={cls} {...svgProps}>
+          <line x1="6" y1="2" x2="6" y2="10" />
+          <line x1="12" y1="2" x2="12" y2="8" />
+          <line x1="18" y1="2" x2="18" y2="10" />
+          <circle cx="12" cy="15" r="5" fill="currentColor" opacity="0.1" />
+          <circle cx="12" cy="15" r="5" />
+          <line x1="6" y1="10" x2="9" y2="12" />
+          <line x1="18" y1="10" x2="15" y2="12" />
+          <line x1="12" y1="8" x2="12" y2="10" />
+        </svg>
+      )
+    case 'dir_hitchcock': // Knife (Psycho)
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M12 2v14" strokeWidth="2" />
+          <path d="M9 16h6l-3 6-3-6z" fill="currentColor" opacity="0.3" />
+          <path d="M9 16h6l-3 6-3-6z" />
+          <path d="M10 2c0-0 4 0 4 0" strokeWidth="3" />
+          <path d="M8 4h8" />
+        </svg>
+      )
+    case 'dir_wes': // Suitcase (symmetrical, Grand Budapest)
+      return (
+        <svg className={cls} {...svgProps}>
+          <rect x="4" y="8" width="16" height="12" rx="2" />
+          <path d="M8 8V6a4 4 0 018 0v2" />
+          <line x1="12" y1="8" x2="12" y2="20" />
+          <line x1="4" y1="14" x2="20" y2="14" />
+          <circle cx="12" cy="14" r="1.5" fill="currentColor" />
+        </svg>
+      )
+    case 'dir_ridley': // Alien head silhouette
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M8 22c0-2 1-4 1-6s-2-4-2-7c0-4 2-7 5-7s5 3 5 7c0 3-2 5-2 7s1 4 1 6" fill="currentColor" opacity="0.1" />
+          <path d="M8 22c0-2 1-4 1-6s-2-4-2-7c0-4 2-7 5-7s5 3 5 7c0 3-2 5-2 7s1 4 1 6" />
+          <circle cx="10" cy="9" r="1" fill="currentColor" />
+          <circle cx="14" cy="9" r="1" fill="currentColor" />
+        </svg>
+      )
+    case 'dir_coen': // Bowling pin (Big Lebowski)
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M12 2c-1.5 0-2 1-2 2s1 2 1 4c0 1.5-2 3-2 6 0 4 1.5 8 3 8s3-4 3-8c0-3-2-4.5-2-6 0-2 1-2 1-4s-.5-2-2-2z" fill="currentColor" opacity="0.1" />
+          <path d="M12 2c-1.5 0-2 1-2 2s1 2 1 4c0 1.5-2 3-2 6 0 4 1.5 8 3 8s3-4 3-8c0-3-2-4.5-2-6 0-2 1-2 1-4s-.5-2-2-2z" />
+        </svg>
+      )
+    case 'dir_park': // Hammer (Oldboy)
+      return (
+        <svg className={cls} {...svgProps}>
+          <rect x="10" y="2" width="4" height="8" rx="1" fill="currentColor" opacity="0.15" />
+          <rect x="10" y="2" width="4" height="8" rx="1" />
+          <line x1="12" y1="10" x2="12" y2="22" strokeWidth="2" />
+        </svg>
+      )
+    case 'dir_miyazaki': // Totoro-like spirit / wind
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M6 20c0-6 2-10 6-14 4 4 6 8 6 14" fill="currentColor" opacity="0.1" />
+          <path d="M6 20c0-6 2-10 6-14 4 4 6 8 6 14" />
+          <circle cx="10" cy="14" r="1.5" fill="currentColor" />
+          <circle cx="14" cy="14" r="1.5" fill="currentColor" />
+          <path d="M10 18c1 1 3 1 4 0" />
+          <path d="M7 8l-3-4M17 8l3-4" />
+        </svg>
+      )
+    case 'dir_bong': // Umbrella/rain (Parasite stairs scene)
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M12 2v20" />
+          <path d="M4 12c0-5 3.6-8 8-8s8 3 8 8" fill="currentColor" opacity="0.1" />
+          <path d="M4 12c0-5 3.6-8 8-8s8 3 8 8" />
+          <path d="M10 22c0-1 1-2 2-2s2 1 2 2" />
+          <line x1="2" y1="18" x2="4" y2="16" />
+          <line x1="20" y1="18" x2="22" y2="16" />
+        </svg>
+      )
+    case 'dir_zemeckis': // Clock/DeLorean (Back to the Future)
+      return (
+        <svg className={cls} {...svgProps}>
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12,4 12,12 17,7" strokeWidth="2" />
+          <path d="M7 20l-3 3M17 20l3 3" />
+          <circle cx="12" cy="12" r="1" fill="currentColor" />
+        </svg>
+      )
+    case 'dir_cameron': // Ship bow (Titanic) + waves
+      return (
+        <svg className={cls} {...svgProps}>
+          <path d="M2 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+          <path d="M2 20c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+          <path d="M12 4v10" strokeWidth="2" />
+          <path d="M8 8l4-4 4 4" />
+          <path d="M6 14l6-2 6 2" fill="currentColor" opacity="0.1" />
+        </svg>
+      )
+    case 'dir_lynch': // TV static / eye spiral (Twin Peaks)
+      return (
+        <svg className={cls} {...svgProps}>
+          <rect x="3" y="4" width="18" height="14" rx="2" />
+          <path d="M3 18h18" />
+          <path d="M10 21h4" />
+          <path d="M12 8a4 4 0 011 3 4 4 0 01-1 3 4 4 0 01-1-3 4 4 0 011-3z" fill="currentColor" opacity="0.3" />
+          <path d="M8 11h8M12 7v8" strokeDasharray="1 1" />
+        </svg>
+      )
+    case 'dir_woody': // Glasses (iconic Woody Allen look)
+      return (
+        <svg className={cls} {...svgProps}>
+          <circle cx="8" cy="12" r="4" />
+          <circle cx="16" cy="12" r="4" />
+          <line x1="12" y1="12" x2="12" y2="12" />
+          <path d="M4 12H2M22 12h-2" />
+          <path d="M12 11c0-1 0-1 0 0" />
+        </svg>
+      )
+    case 'dir_clint': // Revolver (westerns)
+      return (
+        <svg className={cls} {...svgProps}>
+          <circle cx="7" cy="14" r="4" />
+          <circle cx="7" cy="14" r="1.5" fill="currentColor" />
+          <path d="M11 13h10" strokeWidth="2" />
+          <path d="M11 13l-1 5h3l-1-5" fill="currentColor" opacity="0.2" />
+          <path d="M15 11v-2h4v4h-4" />
+        </svg>
+      )
     case 'bolt':
       return (
         <svg className={cls} {...svgProps}>

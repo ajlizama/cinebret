@@ -42,6 +42,8 @@ const DIRECTOR_IMAGES: Record<string, string> = {
   dir_coppola: '/directors/coppola.png',
   dir_clint: '/directors/eastwood.jpg',
   dir_miyazaki: '/directors/miyazaki.jpg',
+  dir_ridley: '/directors/ridley_scott.jpg',
+  dir_villeneuve: '/directors/villeneuve.jpg',
 }
 
 function QuestIcon({ name, className = '' }: { name: string; className?: string }) {

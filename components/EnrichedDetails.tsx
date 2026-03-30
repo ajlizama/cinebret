@@ -51,7 +51,6 @@ export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) 
           .select('id, titulo, titulo_ingles, poster_path, nota_imdb, tmdb_id')
           .in('tmdb_id', enr.similar_ids)
           .not('poster_path', 'is', null)
-          .limit(10)
         if (sims) {
           const order = new Map((enr.similar_ids as number[]).map((id: number, i: number) => [id, i]))
           sims.sort((a: any, b: any) => (order.get(a.tmdb_id) ?? 99) - (order.get(b.tmdb_id) ?? 99))

@@ -294,7 +294,6 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 .select('id, titulo, titulo_ingles, poster_path, nota_imdb, tmdb_id')
                 .in('tmdb_id', simIds)
                 .not('poster_path', 'is', null)
-                .limit(15)
               if (!simPels || simPels.length === 0) return null
               // Sort by similar_ids order
               const orderMap = new Map(simIds.map((id, i) => [id, i]))

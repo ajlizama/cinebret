@@ -671,7 +671,7 @@ function PanelExpandido({
 /* ─────────── Trending carousel ─────────── */
 function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro, nowPlayingIds = [], cinemaBadges = {} }: {
   peliculas: Pelicula[]; trendingIds: number[]; plataformas: typeof PLATAFORMAS; onSelect: (p: Pelicula) => void
-  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; nowPlayingIds?: number[]; cinemaBadges?: Record<number, string>
+  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; nowPlayingIds?: number[]; cinemaBadges?: Record<string, string>
 }) {
   const trendingSet = new Set(trendingIds)
   let trendingMovies = peliculas
@@ -703,11 +703,11 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                       </div>
                     ))}
                   </div>
-                ) : p.tmdb_id && cinemaBadges[p.tmdb_id] === 'en_cines' ? (
+                ) : p.tmdb_id && cinemaBadges[String(p.tmdb_id)] === 'en_cines' ? (
                   <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
-                ) : p.tmdb_id && cinemaBadges[p.tmdb_id] === 'estreno' ? (
+                ) : p.tmdb_id && cinemaBadges[String(p.tmdb_id)] === 'estreno' ? (
                   <span className="bg-red-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Estreno</span>
-                ) : p.tmdb_id && cinemaBadges[p.tmdb_id] === 'proximamente' ? (
+                ) : p.tmdb_id && cinemaBadges[String(p.tmdb_id)] === 'proximamente' ? (
                   <span className="bg-blue-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Pronto</span>
                 ) : null}
               </div>
@@ -721,7 +721,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPlayingIds = [], cinemaBadges = {} }: { peliculas: Pelicula[]; trendingIds?: number[]; nowPlayingIds?: number[]; cinemaBadges?: Record<number, string> }) {
+export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPlayingIds = [], cinemaBadges = {} }: { peliculas: Pelicula[]; trendingIds?: number[]; nowPlayingIds?: number[]; cinemaBadges?: Record<string, string> }) {
   const { user } = useAuth()
   const [userPeliculas, setUserPeliculas] = useState<Record<string, UserPelicula>>({})
   const [busqueda, setBusqueda] = useState('')

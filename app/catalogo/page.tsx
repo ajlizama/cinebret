@@ -133,7 +133,7 @@ export default async function CatalogoPage() {
   // Fetch TMDB trending + now_playing
   let trendingIds: number[] = []
   let nowPlayingIds: number[] = []
-  let cinemaBadges: Record<number, string> = {}
+  let cinemaBadges: Record<string, string> = {}
   try {
     const tmdbKey = process.env.TMDB_API_KEY
     if (tmdbKey) {
@@ -162,7 +162,7 @@ export default async function CatalogoPage() {
       const allUpcoming = [...(up1.results ?? []), ...(up2.results ?? [])]
       const upcomingSet = new Set(allUpcoming.map((m: any) => m.id))
 
-      const cinemaBadges: Record<number, string> = {}
+      const cinemaBadges: Record<string, string> = {}
       // Process now_playing
       for (const m of allNowPlaying) {
         const releaseDate = m.release_date ? new Date(m.release_date) : null

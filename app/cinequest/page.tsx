@@ -48,6 +48,8 @@ const DIRECTOR_IMAGES: Record<string, string> = {
   dir_lynch: '/directors/lynch.jpg',
   dir_woody: '/directors/woody_allen.jpg',
   dir_zemeckis: '/directors/zemeckis.png',
+  dir_park: '/directors/park_chanwook.png',
+  dir_bong: '/directors/bong_joonho.jpg',
 }
 
 function QuestIcon({ name, className = '' }: { name: string; className?: string }) {

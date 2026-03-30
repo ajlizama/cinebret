@@ -309,10 +309,10 @@ function CertFilter({ selected, onChange }: { selected: string[]; onChange: (s: 
 }
 
 const MOOD_CATS = [
-  { id: "Pa'l domingo de bajón", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M3 18h18M4 18V9a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v9m12 0V9a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v9M7 13h10a1 1 0 0 1 1 1v4H6v-4a1 1 0 0 1 1-1z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Domingo de bajón' },
-  { id: "Pa' saltar del sillón", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Saltar del sillón' },
-  { id: "Pa' quedar con el cerebro como licuadora", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 21h6M10 17v4M14 17v4M8.5 11c.5-1 1.5-2 3.5-2s3 1 3.5 2" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Quedar con el cerebro como licuadora' },
-  { id: "Pa' llorar a moco tendido", icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 2c-1.5 4-6 7-6 11a6 6 0 0 0 12 0c0-4-4.5-7-6-11z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: 'Llorar a moco tendido' },
+  { id: "Pa'l domingo de bajón", emoji: '🛋️', label: 'Domingo de bajón' },
+  { id: "Pa' saltar del sillón", emoji: '⚡', label: 'Saltar del sillón' },
+  { id: "Pa' quedar con el cerebro como licuadora", emoji: '🤯', label: 'Quedar con el cerebro como licuadora' },
+  { id: "Pa' llorar a moco tendido", emoji: '😭', label: 'Llorar a moco tendido' },
 ]
 
 /* ─────────── Click-to-play video clip ─────────── */
@@ -890,8 +890,9 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950 pt-6 pb-4">
+      <div className="relative overflow-hidden bg-zinc-950 pt-4 pb-4">
         <div className="relative flex flex-col items-center justify-center px-4">
+          <h1 className="text-xl md:text-2xl font-bold text-white mb-3">Bienvenido a <span className="text-amber-400">CineBret</span></h1>
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
@@ -934,7 +935,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
                   className={`py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold flex flex-col items-center justify-center gap-1 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
-                  <span className="text-lg md:text-xl leading-none">{cat.icon}</span>
+                  <span className="text-lg md:text-xl leading-none">{cat.emoji}</span>
                   <span className="text-center leading-tight">{cat.label}</span>
                 </button>
               )
@@ -960,9 +961,9 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           </div>
         </div>
 
-        {/* ── Genre pills (always visible) ── */}
-        <div className="mb-3">
-          <div className="flex overflow-x-auto gap-1.5 pb-2 scrollbar-none -mx-3 px-3">
+        {/* ── Genre pills + Más filtros in one row ── */}
+        <div className="mb-3 flex items-center gap-2">
+          <div className="flex-1 overflow-x-auto flex gap-1.5 scrollbar-none">
             {generosDisponibles.map(g => (
               <button key={g}
                 onClick={() => setGenerosFiltro(prev => prev.includes(g) ? prev.filter(x => x !== g) : [...prev, g])}
@@ -974,17 +975,17 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               </button>
             ))}
           </div>
+          <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
+            className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
+            Mas filtros
+            {filtrosAvanzadosCount > 0 && <span className="bg-amber-500 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
+          </button>
         </div>
 
-        {/* ── Active filters as amber pills ── */}
-        {hayFiltros && (
+        {/* ── Active non-genre filters ── */}
+        {(plataformasFiltro.length > 0 || categoriasFiltro.length > 0 || directoresFiltro.length > 0 || actoresFiltro.length > 0 || anioDesde || anioHasta) && (
           <div className="mb-3 flex flex-wrap items-center gap-1.5">
-            {generosFiltro.map(g => (
-              <span key={`g-${g}`} onClick={() => setGenerosFiltro(prev => prev.filter(x => x !== g))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {g} <span className="text-amber-400/60">x</span>
-              </span>
-            ))}
             {plataformasFiltro.map(pl => {
               const plat = PLATAFORMAS.find(p => p.id === pl)
               return plat ? (
@@ -1042,16 +1043,6 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
             <button onClick={limpiarFiltros} className="rounded-full px-3 py-1 text-xs text-zinc-500 hover:text-white bg-zinc-800 hover:bg-zinc-700 transition-colors">Limpiar todo</button>
           </div>
         )}
-
-        {/* ── Mas filtros toggle ── */}
-        <div className="mb-3 flex items-center gap-2">
-          <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
-            className={`rounded-full px-4 py-2 text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
-            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
-            Mas filtros
-            {filtrosAvanzadosCount > 0 && <span className="bg-amber-500 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
-          </button>
-        </div>
 
         {/* ── Panel filtros avanzados ── */}
         {mostrarFiltrosAvanzados && (

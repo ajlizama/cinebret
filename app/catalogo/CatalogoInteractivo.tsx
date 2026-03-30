@@ -74,45 +74,199 @@ function matchOscarFiltro(p: Pelicula, filtros: string[]): boolean {
   })
 }
 
-type MultiSelectProps = { label: string; opciones: string[]; seleccionados: string[]; onChange: (s: string[]) => void }
+const CERT_OPTIONS = ['G', 'PG', 'PG-13', 'R', 'NC-17', 'TE', 'TE+7']
 
-function MultiSelect({ label, opciones, seleccionados, onChange }: MultiSelectProps) {
+const POPULAR_KEYWORDS = [
+  'prison', 'friendship', 'corruption', 'based on novel or book', 'freedom', 'hope',
+  'time travel', 'revenge', 'love', 'family', 'heist', 'war', 'dystopia', 'survival',
+  'space', 'detective', 'serial killer', 'dream', 'artificial intelligence', 'robot',
+]
+
+/* ─── Pill-based multi select (no keyboard trigger on mobile) ─── */
+type PillSelectProps = {
+  label: string
+  opciones: string[]
+  seleccionados: string[]
+  onChange: (s: string[]) => void
+  showSearch?: boolean /* enable text search for large lists like Director/Actor */
+}
+
+function PillSelect({ label, opciones, seleccionados, onChange, showSearch = false }: PillSelectProps) {
   const [abierto, setAbierto] = useState(false)
   const [busqueda, setBusqueda] = useState('')
   const toggle = (op: string) => onChange(seleccionados.includes(op) ? seleccionados.filter(s => s !== op) : [...seleccionados, op])
-  const opcionesFiltradas = opciones.filter(o => o.toLowerCase().includes(busqueda.toLowerCase()))
+  const opcionesFiltradas = showSearch && busqueda
+    ? opciones.filter(o => o.toLowerCase().includes(busqueda.toLowerCase()))
+    : opciones
   const handleClose = () => { setAbierto(false); setBusqueda('') }
 
   return (
     <div className="relative">
       <button onClick={() => setAbierto(!abierto)}
-        className={`border rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-colors ${seleccionados.length > 0 ? 'border-yellow-400 bg-yellow-400 text-zinc-950 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>
+        className={`rounded-full px-4 py-2 text-sm flex items-center gap-2 transition-all duration-200 ${seleccionados.length > 0 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
         {label}
-        {seleccionados.length > 0 && <span className="bg-zinc-950 text-yellow-400 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{seleccionados.length}</span>}
-        <span className="text-xs">{abierto ? '▲' : '▼'}</span>
+        {seleccionados.length > 0 && <span className="bg-amber-500 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{seleccionados.length}</span>}
+        <svg className={`w-3 h-3 transition-transform duration-200 ${abierto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
       </button>
       {abierto && (
         <>
-          <div className="fixed inset-0 z-10" onClick={handleClose} />
-          <div className="absolute top-full mt-1 left-0 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl min-w-52 flex flex-col max-h-72">
-            <div className="p-2 border-b border-zinc-800 shrink-0">
-              <input autoFocus type="text" placeholder="Buscar..." value={busqueda} onChange={e => setBusqueda(e.target.value)} onClick={e => e.stopPropagation()}
-                className="w-full px-3 py-1.5 text-sm bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500" />
-            </div>
-            {seleccionados.length > 0 && <div className="border-b border-zinc-800 px-3 py-2 shrink-0"><button onClick={() => onChange([])} className="text-xs text-zinc-500 hover:text-white transition-colors">Limpiar selección</button></div>}
-            <div className="overflow-y-auto">
-              {opcionesFiltradas.length === 0 ? <p className="text-xs text-zinc-500 px-3 py-3">Sin resultados</p> : opcionesFiltradas.map(op => (
-                <div key={op} onClick={() => toggle(op)} className="flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 cursor-pointer text-sm">
-                  <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${seleccionados.includes(op) ? 'bg-yellow-400 border-yellow-400' : 'border-zinc-600'}`}>
-                    {seleccionados.includes(op) && <span className="text-zinc-950 text-xs font-bold">✓</span>}
-                  </div>
-                  <span className="truncate text-zinc-300">{op}</span>
+          {/* Desktop dropdown */}
+          <div className="hidden md:block">
+            <div className="fixed inset-0 z-10" onClick={handleClose} />
+            <div className="absolute top-full mt-2 left-0 z-20 bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-2xl shadow-black/40 min-w-64 max-w-80 flex flex-col max-h-80 overflow-hidden">
+              {showSearch && (
+                <div className="p-3 border-b border-zinc-800/50 shrink-0">
+                  <input type="text" placeholder="Buscar..." value={busqueda} onChange={e => setBusqueda(e.target.value)} onClick={e => e.stopPropagation()}
+                    className="w-full px-3 py-2 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
                 </div>
-              ))}
+              )}
+              {seleccionados.length > 0 && (
+                <div className="border-b border-zinc-800/50 px-3 py-2 shrink-0 flex items-center justify-between">
+                  <div className="flex flex-wrap gap-1.5">
+                    {seleccionados.map(s => (
+                      <span key={s} onClick={() => toggle(s)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                        {s} <span className="text-amber-400/60">x</span>
+                      </span>
+                    ))}
+                  </div>
+                  <button onClick={() => onChange([])} className="text-xs text-zinc-500 hover:text-white transition-colors ml-2 shrink-0">Limpiar</button>
+                </div>
+              )}
+              <div className="overflow-y-auto p-2">
+                {opcionesFiltradas.length === 0 ? <p className="text-xs text-zinc-500 px-3 py-3">Sin resultados</p> : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {opcionesFiltradas.map(op => (
+                      <button key={op} onClick={() => toggle(op)}
+                        className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${seleccionados.includes(op)
+                          ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                          : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
+                        }`}>
+                        {op}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          {/* Mobile bottom sheet */}
+          <div className="md:hidden fixed inset-0 z-50" onClick={handleClose}>
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            <div className="absolute bottom-0 left-0 right-0 bg-zinc-900 rounded-t-3xl max-h-[70vh] flex flex-col animate-in slide-in-from-bottom duration-300" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-zinc-800/50">
+                <h3 className="text-white font-semibold text-base">{label}</h3>
+                <button onClick={handleClose} className="text-zinc-400 hover:text-white text-lg w-8 h-8 flex items-center justify-center rounded-full bg-zinc-800">x</button>
+              </div>
+              {showSearch && (
+                <div className="px-4 pt-3 shrink-0">
+                  <input type="text" placeholder="Buscar..." value={busqueda} onChange={e => setBusqueda(e.target.value)}
+                    className="w-full px-4 py-2.5 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
+                </div>
+              )}
+              {seleccionados.length > 0 && (
+                <div className="px-4 pt-3 shrink-0 flex items-center justify-between gap-2">
+                  <div className="flex flex-wrap gap-1.5 flex-1">
+                    {seleccionados.map(s => (
+                      <span key={s} onClick={() => toggle(s)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer">
+                        {s} <span className="text-amber-400/60">x</span>
+                      </span>
+                    ))}
+                  </div>
+                  <button onClick={() => onChange([])} className="text-xs text-zinc-500 shrink-0">Limpiar</button>
+                </div>
+              )}
+              <div className="overflow-y-auto p-4 flex flex-wrap gap-2 content-start">
+                {opcionesFiltradas.length === 0 ? <p className="text-xs text-zinc-500 py-3">Sin resultados</p> : (
+                  opcionesFiltradas.map(op => (
+                    <button key={op} onClick={() => toggle(op)}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${seleccionados.includes(op)
+                        ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'
+                      }`}>
+                      {op}
+                    </button>
+                  ))
+                )}
+              </div>
+              <div className="p-4 border-t border-zinc-800/50 shrink-0">
+                <button onClick={handleClose} className="w-full bg-amber-500 text-zinc-950 font-semibold rounded-xl py-3 text-sm transition-colors hover:bg-amber-400">
+                  Aplicar {seleccionados.length > 0 ? `(${seleccionados.length})` : ''}
+                </button>
+              </div>
             </div>
           </div>
         </>
       )}
+    </div>
+  )
+}
+
+/* ─── Keyword filter with popular pills + custom input ─── */
+function KeywordFilter({ selected, onChange }: { selected: string[]; onChange: (s: string[]) => void }) {
+  const [custom, setCustom] = useState('')
+  const toggle = (kw: string) => onChange(selected.includes(kw) ? selected.filter(s => s !== kw) : [...selected, kw])
+  const addCustom = () => {
+    const trimmed = custom.trim().toLowerCase()
+    if (trimmed && !selected.includes(trimmed)) onChange([...selected, trimmed])
+    setCustom('')
+  }
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <span className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Keywords</span>
+        {selected.length > 0 && <span className="bg-amber-500 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{selected.length}</span>}
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {POPULAR_KEYWORDS.map(kw => (
+          <button key={kw} onClick={() => toggle(kw)}
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${selected.includes(kw)
+              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+              : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
+            }`}>
+            {kw}
+          </button>
+        ))}
+      </div>
+      <div className="flex gap-2 mt-1">
+        <input type="text" placeholder="Agregar keyword..." value={custom}
+          onChange={e => setCustom(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustom() } }}
+          className="flex-1 px-3 py-2 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
+        <button onClick={addCustom} className="bg-zinc-800 text-zinc-400 hover:text-white px-3 py-2 rounded-xl text-sm transition-colors">+</button>
+      </div>
+      {selected.filter(s => !POPULAR_KEYWORDS.includes(s)).length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {selected.filter(s => !POPULAR_KEYWORDS.includes(s)).map(kw => (
+            <span key={kw} onClick={() => toggle(kw)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+              {kw} <span className="text-amber-400/60">x</span>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ─── Inline pill row for certification ─── */
+function CertFilter({ selected, onChange }: { selected: string[]; onChange: (s: string[]) => void }) {
+  const toggle = (c: string) => onChange(selected.includes(c) ? selected.filter(s => s !== c) : [...selected, c])
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <span className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Clasificacion</span>
+        {selected.length > 0 && <span className="bg-amber-500 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{selected.length}</span>}
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {CERT_OPTIONS.map(c => (
+          <button key={c} onClick={() => toggle(c)}
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${selected.includes(c)
+              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+              : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
+            }`}>
+            {c}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -667,7 +821,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
 
   const hayFiltros = busqueda || plataformasFiltro.length > 0 || categoriasFiltro.length > 0 ||
     generosFiltro.length > 0 || directoresFiltro.length > 0 || actoresFiltro.length > 0 ||
-    compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || filtroVistas !== 'todas' || soloWatchlist || anioDesde || anioHasta || smartKeywords.length > 0
+    compositoresFiltro.length > 0 || oscarsFiltro.length > 0 || soloReviews || soloSello || filtroVistas !== 'todas' || soloWatchlist || anioDesde || anioHasta || smartKeywords.length > 0 || certFiltro.length > 0
 
   useEffect(() => { setPagina(0) }, [busqueda, plataformasFiltro, categoriasFiltro, generosFiltro, directoresFiltro, actoresFiltro, compositoresFiltro, oscarsFiltro, soloReviews, soloSello, filtroVistas, soloWatchlist, orden])
 
@@ -680,7 +834,9 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   const POR_PAGINA = 200
   const totalPaginas = Math.ceil(peliculasFiltradas.length / POR_PAGINA)
   const peliculasPagina = peliculasFiltradas.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA)
-  const filtrosAvanzadosCount = [...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro].length
+  const keywordsFiltro = smartKeywords
+  const setKeywordsFiltro = setSmartKeywords
+  const filtrosAvanzadosCount = [...generosFiltro, ...directoresFiltro, ...actoresFiltro, ...oscarsFiltro, ...compositoresFiltro, ...certFiltro, ...keywordsFiltro].length
 
   // Auto-scroll to expanded panel
   useEffect(() => {
@@ -753,7 +909,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           </div>
         </div>
 
-        {/* ── ¿Qué plataformas tienes? ── */}
+        {/* ── Plataformas ── */}
         <div className="mb-3">
           <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>
           <div className="flex flex-wrap items-center gap-2">
@@ -762,58 +918,158 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
               return (
                 <button key={plat.id}
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                  className={`h-10 w-16 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all ${activa ? 'bg-white border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.6)] scale-110 ring-2 ring-yellow-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
+                  className={`h-10 w-16 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all duration-200 ${activa ? 'bg-white border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.5)] scale-110 ring-2 ring-amber-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-4 md:h-4.5 w-auto object-contain" />
                 </button>
               )
             })}
-            <div className="w-px h-6 bg-zinc-700 mx-1 hidden md:block" />
-            <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
-              className={`h-8 px-3 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors ${mostrarFiltrosAvanzados ? 'bg-zinc-700 border-zinc-600 text-white' : 'border-zinc-600 text-zinc-400 hover:border-zinc-400 hover:text-white'}`}>
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
-              Más filtros
-              {filtrosAvanzadosCount > 0 && <span className="bg-yellow-400 text-zinc-950 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold leading-none">{filtrosAvanzadosCount}</span>}
-            </button>
-            {hayFiltros && <button onClick={limpiarFiltros} className="h-8 px-3 rounded-lg border border-zinc-600 text-xs text-zinc-500 hover:text-white transition-colors">✕ Limpiar</button>}
           </div>
+        </div>
 
-          {/* Panel filtros avanzados */}
-          {mostrarFiltrosAvanzados && (
-            <div className="mt-3 bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <MultiSelect label="Género" opciones={generosDisponibles} seleccionados={generosFiltro} onChange={setGenerosFiltro} />
-                <MultiSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} />
-                <MultiSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} />
-                <MultiSelect label="🏆 Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
-                <MultiSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} />
+        {/* ── Genre pills (always visible) ── */}
+        <div className="mb-3">
+          <div className="flex overflow-x-auto gap-1.5 pb-2 scrollbar-none -mx-3 px-3">
+            {generosDisponibles.map(g => (
+              <button key={g}
+                onClick={() => setGenerosFiltro(prev => prev.includes(g) ? prev.filter(x => x !== g) : [...prev, g])}
+                className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 ${generosFiltro.includes(g)
+                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
+                }`}>
+                {g}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Active filters as amber pills ── */}
+        {hayFiltros && (
+          <div className="mb-3 flex flex-wrap items-center gap-1.5">
+            {generosFiltro.map(g => (
+              <span key={`g-${g}`} onClick={() => setGenerosFiltro(prev => prev.filter(x => x !== g))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {g} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {plataformasFiltro.map(pl => {
+              const plat = PLATAFORMAS.find(p => p.id === pl)
+              return plat ? (
+                <span key={`pl-${pl}`} onClick={() => setPlataformasFiltro(prev => prev.filter(x => x !== pl))}
+                  className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                  {plat.nombre} <span className="text-amber-400/60">x</span>
+                </span>
+              ) : null
+            })}
+            {categoriasFiltro.map(c => (
+              <span key={`c-${c}`} onClick={() => setCategoriasFiltro(prev => prev.filter(x => x !== c))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {c} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {directoresFiltro.map(d => (
+              <span key={`d-${d}`} onClick={() => setDirectoresFiltro(prev => prev.filter(x => x !== d))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {d} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {actoresFiltro.map(a => (
+              <span key={`a-${a}`} onClick={() => setActoresFiltro(prev => prev.filter(x => x !== a))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {a} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {oscarsFiltro.map(o => (
+              <span key={`o-${o}`} onClick={() => setOscarsFiltro(prev => prev.filter(x => x !== o))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {o} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {certFiltro.map(c => (
+              <span key={`cert-${c}`} onClick={() => setCertFiltro(prev => prev.filter(x => x !== c))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {c} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {keywordsFiltro.map(k => (
+              <span key={`kw-${k}`} onClick={() => setKeywordsFiltro(prev => prev.filter(x => x !== k))}
+                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
+                {k} <span className="text-amber-400/60">x</span>
+              </span>
+            ))}
+            {(soloReviews || soloSello || soloWatchlist || filtroVistas !== 'todas' || anioDesde || anioHasta) && (
+              <>
+                {soloReviews && <span onClick={() => setSoloReviews(false)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">CB Reviews <span className="text-amber-400/60">x</span></span>}
+                {soloSello && <span onClick={() => setSoloSello(false)} className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-emerald-500/30 transition-colors">Recomendadas <span className="text-emerald-400/60">x</span></span>}
+                {soloWatchlist && <span onClick={() => setSoloWatchlist(false)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">Watchlist <span className="text-amber-400/60">x</span></span>}
+                {filtroVistas !== 'todas' && <span onClick={() => setFiltroVistas('todas')} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">{filtroVistas === 'vistas' ? 'Vistas' : 'No vistas'} <span className="text-amber-400/60">x</span></span>}
+                {(anioDesde || anioHasta) && <span onClick={() => { setAnioDesde(''); setAnioHasta('') }} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">{anioDesde || '...'}-{anioHasta || '...'} <span className="text-amber-400/60">x</span></span>}
+              </>
+            )}
+            <button onClick={limpiarFiltros} className="rounded-full px-3 py-1 text-xs text-zinc-500 hover:text-white bg-zinc-800 hover:bg-zinc-700 transition-colors">Limpiar todo</button>
+          </div>
+        )}
+
+        {/* ── Mas filtros toggle ── */}
+        <div className="mb-3 flex items-center gap-2">
+          <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
+            className={`rounded-full px-4 py-2 text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
+            Mas filtros
+            {filtrosAvanzadosCount > 0 && <span className="bg-amber-500 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
+          </button>
+        </div>
+
+        {/* ── Panel filtros avanzados ── */}
+        {mostrarFiltrosAvanzados && (
+          <div className="mb-4 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-4 md:p-5 space-y-4">
+            {/* Pill-based selectors row */}
+            <div className="flex flex-wrap gap-2">
+              <PillSelect label="Director" opciones={directoresDisponibles} seleccionados={directoresFiltro} onChange={setDirectoresFiltro} showSearch />
+              <PillSelect label="Actor" opciones={actoresDisponibles} seleccionados={actoresFiltro} onChange={setActoresFiltro} showSearch />
+              <PillSelect label="Oscars" opciones={OSCAR_OPCIONES} seleccionados={oscarsFiltro} onChange={setOscarsFiltro} />
+              <PillSelect label="Compositor" opciones={compositoresDisponibles} seleccionados={compositoresFiltro} onChange={setCompositoresFiltro} showSearch />
+            </div>
+
+            {/* Certification pills */}
+            <CertFilter selected={certFiltro} onChange={setCertFiltro} />
+
+            {/* Keyword pills */}
+            <KeywordFilter selected={keywordsFiltro} onChange={setKeywordsFiltro} />
+
+            {/* Toggle row */}
+            <div className="flex items-center flex-wrap gap-2 pt-1 border-t border-zinc-800/50">
+              <div className="flex rounded-full border border-zinc-700/50 overflow-hidden text-xs font-medium">
+                {(['todas', 'vistas', 'no_vistas'] as const).map(v => (
+                  <button key={v} onClick={() => setFiltroVistas(v)}
+                    className={`px-3 py-1.5 transition-all duration-200 ${filtroVistas === v ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
+                    {v === 'todas' ? 'Todas' : v === 'vistas' ? 'Vistas' : 'No vistas'}
+                  </button>
+                ))}
               </div>
-              <div className="flex items-center flex-wrap gap-3 pt-1">
-                {/* Todas / Vistas / No Vistas */}
-                <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
-                  {(['todas', 'vistas', 'no_vistas'] as const).map(v => (
-                    <button key={v} onClick={() => setFiltroVistas(v)}
-                      className={`px-3 py-1.5 transition-colors ${filtroVistas === v ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
-                      {v === 'todas' ? 'Todas' : v === 'vistas' ? 'Vistas' : 'No vistas'}
-                    </button>
-                  ))}
-                </div>
-                {/* Watchlist */}
-                <button onClick={() => setSoloWatchlist(!soloWatchlist)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloWatchlist ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>Watchlist</button>
-                <button onClick={() => setSoloReviews(!soloReviews)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloReviews ? 'bg-yellow-400 text-zinc-950 border-yellow-400 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>Solo reviews CineBret</button>
-                <button onClick={() => setSoloSello(!soloSello)} className={`border rounded-lg px-3 py-1.5 text-xs transition-colors ${soloSello ? 'bg-emerald-500 text-white border-emerald-500 font-medium' : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'}`}>Solo recomendadas</button>
-                <div className="flex items-center gap-2 md:ml-auto">
-                  <span className="text-zinc-500 text-xs">Año</span>
-                  <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
-                    className={`bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none ${anioDesde ? 'border-yellow-400' : 'border-zinc-700'}`} />
-                  <span className="text-zinc-600 text-xs">—</span>
-                  <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
-                    className={`bg-zinc-800 border rounded-lg px-2 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none ${anioHasta ? 'border-yellow-400' : 'border-zinc-700'}`} />
-                </div>
+              <button onClick={() => setSoloWatchlist(!soloWatchlist)}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloWatchlist ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                Watchlist
+              </button>
+              <button onClick={() => setSoloReviews(!soloReviews)}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloReviews ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                CB Reviews
+              </button>
+              <button onClick={() => setSoloSello(!soloSello)}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloSello ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                Recomendadas
+              </button>
+              <div className="flex items-center gap-2 md:ml-auto">
+                <span className="text-zinc-500 text-xs">Ano</span>
+                <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
+                  className={`bg-zinc-800/80 border rounded-xl px-2.5 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none transition-colors ${anioDesde ? 'border-amber-500/50' : 'border-zinc-700/50'}`} />
+                <span className="text-zinc-600 text-xs">-</span>
+                <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
+                  className={`bg-zinc-800/80 border rounded-xl px-2.5 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none transition-colors ${anioHasta ? 'border-amber-500/50' : 'border-zinc-700/50'}`} />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* ── Trending ── */}
         <TrendingCarousel

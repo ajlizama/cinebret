@@ -44,9 +44,9 @@ export async function GET() {
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
   const recentStart = thirtyDaysAgo.toISOString().split('T')[0]
 
-  // 6 months ahead (for upcoming)
+  // End of current year (show all upcoming for the year)
   const sixMonths = new Date()
-  sixMonths.setMonth(sixMonths.getMonth() + 6)
+  sixMonths.setFullYear(sixMonths.getFullYear(), 11, 31)
   const futureEnd = sixMonths.toISOString().split('T')[0]
 
   const base = 'https://api.themoviedb.org/3'

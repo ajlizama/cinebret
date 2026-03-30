@@ -669,9 +669,9 @@ function PanelExpandido({
 }
 
 /* ─────────── Trending carousel ─────────── */
-function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro, nowPlayingIds = [], cinemaBadges = {} }: {
+function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categoriasFiltro, plataformasFiltro, generosFiltro, cinemaBadges = {} }: {
   peliculas: Pelicula[]; trendingIds: number[]; plataformas: typeof PLATAFORMAS; onSelect: (p: Pelicula) => void
-  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; nowPlayingIds?: number[]; cinemaBadges?: Record<string, string>
+  categoriasFiltro: string[]; plataformasFiltro: string[]; generosFiltro: string[]; cinemaBadges?: Record<string, string>
 }) {
   const trendingSet = new Set(trendingIds)
   let trendingMovies = peliculas
@@ -694,7 +694,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
               <div className="absolute top-0 left-0 bg-zinc-950/80 rounded-br-lg px-2 py-1">
                 <span className="text-white font-black text-lg leading-none">{i + 1}</span>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950 to-transparent pt-4 pb-1 px-1" suppressHydrationWarning>
                 {p.plataformas.length > 0 ? (
                   <div className="flex items-center gap-0.5">
                     {plataformas.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
@@ -721,7 +721,16 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPlayingIds = [], cinemaBadges = {} }: { peliculas: Pelicula[]; trendingIds?: number[]; nowPlayingIds?: number[]; cinemaBadges?: Record<string, string> }) {
+export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[] }) {
+  const [cinemaBadges, setCinemaBadges] = useState<Record<string, string>>({})
+
+  // Fetch cinema badges client-side (avoids hydration mismatch)
+  useEffect(() => {
+    fetch('/api/cinema-badges')
+      .then(r => r.json())
+      .then(data => setCinemaBadges(data.badges || {}))
+      .catch(() => {})
+  }, [])
   const { user } = useAuth()
   const [userPeliculas, setUserPeliculas] = useState<Record<string, UserPelicula>>({})
   const [busqueda, setBusqueda] = useState('')
@@ -1103,7 +1112,6 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [], nowPl
         <TrendingCarousel
           peliculas={peliculas}
           trendingIds={trendingIds}
-          nowPlayingIds={nowPlayingIds}
           cinemaBadges={cinemaBadges}
           plataformas={PLATAFORMAS}
           categoriasFiltro={categoriasFiltro}

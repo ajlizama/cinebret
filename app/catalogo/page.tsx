@@ -130,71 +130,26 @@ export default async function CatalogoPage() {
     }
   })
 
-  // Fetch TMDB trending + now_playing
+  // Fetch TMDB trending
   let trendingIds: number[] = []
-  let nowPlayingIds: number[] = []
-  let cinemaBadges: Record<string, string> = {}
   try {
     const tmdbKey = process.env.TMDB_API_KEY
     if (tmdbKey) {
       const pageNums = Array.from({ length: 20 }, (_, i) => i + 1)
-      const [trendingPages, np1, np2, up1, up2] = await Promise.all([
-        Promise.all(
-          pageNums.map(p =>
-            fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
-              .then(r => r.json()).catch(() => ({ results: [] }))
-          )
-        ),
-        fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbKey}&region=CL&page=1`, { next: { revalidate: 3600 } })
-          .then(r => r.json()).catch(() => ({ results: [] })),
-        fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbKey}&region=CL&page=2`, { next: { revalidate: 3600 } })
-          .then(r => r.json()).catch(() => ({ results: [] })),
-        fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${tmdbKey}&region=CL&page=1`, { next: { revalidate: 3600 } })
-          .then(r => r.json()).catch(() => ({ results: [] })),
-        fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${tmdbKey}&region=CL&page=2`, { next: { revalidate: 3600 } })
-          .then(r => r.json()).catch(() => ({ results: [] })),
-      ])
+      const trendingPages = await Promise.all(
+        pageNums.map(p =>
+          fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
+            .then(r => r.json()).catch(() => ({ results: [] }))
+        )
+      )
       trendingIds = trendingPages.flatMap((d: any) => (d.results ?? []).map((m: any) => m.id as number))
-
-      // Build cinema badge map: tmdb_id -> 'en_cines' | 'estreno' | 'proximamente'
-      const today = new Date()
-      const allNowPlaying = [...(np1.results ?? []), ...(np2.results ?? [])]
-      const allUpcoming = [...(up1.results ?? []), ...(up2.results ?? [])]
-      const upcomingSet = new Set(allUpcoming.map((m: any) => m.id))
-
-      const cinemaBadges: Record<string, string> = {}
-      // Process now_playing
-      for (const m of allNowPlaying) {
-        const releaseDate = m.release_date ? new Date(m.release_date) : null
-        if (!releaseDate) continue
-        const diffDays = Math.round((today.getTime() - releaseDate.getTime()) / (1000 * 60 * 60 * 24))
-        if (diffDays > 7) {
-          cinemaBadges[m.id] = 'en_cines' // released more than 7 days ago
-        } else {
-          cinemaBadges[m.id] = 'estreno' // within 7 days (past or future)
-        }
-      }
-      // Process upcoming (overrides now_playing for future movies)
-      for (const m of allUpcoming) {
-        const releaseDate = m.release_date ? new Date(m.release_date) : null
-        if (!releaseDate) continue
-        const diffDays = Math.round((releaseDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
-        if (diffDays <= 7 && diffDays >= -7) {
-          cinemaBadges[m.id] = 'estreno' // within 7 days
-        } else if (diffDays > 7) {
-          cinemaBadges[m.id] = 'proximamente' // more than 7 days in future
-        }
-        // Don't override en_cines if already set and movie is past
-      }
-
-      nowPlayingIds = Object.keys(cinemaBadges).map(Number)
     }
   } catch {}
 
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="inicio" />
-      <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} nowPlayingIds={nowPlayingIds} cinemaBadges={cinemaBadges} />
+      <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} />
     </main>
   )
 }

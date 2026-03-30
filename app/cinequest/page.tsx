@@ -44,6 +44,10 @@ const DIRECTOR_IMAGES: Record<string, string> = {
   dir_miyazaki: '/directors/miyazaki.jpg',
   dir_ridley: '/directors/ridley_scott.jpg',
   dir_villeneuve: '/directors/villeneuve.jpg',
+  dir_hitchcock: '/directors/hitchcock.jpg',
+  dir_lynch: '/directors/lynch.jpg',
+  dir_woody: '/directors/woody_allen.jpg',
+  dir_zemeckis: '/directors/zemeckis.png',
 }
 
 function QuestIcon({ name, className = '' }: { name: string; className?: string }) {

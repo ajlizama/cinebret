@@ -307,7 +307,7 @@ export default function MapaPage() {
   }
 
   return (
-    <main className="h-[100dvh] flex flex-col bg-zinc-950 overflow-hidden">
+    <main className="fixed inset-0 flex flex-col bg-zinc-950 overflow-hidden">
       <Nav />
       <div ref={containerRef} className="relative flex-1 min-h-0">
         {/* Controls — top left: compact search + collapsible settings */}

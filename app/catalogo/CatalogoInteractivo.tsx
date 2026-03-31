@@ -800,6 +800,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
     video_clip_url: (rec as any).video_clip_url ?? null,
     keywords: [], tagline: null, certification: null,
     backdrop_path: (rec as any).backdrop_path ?? null,
+    _isSerie: activeMode === 'series',
   })
   const gridRef = useRef<HTMLDivElement>(null)
 

@@ -278,7 +278,7 @@ async function fetchCandidatosSeries(): Promise<string[]> {
   // Add high quality series
   offset = 0
   while (true) {
-    const { data } = await supabase.from('series').select('id').gte('nota_imdb', 7.0).range(offset, offset + batchSize - 1)
+    const { data } = await supabase.from('series').select('id').gte('nota_imdb', 8.0).range(offset, offset + batchSize - 1)
     if (!data || data.length === 0) break
     data.forEach((r: any) => ids.add(r.id))
     if (data.length < batchSize) break
@@ -524,12 +524,28 @@ export default function ParaTi({
     if (preferenciasExternas === undefined && user) {
       const { data: prefData } = await supabase
         .from('perfil_preferencias')
-        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores, peso_historial')
+        .select('birth_year, fav_movies, generos_preferidos, mood_ranking, peso_critica, peso_seguidores, peso_director, peso_actores, peso_historial, series_fav, series_generos, series_mood_ranking, series_peso_critica, series_peso_seguidores')
         .eq('user_id', user.id)
         .maybeSingle()
-      perfil = prefData as UserProfile | null
+
+      if (isSeries && prefData?.series_generos?.length) {
+        // Use series-specific prefs, fall back to movie prefs for missing fields
+        perfil = {
+          birth_year: prefData.birth_year,
+          fav_movies: prefData.series_fav ?? prefData.fav_movies ?? [],
+          generos_preferidos: prefData.series_generos,
+          mood_ranking: prefData.series_mood_ranking ?? prefData.mood_ranking ?? [],
+          peso_critica: prefData.series_peso_critica ?? prefData.peso_critica ?? 0.5,
+          peso_seguidores: prefData.series_peso_seguidores ?? prefData.peso_seguidores ?? 0.5,
+          peso_director: 0, // No director clusters for series
+          peso_actores: 0,  // No actor clusters for series
+          peso_historial: prefData.peso_historial,
+        }
+      } else {
+        perfil = prefData as UserProfile | null
+      }
     }
-    const tienePerfilCompleto = !!perfil
+    const tienePerfilCompleto = !!perfil || (isSeries && (vistasRaw.length + vistasSeriesRaw.length) >= 5)
 
     // Si no tiene perfil y no tiene historial, mostrar banner
     const hasHistory = (vistasRaw.length + vistasSeriesRaw.length) >= 5
@@ -612,11 +628,12 @@ export default function ParaTi({
       favDirectors = [...new Set(favDirectors)]
     }
 
-    // 6b. Director clusters — fetch all clusters and build user preference
-    const clusterMap: Record<string, number> = {} // director → cluster_id
-    const { data: clusterData } = await supabase
-      .from('director_clusters').select('director, cluster_id')
-    ;(clusterData ?? []).forEach((c: any) => { clusterMap[c.director] = c.cluster_id })
+    // 6b. Director clusters — only for movies
+    const clusterMap: Record<string, number> = {}
+    if (!isSeries) {
+      const { data: clusterData } = await supabase.from('director_clusters').select('director, cluster_id')
+      ;(clusterData ?? []).forEach((c: any) => { clusterMap[c.director] = c.cluster_id })
+    }
 
     const userClusterWeights: Record<number, number> = {}
     for (const fd of favDirectors) {
@@ -624,11 +641,12 @@ export default function ParaTi({
       if (cid !== undefined) userClusterWeights[cid] = (userClusterWeights[cid] ?? 0) + 2
     }
 
-    // 6c. Actor clusters
-    const actorClusterMap: Record<string, number> = {} // actor → cluster_id
-    const { data: actorClusterData } = await supabase
-      .from('actor_clusters').select('actor, cluster_id')
-    ;(actorClusterData ?? []).forEach((c: any) => { actorClusterMap[c.actor] = c.cluster_id })
+    // 6c. Actor clusters — only for movies
+    const actorClusterMap: Record<string, number> = {}
+    if (!isSeries) {
+      const { data: actorClusterData } = await supabase.from('actor_clusters').select('actor, cluster_id')
+      ;(actorClusterData ?? []).forEach((c: any) => { actorClusterMap[c.actor] = c.cluster_id })
+    }
 
     const userActorClusterWeights: Record<number, number> = {}
     // Seed from fav movies' actors
@@ -862,7 +880,7 @@ export default function ParaTi({
     const poolDiscovery: Rec[] = []
     for (const rec of allRecs) {
       const isNewGenre = genPrefs.length > 0 && !rec.generos.some(g => genPrefsNorm.includes(genNorm(g)))
-      const isHighQuality = (rec.nota_imdb ?? 0) >= 7.5
+      const isHighQuality = (rec.nota_imdb ?? 0) >= (isSeries ? 8.5 : 7.5)
       if (isNewGenre && isHighQuality) {
         poolDiscovery.push({ ...rec, score: qualityOf(rec) * 2, razon: 'Algo nuevo para ti' })
       }

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 
 const GENEROS_OPCIONES = [
   'Acción', 'Aventura', 'Comedia', 'Drama', 'Thriller', 'Terror',
@@ -63,10 +64,12 @@ function MovieSearchSlot({
   slot,
   index,
   onChange,
+  isSeries = false,
 }: {
   slot: FavSlot
   index: number
   onChange: (updated: FavSlot) => void
+  isSeries?: boolean
 }) {
   const debounced = useDebounce(slot.query, 400)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -76,8 +79,10 @@ function MovieSearchSlot({
       onChange({ ...slot, results: [], open: false })
       return
     }
-    supabase
-      .rpc('buscar_peliculas', { q: debounced })
+    const searchPromise = isSeries
+      ? supabase.from('series').select('id, titulo, titulo_ingles, poster_path').or(`titulo.ilike.%${debounced}%,titulo_ingles.ilike.%${debounced}%`).order('nota_imdb', { ascending: false, nullsFirst: false }).limit(8)
+      : supabase.rpc('buscar_peliculas', { q: debounced })
+    searchPromise
       .then(({ data }) => {
         const results: MovieSuggestion[] = (data ?? []).slice(0, 8).map((p: any) => ({
           id: p.id, titulo: p.titulo, titulo_ingles: p.titulo_ingles ?? null, poster_path: p.poster_path ?? null,
@@ -123,7 +128,7 @@ function MovieSearchSlot({
         <input
           type="text"
           value={slot.query}
-          placeholder="Buscar película..."
+          placeholder={isSeries ? "Buscar serie..." : "Buscar película..."}
           onChange={e => {
             if (slot.selected) clear()
             onChange({ ...slot, query: e.target.value, selected: null })
@@ -178,6 +183,8 @@ function MovieSearchSlot({
 
 export default function CuestionarioOnboarding({ onComplete, onDismiss, preferenciasIniciales, anonymous }: Props) {
   const { user } = useAuth()
+  const { mode } = useMediaMode()
+  const isSeries = mode === 'series'
   const [birthYear, setBirthYear] = useState(preferenciasIniciales?.birth_year?.toString() ?? '')
   const [favSlots, setFavSlots] = useState<FavSlot[]>([
     { query: '', results: [], selected: null, open: false },
@@ -210,12 +217,26 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
   const [showDetalleExtra, setShowDetalleExtra] = useState(false)
   const [guardando, setGuardando] = useState(false)
 
-  // Cargar películas favoritas existentes (solo al editar)
+  // Cargar favoritas existentes (películas o series según modo)
   useEffect(() => {
+    // Load series prefs if in series mode
+    if (isSeries && user) {
+      supabase.from('perfil_preferencias').select('series_fav, series_generos, series_mood_ranking, series_peso_critica, series_peso_seguidores').eq('user_id', user.id).maybeSingle()
+        .then(({ data: sp }) => {
+          if (sp?.series_generos?.length) setGeneros(sp.series_generos)
+          if (sp?.series_mood_ranking?.length) {
+            const missing = MOODS_DEFAULT.map(m => m.key).filter(k => !sp.series_mood_ranking.includes(k))
+            setMoods([...sp.series_mood_ranking, ...missing])
+          }
+          if (sp?.series_peso_critica != null) setPesoCritica(Math.round(sp.series_peso_critica * 10))
+          if (sp?.series_peso_seguidores != null) setPesoSeguidores(Math.round(sp.series_peso_seguidores * 10))
+        })
+    }
     const ids = preferenciasIniciales?.fav_movies ?? []
     if (ids.length === 0) return
+    const table = isSeries ? 'series' : 'peliculas'
     supabase
-      .from('peliculas')
+      .from(table)
       .select('id, titulo, titulo_ingles, poster_path')
       .in('id', ids)
       .then(({ data }) => {
@@ -282,10 +303,18 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
     }
 
     if (user && !anonymous) {
-      await supabase.from('perfil_preferencias').upsert(
-        { user_id: user.id, ...prefs, updated_at: new Date().toISOString() },
-        { onConflict: 'user_id' }
-      )
+      if (isSeries) {
+        // Save series preferences in separate columns
+        await supabase.from('perfil_preferencias').upsert(
+          { user_id: user.id, series_fav: favMovies, series_generos: generos, series_mood_ranking: moods, series_peso_critica: pesoCritica / 10, series_peso_seguidores: anonymous ? 0 : pesoSeguidores / 10, updated_at: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        )
+      } else {
+        await supabase.from('perfil_preferencias').upsert(
+          { user_id: user.id, ...prefs, updated_at: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        )
+      }
     }
 
     setGuardando(false)
@@ -318,10 +347,10 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
             />
           </section>
 
-          {/* Paso 2: Top 3 películas */}
+          {/* Paso 2: Top 3 favoritas */}
           <section className="space-y-3">
             <h3 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide">
-              2. Top 3 películas favoritas
+              2. Top 3 {isSeries ? 'series' : 'películas'} favoritas
             </h3>
             <div className="space-y-2">
               {favSlots.map((slot, i) => (
@@ -330,6 +359,7 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
                   slot={slot}
                   index={i}
                   onChange={updated => updateSlot(i, updated)}
+                  isSeries={isSeries}
                 />
               ))}
             </div>
@@ -479,26 +509,30 @@ export default function CuestionarioOnboarding({ onComplete, onDismiss, preferen
             </button>
             {showDetalleExtra && (
               <div className="mt-3 space-y-5">
-                <div className="space-y-2">
-                  <p className="text-sm text-zinc-300">¿Qué tan importante es el director para ti?</p>
-                  <div className="flex justify-between text-xs text-zinc-500">
-                    <span>No mucho</span>
-                    <span className="text-white font-semibold">{pesoDirector}/10</span>
-                    <span>Fundamental</span>
+                {!isSeries && (
+                  <div className="space-y-2">
+                    <p className="text-sm text-zinc-300">¿Qué tan importante es el director para ti?</p>
+                    <div className="flex justify-between text-xs text-zinc-500">
+                      <span>No mucho</span>
+                      <span className="text-white font-semibold">{pesoDirector}/10</span>
+                      <span>Fundamental</span>
+                    </div>
+                    <input type="range" min={0} max={10} value={pesoDirector}
+                      onChange={e => setPesoDirector(Number(e.target.value))} className="w-full accent-yellow-400" />
                   </div>
-                  <input type="range" min={0} max={10} value={pesoDirector}
-                    onChange={e => setPesoDirector(Number(e.target.value))} className="w-full accent-yellow-400" />
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-zinc-300">¿Qué tan importante es el reparto para ti?</p>
-                  <div className="flex justify-between text-xs text-zinc-500">
-                    <span>No mucho</span>
-                    <span className="text-white font-semibold">{pesoActores}/10</span>
-                    <span>Fundamental</span>
+                )}
+                {!isSeries && (
+                  <div className="space-y-2">
+                    <p className="text-sm text-zinc-300">¿Qué tan importante es el reparto para ti?</p>
+                    <div className="flex justify-between text-xs text-zinc-500">
+                      <span>No mucho</span>
+                      <span className="text-white font-semibold">{pesoActores}/10</span>
+                      <span>Fundamental</span>
+                    </div>
+                    <input type="range" min={0} max={10} value={pesoActores}
+                      onChange={e => setPesoActores(Number(e.target.value))} className="w-full accent-yellow-400" />
                   </div>
-                  <input type="range" min={0} max={10} value={pesoActores}
-                    onChange={e => setPesoActores(Number(e.target.value))} className="w-full accent-yellow-400" />
-                </div>
+                )}
               </div>
             )}
           </section>

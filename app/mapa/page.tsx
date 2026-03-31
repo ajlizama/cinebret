@@ -75,7 +75,7 @@ export default function MapaPage() {
       if (containerRef.current) {
         setDimensions({
           width: containerRef.current.clientWidth,
-          height: window.innerHeight - 80,
+          height: window.innerHeight - (containerRef.current.getBoundingClientRect().top),
         })
       }
     }

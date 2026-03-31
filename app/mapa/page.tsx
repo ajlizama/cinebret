@@ -126,12 +126,22 @@ export default function MapaPage() {
       return false
     })
 
+    // Create fresh node objects without stale x/y positions
     const updatedNodes = limitedNodes.map(n => ({
-      ...n,
+      id: n.id, title: n.title, titleEs: n.titleEs, imdb: n.imdb,
+      poster: n.poster, categoria: n.categoria, color: n.color,
+      genres: n.genres,
       connections: connCount.get(n.id) || 0,
     }))
 
-    return { nodes: updatedNodes, links: filteredEdges }
+    // Fresh edge objects with string IDs (not object references)
+    const freshEdges = filteredEdges.map(e => ({
+      source: typeof e.source === 'object' ? (e.source as any).id : e.source,
+      target: typeof e.target === 'object' ? (e.target as any).id : e.target,
+      weight: e.weight,
+    }))
+
+    return { nodes: updatedNodes, links: freshEdges }
   }, [rawGraph, nodeLimit])
 
   // Search

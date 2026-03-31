@@ -197,7 +197,7 @@ export function parseSmartSearch(query: string): SmartFilters {
     const parts: string[] = []
     if (result.generos.length) parts.push(result.generos.join(' y '))
     if (result.plataformas.length) {
-      const platNames: Record<string, string> = { netflix: 'Netflix', disney_plus: 'Disney+', hbo_max: 'HBO', amazon_prime: 'Prime', apple_tv: 'Apple TV+', paramount_plus: 'Paramount+', mubi: 'MUBI' }
+      const platNames: Record<string, string> = { netflix: 'Netflix', disney_plus: 'Disney+', hbo_max: 'HBO', amazon_prime: 'Prime', apple_tv: 'Apple TV+', paramount_plus: 'Paramount+', mubi: 'MUBI', crunchyroll: 'Crunchyroll' }
       parts.push(result.plataformas.map(p => platNames[p] ?? p).join(' y '))
     }
     if (result.categorias.length) parts.push('modo relax')

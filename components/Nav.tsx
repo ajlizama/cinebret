@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 import UsernameModal from './UsernameModal'
@@ -40,6 +41,7 @@ type ResultadoPelicula = {
   anio: number | null
   nota_imdb: number | null
   poster_path: string | null
+  _isSerie?: boolean
 }
 
 function tiempoRelativo(iso: string) {
@@ -62,6 +64,8 @@ function MiniAvatar({ url, username }: { url: string | null; username: string })
 
 export default function Nav({ active, transparent }: Props) {
   const { user, username, loading, signOut } = useAuth()
+  const { mode, setMode, hydrated } = useMediaMode()
+  const activeMode = hydrated ? mode : 'peliculas'
   const router = useRouter()
   const [modalAbierto, setModalAbierto] = useState(false)
   const [usernameModal, setUsernameModal] = useState(false)
@@ -160,16 +164,22 @@ export default function Nav({ active, transparent }: Props) {
     setCargandoBusqueda(true)
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
-      const [{ data: profiles }, { data: peliculas }] = await Promise.all([
+      const [{ data: profiles }, pelisResult, seriesResult] = await Promise.all([
         supabase.rpc('buscar_usuarios', { q }),
         supabase.rpc('buscar_peliculas', { q }),
+        supabase.from('series').select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, poster_path').or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%`).order('nota_imdb', { ascending: false, nullsFirst: false }).limit(10),
       ])
 
-      // Películas
-      setPeliculasResultados((peliculas ?? []).map((p: any) => ({
+      // Películas + Series combinadas
+      const pelis = (pelisResult.data ?? []).map((p: any) => ({
         id: p.id, titulo: p.titulo, titulo_ingles: p.titulo_ingles ?? null,
-        anio: p.anio ?? null, nota_imdb: p.nota_imdb ?? null, poster_path: p.poster_path ?? null,
-      })))
+        anio: p.anio ?? null, nota_imdb: p.nota_imdb ?? null, poster_path: p.poster_path ?? null, _isSerie: false,
+      }))
+      const srs = (seriesResult.data ?? []).map((s: any) => ({
+        id: s.id, titulo: s.titulo, titulo_ingles: s.titulo_ingles ?? null,
+        anio: s.anio_inicio ?? null, nota_imdb: s.nota_imdb ?? null, poster_path: s.poster_path ?? null, _isSerie: true,
+      }))
+      setPeliculasResultados([...pelis, ...srs])
 
       // Usuarios
       if (!profiles || profiles.length === 0) { setResultados([]); setCargandoBusqueda(false); return }
@@ -229,7 +239,7 @@ export default function Nav({ active, transparent }: Props) {
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
                 onFocus={() => busqueda && setShowSearch(true)}
-                placeholder="Buscar película o usuario..."
+                placeholder="Buscar película, serie o usuario..."
                 className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
               />
               {showSearch && busqueda && (
@@ -242,14 +252,14 @@ export default function Nav({ active, transparent }: Props) {
                       <p className="text-zinc-500 text-xs px-4 py-3">Sin resultados</p>
                     ) : (
                       <>
-                        {/* Sección películas */}
+                        {/* Sección contenido */}
                         {peliculasResultados.length > 0 && (
                           <div>
-                            <p className="text-zinc-600 text-[10px] font-semibold uppercase tracking-wide px-3 pt-2.5 pb-1">Películas</p>
+                            <p className="text-zinc-600 text-[10px] font-semibold uppercase tracking-wide px-3 pt-2.5 pb-1">Contenido</p>
                             {peliculasResultados.map(p => (
                               <Link
-                                key={p.id}
-                                href={`/pelicula/${p.id}`}
+                                key={`${p._isSerie ? 's' : 'p'}-${p.id}`}
+                                href={p._isSerie ? `/serie/${p.id}` : `/pelicula/${p.id}`}
                                 onClick={() => { setBusqueda(''); setShowSearch(false) }}
                                 className="flex items-center gap-3 px-3 py-2 hover:bg-zinc-800 border-b border-zinc-800/60 last:border-0 transition-colors"
                               >
@@ -265,6 +275,7 @@ export default function Nav({ active, transparent }: Props) {
                                 <div className="flex-1 min-w-0">
                                   <p className="text-white text-xs font-medium leading-snug line-clamp-1">{p.titulo_ingles ?? p.titulo}</p>
                                   <div className="flex items-center gap-2 mt-0.5">
+                                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ${p._isSerie ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{p._isSerie ? 'Serie' : 'Película'}</span>
                                     {p.anio && <span className="text-zinc-500 text-[10px]">{p.anio}</span>}
                                     {p.nota_imdb && <span className="text-yellow-400 text-[10px] flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {p.nota_imdb}</span>}
                                   </div>
@@ -311,6 +322,24 @@ export default function Nav({ active, transparent }: Props) {
             </div>
 
             <div className="flex items-center gap-3 shrink-0">
+              {/* Toggle Películas / Series */}
+              <div className="flex bg-zinc-800 rounded-lg p-0.5 gap-0.5" suppressHydrationWarning>
+                <button
+                  onClick={() => setMode('peliculas')}
+                  className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`}
+                  suppressHydrationWarning
+                >
+                  Películas
+                </button>
+                <button
+                  onClick={() => setMode('series')}
+                  className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors ${activeMode === 'series' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`}
+                  suppressHydrationWarning
+                >
+                  Series
+                </button>
+              </div>
+
               <a
                 href="https://open.spotify.com/playlist/4KR3H2OR7VzwZM0AMDskap?si=c8ac5239a4564661"
                 target="_blank"

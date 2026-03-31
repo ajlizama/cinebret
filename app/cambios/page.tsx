@@ -15,6 +15,7 @@ const PLATAFORMAS: Record<string, { nombre: string; color: string; bg: string }>
   apple_tv:       { nombre: 'Apple TV+',   color: 'text-zinc-300',   bg: 'bg-zinc-800/60 border-zinc-600' },
   paramount_plus: { nombre: 'Paramount+',  color: 'text-sky-400',    bg: 'bg-sky-950/40 border-sky-800' },
   mubi:           { nombre: 'MUBI',        color: 'text-blue-300',   bg: 'bg-blue-950/40 border-blue-700' },
+  crunchyroll:    { nombre: 'Crunchyroll', color: 'text-orange-300', bg: 'bg-orange-950/40 border-orange-700' },
 }
 
 type Cambio = {

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { MediaModeProvider } from "@/context/MediaModeContext";
 import { Analytics } from "@vercel/analytics/next";
 import FeedbackButton from "@/components/FeedbackButton";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
@@ -75,8 +76,10 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-zinc-950">
         <AuthProvider>
-          {children}
-          <FeedbackButton />
+          <MediaModeProvider>
+            {children}
+            <FeedbackButton />
+          </MediaModeProvider>
         </AuthProvider>
         <Analytics />
         <ServiceWorkerRegistrar />

@@ -75,7 +75,7 @@ export function computeStats(peliculas: PeliculaConStats[]): Stats {
     const enr = p.enriquecimiento
     if (enr?.director?.trim()) directors[enr.director.trim()] = (directors[enr.director.trim()] ?? 0) + 1
     if (enr?.actores) {
-      enr.actores.split(',').map((a: string) => a.trim()).filter(Boolean).forEach((a: string) => {
+      ;(Array.isArray(enr.actores) ? enr.actores : enr.actores.split(',')).map((a: string) => a.trim()).filter(Boolean).forEach((a: string) => {
         actors[a] = (actors[a] ?? 0) + 1
       })
     }

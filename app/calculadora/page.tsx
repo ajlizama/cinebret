@@ -16,6 +16,7 @@ const PLATAFORMAS = [
   { id: 'apple_tv',       nombre: 'Apple TV+',     logo: '/apple_tv.png' },
   { id: 'paramount_plus', nombre: 'Paramount+',    logo: '/paramount_plus.svg' },
   { id: 'mubi',            nombre: 'MUBI',          logo: '/mubi.png' },
+  { id: 'crunchyroll',    nombre: 'Crunchyroll',   logo: '/crunchyroll.png' },
 ]
 
 type PlatformResult = {

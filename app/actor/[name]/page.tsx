@@ -70,7 +70,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
       }
     }
     // Fallback: check actores text field
-    const actores = (enr.actores as string || '').split(',').map(a => a.trim())
+    const actores = Array.isArray(enr.actores) ? enr.actores : (enr.actores as string || '').split(',').map(a => a.trim())
     if (actores.includes(actorName)) {
       actorMovieIds.push(enr.pelicula_id)
     }

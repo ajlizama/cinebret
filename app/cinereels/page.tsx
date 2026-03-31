@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 import Nav from '@/components/Nav'
 import EnrichedDetails from '@/components/EnrichedDetails'
 import ShareButton from '@/components/ShareButton'
@@ -31,6 +32,7 @@ const PLATAFORMAS = [
   { id: 'apple_tv', logo: '/apple_tv.png' },
   { id: 'paramount_plus', logo: '/paramount_plus.svg' },
   { id: 'mubi', logo: '/mubi.png' },
+  { id: 'crunchyroll', logo: '/crunchyroll.png' },
 ]
 
 function extractYTId(url: string): string | null {
@@ -87,9 +89,9 @@ function loadYT(): Promise<void> {
   return ytPromise
 }
 
-function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist, onVisto, onWatchlist }: {
+function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist, onVisto, onWatchlist, isSeries = false }: {
   movie: ReelMovie; index: number; total: number; muted: boolean; onShowInfo: () => void
-  visto: boolean; watchlist: boolean; onVisto: () => void; onWatchlist: () => void
+  visto: boolean; watchlist: boolean; onVisto: () => void; onWatchlist: () => void; isSeries?: boolean
 }) {
   const isUpcoming = movie.source === 'upcoming'
   return (
@@ -117,7 +119,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
               Proximamente
             </span>
           )}
-          <Link href={`/pelicula/${movie.id}`} className="pointer-events-auto">
+          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${movie.id}`} className="pointer-events-auto">
             {!movie.logo_path && <h3 className="text-white font-bold text-xl drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
             {movie.logo_path && <h3 className="text-white font-bold text-lg drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
           </Link>
@@ -172,7 +174,7 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
           data={{
             title: movie.titulo_ingles || movie.titulo,
             text: `Mira "${movie.titulo_ingles || movie.titulo}" en CineBret`,
-            url: `https://cinebret.cl/pelicula/${movie.id}`,
+            url: `https://cinebret.cl/${isSeries ? 'serie' : 'pelicula'}/${movie.id}`,
           }}
           className="flex flex-col items-center gap-1"
         >
@@ -192,6 +194,8 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
 
 export default function CineReelsPage() {
   const { user } = useAuth()
+  const { mode } = useMediaMode()
+  const isSeries = mode === 'series'
   const [movies, setMovies] = useState<ReelMovie[]>([])
   const [current, setCurrent] = useState(0)
   const [muted, setMuted] = useState(true)
@@ -209,9 +213,56 @@ export default function CineReelsPage() {
   const touchCurrentY = useRef(0)
   const isDragging = useRef(false)
 
-  // Fetch movies
+  // Fetch content
   useEffect(() => {
     ;(async () => {
+      // SERIES MODE: load series with trailers
+      if (isSeries) {
+        const { data: seriesData } = await supabase
+          .from('series')
+          .select('id, titulo, titulo_ingles, nota_imdb, anio_inicio, categoria, poster_path, logo_path, youtube_trailer_key')
+          .not('youtube_trailer_key', 'is', null)
+          .not('poster_path', 'is', null)
+          .order('nota_imdb', { ascending: false, nullsFirst: false })
+          .limit(200)
+
+        if (!seriesData || seriesData.length === 0) { setLoading(false); return }
+
+        // Get directors
+        const sIds = seriesData.map(s => s.id)
+        const dirMap: Record<string, string | null> = {}
+        for (let i = 0; i < sIds.length; i += 100) {
+          const chunk = sIds.slice(i, i + 100)
+          const { data: enr } = await supabase.from('enriquecimiento_series').select('serie_id, director').in('serie_id', chunk)
+          ;(enr ?? []).forEach((e: any) => { dirMap[e.serie_id] = e.director })
+        }
+
+        // Get platforms
+        const { data: wpData } = await supabase.from('watch_providers_series').select('serie_id, platform_key').eq('provider_type', 'flatrate').not('platform_key', 'is', null).in('serie_id', sIds)
+        const platMap: Record<string, string[]> = {}
+        ;(wpData ?? []).forEach((wp: any) => {
+          if (!platMap[wp.serie_id]) platMap[wp.serie_id] = []
+          if (!platMap[wp.serie_id].includes(wp.platform_key)) platMap[wp.serie_id].push(wp.platform_key)
+        })
+
+        const reels: ReelMovie[] = seriesData.map((s: any) => ({
+          id: s.id, titulo: s.titulo, titulo_ingles: s.titulo_ingles,
+          nota_imdb: s.nota_imdb, anio: s.anio_inicio, categoria: s.categoria,
+          poster_path: s.poster_path, logo_path: s.logo_path,
+          director: dirMap[s.id] ?? null, videoId: s.youtube_trailer_key,
+          plataformas: platMap[s.id] ?? [], source: 'catalog' as const,
+        }))
+
+        // Shuffle
+        const rng = mulberry32(getSessionSeed())
+        reels.sort(() => rng() - 0.5)
+
+        setMovies(reels)
+        setLoading(false)
+        return
+      }
+
+      // MOVIES MODE (original)
       const allEnr: any[] = []
       let offset = 0
       while (true) {
@@ -595,7 +646,7 @@ export default function CineReelsPage() {
           <MovieOverlay movie={movie} index={current} total={movies.length} muted={muted}
             visto={up.visto} watchlist={up.watchlist}
             onVisto={() => toggleVisto(movie.id)} onWatchlist={() => toggleWatchlist(movie.id)}
-            onShowInfo={() => setShowInfo(v => !v)} />
+            onShowInfo={() => setShowInfo(v => !v)} isSeries={isSeries} />
 
           {/* Poster + loading */}
           {!playing && (
@@ -635,8 +686,8 @@ export default function CineReelsPage() {
               <button onClick={() => setShowInfo(false)} className="text-zinc-500 hover:text-white text-lg">✕</button>
             </div>
             <div className="px-4 py-3">
-              <EnrichedDetails peliculaId={movie.id} />
-              <Link href={`/pelicula/${movie.id}`} className="inline-block mt-3 text-xs text-yellow-400 hover:text-yellow-300 font-medium">
+              <EnrichedDetails peliculaId={movie.id} isSerie={isSeries} />
+              <Link href={`${isSeries ? '/serie' : '/pelicula'}/${movie.id}`} className="inline-block mt-3 text-xs text-yellow-400 hover:text-yellow-300 font-medium">
                 Ver ficha completa →
               </Link>
             </div>

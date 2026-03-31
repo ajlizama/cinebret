@@ -183,6 +183,11 @@ async function main() {
       score -= 5
     }
 
+    // PENALTY: animation vs live action mismatch
+    const aIsAnimation = a.genres.includes('animacion')
+    const bIsAnimation = b.genres.includes('animacion')
+    if (aIsAnimation !== bIsAnimation) score -= 15
+
     return score
   }
 

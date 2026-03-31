@@ -88,7 +88,7 @@ export default async function DirectorPage({ params }: { params: Promise<{ name:
   for (const m of sorted) {
     const enr = enrMap[m.id]
     if (enr?.compositor) composers[enr.compositor] = (composers[enr.compositor] ?? 0) + 1
-    const actList = (enr?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
+    const actList = Array.isArray(enr?.actores) ? enr.actores : (enr?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
     for (const a of actList.slice(0, 5)) actors[a] = (actors[a] ?? 0) + 1
     for (const g of (enr?.generos ?? [])) { const ng = norm(g); genres[ng] = (genres[ng] ?? 0) + 1 }
     if (m.categoria) { const cat = CAT_SHORT[m.categoria] ?? m.categoria; categories[cat] = (categories[cat] ?? 0) + 1 }

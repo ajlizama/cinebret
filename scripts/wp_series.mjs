@@ -1,7 +1,4 @@
-// Fetch TMDB watch/providers for all CineBret movies (Chile region)
-// Uses Node.js fetch (no Python dependency issues)
-
-// Load env vars from ../.env.local
+// Fetch TMDB watch/providers for all series (Chile region)
 import { readFileSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -34,16 +31,24 @@ const headers = {
 }
 
 async function supaGet(table, params) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
-    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-  })
-  return res.json()
+  const all = []
+  let offset = 0
+  while (true) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}&offset=${offset}&limit=1000`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    })
+    const data = await res.json()
+    if (!data.length) break
+    all.push(...data)
+    if (data.length < 1000) break
+    offset += 1000
+  }
+  return all
 }
 
 async function supaUpsert(table, rows) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers,
+    method: 'POST', headers,
     body: JSON.stringify(rows),
   })
   return res.status
@@ -51,7 +56,7 @@ async function supaUpsert(table, rows) {
 
 async function tmdbProviders(tmdbId) {
   try {
-    const res = await fetch(`https://api.themoviedb.org/3/movie/${tmdbId}/watch/providers?api_key=${TMDB_API_KEY}`)
+    const res = await fetch(`https://api.themoviedb.org/3/tv/${tmdbId}/watch/providers?api_key=${TMDB_API_KEY}`)
     if (!res.ok) return null
     const data = await res.json()
     return data.results?.[REGION] || null
@@ -61,90 +66,64 @@ async function tmdbProviders(tmdbId) {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
 
 async function main() {
-  // Fetch all movies
-  console.log('Fetching movies from Supabase...')
-  const allMovies = []
-  let offset = 0
-  while (true) {
-    const batch = await supaGet('peliculas', `select=id,tmdb_id&tmdb_id=not.is.null&order=id&offset=${offset}&limit=1000`)
-    if (!batch.length) break
-    allMovies.push(...batch)
-    offset += batch.length
-    if (batch.length < 1000) break
-  }
-  console.log(`Found ${allMovies.length} movies`)
+  console.log('Fetching series from Supabase...')
+  const allSeries = await supaGet('series', 'select=id,tmdb_id&tmdb_id=not.is.null&order=id')
+  console.log(`Found ${allSeries.length} series`)
 
   // Check existing
   const existing = new Set()
-  offset = 0
-  while (true) {
-    const batch = await supaGet('watch_providers', `select=pelicula_id&offset=${offset}&limit=1000`)
-    if (!batch.length) break
-    batch.forEach(r => existing.add(r.pelicula_id))
-    offset += batch.length
-    if (batch.length < 1000) break
-  }
+  const existingRows = await supaGet('watch_providers_series', 'select=serie_id')
+  existingRows.forEach(r => existing.add(r.serie_id))
 
-  const toFetch = allMovies.filter(m => !existing.has(m.id))
+  const toFetch = allSeries.filter(s => !existing.has(s.id))
   console.log(`Already have: ${existing.size}, to fetch: ${toFetch.length}`)
 
   let batchRows = []
-  let fetched = 0
-  let errors = 0
-  let totalRows = 0
+  let fetched = 0, errors = 0, totalRows = 0
 
-  for (const movie of toFetch) {
+  for (const serie of toFetch) {
     try {
-      const cl = await tmdbProviders(movie.tmdb_id)
+      const cl = await tmdbProviders(serie.tmdb_id)
       if (cl) {
-        const link = cl.link || ''
         for (const type of ['flatrate', 'rent', 'buy']) {
           for (const p of (cl[type] || [])) {
             batchRows.push({
-              pelicula_id: movie.id,
-              tmdb_id: movie.tmdb_id,
+              serie_id: serie.id,
+              tmdb_id: serie.tmdb_id,
               provider_id: p.provider_id,
               provider_name: p.provider_name,
               provider_type: type,
               platform_key: PROVIDER_MAP[p.provider_id] || null,
               logo_path: p.logo_path || '',
-              tmdb_link: link,
+              tmdb_link: cl.link || '',
             })
           }
         }
       }
-
       fetched++
 
-      // Upsert in batches of 200
       if (batchRows.length >= 200) {
-        const status = await supaUpsert('watch_providers', batchRows)
+        const status = await supaUpsert('watch_providers_series', batchRows)
         totalRows += batchRows.length
-        console.log(`  Upserted ${batchRows.length} rows (${fetched}/${toFetch.length} movies) [${status}]`)
+        console.log(`  Upserted ${batchRows.length} rows (${fetched}/${toFetch.length} series) [${status}]`)
         batchRows = []
       }
 
-      // Rate limit
       if (fetched % 35 === 0) await sleep(1000)
-
-      // Progress
       if (fetched % 200 === 0) console.log(`  Progress: ${fetched}/${toFetch.length}...`)
-
     } catch (e) {
       errors++
-      console.log(`  Error ${movie.tmdb_id}: ${e.message}`)
       if (errors > 50) { console.log('Too many errors, stopping'); break }
     }
   }
 
-  // Final batch
   if (batchRows.length > 0) {
-    await supaUpsert('watch_providers', batchRows)
+    await supaUpsert('watch_providers_series', batchRows)
     totalRows += batchRows.length
     console.log(`  Upserted final ${batchRows.length} rows`)
   }
 
-  console.log(`\nDone! ${fetched} movies, ${totalRows} provider rows, ${errors} errors`)
+  console.log(`\nDone! ${fetched} series, ${totalRows} provider rows, ${errors} errors`)
 }
 
 main()

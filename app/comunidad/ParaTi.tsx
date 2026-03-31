@@ -87,6 +87,7 @@ const PLATAFORMAS = [
   { id: 'apple_tv',       nombre: 'Apple TV+',    logo: '/apple_tv.png' },
   { id: 'paramount_plus', nombre: 'Paramount+',   logo: '/paramount_plus.svg' },
   { id: 'mubi',           nombre: 'MUBI',          logo: '/mubi.png' },
+  { id: 'crunchyroll',   nombre: 'Crunchyroll',   logo: '/crunchyroll.png' },
 ]
 
 const CATS = [
@@ -567,7 +568,8 @@ export default function ParaTi({
       const { data: favActEnr } = await supabase
         .from('enriquecimiento').select('actores').in('pelicula_id', favMovieIds)
       ;(favActEnr ?? []).forEach((e: any) => {
-        ;(e.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean).forEach((a: string) => {
+        const actList = Array.isArray(e.actores) ? e.actores : (e.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
+        ;actList.forEach((a: string) => {
           const cid = actorClusterMap[a]
           if (cid !== undefined) userActorClusterWeights[cid] = (userActorClusterWeights[cid] ?? 0) + 1
         })
@@ -606,8 +608,8 @@ export default function ParaTi({
           if (cid !== undefined) userClusterWeights[cid] = (userClusterWeights[cid] ?? 0) + (r / 10)
         }
         // Actor cluster weights from history
-        const actoresStr = enr?.actores ?? ''
-        actoresStr.split(',').map((a: string) => a.trim()).filter(Boolean).forEach((a: string) => {
+        const actList2 = Array.isArray(enr?.actores) ? enr.actores : (enr?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
+        actList2.forEach((a: string) => {
           const acid = actorClusterMap[a]
           if (acid !== undefined) userActorClusterWeights[acid] = (userActorClusterWeights[acid] ?? 0) + (r / 10)
         })
@@ -714,7 +716,7 @@ export default function ParaTi({
         if (!reason && dirScore > 1) reason = `Dir. ${rec.director.split(' ').pop()}`
       }
       // Actor cluster
-      const actors = (rec.actores ?? '').split(',').map(a => a.trim()).filter(Boolean)
+      const actors = Array.isArray(rec.actores) ? rec.actores : (rec.actores ?? '').split(',').map(a => a.trim()).filter(Boolean)
       for (const a of actors) {
         const acid = actorClusterMap[a]
         if (acid !== undefined) {

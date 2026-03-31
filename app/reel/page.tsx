@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import Loading from '@/components/Loading'
 import YouTubeClip from '@/components/YouTubeClip'
@@ -27,7 +28,7 @@ type MiniReview = {
 
 const PLATFORM_LOGOS: Record<string, string> = {
   netflix: '/netflix.png', disney_plus: '/disney_plus.svg', hbo_max: '/hbo_max.png',
-  amazon_prime: '/amazon_prime.png', apple_tv: '/apple_tv.png', paramount_plus: '/paramount_plus.svg', mubi: '/mubi.png',
+  amazon_prime: '/amazon_prime.png', apple_tv: '/apple_tv.png', paramount_plus: '/paramount_plus.svg', mubi: '/mubi.png', crunchyroll: '/crunchyroll.png',
 }
 
 const SWIPE_THRESHOLD = 80
@@ -102,9 +103,9 @@ function StoryBars({ total, current }: { total: number; current: number }) {
 
 /* ── Reel Card ── */
 function ReelCard({
-  pelicula, onSwipe, isTop, onVista, onWatchlist, currentUserId,
+  pelicula, onSwipe, isTop, onVista, onWatchlist, currentUserId, isSeries = false,
 }: {
-  pelicula: Pelicula
+  pelicula: Pelicula; isSeries?: boolean
   onSwipe: (dir: 'left' | 'right' | 'down' | 'up') => void
   isTop: boolean
   onVista: () => void
@@ -443,7 +444,7 @@ function ReelCard({
             </div>
           )}
 
-          <Link href={`/pelicula/${pelicula.id}`} className="block mt-4 text-yellow-400 text-xs font-medium">Ver ficha completa →</Link>
+          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${pelicula.id}`} className="block mt-4 text-yellow-400 text-xs font-medium">Ver ficha completa →</Link>
         </div>
       )}
 
@@ -474,7 +475,7 @@ function ReelCard({
               <p className="text-zinc-300 text-sm leading-relaxed">{r.review_text}</p>
             </div>
           ))}
-          <Link href={`/pelicula/${pelicula.id}#reviews`} className="block mt-2 text-yellow-400 text-xs font-medium">Ver todas en la ficha →</Link>
+          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${pelicula.id}#reviews`} className="block mt-2 text-yellow-400 text-xs font-medium">Ver todas en la ficha →</Link>
         </div>
       )}
 
@@ -524,6 +525,8 @@ type LastAction = {
 
 export default function ReelPage() {
   const { user } = useAuth()
+  const { mode } = useMediaMode()
+  const isSeries = mode === 'series'
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
   const [cargando, setCargando] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -539,60 +542,116 @@ export default function ReelPage() {
     const snoozed = getSnoozed()
     const sessionDone = getSessionDone()
     const excluidos = new Set<string>([...Object.keys(snoozed), ...sessionDone])
-    if (user) {
-      const { data } = await supabase
-        .from('user_peliculas').select('pelicula_id')
-        .eq('user_id', user.id).or('visto.eq.true,watchlist.eq.true')
-      ;(data ?? []).forEach((r: any) => excluidos.add(r.pelicula_id))
-    }
 
-    const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma').eq('activo', true)
-    const platSets: Record<string, Set<string>> = {}
-    ;(cats ?? []).forEach((c: any) => {
-      if (!platSets[c.pelicula_id]) platSets[c.pelicula_id] = new Set()
-      platSets[c.pelicula_id].add(c.plataforma)
-    })
-    const platMap: Record<string, string[]> = {}
-    Object.entries(platSets).forEach(([id, set]) => { platMap[id] = [...set] })
-    const ids = Object.keys(platMap).filter(id => !excluidos.has(id))
-    if (ids.length === 0) { setCargando(false); return }
+    if (isSeries) {
+      // --- SERIES MODE ---
+      if (user) {
+        const { data } = await supabase.from('user_series').select('serie_id').eq('user_id', user.id).or('visto.eq.true,watchlist.eq.true')
+        ;(data ?? []).forEach((r: any) => excluidos.add(r.serie_id))
+      }
 
-    const CHUNK = 100
-    const todas: Pelicula[] = []
-    for (let i = 0; i < Math.min(ids.length, 300); i += CHUNK) {
-      const chunk = ids.slice(i, i + CHUNK)
-      const { data: pels } = await supabase
-        .from('peliculas').select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, oscars, poster_path, categoria, runtime, boxoffice')
-        .in('id', chunk).not('poster_path', 'is', null)
-        .order('nota_imdb', { ascending: false, nullsFirst: false })
-      ;(pels ?? []).forEach((p: any) => {
-        todas.push({ ...p, plataformas: platMap[p.id] ?? [], sinopsis: null, generos: [], director: null, actores: null, compositor: null, video_clip_url: null })
+      // Get series with watch providers
+      const { data: wpData } = await supabase.from('watch_providers_series').select('serie_id, platform_key').eq('provider_type', 'flatrate').not('platform_key', 'is', null)
+      const platMap: Record<string, string[]> = {}
+      ;(wpData ?? []).forEach((wp: any) => {
+        if (!platMap[wp.serie_id]) platMap[wp.serie_id] = []
+        if (!platMap[wp.serie_id].includes(wp.platform_key)) platMap[wp.serie_id].push(wp.platform_key)
       })
-    }
+      const ids = Object.keys(platMap).filter(id => !excluidos.has(id))
+      if (ids.length === 0) { setCargando(false); return }
 
-    const todosIds = todas.map(p => p.id)
-    const enrMap: Record<string, any> = {}
-    for (let i = 0; i < todosIds.length; i += CHUNK) {
-      const chunk = todosIds.slice(i, i + CHUNK)
-      const { data: enr } = await supabase
-        .from('enriquecimiento').select('pelicula_id, sinopsis_chilensis, generos, director, actores, compositor, video_clip_url')
-        .in('pelicula_id', chunk)
-      ;(enr ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
-    }
+      const CHUNK = 100
+      const todas: Pelicula[] = []
+      for (let i = 0; i < Math.min(ids.length, 300); i += CHUNK) {
+        const chunk = ids.slice(i, i + CHUNK)
+        const { data: sers } = await supabase
+          .from('series').select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, poster_path, categoria, episode_runtime, num_temporadas')
+          .in('id', chunk).not('poster_path', 'is', null)
+          .order('nota_imdb', { ascending: false, nullsFirst: false })
+        ;(sers ?? []).forEach((s: any) => {
+          todas.push({ id: s.id, titulo: s.titulo, titulo_ingles: s.titulo_ingles, anio: s.anio_inicio, nota_imdb: s.nota_imdb, rt_score: null, metacritic_score: null, oscars: null, poster_path: s.poster_path, categoria: s.categoria, runtime: s.episode_runtime, boxoffice: null, plataformas: platMap[s.id] ?? [], sinopsis: null, generos: [], director: null, actores: null, compositor: null, video_clip_url: null })
+        })
+      }
 
-    const final = todas.map(p => ({
-      ...p,
-      sinopsis: enrMap[p.id]?.sinopsis_chilensis ?? null,
-      generos: enrMap[p.id]?.generos ?? [],
-      director: enrMap[p.id]?.director ?? null,
-      actores: enrMap[p.id]?.actores ?? null,
-      compositor: enrMap[p.id]?.compositor ?? null,
-      video_clip_url: enrMap[p.id]?.video_clip_url ?? null,
-    }))
-    final.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
-    setPeliculas(final)
-    setCargando(false)
-  }, [user])
+      const todosIds = todas.map(p => p.id)
+      const enrMap: Record<string, any> = {}
+      for (let i = 0; i < todosIds.length; i += CHUNK) {
+        const chunk = todosIds.slice(i, i + CHUNK)
+        const { data: enr } = await supabase
+          .from('enriquecimiento_series').select('serie_id, sinopsis_chilensis, generos, director, actores, compositor')
+          .in('serie_id', chunk)
+        ;(enr ?? []).forEach((e: any) => { enrMap[e.serie_id] = e })
+      }
+
+      const final = todas.map(p => ({
+        ...p,
+        sinopsis: enrMap[p.id]?.sinopsis_chilensis ?? null,
+        generos: enrMap[p.id]?.generos ?? [],
+        director: enrMap[p.id]?.director ?? null,
+        actores: Array.isArray(enrMap[p.id]?.actores) ? enrMap[p.id].actores.join(', ') : (enrMap[p.id]?.actores ?? null),
+        compositor: enrMap[p.id]?.compositor ?? null,
+        video_clip_url: null,
+      }))
+      final.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+      setPeliculas(final)
+      setCargando(false)
+    } else {
+      // --- MOVIES MODE (original) ---
+      if (user) {
+        const { data } = await supabase
+          .from('user_peliculas').select('pelicula_id')
+          .eq('user_id', user.id).or('visto.eq.true,watchlist.eq.true')
+        ;(data ?? []).forEach((r: any) => excluidos.add(r.pelicula_id))
+      }
+
+      const { data: cats } = await supabase.from('catalogos').select('pelicula_id, plataforma').eq('activo', true)
+      const platSets: Record<string, Set<string>> = {}
+      ;(cats ?? []).forEach((c: any) => {
+        if (!platSets[c.pelicula_id]) platSets[c.pelicula_id] = new Set()
+        platSets[c.pelicula_id].add(c.plataforma)
+      })
+      const platMap: Record<string, string[]> = {}
+      Object.entries(platSets).forEach(([id, set]) => { platMap[id] = [...set] })
+      const ids = Object.keys(platMap).filter(id => !excluidos.has(id))
+      if (ids.length === 0) { setCargando(false); return }
+
+      const CHUNK = 100
+      const todas: Pelicula[] = []
+      for (let i = 0; i < Math.min(ids.length, 300); i += CHUNK) {
+        const chunk = ids.slice(i, i + CHUNK)
+        const { data: pels } = await supabase
+          .from('peliculas').select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, oscars, poster_path, categoria, runtime, boxoffice')
+          .in('id', chunk).not('poster_path', 'is', null)
+          .order('nota_imdb', { ascending: false, nullsFirst: false })
+        ;(pels ?? []).forEach((p: any) => {
+          todas.push({ ...p, plataformas: platMap[p.id] ?? [], sinopsis: null, generos: [], director: null, actores: null, compositor: null, video_clip_url: null })
+        })
+      }
+
+      const todosIds = todas.map(p => p.id)
+      const enrMap: Record<string, any> = {}
+      for (let i = 0; i < todosIds.length; i += CHUNK) {
+        const chunk = todosIds.slice(i, i + CHUNK)
+        const { data: enr } = await supabase
+          .from('enriquecimiento').select('pelicula_id, sinopsis_chilensis, generos, director, actores, compositor, video_clip_url')
+          .in('pelicula_id', chunk)
+        ;(enr ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
+      }
+
+      const final = todas.map(p => ({
+        ...p,
+        sinopsis: enrMap[p.id]?.sinopsis_chilensis ?? null,
+        generos: enrMap[p.id]?.generos ?? [],
+        director: enrMap[p.id]?.director ?? null,
+        actores: enrMap[p.id]?.actores ?? null,
+        compositor: enrMap[p.id]?.compositor ?? null,
+        video_clip_url: enrMap[p.id]?.video_clip_url ?? null,
+      }))
+      final.sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+      setPeliculas(final)
+      setCargando(false)
+    }
+  }, [user, isSeries])
 
   useEffect(() => { cargarPeliculas() }, [cargarPeliculas])
 
@@ -655,7 +714,7 @@ export default function ReelPage() {
   if (cargando) return (
     <main className="min-h-screen bg-zinc-950 flex flex-col">
       <Nav active="reel" />
-      <div className="flex-1 flex items-center justify-center"><Loading text="Cargando películas..." size="lg" /></div>
+      <div className="flex-1 flex items-center justify-center"><Loading text="Cargando..." size="lg" /></div>
     </main>
   )
 
@@ -676,7 +735,7 @@ export default function ReelPage() {
               <ReelCard
                 pelicula={p} onSwipe={handleSwipe} isTop={i === 0}
                 onVista={() => handleSwipe('up')} onWatchlist={() => handleSwipe('right')}
-                currentUserId={user?.id}
+                currentUserId={user?.id} isSeries={isSeries}
               />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={onboardingDone} />}
             </div>

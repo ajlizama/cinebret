@@ -13,6 +13,7 @@ const PLATAFORMAS = [
   { key: 'apple_tv', name: 'Apple TV+', icon: '/apple_tv.png' },
   { key: 'paramount_plus', name: 'Paramount+', icon: '/paramount_plus.svg' },
   { key: 'mubi', name: 'MUBI', icon: '/mubi.png' },
+  { key: 'crunchyroll', name: 'Crunchyroll', icon: '/crunchyroll.png' },
 ]
 
 export default function MisPlataformas({

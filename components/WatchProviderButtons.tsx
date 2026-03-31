@@ -21,6 +21,7 @@ const PLATFORM_DEEP_LINKS: Record<string, (tmdbId: number | null) => string> = {
   apple_tv: () => 'https://tv.apple.com',
   paramount_plus: () => 'https://www.paramountplus.com',
   mubi: () => 'https://mubi.com',
+  crunchyroll: () => 'https://www.crunchyroll.com',
 }
 
 const PLATFORM_LOGOS: Record<string, string> = {
@@ -31,6 +32,7 @@ const PLATFORM_LOGOS: Record<string, string> = {
   apple_tv: '/apple_tv.png',
   paramount_plus: '/paramount_plus.svg',
   mubi: '/mubi.png',
+  crunchyroll: '/crunchyroll.png',
 }
 
 const PLATFORM_NAMES: Record<string, string> = {
@@ -41,6 +43,7 @@ const PLATFORM_NAMES: Record<string, string> = {
   apple_tv: 'Apple TV+',
   paramount_plus: 'Paramount+',
   mubi: 'MUBI',
+  crunchyroll: 'Crunchyroll',
 }
 
 const PLATFORM_COLORS: Record<string, string> = {
@@ -51,6 +54,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   apple_tv: 'bg-zinc-700 hover:bg-zinc-600',
   paramount_plus: 'bg-blue-600 hover:bg-blue-500',
   mubi: 'bg-zinc-700 hover:bg-zinc-600',
+  crunchyroll: 'bg-orange-600 hover:bg-orange-500',
 }
 
 export default function WatchProviderButtons({ peliculaId }: { peliculaId: string }) {

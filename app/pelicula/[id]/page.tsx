@@ -25,6 +25,7 @@ const PLATAFORMAS = [
   { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600', logo: '/apple_tv.png' },
   { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
   { id: 'mubi', nombre: 'MUBI', color: 'bg-blue-800', logo: '/mubi.png' },
+  { id: 'crunchyroll', nombre: 'Crunchyroll', color: 'bg-orange-600', logo: '/crunchyroll.png' },
 ]
 
 async function getPelicula(id: string) {

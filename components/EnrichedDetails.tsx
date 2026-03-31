@@ -17,52 +17,85 @@ type EnrData = {
   similar_ids: number[] | null
 }
 
-export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) {
+export default function EnrichedDetails({ peliculaId, isSerie = false }: { peliculaId: string; isSerie?: boolean }) {
   const [data, setData] = useState<EnrData | null>(null)
-  const [similarMovies, setSimilarMovies] = useState<any[]>([])
+  const [similarItems, setSimilarItems] = useState<any[]>([])
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     if (loaded) return
     ;(async () => {
-      // Fetch extra data from peliculas + enriquecimiento
-      const [{ data: pel }, { data: enr }] = await Promise.all([
-        supabase.from('peliculas').select('backdrop_path, tagline, certification, collection_name, budget, revenue').eq('id', peliculaId).maybeSingle(),
-        supabase.from('enriquecimiento').select('cast_json, keywords, similar_ids').eq('pelicula_id', peliculaId).maybeSingle(),
-      ])
+      let enriched: EnrData
 
-      const enriched: EnrData = {
-        backdrop_path: pel?.backdrop_path ?? null,
-        tagline: pel?.tagline ?? null,
-        certification: pel?.certification ?? null,
-        collection_name: pel?.collection_name ?? null,
-        budget: pel?.budget ?? null,
-        revenue: pel?.revenue ?? null,
-        cast_json: enr?.cast_json ?? null,
-        keywords: enr?.keywords ?? null,
-        similar_ids: enr?.similar_ids ?? null,
-      }
-      setData(enriched)
+      if (isSerie) {
+        const [{ data: ser }, { data: enr }] = await Promise.all([
+          supabase.from('series').select('backdrop_path, tagline, certification').eq('id', peliculaId).maybeSingle(),
+          supabase.from('enriquecimiento_series').select('cast_json, keywords, similar_ids').eq('serie_id', peliculaId).maybeSingle(),
+        ])
+        enriched = {
+          backdrop_path: ser?.backdrop_path ?? null,
+          tagline: ser?.tagline ?? null,
+          certification: ser?.certification ?? null,
+          collection_name: null,
+          budget: null,
+          revenue: null,
+          cast_json: enr?.cast_json ?? null,
+          keywords: enr?.keywords ?? null,
+          similar_ids: enr?.similar_ids ?? null,
+        }
 
-      // Fetch similar movies if we have IDs
-      if (enr?.similar_ids && enr.similar_ids.length > 0) {
-        const { data: sims } = await supabase
-          .from('peliculas')
-          .select('id, titulo, titulo_ingles, poster_path, nota_imdb, tmdb_id')
-          .in('tmdb_id', enr.similar_ids)
-          .not('poster_path', 'is', null)
-        if (sims) {
-          const order = new Map((enr.similar_ids as number[]).map((id: number, i: number) => [id, i]))
-          sims.sort((a: any, b: any) => (order.get(a.tmdb_id) ?? 99) - (order.get(b.tmdb_id) ?? 99))
-          setSimilarMovies(sims)
+        if (enr?.similar_ids && enr.similar_ids.length > 0) {
+          const { data: sims } = await supabase
+            .from('series')
+            .select('id, titulo, titulo_ingles, poster_path, nota_imdb, tmdb_id')
+            .in('tmdb_id', enr.similar_ids)
+            .not('poster_path', 'is', null)
+          if (sims) {
+            const order = new Map((enr.similar_ids as number[]).map((id: number, i: number) => [id, i]))
+            sims.sort((a: any, b: any) => (order.get(a.tmdb_id) ?? 99) - (order.get(b.tmdb_id) ?? 99))
+            setSimilarItems(sims)
+          }
+        }
+      } else {
+        const [{ data: pel }, { data: enr }] = await Promise.all([
+          supabase.from('peliculas').select('backdrop_path, tagline, certification, collection_name, budget, revenue').eq('id', peliculaId).maybeSingle(),
+          supabase.from('enriquecimiento').select('cast_json, keywords, similar_ids').eq('pelicula_id', peliculaId).maybeSingle(),
+        ])
+        enriched = {
+          backdrop_path: pel?.backdrop_path ?? null,
+          tagline: pel?.tagline ?? null,
+          certification: pel?.certification ?? null,
+          collection_name: pel?.collection_name ?? null,
+          budget: pel?.budget ?? null,
+          revenue: pel?.revenue ?? null,
+          cast_json: enr?.cast_json ?? null,
+          keywords: enr?.keywords ?? null,
+          similar_ids: enr?.similar_ids ?? null,
+        }
+
+        if (enr?.similar_ids && enr.similar_ids.length > 0) {
+          const { data: sims } = await supabase
+            .from('peliculas')
+            .select('id, titulo, titulo_ingles, poster_path, nota_imdb, tmdb_id')
+            .in('tmdb_id', enr.similar_ids)
+            .not('poster_path', 'is', null)
+          if (sims) {
+            const order = new Map((enr.similar_ids as number[]).map((id: number, i: number) => [id, i]))
+            sims.sort((a: any, b: any) => (order.get(a.tmdb_id) ?? 99) - (order.get(b.tmdb_id) ?? 99))
+            setSimilarItems(sims)
+          }
         }
       }
 
+      setData(enriched)
       setLoaded(true)
     })()
-  }, [peliculaId, loaded])
+  }, [peliculaId, loaded, isSerie])
 
   if (!data) return null
+
+  const detailPath = isSerie ? '/serie' : '/pelicula'
+  const contentLabel = isSerie ? 'serie' : 'película'
 
   return (
     <div className="space-y-3 mt-0 overflow-hidden min-w-0">
@@ -87,13 +120,13 @@ export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) 
         </div>
       )}
 
-      {/* Similar movies */}
-      {similarMovies.length > 0 && (
+      {/* Similar content */}
+      {similarItems.length > 0 && (
         <div>
-          <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-2">Si te gustó esta película</p>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-2">Si te gustó esta {contentLabel}</p>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {similarMovies.map((sim: any) => (
-              <Link key={sim.id} href={`/pelicula/${sim.id}`} className="shrink-0 w-20">
+            {similarItems.map((sim: any) => (
+              <Link key={sim.id} href={`${detailPath}/${sim.id}`} className="shrink-0 w-20">
                 <div className="relative w-20 h-28 rounded-lg overflow-hidden bg-zinc-800 mb-1 ring-1 ring-transparent hover:ring-yellow-400/50 transition-all">
                   <Image src={`https://image.tmdb.org/t/p/w185${sim.poster_path}`} alt={sim.titulo_ingles || sim.titulo} fill className="object-cover" sizes="80px" />
                   {sim.nota_imdb && (
@@ -116,8 +149,8 @@ export default function EnrichedDetails({ peliculaId }: { peliculaId: string }) 
         </div>
       )}
 
-      {/* Budget / Revenue compact */}
-      {(data.budget && data.budget > 0 || data.revenue && data.revenue > 0) && (
+      {/* Budget / Revenue compact (movies only) */}
+      {!isSerie && (data.budget && data.budget > 0 || data.revenue && data.revenue > 0) && (
         <div className="flex gap-4 text-[10px] text-zinc-500">
           {data.budget && data.budget > 0 && <span>Presupuesto: ${(data.budget / 1_000_000).toFixed(0)}M</span>}
           {data.revenue && data.revenue > 0 && <span>Recaudación: ${(data.revenue / 1_000_000).toFixed(0)}M</span>}

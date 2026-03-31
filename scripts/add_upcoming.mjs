@@ -150,7 +150,7 @@ async function main() {
     const wp = await fetchTMDB(`/movie/${movie.tmdb}/watch/providers`)
     const cl = wp?.results?.CL
     if (cl) {
-      const provMap = { 8: 'netflix', 337: 'disney_plus', 384: 'hbo_max', 1899: 'hbo_max', 119: 'amazon_prime', 9: 'amazon_prime', 10: 'amazon_prime', 350: 'apple_tv', 2: 'apple_tv', 531: 'paramount_plus', 11: 'mubi' }
+      const provMap = { 8: 'netflix', 337: 'disney_plus', 384: 'hbo_max', 1899: 'hbo_max', 119: 'amazon_prime', 9: 'amazon_prime', 10: 'amazon_prime', 350: 'apple_tv', 2: 'apple_tv', 531: 'paramount_plus', 11: 'mubi', 283: 'crunchyroll', 1968: 'crunchyroll' }
       const rows = []
       for (const type of ['flatrate', 'rent', 'buy']) {
         for (const p of (cl[type] || [])) {

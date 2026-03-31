@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import PeliculaDetalle from './PeliculaDetalle'
 import AgregarAListaButton from '@/app/pelicula/[id]/AgregarAListaButton'
@@ -26,6 +27,7 @@ const PLATAFORMAS = [
   { id: 'apple_tv', nombre: 'Apple TV+', logo: '/apple_tv.png' },
   { id: 'paramount_plus', nombre: 'Paramount+', logo: '/paramount_plus.svg' },
   { id: 'mubi', nombre: 'MUBI', logo: '/mubi.png' },
+  { id: 'crunchyroll', nombre: 'Crunchyroll', logo: '/crunchyroll.png' },
 ]
 
 export type Pelicula = {
@@ -33,13 +35,21 @@ export type Pelicula = {
   nota_imdb: number | null; rt_score: number | null; metacritic_score: number | null
   runtime: number | null; boxoffice: number | null; categoria: string | null
   plataformas: string[]; es_review_autor: boolean; sello_bret: boolean
-  director: string | null; director_oscars: number | null; actores: string | null
+  director: string | null; director_oscars: number | null; actores: string | string[] | null
   actores_oscars: Record<string, number> | null; compositor: string | null
   compositor_oscars: number | null; generos: string[]; poster_path: string | null
   oscars: string | null; imdb_id: string | null; youtube_trailer_key: string | null
   sinopsis: string | null; video_clip_url: string | null
   keywords: string[]; tagline: string | null; certification: string | null
   backdrop_path: string | null
+  _isSerie?: boolean
+}
+
+// Normalize actores: can be string, string[], or null
+function actoresStr(a: string | string[] | null): string {
+  if (!a) return ''
+  if (Array.isArray(a)) return a.join(', ')
+  return a
 }
 
 type Orden = 'imdb' | 'rt' | 'metacritic' | 'boxoffice' | 'anio_desc' | 'anio_asc' | 'titulo'
@@ -349,6 +359,9 @@ function PanelExpandido({
   toggleWatchlist: (id: string, e: React.MouseEvent) => void
   setRating: (id: string, r: number, e: any) => void
 }) {
+  const { mode, hydrated } = useMediaMode()
+  const activeMode = hydrated ? mode : 'peliculas'
+  const detailPrefix = activeMode === 'series' ? '/serie' : '/pelicula'
   const platsActivas = PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id))
   const oscarGano = p.oscars?.toLowerCase().startsWith('ganó')
   const oscarNum = p.oscars?.match(/\d+/)?.[0]
@@ -377,14 +390,14 @@ function PanelExpandido({
           <div className="px-4 -mt-16 relative z-10">
             <div className="flex gap-3 items-end">
               <div className="flex flex-col items-center gap-1.5">
-                <Link href={`/pelicula/${p.id}`} className="relative w-24 shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-zinc-900 block" style={{ aspectRatio: '2/3' }}>
+                <Link href={`${p._isSerie ? '/serie' : '/pelicula'}/${p.id}`} className="relative w-24 shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-zinc-900 block" style={{ aspectRatio: '2/3' }}>
                   {p.poster_path ? (
                     <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="96px" />
                   ) : (
                     <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><svg className="w-8 h-8 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                   )}
                 </Link>
-                <Link href={`/pelicula/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
+                <Link href={`${p._isSerie ? '/serie' : '/pelicula'}/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
               </div>
               <div className="flex-1 min-w-0 pb-1">
                 <h3 className="text-lg font-bold text-white leading-tight">
@@ -498,7 +511,7 @@ function PanelExpandido({
               {p.compositor && <div><p className="text-white text-sm font-medium">{p.compositor}</p><p className="text-zinc-500 text-xs">Compositor</p></div>}
             </div>
             {/* Enriched: tagline, cast, similar, keywords, budget */}
-            <EnrichedDetails peliculaId={p.id} />
+            <EnrichedDetails peliculaId={p.id} isSerie={!!p._isSerie} />
 
             {/* Badges — after cast */}
             <div className="flex gap-2 flex-wrap">
@@ -523,14 +536,14 @@ function PanelExpandido({
           <div className="relative z-10 p-6 flex gap-8">
             {/* Poster + Ver ficha */}
             <div className="flex flex-col items-center gap-2 shrink-0 self-start">
-              <Link href={`/pelicula/${p.id}`} className="relative w-48 rounded-xl overflow-hidden shadow-2xl block" style={{ aspectRatio: '2/3' }}>
+              <Link href={`${p._isSerie ? '/serie' : '/pelicula'}/${p.id}`} className="relative w-48 rounded-xl overflow-hidden shadow-2xl block" style={{ aspectRatio: '2/3' }}>
                 {p.poster_path ? (
                   <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="192px" />
                 ) : (
                   <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center"><svg className="w-12 h-12 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
                 )}
               </Link>
-              <Link href={`/pelicula/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
+              <Link href={`${p._isSerie ? '/serie' : '/pelicula'}/${p.id}`} className="text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors">Ver ficha</Link>
             </div>
 
             {/* Info */}
@@ -634,7 +647,7 @@ function PanelExpandido({
                 {p.compositor && <div><p className="text-white text-sm font-medium drop-shadow">{p.compositor}</p><p className="text-zinc-400 text-xs drop-shadow">Compositor</p></div>}
               </div>
               {/* Enriched: tagline, cast, similar, keywords, budget */}
-              <EnrichedDetails peliculaId={p.id} />
+              <EnrichedDetails peliculaId={p.id} isSerie={!!p._isSerie} />
 
               <div className="flex gap-3 items-center flex-wrap">
                 {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
@@ -721,7 +734,12 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[] }) {
+export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [] }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[] }) {
+  const { mode, hydrated } = useMediaMode()
+  const activeMode = hydrated ? mode : 'peliculas'
+  const contenido = activeMode === 'series' ? series : peliculas
+  const activeTrendingIds = activeMode === 'series' ? trendingSeriesIds : trendingIds
+  const detailPrefix = activeMode === 'series' ? '/serie' : '/pelicula'
   const [cinemaBadges, setCinemaBadges] = useState<Record<string, string>>({})
 
   // Fetch cinema badges client-side (avoids hydration mismatch)
@@ -821,18 +839,18 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
   }
 
   const generosDisponibles = ALLOWED_GENRES.filter(g =>
-    peliculas.some(p => p.generos.some(pg => pg === g || normalizeGenre(pg) === g))
+    contenido.some(p => p.generos.some(pg => pg === g || normalizeGenre(pg) === g))
   )
-  const directoresDisponibles = [...new Set(peliculas.map(p => p.director).filter(Boolean) as string[])].sort()
-  const actoresDisponibles = [...new Set(peliculas.flatMap(p => (p.actores || '').split(',').map(a => a.trim()).filter(Boolean)))].sort()
-  const compositoresDisponibles = [...new Set(peliculas.map(p => p.compositor).filter(Boolean) as string[])].sort()
+  const directoresDisponibles = [...new Set(contenido.map(p => p.director).filter(Boolean) as string[])].sort()
+  const actoresDisponibles = [...new Set(contenido.flatMap(p => actoresStr(p.actores).split(',').map(s => s.trim()).filter(Boolean)))].sort()
+  const compositoresDisponibles = [...new Set(contenido.map(p => p.compositor).filter(Boolean) as string[])].sort()
 
-  const peliculasFiltradas = peliculas
+  const peliculasFiltradas = contenido
     .filter(p => {
       const terminos = busqueda.split(',').map(t => t.trim().toLowerCase()).filter(Boolean)
       const matchBusqueda = terminos.length === 0 || terminos.every(q =>
         p.titulo.toLowerCase().includes(q) || (p.titulo_ingles || '').toLowerCase().includes(q) ||
-        (p.director || '').toLowerCase().includes(q) || (p.actores || '').toLowerCase().includes(q) ||
+        (p.director || '').toLowerCase().includes(q) || actoresStr(p.actores).toLowerCase().includes(q) ||
         p.generos.some(g => g.toLowerCase().includes(q)) || (p.compositor || '').toLowerCase().includes(q)
       )
       return matchBusqueda &&
@@ -840,7 +858,7 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
         (categoriasFiltro.length === 0 || categoriasFiltro.includes(p.categoria || '')) &&
         (generosFiltro.length === 0 || generosFiltro.every(g => p.generos.some(pg => pg === g || normalizeGenre(pg) === g))) &&
         (directoresFiltro.length === 0 || directoresFiltro.includes(p.director || '')) &&
-        (actoresFiltro.length === 0 || actoresFiltro.some(a => (p.actores || '').includes(a))) &&
+        (actoresFiltro.length === 0 || actoresFiltro.some(a => actoresStr(p.actores).includes(a))) &&
         (compositoresFiltro.length === 0 || compositoresFiltro.includes(p.compositor || '')) &&
         (!soloReviews || p.es_review_autor) && (!soloSello || p.sello_bret) &&
         (filtroVistas === 'todas' || (filtroVistas === 'vistas' ? userPeliculas[p.id]?.visto : !userPeliculas[p.id]?.visto)) &&
@@ -1110,8 +1128,8 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
 
         {/* ── Trending ── */}
         <TrendingCarousel
-          peliculas={peliculas}
-          trendingIds={trendingIds}
+          peliculas={contenido}
+          trendingIds={activeTrendingIds}
           cinemaBadges={cinemaBadges}
           plataformas={PLATAFORMAS}
           categoriasFiltro={categoriasFiltro}
@@ -1145,10 +1163,10 @@ export default function CatalogoInteractivo({ peliculas, trendingIds = [] }: { p
           ) : (
             <div>
               <h2 className="text-base md:text-xl font-bold text-white mb-2">Para Ti</h2>
-              {/* Carrusel para usuarios sin cuestionario — solo películas con plataforma, con filtros */}
+              {/* Carrusel para usuarios sin cuestionario — contenido con plataforma, con filtros */}
               <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
                 {(() => {
-                  let pool = peliculas.filter(p => p.poster_path && p.plataformas.length > 0)
+                  let pool = contenido.filter(p => p.poster_path && p.plataformas.length > 0)
 
                   // Apply mood filter
                   if (categoriasFiltro.length > 0) {

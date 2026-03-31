@@ -75,7 +75,7 @@ export default function MapaPage() {
       if (containerRef.current) {
         setDimensions({
           width: containerRef.current.clientWidth,
-          height: window.innerHeight - 120,
+          height: window.innerHeight - 80,
         })
       }
     }
@@ -194,7 +194,7 @@ export default function MapaPage() {
     ctx.save()
     ctx.globalAlpha = dimmed ? 0.25 : 1
 
-    const showPoster = globalScale > 2
+    const showPoster = globalScale > 1.2
     const img = imageCache[node.id]
     const hasPoster = img && img.complete && img.naturalWidth > 0
 
@@ -392,7 +392,7 @@ export default function MapaPage() {
           <>
             {/* Mobile: compact bottom bar — graph stays visible */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
-              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-6 pb-4 px-4">
+              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/90 to-transparent pt-4 pb-2 px-3">
                 <div className="flex items-center gap-3">
                   {selectedNode.poster && (
                     <img
@@ -433,9 +433,9 @@ export default function MapaPage() {
                   </div>
                 </div>
                 {/* CineBret watermark */}
-                <div className="flex items-center justify-center gap-1.5 mt-2 opacity-30">
-                  <img src="/logo-oficial.png" alt="CineBret" className="h-3.5 w-auto" />
-                  <span className="text-zinc-600 text-[8px]">cinebret.cl/mapa</span>
+                <div className="flex items-center justify-center gap-1.5 mt-1 opacity-30">
+                  <img src="/logo-oficial.png" alt="CineBret" className="h-3 w-auto" />
+                  <span className="text-zinc-600 text-[7px]">cinebret.cl/mapa</span>
                 </div>
               </div>
             </div>

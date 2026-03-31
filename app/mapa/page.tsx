@@ -56,6 +56,8 @@ export default function MapaPage() {
   const [nodeLimit, setNodeLimit] = useState(1000)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<GraphNode[]>([])
+  const [showControls, setShowControls] = useState(false)
+  const [showInstructions, setShowInstructions] = useState(true)
   const fgRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
@@ -308,31 +310,39 @@ export default function MapaPage() {
     <main className="min-h-screen bg-zinc-950 overflow-hidden">
       <Nav />
       <div ref={containerRef} className="relative">
-        {/* Controls panel — top left */}
-        <div className="absolute top-2 left-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2.5 space-y-2.5 w-48 md:w-56">
-          {/* Search */}
+        {/* Controls — top left: compact search + collapsible settings */}
+        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
+          {/* Search bar — always visible, compact */}
           <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Buscar película..."
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
-            />
+            <div className="flex items-center gap-1 bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-lg">
+              <svg className="w-3.5 h-3.5 text-zinc-500 ml-2.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Buscar..."
+                className="w-28 md:w-40 bg-transparent py-1.5 pr-2 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none"
+              />
+              {!showControls && (
+                <button onClick={() => setShowControls(true)} className="px-2 py-1.5 text-zinc-500 hover:text-white border-l border-zinc-800">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 007.92 12.446m-9.09 2.778A7.5 7.5 0 014.085 5.736"/><path strokeLinecap="round" strokeLinejoin="round" d="M16 12h6M19 9v6"/></svg>
+                </button>
+              )}
+            </div>
             {searchResults.length > 0 && (
-              <div className="absolute top-full mt-1 left-0 right-0 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl overflow-hidden max-h-60 overflow-y-auto z-20">
+              <div className="absolute top-full mt-1 left-0 w-52 bg-zinc-900/95 border border-zinc-700 rounded-lg shadow-2xl overflow-hidden max-h-52 overflow-y-auto z-20 backdrop-blur-sm">
                 {searchResults.map(n => (
                   <button
                     key={n.id}
                     onClick={() => focusNode(n)}
-                    className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 text-left"
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-zinc-800 text-left"
                   >
                     {n.poster && (
-                      <img src={`https://image.tmdb.org/t/p/w92${n.poster}`} alt="" className="w-6 h-9 rounded object-cover shrink-0" />
+                      <img src={`https://image.tmdb.org/t/p/w92${n.poster}`} alt="" className="w-5 h-8 rounded object-cover shrink-0" />
                     )}
                     <div className="min-w-0">
-                      <p className="text-white text-xs font-medium line-clamp-1">{n.title}</p>
-                      <span className="text-yellow-400 text-[10px]">⭐ {n.imdb}</span>
+                      <p className="text-white text-[11px] font-medium line-clamp-1">{n.title}</p>
+                      <span className="text-yellow-400 text-[9px]">⭐ {n.imdb}</span>
                     </div>
                   </button>
                 ))}
@@ -340,39 +350,41 @@ export default function MapaPage() {
             )}
           </div>
 
-          {/* Node limit slider */}
-          <div>
-            <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
-              <span>Películas en mapa</span>
-              <span className="text-white font-bold">{nodeLimit}</span>
-            </div>
-            <input
-              type="range"
-              min={200}
-              max={rawGraph?.nodes.length || 3000}
-              step={100}
-              value={nodeLimit}
-              onChange={e => { setNodeLimit(Number(e.target.value)); setSelectedNode(null); if (fgRef.current) fgRef.current.d3ReheatSimulation() }}
-              className="w-full accent-yellow-400"
-            />
-            <div className="flex justify-between text-[9px] text-zinc-600">
-              <span>Top 200</span>
-              <span>Todas ({rawGraph?.nodes.length})</span>
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div className="border-t border-zinc-800 pt-2">
-            <p className="text-[9px] text-zinc-600 uppercase tracking-wide mb-1">Categorías</p>
-            {Object.entries(CAT_COLORS).map(([cat, color]) => (
-              <div key={cat} className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                <span className="text-[9px] text-zinc-500">{CAT_LABELS[cat]}</span>
+          {/* Collapsible settings panel */}
+          {showControls && (
+            <div className="bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-lg px-3 py-2 w-44 md:w-52 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wide">Ajustes</span>
+                <button onClick={() => setShowControls(false)} className="text-zinc-500 hover:text-white text-xs">✕</button>
               </div>
-            ))}
-          </div>
 
-          <p className="text-[9px] text-zinc-600">{graphData?.nodes.length} nodos · {graphData?.links.length} conexiones</p>
+              {/* Slider */}
+              <div>
+                <div className="flex justify-between text-[9px] text-zinc-500 mb-0.5">
+                  <span>Películas</span>
+                  <span className="text-white font-bold">{nodeLimit}</span>
+                </div>
+                <input
+                  type="range" min={200} max={rawGraph?.nodes.length || 3000} step={100}
+                  value={nodeLimit}
+                  onChange={e => { setNodeLimit(Number(e.target.value)); setSelectedNode(null); if (fgRef.current) fgRef.current.d3ReheatSimulation() }}
+                  className="w-full accent-yellow-400 h-1"
+                />
+              </div>
+
+              {/* Legend */}
+              <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                {Object.entries(CAT_COLORS).map(([cat, color]) => (
+                  <div key={cat} className="flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
+                    <span className="text-[8px] text-zinc-500">{CAT_LABELS[cat]}</span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-[8px] text-zinc-600">{graphData?.nodes.length} nodos · {graphData?.links.length} conexiones</p>
+            </div>
+          )}
         </div>
 
         {/* Selected node panel — desktop: sidebar, mobile: bottom sheet */}
@@ -510,10 +522,12 @@ export default function MapaPage() {
           </div>
         )}
 
-        {/* Instructions */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-full px-4 py-1.5">
-          <p className="text-[10px] text-zinc-500">Scroll para zoom · Arrastra para mover · Click en película para explorar conexiones</p>
-        </div>
+        {/* Instructions — auto-hide after interaction */}
+        {showInstructions && !selectedNode && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-full px-4 py-1.5 transition-opacity">
+            <p className="text-[10px] text-zinc-500">Scroll para zoom · Arrastra para mover · Click en película para explorar</p>
+          </div>
+        )}
 
         {graphData && (
           <ForceGraph
@@ -543,6 +557,7 @@ export default function MapaPage() {
               }
             }}
             onBackgroundClick={() => setSelectedNode(null)}
+            onZoom={() => { if (showInstructions) setShowInstructions(false) }}
             enableNodeDrag={true}
             enableZoomInteraction={true}
             enablePanInteraction={true}

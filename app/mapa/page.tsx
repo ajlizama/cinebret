@@ -75,7 +75,7 @@ export default function MapaPage() {
       if (containerRef.current) {
         setDimensions({
           width: containerRef.current.clientWidth,
-          height: window.innerHeight - (containerRef.current.getBoundingClientRect().top),
+          height: containerRef.current.clientHeight,
         })
       }
     }
@@ -307,9 +307,9 @@ export default function MapaPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 overflow-hidden">
+    <main className="h-[100dvh] flex flex-col bg-zinc-950 overflow-hidden">
       <Nav />
-      <div ref={containerRef} className="relative">
+      <div ref={containerRef} className="relative flex-1 min-h-0">
         {/* Controls — top left: compact search + collapsible settings */}
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
           {/* Search bar — always visible, compact */}

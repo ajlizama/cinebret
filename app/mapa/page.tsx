@@ -148,8 +148,9 @@ export default function MapaPage() {
     setSearchQuery('')
     setSearchResults([])
     if (fgRef.current) {
-      fgRef.current.centerAt(node.x, node.y, 800)
-      fgRef.current.zoom(4, 800)
+      // Smooth animated zoom to node
+      fgRef.current.centerAt(node.x, node.y, 1200)
+      fgRef.current.zoom(3.5, 1200)
     }
   }, [])
 
@@ -189,7 +190,7 @@ export default function MapaPage() {
     const dimmed = selectedNode && !isSelected && !isConnectedToSelected
 
     ctx.save()
-    ctx.globalAlpha = dimmed ? 0.1 : 1
+    ctx.globalAlpha = dimmed ? 0.25 : 1
 
     const showPoster = globalScale > 2
     const img = imageCache[node.id]
@@ -262,9 +263,31 @@ export default function MapaPage() {
     ctx.beginPath()
     ctx.moveTo(link.source.x, link.source.y)
     ctx.lineTo(link.target.x, link.target.y)
-    ctx.strokeStyle = dimmed ? 'rgba(255,255,255,0.02)' : isConnected ? 'rgba(250,204,21,0.6)' : `rgba(255,255,255,${Math.min(0.15, link.weight * 0.04)})`
-    ctx.lineWidth = isConnected ? 1.5 / globalScale : Math.max(0.2, link.weight * 0.3) / globalScale
+    ctx.strokeStyle = dimmed ? 'rgba(255,255,255,0.03)' : isConnected ? 'rgba(250,204,21,0.7)' : `rgba(255,255,255,${Math.min(0.15, link.weight * 0.04)})`
+    ctx.lineWidth = isConnected ? 2 / globalScale : Math.max(0.2, link.weight * 0.3) / globalScale
     ctx.stroke()
+
+    // Show percentage label on connected links when zoomed enough
+    if (isConnected && globalScale > 1.5) {
+      const pct = Math.round((link.weight / 4) * 100)
+      const midX = (link.source.x + link.target.x) / 2
+      const midY = (link.source.y + link.target.y) / 2
+      const fontSize = Math.max(3, 12 / globalScale)
+
+      // Background pill
+      ctx.fillStyle = 'rgba(0,0,0,0.7)'
+      const textWidth = fontSize * 2.5
+      ctx.beginPath()
+      ctx.roundRect(midX - textWidth / 2, midY - fontSize / 2 - 1, textWidth, fontSize + 2, fontSize / 2)
+      ctx.fill()
+
+      // Percentage text
+      ctx.font = `bold ${fontSize}px sans-serif`
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillStyle = '#facc15'
+      ctx.fillText(`${pct}%`, midX, midY)
+    }
   }, [selectedNode])
 
   if (loading || !ForceGraph) {
@@ -355,92 +378,53 @@ export default function MapaPage() {
         {/* Selected node panel — desktop: sidebar, mobile: bottom sheet */}
         {selectedNode && (
           <>
-            {/* Mobile: bottom sheet overlay */}
-            <div className="md:hidden fixed inset-0 z-20" onClick={() => setSelectedNode(null)}>
-              <div className="absolute inset-0 bg-black/60" />
-              <div className="absolute bottom-0 left-0 right-0 bg-zinc-950 rounded-t-3xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                {/* Drag handle */}
-                <div className="flex justify-center pt-3 pb-1">
-                  <div className="w-10 h-1 bg-zinc-700 rounded-full" />
-                </div>
-
-                {/* Hero: poster + backdrop gradient */}
-                <div className="relative px-5 pt-2 pb-4">
-                  <div className="flex items-end gap-4">
-                    {selectedNode.poster && (
-                      <img
-                        src={`https://image.tmdb.org/t/p/w342${selectedNode.poster}`}
-                        alt=""
-                        className="w-28 rounded-xl shadow-2xl shrink-0"
-                        style={{ aspectRatio: '2/3', border: `3px solid ${selectedNode.color}` }}
-                      />
-                    )}
-                    <div className="flex-1 min-w-0 pb-1">
-                      <h2 className="text-white text-xl font-black leading-tight">{selectedNode.title}</h2>
-                      {selectedNode.title !== selectedNode.titleEs && (
-                        <p className="text-zinc-500 text-xs mt-0.5">{selectedNode.titleEs}</p>
-                      )}
-                      <div className="flex items-center gap-3 mt-2">
-                        <span className="text-yellow-400 text-lg font-black flex items-center gap-1">
-                          <svg className="w-4 h-4 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
-                          {selectedNode.imdb}
-                        </span>
-                        <span className="text-zinc-500 text-sm">{selectedNode.connections} conexiones</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5 mt-2">
-                        {selectedNode.genres.map(g => (
-                          <span key={g} className="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">{g}</span>
+            {/* Mobile: compact bottom bar — graph stays visible */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
+              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-6 pb-4 px-4">
+                <div className="flex items-center gap-3">
+                  {selectedNode.poster && (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
+                      alt=""
+                      className="w-14 rounded-lg shadow-2xl shrink-0"
+                      style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-white text-base font-black leading-tight">{selectedNode.title}</h2>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className="text-yellow-400 text-sm font-black flex items-center gap-1">
+                        <svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                        {selectedNode.imdb}
+                      </span>
+                      <span className="text-zinc-500 text-xs">{connectedNodes.length} conexiones</span>
+                      <div className="flex gap-1">
+                        {selectedNode.genres.slice(0, 2).map(g => (
+                          <span key={g} className="text-[8px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
                         ))}
                       </div>
-                      <button
-                        onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
-                        className="mt-3 text-xs text-yellow-400 font-semibold"
-                      >
-                        Ver ficha completa →
-                      </button>
                     </div>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
+                      className="bg-yellow-400 text-zinc-950 text-xs font-bold px-3 py-1.5 rounded-lg"
+                    >
+                      Ficha
+                    </button>
+                    <button
+                      onClick={() => setSelectedNode(null)}
+                      className="text-zinc-500 text-lg px-1"
+                    >
+                      ✕
+                    </button>
                   </div>
                 </div>
-
-                {/* Connected movies — poster grid */}
-                {connectedNodes.length > 0 && (
-                  <div className="px-5 pb-8">
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3 font-semibold">
-                      Si te gustó {selectedNode.title}
-                    </p>
-                    <div className="grid grid-cols-4 gap-2.5">
-                      {connectedNodes.map(({ node: cn, weight }) => (
-                        <button
-                          key={cn.id}
-                          onClick={() => focusNode(cn)}
-                          className="text-center group"
-                        >
-                          <div className="relative">
-                            {cn.poster ? (
-                              <img
-                                src={`https://image.tmdb.org/t/p/w154${cn.poster}`}
-                                alt=""
-                                className="w-full rounded-lg shadow-lg group-hover:ring-2 ring-yellow-400 transition-all"
-                                style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }}
-                              />
-                            ) : (
-                              <div className="w-full rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }} />
-                            )}
-                            <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
-                              <span className="text-yellow-400 text-[9px] font-bold">{cn.imdb}</span>
-                            </div>
-                          </div>
-                          <p className="text-white text-[10px] font-medium mt-1 line-clamp-2 leading-tight">{cn.title}</p>
-                        </button>
-                      ))}
-                    </div>
-                    {/* CineBret watermark for screenshots */}
-                    <div className="flex items-center justify-center gap-2 mt-5 opacity-40">
-                      <img src="/logo-oficial.png" alt="CineBret" className="h-5 w-auto" />
-                      <span className="text-zinc-500 text-[10px]">cinebret.cl/mapa</span>
-                    </div>
-                  </div>
-                )}
+                {/* CineBret watermark */}
+                <div className="flex items-center justify-center gap-1.5 mt-2 opacity-30">
+                  <img src="/logo-oficial.png" alt="CineBret" className="h-3.5 w-auto" />
+                  <span className="text-zinc-600 text-[8px]">cinebret.cl/mapa</span>
+                </div>
               </div>
             </div>
 
@@ -547,7 +531,16 @@ export default function MapaPage() {
             cooldownTicks={200}
             onNodeHover={(node: any) => setHoveredNode(node)}
             onNodeClick={(node: any) => {
-              setSelectedNode(prev => prev?.id === node.id ? null : node)
+              if (selectedNode?.id === node.id) {
+                setSelectedNode(null)
+              } else {
+                setSelectedNode(node)
+                // Smooth zoom to selected node
+                if (fgRef.current) {
+                  fgRef.current.centerAt(node.x, node.y, 1200)
+                  fgRef.current.zoom(3.5, 1200)
+                }
+              }
             }}
             onBackgroundClick={() => setSelectedNode(null)}
             enableNodeDrag={true}

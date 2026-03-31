@@ -22,15 +22,23 @@ const PLATAFORMAS = [
 ]
 
 async function getSerie(id: string) {
-  const { data } = await supabase
+  // First fetch the serie itself — use maybeSingle() so missing rows return null instead of throwing
+  const { data: serie } = await supabase
     .from('series')
-    .select(`
-      *,
-      enriquecimiento_series (*)
-    `)
+    .select('*')
     .eq('id', id)
-    .single()
-  return data
+    .maybeSingle()
+
+  if (!serie) return null
+
+  // Fetch enrichment separately so a missing row never breaks the page
+  const { data: enr } = await supabase
+    .from('enriquecimiento_series')
+    .select('*')
+    .eq('serie_id', id)
+    .maybeSingle()
+
+  return { ...serie, enriquecimiento_series: enr }
 }
 
 async function getTemporadas(serieId: string) {

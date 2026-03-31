@@ -575,7 +575,7 @@ export default function ParaTi({
             .select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, episode_runtime, num_temporadas, poster_path, backdrop_path, categoria, imdb_id, tmdb_id, youtube_trailer_key')
             .in('id', chunk),
           supabase.from('enriquecimiento_series')
-            .select('serie_id, generos, director, actores, compositor, sinopsis_chilensis')
+            .select('serie_id, generos, director, actores, compositor, sinopsis_chilensis, keywords')
             .in('serie_id', chunk),
         ])
         ;(sers ?? []).forEach((s: any) => { pelMap[s.id] = { ...s, anio: s.anio_inicio, runtime: s.episode_runtime, rt_score: null, metacritic_score: null, boxoffice: null, oscars: null } })
@@ -586,7 +586,7 @@ export default function ParaTi({
             .select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, poster_path, backdrop_path, categoria, imdb_id, tmdb_id')
             .in('id', chunk),
           supabase.from('enriquecimiento')
-            .select('pelicula_id, generos, director, actores, compositor, sinopsis_chilensis, youtube_trailer_key, es_review_autor')
+            .select('pelicula_id, generos, director, actores, compositor, sinopsis_chilensis, youtube_trailer_key, es_review_autor, keywords')
             .in('pelicula_id', chunk),
         ])
         ;(pels ?? []).forEach((p: any) => { pelMap[p.id] = p })
@@ -673,6 +673,7 @@ export default function ParaTi({
 
     // 7. Scoring con historial del usuario
     let normGenre: Record<string, number> = {}
+    let normKeywords: Record<string, number> = {}
     let directorAvg: Record<string, number> = {}
     let eraAvg = 2005
 
@@ -687,9 +688,9 @@ export default function ParaTi({
 
       const [{ data: pelisVistas }, { data: enrVistas }, { data: seriesVistas }, { data: enrSeriesVistas }] = await Promise.all([
         allVistaMovieIds.length > 0 ? supabase.from('peliculas').select('id, anio').in('id', allVistaMovieIds) : { data: [] },
-        allVistaMovieIds.length > 0 ? supabase.from('enriquecimiento').select('pelicula_id, generos, director, actores').in('pelicula_id', allVistaMovieIds) : { data: [] },
+        allVistaMovieIds.length > 0 ? supabase.from('enriquecimiento').select('pelicula_id, generos, director, actores, keywords').in('pelicula_id', allVistaMovieIds) : { data: [] },
         allVistaSerieIds.length > 0 ? supabase.from('series').select('id, anio_inicio').in('id', allVistaSerieIds) : { data: [] },
-        allVistaSerieIds.length > 0 ? supabase.from('enriquecimiento_series').select('serie_id, generos, director, actores').in('serie_id', allVistaSerieIds) : { data: [] },
+        allVistaSerieIds.length > 0 ? supabase.from('enriquecimiento_series').select('serie_id, generos, director, actores, keywords').in('serie_id', allVistaSerieIds) : { data: [] },
       ])
 
       const evMap: Record<string, any> = {}
@@ -703,6 +704,7 @@ export default function ParaTi({
       ]
 
       const genreWeight: Record<string, number> = {}
+      const keywordWeight: Record<string, number> = {}
       const dirRatings: Record<string, number[]> = {}
       const years: number[] = []
 
@@ -710,6 +712,7 @@ export default function ParaTi({
         const r = ratingMap[p.id] ?? 6
         const enr = evMap[p.id]
         enr?.generos?.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
+        ;(enr?.keywords ?? []).forEach((k: string) => { keywordWeight[k] = (keywordWeight[k] ?? 0) + r })
         if (enr?.director) {
           dirRatings[enr.director] = [...(dirRatings[enr.director] ?? []), r]
           // Add cluster weight from watch history (weighted by rating)
@@ -727,6 +730,9 @@ export default function ParaTi({
 
       const maxW = Math.max(...Object.values(genreWeight), 1)
       normGenre = Object.fromEntries(Object.entries(genreWeight).map(([g, w]) => [g, w / maxW]))
+      // Normalize keyword weights
+      const maxKW = Math.max(...Object.values(keywordWeight), 1)
+      normKeywords = Object.fromEntries(Object.entries(keywordWeight).map(([k, w]) => [k, w / maxKW]))
       directorAvg = Object.fromEntries(
         Object.entries(dirRatings).map(([d, rs]) => [d, rs.reduce((a, b) => a + b, 0) / rs.length])
       )
@@ -793,13 +799,23 @@ export default function ParaTi({
 
     // ── POOL A: Géneros preferidos (del cuestionario)
     // "Porque te gustan los thrillers"
+    // "Animación" is treated as a format, not a real genre — reduced weight
+    const FORMAT_GENRES = new Set(['animación', 'animacion', 'animation'])
     const poolGenre: Rec[] = []
     if (genPrefs.length > 0) {
       for (const rec of allRecs) {
-        const matchCount = rec.generos.filter(g => genPrefsNorm.includes(genNorm(g))).length
-        if (matchCount > 0) {
-          const matched = rec.generos.filter(g => genPrefsNorm.includes(genNorm(g))).slice(0, 2)
-          poolGenre.push({ ...rec, score: matchCount * 3 + qualityOf(rec), razon: matched.join(', ') })
+        const substantiveMatches = rec.generos.filter(g => {
+          const norm = genNorm(g)
+          return genPrefsNorm.includes(norm) && !FORMAT_GENRES.has(norm)
+        })
+        const formatMatches = rec.generos.filter(g => {
+          const norm = genNorm(g)
+          return genPrefsNorm.includes(norm) && FORMAT_GENRES.has(norm)
+        })
+        const matchScore = substantiveMatches.length * 3 + formatMatches.length * 0.5
+        if (matchScore > 0) {
+          const matched = [...substantiveMatches, ...formatMatches].slice(0, 2).map(g => g)
+          poolGenre.push({ ...rec, score: matchScore + qualityOf(rec), razon: matched.join(', ') })
         }
       }
       poolGenre.sort((a, b) => b.score - a.score)
@@ -871,6 +887,22 @@ export default function ParaTi({
       poolHistory.sort((a, b) => b.score - a.score)
     }
 
+    // ── POOL H: Keywords (temas que disfrutas)
+    // "Porque te gustan temas como 'dark fantasy', 'revenge'"
+    const poolKeywords: Rec[] = []
+    if (Object.keys(normKeywords).length > 0) {
+      for (const rec of allRecs) {
+        const recKws = (enrMap[rec.id]?.keywords ?? []) as string[]
+        if (recKws.length === 0) continue
+        const kwMatch = recKws.reduce((s: number, k: string) => s + (normKeywords[k] ?? 0), 0)
+        if (kwMatch > 0.5) {
+          const topKws = recKws.filter(k => (normKeywords[k] ?? 0) > 0.3).slice(0, 2)
+          poolKeywords.push({ ...rec, score: kwMatch * 2.5 + qualityOf(rec), razon: topKws.length ? topKws.join(', ') : 'Temas afines' })
+        }
+      }
+      poolKeywords.sort((a, b) => b.score - a.score)
+    }
+
     // ── POOL E: Seguidores (lo que ven tus seguidos)
     // "Porque tus amigos la vieron"
     const poolFollowers: Rec[] = []
@@ -910,17 +942,17 @@ export default function ParaTi({
     }
 
     // ── INTERLEAVE: mezclar los pools
-    // Proporción: Genre(30%), Similar(20%), Director(15%), Mood(10%), History(10%), Followers(10%), Discovery(5%)
+    // Proporción: Genre(25%), Keywords(15%), Similar(20%), Director(10%), Mood(8%), History(8%), Followers(7%), Discovery(7%)
     const pools = [
-      { items: diverseSample(poolGenre, 18, 15, 80), weight: 30 },
+      { items: diverseSample(poolGenre, 18, 15, 80), weight: 25 },
+      { items: diverseSample(poolKeywords, 15, 10, 60), weight: 15 },
       { items: diverseSample(poolSimilar, 20, 15, 60), weight: 20 },
-      { items: diverseSample(poolDirector, 12, 8, 50), weight: 15 },
-      { items: diverseSample(poolMood, 10, 6, 40), weight: 10 },
-      { items: diverseSample(poolHistory, 8, 6, 40), weight: 10 },
-      { items: diverseSample(poolFollowers, 8, 7, 30), weight: 10 },
-      { items: diverseSample(poolDiscovery, 5, 8, 30), weight: 5 },
+      { items: diverseSample(poolDirector, 12, 8, 50), weight: isSeries ? 5 : 10 },
+      { items: diverseSample(poolMood, 10, 6, 40), weight: 8 },
+      { items: diverseSample(poolHistory, 8, 6, 40), weight: 8 },
+      { items: diverseSample(poolFollowers, 8, 7, 30), weight: 7 },
+      { items: diverseSample(poolDiscovery, 5, 8, 30), weight: 7 },
     ]
-    // Normalize weights for pools that have items
     const activePools = pools.filter(p => p.items.length > 0)
     const totalWeight = activePools.reduce((s, p) => s + p.weight, 0)
 
@@ -929,25 +961,36 @@ export default function ParaTi({
     const cursors = activePools.map(() => 0)
     const maxTotal = 150
 
+    // Track consecutive same-format count for interleaving
+    let consecutiveAnimation = 0
+    const MAX_CONSECUTIVE_SAME_FORMAT = 3
+
     while (balanced.length < maxTotal) {
       let added = false
       for (let i = 0; i < activePools.length; i++) {
         const pool = activePools[i]
-        // How many items this pool contributes per round
         const take = Math.max(1, Math.round((pool.weight / totalWeight) * 5))
         for (let t = 0; t < take && cursors[i] < pool.items.length; t++) {
           const rec = pool.items[cursors[i]]
           cursors[i]++
-          if (!seen.has(rec.id)) {
-            seen.add(rec.id)
-            balanced.push(rec)
-            added = true
-            if (balanced.length >= maxTotal) break
+          if (seen.has(rec.id)) continue
+
+          // Check if adding this would create too many consecutive same-format items
+          const isAnim = rec.generos.some(g => FORMAT_GENRES.has(genNorm(g)))
+          if (isAnim && consecutiveAnimation >= MAX_CONSECUTIVE_SAME_FORMAT) {
+            // Skip this one for now, it'll come back in next rounds
+            continue
           }
+
+          seen.add(rec.id)
+          balanced.push(rec)
+          consecutiveAnimation = isAnim ? consecutiveAnimation + 1 : 0
+          added = true
+          if (balanced.length >= maxTotal) break
         }
         if (balanced.length >= maxTotal) break
       }
-      if (!added) break // all pools exhausted
+      if (!added) break
     }
 
     // 10. Plataformas según modo

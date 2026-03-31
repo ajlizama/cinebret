@@ -6,7 +6,7 @@ import Nav from '@/components/Nav'
 import dynamic from 'next/dynamic'
 
 // ForceGraph2D must be loaded client-side only (uses canvas/webgl)
-const ForceGraph2D = dynamic(() => import('react-force-graph').then(mod => mod.ForceGraph2D), { ssr: false })
+const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), { ssr: false })
 
 type GraphNode = {
   id: string

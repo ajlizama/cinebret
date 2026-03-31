@@ -68,9 +68,9 @@ async function main() {
       const target = tmdbToMovie.get(tmdbId)
       if (!target || target.id === movie.id) continue
 
-      // Bidirectional only: A→B must have B→A in top 20
+      // Bidirectional only: A→B must have B→A in top 30
       const targetEnr = enrMap.get(target.id)
-      const targetSimilar = (targetEnr?.similar_ids || []).slice(0, 20)
+      const targetSimilar = (targetEnr?.similar_ids || []).slice(0, 30)
       const isBidirectional = movie.tmdb_id && targetSimilar.includes(movie.tmdb_id)
       if (!isBidirectional) continue
 
@@ -80,7 +80,7 @@ async function main() {
 
       const posA = topSimilar.indexOf(tmdbId)
       const posB = targetSimilar.indexOf(movie.tmdb_id)
-      const weight = 2 + (10 - posA) / 10 + (20 - Math.max(posB, 0)) / 20
+      const weight = 2 + (10 - posA) / 10 + (30 - Math.max(posB, 0)) / 30
 
       edges.push({
         source: movie.id,

@@ -526,14 +526,22 @@ export default function CineReelsPage() {
   const toggleVisto = useCallback((movieId: string) => {
     const cur = userStates[movieId]?.visto ?? false
     setUserStates(prev => ({ ...prev, [movieId]: { ...prev[movieId], visto: !cur, watchlist: prev[movieId]?.watchlist ?? false } }))
-    if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: movieId, visto: !cur }, { onConflict: 'user_id,pelicula_id' })
-  }, [user, userStates])
+    if (user) {
+      const table = isSeries ? 'user_series' : 'user_peliculas'
+      const idField = isSeries ? 'serie_id' : 'pelicula_id'
+      supabase.from(table).upsert({ user_id: user.id, [idField]: movieId, visto: !cur }, { onConflict: isSeries ? 'user_id,serie_id' : 'user_id,pelicula_id' })
+    }
+  }, [user, userStates, isSeries])
 
   const toggleWatchlist = useCallback((movieId: string) => {
     const cur = userStates[movieId]?.watchlist ?? false
     setUserStates(prev => ({ ...prev, [movieId]: { visto: prev[movieId]?.visto ?? false, watchlist: !cur } }))
-    if (user) supabase.from('user_peliculas').upsert({ user_id: user.id, pelicula_id: movieId, watchlist: !cur }, { onConflict: 'user_id,pelicula_id' })
-  }, [user, userStates])
+    if (user) {
+      const table = isSeries ? 'user_series' : 'user_peliculas'
+      const idField = isSeries ? 'serie_id' : 'pelicula_id'
+      supabase.from(table).upsert({ user_id: user.id, [idField]: movieId, watchlist: !cur }, { onConflict: isSeries ? 'user_id,serie_id' : 'user_id,pelicula_id' })
+    }
+  }, [user, userStates, isSeries])
 
   const goTo = useCallback((idx: number) => {
     if (idx < 0 || idx >= movies.length) return

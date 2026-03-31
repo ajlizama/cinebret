@@ -805,23 +805,28 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
 
   useEffect(() => {
     if (!user) { setUserPeliculas({}); return }
-    supabase.from('user_peliculas').select('pelicula_id, visto, rating, watchlist').eq('user_id', user.id)
+    const table = activeMode === 'series' ? 'user_series' : 'user_peliculas'
+    const idField = activeMode === 'series' ? 'serie_id' : 'pelicula_id'
+    supabase.from(table).select(`${idField}, visto, rating, watchlist`).eq('user_id', user.id)
       .then(({ data }) => {
         if (!data) return
         const map: Record<string, UserPelicula> = {}
-        data.forEach(r => { map[r.pelicula_id] = { visto: r.visto, rating: r.rating, watchlist: r.watchlist } })
+        data.forEach((r: any) => { map[r[idField]] = { visto: r.visto, rating: r.rating, watchlist: r.watchlist } })
         setUserPeliculas(map)
       })
-  }, [user])
+  }, [user, activeMode])
 
-  const upsertUserPelicula = async (peliculaId: string, campos: Partial<UserPelicula>) => {
+  const upsertUserPelicula = async (itemId: string, campos: Partial<UserPelicula>) => {
     if (!user) return
-    const actual = userPeliculas[peliculaId] ?? { visto: false, rating: null, watchlist: false }
+    const table = activeMode === 'series' ? 'user_series' : 'user_peliculas'
+    const idField = activeMode === 'series' ? 'serie_id' : 'pelicula_id'
+    const conflict = activeMode === 'series' ? 'user_id,serie_id' : 'user_id,pelicula_id'
+    const actual = userPeliculas[itemId] ?? { visto: false, rating: null, watchlist: false }
     const nuevo = { ...actual, ...campos }
-    setUserPeliculas(prev => ({ ...prev, [peliculaId]: nuevo }))
-    await supabase.from('user_peliculas').upsert(
-      { user_id: user.id, pelicula_id: peliculaId, visto: nuevo.visto, rating: nuevo.rating, watchlist: nuevo.watchlist },
-      { onConflict: 'user_id,pelicula_id' }
+    setUserPeliculas(prev => ({ ...prev, [itemId]: nuevo }))
+    await supabase.from(table).upsert(
+      { user_id: user.id, [idField]: itemId, visto: nuevo.visto, rating: nuevo.rating, watchlist: nuevo.watchlist },
+      { onConflict: conflict }
     )
   }
 

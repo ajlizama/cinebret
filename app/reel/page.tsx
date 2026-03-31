@@ -656,18 +656,21 @@ export default function ReelPage() {
   useEffect(() => { cargarPeliculas() }, [cargarPeliculas])
 
   const handleSwipe = useCallback((dir: 'left' | 'right' | 'down' | 'up') => {
-    // Get the top movie before modifying state
     const top = peliculas[0]
     if (!top) return
+
+    const table = isSeries ? 'user_series' : 'user_peliculas'
+    const idField = isSeries ? 'serie_id' : 'pelicula_id'
+    const conflict = isSeries ? 'user_id,serie_id' : 'user_id,pelicula_id'
 
     if (dir === 'right') {
       setLastAction({ pelicula: top, action: 'right' })
       markSessionDone(top.id)
       setPeliculas(prev => prev.slice(1))
       if (user) {
-        supabase.from('user_peliculas').upsert(
-          { user_id: user.id, pelicula_id: top.id, watchlist: true, visto: false },
-          { onConflict: 'user_id,pelicula_id' }
+        supabase.from(table).upsert(
+          { user_id: user.id, [idField]: top.id, watchlist: true, visto: false },
+          { onConflict: conflict }
         ).then(({ error }) => { if (error) console.error('watchlist error:', error) })
       }
     } else if (dir === 'left') {
@@ -679,9 +682,9 @@ export default function ReelPage() {
       markSessionDone(top.id)
       setPeliculas(prev => prev.slice(1))
       if (user) {
-        supabase.from('user_peliculas').upsert(
-          { user_id: user.id, pelicula_id: top.id, visto: true, watchlist: false },
-          { onConflict: 'user_id,pelicula_id' }
+        supabase.from(table).upsert(
+          { user_id: user.id, [idField]: top.id, visto: true, watchlist: false },
+          { onConflict: conflict }
         ).then(({ error }) => { if (error) console.error('visto error:', error) })
       }
     } else if (dir === 'down') {
@@ -693,18 +696,20 @@ export default function ReelPage() {
         return next
       })
     }
-  }, [user, peliculas])
+  }, [user, peliculas, isSeries])
 
   const handleUndo = useCallback(() => {
     if (!lastAction) return
     const { pelicula, action } = lastAction
+    const table = isSeries ? 'user_series' : 'user_peliculas'
+    const idField = isSeries ? 'serie_id' : 'pelicula_id'
     setPeliculas(prev => [pelicula, ...prev.filter(p => p.id !== pelicula.id)])
     unmarkSessionDone(pelicula.id)
     if (action === 'left') unsnoozeId(pelicula.id)
-    else if (action === 'right') { if (user) supabase.from('user_peliculas').update({ watchlist: false }).eq('user_id', user.id).eq('pelicula_id', pelicula.id) }
-    else if (action === 'up') { if (user) supabase.from('user_peliculas').update({ visto: false }).eq('user_id', user.id).eq('pelicula_id', pelicula.id) }
+    else if (action === 'right') { if (user) supabase.from(table).update({ watchlist: false }).eq('user_id', user.id).eq(idField, pelicula.id) }
+    else if (action === 'up') { if (user) supabase.from(table).update({ visto: false }).eq('user_id', user.id).eq(idField, pelicula.id) }
     setLastAction(null)
-  }, [lastAction, user])
+  }, [lastAction, user, isSeries])
 
   const onboardingDone = () => {
     localStorage.setItem('reel_onboarding', '1')

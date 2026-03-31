@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import PeliculaDetalle from '@/app/catalogo/PeliculaDetalle'
 import Loading from '@/components/Loading'
@@ -262,6 +263,45 @@ async function fetchCandidatosHoy(): Promise<string[]> {
   return Array.from(ids)
 }
 
+/** Fetch series candidate IDs (with watch providers or high quality) */
+async function fetchCandidatosSeries(): Promise<string[]> {
+  const ids = new Set<string>()
+  const batchSize = 1000
+  let offset = 0
+  while (true) {
+    const { data } = await supabase.from('watch_providers_series').select('serie_id').range(offset, offset + batchSize - 1)
+    if (!data || data.length === 0) break
+    data.forEach((r: any) => ids.add(r.serie_id))
+    if (data.length < batchSize) break
+    offset += batchSize
+  }
+  // Add high quality series
+  offset = 0
+  while (true) {
+    const { data } = await supabase.from('series').select('id').gte('nota_imdb', 7.0).range(offset, offset + batchSize - 1)
+    if (!data || data.length === 0) break
+    data.forEach((r: any) => ids.add(r.id))
+    if (data.length < batchSize) break
+    offset += batchSize
+  }
+  return Array.from(ids)
+}
+
+async function fetchCatalogosSeries(ids: string[]): Promise<Record<string, string[]>> {
+  if (ids.length === 0) return {}
+  const platMap: Record<string, string[]> = {}
+  for (let i = 0; i < ids.length; i += 50) {
+    const chunk = ids.slice(i, i + 50)
+    const { data } = await supabase.from('watch_providers_series').select('serie_id, platform_key')
+      .eq('provider_type', 'flatrate').not('platform_key', 'is', null).in('serie_id', chunk)
+    ;(data ?? []).forEach((wp: any) => {
+      if (!platMap[wp.serie_id]) platMap[wp.serie_id] = []
+      if (!platMap[wp.serie_id].includes(wp.platform_key)) platMap[wp.serie_id].push(wp.platform_key)
+    })
+  }
+  return platMap
+}
+
 export type RecExport = Rec
 
 // ── Tracked card: detects skips via IntersectionObserver ──────────────
@@ -315,6 +355,8 @@ export default function ParaTi({
   filtrosPlataformas?: string[]
 }) {
   const { user, username: miUsername } = useAuth()
+  const { mode } = useMediaMode()
+  const isSeries = mode === 'series'
   const [recs, setRecs] = useState<Rec[]>([])
   const [cargando, setCargando] = useState(false)
   const [catFiltro, setCatFiltro] = useState<string | null>(null)
@@ -325,8 +367,8 @@ export default function ParaTi({
   const [sinPerfil, setSinPerfil] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Cache key for sessionStorage
-  const cacheKey = user ? `cinebret-recs-${user.id}` : 'cinebret-recs-anon'
+  // Cache key for sessionStorage (includes mode)
+  const cacheKey = user ? `cinebret-recs-${user.id}-${mode}` : `cinebret-recs-anon-${mode}`
   const scrollKey = `${cacheKey}-scroll`
   const interactedKey = `${cacheKey}-dirty`
 
@@ -358,104 +400,112 @@ export default function ParaTi({
     // Clear dirty flag and compute fresh
     try { sessionStorage.removeItem(interactedKey) } catch {}
     compute()
-  }, [user, preferenciasExternas])
+  }, [user, preferenciasExternas, mode])
 
   useEffect(() => {
     if (!user || recs.length === 0) return
+    const table = isSeries ? 'user_series' : 'user_peliculas'
+    const idField = isSeries ? 'serie_id' : 'pelicula_id'
     supabase
-      .from('user_peliculas')
-      .select('pelicula_id, visto, rating, watchlist')
+      .from(table)
+      .select(`${idField}, visto, rating, watchlist`)
       .eq('user_id', user.id)
-      .in('pelicula_id', recs.map(r => r.id))
+      .in(idField, recs.map(r => r.id))
       .then(({ data }) => {
         const map: Record<string, UserState> = {}
         ;(data ?? []).forEach((r: any) => {
-          map[r.pelicula_id] = { visto: r.visto, watchlist: r.watchlist, rating: r.rating }
+          map[r[idField]] = { visto: r.visto, watchlist: r.watchlist, rating: r.rating }
         })
         setUserMap(map)
       })
-  }, [user, recs])
+  }, [user, recs, isSeries])
 
-  const upsert = async (peliculaId: string, campos: Partial<UserState>) => {
+  const upsert = async (itemId: string, campos: Partial<UserState>) => {
     if (!user) return
-    // Mark as dirty so recs recalculate on next visit
     try { sessionStorage.setItem(interactedKey, '1') } catch {}
-    const actual = userMap[peliculaId] ?? { visto: false, watchlist: false, rating: null }
+    const actual = userMap[itemId] ?? { visto: false, watchlist: false, rating: null }
     const nuevo = { ...actual, ...campos }
-    setUserMap(prev => ({ ...prev, [peliculaId]: nuevo }))
-    await supabase.from('user_peliculas').upsert(
-      { user_id: user.id, pelicula_id: peliculaId, visto: nuevo.visto, watchlist: nuevo.watchlist, rating: nuevo.rating },
-      { onConflict: 'user_id,pelicula_id' }
+    setUserMap(prev => ({ ...prev, [itemId]: nuevo }))
+    const table = isSeries ? 'user_series' : 'user_peliculas'
+    const idField = isSeries ? 'serie_id' : 'pelicula_id'
+    await supabase.from(table).upsert(
+      { user_id: user.id, [idField]: itemId, visto: nuevo.visto, watchlist: nuevo.watchlist, rating: nuevo.rating },
+      { onConflict: isSeries ? 'user_id,serie_id' : 'user_id,pelicula_id' }
     )
   }
 
   const compute = async () => {
     setCargando(true)
 
-    // 1. Candidatos: películas del catálogo de hoy
-    const allCandidatoIds = await fetchCandidatosHoy()
+    // 1. Candidatos según modo
+    const allCandidatoIds = isSeries ? await fetchCandidatosSeries() : await fetchCandidatosHoy()
     if (allCandidatoIds.length === 0) { setCargando(false); return }
 
-    // 2. Vistas del usuario para excluir + collect high-rated and recent
+    // 2. Vistas del usuario (MIXTO: películas + series para el perfil)
     let vistasRaw: any[] = []
+    let vistasSeriesRaw: any[] = []
     if (user) {
-      const { data } = await supabase
-        .from('user_peliculas')
-        .select('pelicula_id, rating, created_at')
-        .eq('user_id', user.id)
-        .eq('visto', true)
-      vistasRaw = data ?? []
+      const [{ data: pelVistas }, { data: serVistas }] = await Promise.all([
+        supabase.from('user_peliculas').select('pelicula_id, rating, created_at').eq('user_id', user.id).eq('visto', true),
+        supabase.from('user_series').select('serie_id, rating, created_at').eq('user_id', user.id).eq('visto', true),
+      ])
+      vistasRaw = pelVistas ?? []
+      vistasSeriesRaw = serVistas ?? []
     }
-    const vistasSet = new Set(vistasRaw.map((v: any) => v.pelicula_id))
+    // Excluir del tipo actual
+    const idField = isSeries ? 'serie_id' : 'pelicula_id'
+    const vistasActual = isSeries ? vistasSeriesRaw : vistasRaw
+    const vistasSet = new Set(vistasActual.map((v: any) => v[idField]))
 
-    // 2b. Fetch similar_ids for user's top-rated + most recent movies
+    // 2b. Fetch similar_ids from BOTH movies and series the user liked (mixed profile)
     let userSimilarTmdbIds: number[] = []
-    const userSimilarReasons: Record<string, string> = {} // tmdb_id -> reason
+    const userSimilarReasons: Record<string, string> = {}
+
+    // Seeds from movies
     if (vistasRaw.length > 0) {
-      // Top rated (rating >= 8) + last 10 watched (by created_at)
       const highRated = vistasRaw.filter((v: any) => v.rating && v.rating >= 8).map((v: any) => v.pelicula_id)
-      const recentSorted = [...vistasRaw].sort((a: any, b: any) =>
-        (b.created_at || '').localeCompare(a.created_at || '')
-      ).slice(0, 10).map((v: any) => v.pelicula_id)
+      const recentSorted = [...vistasRaw].sort((a: any, b: any) => (b.created_at || '').localeCompare(a.created_at || '')).slice(0, 10).map((v: any) => v.pelicula_id)
       const seedIds = [...new Set([...highRated, ...recentSorted])]
-
       if (seedIds.length > 0) {
-        // Fetch similar_ids + titles for these seed movies
-        const { data: seedEnr } = await supabase
-          .from('enriquecimiento')
-          .select('pelicula_id, similar_ids')
-          .in('pelicula_id', seedIds.slice(0, 30))
-          .not('similar_ids', 'is', null)
-
+        const { data: seedEnr } = await supabase.from('enriquecimiento').select('pelicula_id, similar_ids').in('pelicula_id', seedIds.slice(0, 30)).not('similar_ids', 'is', null)
         if (seedEnr && seedEnr.length > 0) {
-          // Get seed movie titles for the "reason" text
-          const { data: seedMovies } = await supabase
-            .from('peliculas')
-            .select('id, titulo_ingles, titulo')
-            .in('id', seedEnr.map((e: any) => e.pelicula_id))
+          const { data: seedMovies } = await supabase.from('peliculas').select('id, titulo_ingles, titulo').in('id', seedEnr.map((e: any) => e.pelicula_id))
           const seedTitleMap = new Map((seedMovies || []).map((m: any) => [m.id, m.titulo_ingles || m.titulo]))
-
           for (const enr of seedEnr as any[]) {
             const seedTitle = seedTitleMap.get(enr.pelicula_id) || ''
             for (const tmdbId of (enr.similar_ids || []) as number[]) {
-              if (!userSimilarTmdbIds.includes(tmdbId)) {
-                userSimilarTmdbIds.push(tmdbId)
-                userSimilarReasons[tmdbId] = `Similar a ${seedTitle}`
-              }
+              if (!userSimilarTmdbIds.includes(tmdbId)) { userSimilarTmdbIds.push(tmdbId); userSimilarReasons[tmdbId] = `Similar a ${seedTitle}` }
+            }
+          }
+        }
+      }
+    }
+    // Seeds from series
+    if (vistasSeriesRaw.length > 0) {
+      const highRatedS = vistasSeriesRaw.filter((v: any) => v.rating && v.rating >= 8).map((v: any) => v.serie_id)
+      const recentS = [...vistasSeriesRaw].sort((a: any, b: any) => (b.created_at || '').localeCompare(a.created_at || '')).slice(0, 10).map((v: any) => v.serie_id)
+      const seedIdsS = [...new Set([...highRatedS, ...recentS])]
+      if (seedIdsS.length > 0) {
+        const { data: seedEnrS } = await supabase.from('enriquecimiento_series').select('serie_id, similar_ids').in('serie_id', seedIdsS.slice(0, 30)).not('similar_ids', 'is', null)
+        if (seedEnrS && seedEnrS.length > 0) {
+          const { data: seedSeries } = await supabase.from('series').select('id, titulo_ingles, titulo').in('id', seedEnrS.map((e: any) => e.serie_id))
+          const seedTitleMapS = new Map((seedSeries || []).map((s: any) => [s.id, s.titulo_ingles || s.titulo]))
+          for (const enr of seedEnrS as any[]) {
+            const seedTitle = seedTitleMapS.get(enr.serie_id) || ''
+            for (const tmdbId of (enr.similar_ids || []) as number[]) {
+              if (!userSimilarTmdbIds.includes(tmdbId)) { userSimilarTmdbIds.push(tmdbId); userSimilarReasons[tmdbId] = `Similar a ${seedTitle}` }
             }
           }
         }
       }
     }
 
-    // Add similar movies to candidate pool (they might not be in catalogos)
+    // Add similar items to candidate pool
     if (userSimilarTmdbIds.length > 0) {
-      const { data: simPels } = await supabase
-        .from('peliculas')
-        .select('id')
-        .in('tmdb_id', userSimilarTmdbIds.slice(0, 500))
-      if (simPels) {
-        for (const p of simPels) {
+      const simTable = isSeries ? 'series' : 'peliculas'
+      const { data: simItems } = await supabase.from(simTable).select('id').in('tmdb_id', userSimilarTmdbIds.slice(0, 500))
+      if (simItems) {
+        for (const p of simItems) {
           if (!allCandidatoIds.includes(p.id)) allCandidatoIds.push(p.id)
         }
       }
@@ -477,28 +527,41 @@ export default function ParaTi({
     const tienePerfilCompleto = !!perfil
 
     // Si no tiene perfil y no tiene historial, mostrar banner
-    const hasHistory = vistasRaw.length >= 5
+    const hasHistory = (vistasRaw.length + vistasSeriesRaw.length) >= 5
     if (!tienePerfilCompleto && !hasHistory) {
       setSinPerfil(true)
     } else {
       setSinPerfil(false)
     }
 
-    // 4. Fetch películas y enriquecimiento en paralelo por chunks
+    // 4. Fetch contenido y enriquecimiento según modo
     const pelMap: Record<string, any> = {}
     const enrMap: Record<string, any> = {}
     for (let i = 0; i < candidatoIds.length; i += 50) {
       const chunk = candidatoIds.slice(i, i + 50)
-      const [{ data: pels }, { data: enrs }] = await Promise.all([
-        supabase.from('peliculas')
-          .select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, poster_path, backdrop_path, categoria, imdb_id')
-          .in('id', chunk),
-        supabase.from('enriquecimiento')
-          .select('pelicula_id, generos, director, actores, compositor, sinopsis_chilensis, youtube_trailer_key, es_review_autor')
-          .in('pelicula_id', chunk),
-      ])
-      ;(pels ?? []).forEach((p: any) => { pelMap[p.id] = p })
-      ;(enrs ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
+      if (isSeries) {
+        const [{ data: sers }, { data: enrs }] = await Promise.all([
+          supabase.from('series')
+            .select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, episode_runtime, num_temporadas, poster_path, backdrop_path, categoria, imdb_id, tmdb_id, youtube_trailer_key')
+            .in('id', chunk),
+          supabase.from('enriquecimiento_series')
+            .select('serie_id, generos, director, actores, compositor, sinopsis_chilensis')
+            .in('serie_id', chunk),
+        ])
+        ;(sers ?? []).forEach((s: any) => { pelMap[s.id] = { ...s, anio: s.anio_inicio, runtime: s.episode_runtime, rt_score: null, metacritic_score: null, boxoffice: null, oscars: null } })
+        ;(enrs ?? []).forEach((e: any) => { enrMap[e.serie_id] = { ...e, pelicula_id: e.serie_id, youtube_trailer_key: null, es_review_autor: false } })
+      } else {
+        const [{ data: pels }, { data: enrs }] = await Promise.all([
+          supabase.from('peliculas')
+            .select('id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, poster_path, backdrop_path, categoria, imdb_id, tmdb_id')
+            .in('id', chunk),
+          supabase.from('enriquecimiento')
+            .select('pelicula_id, generos, director, actores, compositor, sinopsis_chilensis, youtube_trailer_key, es_review_autor')
+            .in('pelicula_id', chunk),
+        ])
+        ;(pels ?? []).forEach((p: any) => { pelMap[p.id] = p })
+        ;(enrs ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
+      }
     }
 
     // 5. Señal de seguidores
@@ -582,22 +645,36 @@ export default function ParaTi({
     let eraAvg = 2005
 
     if (hasHistory) {
+      // MIXED profile: ratings from both movies and series
       const ratingMap: Record<string, number> = {}
       vistasRaw.forEach((v: any) => { ratingMap[v.pelicula_id] = v.rating ?? 6 })
+      vistasSeriesRaw.forEach((v: any) => { ratingMap[v.serie_id] = v.rating ?? 6 })
 
-      const [{ data: pelisVistas }, { data: enrVistas }] = await Promise.all([
-        supabase.from('peliculas').select('id, anio').in('id', Array.from(vistasSet)),
-        supabase.from('enriquecimiento').select('pelicula_id, generos, director').in('pelicula_id', Array.from(vistasSet)),
+      const allVistaMovieIds = vistasRaw.map((v: any) => v.pelicula_id)
+      const allVistaSerieIds = vistasSeriesRaw.map((v: any) => v.serie_id)
+
+      const [{ data: pelisVistas }, { data: enrVistas }, { data: seriesVistas }, { data: enrSeriesVistas }] = await Promise.all([
+        allVistaMovieIds.length > 0 ? supabase.from('peliculas').select('id, anio').in('id', allVistaMovieIds) : { data: [] },
+        allVistaMovieIds.length > 0 ? supabase.from('enriquecimiento').select('pelicula_id, generos, director, actores').in('pelicula_id', allVistaMovieIds) : { data: [] },
+        allVistaSerieIds.length > 0 ? supabase.from('series').select('id, anio_inicio').in('id', allVistaSerieIds) : { data: [] },
+        allVistaSerieIds.length > 0 ? supabase.from('enriquecimiento_series').select('serie_id, generos, director, actores').in('serie_id', allVistaSerieIds) : { data: [] },
       ])
 
       const evMap: Record<string, any> = {}
       ;(enrVistas ?? []).forEach((e: any) => { evMap[e.pelicula_id] = e })
+      ;(enrSeriesVistas ?? []).forEach((e: any) => { evMap[e.serie_id] = { ...e, pelicula_id: e.serie_id } })
+
+      // Merge all watched items
+      const allWatchedItems = [
+        ...((pelisVistas ?? []) as any[]).map((p: any) => ({ id: p.id, anio: p.anio })),
+        ...((seriesVistas ?? []) as any[]).map((s: any) => ({ id: s.id, anio: s.anio_inicio })),
+      ]
 
       const genreWeight: Record<string, number> = {}
       const dirRatings: Record<string, number[]> = {}
       const years: number[] = []
 
-      ;(pelisVistas ?? []).forEach((p: any) => {
+      allWatchedItems.forEach((p: any) => {
         const r = ratingMap[p.id] ?? 6
         const enr = evMap[p.id]
         enr?.generos?.forEach((g: string) => { genreWeight[g] = (genreWeight[g] ?? 0) + r })
@@ -667,7 +744,7 @@ export default function ParaTi({
           rt_score: movie.rt_score ?? null, metacritic_score: movie.metacritic_score ?? null,
           runtime: movie.runtime ?? null, boxoffice: movie.boxoffice ?? null,
           oscars: movie.oscars ?? null, poster_path: movie.poster_path, backdrop_path: movie.backdrop_path ?? null, categoria: movie.categoria,
-          director: enr?.director ?? null, actores: enr?.actores ?? null,
+          director: enr?.director ?? null, actores: Array.isArray(enr?.actores) ? enr.actores.join(', ') : (enr?.actores ?? null),
           compositor: enr?.compositor ?? null, generos: enr?.generos ?? [],
           sinopsis: enr?.sinopsis_chilensis ?? null, razon: '', score: 0, plataformas: [],
           imdb_id: movie.imdb_id, youtube_trailer_key: enr?.youtube_trailer_key ?? null,
@@ -841,8 +918,10 @@ export default function ParaTi({
       if (!added) break // all pools exhausted
     }
 
-    // 10. Plataformas
-    const platMap = await fetchCatalogosHoy(balanced.map(r => r.id))
+    // 10. Plataformas según modo
+    const platMap = isSeries
+      ? await fetchCatalogosSeries(balanced.map(r => r.id))
+      : await fetchCatalogosHoy(balanced.map(r => r.id))
     balanced.forEach(r => { r.plataformas = platMap[r.id] ?? [] })
 
     // Aplicar penalidad por skips + jitter aleatorio

@@ -447,20 +447,29 @@ export default function ParaTi({
     if (allCandidatoIds.length === 0) { setCargando(false); return }
 
     // 2. Vistas del usuario (MIXTO: películas + series para el perfil)
+    const excludeSet = new Set<string>()
     let vistasRaw: any[] = []
     let vistasSeriesRaw: any[] = []
     if (user) {
-      const [{ data: pelVistas }, { data: serVistas }] = await Promise.all([
+      const [{ data: pelVistas }, { data: serVistas }, { data: pelWL }, { data: serWL }] = await Promise.all([
         supabase.from('user_peliculas').select('pelicula_id, rating, created_at').eq('user_id', user.id).eq('visto', true),
         supabase.from('user_series').select('serie_id, rating, created_at').eq('user_id', user.id).eq('visto', true),
+        supabase.from('user_peliculas').select('pelicula_id').eq('user_id', user.id).or('visto.eq.true,watchlist.eq.true'),
+        supabase.from('user_series').select('serie_id').eq('user_id', user.id).or('visto.eq.true,watchlist.eq.true'),
       ])
       vistasRaw = pelVistas ?? []
       vistasSeriesRaw = serVistas ?? []
+      // Exclude ALL interacted items (visto + watchlist)
+      if (isSeries) {
+        (serWL ?? []).forEach((r: any) => excludeSet.add(r.serie_id))
+      } else {
+        (pelWL ?? []).forEach((r: any) => excludeSet.add(r.pelicula_id))
+      }
     }
-    // Excluir del tipo actual
+    // Excluir del tipo actual — visto AND watchlist
     const idField = isSeries ? 'serie_id' : 'pelicula_id'
     const vistasActual = isSeries ? vistasSeriesRaw : vistasRaw
-    const vistasSet = new Set(vistasActual.map((v: any) => v[idField]))
+    const vistasSet = excludeSet
 
     // 2b. Fetch similar_ids from BOTH movies and series the user liked (mixed profile)
     let userSimilarTmdbIds: number[] = []

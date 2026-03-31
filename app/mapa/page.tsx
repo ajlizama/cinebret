@@ -58,6 +58,8 @@ export default function MapaPage() {
   const [searchResults, setSearchResults] = useState<GraphNode[]>([])
   const [showControls, setShowControls] = useState(false)
   const [showInstructions, setShowInstructions] = useState(true)
+  const [pathNodes, setPathNodes] = useState<string[]>([])
+  const [pathEdges, setPathEdges] = useState<Set<string>>(new Set())
   const fgRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
@@ -127,7 +129,7 @@ export default function MapaPage() {
     })
 
     // Create fresh node objects without stale x/y positions
-    const updatedNodes = limitedNodes.map(n => ({
+    const updatedNodes: GraphNode[] = limitedNodes.map(n => ({
       id: n.id, title: n.title, titleEs: n.titleEs, imdb: n.imdb,
       poster: n.poster, categoria: n.categoria, color: n.color,
       genres: n.genres,
@@ -144,9 +146,97 @@ export default function MapaPage() {
     return { nodes: updatedNodes, links: freshEdges }
   }, [rawGraph, nodeLimit])
 
-  // Search
+  // Find shortest path between two movies (Dijkstra with inverse weight = strongest path)
+  const findPath = useCallback((startId: string, endId: string): string[] | null => {
+    if (!graphData) return null
+    // Build adjacency list
+    const adj = new Map<string, { id: string; weight: number }[]>()
+    graphData.nodes.forEach(n => adj.set(n.id, []))
+    graphData.links.forEach(l => {
+      const sId = typeof l.source === 'object' ? (l.source as any).id : l.source
+      const tId = typeof l.target === 'object' ? (l.target as any).id : l.target
+      adj.get(sId)?.push({ id: tId, weight: l.weight })
+      adj.get(tId)?.push({ id: sId, weight: l.weight })
+    })
+
+    // Dijkstra (using inverse weight so we prefer stronger connections)
+    const dist = new Map<string, number>()
+    const prev = new Map<string, string | null>()
+    const visited = new Set<string>()
+    dist.set(startId, 0)
+    prev.set(startId, null)
+
+    while (true) {
+      let minDist = Infinity
+      let minNode: string | null = null
+      for (const [id, d] of dist) {
+        if (!visited.has(id) && d < minDist) { minDist = d; minNode = id }
+      }
+      if (!minNode || minNode === endId) break
+      visited.add(minNode)
+
+      for (const neighbor of (adj.get(minNode) || [])) {
+        if (visited.has(neighbor.id)) continue
+        // Cost = inverse of weight (stronger = cheaper = preferred)
+        const cost = 1 / (neighbor.weight || 0.1)
+        const newDist = minDist + cost
+        if (!dist.has(neighbor.id) || newDist < (dist.get(neighbor.id) || Infinity)) {
+          dist.set(neighbor.id, newDist)
+          prev.set(neighbor.id, minNode)
+        }
+      }
+    }
+
+    if (!prev.has(endId)) return null
+
+    // Reconstruct path
+    const path: string[] = []
+    let current: string | null = endId
+    while (current) {
+      path.unshift(current)
+      current = prev.get(current) || null
+    }
+    return path
+  }, [graphData])
+
+  // Search — detect "movie1, movie2" pattern for path finding
   useEffect(() => {
-    if (!searchQuery.trim() || !graphData) { setSearchResults([]); return }
+    if (!searchQuery.trim() || !graphData) { setSearchResults([]); setPathNodes([]); setPathEdges(new Set()); return }
+
+    // Check for path query (comma separated)
+    if (searchQuery.includes(',')) {
+      const parts = searchQuery.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+      if (parts.length >= 2) {
+        const nodeA = graphData.nodes.find(n => n.title.toLowerCase().includes(parts[0]) || n.titleEs?.toLowerCase().includes(parts[0]))
+        const nodeB = graphData.nodes.find(n => n.title.toLowerCase().includes(parts[1]) || n.titleEs?.toLowerCase().includes(parts[1]))
+        if (nodeA && nodeB) {
+          const path = findPath(nodeA.id, nodeB.id)
+          if (path && path.length > 0) {
+            setPathNodes(path)
+            // Build edge set for highlighting
+            const edges = new Set<string>()
+            for (let i = 0; i < path.length - 1; i++) {
+              edges.add([path[i], path[i + 1]].sort().join('-'))
+            }
+            setPathEdges(edges)
+            setSearchResults([])
+            setSelectedNode(null)
+            // Zoom to show the path
+            if (fgRef.current && path.length > 0) {
+              const pathNodeObjs = path.map(id => graphData.nodes.find(n => n.id === id)).filter(Boolean)
+              const avgX = pathNodeObjs.reduce((s, n) => s + (n?.x || 0), 0) / pathNodeObjs.length
+              const avgY = pathNodeObjs.reduce((s, n) => s + (n?.y || 0), 0) / pathNodeObjs.length
+              fgRef.current.centerAt(avgX, avgY, 1200)
+              fgRef.current.zoom(2, 1200)
+            }
+            return
+          }
+        }
+      }
+    }
+
+    setPathNodes([])
+    setPathEdges(new Set())
     const q = searchQuery.toLowerCase()
     const results = graphData.nodes
       .filter(n => n.title.toLowerCase().includes(q) || n.titleEs?.toLowerCase().includes(q))
@@ -194,12 +284,14 @@ export default function MapaPage() {
 
     const isHovered = hoveredNode?.id === node.id
     const isSelected = selectedNode?.id === node.id
+    const isOnPath = pathNodes.includes(node.id)
     const isConnectedToSelected = selectedNode && graphData?.links.some(l => {
       const sId = typeof l.source === 'object' ? (l.source as any).id : l.source
       const tId = typeof l.target === 'object' ? (l.target as any).id : l.target
       return (sId === selectedNode.id && tId === node.id) || (tId === selectedNode.id && sId === node.id)
     })
-    const dimmed = selectedNode && !isSelected && !isConnectedToSelected
+    const hasPath = pathNodes.length > 0
+    const dimmed = hasPath ? !isOnPath : (selectedNode && !isSelected && !isConnectedToSelected)
 
     ctx.save()
     ctx.globalAlpha = dimmed ? 0.25 : 1
@@ -215,7 +307,7 @@ export default function MapaPage() {
       const border = isSelected ? 2 : isHovered ? 1.5 : 1
 
       // Border
-      ctx.fillStyle = isSelected ? '#facc15' : isHovered ? '#ffffff' : node.color
+      ctx.fillStyle = isSelected ? '#facc15' : isOnPath ? '#facc15' : isHovered ? '#ffffff' : node.color
       ctx.beginPath()
       const br = 2
       ctx.roundRect(node.x - imgW / 2 - border, node.y - imgH / 2 - border, imgW + border * 2, imgH + border * 2, br + border)
@@ -263,24 +355,27 @@ export default function MapaPage() {
         ctx.fillText(node.title, node.x, node.y + size + 2)
       }
     }
-  }, [hoveredNode, selectedNode, imageCache, graphData])
+  }, [hoveredNode, selectedNode, imageCache, graphData, pathNodes])
 
   // Paint link
   const paintLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     const sId = typeof link.source === 'object' ? link.source.id : link.source
     const tId = typeof link.target === 'object' ? link.target.id : link.target
     const isConnected = selectedNode && (sId === selectedNode.id || tId === selectedNode.id)
-    const dimmed = selectedNode && !isConnected
+    const edgeKey = [sId, tId].sort().join('-')
+    const isPathEdge = pathEdges.has(edgeKey)
+    const hasPath = pathNodes.length > 0
+    const dimmed = hasPath ? !isPathEdge : (selectedNode && !isConnected)
 
     ctx.beginPath()
     ctx.moveTo(link.source.x, link.source.y)
     ctx.lineTo(link.target.x, link.target.y)
-    ctx.strokeStyle = dimmed ? 'rgba(255,255,255,0.03)' : isConnected ? 'rgba(250,204,21,0.7)' : `rgba(255,255,255,${Math.min(0.15, link.weight * 0.04)})`
-    ctx.lineWidth = isConnected ? 2 / globalScale : Math.max(0.2, link.weight * 0.3) / globalScale
+    ctx.strokeStyle = dimmed ? 'rgba(255,255,255,0.03)' : isPathEdge ? 'rgba(250,204,21,0.9)' : isConnected ? 'rgba(250,204,21,0.7)' : `rgba(255,255,255,${Math.min(0.15, link.weight * 0.04)})`
+    ctx.lineWidth = isPathEdge ? 3 / globalScale : isConnected ? 2 / globalScale : Math.max(0.2, link.weight * 0.3) / globalScale
     ctx.stroke()
 
-    // Show percentage label on connected links when zoomed enough
-    if (isConnected && globalScale > 1.5) {
+    // Show percentage label on path or connected links when zoomed enough
+    if ((isConnected || isPathEdge) && globalScale > 1.5) {
       const pct = Math.round((link.weight / 4) * 100)
       const midX = (link.source.x + link.target.x) / 2
       const midY = (link.source.y + link.target.y) / 2
@@ -300,7 +395,7 @@ export default function MapaPage() {
       ctx.fillStyle = '#facc15'
       ctx.fillText(`${pct}%`, midX, midY)
     }
-  }, [selectedNode])
+  }, [selectedNode, pathEdges, pathNodes])
 
   if (loading || !ForceGraph) {
     return (
@@ -330,7 +425,7 @@ export default function MapaPage() {
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Buscar..."
+                placeholder="Buscar o A, B..."
                 className="w-28 md:w-40 bg-transparent py-1.5 pr-2 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none"
               />
               {!showControls && (
@@ -519,6 +614,48 @@ export default function MapaPage() {
               )}
             </div>
           </>
+        )}
+
+        {/* Path result panel */}
+        {pathNodes.length > 0 && graphData && (
+          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-64 md:w-72 max-h-[70vh] overflow-y-auto">
+            <div className="p-3 border-b border-zinc-800 flex items-center justify-between">
+              <p className="text-xs text-zinc-400 font-semibold">Camino encontrado ({pathNodes.length - 1} pasos)</p>
+              <button onClick={() => { setPathNodes([]); setPathEdges(new Set()); setSearchQuery('') }} className="text-zinc-500 hover:text-white text-xs">✕</button>
+            </div>
+            <div className="p-3 space-y-1">
+              {pathNodes.map((id, i) => {
+                const node = graphData.nodes.find(n => n.id === id)
+                if (!node) return null
+                return (
+                  <div key={id}>
+                    <button
+                      onClick={() => focusNode(node)}
+                      className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
+                    >
+                      {node.poster ? (
+                        <img src={`https://image.tmdb.org/t/p/w92${node.poster}`} alt="" className="w-8 rounded object-cover shrink-0" style={{ aspectRatio: '2/3' }} />
+                      ) : (
+                        <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-[11px] font-medium line-clamp-1">{node.title}</p>
+                        <span className="text-yellow-400 text-[9px]">⭐ {node.imdb}</span>
+                      </div>
+                      {i === 0 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">INICIO</span>}
+                      {i === pathNodes.length - 1 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">FIN</span>}
+                    </button>
+                    {i < pathNodes.length - 1 && (
+                      <div className="flex items-center gap-1 pl-5 py-0.5">
+                        <div className="w-px h-3 bg-yellow-400/50" />
+                        <svg className="w-3 h-3 text-yellow-400/50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M12 5v14m0 0l-4-4m4 4l4-4"/></svg>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         )}
 
         {/* Hover tooltip (only when no selection) */}

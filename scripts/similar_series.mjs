@@ -90,8 +90,17 @@ async function main() {
   profiles.forEach(p => {
     new Set(p.keywords).forEach(k => { keywordDocCount[k] = (keywordDocCount[k] || 0) + 1 })
   })
+  // Exclude generic keywords (>15% of series)
+  const genericThreshold = Math.round(profiles.length * 0.15)
+  const genericKeywords = new Set()
+  for (const [kw, count] of Object.entries(keywordDocCount)) {
+    if (count > genericThreshold) genericKeywords.add(kw)
+  }
+  console.log(`Generic keywords excluded: ${[...genericKeywords].join(', ')}`)
+
   const keywordIdf = {}
   for (const [kw, count] of Object.entries(keywordDocCount)) {
+    if (genericKeywords.has(kw)) continue
     keywordIdf[kw] = Math.min(10, Math.max(1, Math.log(profiles.length / count)))
   }
 
@@ -99,13 +108,15 @@ async function main() {
     if (a.id === b.id) return -1
     let score = 0
 
-    // Keywords (40%)
+    // Keywords (43%) — generic keywords excluded
     if (a.keywords.length > 0 && b.keywords.length > 0) {
-      const shared = a.keywords.filter(k => b.keywords.includes(k))
+      const aKw = a.keywords.filter(k => !genericKeywords.has(k))
+      const bKw = b.keywords.filter(k => !genericKeywords.has(k))
+      const shared = aKw.filter(k => bKw.includes(k))
       if (shared.length > 0) {
         const idfSum = shared.reduce((sum, k) => sum + (keywordIdf[k] || 1), 0)
-        const maxIdf = Math.max(a.keywords.length, b.keywords.length) * 5
-        score += Math.min(40, (idfSum / maxIdf) * 40)
+        const maxIdf = Math.max(aKw.length, bKw.length) * 5
+        score += Math.min(43, (idfSum / maxIdf) * 43)
         const rareShared = shared.filter(k => (keywordDocCount[k] || 999) < 30).length
         score += rareShared >= 4 ? 15 : rareShared >= 2 ? 8 : 0
       }
@@ -134,16 +145,15 @@ async function main() {
       else if (diff === 10) score += 2
     }
 
-    // IMDB range (5%)
+    // IMDB range (8%)
     if (a.imdb > 0 && b.imdb > 0) {
       const diff = Math.abs(a.imdb - b.imdb)
-      if (diff <= 0.5) score += 5
-      else if (diff <= 1.0) score += 3
-      else if (diff <= 1.5) score += 1
+      if (diff <= 0.5) score += 8
+      else if (diff <= 1.0) score += 5
+      else if (diff <= 1.5) score += 2
     }
 
-    // Category (5%)
-    if (a.categoria && b.categoria && a.categoria === b.categoria) score += 5
+    // Category removed from scoring (was 5%)
 
     // Certification bonus
     if (a.certification && b.certification && a.certification === b.certification) score += 2

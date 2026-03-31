@@ -94,13 +94,22 @@ async function main() {
     const uniqueKws = new Set(p.keywords)
     uniqueKws.forEach(k => { keywordDocCount[k] = (keywordDocCount[k] || 0) + 1 })
   })
-  // IDF: log(totalDocs / docCount) - capped between 1 and 10
+  // Exclude generic keywords that appear in >15% of movies
+  const genericThreshold = Math.round(totalDocs * 0.15)
+  const genericKeywords = new Set()
+  for (const [kw, count] of Object.entries(keywordDocCount)) {
+    if (count > genericThreshold) genericKeywords.add(kw)
+  }
+  console.log(`Generic keywords excluded (>${genericThreshold} movies): ${[...genericKeywords].join(', ')}`)
+
+  // IDF: log(totalDocs / docCount) - capped between 1 and 10, skip generics
   const keywordIdf = {}
   for (const [kw, count] of Object.entries(keywordDocCount)) {
+    if (genericKeywords.has(kw)) continue
     keywordIdf[kw] = Math.min(10, Math.max(1, Math.log(totalDocs / count)))
   }
-  console.log(`Keyword IDF built. Most common: "${Object.entries(keywordDocCount).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,c])=>`${k}(${c})`).join(', ')}"`)
-  console.log(`Most rare (in 2+ movies): "${Object.entries(keywordDocCount).filter(([,c])=>c>=2).sort((a,b)=>a[1]-b[1]).slice(0,5).map(([k,c])=>`${k}(${c})`).join(', ')}"`)
+  console.log(`Keyword IDF built (${Object.keys(keywordIdf).length} keywords). Most common kept: "${Object.entries(keywordDocCount).filter(([k])=>!genericKeywords.has(k)).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,c])=>`${k}(${c})`).join(', ')}"`)
+  console.log(`Most rare (in 2+ movies): "${Object.entries(keywordDocCount).filter(([k,c])=>c>=2&&!genericKeywords.has(k)).sort((a,b)=>a[1]-b[1]).slice(0,5).map(([k,c])=>`${k}(${c})`).join(', ')}"`)
 
   // Similarity function
   function similarity(a, b) {
@@ -108,17 +117,17 @@ async function main() {
 
     let score = 0
 
-    // 1. KEYWORDS with TF-IDF weighting (40% weight)
-    // Rare shared keywords (like "prison" in only 5 movies) score much higher
-    // than common ones (like "based on novel or book" in 200 movies)
+    // 1. KEYWORDS with TF-IDF weighting (43% weight)
+    // Generic keywords excluded, rare shared keywords score highest
     if (a.keywords.length > 0 && b.keywords.length > 0) {
-      const shared = a.keywords.filter(k => b.keywords.includes(k))
+      // Filter out generic keywords before comparing
+      const aKw = a.keywords.filter(k => !genericKeywords.has(k))
+      const bKw = b.keywords.filter(k => !genericKeywords.has(k))
+      const shared = aKw.filter(k => bKw.includes(k))
       if (shared.length > 0) {
-        // Sum IDF weights of shared keywords (rare = high weight)
         const idfSum = shared.reduce((sum, k) => sum + (keywordIdf[k] || 1), 0)
-        // Normalize by max possible IDF sum
-        const maxIdf = Math.max(a.keywords.length, b.keywords.length) * 5 // avg IDF ~5
-        const keywordScore = Math.min(40, (idfSum / maxIdf) * 40)
+        const maxIdf = Math.max(aKw.length, bKw.length) * 5
+        const keywordScore = Math.min(43, (idfSum / maxIdf) * 43)
         // Bonus for many rare shared keywords
         const rareShared = shared.filter(k => (keywordDocCount[k] || 999) < 30).length
         const bonus = rareShared >= 4 ? 15 : rareShared >= 2 ? 8 : 0
@@ -130,48 +139,40 @@ async function main() {
     if (a.genres.length > 0 && b.genres.length > 0) {
       const shared = a.genres.filter(g => b.genres.includes(g))
       if (shared.length > 0) {
-        // More shared genres = higher score, with diminishing returns
         const genreRatio = shared.length / Math.max(a.genres.length, b.genres.length)
         score += genreRatio * 25
-        // Exact genre match bonus
         if (shared.length >= 2) score += 5
       }
     }
 
     // 3. DIRECTOR (15% weight)
-    // Same director is a very strong signal
     const sharedDirectors = a.directors.filter(d => b.directors.some(bd => bd.includes(d) || d.includes(bd)))
     if (sharedDirectors.length > 0) {
       score += 15
     }
 
     // 4. COMPOSITOR (5% weight)
-    // Same composer suggests similar tone/feel
     if (a.compositor && b.compositor && a.compositor === b.compositor && a.compositor !== 'unknown') {
       score += 5
     }
 
     // 5. DECADE/ERA (5% weight)
-    // Movies from the same era share aesthetic sensibilities
     if (a.decade && b.decade) {
       const decadeDiff = Math.abs(a.decade - b.decade)
       if (decadeDiff === 0) score += 5
       else if (decadeDiff === 10) score += 2
     }
 
-    // 6. IMDB RANGE (5% weight)
-    // Similar quality level
+    // 6. IMDB RANGE (8% weight — up from 5%)
     if (a.imdb > 0 && b.imdb > 0) {
       const diff = Math.abs(a.imdb - b.imdb)
-      if (diff <= 0.5) score += 5
-      else if (diff <= 1.0) score += 3
-      else if (diff <= 1.5) score += 1
+      if (diff <= 0.5) score += 8
+      else if (diff <= 1.0) score += 5
+      else if (diff <= 1.5) score += 2
     }
 
-    // 7. MOOD/CATEGORY (5% weight)
-    if (a.categoria && b.categoria && a.categoria === b.categoria) {
-      score += 5
-    }
+    // 7. CATEGORY removed from scoring (was 5%, now 0%)
+    // Category is CineBret-assigned via AI, circular to include in similarity
 
     // 8. CERTIFICATION (bonus for same audience)
     if (a.certification && b.certification && a.certification === b.certification) {

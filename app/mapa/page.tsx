@@ -286,7 +286,7 @@ export default function MapaPage() {
       <Nav />
       <div ref={containerRef} className="relative">
         {/* Controls panel — top left */}
-        <div className="absolute top-2 left-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2.5 space-y-2.5 w-56">
+        <div className="absolute top-2 left-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2.5 space-y-2.5 w-48 md:w-56">
           {/* Search */}
           <div className="relative">
             <input
@@ -352,86 +352,167 @@ export default function MapaPage() {
           <p className="text-[9px] text-zinc-600">{graphData?.nodes.length} nodos · {graphData?.links.length} conexiones</p>
         </div>
 
-        {/* Selected node panel — top right */}
+        {/* Selected node panel — desktop: sidebar, mobile: bottom sheet */}
         {selectedNode && (
-          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-72 max-h-[80vh] overflow-y-auto">
-            {/* Header */}
-            <div className="p-3 border-b border-zinc-800">
-              <div className="flex items-start gap-3">
-                {selectedNode.poster && (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
-                    alt=""
-                    className="w-16 rounded-lg object-cover shrink-0"
-                    style={{ aspectRatio: '2/3' }}
-                  />
-                )}
-                <div className="min-w-0">
-                  <p className="text-white text-sm font-bold leading-tight">{selectedNode.title}</p>
-                  {selectedNode.title !== selectedNode.titleEs && (
-                    <p className="text-zinc-500 text-[10px] mt-0.5">{selectedNode.titleEs}</p>
-                  )}
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-yellow-400 text-xs font-bold">⭐ {selectedNode.imdb}</span>
-                    <span className="text-zinc-500 text-[10px]">{selectedNode.connections} conexiones</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    {selectedNode.genres.map(g => (
-                      <span key={g} className="text-[8px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
-                    className="mt-2 text-[10px] text-yellow-400 hover:text-yellow-300 font-medium"
-                  >
-                    Ver ficha completa →
-                  </button>
+          <>
+            {/* Mobile: bottom sheet overlay */}
+            <div className="md:hidden fixed inset-0 z-20" onClick={() => setSelectedNode(null)}>
+              <div className="absolute inset-0 bg-black/60" />
+              <div className="absolute bottom-0 left-0 right-0 bg-zinc-950 rounded-t-3xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                {/* Drag handle */}
+                <div className="flex justify-center pt-3 pb-1">
+                  <div className="w-10 h-1 bg-zinc-700 rounded-full" />
                 </div>
+
+                {/* Hero: poster + backdrop gradient */}
+                <div className="relative px-5 pt-2 pb-4">
+                  <div className="flex items-end gap-4">
+                    {selectedNode.poster && (
+                      <img
+                        src={`https://image.tmdb.org/t/p/w342${selectedNode.poster}`}
+                        alt=""
+                        className="w-28 rounded-xl shadow-2xl shrink-0"
+                        style={{ aspectRatio: '2/3', border: `3px solid ${selectedNode.color}` }}
+                      />
+                    )}
+                    <div className="flex-1 min-w-0 pb-1">
+                      <h2 className="text-white text-xl font-black leading-tight">{selectedNode.title}</h2>
+                      {selectedNode.title !== selectedNode.titleEs && (
+                        <p className="text-zinc-500 text-xs mt-0.5">{selectedNode.titleEs}</p>
+                      )}
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="text-yellow-400 text-lg font-black flex items-center gap-1">
+                          <svg className="w-4 h-4 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                          {selectedNode.imdb}
+                        </span>
+                        <span className="text-zinc-500 text-sm">{selectedNode.connections} conexiones</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {selectedNode.genres.map(g => (
+                          <span key={g} className="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">{g}</span>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
+                        className="mt-3 text-xs text-yellow-400 font-semibold"
+                      >
+                        Ver ficha completa →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Connected movies — poster grid */}
+                {connectedNodes.length > 0 && (
+                  <div className="px-5 pb-8">
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3 font-semibold">
+                      Si te gustó {selectedNode.title}
+                    </p>
+                    <div className="grid grid-cols-4 gap-2.5">
+                      {connectedNodes.map(({ node: cn, weight }) => (
+                        <button
+                          key={cn.id}
+                          onClick={() => focusNode(cn)}
+                          className="text-center group"
+                        >
+                          <div className="relative">
+                            {cn.poster ? (
+                              <img
+                                src={`https://image.tmdb.org/t/p/w154${cn.poster}`}
+                                alt=""
+                                className="w-full rounded-lg shadow-lg group-hover:ring-2 ring-yellow-400 transition-all"
+                                style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }}
+                              />
+                            ) : (
+                              <div className="w-full rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }} />
+                            )}
+                            <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
+                              <span className="text-yellow-400 text-[9px] font-bold">{cn.imdb}</span>
+                            </div>
+                          </div>
+                          <p className="text-white text-[10px] font-medium mt-1 line-clamp-2 leading-tight">{cn.title}</p>
+                        </button>
+                      ))}
+                    </div>
+                    {/* CineBret watermark for screenshots */}
+                    <div className="flex items-center justify-center gap-2 mt-5 opacity-40">
+                      <img src="/logo-oficial.png" alt="CineBret" className="h-5 w-auto" />
+                      <span className="text-zinc-500 text-[10px]">cinebret.cl/mapa</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Connected movies */}
-            {connectedNodes.length > 0 && (
-              <div className="p-3">
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-2">
-                  Conectada con ({connectedNodes.length})
-                </p>
-                <div className="space-y-1.5">
-                  {connectedNodes.map(({ node: cn, weight }) => (
+            {/* Desktop: sidebar */}
+            <div className="hidden md:block absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-72 max-h-[80vh] overflow-y-auto">
+              <div className="p-3 border-b border-zinc-800">
+                <div className="flex items-start gap-3">
+                  {selectedNode.poster && (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
+                      alt=""
+                      className="w-16 rounded-lg object-cover shrink-0"
+                      style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
+                    />
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-white text-sm font-bold leading-tight">{selectedNode.title}</p>
+                    {selectedNode.title !== selectedNode.titleEs && (
+                      <p className="text-zinc-500 text-[10px] mt-0.5">{selectedNode.titleEs}</p>
+                    )}
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-yellow-400 text-xs font-bold">⭐ {selectedNode.imdb}</span>
+                      <span className="text-zinc-500 text-[10px]">{selectedNode.connections} conexiones</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {selectedNode.genres.map(g => (
+                        <span key={g} className="text-[8px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
+                      ))}
+                    </div>
                     <button
-                      key={cn.id}
-                      onClick={() => focusNode(cn)}
-                      className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
+                      onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
+                      className="mt-2 text-[10px] text-yellow-400 hover:text-yellow-300 font-medium"
                     >
-                      {cn.poster ? (
-                        <img
-                          src={`https://image.tmdb.org/t/p/w92${cn.poster}`}
-                          alt=""
-                          className="w-8 rounded object-cover shrink-0"
-                          style={{ aspectRatio: '2/3' }}
-                        />
-                      ) : (
-                        <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-[11px] font-medium line-clamp-1">{cn.title}</p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-yellow-400 text-[9px]">⭐ {cn.imdb}</span>
-                          <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-yellow-400/60 rounded-full"
-                              style={{ width: `${(weight / 4) * 100}%` }}
-                            />
-                          </div>
-                          <span className="text-zinc-600 text-[8px]">{weight.toFixed(1)}</span>
-                        </div>
-                      </div>
+                      Ver ficha completa →
                     </button>
-                  ))}
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
+              {connectedNodes.length > 0 && (
+                <div className="p-3">
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-2">
+                    Si te gustó {selectedNode.title}
+                  </p>
+                  <div className="space-y-1.5">
+                    {connectedNodes.map(({ node: cn, weight }) => (
+                      <button
+                        key={cn.id}
+                        onClick={() => focusNode(cn)}
+                        className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
+                      >
+                        {cn.poster ? (
+                          <img src={`https://image.tmdb.org/t/p/w92${cn.poster}`} alt="" className="w-8 rounded object-cover shrink-0" style={{ aspectRatio: '2/3' }} />
+                        ) : (
+                          <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-[11px] font-medium line-clamp-1">{cn.title}</p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-yellow-400 text-[9px]">⭐ {cn.imdb}</span>
+                            <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                              <div className="h-full bg-yellow-400/60 rounded-full" style={{ width: `${(weight / 4) * 100}%` }} />
+                            </div>
+                            <span className="text-zinc-600 text-[8px]">{weight.toFixed(1)}</span>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
         )}
 
         {/* Hover tooltip (only when no selection) */}

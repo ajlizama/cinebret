@@ -372,8 +372,13 @@ export default function ParaTi({
   const scrollKey = `${cacheKey}-scroll`
   const interactedKey = `${cacheKey}-dirty`
 
+  const computeIdRef = useRef(0)
+
   useEffect(() => {
     if (!user && !preferenciasExternas) return
+
+    // Cancel any previous compute by incrementing the ID
+    const thisComputeId = ++computeIdRef.current
 
     // Try to restore from cache if user hasn't interacted
     try {
@@ -385,7 +390,6 @@ export default function ParaTi({
         if (parsed.length > 0) {
           setRecs(parsed)
           if (cachedPage) setPage(parseInt(cachedPage, 10))
-          // Restore scroll position after render
           requestAnimationFrame(() => {
             const savedScroll = sessionStorage.getItem(scrollKey)
             if (savedScroll && scrollRef.current) {
@@ -399,7 +403,8 @@ export default function ParaTi({
 
     // Clear dirty flag and compute fresh
     try { sessionStorage.removeItem(interactedKey) } catch {}
-    compute()
+    // Pass computeId so compute can check if it's still the current one
+    compute(thisComputeId)
   }, [user, preferenciasExternas, mode])
 
   useEffect(() => {
@@ -434,7 +439,7 @@ export default function ParaTi({
     )
   }
 
-  const compute = async () => {
+  const compute = async (computeId?: number) => {
     setCargando(true)
 
     // 1. Candidatos según modo
@@ -930,6 +935,8 @@ export default function ParaTi({
       score: r.score * getSkipPenalty(r.id) * (0.92 + Math.random() * 0.16)
     }))
     const sorted = final.sort((a, b) => b.score - a.score)
+    // Only apply results if this compute is still the current one (prevents race condition)
+    if (computeId !== undefined && computeId !== computeIdRef.current) return
     setRecs(sorted)
     try { sessionStorage.setItem(cacheKey, JSON.stringify(sorted)) } catch {}
     setCargando(false)

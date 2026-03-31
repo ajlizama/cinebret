@@ -68,28 +68,24 @@ async function main() {
       const target = tmdbToMovie.get(tmdbId)
       if (!target || target.id === movie.id) continue
 
-      // Bidirectional check: only create edge if both reference each other in top 20
+      // Bidirectional only: A→B must have B→A in top 20
       const targetEnr = enrMap.get(target.id)
       const targetSimilar = (targetEnr?.similar_ids || []).slice(0, 20)
       const isBidirectional = movie.tmdb_id && targetSimilar.includes(movie.tmdb_id)
+      if (!isBidirectional) continue
 
-      // Edge key (sorted to avoid duplicates)
       const key = [movie.id, target.id].sort().join('-')
       if (edgeSet.has(key)) continue
       edgeSet.add(key)
 
-      // Position in similar list = weight (closer = stronger)
       const posA = topSimilar.indexOf(tmdbId)
-      const posB = isBidirectional ? targetSimilar.indexOf(movie.tmdb_id) : -1
-      const weight = isBidirectional
-        ? 2 + (10 - posA) / 10 + (20 - Math.max(posB, 0)) / 20 // strong: 2-4
-        : 0.5 + (10 - posA) / 10 // weak: 0.5-1.5
+      const posB = targetSimilar.indexOf(movie.tmdb_id)
+      const weight = 2 + (10 - posA) / 10 + (20 - Math.max(posB, 0)) / 20
 
       edges.push({
         source: movie.id,
         target: target.id,
         weight: Math.round(weight * 100) / 100,
-        bidirectional: isBidirectional,
       })
 
       connectionCount.set(movie.id, (connectionCount.get(movie.id) || 0) + 1)

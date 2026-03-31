@@ -1,12 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Nav from '@/components/Nav'
-import dynamic from 'next/dynamic'
-
-// ForceGraph2D must be loaded client-side only (uses canvas/webgl)
-const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), { ssr: false })
 
 type GraphNode = {
   id: string
@@ -26,10 +22,9 @@ type GraphEdge = {
   source: string | GraphNode
   target: string | GraphNode
   weight: number
-  bidirectional: boolean
 }
 
-type GraphData = {
+type RawGraph = {
   nodes: GraphNode[]
   edges: GraphEdge[]
 }
@@ -48,18 +43,31 @@ const CAT_COLORS: Record<string, string> = {
   "Pa' llorar a moco tendido": '#a855f7',
 }
 
+const LIMIT_OPTIONS = [500, 1000, 1500, 2000, 3000]
+
 export default function MapaPage() {
   const router = useRouter()
-  const [graphData, setGraphData] = useState<{ nodes: GraphNode[]; links: GraphEdge[] } | null>(null)
+  const [rawGraph, setRawGraph] = useState<RawGraph | null>(null)
   const [loading, setLoading] = useState(true)
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null)
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null)
   const [imageCache, setImageCache] = useState<Record<string, HTMLImageElement>>({})
+  const [ForceGraph, setForceGraph] = useState<any>(null)
+  const [nodeLimit, setNodeLimit] = useState(1000)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<GraphNode[]>([])
   const fgRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
 
-  // Resize handler
+  // Load ForceGraph2D dynamically
+  useEffect(() => {
+    import('react-force-graph-2d').then(mod => {
+      setForceGraph(() => mod.default)
+    })
+  }, [])
+
+  // Resize
   useEffect(() => {
     const update = () => {
       if (containerRef.current) {
@@ -74,15 +82,14 @@ export default function MapaPage() {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Load graph data
+  // Load raw graph data
   useEffect(() => {
     fetch('/movie-graph.json')
       .then(r => r.json())
-      .then((data: GraphData) => {
-        // Preload poster images for visible nodes
+      .then((data: RawGraph) => {
+        // Preload images
         const imgs: Record<string, HTMLImageElement> = {}
-        const topNodes = [...data.nodes].sort((a, b) => b.connections - a.connections).slice(0, 500)
-        topNodes.forEach(n => {
+        data.nodes.forEach(n => {
           if (n.poster) {
             const img = new Image()
             img.crossOrigin = 'anonymous'
@@ -91,84 +98,161 @@ export default function MapaPage() {
           }
         })
         setImageCache(imgs)
-
-        setGraphData({
-          nodes: data.nodes,
-          links: data.edges,
-        })
+        setRawGraph(data)
         setLoading(false)
       })
   }, [])
 
-  // Draw node
-  const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
-    const size = Math.max(4, Math.min(12, 3 + node.connections / 3))
-    const isHovered = hoveredNode?.id === node.id
-    const isSelected = selectedNode?.id === node.id
-    const isConnectedToSelected = selectedNode && graphData?.links.some(
-      l => {
+  // Filter graph by IMDB limit
+  const graphData = useMemo(() => {
+    if (!rawGraph) return null
+    // Sort by IMDB desc, take top N
+    const sortedNodes = [...rawGraph.nodes].sort((a, b) => (b.imdb || 0) - (a.imdb || 0))
+    const limitedNodes = sortedNodes.slice(0, nodeLimit)
+    const nodeIds = new Set(limitedNodes.map(n => n.id))
+
+    // Recount connections within the limited set
+    const connCount = new Map<string, number>()
+    const filteredEdges = rawGraph.edges.filter(e => {
+      const sId = typeof e.source === 'object' ? (e.source as any).id : e.source
+      const tId = typeof e.target === 'object' ? (e.target as any).id : e.target
+      if (nodeIds.has(sId) && nodeIds.has(tId)) {
+        connCount.set(sId, (connCount.get(sId) || 0) + 1)
+        connCount.set(tId, (connCount.get(tId) || 0) + 1)
+        return true
+      }
+      return false
+    })
+
+    const updatedNodes = limitedNodes.map(n => ({
+      ...n,
+      connections: connCount.get(n.id) || 0,
+    }))
+
+    return { nodes: updatedNodes, links: filteredEdges }
+  }, [rawGraph, nodeLimit])
+
+  // Search
+  useEffect(() => {
+    if (!searchQuery.trim() || !graphData) { setSearchResults([]); return }
+    const q = searchQuery.toLowerCase()
+    const results = graphData.nodes
+      .filter(n => n.title.toLowerCase().includes(q) || n.titleEs?.toLowerCase().includes(q))
+      .sort((a, b) => (b.imdb || 0) - (a.imdb || 0))
+      .slice(0, 8)
+    setSearchResults(results)
+  }, [searchQuery, graphData])
+
+  const focusNode = useCallback((node: GraphNode) => {
+    setSelectedNode(node)
+    setSearchQuery('')
+    setSearchResults([])
+    if (fgRef.current) {
+      fgRef.current.centerAt(node.x, node.y, 800)
+      fgRef.current.zoom(4, 800)
+    }
+  }, [])
+
+  // Get connected nodes for selected
+  const connectedNodes = useMemo(() => {
+    if (!selectedNode || !graphData) return []
+    const nodeMap = new Map(graphData.nodes.map(n => [n.id, n]))
+    return graphData.links
+      .filter(l => {
         const sId = typeof l.source === 'object' ? (l.source as any).id : l.source
         const tId = typeof l.target === 'object' ? (l.target as any).id : l.target
-        return (sId === selectedNode.id && tId === node.id) || (tId === selectedNode.id && sId === node.id)
-      }
-    )
+        return sId === selectedNode.id || tId === selectedNode.id
+      })
+      .map(l => {
+        const sId = typeof l.source === 'object' ? (l.source as any).id : l.source
+        const tId = typeof l.target === 'object' ? (l.target as any).id : l.target
+        const otherId = sId === selectedNode.id ? tId : sId
+        return { node: nodeMap.get(otherId)!, weight: l.weight }
+      })
+      .filter(c => c.node)
+      .sort((a, b) => b.weight - a.weight)
+  }, [selectedNode, graphData])
+
+  // Paint node — colored circle at distance, poster when zoomed in
+  const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
+    const minSize = 3
+    const maxSize = 16
+    const size = Math.max(minSize, Math.min(maxSize, minSize + (node.connections / 1.5)))
+
+    const isHovered = hoveredNode?.id === node.id
+    const isSelected = selectedNode?.id === node.id
+    const isConnectedToSelected = selectedNode && graphData?.links.some(l => {
+      const sId = typeof l.source === 'object' ? (l.source as any).id : l.source
+      const tId = typeof l.target === 'object' ? (l.target as any).id : l.target
+      return (sId === selectedNode.id && tId === node.id) || (tId === selectedNode.id && sId === node.id)
+    })
     const dimmed = selectedNode && !isSelected && !isConnectedToSelected
 
-    // Try to draw poster
+    ctx.save()
+    ctx.globalAlpha = dimmed ? 0.1 : 1
+
+    const showPoster = globalScale > 2
     const img = imageCache[node.id]
-    if (img && img.complete && img.naturalWidth > 0 && globalScale > 1.5) {
-      const imgSize = size * 2.5
-      ctx.save()
-      ctx.globalAlpha = dimmed ? 0.15 : 1
-      // Rounded rect clip
-      const r = imgSize * 0.15
+    const hasPoster = img && img.complete && img.naturalWidth > 0
+
+    if (showPoster && hasPoster) {
+      // Poster mode: rectangular poster with colored border
+      const imgW = size * 2.2
+      const imgH = imgW * 1.5
+      const border = isSelected ? 2 : isHovered ? 1.5 : 1
+
+      // Border
+      ctx.fillStyle = isSelected ? '#facc15' : isHovered ? '#ffffff' : node.color
       ctx.beginPath()
-      ctx.moveTo(node.x - imgSize / 2 + r, node.y - imgSize * 0.75)
-      ctx.lineTo(node.x + imgSize / 2 - r, node.y - imgSize * 0.75)
-      ctx.quadraticCurveTo(node.x + imgSize / 2, node.y - imgSize * 0.75, node.x + imgSize / 2, node.y - imgSize * 0.75 + r)
-      ctx.lineTo(node.x + imgSize / 2, node.y + imgSize * 0.75 - r)
-      ctx.quadraticCurveTo(node.x + imgSize / 2, node.y + imgSize * 0.75, node.x + imgSize / 2 - r, node.y + imgSize * 0.75)
-      ctx.lineTo(node.x - imgSize / 2 + r, node.y + imgSize * 0.75)
-      ctx.quadraticCurveTo(node.x - imgSize / 2, node.y + imgSize * 0.75, node.x - imgSize / 2, node.y + imgSize * 0.75 - r)
-      ctx.lineTo(node.x - imgSize / 2, node.y - imgSize * 0.75 + r)
-      ctx.quadraticCurveTo(node.x - imgSize / 2, node.y - imgSize * 0.75, node.x - imgSize / 2 + r, node.y - imgSize * 0.75)
+      const br = 2
+      ctx.roundRect(node.x - imgW / 2 - border, node.y - imgH / 2 - border, imgW + border * 2, imgH + border * 2, br + border)
+      ctx.fill()
+
+      // Poster
+      ctx.beginPath()
+      ctx.roundRect(node.x - imgW / 2, node.y - imgH / 2, imgW, imgH, br)
       ctx.closePath()
       ctx.clip()
-      ctx.drawImage(img, node.x - imgSize / 2, node.y - imgSize * 0.75, imgSize, imgSize * 1.5)
+      ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
       ctx.restore()
 
-      // Border for selected/hovered
-      if (isSelected || isHovered) {
-        ctx.strokeStyle = isSelected ? '#facc15' : '#ffffff'
-        ctx.lineWidth = isSelected ? 2 / globalScale : 1 / globalScale
-        ctx.beginPath()
-        ctx.rect(node.x - imgSize / 2, node.y - imgSize * 0.75, imgSize, imgSize * 1.5)
-        ctx.stroke()
+      // Title below poster
+      if (globalScale > 3 && !dimmed) {
+        const fontSize = Math.max(2, 10 / globalScale)
+        ctx.font = `bold ${fontSize}px sans-serif`
+        ctx.textAlign = 'center'
+        ctx.fillStyle = 'rgba(0,0,0,0.8)'
+        ctx.fillText(node.title, node.x + 0.3, node.y + imgH / 2 + 2.3)
+        ctx.fillStyle = '#ffffff'
+        ctx.fillText(node.title, node.x, node.y + imgH / 2 + 2)
       }
     } else {
-      // Fallback: colored circle
+      // Circle mode: colored dot
       ctx.beginPath()
       ctx.arc(node.x, node.y, size, 0, 2 * Math.PI)
-      ctx.fillStyle = dimmed ? `${node.color}30` : node.color
+      ctx.fillStyle = dimmed ? `${node.color}20` : node.color
       ctx.fill()
 
       if (isSelected || isHovered) {
         ctx.strokeStyle = isSelected ? '#facc15' : '#ffffff'
-        ctx.lineWidth = 2 / globalScale
+        ctx.lineWidth = (isSelected ? 3 : 2) / globalScale
         ctx.stroke()
       }
-    }
 
-    // Title label when zoomed in
-    if (globalScale > 3 && !dimmed) {
-      ctx.font = `${Math.max(2, 10 / globalScale)}px sans-serif`
-      ctx.textAlign = 'center'
-      ctx.fillStyle = '#ffffff'
-      ctx.fillText(node.title, node.x, node.y + size + 3)
+      ctx.restore()
+
+      // Title
+      if (globalScale > 3.5 && !dimmed) {
+        const fontSize = Math.max(2, 9 / globalScale)
+        ctx.font = `bold ${fontSize}px sans-serif`
+        ctx.textAlign = 'center'
+        ctx.fillStyle = '#ffffff'
+        ctx.fillText(node.title, node.x, node.y + size + 2)
+      }
     }
   }, [hoveredNode, selectedNode, imageCache, graphData])
 
-  // Draw link
+  // Paint link
   const paintLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     const sId = typeof link.source === 'object' ? link.source.id : link.source
     const tId = typeof link.target === 'object' ? link.target.id : link.target
@@ -183,7 +267,7 @@ export default function MapaPage() {
     ctx.stroke()
   }, [selectedNode])
 
-  if (loading) {
+  if (loading || !ForceGraph) {
     return (
       <main className="min-h-screen bg-zinc-950">
         <Nav />
@@ -201,60 +285,173 @@ export default function MapaPage() {
     <main className="min-h-screen bg-zinc-950 overflow-hidden">
       <Nav />
       <div ref={containerRef} className="relative">
-        {/* Legend */}
-        <div className="absolute top-2 left-2 z-10 bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2 space-y-1">
-          <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-1">Categorías</p>
-          {Object.entries(CAT_COLORS).map(([cat, color]) => (
-            <div key={cat} className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
-              <span className="text-[10px] text-zinc-400">{CAT_LABELS[cat] || cat}</span>
+        {/* Controls panel — top left */}
+        <div className="absolute top-2 left-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2.5 space-y-2.5 w-56">
+          {/* Search */}
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Buscar película..."
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
+            />
+            {searchResults.length > 0 && (
+              <div className="absolute top-full mt-1 left-0 right-0 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl overflow-hidden max-h-60 overflow-y-auto z-20">
+                {searchResults.map(n => (
+                  <button
+                    key={n.id}
+                    onClick={() => focusNode(n)}
+                    className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 text-left"
+                  >
+                    {n.poster && (
+                      <img src={`https://image.tmdb.org/t/p/w92${n.poster}`} alt="" className="w-6 h-9 rounded object-cover shrink-0" />
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-white text-xs font-medium line-clamp-1">{n.title}</p>
+                      <span className="text-yellow-400 text-[10px]">⭐ {n.imdb}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Node limit slider */}
+          <div>
+            <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+              <span>Películas en mapa</span>
+              <span className="text-white font-bold">{nodeLimit}</span>
             </div>
-          ))}
-          <p className="text-[10px] text-zinc-600 mt-2">{graphData?.nodes.length} películas · {graphData?.links.length} conexiones</p>
+            <input
+              type="range"
+              min={200}
+              max={rawGraph?.nodes.length || 3000}
+              step={100}
+              value={nodeLimit}
+              onChange={e => { setNodeLimit(Number(e.target.value)); setSelectedNode(null); if (fgRef.current) fgRef.current.d3ReheatSimulation() }}
+              className="w-full accent-yellow-400"
+            />
+            <div className="flex justify-between text-[9px] text-zinc-600">
+              <span>Top 200</span>
+              <span>Todas ({rawGraph?.nodes.length})</span>
+            </div>
+          </div>
+
+          {/* Legend */}
+          <div className="border-t border-zinc-800 pt-2">
+            <p className="text-[9px] text-zinc-600 uppercase tracking-wide mb-1">Categorías</p>
+            {Object.entries(CAT_COLORS).map(([cat, color]) => (
+              <div key={cat} className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                <span className="text-[9px] text-zinc-500">{CAT_LABELS[cat]}</span>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-[9px] text-zinc-600">{graphData?.nodes.length} nodos · {graphData?.links.length} conexiones</p>
         </div>
 
-        {/* Selected node info */}
-        {(selectedNode || hoveredNode) && (
-          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-4 py-3 max-w-xs">
-            <div className="flex items-start gap-3">
-              {(selectedNode || hoveredNode)!.poster && (
-                <img
-                  src={`https://image.tmdb.org/t/p/w92${(selectedNode || hoveredNode)!.poster}`}
-                  alt=""
-                  className="w-12 h-18 rounded object-cover shrink-0"
-                />
-              )}
-              <div>
-                <p className="text-white text-sm font-bold">{(selectedNode || hoveredNode)!.title}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-yellow-400 text-xs font-bold">⭐ {(selectedNode || hoveredNode)!.imdb}</span>
-                  <span className="text-zinc-500 text-[10px]">{(selectedNode || hoveredNode)!.connections} conexiones</span>
-                </div>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {(selectedNode || hoveredNode)!.genres.map(g => (
-                    <span key={g} className="text-[9px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
-                  ))}
-                </div>
-                {selectedNode && (
+        {/* Selected node panel — top right */}
+        {selectedNode && (
+          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-72 max-h-[80vh] overflow-y-auto">
+            {/* Header */}
+            <div className="p-3 border-b border-zinc-800">
+              <div className="flex items-start gap-3">
+                {selectedNode.poster && (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
+                    alt=""
+                    className="w-16 rounded-lg object-cover shrink-0"
+                    style={{ aspectRatio: '2/3' }}
+                  />
+                )}
+                <div className="min-w-0">
+                  <p className="text-white text-sm font-bold leading-tight">{selectedNode.title}</p>
+                  {selectedNode.title !== selectedNode.titleEs && (
+                    <p className="text-zinc-500 text-[10px] mt-0.5">{selectedNode.titleEs}</p>
+                  )}
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-yellow-400 text-xs font-bold">⭐ {selectedNode.imdb}</span>
+                    <span className="text-zinc-500 text-[10px]">{selectedNode.connections} conexiones</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {selectedNode.genres.map(g => (
+                      <span key={g} className="text-[8px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
+                    ))}
+                  </div>
                   <button
                     onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
-                    className="mt-2 text-xs text-yellow-400 hover:text-yellow-300 font-medium"
+                    className="mt-2 text-[10px] text-yellow-400 hover:text-yellow-300 font-medium"
                   >
-                    Ver ficha →
+                    Ver ficha completa →
                   </button>
-                )}
+                </div>
               </div>
+            </div>
+
+            {/* Connected movies */}
+            {connectedNodes.length > 0 && (
+              <div className="p-3">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-2">
+                  Conectada con ({connectedNodes.length})
+                </p>
+                <div className="space-y-1.5">
+                  {connectedNodes.map(({ node: cn, weight }) => (
+                    <button
+                      key={cn.id}
+                      onClick={() => focusNode(cn)}
+                      className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
+                    >
+                      {cn.poster ? (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w92${cn.poster}`}
+                          alt=""
+                          className="w-8 rounded object-cover shrink-0"
+                          style={{ aspectRatio: '2/3' }}
+                        />
+                      ) : (
+                        <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-[11px] font-medium line-clamp-1">{cn.title}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-yellow-400 text-[9px]">⭐ {cn.imdb}</span>
+                          <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-yellow-400/60 rounded-full"
+                              style={{ width: `${(weight / 4) * 100}%` }}
+                            />
+                          </div>
+                          <span className="text-zinc-600 text-[8px]">{weight.toFixed(1)}</span>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Hover tooltip (only when no selection) */}
+        {hoveredNode && !selectedNode && (
+          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2.5">
+            <p className="text-white text-sm font-bold">{hoveredNode.title}</p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-yellow-400 text-xs">⭐ {hoveredNode.imdb}</span>
+              <span className="text-zinc-500 text-[10px]">{hoveredNode.connections} conexiones</span>
             </div>
           </div>
         )}
 
         {/* Instructions */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-full px-4 py-1.5">
-          <p className="text-[10px] text-zinc-500">Scroll para zoom · Arrastra para mover · Click en película para ver conexiones</p>
+          <p className="text-[10px] text-zinc-500">Scroll para zoom · Arrastra para mover · Click en película para explorar conexiones</p>
         </div>
 
         {graphData && (
-          <ForceGraph2D
+          <ForceGraph
             ref={fgRef}
             width={dimensions.width}
             height={dimensions.height}
@@ -268,7 +465,9 @@ export default function MapaPage() {
             warmupTicks={100}
             cooldownTicks={200}
             onNodeHover={(node: any) => setHoveredNode(node)}
-            onNodeClick={(node: any) => setSelectedNode(prev => prev?.id === node.id ? null : node)}
+            onNodeClick={(node: any) => {
+              setSelectedNode(prev => prev?.id === node.id ? null : node)
+            }}
             onBackgroundClick={() => setSelectedNode(null)}
             enableNodeDrag={true}
             enableZoomInteraction={true}

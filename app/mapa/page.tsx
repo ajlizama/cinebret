@@ -60,6 +60,7 @@ export default function MapaPage() {
   const [showInstructions, setShowInstructions] = useState(true)
   const [pathNodes, setPathNodes] = useState<string[]>([])
   const [pathEdges, setPathEdges] = useState<Set<string>>(new Set())
+  const originalPositions = useRef<Map<string, { x: number; y: number }>>(new Map())
   const fgRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
@@ -220,7 +221,7 @@ export default function MapaPage() {
             }
             setPathEdges(edges)
             setSearchResults([])
-            setSelectedNode(null)
+            deselectNode()
             // Zoom to show the path
             if (fgRef.current && path.length > 0) {
               const pathNodeObjs = path.map(id => graphData.nodes.find(n => n.id === id)).filter(Boolean)
@@ -245,16 +246,62 @@ export default function MapaPage() {
     setSearchResults(results)
   }, [searchQuery, graphData])
 
+  const restorePositions = useCallback(() => {
+    if (originalPositions.current.size > 0 && graphData) {
+      for (const gNode of graphData.nodes as any[]) {
+        const orig = originalPositions.current.get(gNode.id)
+        if (orig) { gNode.x = orig.x; gNode.y = orig.y }
+      }
+      originalPositions.current.clear()
+    }
+  }, [graphData])
+
+  const deselectNode = useCallback(() => {
+    restorePositions()
+    setSelectedNode(null)
+  }, [restorePositions])
+
   const focusNode = useCallback((node: GraphNode) => {
+    // Restore previous positions before selecting new node
+    if (originalPositions.current.size > 0 && graphData) {
+      for (const gNode of graphData.nodes as any[]) {
+        const orig = originalPositions.current.get(gNode.id)
+        if (orig) { gNode.x = orig.x; gNode.y = orig.y }
+      }
+      originalPositions.current.clear()
+    }
+
     setSelectedNode(node)
     setSearchQuery('')
     setSearchResults([])
-    if (fgRef.current) {
-      // Smooth animated zoom to node
+
+    if (fgRef.current && graphData) {
+      // Save original positions of connected nodes and pull them closer
+      const connectedIds = new Set<string>()
+      graphData.links.forEach((l: any) => {
+        const sId = typeof l.source === 'object' ? l.source.id : l.source
+        const tId = typeof l.target === 'object' ? l.target.id : l.target
+        if (sId === node.id) connectedIds.add(tId)
+        if (tId === node.id) connectedIds.add(sId)
+      })
+
+      for (const gNode of graphData.nodes as any[]) {
+        if (connectedIds.has(gNode.id) && gNode.x != null && gNode.y != null) {
+          // Save original position
+          originalPositions.current.set(gNode.id, { x: gNode.x, y: gNode.y })
+          // Pull 80% closer to selected node
+          const dx = (node.x || 0) - gNode.x
+          const dy = (node.y || 0) - gNode.y
+          gNode.x += dx * 0.8
+          gNode.y += dy * 0.8
+        }
+      }
+
+      // Smooth animated zoom
       fgRef.current.centerAt(node.x, node.y, 1200)
       fgRef.current.zoom(3.5, 1200)
     }
-  }, [])
+  }, [graphData])
 
   // Get connected nodes for selected
   const connectedNodes = useMemo(() => {
@@ -472,7 +519,7 @@ export default function MapaPage() {
                 <input
                   type="range" min={200} max={rawGraph?.nodes.length || 3000} step={100}
                   value={nodeLimit}
-                  onChange={e => { setNodeLimit(Number(e.target.value)); setSelectedNode(null); if (fgRef.current) fgRef.current.d3ReheatSimulation() }}
+                  onChange={e => { setNodeLimit(Number(e.target.value)); deselectNode(); if (fgRef.current) fgRef.current.d3ReheatSimulation() }}
                   className="w-full accent-yellow-400 h-1"
                 />
               </div>
@@ -530,7 +577,7 @@ export default function MapaPage() {
                       Ficha
                     </button>
                     <button
-                      onClick={() => setSelectedNode(null)}
+                      onClick={() => deselectNode()}
                       className="text-zinc-500 text-lg px-1"
                     >
                       ✕
@@ -693,17 +740,12 @@ export default function MapaPage() {
             onNodeHover={(node: any) => setHoveredNode(node)}
             onNodeClick={(node: any) => {
               if (selectedNode?.id === node.id) {
-                setSelectedNode(null)
+                deselectNode()
               } else {
-                setSelectedNode(node)
-                // Smooth zoom to selected node
-                if (fgRef.current) {
-                  fgRef.current.centerAt(node.x, node.y, 1200)
-                  fgRef.current.zoom(3.5, 1200)
-                }
+                focusNode(node)
               }
             }}
-            onBackgroundClick={() => setSelectedNode(null)}
+            onBackgroundClick={() => deselectNode()}
             onZoom={() => { if (showInstructions) setShowInstructions(false) }}
             enableNodeDrag={true}
             enableZoomInteraction={true}

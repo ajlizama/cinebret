@@ -928,9 +928,9 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950 pt-4 pb-4">
+      <div className="relative overflow-hidden bg-zinc-950 pt-4 pb-2">
         <div className="relative flex flex-col items-center justify-center px-4">
-          <h1 className="text-xl md:text-2xl font-bold text-white mb-3">Bienvenido a <span className="text-amber-400">CineBret</span></h1>
+          <h1 className="text-xl md:text-2xl font-bold text-white mb-2">Bienvenido a <span className="text-amber-400">CineBret</span></h1>
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
@@ -972,8 +972,8 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold flex flex-col items-center justify-center gap-1 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
-                  <span className="text-lg md:text-xl leading-none">{cat.emoji}</span>
+                  className={`py-1.5 md:py-2.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-0.5 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
+                  <span className="text-base md:text-xl leading-none">{cat.emoji}</span>
                   <span className="text-center leading-tight">{cat.label}</span>
                 </button>
               )
@@ -984,15 +984,15 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         {/* ── Plataformas ── */}
         <div className="mb-3">
           <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
               return (
                 <button key={plat.id}
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                  className={`h-10 w-16 md:h-10 md:w-18 rounded-xl border-2 flex items-center justify-center transition-all duration-200 ${activa ? 'bg-white border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.5)] scale-110 ring-2 ring-amber-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
+                  className={`shrink-0 h-8 w-14 md:h-10 md:w-16 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${activa ? 'bg-white border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.5)] scale-110 ring-2 ring-amber-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-4 md:h-4.5 w-auto object-contain" />
+                  <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-3.5 md:h-4 w-auto object-contain" />
                 </button>
               )
             })}

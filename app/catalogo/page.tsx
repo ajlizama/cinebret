@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import Nav from '@/components/Nav'
 import CatalogoInteractivo, { type Pelicula } from './CatalogoInteractivo'
+import FeatureWidgets from '@/components/FeatureWidgets'
 
 export const revalidate = 21600 // 6 hours
 
@@ -223,7 +224,7 @@ export default async function CatalogoPage() {
   return (
     <main className="min-h-screen bg-zinc-950">
       <Nav active="inicio" />
-      <CatalogoInteractivo peliculas={peliculas} series={series} trendingIds={trendingIds} trendingSeriesIds={trendingSeriesIds} />
+      <CatalogoInteractivo peliculas={peliculas} series={series} trendingIds={trendingIds} trendingSeriesIds={trendingSeriesIds} widgetSlot={<FeatureWidgets />} />
     </main>
   )
 }

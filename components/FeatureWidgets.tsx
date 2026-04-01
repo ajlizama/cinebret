@@ -309,7 +309,36 @@ function MapaWidget({ movie }: { movie: WidgetMovie | null }) {
 }
 
 // ── Main Component ──
+// Prefetch data for Tinder and Reels so they load instantly when clicked
+function usePrefetch() {
+  useEffect(() => {
+    // Prefetch the Tinder and CineReels pages in background
+    const prefetchLinks = ['/reel', '/cinereels', '/mapa']
+    prefetchLinks.forEach(href => {
+      const link = document.createElement('link')
+      link.rel = 'prefetch'
+      link.href = href
+      document.head.appendChild(link)
+    })
+
+    // Also prefetch the heavy data these pages need
+    // Tinder: catalogos + peliculas
+    const prefetchData = async () => {
+      try {
+        // Cache movie-graph for mapa
+        if (!sessionStorage.getItem('graph-prefetched')) {
+          fetch('/movie-graph.json').then(() => { sessionStorage.setItem('graph-prefetched', '1') })
+        }
+      } catch {}
+    }
+    // Delay prefetch slightly so it doesn't compete with current page load
+    const timer = setTimeout(prefetchData, 2000)
+    return () => clearTimeout(timer)
+  }, [])
+}
+
 export default function FeatureWidgets() {
+  usePrefetch()
   const [tinderMovies, setTinderMovies] = useState<WidgetMovie[]>([])
   const [reelMovie, setReelMovie] = useState<WidgetMovie | null>(null)
   const [mapaMovie, setMapaMovie] = useState<WidgetMovie | null>(null)

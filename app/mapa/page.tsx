@@ -290,11 +290,11 @@ export default function MapaPage() {
         if (connectedIds.has(gNode.id) && gNode.x != null && gNode.y != null) {
           // Save original position
           originalPositions.current.set(gNode.id, { x: gNode.x, y: gNode.y })
-          // Pull 40% closer to selected node (half gravity)
+          // Pull 20% closer to selected node (subtle gravity)
           const dx = (node.x || 0) - gNode.x
           const dy = (node.y || 0) - gNode.y
-          gNode.x += dx * 0.4
-          gNode.y += dy * 0.4
+          gNode.x += dx * 0.2
+          gNode.y += dy * 0.2
         }
       }
 
@@ -343,7 +343,7 @@ export default function MapaPage() {
       if (!n?.x) return 100
       return Math.sqrt((n.x - cx) ** 2 + (n.y - cy) ** 2)
     })
-    const viewRadius = Math.max(200, ...connDists) * 1.5
+    const viewRadius = Math.max(150, ...connDists) * 1.2
     const scale = 48 / viewRadius
 
     ctx.clearRect(0, 0, 100, 100)
@@ -635,13 +635,11 @@ export default function MapaPage() {
                         {selectedNode.imdb}
                       </span>
                     </div>
-                    {/* Close X on selected poster */}
-                    <button onClick={(e) => { e.stopPropagation(); deselectNode() }} className="absolute -top-1 -right-1 bg-zinc-800 border border-zinc-600 rounded-full w-5 h-5 flex items-center justify-center text-zinc-400 text-[10px]">✕</button>
                   </div>
 
-                  {/* Connected movies — scrollable */}
+                  {/* Connected movies — scrollable, slightly smaller */}
                   <div className="flex-1 overflow-x-auto scrollbar-none">
-                    <div className="flex gap-1.5 h-36">
+                    <div className="flex gap-1.5 h-28">
                       {connectedNodes.map(({ node: cn }) => (
                         <div key={cn.id} className="shrink-0 relative h-full" onClick={() => focusNode(cn)}>
                           {cn.poster ? (

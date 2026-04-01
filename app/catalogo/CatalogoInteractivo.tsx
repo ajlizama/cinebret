@@ -1157,9 +1157,6 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
           </div>
         )}
 
-        {/* ── Feature Widgets (Tinder, Reels, Mapa) ── */}
-        <FeatureWidgets />
-
         {/* ── Para Ti ── */}
         <div className="mb-4 border-t border-zinc-800 pt-3">
           {user ? (

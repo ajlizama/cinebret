@@ -290,11 +290,11 @@ export default function MapaPage() {
         if (connectedIds.has(gNode.id) && gNode.x != null && gNode.y != null) {
           // Save original position
           originalPositions.current.set(gNode.id, { x: gNode.x, y: gNode.y })
-          // Pull 80% closer to selected node
+          // Pull 40% closer to selected node (half gravity)
           const dx = (node.x || 0) - gNode.x
           const dy = (node.y || 0) - gNode.y
-          gNode.x += dx * 0.8
-          gNode.y += dy * 0.8
+          gNode.x += dx * 0.4
+          gNode.y += dy * 0.4
         }
       }
 
@@ -324,63 +324,75 @@ export default function MapaPage() {
       .sort((a, b) => b.weight - a.weight)
   }, [selectedNode, graphData])
 
-  // Draw minimapa when selected
+  // Draw minimapa — zoomed in around selected node, moves with selection
   useEffect(() => {
     if (!minimapRef.current || !graphData || !selectedNode) return
     const canvas = minimapRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const nodes = graphData.nodes as any[]
-    const validNodes = nodes.filter(n => n.x != null && n.y != null)
-    if (validNodes.length === 0) return
+    const selNode = (graphData.nodes as any[]).find(n => n.id === selectedNode.id)
+    if (!selNode?.x == null) return
 
-    const minX = Math.min(...validNodes.map(n => n.x))
-    const maxX = Math.max(...validNodes.map(n => n.x))
-    const minY = Math.min(...validNodes.map(n => n.y))
-    const maxY = Math.max(...validNodes.map(n => n.y))
-    const scale = Math.min(96 / (maxX - minX || 1), 96 / (maxY - minY || 1))
+    // Center on selected node with a neighborhood radius
+    const cx = selNode.x || 0
+    const cy = selNode.y || 0
+    // Find max distance of connected nodes to set zoom
+    const connDists = connectedNodes.map(cn => {
+      const n = (graphData.nodes as any[]).find(gn => gn.id === cn.node.id)
+      if (!n?.x) return 100
+      return Math.sqrt((n.x - cx) ** 2 + (n.y - cy) ** 2)
+    })
+    const viewRadius = Math.max(200, ...connDists) * 1.5
+    const scale = 48 / viewRadius
 
     ctx.clearRect(0, 0, 100, 100)
-    ctx.fillStyle = 'rgba(0,0,0,0.5)'
+    ctx.fillStyle = 'rgba(9,9,11,0.7)'
     ctx.fillRect(0, 0, 100, 100)
 
-    // Edges faintly
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)'
+    // Edges
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)'
     ctx.lineWidth = 0.3
     for (const link of graphData.links as any[]) {
       const s = typeof link.source === 'object' ? link.source : null
       const t = typeof link.target === 'object' ? link.target : null
       if (!s?.x || !t?.x) continue
+      const sx = (s.x - cx) * scale + 50
+      const sy = (s.y - cy) * scale + 50
+      const tx = (t.x - cx) * scale + 50
+      const ty = (t.y - cy) * scale + 50
+      if (sx < -20 || sx > 120 || sy < -20 || sy > 120) continue
       ctx.beginPath()
-      ctx.moveTo((s.x - minX) * scale + 2, (s.y - minY) * scale + 2)
-      ctx.lineTo((t.x - minX) * scale + 2, (t.y - minY) * scale + 2)
+      ctx.moveTo(sx, sy)
+      ctx.lineTo(tx, ty)
       ctx.stroke()
     }
 
-    // Nodes as dots
+    // Nodes
+    const validNodes = (graphData.nodes as any[]).filter(n => n.x != null && n.y != null)
     for (const n of validNodes) {
-      const x = (n.x - minX) * scale + 2
-      const y = (n.y - minY) * scale + 2
+      const x = (n.x - cx) * scale + 50
+      const y = (n.y - cy) * scale + 50
+      if (x < -5 || x > 105 || y < -5 || y > 105) continue
       const isSel = n.id === selectedNode.id
       const isConn = connectedNodes.some(cn => cn.node.id === n.id)
       ctx.beginPath()
-      ctx.arc(x, y, isSel ? 3 : isConn ? 2 : 0.7, 0, Math.PI * 2)
+      ctx.arc(x, y, isSel ? 4 : isConn ? 2.5 : 1, 0, Math.PI * 2)
       ctx.fillStyle = isSel ? '#facc15' : isConn ? '#facc15' : n.color || '#555'
       ctx.fill()
     }
 
-    // Selected connections
-    ctx.strokeStyle = 'rgba(250,204,21,0.6)'
-    ctx.lineWidth = 1
+    // Connected edges highlighted
+    ctx.strokeStyle = 'rgba(250,204,21,0.7)'
+    ctx.lineWidth = 1.2
     for (const link of graphData.links as any[]) {
       const s = typeof link.source === 'object' ? link.source : null
       const t = typeof link.target === 'object' ? link.target : null
       if (!s?.x || !t?.x) continue
       if (s.id !== selectedNode.id && t.id !== selectedNode.id) continue
       ctx.beginPath()
-      ctx.moveTo((s.x - minX) * scale + 2, (s.y - minY) * scale + 2)
-      ctx.lineTo((t.x - minX) * scale + 2, (t.y - minY) * scale + 2)
+      ctx.moveTo((s.x - cx) * scale + 50, (s.y - cy) * scale + 50)
+      ctx.lineTo((t.x - cx) * scale + 50, (t.y - cy) * scale + 50)
       ctx.stroke()
     }
   }, [selectedNode, graphData, connectedNodes])
@@ -483,21 +495,19 @@ export default function MapaPage() {
     ctx.lineWidth = isPathEdge ? 3 / globalScale : isConnected ? 2 / globalScale : Math.max(0.2, link.weight * 0.3) / globalScale
     ctx.stroke()
 
-    // Show percentage label on path or connected links when zoomed enough
-    if ((isConnected || isPathEdge) && globalScale > 1.5) {
+    // Show percentage only on path edges (not regular connections)
+    if (isPathEdge && globalScale > 1.5) {
       const pct = Math.round((link.weight / 4) * 100)
       const midX = (link.source.x + link.target.x) / 2
       const midY = (link.source.y + link.target.y) / 2
       const fontSize = Math.max(3, 12 / globalScale)
 
-      // Background pill
       ctx.fillStyle = 'rgba(0,0,0,0.7)'
       const textWidth = fontSize * 2.5
       ctx.beginPath()
       ctx.roundRect(midX - textWidth / 2, midY - fontSize / 2 - 1, textWidth, fontSize + 2, fontSize / 2)
       ctx.fill()
 
-      // Percentage text
       ctx.font = `bold ${fontSize}px sans-serif`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
@@ -604,60 +614,59 @@ export default function MapaPage() {
         {/* Selected node panel — desktop: sidebar, mobile: bottom sheet */}
         {selectedNode && (
           <>
-            {/* Mobile: bottom poster carousel + close button */}
+            {/* Mobile: fixed selected poster + scrollable connections */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
               <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-3 pb-2 px-2">
-                {/* Horizontal scroll: selected poster + connected posters */}
-                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
-                  {/* Selected movie — larger poster */}
+                <div className="flex gap-2 pb-1">
+                  {/* Selected movie — fixed, not scrollable, with golden glow */}
                   <div className="shrink-0 relative" onClick={() => router.push(`/pelicula/${selectedNode.id}`)}>
                     {selectedNode.poster && (
                       <img
                         src={`https://image.tmdb.org/t/p/w185${selectedNode.poster}`}
                         alt=""
-                        className="h-36 rounded-lg shadow-2xl"
-                        style={{ aspectRatio: '2/3', border: `3px solid ${selectedNode.color}` }}
+                        className="h-36 rounded-lg shadow-[0_0_15px_rgba(250,204,21,0.4)]"
+                        style={{ aspectRatio: '2/3', border: `3px solid #facc15` }}
                       />
                     )}
-                    <div className="absolute bottom-1 left-1 right-1">
-                      <p className="text-white text-[9px] font-bold leading-tight line-clamp-1 drop-shadow-lg">{selectedNode.title}</p>
+                    <div className="absolute bottom-1 left-1 right-1 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg px-1 pt-3 pb-0.5">
+                      <p className="text-white text-[9px] font-bold leading-tight line-clamp-1">{selectedNode.title}</p>
                       <span className="text-yellow-400 text-[10px] font-black flex items-center gap-0.5">
                         <svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
-                        {selectedNode.imdb} · {connectedNodes.length} conex
+                        {selectedNode.imdb}
                       </span>
                     </div>
+                    {/* Close X on selected poster */}
+                    <button onClick={(e) => { e.stopPropagation(); deselectNode() }} className="absolute -top-1 -right-1 bg-zinc-800 border border-zinc-600 rounded-full w-5 h-5 flex items-center justify-center text-zinc-400 text-[10px]">✕</button>
                   </div>
 
-                  {/* Connected movies — smaller posters */}
-                  {connectedNodes.map(({ node: cn, weight }) => (
-                    <div key={cn.id} className="shrink-0 relative" onClick={() => focusNode(cn)}>
-                      {cn.poster ? (
-                        <img
-                          src={`https://image.tmdb.org/t/p/w154${cn.poster}`}
-                          alt=""
-                          className="h-36 rounded-lg shadow-lg"
-                          style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }}
-                        />
-                      ) : (
-                        <div className="h-36 rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }} />
-                      )}
-                      <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
-                        <span className="text-yellow-400 text-[9px] font-bold">{cn.imdb}</span>
-                      </div>
-                      <div className="absolute bottom-1 left-1 right-1">
-                        <p className="text-white text-[8px] font-medium leading-tight line-clamp-1 drop-shadow-lg">{cn.title}</p>
-                      </div>
+                  {/* Connected movies — scrollable */}
+                  <div className="flex-1 overflow-x-auto scrollbar-none">
+                    <div className="flex gap-1.5 h-36">
+                      {connectedNodes.map(({ node: cn }) => (
+                        <div key={cn.id} className="shrink-0 relative h-full" onClick={() => focusNode(cn)}>
+                          {cn.poster ? (
+                            <img
+                              src={`https://image.tmdb.org/t/p/w154${cn.poster}`}
+                              alt=""
+                              className="h-full rounded-lg"
+                              style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }}
+                            />
+                          ) : (
+                            <div className="h-full rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }} />
+                          )}
+                          <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
+                            <span className="text-yellow-400 text-[8px] font-bold">{cn.imdb}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
 
-                {/* Close button + watermark row */}
-                <div className="flex items-center justify-between mt-1 px-1">
-                  <div className="flex items-center gap-1.5 opacity-30">
-                    <img src="/logo-oficial.png" alt="CineBret" className="h-3 w-auto" />
-                    <span className="text-zinc-600 text-[7px]">cinebret.cl/mapa</span>
-                  </div>
-                  <button onClick={() => deselectNode()} className="text-zinc-500 text-xs px-2 py-1">✕ Cerrar</button>
+                {/* Watermark */}
+                <div className="flex items-center justify-center gap-1.5 mt-0.5 opacity-25">
+                  <img src="/logo-oficial.png" alt="CineBret" className="h-2.5 w-auto" />
+                  <span className="text-zinc-600 text-[6px]">cinebret.cl/mapa</span>
                 </div>
               </div>
             </div>

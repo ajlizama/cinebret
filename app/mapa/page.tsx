@@ -63,6 +63,7 @@ export default function MapaPage() {
   const originalPositions = useRef<Map<string, { x: number; y: number }>>(new Map())
   const fgRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const minimapRef = useRef<HTMLCanvasElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
 
   // Load ForceGraph2D dynamically
@@ -323,6 +324,67 @@ export default function MapaPage() {
       .sort((a, b) => b.weight - a.weight)
   }, [selectedNode, graphData])
 
+  // Draw minimapa when selected
+  useEffect(() => {
+    if (!minimapRef.current || !graphData || !selectedNode) return
+    const canvas = minimapRef.current
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const nodes = graphData.nodes as any[]
+    const validNodes = nodes.filter(n => n.x != null && n.y != null)
+    if (validNodes.length === 0) return
+
+    const minX = Math.min(...validNodes.map(n => n.x))
+    const maxX = Math.max(...validNodes.map(n => n.x))
+    const minY = Math.min(...validNodes.map(n => n.y))
+    const maxY = Math.max(...validNodes.map(n => n.y))
+    const scale = Math.min(96 / (maxX - minX || 1), 96 / (maxY - minY || 1))
+
+    ctx.clearRect(0, 0, 100, 100)
+    ctx.fillStyle = 'rgba(0,0,0,0.5)'
+    ctx.fillRect(0, 0, 100, 100)
+
+    // Edges faintly
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)'
+    ctx.lineWidth = 0.3
+    for (const link of graphData.links as any[]) {
+      const s = typeof link.source === 'object' ? link.source : null
+      const t = typeof link.target === 'object' ? link.target : null
+      if (!s?.x || !t?.x) continue
+      ctx.beginPath()
+      ctx.moveTo((s.x - minX) * scale + 2, (s.y - minY) * scale + 2)
+      ctx.lineTo((t.x - minX) * scale + 2, (t.y - minY) * scale + 2)
+      ctx.stroke()
+    }
+
+    // Nodes as dots
+    for (const n of validNodes) {
+      const x = (n.x - minX) * scale + 2
+      const y = (n.y - minY) * scale + 2
+      const isSel = n.id === selectedNode.id
+      const isConn = connectedNodes.some(cn => cn.node.id === n.id)
+      ctx.beginPath()
+      ctx.arc(x, y, isSel ? 3 : isConn ? 2 : 0.7, 0, Math.PI * 2)
+      ctx.fillStyle = isSel ? '#facc15' : isConn ? '#facc15' : n.color || '#555'
+      ctx.fill()
+    }
+
+    // Selected connections
+    ctx.strokeStyle = 'rgba(250,204,21,0.6)'
+    ctx.lineWidth = 1
+    for (const link of graphData.links as any[]) {
+      const s = typeof link.source === 'object' ? link.source : null
+      const t = typeof link.target === 'object' ? link.target : null
+      if (!s?.x || !t?.x) continue
+      if (s.id !== selectedNode.id && t.id !== selectedNode.id) continue
+      ctx.beginPath()
+      ctx.moveTo((s.x - minX) * scale + 2, (s.y - minY) * scale + 2)
+      ctx.lineTo((t.x - minX) * scale + 2, (t.y - minY) * scale + 2)
+      ctx.stroke()
+    }
+  }, [selectedNode, graphData, connectedNodes])
+
   // Paint node — colored circle at distance, poster when zoomed in
   const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     const minSize = 3
@@ -542,54 +604,67 @@ export default function MapaPage() {
         {/* Selected node panel — desktop: sidebar, mobile: bottom sheet */}
         {selectedNode && (
           <>
-            {/* Mobile: compact bottom bar — graph stays visible */}
+            {/* Mobile: bottom poster carousel + close button */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
-              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/90 to-transparent pt-4 pb-2 px-3">
-                <div className="flex items-center gap-3">
-                  {selectedNode.poster && (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
-                      alt=""
-                      className="w-14 rounded-lg shadow-2xl shrink-0"
-                      style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-white text-base font-black leading-tight">{selectedNode.title}</h2>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-yellow-400 text-sm font-black flex items-center gap-1">
-                        <svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
-                        {selectedNode.imdb}
+              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-3 pb-2 px-2">
+                {/* Horizontal scroll: selected poster + connected posters */}
+                <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
+                  {/* Selected movie — larger poster */}
+                  <div className="shrink-0 relative" onClick={() => router.push(`/pelicula/${selectedNode.id}`)}>
+                    {selectedNode.poster && (
+                      <img
+                        src={`https://image.tmdb.org/t/p/w185${selectedNode.poster}`}
+                        alt=""
+                        className="h-36 rounded-lg shadow-2xl"
+                        style={{ aspectRatio: '2/3', border: `3px solid ${selectedNode.color}` }}
+                      />
+                    )}
+                    <div className="absolute bottom-1 left-1 right-1">
+                      <p className="text-white text-[9px] font-bold leading-tight line-clamp-1 drop-shadow-lg">{selectedNode.title}</p>
+                      <span className="text-yellow-400 text-[10px] font-black flex items-center gap-0.5">
+                        <svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                        {selectedNode.imdb} · {connectedNodes.length} conex
                       </span>
-                      <span className="text-zinc-500 text-xs">{connectedNodes.length} conexiones</span>
-                      <div className="flex gap-1">
-                        {selectedNode.genres.slice(0, 2).map(g => (
-                          <span key={g} className="text-[8px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
-                        ))}
-                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-2 shrink-0">
-                    <button
-                      onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
-                      className="bg-yellow-400 text-zinc-950 text-xs font-bold px-3 py-1.5 rounded-lg"
-                    >
-                      Ficha
-                    </button>
-                    <button
-                      onClick={() => deselectNode()}
-                      className="text-zinc-500 text-lg px-1"
-                    >
-                      ✕
-                    </button>
-                  </div>
+
+                  {/* Connected movies — smaller posters */}
+                  {connectedNodes.map(({ node: cn, weight }) => (
+                    <div key={cn.id} className="shrink-0 relative" onClick={() => focusNode(cn)}>
+                      {cn.poster ? (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w154${cn.poster}`}
+                          alt=""
+                          className="h-36 rounded-lg shadow-lg"
+                          style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }}
+                        />
+                      ) : (
+                        <div className="h-36 rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }} />
+                      )}
+                      <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
+                        <span className="text-yellow-400 text-[9px] font-bold">{cn.imdb}</span>
+                      </div>
+                      <div className="absolute bottom-1 left-1 right-1">
+                        <p className="text-white text-[8px] font-medium leading-tight line-clamp-1 drop-shadow-lg">{cn.title}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                {/* CineBret watermark */}
-                <div className="flex items-center justify-center gap-1.5 mt-1 opacity-30">
-                  <img src="/logo-oficial.png" alt="CineBret" className="h-3 w-auto" />
-                  <span className="text-zinc-600 text-[7px]">cinebret.cl/mapa</span>
+
+                {/* Close button + watermark row */}
+                <div className="flex items-center justify-between mt-1 px-1">
+                  <div className="flex items-center gap-1.5 opacity-30">
+                    <img src="/logo-oficial.png" alt="CineBret" className="h-3 w-auto" />
+                    <span className="text-zinc-600 text-[7px]">cinebret.cl/mapa</span>
+                  </div>
+                  <button onClick={() => deselectNode()} className="text-zinc-500 text-xs px-2 py-1">✕ Cerrar</button>
                 </div>
               </div>
+            </div>
+
+            {/* Mobile: minimapa arriba derecha */}
+            <div className="md:hidden absolute top-2 right-2 z-10 bg-zinc-900/80 border border-zinc-700 rounded-lg overflow-hidden" style={{ width: 100, height: 100 }}>
+              <canvas ref={minimapRef} width={100} height={100} className="w-full h-full" />
             </div>
 
             {/* Desktop: sidebar */}

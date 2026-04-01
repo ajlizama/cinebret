@@ -146,7 +146,7 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
         value={value}
         onChange={e => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full bg-zinc-900/80 backdrop-blur-md border border-zinc-600 rounded-2xl px-5 py-3.5 pr-24 text-white placeholder:text-zinc-400 focus:outline-none focus:border-yellow-400/60 focus:ring-1 focus:ring-yellow-400/30 text-base md:text-sm shadow-lg"
+        className="w-full bg-zinc-900/80 backdrop-blur-md border-0 rounded-2xl px-5 py-3.5 pr-24 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-yellow-400/30 text-base md:text-sm shadow-lg"
       />
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
         {/* Processing indicator */}

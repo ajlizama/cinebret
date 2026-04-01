@@ -61,6 +61,11 @@ export default function MapaPage() {
   const [searchResults, setSearchResults] = useState<GraphNode[]>([])
   const [showControls, setShowControls] = useState(false)
   const [showInstructions, setShowInstructions] = useState(true)
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return !localStorage.getItem('mapa_onboarding_done')
+  })
+  const [onboardingStep, setOnboardingStep] = useState(0)
   const [pathNodes, setPathNodes] = useState<string[]>([])
   const [pathEdges, setPathEdges] = useState<Set<string>>(new Set())
   const originalPositions = useRef<Map<string, { x: number; y: number }>>(new Map())
@@ -809,10 +814,62 @@ export default function MapaPage() {
           </div>
         )}
 
-        {/* Instructions — auto-hide after interaction */}
-        {showInstructions && !selectedNode && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-full px-4 py-1.5 transition-opacity">
-            <p className="text-[10px] text-zinc-500">Scroll para zoom · Arrastra para mover · Click en película para explorar</p>
+        {/* Onboarding overlay */}
+        {showOnboarding && !loading && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center" onClick={() => { setShowOnboarding(false); setShowInstructions(false) }}>
+            <div className="absolute inset-0 bg-black/50" onClick={() => { setShowOnboarding(false); localStorage.setItem('mapa_onboarding_done', '1') }} />
+            <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-5 max-w-xs mx-4 text-center" onClick={e => e.stopPropagation()}>
+              {onboardingStep === 0 && (
+                <>
+                  <div className="w-12 h-12 rounded-full bg-yellow-400/20 flex items-center justify-center mx-auto mb-3">
+                    <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
+                  </div>
+                  <h3 className="text-white font-bold text-sm mb-1">Busca películas</h3>
+                  <p className="text-zinc-400 text-xs">Usa el buscador arriba para encontrar cualquier película y ver sus conexiones</p>
+                </>
+              )}
+              {onboardingStep === 1 && (
+                <>
+                  <div className="w-12 h-12 rounded-full bg-blue-400/20 flex items-center justify-center mx-auto mb-3">
+                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <h3 className="text-white font-bold text-sm mb-1">Explora el mapa</h3>
+                  <p className="text-zinc-400 text-xs">Arrastra para moverte y haz scroll/pinch para hacer zoom. Los posters aparecen al acercarte</p>
+                </>
+              )}
+              {onboardingStep === 2 && (
+                <>
+                  <div className="w-12 h-12 rounded-full bg-pink-400/20 flex items-center justify-center mx-auto mb-3">
+                    <svg className="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <h3 className="text-white font-bold text-sm mb-1">Toca una película</h3>
+                  <p className="text-zinc-400 text-xs">Click en cualquier nodo para ver sus conexiones y descubrir películas similares</p>
+                </>
+              )}
+              <div className="flex items-center justify-center gap-3 mt-4">
+                {onboardingStep < 2 ? (
+                  <button
+                    onClick={() => setOnboardingStep(s => s + 1)}
+                    className="bg-yellow-400 text-zinc-950 text-xs font-bold px-5 py-2 rounded-lg"
+                  >
+                    Siguiente
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => { setShowOnboarding(false); setShowInstructions(false); localStorage.setItem('mapa_onboarding_done', '1') }}
+                    className="bg-yellow-400 text-zinc-950 text-xs font-bold px-5 py-2 rounded-lg"
+                  >
+                    Explorar
+                  </button>
+                )}
+              </div>
+              {/* Step dots */}
+              <div className="flex justify-center gap-1.5 mt-3">
+                {[0, 1, 2].map(i => (
+                  <div key={i} className={`w-1.5 h-1.5 rounded-full ${i === onboardingStep ? 'bg-yellow-400' : 'bg-zinc-700'}`} />
+                ))}
+              </div>
+            </div>
           </div>
         )}
 

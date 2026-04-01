@@ -45,8 +45,8 @@ function TinderWidget({ movies }: { movies: WidgetMovie[] }) {
   const nextMovie = movies[(currentIndex + 1) % movies.length]
 
   return (
-    <Link href="/reel" className="shrink-0 w-56 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-      <div className="px-3 py-2 border-b border-zinc-800 flex items-center justify-between">
+    <Link href="/reel" className="shrink-0 w-56 bg-zinc-900 rounded-2xl overflow-hidden">
+      <div className="px-3 py-2 flex items-center justify-between">
         <span className="text-white text-sm font-bold">Tinder</span>
         <svg className="w-4 h-4 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z" />
@@ -111,8 +111,8 @@ function ReelsWidget({ movie }: { movie: WidgetMovie | null }) {
   if (!movie?.youtube_trailer_key) return null
 
   return (
-    <Link href="/cinereels" className="shrink-0 w-56 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-      <div className="px-3 py-2 border-b border-zinc-800 flex items-center justify-between">
+    <Link href="/cinereels" className="shrink-0 w-56 bg-zinc-900 rounded-2xl overflow-hidden">
+      <div className="px-3 py-2 flex items-center justify-between">
         <span className="text-white text-sm font-bold">Reels</span>
         <img src="/cinereels-icon.png" alt="" className="w-4 h-4 object-contain opacity-50" />
       </div>
@@ -124,7 +124,16 @@ function ReelsWidget({ movie }: { movie: WidgetMovie | null }) {
           style={{ border: 0 }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute bottom-2 left-3 right-3 pointer-events-none">
+        {/* Action buttons right side */}
+        <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex flex-col gap-2 pointer-events-none">
+          <div className="w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" strokeLinecap="round"/></svg>
+          </div>
+          <div className="w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+        </div>
+        <div className="absolute bottom-2 left-3 right-10 pointer-events-none">
           <p className="text-white text-xs font-bold leading-tight">{movie.titulo_ingles || movie.titulo}</p>
           <div className="flex items-center gap-2 mt-0.5">
             {movie.nota_imdb && <span className="text-yellow-400 text-[10px] font-bold">⭐ {movie.nota_imdb}</span>}
@@ -287,8 +296,8 @@ function MapaWidget({ movie }: { movie: WidgetMovie | null }) {
   }, [graphData, movie])
 
   return (
-    <Link href="/mapa" className="shrink-0 w-56 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-      <div className="px-3 py-2 border-b border-zinc-800 flex items-center justify-between">
+    <Link href="/mapa" className="shrink-0 w-56 bg-zinc-900 rounded-2xl overflow-hidden">
+      <div className="px-3 py-2 flex items-center justify-between">
         <span className="text-white text-sm font-bold">Mapa</span>
         <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path strokeLinecap="round" d="M12 2v4m0 12v4m10-10h-4M6 12H2"/></svg>
       </div>

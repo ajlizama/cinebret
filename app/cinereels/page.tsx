@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
 import { useMediaMode } from '@/context/MediaModeContext'
+import { useGuestLimit } from '@/hooks/useGuestLimit'
+import GuestLimitModal from '@/components/GuestLimitModal'
 import Nav from '@/components/Nav'
 import EnrichedDetails from '@/components/EnrichedDetails'
 import ShareButton from '@/components/ShareButton'
@@ -198,6 +200,7 @@ export default function CineReelsPage() {
   const isSeries = mode === 'series'
   const [movies, setMovies] = useState<ReelMovie[]>([])
   const [current, setCurrent] = useState(0)
+  const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'cinereels')
   const [muted, setMuted] = useState(true)
   const [loading, setLoading] = useState(true)
   const [playing, setPlaying] = useState(false)
@@ -545,6 +548,8 @@ export default function CineReelsPage() {
 
   const goTo = useCallback((idx: number) => {
     if (idx < 0 || idx >= movies.length) return
+    // Guest limit check
+    if (guestIncrement()) return
     // Track engagement for non-logged users
     if (!user && movies[current]) {
       const viewTime = (Date.now() - viewStartTime.current) / 1000
@@ -684,6 +689,8 @@ export default function CineReelsPage() {
       </div>
 
       {/* Info panel (slides up like TikTok comments) */}
+      {guestBlocked && <GuestLimitModal />}
+
       {showInfo && (
         <>
           <div className="fixed inset-0 z-50" onClick={() => setShowInfo(false)} />

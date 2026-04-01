@@ -8,6 +8,8 @@ import { useAuth } from '@/context/AuthContext'
 import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import Loading from '@/components/Loading'
+import { useGuestLimit } from '@/hooks/useGuestLimit'
+import GuestLimitModal from '@/components/GuestLimitModal'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
 
@@ -530,6 +532,7 @@ export default function ReelPage() {
   const [peliculas, setPeliculas] = useState<Pelicula[]>([])
   const [cargando, setCargando] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'tinder')
   const [lastAction, setLastAction] = useState<LastAction | null>(null)
 
   useEffect(() => {
@@ -656,6 +659,9 @@ export default function ReelPage() {
   useEffect(() => { cargarPeliculas() }, [cargarPeliculas])
 
   const handleSwipe = useCallback((dir: 'left' | 'right' | 'down' | 'up') => {
+    // Guest limit check
+    if (guestIncrement()) return
+
     const top = peliculas[0]
     if (!top) return
 
@@ -753,6 +759,7 @@ export default function ReelPage() {
                 currentUserId={user?.id} isSeries={isSeries}
               />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={onboardingDone} />}
+              {i === 0 && guestBlocked && <GuestLimitModal />}
             </div>
           ))}
         </div>

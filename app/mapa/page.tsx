@@ -4,6 +4,9 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Nav from '@/components/Nav'
 import { useMediaMode } from '@/context/MediaModeContext'
+import { useAuth } from '@/context/AuthContext'
+import { useGuestLimit } from '@/hooks/useGuestLimit'
+import GuestLimitModal from '@/components/GuestLimitModal'
 
 type GraphNode = {
   id: string
@@ -49,6 +52,8 @@ const LIMIT_OPTIONS = [500, 1000, 1500, 2000, 3000]
 export default function MapaPage() {
   const router = useRouter()
   const { mode } = useMediaMode()
+  const { user } = useAuth()
+  const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'mapa')
   const isSeries = mode === 'series'
   const [rawGraph, setRawGraph] = useState<RawGraph | null>(null)
   const [loading, setLoading] = useState(true)
@@ -815,6 +820,8 @@ export default function MapaPage() {
         )}
 
         {/* Onboarding overlay */}
+        {guestBlocked && <GuestLimitModal />}
+
         {showOnboarding && !loading && (
           <div className="absolute inset-0 z-30 flex items-center justify-center" onClick={() => { setShowOnboarding(false); setShowInstructions(false) }}>
             <div className="absolute inset-0 bg-black/50" onClick={() => { setShowOnboarding(false); localStorage.setItem('mapa_onboarding_done', '1') }} />
@@ -892,6 +899,7 @@ export default function MapaPage() {
               if (selectedNode?.id === node.id) {
                 deselectNode()
               } else {
+                if (guestIncrement()) return
                 focusNode(node)
               }
             }}

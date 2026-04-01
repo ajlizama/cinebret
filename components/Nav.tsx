@@ -232,15 +232,15 @@ export default function Nav({ active, transparent }: Props) {
               <img loading="lazy" src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
             </Link>
 
-            {/* Buscador unificado */}
-            <div className="relative flex-1 max-w-xs" ref={searchRef}>
+            {/* Buscador unificado — expands on focus on mobile */}
+            <div className={`relative transition-all duration-200 ${showSearch ? 'fixed inset-x-0 top-0 z-50 px-3 pt-3 pb-2 bg-zinc-950 md:relative md:inset-auto md:p-0 md:bg-transparent md:flex-1 md:max-w-xs' : 'flex-1 max-w-xs'}`} ref={searchRef}>
               <input
                 type="text"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
-                onFocus={() => busqueda && setShowSearch(true)}
+                onFocus={() => setShowSearch(true)}
                 placeholder="Buscar película, serie o usuario..."
-                className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+                className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-[16px] md:text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
               />
               {showSearch && busqueda && (
                 <>

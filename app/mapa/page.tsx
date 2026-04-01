@@ -561,7 +561,7 @@ export default function MapaPage() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Buscar o A, B..."
-                className="w-28 md:w-40 bg-transparent py-1.5 pr-2 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none"
+                className="w-28 md:w-40 bg-transparent py-1.5 pr-2 text-[16px] md:text-[11px] text-white placeholder:text-zinc-500 focus:outline-none"
               />
               {!showControls && (
                 <button onClick={() => setShowControls(true)} className="px-2 py-1.5 text-zinc-500 hover:text-white border-l border-zinc-800">

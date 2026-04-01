@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Nav from '@/components/Nav'
+import { useMediaMode } from '@/context/MediaModeContext'
 
 type GraphNode = {
   id: string
@@ -47,6 +48,8 @@ const LIMIT_OPTIONS = [500, 1000, 1500, 2000, 3000]
 
 export default function MapaPage() {
   const router = useRouter()
+  const { mode } = useMediaMode()
+  const isSeries = mode === 'series'
   const [rawGraph, setRawGraph] = useState<RawGraph | null>(null)
   const [loading, setLoading] = useState(true)
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null)
@@ -88,12 +91,20 @@ export default function MapaPage() {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Load raw graph data
+  // Load raw graph data — switches between movies and series
   useEffect(() => {
-    fetch('/movie-graph.json')
+    setLoading(true)
+    setRawGraph(null)
+    setSelectedNode(null)
+    setPathNodes([])
+    setPathEdges(new Set())
+    setSearchQuery('')
+    originalPositions.current.clear()
+
+    const graphFile = isSeries ? '/series-graph.json' : '/movie-graph.json'
+    fetch(graphFile)
       .then(r => r.json())
       .then((data: RawGraph) => {
-        // Preload images
         const imgs: Record<string, HTMLImageElement> = {}
         data.nodes.forEach(n => {
           if (n.poster) {
@@ -107,7 +118,7 @@ export default function MapaPage() {
         setRawGraph(data)
         setLoading(false)
       })
-  }, [])
+  }, [isSeries])
 
   // Filter graph by IMDB limit
   const graphData = useMemo(() => {
@@ -523,7 +534,7 @@ export default function MapaPage() {
         <div className="flex items-center justify-center h-[80vh]">
           <div className="text-center">
             <div className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-zinc-400 text-sm">Cargando mapa de películas...</p>
+            <p className="text-zinc-400 text-sm">Cargando mapa de {isSeries ? 'series' : 'películas'}...</p>
           </div>
         </div>
       </main>
@@ -619,7 +630,7 @@ export default function MapaPage() {
               <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-3 pb-2 px-2">
                 <div className="flex gap-2 pb-1">
                   {/* Selected movie — fixed, not scrollable, with golden glow */}
-                  <div className="shrink-0 relative" onClick={() => router.push(`/pelicula/${selectedNode.id}`)}>
+                  <div className="shrink-0 relative" onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}>
                     {selectedNode.poster && (
                       <img
                         src={`https://image.tmdb.org/t/p/w185${selectedNode.poster}`}
@@ -701,7 +712,7 @@ export default function MapaPage() {
                       ))}
                     </div>
                     <button
-                      onClick={() => router.push(`/pelicula/${selectedNode.id}`)}
+                      onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
                       className="mt-2 text-[10px] text-yellow-400 hover:text-yellow-300 font-medium"
                     >
                       Ver ficha completa →

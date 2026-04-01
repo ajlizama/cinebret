@@ -735,7 +735,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [] }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[] }) {
+export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode }) {
   const { mode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
   const contenido = activeMode === 'series' ? series : peliculas
@@ -1156,6 +1156,9 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
             />
           </div>
         )}
+
+        {/* ── Feature Widgets slot (only rendered if passed) ── */}
+        {widgetSlot}
 
         {/* ── Para Ti ── */}
         <div className="mb-4 border-t border-zinc-800 pt-3">

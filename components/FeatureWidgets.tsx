@@ -249,20 +249,40 @@ function MapaWidget({ movie }: { movie: WidgetMovie | null }) {
       ctx.stroke()
     })
 
-    // Draw selected node (bigger, yellow)
-    ctx.beginPath()
-    ctx.arc(cx, cy, 8, 0, Math.PI * 2)
-    ctx.fillStyle = '#facc15'
-    ctx.fill()
-    ctx.strokeStyle = '#ffffff'
-    ctx.lineWidth = 2
-    ctx.stroke()
-
-    // Title
-    ctx.fillStyle = '#ffffff'
-    ctx.font = 'bold 9px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.fillText(movie.titulo_ingles || movie.titulo, cx, cy + 16)
+    // Draw selected node poster (mini)
+    if (movie.poster_path) {
+      const posterImg = new window.Image()
+      posterImg.crossOrigin = 'anonymous'
+      posterImg.src = `https://image.tmdb.org/t/p/w92${movie.poster_path}`
+      posterImg.onload = () => {
+        // Yellow border
+        ctx.fillStyle = '#facc15'
+        ctx.beginPath()
+        ctx.roundRect(cx - 13, cy - 18, 26, 36, 3)
+        ctx.fill()
+        // Poster clipped
+        ctx.save()
+        ctx.beginPath()
+        ctx.roundRect(cx - 11, cy - 16, 22, 32, 2)
+        ctx.clip()
+        ctx.drawImage(posterImg, cx - 11, cy - 16, 22, 32)
+        ctx.restore()
+        // Title below
+        ctx.fillStyle = '#ffffff'
+        ctx.font = 'bold 8px sans-serif'
+        ctx.textAlign = 'center'
+        ctx.fillText(movie.titulo_ingles || movie.titulo, cx, cy + 24)
+      }
+    } else {
+      ctx.beginPath()
+      ctx.arc(cx, cy, 8, 0, Math.PI * 2)
+      ctx.fillStyle = '#facc15'
+      ctx.fill()
+      ctx.fillStyle = '#ffffff'
+      ctx.font = 'bold 9px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.fillText(movie.titulo_ingles || movie.titulo, cx, cy + 16)
+    }
 
   }, [graphData, movie])
 

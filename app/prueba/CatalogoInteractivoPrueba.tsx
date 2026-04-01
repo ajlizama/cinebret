@@ -6,14 +6,9 @@ import CatalogoInteractivo, { type Pelicula } from '../catalogo/CatalogoInteract
 import FeatureWidgets from '@/components/FeatureWidgets'
 
 export default function CatalogoInteractivoPrueba({ peliculas, trendingIds = [] }: { peliculas: Pelicula[]; trendingIds?: number[] }) {
+  // We need to inject widgets between Trending and Para Ti
+  // CatalogoInteractivo doesn't expose that slot, so we pass widgets as a prop
   return (
-    <div>
-      {/* Widgets preview between trending and the rest */}
-      <div className="max-w-7xl mx-auto px-3 mt-2">
-        <FeatureWidgets />
-      </div>
-      {/* Original catalog */}
-      <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} />
-    </div>
+    <CatalogoInteractivo peliculas={peliculas} trendingIds={trendingIds} widgetSlot={<FeatureWidgets />} />
   )
 }

@@ -15,6 +15,7 @@ import EnrichedDetails from '@/components/EnrichedDetails'
 import SpotifyPlayer from '@/components/SpotifyPlayer'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 import SmartSearchBar from '@/components/SmartSearchBar'
+import FeatureWidgets from '@/components/FeatureWidgets'
 import type { SmartFilters } from '@/lib/smart-search'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
@@ -1155,6 +1156,9 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
             />
           </div>
         )}
+
+        {/* ── Feature Widgets (Tinder, Reels, Mapa) ── */}
+        <FeatureWidgets />
 
         {/* ── Para Ti ── */}
         <div className="mb-4 border-t border-zinc-800 pt-3">

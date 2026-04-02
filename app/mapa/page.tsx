@@ -766,46 +766,93 @@ export default function MapaPage() {
           </>
         )}
 
-        {/* Path result panel */}
+        {/* Path result panel — mobile: bottom horizontal, desktop: sidebar */}
         {pathNodes.length > 0 && graphData && (
-          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-64 md:w-72 max-h-[70vh] overflow-y-auto">
-            <div className="p-3 border-b border-zinc-800 flex items-center justify-between">
-              <p className="text-xs text-zinc-400 font-semibold">Camino encontrado ({pathNodes.length - 1} pasos)</p>
-              <button onClick={() => { setPathNodes([]); setPathEdges(new Set()); setSearchQuery('') }} className="text-zinc-500 hover:text-white text-xs">✕</button>
+          <>
+            {/* Mobile: horizontal bottom strip */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
+              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-3 pb-2 px-2">
+                <div className="flex items-center justify-between mb-1.5 px-1">
+                  <p className="text-[10px] text-zinc-400 font-semibold">{pathNodes.length - 1} pasos</p>
+                  <button onClick={() => { setPathNodes([]); setPathEdges(new Set()); setSearchQuery('') }} className="text-zinc-500 text-xs px-1">✕</button>
+                </div>
+                <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1">
+                  {pathNodes.map((id, i) => {
+                    const node = graphData.nodes.find((n: any) => n.id === id)
+                    if (!node) return null
+                    return (
+                      <div key={id} className="flex items-center shrink-0">
+                        <button onClick={() => focusNode(node)} className="relative">
+                          {node.poster ? (
+                            <img
+                              src={`https://image.tmdb.org/t/p/w154${node.poster}`}
+                              alt=""
+                              className="h-28 rounded-lg"
+                              style={{ aspectRatio: '2/3', border: i === 0 || i === pathNodes.length - 1 ? '2px solid #facc15' : '2px solid #3f3f46' }}
+                            />
+                          ) : (
+                            <div className="h-28 rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3' }} />
+                          )}
+                          <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
+                            <span className="text-yellow-400 text-[8px] font-bold">{node.imdb}</span>
+                          </div>
+                          {i === 0 && <div className="absolute bottom-1 left-1 bg-yellow-400 text-zinc-950 text-[7px] font-bold px-1 rounded">INICIO</div>}
+                          {i === pathNodes.length - 1 && <div className="absolute bottom-1 left-1 bg-yellow-400 text-zinc-950 text-[7px] font-bold px-1 rounded">FIN</div>}
+                        </button>
+                        {i < pathNodes.length - 1 && (
+                          <svg className="w-4 h-4 text-yellow-400/60 shrink-0 mx-0.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M9 5l7 7-7 7"/></svg>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className="flex items-center justify-center gap-1.5 mt-1 opacity-25">
+                  <img src="/logo-oficial.png" alt="CineBret" className="h-2.5 w-auto" />
+                  <span className="text-zinc-600 text-[6px]">cinebret.cl/mapa</span>
+                </div>
+              </div>
             </div>
-            <div className="p-3 space-y-1">
-              {pathNodes.map((id, i) => {
-                const node = graphData.nodes.find(n => n.id === id)
-                if (!node) return null
-                return (
-                  <div key={id}>
-                    <button
-                      onClick={() => focusNode(node)}
-                      className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
-                    >
-                      {node.poster ? (
-                        <img src={`https://image.tmdb.org/t/p/w92${node.poster}`} alt="" className="w-8 rounded object-cover shrink-0" style={{ aspectRatio: '2/3' }} />
-                      ) : (
-                        <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+
+            {/* Desktop: sidebar */}
+            <div className="hidden md:block absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-72 max-h-[70vh] overflow-y-auto">
+              <div className="p-3 border-b border-zinc-800 flex items-center justify-between">
+                <p className="text-xs text-zinc-400 font-semibold">Camino encontrado ({pathNodes.length - 1} pasos)</p>
+                <button onClick={() => { setPathNodes([]); setPathEdges(new Set()); setSearchQuery('') }} className="text-zinc-500 hover:text-white text-xs">✕</button>
+              </div>
+              <div className="p-3 space-y-1">
+                {pathNodes.map((id, i) => {
+                  const node = graphData.nodes.find((n: any) => n.id === id)
+                  if (!node) return null
+                  return (
+                    <div key={id}>
+                      <button
+                        onClick={() => focusNode(node)}
+                        className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
+                      >
+                        {node.poster ? (
+                          <img src={`https://image.tmdb.org/t/p/w92${node.poster}`} alt="" className="w-8 rounded object-cover shrink-0" style={{ aspectRatio: '2/3' }} />
+                        ) : (
+                          <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-[11px] font-medium line-clamp-1">{node.title}</p>
+                          <span className="text-yellow-400 text-[9px]">⭐ {node.imdb}</span>
+                        </div>
+                        {i === 0 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">INICIO</span>}
+                        {i === pathNodes.length - 1 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">FIN</span>}
+                      </button>
+                      {i < pathNodes.length - 1 && (
+                        <div className="flex items-center gap-1 pl-5 py-0.5">
+                          <div className="w-px h-3 bg-yellow-400/50" />
+                          <svg className="w-3 h-3 text-yellow-400/50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M12 5v14m0 0l-4-4m4 4l4-4"/></svg>
+                        </div>
                       )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-[11px] font-medium line-clamp-1">{node.title}</p>
-                        <span className="text-yellow-400 text-[9px]">⭐ {node.imdb}</span>
-                      </div>
-                      {i === 0 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">INICIO</span>}
-                      {i === pathNodes.length - 1 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">FIN</span>}
-                    </button>
-                    {i < pathNodes.length - 1 && (
-                      <div className="flex items-center gap-1 pl-5 py-0.5">
-                        <div className="w-px h-3 bg-yellow-400/50" />
-                        <svg className="w-3 h-3 text-yellow-400/50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M12 5v14m0 0l-4-4m4 4l4-4"/></svg>
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         {/* Hover tooltip (only when no selection) */}

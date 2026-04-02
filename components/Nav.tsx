@@ -233,33 +233,19 @@ export default function Nav({ active, transparent }: Props) {
             </Link>
 
             {/* Buscador unificado */}
-            {/* Collapsed trigger on mobile */}
-            {!showSearch && (
-              <button
-                onClick={() => setShowSearch(true)}
-                className="flex-1 max-w-xs md:hidden bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-left"
-              >
-                <span className="text-zinc-500 text-[13px]">Buscar...</span>
-              </button>
-            )}
-            {/* Full search — always visible on desktop, overlay on mobile when active */}
-            <div className={`${showSearch ? 'fixed inset-0 z-50 bg-zinc-950 p-3 md:relative md:inset-auto md:p-0 md:bg-transparent' : 'hidden md:block'} flex-1 max-w-xs`} ref={searchRef}>
-              <div className="flex items-center gap-2 md:block">
-                <input
-                  type="text"
-                  value={busqueda}
-                  onChange={e => setBusqueda(e.target.value)}
-                  autoFocus={showSearch}
-                  placeholder="Buscar película, serie o usuario..."
-                  className="flex-1 w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-[16px] md:text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
-                />
-                <button onClick={() => { setShowSearch(false); setBusqueda('') }} className="md:hidden text-zinc-400 text-sm px-2 shrink-0">
-                  Cancelar
-                </button>
-              </div>
+            <div className="relative flex-1 max-w-xs" ref={searchRef}>
+              <input
+                type="text"
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
+                onFocus={() => busqueda && setShowSearch(true)}
+                placeholder="Buscar..."
+                className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-[16px] md:text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
+              />
               {showSearch && busqueda && (
                 <>
-                  <div className="mt-2 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden max-h-[60vh] overflow-y-auto md:absolute md:top-full md:mt-1 md:left-0 md:right-0 md:z-20">
+                  <div className="fixed inset-0 z-10" onClick={() => setShowSearch(false)} />
+                  <div className="absolute top-full mt-1 left-0 right-0 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden max-h-[70vh] overflow-y-auto">
                     {cargandoBusqueda ? (
                       <p className="text-zinc-500 text-xs px-4 py-3">Buscando...</p>
                     ) : peliculasResultados.length === 0 && resultados.length === 0 ? (

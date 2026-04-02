@@ -233,8 +233,11 @@ export default function Nav({ active, transparent }: Props) {
               <img loading="lazy" src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
             </Link>
 
-            {/* Buscador unificado — expands over toggle on mobile when focused */}
-            <div className={`relative transition-all duration-200 ${searchFocused ? 'absolute left-12 right-3 z-20 md:relative md:left-auto md:right-auto md:flex-1 md:max-w-xs' : 'flex-1 max-w-xs'}`} ref={searchRef}>
+            {/* Buscador unificado — expands over toggle+icons on mobile when focused */}
+            <div
+              className={`transition-all duration-200 ${searchFocused ? 'absolute inset-x-0 left-12 z-30 md:relative md:inset-auto md:flex-1 md:max-w-xs' : 'relative flex-1 min-w-0'}`}
+              ref={searchRef}
+            >
               <input
                 type="text"
                 value={busqueda}

@@ -66,6 +66,7 @@ export default function Nav({ active, transparent }: Props) {
   const { user, username, loading, signOut } = useAuth()
   const { mode, setMode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
+  const [searchFocused, setSearchFocused] = useState(false)
   const router = useRouter()
   const [modalAbierto, setModalAbierto] = useState(false)
   const [usernameModal, setUsernameModal] = useState(false)
@@ -226,20 +227,21 @@ export default function Nav({ active, transparent }: Props) {
 
           <div className="flex-1 min-w-0">
           {/* Fila 1: logo mobile + buscador + auth */}
-          <div className="flex items-center justify-between mb-2.5 gap-3">
+          <div className="relative flex items-center justify-between mb-2.5 gap-3">
             <Link href="/" className="shrink-0 md:hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img loading="lazy" src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
             </Link>
 
-            {/* Buscador unificado */}
-            <div className="relative flex-1 max-w-xs" ref={searchRef}>
+            {/* Buscador unificado — expands over toggle on mobile when focused */}
+            <div className={`relative transition-all duration-200 ${searchFocused ? 'absolute left-12 right-3 z-20 md:relative md:left-auto md:right-auto md:flex-1 md:max-w-xs' : 'flex-1 max-w-xs'}`} ref={searchRef}>
               <input
                 type="text"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
-                onFocus={() => busqueda && setShowSearch(true)}
-                placeholder="Buscar..."
+                onFocus={() => { setSearchFocused(true); if (busqueda) setShowSearch(true) }}
+                onBlur={() => { setTimeout(() => setSearchFocused(false), 200) }}
+                placeholder={searchFocused ? "Buscar película, serie o usuario..." : "Buscar..."}
                 className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-[16px] md:text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
               />
               {showSearch && busqueda && (

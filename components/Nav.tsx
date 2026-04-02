@@ -233,18 +233,27 @@ export default function Nav({ active, transparent }: Props) {
               <img loading="lazy" src={transparent ? "/logo-oficial-transparent.png" : "/logo-oficial.png"} alt="CineBret" className="h-8 w-auto" />
             </Link>
 
-            {/* Buscador unificado — expands over toggle+icons on mobile when focused */}
+            {/* Buscador unificado — lupa icon on mobile, expands on click */}
+            {!searchFocused && (
+              <button
+                onClick={() => setSearchFocused(true)}
+                className="md:hidden shrink-0 w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center"
+              >
+                <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
+              </button>
+            )}
             <div
-              className={`transition-all duration-200 ${searchFocused ? 'absolute inset-x-0 left-12 z-30 md:relative md:inset-auto md:flex-1 md:max-w-xs' : 'relative flex-1 min-w-0'}`}
+              className={`transition-all duration-200 ${searchFocused ? 'absolute inset-x-0 left-12 z-30 md:relative md:inset-auto md:flex-1 md:max-w-xs' : 'hidden md:block relative flex-1 min-w-0'}`}
               ref={searchRef}
             >
               <input
                 type="text"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
+                autoFocus={searchFocused}
                 onFocus={() => { setSearchFocused(true); if (busqueda) setShowSearch(true) }}
                 onBlur={() => { setTimeout(() => setSearchFocused(false), 200) }}
-                placeholder={searchFocused ? "Buscar película, serie o usuario..." : "Buscar..."}
+                placeholder="Buscar película, serie o usuario..."
                 className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-[16px] md:text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
               />
               {showSearch && busqueda && (

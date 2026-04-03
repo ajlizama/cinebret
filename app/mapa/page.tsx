@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Nav from '@/components/Nav'
 import { useMediaMode } from '@/context/MediaModeContext'
 import { useAuth } from '@/context/AuthContext'
+import { normalize } from '@/lib/normalize'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
 
@@ -228,10 +229,10 @@ export default function MapaPage() {
 
     // Check for path query (comma separated)
     if (searchQuery.includes(',')) {
-      const parts = searchQuery.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+      const parts = searchQuery.split(',').map(s => normalize(s.trim())).filter(Boolean)
       if (parts.length >= 2) {
-        const nodeA = graphData.nodes.find(n => n.title.toLowerCase().includes(parts[0]) || n.titleEs?.toLowerCase().includes(parts[0]))
-        const nodeB = graphData.nodes.find(n => n.title.toLowerCase().includes(parts[1]) || n.titleEs?.toLowerCase().includes(parts[1]))
+        const nodeA = graphData.nodes.find(n => normalize(n.title).includes(parts[0]) || normalize(n.titleEs || '').includes(parts[0]))
+        const nodeB = graphData.nodes.find(n => normalize(n.title).includes(parts[1]) || normalize(n.titleEs || '').includes(parts[1]))
         if (nodeA && nodeB) {
           const path = findPath(nodeA.id, nodeB.id)
           if (path && path.length > 0) {
@@ -260,9 +261,9 @@ export default function MapaPage() {
 
     setPathNodes([])
     setPathEdges(new Set())
-    const q = searchQuery.toLowerCase()
+    const q = normalize(searchQuery)
     const results = graphData.nodes
-      .filter(n => n.title.toLowerCase().includes(q) || n.titleEs?.toLowerCase().includes(q))
+      .filter(n => normalize(n.title).includes(q) || normalize(n.titleEs || '').includes(q))
       .sort((a, b) => (b.imdb || 0) - (a.imdb || 0))
       .slice(0, 8)
     setSearchResults(results)

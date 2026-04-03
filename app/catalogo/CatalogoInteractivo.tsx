@@ -15,6 +15,7 @@ import EnrichedDetails from '@/components/EnrichedDetails'
 import SpotifyPlayer from '@/components/SpotifyPlayer'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 import SmartSearchBar from '@/components/SmartSearchBar'
+import { normalize } from '@/lib/normalize'
 import FeatureWidgets from '@/components/FeatureWidgets'
 import type { SmartFilters } from '@/lib/smart-search'
 
@@ -854,11 +855,11 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
 
   const peliculasFiltradas = contenido
     .filter(p => {
-      const terminos = busqueda.split(',').map(t => t.trim().toLowerCase()).filter(Boolean)
+      const terminos = busqueda.split(',').map(t => normalize(t.trim())).filter(Boolean)
       const matchBusqueda = terminos.length === 0 || terminos.every(q =>
-        p.titulo.toLowerCase().includes(q) || (p.titulo_ingles || '').toLowerCase().includes(q) ||
-        (p.director || '').toLowerCase().includes(q) || actoresStr(p.actores).toLowerCase().includes(q) ||
-        p.generos.some(g => g.toLowerCase().includes(q)) || (p.compositor || '').toLowerCase().includes(q)
+        normalize(p.titulo).includes(q) || normalize(p.titulo_ingles || '').includes(q) ||
+        normalize(p.director || '').includes(q) || normalize(actoresStr(p.actores)).includes(q) ||
+        p.generos.some(g => normalize(g).includes(q)) || normalize(p.compositor || '').includes(q)
       )
       return matchBusqueda &&
         (plataformasFiltro.length === 0 || plataformasFiltro.some(plat => p.plataformas.includes(plat))) &&
@@ -876,13 +877,13 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         (certFiltro.length === 0 || certFiltro.includes(p.certification ?? '')) &&
         (certExclude.length === 0 || !certExclude.includes(p.certification ?? '')) &&
         (smartKeywords.length === 0 || smartKeywords.some(kw => {
-          const kwl = kw.toLowerCase()
-          return p.keywords.some(k => k.toLowerCase().includes(kwl)) ||
-            (p.tagline || '').toLowerCase().includes(kwl) ||
-            (p.sinopsis || '').toLowerCase().includes(kwl) ||
-            p.generos.some(g => g.toLowerCase().includes(kwl)) ||
-            p.titulo.toLowerCase().includes(kwl) ||
-            (p.titulo_ingles || '').toLowerCase().includes(kwl)
+          const kwl = normalize(kw)
+          return p.keywords.some(k => normalize(k).includes(kwl)) ||
+            normalize(p.tagline || '').includes(kwl) ||
+            normalize(p.sinopsis || '').includes(kwl) ||
+            p.generos.some(g => normalize(g).includes(kwl)) ||
+            normalize(p.titulo).includes(kwl) ||
+            normalize(p.titulo_ingles || '').includes(kwl)
         }))
     })
     .sort((a, b) => {

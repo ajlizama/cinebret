@@ -140,6 +140,7 @@ function TinderCard({
 
     if (rawDist < TAP_THRESHOLD) {
       setOffset({ x: 0, y: 0 })
+      touchedRef.current = true // prevent synthetic click from also firing
       const touchX = e.changedTouches[0]?.clientX ?? 0
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
       const relX = touchX - rect.left
@@ -159,8 +160,11 @@ function TinderCard({
     setOffset({ x: 0, y: 0 })
   }
 
+  // Prevent click from firing after touch (causes double slide advance)
+  const touchedRef = useRef(false)
   const handleClick = (e: React.MouseEvent) => {
     if (!isTop) return
+    if (touchedRef.current) { touchedRef.current = false; return }
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
     const relX = e.clientX - rect.left
     if (relX > rect.width * 0.5) setSlide(Math.min(maxSlide, slide + 1))

@@ -205,13 +205,13 @@ export default async function CatalogoPage() {
   try {
     const tmdbKey = process.env.TMDB_API_KEY
     if (tmdbKey) {
-      const pageNums = Array.from({ length: 20 }, (_, i) => i + 1)
+      const pageNums = Array.from({ length: 30 }, (_, i) => i + 1)
       const [trendingMoviePages, trendingSeriesPages] = await Promise.all([
         Promise.all(pageNums.map(p =>
           fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
             .then(r => r.json()).catch(() => ({ results: [] }))
         )),
-        Promise.all(pageNums.slice(0, 10).map(p =>
+        Promise.all(pageNums.slice(0, 15).map(p =>
           fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=${tmdbKey}&language=es-CL&page=${p}`, { next: { revalidate: 21600 } })
             .then(r => r.json()).catch(() => ({ results: [] }))
         )),

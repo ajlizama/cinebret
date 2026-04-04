@@ -240,7 +240,7 @@ function TinderCard({
               {movie.plataformas.slice(0, 4).map(p => {
                 const logo = PLAT_LOGOS[p]
                 return logo ? (
-                  <div key={p} className="w-9 h-9 rounded-xl bg-black/50 backdrop-blur-sm flex items-center justify-center p-1.5">
+                  <div key={p} className="w-9 h-9 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center p-1.5">
                     <img loading="lazy" src={logo} alt={p} className="w-full h-full object-contain" />
                   </div>
                 ) : null
@@ -272,23 +272,13 @@ function TinderCard({
         </div>
       )}
 
-      {/* ── SLIDE 1: Detailed info ── */}
+      {/* ── SLIDE 1: Sinopsis + crew ── */}
       {slide === 1 && (
         <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <h3 className="text-white font-bold text-lg leading-tight mb-1">{titulo}</h3>
-          <div className="flex items-center gap-2 mb-2 flex-wrap text-sm">
-            {movie.anio && <span className="text-zinc-400">{movie.anio}</span>}
-            {movie.nota_imdb && <span className="text-yellow-400 font-medium flex items-center gap-1"><svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>{movie.nota_imdb}</span>}
-          </div>
-          {movie.generos.length > 0 && (
-            <div className="flex gap-1.5 flex-wrap mb-3">
-              {movie.generos.map(g => (<span key={g} className="bg-white/10 text-zinc-300 text-xs px-2 py-0.5 rounded-full">{g}</span>))}
-            </div>
-          )}
           {movie.sinopsis && (
             <div className="mb-3">
               <p className="text-zinc-500 text-xs uppercase tracking-wide mb-1 font-medium">Sinopsis</p>
-              <p className="text-zinc-300 text-sm leading-relaxed italic">{movie.sinopsis}</p>
+              <p className="text-zinc-300 text-sm leading-relaxed">{movie.sinopsis}</p>
             </div>
           )}
           {movie.director && (

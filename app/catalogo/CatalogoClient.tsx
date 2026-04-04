@@ -1,9 +1,9 @@
 'use client'
 
-import CatalogoInteractivo, { type Pelicula } from '../catalogo/CatalogoInteractivo'
+import CatalogoInteractivo, { type Pelicula } from './CatalogoInteractivo'
 import FeatureWidgetsNuevo from './FeatureWidgetsNuevo'
 import EmbeddedTinder from './EmbeddedTinder'
-import TopNav from './BottomNav'
+import TopNav from '@/components/TopNav'
 
 const TYPEWRITER_PLACEHOLDERS = [
   '¿Cómo te ayudo?',
@@ -12,7 +12,7 @@ const TYPEWRITER_PLACEHOLDERS = [
   'Algo estilo Nolan...',
 ]
 
-export default function InicioPruebaClient({
+export default function CatalogoClient({
   peliculas, series, trendingIds, trendingSeriesIds,
 }: {
   peliculas: Pelicula[]

@@ -77,17 +77,24 @@ export default function TopNav() {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           {/* Left: Logo + Toggle */}
           <div className="flex items-center gap-2.5">
-            <Link href="/inicio_prueba" className="shrink-0">
+            <Link href="/catalogo" className="shrink-0">
               <img src="/logo-oficial.png" alt="CineBret" className="h-8 w-auto" />
             </Link>
             <div className="flex bg-zinc-800/80 rounded-lg p-0.5 gap-0.5" suppressHydrationWarning>
-              <button onClick={() => setMode('peliculas')} className={`px-2 py-1 rounded-md text-[10px] font-semibold transition-colors cursor-pointer ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Pelis</button>
+              <button onClick={() => setMode('peliculas')} className={`px-2 py-1 rounded-md text-[10px] font-semibold transition-colors cursor-pointer ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Películas</button>
               <button onClick={() => setMode('series')} className={`px-2 py-1 rounded-md text-[10px] font-semibold transition-colors cursor-pointer ${activeMode === 'series' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Series</button>
             </div>
           </div>
 
           {/* Right side items */}
           <div className="flex items-center gap-2">
+            {/* Home */}
+            <Link href="/catalogo" className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-zinc-500 transition-colors">
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-zinc-400">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </Link>
+
             {/* Search - expands left on click */}
             <div ref={searchRef} className="relative">
               {!searchOpen ? (

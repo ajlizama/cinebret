@@ -344,6 +344,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
   const [loading, setLoading] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [slide, setSlide] = useState(0)
+  const [dismissed, setDismissed] = useState(false)
   const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'tinder')
 
   useEffect(() => {
@@ -377,6 +378,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
       const { data: sers } = await supabase.from('series')
         .select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, poster_path, categoria')
         .in('id', ids).not('poster_path', 'is', null)
+        .gte('nota_imdb', 7)
         .order('nota_imdb', { ascending: false, nullsFirst: false }).limit(50)
 
       const serIds = (sers ?? []).map(s => s.id)
@@ -393,8 +395,10 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
         generos: enrMap[s.id]?.generos ?? [], director: enrMap[s.id]?.director ?? null,
         actores: Array.isArray(enrMap[s.id]?.actores) ? enrMap[s.id].actores.join(', ') : (enrMap[s.id]?.actores ?? null),
       }))
-      for (let i = result.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [result[i], result[j]] = [result[j], result[i]] }
-      setMovies(result)
+      const t1 = result.filter(m => (m.nota_imdb ?? 0) >= 8)
+      const t2 = result.filter(m => (m.nota_imdb ?? 0) >= 7 && (m.nota_imdb ?? 0) < 8)
+      for (const t of [t1, t2]) { for (let i = t.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [t[i], t[j]] = [t[j], t[i]] } }
+      setMovies([...t1, ...t2])
     } else {
       const { data: wpData } = await supabase.from('watch_providers').select('pelicula_id, platform_key').eq('provider_type', 'flatrate').not('platform_key', 'is', null)
       const platMap: Record<string, string[]> = {}
@@ -405,9 +409,11 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
       const ids = Object.keys(platMap).filter(id => !excluidos.has(id)).slice(0, 200)
       if (ids.length === 0) { setLoading(false); return }
 
+      // Only fetch movies with IMDB >= 7.0 to ensure quality first impressions
       const { data: pels } = await supabase.from('peliculas')
         .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, categoria')
         .in('id', ids).not('poster_path', 'is', null)
+        .gte('nota_imdb', 7)
         .order('nota_imdb', { ascending: false, nullsFirst: false }).limit(80)
 
       const pelIds = (pels ?? []).map(p => p.id)
@@ -424,8 +430,14 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
         generos: enrMap[p.id]?.generos ?? [], director: enrMap[p.id]?.director ?? null,
         actores: enrMap[p.id]?.actores ?? null,
       }))
-      for (let i = result.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [result[i], result[j]] = [result[j], result[i]] }
-      setMovies(result)
+      // Soft shuffle: keep roughly sorted by rating but with some variety
+      // Split into tiers and shuffle within each tier
+      const tier1 = result.filter(m => (m.nota_imdb ?? 0) >= 8) // Top tier
+      const tier2 = result.filter(m => (m.nota_imdb ?? 0) >= 7 && (m.nota_imdb ?? 0) < 8)
+      for (const tier of [tier1, tier2]) {
+        for (let i = tier.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [tier[i], tier[j]] = [tier[j], tier[i]] }
+      }
+      setMovies([...tier1, ...tier2])
     }
     setLoading(false)
   }, [user, isSeries])
@@ -472,6 +484,9 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
     }
   }, [user, filteredMovies, isSeries, guestIncrement])
 
+  // If guest dismissed the modal, hide tinder entirely so they can browse catalog
+  if (dismissed) return null
+
   if (loading) return (
     <div className="mb-4">
       <div className="w-full max-w-xs mx-auto aspect-[3/4] rounded-2xl bg-zinc-800 animate-pulse" />
@@ -494,7 +509,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
               <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={() => { localStorage.setItem('reel_onboarding', '1'); setShowOnboarding(false) }} />}
-              {i === 0 && guestBlocked && <GuestLimitModal />}
+              {i === 0 && guestBlocked && <GuestLimitModal onDismiss={() => setDismissed(true)} />}
             </div>
           ))}
 

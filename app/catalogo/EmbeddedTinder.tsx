@@ -570,8 +570,8 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
             </div>
           ))}
 
-          {/* Action buttons — translucent bar overlapping bottom */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20">
+          {/* Action buttons — translucent bar overlapping bottom (hidden when guest modal shows) */}
+          <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 z-20 ${guestBlocked ? 'hidden' : ''}`}>
             <div className="flex items-center gap-0.5 bg-zinc-950/30 backdrop-blur-md rounded-full px-1 py-1 border border-yellow-400/15">
               <button onClick={() => handleSwipe('left')} className="group flex flex-col items-center gap-0.5 w-16 py-1 rounded-full cursor-pointer transition-all hover:bg-yellow-400/10 active:scale-90">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="text-yellow-400 transition-colors"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>

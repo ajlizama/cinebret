@@ -16,6 +16,9 @@ const PLATAFORMAS = [
   { key: 'crunchyroll', name: 'Crunchyroll', icon: '/crunchyroll.png' },
 ]
 
+const LS_KEY = 'cinebret-plat-global'
+const LS_ENABLED = 'cinebret-plat-global-on'
+
 export default function MisPlataformas({
   onUpdate,
   compact = false,
@@ -29,17 +32,41 @@ export default function MisPlataformas({
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
+    // Read global toggle from localStorage
+    try {
+      if (localStorage.getItem(LS_ENABLED) === '1') setApplyGlobal(true)
+    } catch {}
+
     if (!user) return
     supabase
       .from('perfil_preferencias')
-      .select('plataformas_usuario, aplicar_plataformas_global')
+      .select('plataformas_usuario')
       .eq('user_id', user.id)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.plataformas_usuario) setSelected(data.plataformas_usuario)
-        if (data?.aplicar_plataformas_global) setApplyGlobal(true)
+        if (data?.plataformas_usuario) {
+          setSelected(data.plataformas_usuario)
+          // Sync localStorage if global is on
+          try {
+            if (localStorage.getItem(LS_ENABLED) === '1') {
+              localStorage.setItem(LS_KEY, JSON.stringify(data.plataformas_usuario))
+            }
+          } catch {}
+        }
       })
   }, [user])
+
+  const syncLocalStorage = (plats: string[], enabled: boolean) => {
+    try {
+      if (enabled && plats.length > 0) {
+        localStorage.setItem(LS_KEY, JSON.stringify(plats))
+        localStorage.setItem(LS_ENABLED, '1')
+      } else {
+        localStorage.removeItem(LS_KEY)
+        localStorage.removeItem(LS_ENABLED)
+      }
+    } catch {}
+  }
 
   const toggle = async (key: string) => {
     const next = selected.includes(key)
@@ -47,8 +74,7 @@ export default function MisPlataformas({
       : [...selected, key]
     setSelected(next)
     onUpdate?.(next)
-    // Sync localStorage if global apply is on
-    if (applyGlobal) localStorage.setItem('cinebret-plat-global', JSON.stringify(next))
+    syncLocalStorage(next, applyGlobal)
 
     if (!user) return
     setSaving(true)
@@ -95,23 +121,15 @@ export default function MisPlataformas({
           )
         })}
       </div>
-      {/* Apply globally checkbox */}
       {user && selected.length > 0 && !compact && (
         <label className="flex items-center gap-2 mt-3 cursor-pointer">
           <input
             type="checkbox"
             checked={applyGlobal}
-            onChange={async (e) => {
+            onChange={(e) => {
               const val = e.target.checked
               setApplyGlobal(val)
-              // Save to localStorage for instant read on other pages
-              if (val) localStorage.setItem('cinebret-plat-global', JSON.stringify(selected))
-              else localStorage.removeItem('cinebret-plat-global')
-              // Persist to DB
-              await supabase.from('perfil_preferencias').upsert(
-                { user_id: user.id, aplicar_plataformas_global: val },
-                { onConflict: 'user_id' }
-              )
+              syncLocalStorage(selected, val)
             }}
             className="w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-yellow-400 focus:ring-yellow-400/30 accent-yellow-400"
           />

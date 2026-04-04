@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/supabase'
-import Nav from '@/components/Nav'
 import InicioPrueba from './InicioPrueba'
 
 export const revalidate = 21600
@@ -20,7 +19,7 @@ async function fetchAllPages<T>(
   return results
 }
 
-type SimpleMovie = {
+export type SimpleMovie = {
   id: string
   titulo: string
   titulo_ingles: string | null
@@ -37,7 +36,7 @@ type SimpleMovie = {
 }
 
 export default async function InicioPruebaPage() {
-  // Fetch trending movies
+  // ── Trending movies from TMDB ──
   let trendingMovies: SimpleMovie[] = []
   try {
     const tmdbKey = process.env.TMDB_API_KEY
@@ -50,27 +49,25 @@ export default async function InicioPruebaPage() {
       )
       const tmdbIds = pages.flatMap((d: any) => (d.results ?? []).map((m: any) => m.id))
 
-      // Get these movies from our DB
       const { data: pels } = await supabase
         .from('peliculas')
         .select('id, titulo, titulo_ingles, titulo_latino, poster_path, backdrop_path, nota_imdb, anio, categoria, tmdb_id')
-        .in('tmdb_id', tmdbIds.slice(0, 30))
+        .in('tmdb_id', tmdbIds.slice(0, 50))
         .not('poster_path', 'is', null)
 
       if (pels) {
-        // Get enrichment
-        const { data: enrs } = await supabase.from('enriquecimiento').select('pelicula_id, generos, sinopsis_chilensis').in('pelicula_id', pels.map(p => p.id))
-        const enrMap = new Map((enrs || []).map(e => [e.pelicula_id, e]))
-
-        // Get platforms
-        const { data: wps } = await supabase.from('watch_providers').select('pelicula_id, platform_key').in('pelicula_id', pels.map(p => p.id)).eq('provider_type', 'flatrate').not('platform_key', 'is', null)
+        const pelIds = pels.map(p => p.id)
+        const [enrRes, wpRes] = await Promise.all([
+          supabase.from('enriquecimiento').select('pelicula_id, generos, sinopsis_chilensis').in('pelicula_id', pelIds),
+          supabase.from('watch_providers').select('pelicula_id, platform_key').in('pelicula_id', pelIds).eq('provider_type', 'flatrate').not('platform_key', 'is', null),
+        ])
+        const enrMap = new Map((enrRes.data || []).map(e => [e.pelicula_id, e]))
         const wpMap = new Map<string, string[]>()
-        ;(wps || []).forEach((w: any) => {
+        ;(wpRes.data || []).forEach((w: any) => {
           if (!wpMap.has(w.pelicula_id)) wpMap.set(w.pelicula_id, [])
           if (!wpMap.get(w.pelicula_id)!.includes(w.platform_key)) wpMap.get(w.pelicula_id)!.push(w.platform_key)
         })
 
-        // Sort by trending order
         const orderMap = new Map(tmdbIds.map((id: number, i: number) => [id, i]))
         trendingMovies = pels
           .sort((a: any, b: any) => (orderMap.get(a.tmdb_id) ?? 99) - (orderMap.get(b.tmdb_id) ?? 99))
@@ -92,7 +89,7 @@ export default async function InicioPruebaPage() {
     }
   } catch {}
 
-  // Fetch top rated for "best" section
+  // ── Top rated for "Mejor evaluadas" section ──
   const topRated = await fetchAllPages((from, to) =>
     supabase.from('peliculas')
       .select('id, titulo, titulo_ingles, titulo_latino, poster_path, backdrop_path, nota_imdb, anio, categoria')
@@ -101,7 +98,6 @@ export default async function InicioPruebaPage() {
       .order('nota_imdb', { ascending: false })
       .range(from, to)
   )
-
   const topMovies: SimpleMovie[] = topRated.slice(0, 20).map((p: any) => ({
     id: p.id, titulo: p.titulo_latino || p.titulo, titulo_ingles: p.titulo_ingles,
     titulo_latino: p.titulo_latino, poster_path: p.poster_path, backdrop_path: p.backdrop_path,
@@ -110,7 +106,6 @@ export default async function InicioPruebaPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Nav active="inicio" />
       <InicioPrueba trending={trendingMovies} topRated={topMovies} />
     </main>
   )

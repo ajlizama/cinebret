@@ -736,8 +736,8 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle, hidePlatformTitle, searchPlaceholders }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode | ((filters: { categorias: string[]; plataformas: string[]; trendingIds: number[] }) => React.ReactNode); hideHeroTitle?: boolean; hidePlatformTitle?: boolean; searchPlaceholders?: string[] }) {
-  const { mode, hydrated } = useMediaMode()
+export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle, hidePlatformTitle, searchPlaceholders, showModeToggleInMood }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode | ((filters: { categorias: string[]; plataformas: string[]; trendingIds: number[] }) => React.ReactNode); hideHeroTitle?: boolean; hidePlatformTitle?: boolean; searchPlaceholders?: string[]; showModeToggleInMood?: boolean }) {
+  const { mode, setMode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
   const contenido = activeMode === 'series' ? series : peliculas
   const activeTrendingIds = activeMode === 'series' ? trendingSeriesIds : trendingIds
@@ -967,7 +967,15 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
       <div className="max-w-7xl mx-auto px-3 md:px-6 pt-2">
         {/* ── ¿En qué mood estás? ── */}
         <div className="mb-3">
-          <h2 className="text-base md:text-xl font-bold text-white mb-2">¿En qué mood estás?</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-base md:text-xl font-bold text-white">¿En qué mood estás?</h2>
+            {showModeToggleInMood && (
+              <div className="flex bg-zinc-800 rounded-lg p-0.5 gap-0.5" suppressHydrationWarning>
+                <button onClick={() => setMode('peliculas')} className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Películas</button>
+                <button onClick={() => setMode('series')} className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors ${activeMode === 'series' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Series</button>
+              </div>
+            )}
+          </div>
           <div className="grid grid-cols-4 gap-2">
             {MOOD_CATS.map(cat => {
               const activa = categoriasFiltro.includes(cat.id)

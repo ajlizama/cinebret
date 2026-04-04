@@ -3,7 +3,7 @@
 import CatalogoInteractivo, { type Pelicula } from '../catalogo/CatalogoInteractivo'
 import FeatureWidgetsNuevo from './FeatureWidgetsNuevo'
 import EmbeddedTinder from './EmbeddedTinder'
-import BottomNav from './BottomNav'
+import TopNav from './BottomNav'
 
 const TYPEWRITER_PLACEHOLDERS = [
   '¿Cómo te ayudo?',
@@ -21,7 +21,8 @@ export default function InicioPruebaClient({
   trendingSeriesIds: number[]
 }) {
   return (
-    <main className="min-h-screen bg-zinc-950 pb-20">
+    <main className="min-h-screen bg-zinc-950">
+      <TopNav />
       <CatalogoInteractivo
         peliculas={peliculas}
         series={series}
@@ -34,8 +35,8 @@ export default function InicioPruebaClient({
         hideHeroTitle
         hidePlatformTitle
         searchPlaceholders={TYPEWRITER_PLACEHOLDERS}
+        showModeToggleInMood
       />
-      <BottomNav />
     </main>
   )
 }

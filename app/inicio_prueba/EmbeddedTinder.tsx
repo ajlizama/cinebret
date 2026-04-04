@@ -548,7 +548,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   return (
     <div className="mb-4">
       <div className="w-full">
-        <div className="relative w-full aspect-[3/4]">
+        <div className="relative w-full aspect-[5/4]">
           {filteredMovies.slice(0, 3).map((m, i) => (
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
               <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={i === 0 ? logoPath : null} />

@@ -79,9 +79,9 @@ function OnboardingOverlay({ onDone }: { onDone: () => void }) {
 
 // ── Tinder Card ──
 function TinderCard({
-  movie, isTop, onSwipe, slide, setSlide, logoPath,
+  movie, isTop, onSwipe, slide, setSlide, logoPath, isFirstEver,
 }: {
-  movie: TinderMovie; isTop: boolean; logoPath?: string | null
+  movie: TinderMovie; isTop: boolean; logoPath?: string | null; isFirstEver?: boolean
   onSwipe: (dir: 'left' | 'right' | 'down' | 'up') => void
   slide: number; setSlide: (s: number) => void
 }) {
@@ -192,8 +192,10 @@ function TinderCard({
     >
       {(movie.backdrop_path || movie.poster_path) ? (
         <Image
-          src={movie.backdrop_path ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}` : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          src={movie.backdrop_path ? `https://image.tmdb.org/t/p/w780${movie.backdrop_path}` : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={titulo} fill className="object-cover" draggable={false}
+          priority={isFirstEver}
+          sizes="(max-width: 768px) 100vw, 600px"
         />
       ) : (
         <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center">
@@ -347,8 +349,8 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [slide, setSlide] = useState(0)
   const [dismissed, setDismissed] = useState(false)
-  const [logoPath, setLogoPath] = useState<string | null>(null)
   const logoCache = useRef<Record<string, string | null>>({})
+  const [, setLogoTick] = useState(0) // increment to force re-render when fetch completes
   const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'tinder')
 
   useEffect(() => {
@@ -465,7 +467,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   useEffect(() => { if (hydrated) loadMovies() }, [loadMovies, hydrated])
 
-  // Pre-fetch logos for next ~5 movies and preload images
+  // Pre-fetch logos + backdrop images for upcoming movies
   const visibleMovies = movies.filter(m => {
     if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
     if (plataformas.length > 0 && !plataformas.some(p => m.plataformas.includes(p))) return false
@@ -473,16 +475,22 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   })
   const topMovie = visibleMovies[0] ?? null
 
-  // Synchronous cache lookup — runs every render, no delay
-  const cachedLogo = topMovie ? logoCache.current[topMovie.id] : undefined
-  if (cachedLogo !== undefined && cachedLogo !== logoPath) {
-    setLogoPath(cachedLogo)
-  }
+  // Read logo directly from cache — no state, no delay, same render frame
+  const currentLogo = topMovie && topMovie.id in logoCache.current ? logoCache.current[topMovie.id] : null
 
-  // Async: fetch logos for upcoming movies + preload images
+  // Async: fetch logos + preload images for next batch
   useEffect(() => {
     const type = isSeries ? 'tv' : 'movie'
-    visibleMovies.slice(0, 6).forEach(m => {
+    const upcoming = visibleMovies.slice(0, 6)
+
+    upcoming.forEach(m => {
+      // Preload backdrop image
+      if (m.backdrop_path) {
+        const img = new window.Image()
+        img.src = `https://image.tmdb.org/t/p/w780${m.backdrop_path}`
+      }
+
+      // Fetch logo if not yet in cache
       if (!m._tmdbId || m.id in logoCache.current) return
       logoCache.current[m.id] = null // mark as in-flight
       fetch(`/api/tmdb-logo?id=${m._tmdbId}&type=${type}`)
@@ -490,15 +498,12 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         .then(d => {
           const path = d.logo || null
           logoCache.current[m.id] = path
-          // Preload the image so browser has it cached
           if (path) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w300${path}` }
-          // Update state if this is still the top movie
-          if (m.id === topMovie?.id) setLogoPath(path)
+          // Force re-render so currentLogo picks up the new value
+          setLogoTick(t => t + 1)
         })
         .catch(() => { logoCache.current[m.id] = null })
     })
-    // Clear logo if no top movie
-    if (!topMovie) setLogoPath(null)
   }, [topMovie?.id, isSeries, movies.length])
 
   // Apply mood/platform filters on top of loaded movies
@@ -564,7 +569,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         <div className="relative w-full aspect-[5/4]">
           {filteredMovies.slice(0, 3).map((m, i) => (
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
-              <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={i === 0 ? logoPath : null} />
+              <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={i === 0 ? currentLogo : null} isFirstEver={i === 0 && slide === 0} />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={() => { localStorage.setItem('reel_onboarding', '1'); setShowOnboarding(false) }} />}
               {i === 0 && guestBlocked && <GuestLimitModal onDismiss={() => setDismissed(true)} />}
             </div>

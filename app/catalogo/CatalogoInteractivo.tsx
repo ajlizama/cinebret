@@ -751,6 +751,17 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
       .then(data => setCinemaBadges(data.badges || {}))
       .catch(() => {})
   }, [])
+
+  // Apply saved platform preferences on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('cinebret-plat-global')
+      if (saved) {
+        const plats = JSON.parse(saved)
+        if (Array.isArray(plats) && plats.length > 0) setPlataformasFiltro(plats)
+      }
+    } catch {}
+  }, [])
   const { user } = useAuth()
   const [userPeliculas, setUserPeliculas] = useState<Record<string, UserPelicula>>({})
   const [busqueda, setBusqueda] = useState('')

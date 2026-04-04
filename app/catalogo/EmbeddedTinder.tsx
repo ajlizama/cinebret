@@ -8,6 +8,7 @@ import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
+import Loading from '@/components/Loading'
 
 type TinderMovie = {
   id: string; titulo: string; titulo_ingles: string | null; anio: number | null
@@ -564,7 +565,9 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   if (loading) return (
     <div className="mb-4">
-      <div className="w-full aspect-[5/4] rounded-2xl bg-zinc-800 animate-pulse" />
+      <div className="w-full aspect-[5/4] rounded-2xl bg-zinc-900 flex items-center justify-center">
+        <Loading size="md" />
+      </div>
     </div>
   )
 

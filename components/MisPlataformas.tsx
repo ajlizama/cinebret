@@ -25,19 +25,19 @@ export default function MisPlataformas({
 }) {
   const { user } = useAuth()
   const [selected, setSelected] = useState<string[]>([])
+  const [applyGlobal, setApplyGlobal] = useState(false)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (!user) return
     supabase
       .from('perfil_preferencias')
-      .select('plataformas_usuario')
+      .select('plataformas_usuario, aplicar_plataformas_global')
       .eq('user_id', user.id)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.plataformas_usuario) {
-          setSelected(data.plataformas_usuario)
-        }
+        if (data?.plataformas_usuario) setSelected(data.plataformas_usuario)
+        if (data?.aplicar_plataformas_global) setApplyGlobal(true)
       })
   }, [user])
 
@@ -47,6 +47,8 @@ export default function MisPlataformas({
       : [...selected, key]
     setSelected(next)
     onUpdate?.(next)
+    // Sync localStorage if global apply is on
+    if (applyGlobal) localStorage.setItem('cinebret-plat-global', JSON.stringify(next))
 
     if (!user) return
     setSaving(true)
@@ -93,6 +95,29 @@ export default function MisPlataformas({
           )
         })}
       </div>
+      {/* Apply globally checkbox */}
+      {user && selected.length > 0 && !compact && (
+        <label className="flex items-center gap-2 mt-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={applyGlobal}
+            onChange={async (e) => {
+              const val = e.target.checked
+              setApplyGlobal(val)
+              // Save to localStorage for instant read on other pages
+              if (val) localStorage.setItem('cinebret-plat-global', JSON.stringify(selected))
+              else localStorage.removeItem('cinebret-plat-global')
+              // Persist to DB
+              await supabase.from('perfil_preferencias').upsert(
+                { user_id: user.id, aplicar_plataformas_global: val },
+                { onConflict: 'user_id' }
+              )
+            }}
+            className="w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-yellow-400 focus:ring-yellow-400/30 accent-yellow-400"
+          />
+          <span className="text-zinc-400 text-sm">Aplicar selección a todo CineBret</span>
+        </label>
+      )}
       {saving && <p className="text-zinc-500 text-xs mt-2">Guardando...</p>}
       {!user && !compact && (
         <p className="text-zinc-500 text-xs mt-3">Inicia sesión para guardar tus plataformas</p>

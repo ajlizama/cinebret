@@ -97,57 +97,57 @@ export default function TopNav() {
               </svg>
             </Link>
 
-            {/* Search - expands left on click */}
+            {/* Search - overlays from right */}
             <div ref={searchRef} className="relative">
-              {!searchOpen ? (
-                <button
-                  onClick={() => setSearchOpen(true)}
-                  className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-zinc-500 transition-colors"
-                >
-                  <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
-                </button>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={busqueda}
-                    onChange={e => setBusqueda(e.target.value)}
-                    autoFocus
-                    placeholder="Buscar película, serie..."
-                    className="w-52 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400"
-                  />
-                  <button onClick={() => { setSearchOpen(false); setBusqueda('') }} className="text-zinc-500 text-xs cursor-pointer">✕</button>
-                </div>
-              )}
-
-              {/* Search results dropdown */}
-              {searchOpen && busqueda && (
-                <div className="absolute top-full mt-1 right-0 w-72 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden max-h-[60vh] overflow-y-auto">
-                  {buscando ? (
-                    <p className="text-zinc-500 text-xs px-4 py-3">Buscando...</p>
-                  ) : resultados.length === 0 ? (
-                    <p className="text-zinc-500 text-xs px-4 py-3">Sin resultados</p>
-                  ) : (
-                    resultados.map(p => (
-                      <Link
-                        key={`${p._isSerie ? 's' : 'p'}-${p.id}`}
-                        href={p._isSerie ? `/serie/${p.id}` : `/pelicula/${p.id}`}
-                        onClick={() => { setBusqueda(''); setSearchOpen(false) }}
-                        className="flex items-center gap-3 px-3 py-2 hover:bg-zinc-800 border-b border-zinc-800/60 last:border-0 transition-colors"
-                      >
-                        <div className="w-8 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
-                          {p.poster_path && <img src={`https://image.tmdb.org/t/p/w92${p.poster_path}`} alt="" className="w-full h-full object-cover" />}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white text-xs font-medium leading-snug line-clamp-1">{p.titulo_ingles ?? p.titulo}</p>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ${p._isSerie ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{p._isSerie ? 'Serie' : 'Película'}</span>
-                            {p.anio && <span className="text-zinc-500 text-[10px]">{p.anio}</span>}
-                            {p.nota_imdb && <span className="text-yellow-400 text-[10px]">⭐ {p.nota_imdb}</span>}
-                          </div>
-                        </div>
-                      </Link>
-                    ))
+              <button
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-zinc-500 transition-colors"
+              >
+                <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
+              </button>
+              {searchOpen && (
+                <div className="absolute top-full mt-2 right-0 w-72 z-30">
+                  <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-t-xl rounded-b-xl px-3 py-2 shadow-2xl" style={busqueda ? { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } : undefined}>
+                    <svg className="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
+                    <input
+                      type="text"
+                      value={busqueda}
+                      onChange={e => setBusqueda(e.target.value)}
+                      autoFocus
+                      placeholder="Buscar película, serie..."
+                      className="flex-1 bg-transparent text-[16px] text-white placeholder:text-zinc-500 focus:outline-none"
+                    />
+                    <button onClick={() => { setSearchOpen(false); setBusqueda('') }} className="text-zinc-500 text-xs cursor-pointer shrink-0">✕</button>
+                  </div>
+                  {busqueda && (
+                    <div className="bg-zinc-900 border border-zinc-700 border-t-0 rounded-b-xl overflow-hidden max-h-[60vh] overflow-y-auto">
+                      {buscando ? (
+                        <p className="text-zinc-500 text-xs px-4 py-3">Buscando...</p>
+                      ) : resultados.length === 0 ? (
+                        <p className="text-zinc-500 text-xs px-4 py-3">Sin resultados</p>
+                      ) : (
+                        resultados.map(p => (
+                          <Link
+                            key={`${p._isSerie ? 's' : 'p'}-${p.id}`}
+                            href={p._isSerie ? `/serie/${p.id}` : `/pelicula/${p.id}`}
+                            onClick={() => { setBusqueda(''); setSearchOpen(false) }}
+                            className="flex items-center gap-3 px-3 py-2 hover:bg-zinc-800 border-b border-zinc-800/60 last:border-0 transition-colors"
+                          >
+                            <div className="w-8 shrink-0 rounded overflow-hidden bg-zinc-800" style={{ aspectRatio: '2/3' }}>
+                              {p.poster_path && <img src={`https://image.tmdb.org/t/p/w92${p.poster_path}`} alt="" className="w-full h-full object-cover" />}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-white text-xs font-medium leading-snug line-clamp-1">{p.titulo_ingles ?? p.titulo}</p>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ${p._isSerie ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400'}`}>{p._isSerie ? 'Serie' : 'Película'}</span>
+                                {p.anio && <span className="text-zinc-500 text-[10px]">{p.anio}</span>}
+                                {p.nota_imdb && <span className="text-yellow-400 text-[10px]">⭐ {p.nota_imdb}</span>}
+                              </div>
+                            </div>
+                          </Link>
+                        ))
+                      )}
+                    </div>
                   )}
                 </div>
               )}

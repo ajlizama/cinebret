@@ -29,7 +29,7 @@ export default function InicioPruebaClient({
         trendingSeriesIds={trendingSeriesIds}
         widgetSlot={<FeatureWidgetsNuevo />}
         tinderSlot={(filters) => (
-          <EmbeddedTinder categorias={filters.categorias} plataformas={filters.plataformas} />
+          <EmbeddedTinder categorias={filters.categorias} plataformas={filters.plataformas} trendingIds={filters.trendingIds} />
         )}
         hideHeroTitle
         hidePlatformTitle

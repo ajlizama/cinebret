@@ -736,7 +736,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle, hidePlatformTitle, searchPlaceholders }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode | ((filters: { categorias: string[]; plataformas: string[] }) => React.ReactNode); hideHeroTitle?: boolean; hidePlatformTitle?: boolean; searchPlaceholders?: string[] }) {
+export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle, hidePlatformTitle, searchPlaceholders }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode | ((filters: { categorias: string[]; plataformas: string[]; trendingIds: number[] }) => React.ReactNode); hideHeroTitle?: boolean; hidePlatformTitle?: boolean; searchPlaceholders?: string[] }) {
   const { mode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
   const contenido = activeMode === 'series' ? series : peliculas
@@ -1002,7 +1002,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         </div>
 
         {/* ── Tinder slot (only rendered if passed) ── */}
-        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro }) : tinderSlot}
+        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro, trendingIds: activeTrendingIds }) : tinderSlot}
 
         {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">

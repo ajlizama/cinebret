@@ -14,6 +14,7 @@ type TinderMovie = {
   nota_imdb: number | null; poster_path: string | null; categoria: string | null
   plataformas: string[]; sinopsis: string | null; generos: string[]
   director: string | null; actores: string | null
+  _tmdbId?: number | null
 }
 
 const PLAT_LOGOS: Record<string, string> = {
@@ -336,7 +337,7 @@ function TinderCard({
 }
 
 // ── Main Embedded Tinder ──
-export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { categorias?: string[]; plataformas?: string[] }) {
+export default function EmbeddedTinder({ categorias = [], plataformas = [], trendingIds = [] }: { categorias?: string[]; plataformas?: string[]; trendingIds?: number[] }) {
   const { user } = useAuth()
   const { mode, hydrated } = useMediaMode()
   const isSeries = hydrated ? mode === 'series' : false
@@ -376,9 +377,8 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
       if (ids.length === 0) { setLoading(false); return }
 
       const { data: sers } = await supabase.from('series')
-        .select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, poster_path, categoria')
+        .select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, tmdb_id, poster_path, categoria')
         .in('id', ids).not('poster_path', 'is', null)
-        .gte('nota_imdb', 7)
         .order('nota_imdb', { ascending: false, nullsFirst: false }).limit(50)
 
       const serIds = (sers ?? []).map(s => s.id)
@@ -394,11 +394,18 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
         plataformas: platMap[s.id] ?? [], sinopsis: enrMap[s.id]?.sinopsis_chilensis ?? null,
         generos: enrMap[s.id]?.generos ?? [], director: enrMap[s.id]?.director ?? null,
         actores: Array.isArray(enrMap[s.id]?.actores) ? enrMap[s.id].actores.join(', ') : (enrMap[s.id]?.actores ?? null),
+        _tmdbId: s.tmdb_id,
       }))
-      const t1 = result.filter(m => (m.nota_imdb ?? 0) >= 8)
-      const t2 = result.filter(m => (m.nota_imdb ?? 0) >= 7 && (m.nota_imdb ?? 0) < 8)
-      for (const t of [t1, t2]) { for (let i = t.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [t[i], t[j]] = [t[j], t[i]] } }
-      setMovies([...t1, ...t2])
+      const trendingSet = new Set(trendingIds)
+      const trending = result.filter(m => m._tmdbId && trendingSet.has(m._tmdbId))
+      const rest = result.filter(m => !m._tmdbId || !trendingSet.has(m._tmdbId))
+      const final: TinderMovie[] = []
+      let ti = 0, ri = 0
+      while (ti < trending.length || ri < rest.length) {
+        for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
+        if (ti < trending.length) final.push(trending[ti++])
+      }
+      setMovies(final)
     } else {
       const { data: wpData } = await supabase.from('watch_providers').select('pelicula_id, platform_key').eq('provider_type', 'flatrate').not('platform_key', 'is', null)
       const platMap: Record<string, string[]> = {}
@@ -409,35 +416,45 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { 
       const ids = Object.keys(platMap).filter(id => !excluidos.has(id)).slice(0, 200)
       if (ids.length === 0) { setLoading(false); return }
 
-      // Only fetch movies with IMDB >= 7.0 to ensure quality first impressions
       const { data: pels } = await supabase.from('peliculas')
-        .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, categoria')
+        .select('id, titulo, titulo_ingles, anio, nota_imdb, tmdb_id, poster_path, categoria')
         .in('id', ids).not('poster_path', 'is', null)
-        .gte('nota_imdb', 7)
-        .order('nota_imdb', { ascending: false, nullsFirst: false }).limit(80)
+        .order('nota_imdb', { ascending: false, nullsFirst: false }).limit(200)
 
       const pelIds = (pels ?? []).map(p => p.id)
-      const { data: enr } = await supabase.from('enriquecimiento')
-        .select('pelicula_id, sinopsis_chilensis, generos, director, actores')
-        .in('pelicula_id', pelIds)
+      const CHUNK = 100
       const enrMap: Record<string, any> = {}
-      ;(enr ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
+      for (let i = 0; i < pelIds.length; i += CHUNK) {
+        const chunk = pelIds.slice(i, i + CHUNK)
+        const { data: enr } = await supabase.from('enriquecimiento')
+          .select('pelicula_id, sinopsis_chilensis, generos, director, actores')
+          .in('pelicula_id', chunk)
+        ;(enr ?? []).forEach((e: any) => { enrMap[e.pelicula_id] = e })
+      }
 
-      const result: TinderMovie[] = (pels ?? []).map((p: any) => ({
+      const all: TinderMovie[] = (pels ?? []).map((p: any) => ({
         id: p.id, titulo: p.titulo, titulo_ingles: p.titulo_ingles, anio: p.anio,
         nota_imdb: p.nota_imdb, poster_path: p.poster_path, categoria: p.categoria,
         plataformas: platMap[p.id] ?? [], sinopsis: enrMap[p.id]?.sinopsis_chilensis ?? null,
         generos: enrMap[p.id]?.generos ?? [], director: enrMap[p.id]?.director ?? null,
         actores: enrMap[p.id]?.actores ?? null,
+        _tmdbId: p.tmdb_id,
       }))
-      // Soft shuffle: keep roughly sorted by rating but with some variety
-      // Split into tiers and shuffle within each tier
-      const tier1 = result.filter(m => (m.nota_imdb ?? 0) >= 8) // Top tier
-      const tier2 = result.filter(m => (m.nota_imdb ?? 0) >= 7 && (m.nota_imdb ?? 0) < 8)
-      for (const tier of [tier1, tier2]) {
-        for (let i = tier.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [tier[i], tier[j]] = [tier[j], tier[i]] }
+
+      // Split: trending (30%) + rest by IMDB (70%)
+      const trendingSet = new Set(trendingIds)
+      const trending = all.filter(m => m._tmdbId && trendingSet.has(m._tmdbId))
+        .sort((a, b) => trendingIds.indexOf(a._tmdbId!) - trendingIds.indexOf(b._tmdbId!))
+      const rest = all.filter(m => !m._tmdbId || !trendingSet.has(m._tmdbId))
+      // Interleave: every ~3 movies, insert a trending one
+      const final: TinderMovie[] = []
+      let ti = 0, ri = 0
+      while (ti < trending.length || ri < rest.length) {
+        // 2 from rest, 1 from trending
+        for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
+        if (ti < trending.length) final.push(trending[ti++])
       }
-      setMovies([...tier1, ...tier2])
+      setMovies(final)
     }
     setLoading(false)
   }, [user, isSeries])

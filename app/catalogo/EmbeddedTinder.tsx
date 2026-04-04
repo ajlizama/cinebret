@@ -348,6 +348,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   const [slide, setSlide] = useState(0)
   const [dismissed, setDismissed] = useState(false)
   const [logoPath, setLogoPath] = useState<string | null>(null)
+  const logoCache = useRef<Record<string, string | null>>({})
   const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'tinder')
 
   useEffect(() => {
@@ -463,20 +464,35 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   useEffect(() => { if (hydrated) loadMovies() }, [loadMovies, hydrated])
 
-  // Fetch logo for current top movie
-  const topMovie = movies.length > 0 ? movies.filter(m => {
+  // Pre-fetch logos for next ~5 movies, serve from cache instantly
+  const visibleMovies = movies.filter(m => {
     if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
     if (plataformas.length > 0 && !plataformas.some(p => m.plataformas.includes(p))) return false
     return true
-  })[0] : null
+  })
+  const topMovie = visibleMovies[0] ?? null
+
   useEffect(() => {
-    if (!topMovie?._tmdbId) { setLogoPath(null); return }
     const type = isSeries ? 'tv' : 'movie'
-    fetch(`/api/tmdb-logo?id=${topMovie._tmdbId}&type=${type}`)
-      .then(r => r.json())
-      .then(d => setLogoPath(d.logo || null))
-      .catch(() => setLogoPath(null))
-  }, [topMovie?.id, topMovie?._tmdbId, isSeries])
+    const toFetch = visibleMovies.slice(0, 5).filter(m => m._tmdbId && !(m.id in logoCache.current))
+    toFetch.forEach(m => {
+      logoCache.current[m.id] = null // mark as fetching
+      fetch(`/api/tmdb-logo?id=${m._tmdbId}&type=${type}`)
+        .then(r => r.json())
+        .then(d => {
+          logoCache.current[m.id] = d.logo || null
+          // If this is the current top movie, update state immediately
+          if (m.id === topMovie?.id) setLogoPath(d.logo || null)
+        })
+        .catch(() => { logoCache.current[m.id] = null })
+    })
+    // Set logo from cache if already available
+    if (topMovie && topMovie.id in logoCache.current) {
+      setLogoPath(logoCache.current[topMovie.id])
+    } else if (!topMovie) {
+      setLogoPath(null)
+    }
+  }, [topMovie?.id, isSeries, visibleMovies.length])
 
   // Apply mood/platform filters on top of loaded movies
   const filteredMovies = movies.filter(m => {

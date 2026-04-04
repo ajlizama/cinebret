@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
+import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 
 const MENU_ITEMS = [
@@ -27,6 +28,8 @@ type SearchResult = { id: string; titulo: string; titulo_ingles: string | null; 
 
 export default function TopNav() {
   const { user } = useAuth()
+  const { mode, setMode, hydrated } = useMediaMode()
+  const activeMode = hydrated ? mode : 'peliculas'
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [busqueda, setBusqueda] = useState('')
@@ -72,10 +75,16 @@ export default function TopNav() {
       {/* Top nav bar */}
       <nav className="sticky top-0 z-50 px-4 py-2.5 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Left: Logo */}
-          <Link href="/inicio_prueba" className="shrink-0">
-            <img src="/logo-oficial.png" alt="CineBret" className="h-8 w-auto" />
-          </Link>
+          {/* Left: Logo + Toggle */}
+          <div className="flex items-center gap-2.5">
+            <Link href="/inicio_prueba" className="shrink-0">
+              <img src="/logo-oficial.png" alt="CineBret" className="h-8 w-auto" />
+            </Link>
+            <div className="flex bg-zinc-800/80 rounded-lg p-0.5 gap-0.5" suppressHydrationWarning>
+              <button onClick={() => setMode('peliculas')} className={`px-2 py-1 rounded-md text-[10px] font-semibold transition-colors cursor-pointer ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Pelis</button>
+              <button onClick={() => setMode('series')} className={`px-2 py-1 rounded-md text-[10px] font-semibold transition-colors cursor-pointer ${activeMode === 'series' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Series</button>
+            </div>
+          </div>
 
           {/* Right side items */}
           <div className="flex items-center gap-2">

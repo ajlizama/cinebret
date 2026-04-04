@@ -35,7 +35,6 @@ export default function InicioPruebaClient({
         hideHeroTitle
         hidePlatformTitle
         searchPlaceholders={TYPEWRITER_PLACEHOLDERS}
-        showModeToggleInMood
       />
     </main>
   )

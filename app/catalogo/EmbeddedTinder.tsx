@@ -15,6 +15,7 @@ type TinderMovie = {
   categoria: string | null; plataformas: string[]; sinopsis: string | null; generos: string[]
   director: string | null; actores: string | null
   _tmdbId?: number | null
+  _logoPath?: string | null
 }
 
 const PLAT_LOGOS: Record<string, string> = {
@@ -349,8 +350,6 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [slide, setSlide] = useState(0)
   const [dismissed, setDismissed] = useState(false)
-  const logoCache = useRef<Record<string, string | null>>({})
-  const [, setLogoTick] = useState(0) // increment to force re-render when fetch completes
   const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'tinder')
 
   useEffect(() => {
@@ -411,6 +410,20 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         if (ti < trending.length) final.push(trending[ti++])
         for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
       }
+      // Fetch logos for first 10 series
+      const seriesToFetch = final.slice(0, 10).filter(m => m._tmdbId)
+      if (seriesToFetch.length > 0) {
+        const logoResults = await Promise.all(
+          seriesToFetch.map(m =>
+            fetch(`/api/tmdb-logo?id=${m._tmdbId}&type=tv`)
+              .then(r => r.json()).then(d => ({ id: m.id, logo: d.logo || null }))
+              .catch(() => ({ id: m.id, logo: null }))
+          )
+        )
+        const logoMap = new Map(logoResults.map(r => [r.id, r.logo]))
+        final.forEach(m => { if (logoMap.has(m.id)) m._logoPath = logoMap.get(m.id)! })
+        logoResults.forEach(r => { if (r.logo) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w300${r.logo}` } })
+      }
       setMovies(final)
     } else {
       const { data: wpData } = await supabase.from('watch_providers').select('pelicula_id, platform_key').eq('provider_type', 'flatrate').not('platform_key', 'is', null)
@@ -460,6 +473,22 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         if (ti < trending.length) final.push(trending[ti++])
         for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
       }
+      // Fetch logos for first 10 movies BEFORE showing them
+      const toFetchLogos = final.slice(0, 10).filter(m => m._tmdbId)
+      if (toFetchLogos.length > 0) {
+        const logoResults = await Promise.all(
+          toFetchLogos.map(m =>
+            fetch(`/api/tmdb-logo?id=${m._tmdbId}&type=movie`)
+              .then(r => r.json())
+              .then(d => ({ id: m.id, logo: d.logo || null }))
+              .catch(() => ({ id: m.id, logo: null }))
+          )
+        )
+        const logoMap = new Map(logoResults.map(r => [r.id, r.logo]))
+        final.forEach(m => { if (logoMap.has(m.id)) m._logoPath = logoMap.get(m.id)! })
+        // Preload logo images
+        logoResults.forEach(r => { if (r.logo) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w300${r.logo}` } })
+      }
       setMovies(final)
     }
     setLoading(false)
@@ -467,44 +496,28 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   useEffect(() => { if (hydrated) loadMovies() }, [loadMovies, hydrated])
 
-  // Pre-fetch logos + backdrop images for upcoming movies
-  const visibleMovies = movies.filter(m => {
-    if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
-    if (plataformas.length > 0 && !plataformas.some(p => m.plataformas.includes(p))) return false
-    return true
-  })
-  const topMovie = visibleMovies[0] ?? null
-
-  // Read logo directly from cache — no state, no delay, same render frame
-  const currentLogo = topMovie && topMovie.id in logoCache.current ? logoCache.current[topMovie.id] : null
-
-  // Async: fetch logos + preload images for next batch
+  // Background: fetch logos for movies beyond the first 10 (which were fetched during load)
+  const fetchedLogosRef = useRef(new Set<string>())
   useEffect(() => {
+    if (movies.length === 0) return
     const type = isSeries ? 'tv' : 'movie'
-    const upcoming = visibleMovies.slice(0, 6)
-
-    upcoming.forEach(m => {
-      // Preload backdrop image
-      if (m.backdrop_path) {
-        const img = new window.Image()
-        img.src = `https://image.tmdb.org/t/p/w780${m.backdrop_path}`
-      }
-
-      // Fetch logo if not yet in cache
-      if (!m._tmdbId || m.id in logoCache.current) return
-      logoCache.current[m.id] = null // mark as in-flight
+    // Find movies without logos that we haven't tried yet
+    const needLogos = movies.filter(m => m._tmdbId && m._logoPath === undefined && !fetchedLogosRef.current.has(m.id)).slice(0, 5)
+    needLogos.forEach(m => {
+      fetchedLogosRef.current.add(m.id)
       fetch(`/api/tmdb-logo?id=${m._tmdbId}&type=${type}`)
         .then(r => r.json())
         .then(d => {
-          const path = d.logo || null
-          logoCache.current[m.id] = path
-          if (path) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w300${path}` }
-          // Force re-render so currentLogo picks up the new value
-          setLogoTick(t => t + 1)
+          m._logoPath = d.logo || null
+          if (d.logo) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w300${d.logo}` }
         })
-        .catch(() => { logoCache.current[m.id] = null })
+        .catch(() => { m._logoPath = null })
     })
-  }, [topMovie?.id, isSeries, movies.length])
+    // Preload backdrop images for next few
+    movies.slice(0, 6).forEach(m => {
+      if (m.backdrop_path) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w780${m.backdrop_path}` }
+    })
+  }, [movies.length, isSeries])
 
   // Apply mood/platform filters on top of loaded movies
   const filteredMovies = movies.filter(m => {
@@ -569,7 +582,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         <div className="relative w-full aspect-[5/4]">
           {filteredMovies.slice(0, 3).map((m, i) => (
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
-              <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={i === 0 ? currentLogo : null} isFirstEver={i === 0} />
+              <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={m._logoPath} isFirstEver={i === 0} />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={() => { localStorage.setItem('reel_onboarding', '1'); setShowOnboarding(false) }} />}
               {i === 0 && guestBlocked && <GuestLimitModal onDismiss={() => setDismissed(true)} />}
             </div>

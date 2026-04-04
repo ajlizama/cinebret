@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
+import AuthModal from './AuthModal'
 
 const MENU_ITEMS = [
   { href: '/reel', label: 'Tinder', color: 'text-orange-400', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z" strokeLinecap="round" strokeLinejoin="round"/></svg> },
@@ -31,6 +32,7 @@ export default function TopNav() {
   const { mode, setMode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showAuth, setShowAuth] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [busqueda, setBusqueda] = useState('')
   const [resultados, setResultados] = useState<SearchResult[]>([])
@@ -159,11 +161,19 @@ export default function TopNav() {
             </button>
 
             {/* Profile */}
-            <Link href="/perfil" className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-zinc-500 transition-colors">
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-zinc-400">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-            </Link>
+            {user ? (
+              <Link href="/perfil" className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-zinc-500 transition-colors">
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-zinc-400">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </Link>
+            ) : (
+              <button onClick={() => setShowAuth(true)} className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-zinc-500 transition-colors">
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-zinc-400">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </nav>
@@ -186,6 +196,8 @@ export default function TopNav() {
           </div>
         </div>
       )}
+
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </>
   )
 }

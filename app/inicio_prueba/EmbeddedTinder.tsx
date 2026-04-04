@@ -534,25 +534,19 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
             </div>
           ))}
 
-          {/* Action buttons — overlapping bottom of poster */}
-          <div className="absolute bottom-4 left-0 right-0 z-20 flex items-center justify-center gap-5">
-            <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-0.5 cursor-pointer">
-              <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-xl shadow-lg backdrop-blur-sm hover:border-red-400 transition-colors">✕</div>
-              <span className="text-red-400 text-[10px] font-semibold drop-shadow-lg">Paso</span>
-            </button>
-            <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-0.5 cursor-pointer">
-              <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm hover:border-blue-400 transition-colors">
-                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </div>
-              <span className="text-blue-400 text-[10px] font-semibold drop-shadow-lg">Ya la vi</span>
-            </button>
-            <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-0.5 cursor-pointer">
-              <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-xl shadow-lg backdrop-blur-sm hover:border-pink-400 transition-colors">♥</div>
-              <span className="text-pink-400 text-[10px] font-semibold drop-shadow-lg">Watchlist</span>
-            </button>
+          {/* Action buttons — glass bar overlapping bottom */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20">
+            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-xl rounded-full px-1.5 py-1.5 shadow-2xl border border-white/10">
+              <button onClick={() => handleSwipe('left')} className="group w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-red-500/20 active:scale-90" title="No me interesa">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="text-red-400 group-hover:text-red-300 transition-colors"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+              <button onClick={() => handleSwipe('up')} className="group w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-blue-500/20 active:scale-90" title="Ya la vi">
+                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="text-blue-400 group-hover:text-blue-300 transition-colors"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+              <button onClick={() => handleSwipe('right')} className="group w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-pink-500/20 active:scale-90" title="Agregar a Watchlist">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="text-pink-400 group-hover:text-pink-300 transition-colors"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

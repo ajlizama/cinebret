@@ -5,20 +5,14 @@ import FeatureWidgetsNuevo from './FeatureWidgetsNuevo'
 import EmbeddedTinder from './EmbeddedTinder'
 import TopNav from '@/components/TopNav'
 
-const TYPEWRITER_PLACEHOLDERS = [
-  '¿Cómo te ayudo?',
-  'Una película parecida a Matrix...',
-  'Quiero ver ciencia-ficción...',
-  'Algo estilo Nolan...',
-]
-
 export default function CatalogoClient({
-  peliculas, series, trendingIds, trendingSeriesIds,
+  peliculas, series, trendingIds, trendingSeriesIds, typewriterPhrases,
 }: {
   peliculas: Pelicula[]
   series: Pelicula[]
   trendingIds: number[]
   trendingSeriesIds: number[]
+  typewriterPhrases?: string[]
 }) {
   return (
     <main className="min-h-screen bg-zinc-950">
@@ -34,7 +28,7 @@ export default function CatalogoClient({
         )}
         hideHeroTitle
         hidePlatformTitle
-        searchPlaceholders={TYPEWRITER_PLACEHOLDERS}
+        searchPlaceholders={typewriterPhrases}
       />
     </main>
   )

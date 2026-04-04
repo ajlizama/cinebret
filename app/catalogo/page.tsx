@@ -160,12 +160,32 @@ export default async function CatalogoPage() {
     }
   } catch {}
 
+  // Generate dynamic typewriter placeholders from real data
+  const trendingSet = new Set(trendingIds)
+  const trendingMovies = peliculas.filter(p => p.tmdb_id && trendingSet.has(p.tmdb_id) && p.titulo_ingles)
+  const topRated = peliculas.filter(p => (p.nota_imdb ?? 0) >= 8.5 && p.titulo_ingles).sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+  const topDirectors = [...new Set(peliculas.filter(p => p.director && (p.nota_imdb ?? 0) >= 8).map(p => p.director!.split(',')[0].trim()))].slice(0, 20)
+  const topGenres = [...new Set(peliculas.flatMap(p => p.generos))].filter(g => !['Drama', 'Otros'].includes(g))
+
+  const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)]
+  const movieName = pick(trendingMovies)?.titulo_ingles || pick(topRated)?.titulo_ingles || 'Inception'
+  const genre = pick(topGenres) || 'Ciencia ficción'
+  const director = pick(topDirectors) || 'Nolan'
+
+  const typewriterPhrases = [
+    '¿Cómo te ayudo?',
+    `Una película parecida a ${movieName}...`,
+    `Quiero ver ${genre.toLowerCase()}...`,
+    `Algo estilo ${director}...`,
+  ]
+
   return (
     <CatalogoClient
       peliculas={peliculas}
       series={series}
       trendingIds={trendingIds}
       trendingSeriesIds={trendingSeriesIds}
+      typewriterPhrases={typewriterPhrases}
     />
   )
 }

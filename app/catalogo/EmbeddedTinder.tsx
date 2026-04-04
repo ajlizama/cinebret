@@ -400,13 +400,14 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         _tmdbId: s.tmdb_id,
       }))
       const trendingSet = new Set(trendingIds)
-      const trending = result.filter(m => m._tmdbId && trendingSet.has(m._tmdbId))
-      const rest = result.filter(m => !m._tmdbId || !trendingSet.has(m._tmdbId))
+      const trending = result.filter(m => m._tmdbId && trendingSet.has(m._tmdbId) && m.plataformas.length > 0)
+      for (let i = trending.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [trending[i], trending[j]] = [trending[j], trending[i]] }
+      const rest = result.filter(m => !m._tmdbId || !trendingSet.has(m._tmdbId) || m.plataformas.length === 0)
       const final: TinderMovie[] = []
       let ti = 0, ri = 0
       while (ti < trending.length || ri < rest.length) {
-        for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
         if (ti < trending.length) final.push(trending[ti++])
+        for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
       }
       setMovies(final)
     } else {
@@ -444,18 +445,18 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         _tmdbId: p.tmdb_id,
       }))
 
-      // Split: trending (30%) + rest by IMDB (70%)
+      // Split: trending (shuffled) + rest by IMDB, start with trending
       const trendingSet = new Set(trendingIds)
-      const trending = all.filter(m => m._tmdbId && trendingSet.has(m._tmdbId))
-        .sort((a, b) => trendingIds.indexOf(a._tmdbId!) - trendingIds.indexOf(b._tmdbId!))
-      const rest = all.filter(m => !m._tmdbId || !trendingSet.has(m._tmdbId))
-      // Interleave: every ~3 movies, insert a trending one
+      const trending = all.filter(m => m._tmdbId && trendingSet.has(m._tmdbId) && m.plataformas.length > 0)
+      // Shuffle trending so it's different every time
+      for (let i = trending.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [trending[i], trending[j]] = [trending[j], trending[i]] }
+      const rest = all.filter(m => !m._tmdbId || !trendingSet.has(m._tmdbId) || m.plataformas.length === 0)
+      // Interleave: START with trending, then alternate 1 trending / 2 rest
       const final: TinderMovie[] = []
       let ti = 0, ri = 0
       while (ti < trending.length || ri < rest.length) {
-        // 2 from rest, 1 from trending
-        for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
         if (ti < trending.length) final.push(trending[ti++])
+        for (let k = 0; k < 2 && ri < rest.length; k++) final.push(rest[ri++])
       }
       setMovies(final)
     }
@@ -464,7 +465,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   useEffect(() => { if (hydrated) loadMovies() }, [loadMovies, hydrated])
 
-  // Pre-fetch logos for next ~5 movies, serve from cache instantly
+  // Pre-fetch logos for next ~5 movies and preload images
   const visibleMovies = movies.filter(m => {
     if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
     if (plataformas.length > 0 && !plataformas.some(p => m.plataformas.includes(p))) return false
@@ -472,27 +473,33 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   })
   const topMovie = visibleMovies[0] ?? null
 
+  // Synchronous cache lookup — runs every render, no delay
+  const cachedLogo = topMovie ? logoCache.current[topMovie.id] : undefined
+  if (cachedLogo !== undefined && cachedLogo !== logoPath) {
+    setLogoPath(cachedLogo)
+  }
+
+  // Async: fetch logos for upcoming movies + preload images
   useEffect(() => {
     const type = isSeries ? 'tv' : 'movie'
-    const toFetch = visibleMovies.slice(0, 5).filter(m => m._tmdbId && !(m.id in logoCache.current))
-    toFetch.forEach(m => {
-      logoCache.current[m.id] = null // mark as fetching
+    visibleMovies.slice(0, 6).forEach(m => {
+      if (!m._tmdbId || m.id in logoCache.current) return
+      logoCache.current[m.id] = null // mark as in-flight
       fetch(`/api/tmdb-logo?id=${m._tmdbId}&type=${type}`)
         .then(r => r.json())
         .then(d => {
-          logoCache.current[m.id] = d.logo || null
-          // If this is the current top movie, update state immediately
-          if (m.id === topMovie?.id) setLogoPath(d.logo || null)
+          const path = d.logo || null
+          logoCache.current[m.id] = path
+          // Preload the image so browser has it cached
+          if (path) { const img = new window.Image(); img.src = `https://image.tmdb.org/t/p/w300${path}` }
+          // Update state if this is still the top movie
+          if (m.id === topMovie?.id) setLogoPath(path)
         })
         .catch(() => { logoCache.current[m.id] = null })
     })
-    // Set logo from cache if already available
-    if (topMovie && topMovie.id in logoCache.current) {
-      setLogoPath(logoCache.current[topMovie.id])
-    } else if (!topMovie) {
-      setLogoPath(null)
-    }
-  }, [topMovie?.id, isSeries, visibleMovies.length])
+    // Clear logo if no top movie
+    if (!topMovie) setLogoPath(null)
+  }, [topMovie?.id, isSeries, movies.length])
 
   // Apply mood/platform filters on top of loaded movies
   const filteredMovies = movies.filter(m => {

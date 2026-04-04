@@ -982,7 +982,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-1.5 md:py-2.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-0.5 transition-all ${activa ? 'bg-zinc-600 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)] scale-105' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 opacity-70'}`}>
+                  className={`py-1.5 md:py-2.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-0.5 transition-all ${activa ? 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 shadow-[0_0_10px_rgba(250,204,21,0.15)] scale-105' : 'bg-yellow-400/5 text-zinc-400 border border-yellow-400/10 hover:bg-yellow-400/10'}`}>
                   <span className="text-base md:text-xl leading-none">{cat.emoji}</span>
                   <span className="text-center leading-tight">{cat.label}</span>
                 </button>
@@ -1174,7 +1174,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         {widgetSlot}
 
         {/* ── Para Ti ── */}
-        <div className="mb-4 border-t border-zinc-800 pt-3">
+        <div className="mb-2">
           {user ? (
             <ParaTi key={prefKey} onEditPreferences={() => setShowCuestionario(true)}
               onMovieExpand={rec => { setParaTiMovie(recToPelicula(rec)); setTrendingMovie(null); setExpandida(null) }}
@@ -1259,7 +1259,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         )}
 
         {/* ── Catálogo ── */}
-        <div className="border-t border-zinc-800 pt-4 mb-4" ref={catalogRef}>
+        <div className="mb-4" ref={catalogRef}>
           {/* Row 1: title + toggle + badges */}
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <h2 className="text-xl md:text-2xl font-bold text-white">Catálogo</h2>

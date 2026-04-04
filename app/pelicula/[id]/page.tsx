@@ -81,6 +81,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
   const enr = pelicula.enriquecimiento
   const tieneReviewAutor = enr?.review_autor
   const titulo = pelicula.titulo_ingles || pelicula.titulo
+  const tituloLocal = pelicula.titulo_latino || pelicula.titulo
 
   return (
     <main className="min-h-screen bg-zinc-950 overflow-x-hidden">
@@ -111,15 +112,15 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               {pelicula.logo_path ? (
                 <div className="mb-2">
                   <img loading="lazy" src={`https://image.tmdb.org/t/p/w500${pelicula.logo_path}`} alt={titulo} className="h-16 md:h-20 w-auto max-w-full object-contain drop-shadow-lg" />
-                  {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                    <p className="text-zinc-400 text-sm mt-1">{pelicula.titulo}</p>
+                  {pelicula.titulo_ingles && tituloLocal !== pelicula.titulo_ingles && (
+                    <p className="text-zinc-400 text-sm mt-1">{tituloLocal}</p>
                   )}
                 </div>
               ) : (
                 <>
                   <h1 className="text-4xl font-bold text-white mb-1">{titulo}</h1>
-                  {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (
-                    <p className="text-zinc-400 text-lg mb-1">{pelicula.titulo}</p>
+                  {pelicula.titulo_ingles && tituloLocal !== pelicula.titulo_ingles && (
+                    <p className="text-zinc-400 text-lg mb-1">{tituloLocal}</p>
                   )}
                 </>
               )}

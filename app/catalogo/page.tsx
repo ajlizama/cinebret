@@ -67,14 +67,14 @@ export default async function CatalogoPage() {
     ),
     fetchAllPages((from, to) =>
       supabase.from('peliculas').select(`
-        id, tmdb_id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, categoria, poster_path, backdrop_path, imdb_id, youtube_trailer_key, tagline, certification,
+        id, tmdb_id, titulo, titulo_ingles, titulo_latino, anio, nota_imdb, rt_score, metacritic_score, runtime, boxoffice, oscars, categoria, poster_path, backdrop_path, imdb_id, youtube_trailer_key, tagline, certification,
         enriquecimiento (es_review_autor, sello_bret, director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, generos, sinopsis_chilensis, video_clip_url, keywords)
       `).range(from, to)
     ),
     // Series
     fetchAllPages((from, to) =>
       supabase.from('series').select(`
-        id, tmdb_id, titulo, titulo_ingles, anio_inicio, nota_imdb, num_temporadas, num_episodios, estado, categoria, poster_path, backdrop_path, imdb_id, youtube_trailer_key, tagline, certification, episode_runtime, networks,
+        id, tmdb_id, titulo, titulo_ingles, titulo_latino, anio_inicio, nota_imdb, num_temporadas, num_episodios, estado, categoria, poster_path, backdrop_path, imdb_id, youtube_trailer_key, tagline, certification, episode_runtime, networks,
         enriquecimiento_series (director, actores, compositor, generos, sinopsis_chilensis, keywords, cast_json)
       `).range(from, to)
     ),
@@ -113,7 +113,7 @@ export default async function CatalogoPage() {
     return {
       id: p.id,
       tmdb_id: p.tmdb_id ?? null,
-      titulo: p.titulo,
+      titulo: p.titulo_latino || p.titulo,
       titulo_ingles: p.titulo_ingles ?? null,
       anio: p.anio ?? null,
       nota_imdb: p.nota_imdb ?? null,
@@ -161,7 +161,7 @@ export default async function CatalogoPage() {
     return {
       id: s.id,
       tmdb_id: s.tmdb_id ?? null,
-      titulo: s.titulo,
+      titulo: s.titulo_latino || s.titulo,
       titulo_ingles: s.titulo_ingles ?? null,
       anio: s.anio_inicio ?? null,
       nota_imdb: s.nota_imdb ?? null,

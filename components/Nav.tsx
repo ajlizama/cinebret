@@ -168,7 +168,7 @@ export default function Nav({ active, transparent }: Props) {
       const [{ data: profiles }, pelisResult, seriesResult] = await Promise.all([
         supabase.rpc('buscar_usuarios', { q }),
         supabase.rpc('buscar_peliculas', { q }),
-        supabase.from('series').select('id, titulo, titulo_ingles, anio_inicio, nota_imdb, poster_path').or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%`).order('nota_imdb', { ascending: false, nullsFirst: false }).limit(10),
+        supabase.from('series').select('id, titulo, titulo_ingles, titulo_latino, anio_inicio, nota_imdb, poster_path').or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%,titulo_latino.ilike.%${q}%`).order('nota_imdb', { ascending: false, nullsFirst: false }).limit(10),
       ])
 
       // Películas + Series combinadas

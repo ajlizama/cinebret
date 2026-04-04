@@ -117,6 +117,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
 
   const enr = serie.enriquecimiento_series
   const titulo = serie.titulo_ingles || serie.titulo
+  const tituloLocal = serie.titulo_latino || serie.titulo
   const [plataformas, temporadasRaw] = await Promise.all([
     getWatchProviders(id),
     getTemporadas(id),
@@ -153,15 +154,15 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
               {serie.logo_path ? (
                 <div className="mb-2">
                   <img loading="lazy" src={`https://image.tmdb.org/t/p/w500${serie.logo_path}`} alt={titulo} className="h-16 md:h-20 w-auto max-w-full object-contain drop-shadow-lg" />
-                  {serie.titulo_ingles && serie.titulo !== serie.titulo_ingles && (
-                    <p className="text-zinc-400 text-sm mt-1">{serie.titulo}</p>
+                  {serie.titulo_ingles && tituloLocal !== serie.titulo_ingles && (
+                    <p className="text-zinc-400 text-sm mt-1">{tituloLocal}</p>
                   )}
                 </div>
               ) : (
                 <>
                   <h1 className="text-4xl font-bold text-white mb-1">{titulo}</h1>
-                  {serie.titulo_ingles && serie.titulo !== serie.titulo_ingles && (
-                    <p className="text-zinc-400 text-lg mb-1">{serie.titulo}</p>
+                  {serie.titulo_ingles && tituloLocal !== serie.titulo_ingles && (
+                    <p className="text-zinc-400 text-lg mb-1">{tituloLocal}</p>
                   )}
                 </>
               )}

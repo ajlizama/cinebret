@@ -79,9 +79,9 @@ function OnboardingOverlay({ onDone }: { onDone: () => void }) {
 
 // ── Tinder Card ──
 function TinderCard({
-  movie, isTop, onSwipe, slide, setSlide,
+  movie, isTop, onSwipe, slide, setSlide, logoPath,
 }: {
-  movie: TinderMovie; isTop: boolean
+  movie: TinderMovie; isTop: boolean; logoPath?: string | null
   onSwipe: (dir: 'left' | 'right' | 'down' | 'up') => void
   slide: number; setSlide: (s: number) => void
 }) {
@@ -247,7 +247,11 @@ function TinderCard({
               })}
             </div>
           )}
-          <h3 className="text-white font-bold text-xl leading-tight mb-1">{titulo}</h3>
+          {logoPath ? (
+            <img src={`https://image.tmdb.org/t/p/w300${logoPath}`} alt={titulo} className="h-10 md:h-12 w-auto max-w-[70%] object-contain mb-1 drop-shadow-lg" />
+          ) : (
+            <h3 className="text-white font-bold text-xl leading-tight mb-1 drop-shadow-lg">{titulo}</h3>
+          )}
           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
             {movie.anio && <span className="text-zinc-400 text-sm">{movie.anio}</span>}
             {movie.nota_imdb && (
@@ -353,6 +357,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [slide, setSlide] = useState(0)
   const [dismissed, setDismissed] = useState(false)
+  const [logoPath, setLogoPath] = useState<string | null>(null)
   const { blocked: guestBlocked, increment: guestIncrement } = useGuestLimit(user, 'tinder')
 
   useEffect(() => {
@@ -468,6 +473,21 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   useEffect(() => { if (hydrated) loadMovies() }, [loadMovies, hydrated])
 
+  // Fetch logo for current top movie
+  const topMovie = movies.length > 0 ? movies.filter(m => {
+    if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
+    if (plataformas.length > 0 && !plataformas.some(p => m.plataformas.includes(p))) return false
+    return true
+  })[0] : null
+  useEffect(() => {
+    if (!topMovie?._tmdbId) { setLogoPath(null); return }
+    const type = isSeries ? 'tv' : 'movie'
+    fetch(`/api/tmdb-logo?id=${topMovie._tmdbId}&type=${type}`)
+      .then(r => r.json())
+      .then(d => setLogoPath(d.logo || null))
+      .catch(() => setLogoPath(null))
+  }, [topMovie?.id, topMovie?._tmdbId, isSeries])
+
   // Apply mood/platform filters on top of loaded movies
   const filteredMovies = movies.filter(m => {
     if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
@@ -513,13 +533,13 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   if (loading) return (
     <div className="mb-4">
-      <div className="w-full aspect-[4/5] rounded-2xl bg-zinc-800 animate-pulse" />
+      <div className="w-full aspect-[5/4] rounded-2xl bg-zinc-800 animate-pulse" />
     </div>
   )
 
   if (filteredMovies.length === 0) return (
     <div className="mb-4">
-      <div className="w-full aspect-[4/5] rounded-2xl bg-zinc-900 flex items-center justify-center">
+      <div className="w-full aspect-[5/4] rounded-2xl bg-zinc-900 flex items-center justify-center">
         <p className="text-zinc-500 text-sm text-center px-4">{loading ? '' : 'No hay más contenido disponible.'}</p>
       </div>
     </div>
@@ -531,7 +551,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
         <div className="relative w-full aspect-[3/4]">
           {filteredMovies.slice(0, 3).map((m, i) => (
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
-              <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} />
+              <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={i === 0 ? logoPath : null} />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={() => { localStorage.setItem('reel_onboarding', '1'); setShowOnboarding(false) }} />}
               {i === 0 && guestBlocked && <GuestLimitModal onDismiss={() => setDismissed(true)} />}
             </div>

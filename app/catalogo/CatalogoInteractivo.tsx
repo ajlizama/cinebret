@@ -736,7 +736,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode }) {
+export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode; hideHeroTitle?: boolean }) {
   const { mode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
   const contenido = activeMode === 'series' ? series : peliculas
@@ -931,7 +931,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
       {/* ── HERO ── */}
       <div className="relative overflow-hidden bg-zinc-950 pt-4 pb-2">
         <div className="relative flex flex-col items-center justify-center px-4">
-          <h1 className="text-xl md:text-2xl font-bold text-white mb-2">Bienvenido a <span className="text-amber-400">CineBret</span></h1>
+          {!hideHeroTitle && <h1 className="text-xl md:text-2xl font-bold text-white mb-2">Bienvenido a <span className="text-amber-400">CineBret</span></h1>}
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
@@ -999,6 +999,9 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
             })}
           </div>
         </div>
+
+        {/* ── Tinder slot (only rendered if passed) ── */}
+        {tinderSlot}
 
         {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">

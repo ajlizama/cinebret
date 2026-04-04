@@ -736,7 +736,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 }
 
 /* ─────────── Main component ─────────── */
-export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode; hideHeroTitle?: boolean }) {
+export default function CatalogoInteractivo({ peliculas, series = [], trendingIds = [], trendingSeriesIds = [], widgetSlot, tinderSlot, hideHeroTitle, hidePlatformTitle, searchPlaceholders }: { peliculas: Pelicula[]; series?: Pelicula[]; trendingIds?: number[]; trendingSeriesIds?: number[]; widgetSlot?: React.ReactNode; tinderSlot?: React.ReactNode | ((filters: { categorias: string[]; plataformas: string[] }) => React.ReactNode); hideHeroTitle?: boolean; hidePlatformTitle?: boolean; searchPlaceholders?: string[] }) {
   const { mode, hydrated } = useMediaMode()
   const activeMode = hydrated ? mode : 'peliculas'
   const contenido = activeMode === 'series' ? series : peliculas
@@ -959,6 +959,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               setPagina(0)
             }}
             placeholder="Buscar película o pedir recomendación..."
+            placeholders={searchPlaceholders}
           />
         </div>
       </div>
@@ -983,8 +984,8 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         </div>
 
         {/* ── Plataformas ── */}
-        <div className="mb-3">
-          <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>
+        <div className={hidePlatformTitle ? 'mb-3 -mt-1' : 'mb-3'}>
+          {!hidePlatformTitle && <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>}
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
@@ -1001,7 +1002,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         </div>
 
         {/* ── Tinder slot (only rendered if passed) ── */}
-        {tinderSlot}
+        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro }) : tinderSlot}
 
         {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">

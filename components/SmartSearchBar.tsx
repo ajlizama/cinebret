@@ -9,9 +9,44 @@ type Props = {
   onSmartFilters: (filters: SmartFilters) => void
   onScrollToCatalog?: () => void
   placeholder?: string
+  placeholders?: string[] // Typewriter cycling placeholders
 }
 
-export default function SmartSearchBar({ value, onChange, onSmartFilters, onScrollToCatalog, placeholder = 'Buscar película, director, actor...' }: Props) {
+function useTypewriter(phrases: string[], enabled: boolean) {
+  const [text, setText] = useState('')
+  const [phraseIdx, setPhraseIdx] = useState(0)
+  const [charIdx, setCharIdx] = useState(0)
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    if (!enabled || phrases.length === 0) return
+    const phrase = phrases[phraseIdx]
+    if (!deleting) {
+      if (charIdx < phrase.length) {
+        const t = setTimeout(() => { setCharIdx(c => c + 1); setText(phrase.slice(0, charIdx + 1)) }, 60)
+        return () => clearTimeout(t)
+      } else {
+        const t = setTimeout(() => setDeleting(true), 2000)
+        return () => clearTimeout(t)
+      }
+    } else {
+      if (charIdx > 0) {
+        const t = setTimeout(() => { setCharIdx(c => c - 1); setText(phrase.slice(0, charIdx - 1)) }, 35)
+        return () => clearTimeout(t)
+      } else {
+        setDeleting(false)
+        setPhraseIdx(i => (i + 1) % phrases.length)
+      }
+    }
+  }, [charIdx, deleting, phraseIdx, phrases, enabled])
+
+  return text
+}
+
+export default function SmartSearchBar({ value, onChange, onSmartFilters, onScrollToCatalog, placeholder = 'Buscar película, director, actor...', placeholders }: Props) {
+  const [focused, setFocused] = useState(false)
+  const typewriterText = useTypewriter(placeholders ?? [], !!placeholders && !focused && !value)
+  const activePlaceholder = placeholders && !focused && !value ? (typewriterText + '|') : placeholder
   const [listening, setListening] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [responseMsg, setResponseMsg] = useState<string | null>(null)
@@ -142,11 +177,13 @@ export default function SmartSearchBar({ value, onChange, onSmartFilters, onScro
       <input
         ref={inputRef}
         type="text"
-        placeholder={placeholder}
+        placeholder={activePlaceholder}
         value={value}
         onChange={e => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full bg-zinc-900/80 backdrop-blur-md border-0 rounded-2xl px-5 py-3.5 pr-24 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-yellow-400/30 text-base md:text-sm shadow-lg"
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        className="w-full bg-zinc-900/80 backdrop-blur-md border-0 rounded-2xl px-5 py-3.5 pr-24 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-yellow-400/30 text-[16px] md:text-sm shadow-lg"
       />
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
         {/* Processing indicator */}

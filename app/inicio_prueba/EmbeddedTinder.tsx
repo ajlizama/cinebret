@@ -91,7 +91,27 @@ function TinderCard({
   const [gone, setGone] = useState<'left' | 'right' | 'down' | 'up' | null>(null)
 
   const titulo = movie.titulo_ingles || movie.titulo
-  const maxSlide = 1 // poster + info
+  const maxSlide = 3 // poster, info, reviews, ficha
+  const [reviews, setReviews] = useState<any[]>([])
+  const [reviewsLoaded, setReviewsLoaded] = useState(false)
+
+  // Lazy load reviews on slide 2
+  useEffect(() => {
+    if (slide !== 2 || reviewsLoaded) return
+    ;(async () => {
+      const { data: enrData } = await supabase.from('enriquecimiento').select('review_autor, es_review_autor').eq('pelicula_id', movie.id).maybeSingle()
+      const { data: rawReviews } = await supabase.from('user_reviews').select('id, review_text, created_at, user_id, rating').eq('pelicula_id', movie.id).order('created_at', { ascending: false }).limit(5)
+      const all: any[] = []
+      if (enrData?.es_review_autor && enrData?.review_autor) all.push({ id: 'autor', username: 'CineBret', review_text: enrData.review_autor, isAutor: true })
+      if (rawReviews && rawReviews.length > 0) {
+        const { data: profiles } = await supabase.from('profiles').select('user_id, username, avatar_url').in('user_id', rawReviews.map((r: any) => r.user_id))
+        const pm: Record<string, any> = {}; (profiles ?? []).forEach((p: any) => { pm[p.user_id] = p })
+        rawReviews.filter((r: any) => pm[r.user_id]).forEach((r: any) => all.push({ ...r, username: pm[r.user_id].username }))
+      }
+      setReviews(all)
+      setReviewsLoaded(true)
+    })()
+  }, [slide, movie.id, reviewsLoaded])
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isTop) return
@@ -206,7 +226,7 @@ function TinderCard({
 
       {/* ── SLIDE 0: Poster + basic info ── */}
       {slide === 0 && (
-        <div className="absolute inset-x-0 bottom-20 p-4 z-10">
+        <div className="absolute inset-x-0 bottom-24 p-4 z-10">
           {movie.plataformas.length > 0 && (
             <div className="flex gap-1.5 mb-2">
               {movie.plataformas.slice(0, 4).map(p => {
@@ -242,7 +262,7 @@ function TinderCard({
 
       {/* ── SLIDE 1: Detailed info ── */}
       {slide === 1 && (
-        <div className="absolute inset-x-0 bottom-20 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           <h3 className="text-white font-bold text-lg leading-tight mb-1">{titulo}</h3>
           <div className="flex items-center gap-2 mb-2 flex-wrap text-sm">
             {movie.anio && <span className="text-zinc-400">{movie.anio}</span>}
@@ -268,6 +288,39 @@ function TinderCard({
         </div>
       )}
 
+      {/* ── SLIDE 2: Reviews ── */}
+      {slide === 2 && (
+        <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <h3 className="text-white font-bold text-base mb-3">Reviews</h3>
+          {!reviewsLoaded && <p className="text-zinc-500 text-xs text-center pt-4">Cargando reviews...</p>}
+          {reviewsLoaded && reviews.length === 0 && <p className="text-zinc-500 text-sm text-center pt-8">Sin reviews aún.</p>}
+          {reviews.map(r => (
+            <div key={r.id} className="mb-4">
+              <div className="flex items-center gap-2 mb-1.5">
+                {r.isAutor ? (
+                  <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">Review CineBret</span>
+                ) : (
+                  <span className="text-white text-xs font-medium">@{r.username}</span>
+                )}
+                {r.rating && <span className="text-yellow-400 text-xs">{r.rating}/10</span>}
+              </div>
+              <p className="text-zinc-300 text-sm leading-relaxed">{r.review_text}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── SLIDE 3: Ver ficha ── */}
+      {slide === 3 && (
+        <div className="absolute inset-x-0 bottom-24 top-10 flex flex-col items-center justify-center p-4 z-10">
+          <h3 className="text-white font-bold text-lg mb-2">{titulo}</h3>
+          <p className="text-zinc-400 text-sm mb-6 text-center">Visita la ficha completa para más detalles, trailers y más.</p>
+          <Link href={`/pelicula/${movie.id}`} className="bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-bold px-6 py-2.5 rounded-xl text-sm transition-colors">
+            Ver ficha completa
+          </Link>
+        </div>
+      )}
+
       {/* "Otra" button */}
       <button
         className="absolute top-8 right-3 z-30 w-9 h-9 rounded-full bg-zinc-900/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white"
@@ -283,7 +336,7 @@ function TinderCard({
 }
 
 // ── Main Embedded Tinder ──
-export default function EmbeddedTinder() {
+export default function EmbeddedTinder({ categorias = [], plataformas = [] }: { categorias?: string[]; plataformas?: string[] }) {
   const { user } = useAuth()
   const { mode, hydrated } = useMediaMode()
   const isSeries = hydrated ? mode === 'series' : false
@@ -379,9 +432,16 @@ export default function EmbeddedTinder() {
 
   useEffect(() => { if (hydrated) loadMovies() }, [loadMovies, hydrated])
 
+  // Apply mood/platform filters on top of loaded movies
+  const filteredMovies = movies.filter(m => {
+    if (categorias.length > 0 && !categorias.includes(m.categoria ?? '')) return false
+    if (plataformas.length > 0 && !plataformas.some(p => m.plataformas.includes(p))) return false
+    return true
+  })
+
   const handleSwipe = useCallback((dir: 'left' | 'right' | 'down' | 'up') => {
     if (guestIncrement()) return
-    const top = movies[0]
+    const top = filteredMovies[0]
     if (!top) return
 
     const table = isSeries ? 'user_series' : 'user_peliculas'
@@ -410,7 +470,7 @@ export default function EmbeddedTinder() {
       })
       setSlide(0)
     }
-  }, [user, movies, isSeries, guestIncrement])
+  }, [user, filteredMovies, isSeries, guestIncrement])
 
   if (loading) return (
     <div className="mb-4">
@@ -418,10 +478,10 @@ export default function EmbeddedTinder() {
     </div>
   )
 
-  if (movies.length === 0) return (
+  if (filteredMovies.length === 0) return (
     <div className="mb-4">
       <div className="w-full max-w-xs mx-auto aspect-[3/4] rounded-2xl bg-zinc-900 flex items-center justify-center">
-        <p className="text-zinc-500 text-sm text-center px-4">No hay más contenido disponible.</p>
+        <p className="text-zinc-500 text-sm text-center px-4">{loading ? '' : 'No hay más contenido disponible.'}</p>
       </div>
     </div>
   )
@@ -430,33 +490,34 @@ export default function EmbeddedTinder() {
     <div className="mb-4">
       <div className="w-full max-w-xs mx-auto">
         <div className="relative w-full aspect-[3/4]">
-          {movies.slice(0, 3).map((m, i) => (
+          {filteredMovies.slice(0, 3).map((m, i) => (
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
               <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} />
               {i === 0 && showOnboarding && <OnboardingOverlay onDone={() => { localStorage.setItem('reel_onboarding', '1'); setShowOnboarding(false) }} />}
               {i === 0 && guestBlocked && <GuestLimitModal />}
             </div>
           ))}
-        </div>
-        {/* Action buttons */}
-        <div className="flex items-center justify-center gap-5 mt-3">
-          <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-1 cursor-pointer">
-            <div className="w-14 h-14 rounded-full bg-zinc-900 border-2 border-red-500/50 flex items-center justify-center text-red-400 text-xl hover:border-red-400 transition-colors">✕</div>
-            <span className="text-red-400 text-[10px] font-semibold">Paso</span>
-          </button>
-          <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-1 cursor-pointer">
-            <div className="w-14 h-14 rounded-full bg-zinc-900 border-2 border-blue-500/50 flex items-center justify-center hover:border-blue-400 transition-colors">
-              <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            </div>
-            <span className="text-blue-400 text-[10px] font-semibold">Ya la vi</span>
-          </button>
-          <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-1 cursor-pointer">
-            <div className="w-14 h-14 rounded-full bg-zinc-900 border-2 border-pink-500/50 flex items-center justify-center text-pink-400 text-xl hover:border-pink-400 transition-colors">♥</div>
-            <span className="text-pink-400 text-[10px] font-semibold">Watchlist</span>
-          </button>
+
+          {/* Action buttons — overlapping bottom of poster */}
+          <div className="absolute bottom-4 left-0 right-0 z-20 flex items-center justify-center gap-5">
+            <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-xl shadow-lg backdrop-blur-sm hover:border-red-400 transition-colors">✕</div>
+              <span className="text-red-400 text-[10px] font-semibold drop-shadow-lg">Paso</span>
+            </button>
+            <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm hover:border-blue-400 transition-colors">
+                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <span className="text-blue-400 text-[10px] font-semibold drop-shadow-lg">Ya la vi</span>
+            </button>
+            <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <div className="w-14 h-14 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-xl shadow-lg backdrop-blur-sm hover:border-pink-400 transition-colors">♥</div>
+              <span className="text-pink-400 text-[10px] font-semibold drop-shadow-lg">Watchlist</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

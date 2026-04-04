@@ -1,8 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import CatalogoInteractivo, { type Pelicula } from '../catalogo/CatalogoInteractivo'
-import FeatureWidgetsNuevo from './FeatureWidgetsNuevo'
-import EmbeddedTinder from './EmbeddedTinder'
-import BottomNav from './BottomNav'
+import InicioPruebaClient from './InicioPruebaClient'
 
 export const revalidate = 21600 // 6 hours
 
@@ -166,17 +164,11 @@ export default async function InicioPruebaPage() {
   } catch {}
 
   return (
-    <main className="min-h-screen bg-zinc-950 pb-20">
-      <CatalogoInteractivo
-        peliculas={peliculas}
-        series={series}
-        trendingIds={trendingIds}
-        trendingSeriesIds={trendingSeriesIds}
-        widgetSlot={<FeatureWidgetsNuevo />}
-        tinderSlot={<EmbeddedTinder />}
-        hideHeroTitle
-      />
-      <BottomNav />
-    </main>
+    <InicioPruebaClient
+      peliculas={peliculas}
+      series={series}
+      trendingIds={trendingIds}
+      trendingSeriesIds={trendingSeriesIds}
+    />
   )
 }

@@ -565,7 +565,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   if (loading) return (
     <div className="mb-4">
-      <div className="w-full aspect-[5/4] md:aspect-[21/9] rounded-2xl bg-zinc-900 flex items-center justify-center">
+      <div className="w-full aspect-[5/4] md:aspect-[3/1] rounded-2xl bg-zinc-900 flex items-center justify-center">
         <Loading size="md" />
       </div>
     </div>
@@ -573,7 +573,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
 
   if (filteredMovies.length === 0) return (
     <div className="mb-4">
-      <div className="w-full aspect-[5/4] md:aspect-[21/9] rounded-2xl bg-zinc-900 flex items-center justify-center">
+      <div className="w-full aspect-[5/4] md:aspect-[3/1] rounded-2xl bg-zinc-900 flex items-center justify-center">
         <p className="text-zinc-500 text-sm text-center px-4">{loading ? '' : 'No hay más contenido disponible.'}</p>
       </div>
     </div>
@@ -582,7 +582,7 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
   return (
     <div className="mb-4">
       <div className="w-full">
-        <div className="relative w-full aspect-[5/4] md:aspect-[21/9]">
+        <div className="relative w-full aspect-[5/4] md:aspect-[3/1]">
           {filteredMovies.slice(0, 3).map((m, i) => (
             <div key={m.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 8}px)`, zIndex: 3 - i }}>
               <TinderCard movie={m} isTop={i === 0} onSwipe={handleSwipe} slide={i === 0 ? slide : 0} setSlide={i === 0 ? setSlide : () => {}} logoPath={m._logoPath} isFirstEver={i === 0} />

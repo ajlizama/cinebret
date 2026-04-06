@@ -48,7 +48,6 @@ type RoomState = {
   movie_pool: PoolMovie[]
   results: ResultMovie[]
   user2_joined: boolean
-  pool_ready: boolean
 }
 
 type Phase =
@@ -154,8 +153,7 @@ export default function JuntosNuevoPage() {
         .from('peliculas')
         .select('id, titulo, titulo_ingles, poster_path')
         .not('poster_path', 'is', null)
-        .gte('nota_imdb', 6)
-        .limit(500)
+        .range(0, 2999)
       if (data) setAllMovies(data as SearchMovie[])
     }
     loadMovies()
@@ -269,26 +267,33 @@ export default function JuntosNuevoPage() {
           await apiCall('generate_pool', { code: roomCode })
         }
 
-        // Now poll for pool_ready
+        // Now poll for movie_pool to be populated
         pollingRef.current = setInterval(async () => {
           const updated = await fetchRoom(roomCode)
-          if (updated?.pool_ready && updated.movie_pool.length > 0) {
+          if (updated?.movie_pool && Array.isArray(updated.movie_pool) && updated.movie_pool.length > 0) {
             stopPolling()
             setPool(updated.movie_pool)
             setSwipeIndex(0)
             setSwipes({})
             setPhase('swipe')
-          } else if (updated?.pool_ready && updated.movie_pool.length === 0) {
+            setLoading(false)
+          }
+        }, 2000)
+
+        // Timeout: if no pool after 30s, show error
+        setTimeout(() => {
+          if (pollingRef.current) {
             stopPolling()
-            setError('No encontramos peliculas con esas preferencias. Intenten de nuevo.')
+            setError('No encontramos películas con esas preferencias. Intenten de nuevo.')
             setPhase('prefs')
             setPrefsStep(1)
             setSelectedMood('')
             setSelectedGenres([])
             setSelectedReference(null)
             setMovieSearch('')
+            setLoading(false)
           }
-        }, 2000)
+        }, 30000)
       }
     }, 2000)
 

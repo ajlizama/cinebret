@@ -232,54 +232,42 @@ export async function POST(request: NextRequest) {
       const mood1 = MOOD_GENRES[u1.mood] || {}
       const mood2 = MOOD_GENRES[u2.mood] || {}
 
-      // Get latest catalog date
-      const { data: fechaRow } = await supabase
-        .from('catalogos')
-        .select('fecha')
-        .eq('activo', true)
-        .order('fecha', { ascending: false })
-        .limit(1)
-        .maybeSingle()
-
-      const fecha = (fechaRow as any)?.fecha ?? new Date().toISOString().split('T')[0]
-
-      // Get catalog entries for relevant platforms
+      // Get watch providers (TMDB - accurate)
       if (allPlatforms.length === 0) {
         return Response.json({ error: 'No hay plataformas seleccionadas' }, { status: 400 })
       }
 
-      // Paginate catalog entries
       const platMap: Record<string, string[]> = {}
-      let catFrom = 0
-      const catPageSize = 1000
+      let wpFrom = 0
+      const wpPageSize = 1000
 
       while (true) {
-        const { data: catEntries } = await supabase
-          .from('catalogos')
-          .select('pelicula_id, plataforma')
-          .eq('fecha', fecha)
-          .eq('activo', true)
-          .in('plataforma', allPlatforms)
-          .range(catFrom, catFrom + catPageSize - 1)
+        const { data: wpEntries } = await supabase
+          .from('watch_providers')
+          .select('pelicula_id, platform_key')
+          .eq('provider_type', 'flatrate')
+          .not('platform_key', 'is', null)
+          .in('platform_key', allPlatforms)
+          .range(wpFrom, wpFrom + wpPageSize - 1)
 
-        if (!catEntries || catEntries.length === 0) break
+        if (!wpEntries || wpEntries.length === 0) break
 
-        for (const c of catEntries) {
-          if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
-          if (!platMap[c.pelicula_id].includes(c.plataforma)) {
-            platMap[c.pelicula_id].push(c.plataforma)
+        for (const w of wpEntries) {
+          if (!platMap[w.pelicula_id]) platMap[w.pelicula_id] = []
+          if (!platMap[w.pelicula_id].includes(w.platform_key)) {
+            platMap[w.pelicula_id].push(w.platform_key)
           }
         }
 
-        if (catEntries.length < catPageSize) break
-        catFrom += catPageSize
+        if (wpEntries.length < wpPageSize) break
+        wpFrom += wpPageSize
       }
 
       const candidateIds = Object.keys(platMap)
       if (candidateIds.length === 0) {
         await supabase
           .from('juntos_sessions')
-          .update({ movie_pool: [], pool_ready: true })
+          .update({ movie_pool: [] })
           .eq('code', code)
         return Response.json({ ok: true, count: 0 })
       }
@@ -369,7 +357,7 @@ export async function POST(request: NextRequest) {
 
       const { error } = await supabase
         .from('juntos_sessions')
-        .update({ movie_pool: pool, pool_ready: true })
+        .update({ movie_pool: pool })
         .eq('code', code)
 
       if (error) {

@@ -467,7 +467,7 @@ export default function ConexionPage() {
     if (!graph || searchStart.length < 2) return []
     const q = searchStart.toLowerCase()
     return graph.nodes
-      .filter((n) => n.title.toLowerCase().includes(q) || n.titleEs.toLowerCase().includes(q))
+      .filter((n) => (n.title || '').toLowerCase().includes(q) || (n.titleEs || '').toLowerCase().includes(q))
       .slice(0, 8)
   }, [graph, searchStart])
 
@@ -475,7 +475,7 @@ export default function ConexionPage() {
     if (!graph || searchEnd.length < 2) return []
     const q = searchEnd.toLowerCase()
     return graph.nodes
-      .filter((n) => n.title.toLowerCase().includes(q) || n.titleEs.toLowerCase().includes(q))
+      .filter((n) => (n.title || '').toLowerCase().includes(q) || (n.titleEs || '').toLowerCase().includes(q))
       .slice(0, 8)
   }, [graph, searchEnd])
 
@@ -504,11 +504,24 @@ export default function ConexionPage() {
   }
 
   if (isMobile) {
+    // Loading state
+    if (!graph || !startNode || !endNode) {
+      return (
+        <main className="min-h-screen bg-zinc-950 flex items-center justify-center">
+          <Nav active="inicio" />
+          <div className="text-center pt-20">
+            <video src="/loading.mp4" autoPlay muted loop playsInline className="w-16 h-16 mx-auto object-contain" style={{ mixBlendMode: 'screen' }} />
+            <p className="text-zinc-500 text-sm mt-4">Cargando conexiones...</p>
+          </div>
+        </main>
+      )
+    }
+
     return (
       <div className="fixed inset-0 bg-zinc-950 z-40 overflow-hidden">
 
         {/* Background: current movie poster, large, low opacity ---- */}
-        {currentNode && (
+        {currentNode && currentNode.poster && (
           <div className="absolute inset-0 opacity-15 pointer-events-none">
             <Image
               src={`${TMDB_IMG}${currentNode.poster}`}

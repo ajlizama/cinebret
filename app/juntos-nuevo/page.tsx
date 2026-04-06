@@ -5,13 +5,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Loading from '@/components/Loading'
+import { supabase } from '@/lib/supabase'
 
 // ── Types ──
 
 type Prefs = {
   mood: string
   genres: string[]
-  platforms: string[]
+  reference_movie?: string // movie ID
+}
+
+type SearchMovie = {
+  id: string
+  titulo: string
+  titulo_ingles: string | null
+  poster_path: string | null
 }
 
 type PoolMovie = {
@@ -45,6 +53,7 @@ type RoomState = {
 
 type Phase =
   | 'start'
+  | 'platforms'
   | 'waiting'
   | 'prefs'
   | 'waiting_prefs'
@@ -102,11 +111,18 @@ export default function JuntosNuevoPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Platform selection (room creation)
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([])
+
   // Prefs state
   const [selectedMood, setSelectedMood] = useState('')
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([])
-  const [prefsStep, setPrefsStep] = useState(1) // 1=mood, 2=genres, 3=platforms
+  const [prefsStep, setPrefsStep] = useState(1) // 1=mood, 2=genres, 3=reference movie
+
+  // Reference movie search
+  const [allMovies, setAllMovies] = useState<SearchMovie[]>([])
+  const [movieSearch, setMovieSearch] = useState('')
+  const [selectedReference, setSelectedReference] = useState<SearchMovie | null>(null)
 
   // Swipe state
   const [pool, setPool] = useState<PoolMovie[]>([])
@@ -131,11 +147,46 @@ export default function JuntosNuevoPage() {
     return () => stopPolling()
   }, [stopPolling])
 
+  // Load movies for reference search on mount
+  useEffect(() => {
+    async function loadMovies() {
+      const { data } = await supabase
+        .from('peliculas')
+        .select('id, titulo, titulo_ingles, poster_path')
+        .not('poster_path', 'is', null)
+        .gte('nota_imdb', 6)
+        .limit(500)
+      if (data) setAllMovies(data as SearchMovie[])
+    }
+    loadMovies()
+  }, [])
+
+  // Filtered movie results for typeahead
+  const movieSearchResults = movieSearch.length >= 2
+    ? allMovies.filter(m => {
+        const q = movieSearch.toLowerCase()
+        return (
+          m.titulo.toLowerCase().includes(q) ||
+          (m.titulo_ingles && m.titulo_ingles.toLowerCase().includes(q))
+        )
+      }).slice(0, 6)
+    : []
+
   // ── Create Room ──
   const handleCreate = async () => {
+    setPhase('platforms')
+    setSelectedPlatforms([])
+    setError('')
+  }
+
+  const handleCreateWithPlatforms = async () => {
+    if (selectedPlatforms.length === 0) {
+      setError('Elige al menos una plataforma')
+      return
+    }
     setLoading(true)
     setError('')
-    const data = await apiCall('create')
+    const data = await apiCall('create', { platforms: selectedPlatforms })
     if (data.error) {
       setError(data.error)
       setLoading(false)
@@ -179,7 +230,7 @@ export default function JuntosNuevoPage() {
 
   // ── Submit Preferences ──
   const handleSubmitPrefs = async () => {
-    if (!selectedMood || selectedGenres.length === 0 || selectedPlatforms.length === 0) {
+    if (!selectedMood || selectedGenres.length === 0 || !selectedReference) {
       setError('Completa todas las preferencias')
       return
     }
@@ -189,7 +240,14 @@ export default function JuntosNuevoPage() {
     const prefs: Prefs = {
       mood: selectedMood,
       genres: selectedGenres,
-      platforms: selectedPlatforms,
+      reference_movie: selectedReference.id,
+    }
+
+    // For user1, include platforms in the prefs so generate_pool can read them
+    if (slot === 'user1') {
+      (prefs as any).platforms = selectedPlatforms
+    } else {
+      (prefs as any).platforms = []
     }
 
     await apiCall('submit_prefs', { code: roomCode, slot, prefs })
@@ -200,8 +258,8 @@ export default function JuntosNuevoPage() {
       const room = await fetchRoom(roomCode)
       if (!room) return
 
-      const u1Done = room.user1_prefs && Object.keys(room.user1_prefs).length > 0 && (room.user1_prefs as any).mood
-      const u2Done = room.user2_prefs && Object.keys(room.user2_prefs).length > 0 && (room.user2_prefs as any).mood
+      const u1Done = room.user1_prefs && typeof (room.user1_prefs as any).mood === 'string'
+      const u2Done = room.user2_prefs && typeof (room.user2_prefs as any).mood === 'string'
 
       if (u1Done && u2Done) {
         stopPolling()
@@ -227,7 +285,8 @@ export default function JuntosNuevoPage() {
             setPrefsStep(1)
             setSelectedMood('')
             setSelectedGenres([])
-            setSelectedPlatforms([])
+            setSelectedReference(null)
+            setMovieSearch('')
           }
         }, 2000)
       }
@@ -311,6 +370,8 @@ export default function JuntosNuevoPage() {
     setSelectedGenres([])
     setSelectedPlatforms([])
     setPrefsStep(1)
+    setSelectedReference(null)
+    setMovieSearch('')
     setPool([])
     setSwipeIndex(0)
     setSwipes({})
@@ -398,6 +459,62 @@ export default function JuntosNuevoPage() {
                   Unirse a sala
                 </button>
               </div>
+            </div>
+
+            {error && (
+              <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
+            )}
+          </div>
+        )}
+
+        {/* ════════ PLATFORM SELECTION (room creation) ════════ */}
+        {phase === 'platforms' && (
+          <div className="pt-6">
+            <div className="text-center mb-6">
+              <div className="text-5xl mb-3">📺</div>
+              <h2 className="text-2xl font-bold text-white mb-1">¿Que plataformas tienen?</h2>
+              <p className="text-zinc-400 text-sm">Elige las plataformas que comparten. Aplican para ambos.</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              {PLATFORMS.map(p => (
+                <button
+                  key={p.key}
+                  onClick={() => togglePlatform(p.key)}
+                  className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3.5 transition-all ${
+                    selectedPlatforms.includes(p.key)
+                      ? 'border-yellow-400 bg-yellow-400/10'
+                      : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+                  }`}
+                >
+                  <Image
+                    src={p.icon}
+                    alt={p.name}
+                    width={28}
+                    height={28}
+                    className="rounded-md shrink-0"
+                  />
+                  <span className={`text-sm font-medium ${selectedPlatforms.includes(p.key) ? 'text-white' : 'text-zinc-400'}`}>
+                    {p.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setPhase('start'); setSelectedPlatforms([]); setError('') }}
+                className="flex-1 border border-zinc-700 text-zinc-400 font-medium rounded-2xl py-3.5 transition-colors hover:border-zinc-500"
+              >
+                Atras
+              </button>
+              <button
+                onClick={handleCreateWithPlatforms}
+                disabled={selectedPlatforms.length === 0 || loading}
+                className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold rounded-2xl py-3.5 transition-colors"
+              >
+                {loading ? 'Creando...' : 'Crear sala'}
+              </button>
             </div>
 
             {error && (
@@ -538,35 +655,86 @@ export default function JuntosNuevoPage() {
               </div>
             )}
 
-            {/* Q3: Platforms */}
+            {/* Q3: Reference Movie */}
             {prefsStep === 3 && (
               <div className="space-y-4">
-                <h3 className="text-white font-semibold text-lg text-center mb-2">¿Que plataformas tienen?</h3>
-                <p className="text-zinc-500 text-xs text-center">Elige las que tengas</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {PLATFORMS.map(p => (
+                <h3 className="text-white font-semibold text-lg text-center mb-2">Elige una pelicula de referencia</h3>
+                <p className="text-zinc-500 text-xs text-center">Busca una pelicula que te guste para afinar las recomendaciones</p>
+
+                {/* Selected movie display */}
+                {selectedReference ? (
+                  <div className="flex items-center gap-3 bg-zinc-900 border-2 border-yellow-400 rounded-xl p-3">
+                    <div className="w-10 h-14 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
+                      {selectedReference.poster_path && (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w92${selectedReference.poster_path}`}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-sm font-semibold truncate">
+                        {selectedReference.titulo_ingles || selectedReference.titulo}
+                      </p>
+                      {selectedReference.titulo_ingles && selectedReference.titulo !== selectedReference.titulo_ingles && (
+                        <p className="text-zinc-500 text-xs truncate">{selectedReference.titulo}</p>
+                      )}
+                    </div>
                     <button
-                      key={p.key}
-                      onClick={() => togglePlatform(p.key)}
-                      className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3.5 transition-all ${
-                        selectedPlatforms.includes(p.key)
-                          ? 'border-yellow-400 bg-yellow-400/10'
-                          : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
-                      }`}
+                      onClick={() => { setSelectedReference(null); setMovieSearch('') }}
+                      className="text-zinc-500 hover:text-zinc-300 p-1 transition-colors"
                     >
-                      <Image
-                        src={p.icon}
-                        alt={p.name}
-                        width={28}
-                        height={28}
-                        className="rounded-md shrink-0"
-                      />
-                      <span className={`text-sm font-medium ${selectedPlatforms.includes(p.key) ? 'text-white' : 'text-zinc-400'}`}>
-                        {p.name}
-                      </span>
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                      </svg>
                     </button>
-                  ))}
-                </div>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={movieSearch}
+                      onChange={e => setMovieSearch(e.target.value)}
+                      placeholder="Buscar pelicula..."
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-yellow-400/50 transition-colors"
+                    />
+                    {/* Dropdown results */}
+                    {movieSearchResults.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden z-20 shadow-xl">
+                        {movieSearchResults.map(m => (
+                          <button
+                            key={m.id}
+                            onClick={() => {
+                              setSelectedReference(m)
+                              setMovieSearch('')
+                            }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-800 transition-colors text-left"
+                          >
+                            <div className="w-8 h-11 rounded-md overflow-hidden bg-zinc-800 shrink-0">
+                              {m.poster_path && (
+                                <img
+                                  src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                                  alt=""
+                                  className="w-full h-full object-cover"
+                                />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-white text-sm font-medium truncate">
+                                {m.titulo_ingles || m.titulo}
+                              </p>
+                              {m.titulo_ingles && m.titulo !== m.titulo_ingles && (
+                                <p className="text-zinc-500 text-xs truncate">{m.titulo}</p>
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex gap-3 mt-4">
                   <button
                     onClick={() => setPrefsStep(2)}
@@ -576,7 +744,7 @@ export default function JuntosNuevoPage() {
                   </button>
                   <button
                     onClick={handleSubmitPrefs}
-                    disabled={selectedPlatforms.length === 0 || loading}
+                    disabled={!selectedReference || loading}
                     className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold rounded-2xl py-3 transition-colors"
                   >
                     {loading ? 'Enviando...' : 'Listo'}

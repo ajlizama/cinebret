@@ -181,6 +181,17 @@ function parseActors(actorsStr: string | null | undefined): string[] {
   return actorsStr.split(',').map((a) => a.trim().toLowerCase()).filter(Boolean)
 }
 
+/* ─── Connection % helper ─── */
+function distanceToPercent(d: number | null): number {
+  if (d === null) return 0
+  if (d <= 1) return 95
+  if (d === 2) return 85
+  if (d === 3) return 70
+  if (d === 4) return 50
+  if (d === 5) return 30
+  return 10
+}
+
 /* ─── Component ─── */
 export default function AdivinaPage() {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -196,6 +207,9 @@ export default function AdivinaPage() {
   const [stats, setStats] = useState<Stats>(loadStats)
   const [copied, setCopied] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [showLegend, setShowLegend] = useState(false)
+  const [isFreeMode, setIsFreeMode] = useState(false)
+  const [allMovies, setAllMovies] = useState<Movie[]>([]) // all valid movies for free mode picks
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
 
@@ -224,8 +238,16 @@ export default function AdivinaPage() {
         fetch('/movie-graph.json').then((r) => r.json()).catch(() => null) as Promise<GraphData | null>,
       ])
 
+      const adj = graphRes ? buildAdjacency(graphRes.edges) : null
+      if (adj) {
+        setGraphAdj(adj)
+      }
+
+      // Build set of movie IDs that exist in graph
+      const nodeIds = new Set<string>()
       if (graphRes) {
-        setGraphAdj(buildAdjacency(graphRes.edges))
+        for (const n of graphRes.nodes) nodeIds.add(n.id)
+        for (const e of graphRes.edges) { nodeIds.add(e.source); nodeIds.add(e.target) }
       }
 
       const parsed: Movie[] = raw.map((p: any) => ({
@@ -241,23 +263,29 @@ export default function AdivinaPage() {
         enriquecimiento: p.enriquecimiento ?? null,
       }))
 
-      // Sort deterministically by id for consistent indexing
-      parsed.sort((a, b) => a.id.localeCompare(b.id))
-      setMovies(parsed)
+      // Filter: only movies that have connections in the graph (if graph loaded)
+      const connected = nodeIds.size > 0
+        ? parsed.filter((m) => nodeIds.has(m.id))
+        : parsed
 
-      if (parsed.length > 0) {
-        const idx = hashString(`cinebret-${today}`) % parsed.length
-        const target = parsed[idx]
+      // Sort deterministically by id for consistent indexing
+      connected.sort((a, b) => a.id.localeCompare(b.id))
+      setMovies(parsed) // keep all for search suggestions
+      setAllMovies(connected) // only connected movies for target selection
+
+      if (connected.length > 0) {
+        const idx = hashString(`cinebret-${today}`) % connected.length
+        const target = connected[idx]
         setTargetMovie(target)
 
-        // Restore saved state
+        // Check if daily was already played
         const saved = loadGameState(today)
         if (saved) {
           const restoredGuesses: GuessResult[] = saved.guesses
             .map((gid) => {
               const m = parsed.find((p) => p.id === gid)
               if (!m || !target) return null
-              return buildGuessResult(m, target, graphRes ? buildAdjacency(graphRes.edges) : null)
+              return buildGuessResult(m, target, adj)
             })
             .filter(Boolean) as GuessResult[]
           setGuesses(restoredGuesses)
@@ -348,36 +376,58 @@ export default function AdivinaPage() {
       const won = movie.id === targetMovie.id
       const lost = !won && newGuesses.length >= 6
 
-      const newState: GameState = {
-        guesses: newGuesses.map((g) => g.movie.id),
-        solved: won,
-        failed: lost,
+      // Only persist daily game state (not free mode)
+      if (!isFreeMode) {
+        const newState: GameState = {
+          guesses: newGuesses.map((g) => g.movie.id),
+          solved: won,
+          failed: lost,
+        }
+        saveGameState(today, newState)
       }
-      saveGameState(today, newState)
 
       if (won) {
         setSolved(true)
         setShowConfetti(true)
         setTimeout(() => setShowConfetti(false), 3000)
-        const s = loadStats()
-        s.games_played += 1
-        s.games_won += 1
-        s.current_streak += 1
-        if (s.current_streak > s.max_streak) s.max_streak = s.current_streak
-        s.guess_distribution[newGuesses.length - 1] += 1
-        saveStats(s)
-        setStats(s)
+        // Only update stats for daily game
+        if (!isFreeMode) {
+          const s = loadStats()
+          s.games_played += 1
+          s.games_won += 1
+          s.current_streak += 1
+          if (s.current_streak > s.max_streak) s.max_streak = s.current_streak
+          s.guess_distribution[newGuesses.length - 1] += 1
+          saveStats(s)
+          setStats(s)
+        }
       } else if (lost) {
         setFailed(true)
-        const s = loadStats()
-        s.games_played += 1
-        s.current_streak = 0
-        saveStats(s)
-        setStats(s)
+        // Only update stats for daily game
+        if (!isFreeMode) {
+          const s = loadStats()
+          s.games_played += 1
+          s.current_streak = 0
+          saveStats(s)
+          setStats(s)
+        }
       }
     },
-    [targetMovie, gameOver, guesses, today, graphAdj],
+    [targetMovie, gameOver, guesses, today, graphAdj, isFreeMode],
   )
+
+  const startFreeGame = useCallback(() => {
+    if (allMovies.length === 0) return
+    const randomIdx = Math.floor(Math.random() * allMovies.length)
+    const newTarget = allMovies[randomIdx]
+    setTargetMovie(newTarget)
+    setGuesses([])
+    setSolved(false)
+    setFailed(false)
+    setIsFreeMode(true)
+    setSearchText('')
+    setShowSuggestions(false)
+  }, [allMovies])
 
   const shareText = useMemo(() => {
     if (!solved && !failed) return ''
@@ -506,15 +556,38 @@ export default function AdivinaPage() {
         <div className="text-center mb-4">
           <h1 className="text-2xl font-bold text-yellow-400">Adivina la Peli</h1>
           <p className="text-zinc-400 text-sm">
-            Desafío #{dayNumber} &middot; {guesses.length}/6 intentos
+            {isFreeMode ? 'Modo libre' : `Desafío diario #${dayNumber}`} &middot; {guesses.length}/6 intentos
           </p>
-          <button
-            onClick={() => { setStats(loadStats()); setShowStats(true) }}
-            className="mt-1 text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
-          >
-            📊 Ver estadísticas
-          </button>
+          <div className="flex items-center justify-center gap-3 mt-1">
+            <button
+              onClick={() => { setStats(loadStats()); setShowStats(true) }}
+              className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
+            >
+              📊 Estadísticas
+            </button>
+            <button
+              onClick={() => setShowLegend((v) => !v)}
+              className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
+              title="¿Qué significan las siglas?"
+            >
+              ℹ️ Siglas
+            </button>
+          </div>
         </div>
+
+        {/* Legend */}
+        {showLegend && (
+          <div className="mb-4 bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-xs text-zinc-300 space-y-1">
+            <p className="text-yellow-400 font-semibold mb-1.5">¿Qué significan las siglas?</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">DEC</span> Década — verde si misma década</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">GEN</span> Género — verde si comparte algún género</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">DIR</span> Director — verde si mismo director</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">CAST</span> Reparto — verde si comparte algún actor</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">OSC</span> Oscars — verde si mismo status de Oscar</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">COMP</span> Compositor — verde si mismo compositor</p>
+            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">MOOD</span> Mood CineBret — verde si misma categoría</p>
+          </div>
+        )}
 
         {/* Backdrop image */}
         <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 bg-zinc-900">
@@ -552,14 +625,9 @@ export default function AdivinaPage() {
           <div className="mb-4 space-y-2">
             {guesses.map((g, i) => {
               const isCorrect = g.movie.id === targetMovie.id
-              const distLabel =
-                g.graphDistance === null
-                  ? { text: 'Sin conexión en el grafo', color: 'text-zinc-500', icon: '' }
-                  : g.graphDistance <= 2
-                    ? { text: `A ${g.graphDistance} películas`, color: 'text-green-400', icon: '\uD83D\uDD25 Muy cerca!' }
-                    : g.graphDistance <= 4
-                      ? { text: `A ${g.graphDistance} películas`, color: 'text-yellow-400', icon: 'Cerca' }
-                      : { text: `A ${g.graphDistance} películas`, color: 'text-red-400', icon: 'Lejos' }
+              const pct = distanceToPercent(g.graphDistance)
+              const pctColor = pct > 70 ? 'bg-green-500' : pct >= 30 ? 'bg-yellow-500' : 'bg-red-500'
+              const pctTextColor = pct > 70 ? 'text-green-400' : pct >= 30 ? 'text-yellow-400' : 'text-red-400'
               return (
                 <div
                   key={i}
@@ -633,8 +701,16 @@ export default function AdivinaPage() {
                     </span>
                   </div>
                   {!isCorrect && (
-                    <div className={`text-[11px] mt-1 ${distLabel.color}`}>
-                      {distLabel.icon ? `${distLabel.icon} — ${distLabel.text}` : distLabel.text}
+                    <div className="mt-1.5 flex items-center gap-2">
+                      <span className={`text-[11px] font-semibold ${pctTextColor}`}>
+                        Conexión: {pct}%
+                      </span>
+                      <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${pctColor}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -711,12 +787,22 @@ export default function AdivinaPage() {
                 <p className="text-zinc-500 text-xs">{targetMovie.enriquecimiento.generos.join(', ')}</p>
               )}
             </div>
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center gap-2 bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-colors"
-            >
-              {copied ? '¡Copiado!' : '📋 Compartir resultado'}
-            </button>
+            <div className="flex flex-col items-center gap-2">
+              {!isFreeMode && (
+                <button
+                  onClick={handleShare}
+                  className="inline-flex items-center gap-2 bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-colors"
+                >
+                  {copied ? '¡Copiado!' : '📋 Compartir resultado'}
+                </button>
+              )}
+              <button
+                onClick={startFreeGame}
+                className="inline-flex items-center gap-2 bg-zinc-800 text-yellow-400 border border-zinc-700 font-bold px-6 py-2.5 rounded-full hover:bg-zinc-700 transition-colors text-sm"
+              >
+                🎬 Jugar otra película
+              </button>
+            </div>
           </div>
         )}
 
@@ -751,12 +837,22 @@ export default function AdivinaPage() {
                 <p className="text-zinc-500 text-xs">{targetMovie.enriquecimiento.generos.join(', ')}</p>
               )}
             </div>
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center gap-2 bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-colors"
-            >
-              {copied ? '¡Copiado!' : '📋 Compartir resultado'}
-            </button>
+            <div className="flex flex-col items-center gap-2">
+              {!isFreeMode && (
+                <button
+                  onClick={handleShare}
+                  className="inline-flex items-center gap-2 bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-colors"
+                >
+                  {copied ? '¡Copiado!' : '📋 Compartir resultado'}
+                </button>
+              )}
+              <button
+                onClick={startFreeGame}
+                className="inline-flex items-center gap-2 bg-zinc-800 text-yellow-400 border border-zinc-700 font-bold px-6 py-2.5 rounded-full hover:bg-zinc-700 transition-colors text-sm"
+              >
+                🎬 Jugar otra película
+              </button>
+            </div>
           </div>
         )}
       </div>

@@ -66,10 +66,31 @@ function bfs(adj: Map<string, Set<string>>, startId: string, endId: string): str
   return null
 }
 
+function distToPercent(dist: number): number {
+  if (dist <= 1) return 95
+  if (dist === 2) return 85
+  if (dist === 3) return 70
+  if (dist === 4) return 50
+  if (dist === 5) return 30
+  return 10
+}
+
 function pickTwoRandom(nodes: GraphNode[], adj: Map<string, Set<string>>): [GraphNode, GraphNode] | null {
-  const wellConnected = nodes.filter((n) => n.connections >= 8)
+  // Prefer movies with >= 10 connections, fall back to >= 8
+  const veryWellConnected = nodes.filter((n) => n.connections >= 10)
+  const wellConnected = veryWellConnected.length >= 2 ? veryWellConnected : nodes.filter((n) => n.connections >= 8)
   if (wellConnected.length < 2) return null
 
+  // Try up to 10 times for ideal distance (3-6), then fall back to looser criteria
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const a = wellConnected[Math.floor(Math.random() * wellConnected.length)]
+    const b = wellConnected[Math.floor(Math.random() * wellConnected.length)]
+    if (a.id === b.id) continue
+    const path = bfs(adj, a.id, b.id)
+    if (path && path.length >= 4 && path.length <= 7) return [a, b] // distance 3-6
+  }
+
+  // Fallback: accept any path >= 3
   for (let attempt = 0; attempt < 50; attempt++) {
     const a = wellConnected[Math.floor(Math.random() * wellConnected.length)]
     const b = wellConnected[Math.floor(Math.random() * wellConnected.length)]
@@ -95,6 +116,9 @@ export default function ConexionPage() {
   const [path, setPath] = useState<string[]>([])
   const [optimalLen, setOptimalLen] = useState<number>(0)
   const [won, setWon] = useState(false)
+  const [surrendered, setSurrendered] = useState(false)
+  const [optimalPath, setOptimalPath] = useState<string[]>([])
+  const [prevDist, setPrevDist] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const pathRef = useRef<HTMLDivElement>(null)
 
@@ -128,7 +152,10 @@ export default function ConexionPage() {
     setEndNode(e)
     setPath([s.id])
     setOptimalLen(optimal ? optimal.length : 0)
+    setOptimalPath(optimal ?? [])
     setWon(false)
+    setSurrendered(false)
+    setPrevDist(optimal ? optimal.length - 1 : null)
     setError(null)
   }, [graph])
 
@@ -158,10 +185,21 @@ export default function ConexionPage() {
     connectedNodes.sort((a, b) => (b.imdb ?? 0) - (a.imdb ?? 0))
   }
 
+  /* Distance to target --------------------------------------------- */
+  const currentDistToTarget: number | null = (() => {
+    if (!endNode || !currentId || won || surrendered) return null
+    const bfsPath = bfs(adj, currentId, endNode.id)
+    return bfsPath ? bfsPath.length - 1 : null
+  })()
+
+  const isGettingCloser = prevDist !== null && currentDistToTarget !== null && currentDistToTarget < prevDist
+
   /* Tap a connected movie ---------------------------------------- */
   function selectMovie(id: string) {
-    if (won) return
+    if (won || surrendered) return
     if (path.includes(id)) return // already in path
+    // Save current distance as previous before updating path
+    if (currentDistToTarget !== null) setPrevDist(currentDistToTarget)
     const newPath = [...path, id]
     setPath(newPath)
     if (id === endNode?.id) setWon(true)
@@ -169,8 +207,17 @@ export default function ConexionPage() {
 
   /* Undo --------------------------------------------------------- */
   function undo() {
-    if (path.length <= 1 || won) return
-    setPath(path.slice(0, -1))
+    if (path.length <= 1 || won || surrendered) return
+    const newPath = path.slice(0, -1)
+    setPath(newPath)
+    // Recalculate prevDist for the step before the new current
+    if (newPath.length >= 2 && endNode) {
+      const prevId = newPath[newPath.length - 2]
+      const prevBfs = bfs(adj, prevId, endNode.id)
+      setPrevDist(prevBfs ? prevBfs.length - 1 : null)
+    } else {
+      setPrevDist(optimalLen > 0 ? optimalLen - 1 : null)
+    }
   }
 
   /* Share --------------------------------------------------------- */
@@ -183,6 +230,12 @@ export default function ConexionPage() {
     } else {
       navigator.clipboard.writeText(text).catch(() => {})
     }
+  }
+
+  /* Surrender ------------------------------------------------------ */
+  function surrender() {
+    if (won || surrendered) return
+    setSurrendered(true)
   }
 
   /* Rating -------------------------------------------------------- */
@@ -270,6 +323,32 @@ export default function ConexionPage() {
             </span>
           </div>
         </div>
+
+        {/* Initial distance info */}
+        {optimalLen > 1 && (
+          <p className="text-center text-zinc-400 text-sm mt-3">
+            Están a <span className="text-yellow-400 font-bold">{optimalLen - 1} pasos</span> de distancia
+            <span className="ml-2 text-zinc-500">— Conexión: {distToPercent(optimalLen - 1)}%</span>
+          </p>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex justify-center gap-3 mt-3">
+          <button
+            onClick={startGame}
+            className="px-4 py-1.5 bg-zinc-800 text-zinc-300 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-zinc-700"
+          >
+            Cambiar películas
+          </button>
+          {!won && !surrendered && (
+            <button
+              onClick={surrender}
+              className="px-4 py-1.5 bg-zinc-800 text-red-400 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-red-500/30"
+            >
+              Rendirse
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Win screen ------------------------------------------------ */}
@@ -301,8 +380,52 @@ export default function ConexionPage() {
         </div>
       )}
 
+      {/* Surrender screen --------------------------------------------- */}
+      {surrendered && (
+        <div className="max-w-2xl mx-auto px-4 py-6 text-center">
+          <div className="bg-zinc-900 rounded-2xl p-6 border border-red-400/30">
+            <p className="text-red-400 font-bold text-lg mb-3">El camino óptimo era:</p>
+            <div className="flex items-center justify-center gap-1 flex-wrap mb-4">
+              {optimalPath.map((id, i) => {
+                const n = nodeMap.get(id)
+                if (!n) return null
+                return (
+                  <div key={`opt-${id}-${i}`} className="flex items-center shrink-0">
+                    {i > 0 && <span className="text-zinc-600 text-sm mx-0.5">→</span>}
+                    <div className="flex flex-col items-center w-16">
+                      <div className="relative w-14 h-[84px] rounded-lg overflow-hidden ring-1 ring-yellow-400/50">
+                        <Image
+                          src={`${TMDB_IMG}${n.poster}`}
+                          alt={n.titleEs || n.title}
+                          fill
+                          className="object-cover"
+                          sizes="56px"
+                          unoptimized
+                        />
+                      </div>
+                      <span className="text-[9px] text-center mt-0.5 text-zinc-400 leading-tight line-clamp-2">
+                        {n.titleEs || n.title}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-zinc-500 text-sm mb-4">
+              {optimalLen - 1} pasos — Conexión: {distToPercent(optimalLen - 1)}%
+            </p>
+            <button
+              onClick={startGame}
+              className="px-5 py-2.5 bg-yellow-400 text-black font-semibold rounded-xl text-sm hover:bg-yellow-300 transition"
+            >
+              Jugar de nuevo
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Current movie + connections ------------------------------- */}
-      {!won && currentNode && (
+      {!won && !surrendered && currentNode && (
         <div className="max-w-2xl mx-auto px-4 pt-4">
           {/* Current movie info */}
           <div className="flex items-start gap-3 mb-4">
@@ -326,6 +449,19 @@ export default function ConexionPage() {
               </p>
             </div>
           </div>
+
+          {/* Distance indicator */}
+          {currentDistToTarget !== null && path.length > 1 && (
+            <div
+              className={`text-center text-sm font-medium mb-3 px-3 py-1.5 rounded-lg ${
+                isGettingCloser
+                  ? 'bg-green-500/10 text-green-400'
+                  : 'bg-red-500/10 text-red-400'
+              }`}
+            >
+              {isGettingCloser ? '↓' : '↑'} Estás a {currentDistToTarget} paso{currentDistToTarget !== 1 ? 's' : ''} del objetivo — Conexión: {distToPercent(currentDistToTarget)}%
+            </div>
+          )}
 
           {/* Connections label */}
           <p className="text-zinc-400 text-xs font-medium mb-2 uppercase tracking-wider">
@@ -374,7 +510,7 @@ export default function ConexionPage() {
       {/* Path strip at bottom ------------------------------------- */}
       <div className="fixed bottom-0 inset-x-0 bg-zinc-900/95 backdrop-blur border-t border-zinc-800 z-50">
         {/* Undo button */}
-        {!won && path.length > 1 && (
+        {!won && !surrendered && path.length > 1 && (
           <div className="flex justify-end px-4 pt-2">
             <button
               onClick={undo}
@@ -418,7 +554,7 @@ export default function ConexionPage() {
           })}
 
           {/* Ghost target */}
-          {!won && (
+          {!won && !surrendered && (
             <div className="flex items-center shrink-0">
               <span className="text-zinc-600 text-xs mx-0.5">···</span>
               <div className="relative w-10 h-[60px] rounded-md overflow-hidden ring-1 ring-red-500/40 opacity-40">

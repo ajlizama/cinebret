@@ -118,20 +118,139 @@ function directorWonOscar(dirOscars: string | null): boolean {
   return /won/i.test(lower) || /ganó/i.test(lower) || /winner/i.test(lower) || /best director/i.test(lower)
 }
 
+function removeAccents(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
 function freeTextMatch(m: Movie, question: string): boolean {
-  const q = question.toLowerCase()
-    .replace(/[¿?¡!.,]/g, '')
-    .split(/\s+/)
-    .filter(w => w.length > 2) // skip tiny words
-  const haystack = [
-    m.titulo, m.titulo_ingles, m.director, m.actores,
-    m.compositor, m.sinopsis_chilensis, m.keywords,
-    ...(m.generos ?? []),
+  const raw = question.toLowerCase().replace(/[¿?¡!.,]/g, '').trim()
+  const rawNorm = removeAccents(raw)
+
+  // Helper: normalized lowercase fields
+  const kw = removeAccents((m.keywords ?? '').toLowerCase())
+  const generos = removeAccents(normalizeGenres(m.generos).join(' '))
+  const titulo = removeAccents(m.titulo.toLowerCase())
+  const tituloEng = removeAccents((m.titulo_ingles ?? '').toLowerCase())
+  const director = removeAccents((m.director ?? '').toLowerCase())
+  const actores = removeAccents((m.actores ?? '').toLowerCase())
+  const sinopsis = removeAccents((m.sinopsis_chilensis ?? '').toLowerCase())
+  const compositor = removeAccents((m.compositor ?? '').toLowerCase())
+  const anio = m.anio ?? 0
+
+  // ── Pattern: anime / animé ──
+  if (/\banim[eé]\b/.test(raw)) {
+    return generos.includes('animacion') || kw.includes('anime') || kw.includes('manga') ||
+      titulo.includes('anime') || tituloEng.includes('anime')
+  }
+
+  // ── Pattern: musical ──
+  if (/\bmusical\b/.test(rawNorm)) {
+    return generos.includes('musica') || generos.includes('musical') || kw.includes('musical')
+  }
+
+  // ── Pattern: superhéroe / superhero ──
+  if (/\bsuperh[eé]ro[ei]?\b/.test(raw) || /\bsuperhero\b/.test(rawNorm)) {
+    return kw.includes('superhero') || kw.includes('marvel') || kw.includes('dc-comics') || kw.includes('dc comics')
+  }
+
+  // ── Pattern: basada en libro / novela ──
+  if (/basada en (un )?libro/.test(raw) || /\bnovela\b/.test(rawNorm)) {
+    return kw.includes('based-on-novel') || kw.includes('based-on-book') || kw.includes('novel') || kw.includes('book')
+  }
+
+  // ── Pattern: remake ──
+  if (/\bremake\b/.test(rawNorm)) {
+    return kw.includes('remake') || kw.includes('reboot')
+  }
+
+  // ── Pattern: disney / pixar ──
+  if (/\bdisney\b/.test(rawNorm)) {
+    return kw.includes('disney') || titulo.includes('disney') || tituloEng.includes('disney')
+  }
+  if (/\bpixar\b/.test(rawNorm)) {
+    return kw.includes('pixar') || titulo.includes('pixar') || tituloEng.includes('pixar')
+  }
+
+  // ── Pattern: marvel / dc ──
+  if (/\bmarvel\b/.test(rawNorm)) {
+    return kw.includes('marvel') || kw.includes('mcu')
+  }
+  if (/\b(dc|dc comics)\b/.test(rawNorm)) {
+    return kw.includes('dc-comics') || kw.includes('dc comics') || kw.includes('dceu')
+  }
+
+  // ── Pattern: guerra / war ──
+  if (/\bguerra\b/.test(rawNorm) || /\bwar\b/.test(rawNorm)) {
+    return generos.includes('guerra') || kw.includes('war') || kw.includes('world-war')
+  }
+
+  // ── Pattern: robot / inteligencia artificial ──
+  if (/\brobot\b/.test(rawNorm) || /inteligencia artificial/.test(rawNorm) || /\bai\b/.test(rawNorm)) {
+    return kw.includes('robot') || kw.includes('artificial-intelligence') || kw.includes('artificial intelligence') || kw.includes('android')
+  }
+
+  // ── Pattern: sequel / secuela ──
+  if (/\bsecuela\b/.test(rawNorm) || /\bsequel\b/.test(rawNorm) || /\bprequel\b/.test(rawNorm) || /\bprecuela\b/.test(rawNorm)) {
+    return kw.includes('sequel') || kw.includes('prequel') || kw.includes('franchise')
+  }
+
+  // ── Pattern: country / language ("es japonesa", "es americana", "es en español") ──
+  const countryPatterns: [RegExp, string[]][] = [
+    [/japone?s[ae]?|japon/, ['japan', 'japanese']],
+    [/american[ao]?|estados unidos|eeuu/, ['american', 'usa', 'united-states', 'hollywood']],
+    [/mexican[ao]?|mexico/, ['mexico', 'mexican']],
+    [/argentin[ao]?|argentina/, ['argentina', 'argentine']],
+    [/chilen[ao]?|chile/, ['chile', 'chilean']],
+    [/coreana?|corea/, ['korea', 'korean', 'south-korea']],
+    [/francesa?|francia/, ['france', 'french']],
+    [/italian[ao]?|italia/, ['italy', 'italian']],
+    [/aleman[ae]?|alemania/, ['germany', 'german']],
+    [/brit[aá]nic[ao]?|inglesa?|reino unido|inglaterra/, ['british', 'uk', 'england', 'english']],
+    [/espan[oñ]ol[ae]?|espana/, ['spain', 'spanish']],
+    [/en espanol|en castellano/, ['spanish']],
+    [/en ingles/, ['english', 'american', 'british']],
+    [/india|hindu|bollywood/, ['india', 'hindi', 'bollywood']],
   ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
-  return q.some(word => haystack.includes(word))
+  for (const [regex, terms] of countryPatterns) {
+    if (regex.test(rawNorm)) {
+      return terms.some(t => kw.includes(t) || director.includes(t) || actores.includes(t))
+    }
+  }
+
+  // ── Pattern: actor / director ("es de Spielberg", "sale Tom Hanks") ──
+  const personMatch = rawNorm.match(/(?:es de|dirigio|dirige|dirigida por|director[ae]?)\s+(.+)/)
+    || rawNorm.match(/(?:sale|actua|aparece|protagoniza|protagonizada por|con)\s+(.+)/)
+  if (personMatch) {
+    const name = removeAccents(personMatch[1].trim())
+    return director.includes(name) || actores.includes(name)
+  }
+
+  // ── Pattern: decade / time period ("es de los 90", "es antigua", "es reciente") ──
+  const decadeMatch = rawNorm.match(/(?:de )?los (\d{2})s?/)
+  if (decadeMatch) {
+    const dec = parseInt(decadeMatch[1], 10)
+    const fullDec = dec < 30 ? 2000 + dec : 1900 + dec
+    return anio >= fullDec && anio < fullDec + 10
+  }
+  if (/\bantigua\b|\bvieja\b|\bclasic[ao]\b/.test(rawNorm)) {
+    return anio > 0 && anio < 1980
+  }
+  if (/\breciente\b|\bnueva\b|\bmodern[ao]?\b/.test(rawNorm)) {
+    return anio >= 2015
+  }
+
+  // ── Fallback: word-level matching (ignore stopwords) ──
+  const STOPWORDS = new Set([
+    'es', 'la', 'el', 'una', 'un', 'tiene', 'hay', 'fue', 'son', 'las', 'los',
+    'de', 'del', 'en', 'con', 'por', 'que', 'como', 'esta', 'esto', 'esa', 'ese',
+    'se', 'si', 'no', 'al', 'lo', 'le', 'su', 'mas', 'muy', 'ser', 'era', 'han',
+    'sobre', 'una', 'uno', 'dos', 'tres', 'para',
+  ])
+  const words = rawNorm.split(/\s+/).filter(w => w.length > 2 && !STOPWORDS.has(w))
+  if (words.length === 0) return false
+
+  const haystack = [titulo, tituloEng, director, actores, compositor, sinopsis, kw, generos].join(' ')
+  return words.some(word => haystack.includes(word))
 }
 
 function hasOscar(oscarsField: string | null): boolean {
@@ -231,27 +350,27 @@ const CATEGORIES: Category[] = [
     questions: [
       {
         text: '¿Está en Netflix?',
-        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.netflix.includes(p.toLowerCase())),
+        evaluate: (_m, wp) => Array.isArray(wp) && wp.length > 0 && wp.some(p => PLATFORM_MAP.netflix.includes(p.toLowerCase())),
       },
       {
         text: '¿Está en Disney+?',
-        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.disney_plus.includes(p.toLowerCase())),
+        evaluate: (_m, wp) => Array.isArray(wp) && wp.length > 0 && wp.some(p => PLATFORM_MAP.disney_plus.includes(p.toLowerCase())),
       },
       {
         text: '¿Está en HBO?',
-        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.hbo_max.includes(p.toLowerCase())),
+        evaluate: (_m, wp) => Array.isArray(wp) && wp.length > 0 && wp.some(p => PLATFORM_MAP.hbo_max.includes(p.toLowerCase())),
       },
       {
         text: '¿Está en Amazon Prime?',
-        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.amazon_prime.includes(p.toLowerCase())),
+        evaluate: (_m, wp) => Array.isArray(wp) && wp.length > 0 && wp.some(p => PLATFORM_MAP.amazon_prime.includes(p.toLowerCase())),
       },
       {
         text: '¿Está en Apple TV+?',
-        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.apple_tv.includes(p.toLowerCase())),
+        evaluate: (_m, wp) => Array.isArray(wp) && wp.length > 0 && wp.some(p => PLATFORM_MAP.apple_tv.includes(p.toLowerCase())),
       },
       {
         text: '¿Está en Paramount+?',
-        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.paramount_plus.includes(p.toLowerCase())),
+        evaluate: (_m, wp) => Array.isArray(wp) && wp.length > 0 && wp.some(p => PLATFORM_MAP.paramount_plus.includes(p.toLowerCase())),
       },
     ],
   },
@@ -416,7 +535,14 @@ export default function QuienSoyPage() {
   const askQuestion = useCallback(
     (text: string, evaluate: (m: Movie, wp: string[]) => boolean) => {
       if (!secret || remaining <= 0) return
-      const answer = evaluate(secret, secretProviders)
+      // Safety wrapper: always coerce to boolean, never undefined
+      let answer: boolean
+      try {
+        const result = evaluate(secret, secretProviders)
+        answer = result === true
+      } catch {
+        answer = false
+      }
       setAsked(prev => [...prev, { text, answer }])
     },
     [secret, secretProviders, remaining],

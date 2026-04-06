@@ -1,8 +1,43 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import Image from 'next/image'
 import Nav from '@/components/Nav'
+
+/* ------------------------------------------------------------------ */
+/*  SpinningTop — pure SVG/CSS replacement for video trompo            */
+/* ------------------------------------------------------------------ */
+
+function SpinningTop({ size = 'sm' }: { size?: 'sm' | 'lg' }) {
+  const dim = size === 'lg' ? 'w-24 h-24' : 'w-14 h-14'
+  return (
+    <div className={`relative ${dim}`}>
+      <svg viewBox="0 0 100 100" className="w-full h-full animate-spin" style={{ animationDuration: '3s' }}>
+        {/* Top body - golden metallic */}
+        <ellipse cx="50" cy="45" rx="18" ry="6" fill="#d4a017" opacity="0.5" />
+        <polygon points="32,45 50,10 68,45" fill="url(#topGrad)" />
+        <polygon points="38,45 50,85 62,45" fill="url(#bottomGrad)" />
+        {/* Tip glow */}
+        <circle cx="50" cy="85" r="3" fill="#facc15" />
+        <circle cx="50" cy="85" r="6" fill="#facc15" opacity="0.3" />
+        {/* Gradients */}
+        <defs>
+          <linearGradient id="topGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#fde68a" />
+            <stop offset="50%" stopColor="#d4a017" />
+            <stop offset="100%" stopColor="#92700a" />
+          </linearGradient>
+          <linearGradient id="bottomGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#d4a017" />
+            <stop offset="100%" stopColor="#78550a" />
+          </linearGradient>
+        </defs>
+      </svg>
+      {/* Glow ring */}
+      <div className="absolute inset-0 rounded-full" style={{ boxShadow: '0 0 20px rgba(250,204,21,0.4)' }} />
+    </div>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -152,6 +187,16 @@ export default function ConexionPage() {
   const [mobileTransition, setMobileTransition] = useState(false)
   const [trompoEntered, setTrompoEntered] = useState(false)
   const [winCelebrating, setWinCelebrating] = useState(false)
+  const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 })
+  const [boardPhase, setBoardPhase] = useState<'idle' | 'moving' | 'fading' | 'resetting'>('idle')
+  const [visitedPositions, setVisitedPositions] = useState<Array<{ x: number; y: number; poster: string }>>([])
+  const [chooserOpen, setChooserOpen] = useState(false)
+  const [searchStart, setSearchStart] = useState('')
+  const [searchEnd, setSearchEnd] = useState('')
+  const [chosenStart, setChosenStart] = useState<GraphNode | null>(null)
+  const [chosenEnd, setChosenEnd] = useState<GraphNode | null>(null)
+  const [chooserError, setChooserError] = useState<string | null>(null)
+  const [chooserFocused, setChooserFocused] = useState<'start' | 'end' | null>(null)
   const pathRef = useRef<HTMLDivElement>(null)
   const mobilePathRef = useRef<HTMLDivElement>(null)
   const isMobile = useIsMobile()
@@ -192,6 +237,29 @@ export default function ConexionPage() {
     setSurrendered(false)
     setPrevDist(optimal ? optimal.length - 1 : null)
     setError(null)
+    setVisitedPositions([])
+    setBoardOffset({ x: 0, y: 0 })
+    setBoardPhase('idle')
+  }, [graph])
+
+  /* Start game with chosen movies --------------------------------- */
+  const startGameWithChoices = useCallback((s: GraphNode, e: GraphNode) => {
+    if (!graph) return
+    const a = buildAdjacency(graph.edges)
+    const optimal = bfs(a, s.id, e.id)
+    if (!optimal) return
+    setStartNode(s)
+    setEndNode(e)
+    setPath([s.id])
+    setOptimalLen(optimal.length)
+    setOptimalPath(optimal)
+    setWon(false)
+    setSurrendered(false)
+    setPrevDist(optimal.length - 1)
+    setError(null)
+    setVisitedPositions([])
+    setBoardOffset({ x: 0, y: 0 })
+    setBoardPhase('idle')
   }, [graph])
 
   useEffect(() => {
@@ -232,20 +300,20 @@ export default function ConexionPage() {
     connectedNodes.sort((a, b) => (b.imdb ?? 0) - (a.imdb ?? 0))
   }
 
-  /* Top connections for mobile (max 8 by edge weight, always include target) */
+  /* Top connections for mobile (max 6 by edge weight, always include target) */
   const mobileConnections: GraphNode[] = (() => {
-    if (!currentId || connectedNodes.length <= 8) return connectedNodes
+    if (!currentId || connectedNodes.length <= 6) return connectedNodes.slice(0, 6)
     const targetInList = endNode ? connectedNodes.find((n) => n.id === endNode.id) : null
     const sorted = [...connectedNodes].sort((a, b) => {
       const wa = edgeWeights.get(`${currentId}::${a.id}`) ?? 0
       const wb = edgeWeights.get(`${currentId}::${b.id}`) ?? 0
       return wb - wa
     })
-    const top8 = sorted.slice(0, 8)
-    if (targetInList && !top8.find((n) => n.id === targetInList.id)) {
-      top8[7] = targetInList
+    const top6 = sorted.slice(0, 6)
+    if (targetInList && !top6.find((n) => n.id === targetInList.id)) {
+      top6[5] = targetInList
     }
-    return top8
+    return top6
   })()
 
   /* Distance to target --------------------------------------------- */
@@ -263,19 +331,47 @@ export default function ConexionPage() {
     if (path.includes(id)) return // already in path
 
     if (isMobile) {
-      // Animate: fade out connections, then update
-      setMobileTransition(true)
+      // Find the position of the tapped card
+      const tappedIndex = mobileConnections.findIndex((n) => n.id === id)
+      const MOBILE_POSITIONS = [
+        { x: 0, y: -150 },
+        { x: 130, y: -75 },
+        { x: 130, y: 75 },
+        { x: 0, y: 150 },
+        { x: -130, y: 75 },
+        { x: -130, y: -75 },
+      ]
+      const tappedPos = MOBILE_POSITIONS[tappedIndex % MOBILE_POSITIONS.length] ?? { x: 0, y: 0 }
+
+      // Store breadcrumb for current position
+      if (currentNode) {
+        setVisitedPositions((prev) => [...prev, { x: 0, y: 0, poster: currentNode.poster }])
+      }
+
+      // Phase 1: Move board toward tapped card
+      setBoardPhase('moving')
+      setBoardOffset({ x: -tappedPos.x, y: -tappedPos.y })
+
+      // Phase 2: Fade out connections
+      setTimeout(() => {
+        setBoardPhase('fading')
+        setMobileTransition(true)
+      }, 400)
+
+      // Phase 3: Reset board, update state
       setTimeout(() => {
         if (currentDistToTarget !== null) setPrevDist(currentDistToTarget)
         const newPath = [...path, id]
         setPath(newPath)
+        setBoardOffset({ x: 0, y: 0 })
+        setBoardPhase('idle')
+        setMobileTransition(false)
         if (id === endNode?.id) {
           setWon(true)
           setWinCelebrating(true)
           setTimeout(() => setWinCelebrating(false), 2000)
         }
-        setMobileTransition(false)
-      }, 300)
+      }, 500)
     } else {
       // Save current distance as previous before updating path
       if (currentDistToTarget !== null) setPrevDist(currentDistToTarget)
@@ -358,15 +454,54 @@ export default function ConexionPage() {
   /* ================================================================ */
 
   const BOARD_POSITIONS = [
-    { x: 0, y: -120 },    // top
-    { x: 85, y: -85 },    // top-right
-    { x: 120, y: 0 },     // right
-    { x: 85, y: 85 },     // bottom-right
-    { x: 0, y: 120 },     // bottom
-    { x: -85, y: 85 },    // bottom-left
-    { x: -120, y: 0 },    // left
-    { x: -85, y: -85 },   // top-left
+    { x: 0, y: -150 },    // top
+    { x: 130, y: -75 },   // top-right
+    { x: 130, y: 75 },    // bottom-right
+    { x: 0, y: 150 },     // bottom
+    { x: -130, y: 75 },   // bottom-left
+    { x: -130, y: -75 },  // top-left
   ]
+
+  /* Search results for movie chooser ------------------------------ */
+  const searchStartResults = useMemo(() => {
+    if (!graph || searchStart.length < 2) return []
+    const q = searchStart.toLowerCase()
+    return graph.nodes
+      .filter((n) => n.title.toLowerCase().includes(q) || n.titleEs.toLowerCase().includes(q))
+      .slice(0, 8)
+  }, [graph, searchStart])
+
+  const searchEndResults = useMemo(() => {
+    if (!graph || searchEnd.length < 2) return []
+    const q = searchEnd.toLowerCase()
+    return graph.nodes
+      .filter((n) => n.title.toLowerCase().includes(q) || n.titleEs.toLowerCase().includes(q))
+      .slice(0, 8)
+  }, [graph, searchEnd])
+
+  function handleChooserStart() {
+    if (!chosenStart || !chosenEnd) {
+      setChooserError('Selecciona ambas peliculas')
+      return
+    }
+    if (chosenStart.id === chosenEnd.id) {
+      setChooserError('Deben ser peliculas diferentes')
+      return
+    }
+    const p = bfs(adj, chosenStart.id, chosenEnd.id)
+    if (!p) {
+      setChooserError('No hay camino entre estas peliculas')
+      return
+    }
+    startGameWithChoices(chosenStart, chosenEnd)
+    setChooserOpen(false)
+    setChooserError(null)
+    setSearchStart('')
+    setSearchEnd('')
+    setChosenStart(null)
+    setChosenEnd(null)
+    setChooserFocused(null)
+  }
 
   if (isMobile) {
     return (
@@ -429,29 +564,26 @@ export default function ConexionPage() {
         <div className="fixed top-0 left-0 right-0 z-50 safe-area-top bg-gradient-to-b from-zinc-950 via-zinc-950/90 to-transparent pb-4">
           <div className="flex items-center justify-between px-3 pt-3 pb-1">
             {/* Start poster */}
-            <div className="flex items-center gap-1.5">
-              <div className="relative w-8 h-12 rounded overflow-hidden ring-1 ring-green-500 shrink-0">
-                <Image src={`${TMDB_IMG}${startNode.poster}`} alt="" fill className="object-cover" sizes="32px" unoptimized />
+            <div className="flex flex-col items-center w-16 shrink-0">
+              <div className="relative w-14 h-20 rounded-lg overflow-hidden ring-2 ring-green-500 shrink-0">
+                <Image src={`${TMDB_IMG}${startNode.poster}`} alt="" fill className="object-cover" sizes="56px" unoptimized />
               </div>
-              <span className="text-[9px] text-green-400 leading-tight max-w-[60px] line-clamp-2">{startNode.titleEs || startNode.title}</span>
+              <span className="text-[9px] text-green-400 leading-tight text-center mt-0.5 line-clamp-2">{startNode.titleEs || startNode.title}</span>
             </div>
 
-            {/* Steps */}
-            <div className="flex flex-col items-center">
-              <div className="flex items-center gap-1">
-                <div className="w-6 border-t border-dashed border-zinc-600" />
-                <span className="text-yellow-400 font-bold text-sm">{path.length - 1}</span>
-                <div className="w-6 border-t border-dashed border-zinc-600" />
-              </div>
-              <span className="text-[9px] text-zinc-500">pasos</span>
+            {/* Steps + VS */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-yellow-400 font-black text-2xl leading-none">{path.length - 1}</span>
+              <span className="text-[9px] text-zinc-500 uppercase tracking-wider">pasos</span>
+              <span className="text-zinc-600 text-[10px] font-bold mt-0.5">VS</span>
             </div>
 
             {/* Target poster */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-[9px] text-red-400 leading-tight max-w-[60px] line-clamp-2 text-right">{endNode.titleEs || endNode.title}</span>
-              <div className="relative w-8 h-12 rounded overflow-hidden ring-1 ring-red-500 shrink-0">
-                <Image src={`${TMDB_IMG}${endNode.poster}`} alt="" fill className="object-cover" sizes="32px" unoptimized />
+            <div className="flex flex-col items-center w-16 shrink-0">
+              <div className="relative w-14 h-20 rounded-lg overflow-hidden ring-2 ring-red-500 shrink-0">
+                <Image src={`${TMDB_IMG}${endNode.poster}`} alt="" fill className="object-cover" sizes="56px" unoptimized />
               </div>
+              <span className="text-[9px] text-red-400 leading-tight text-center mt-0.5 line-clamp-2">{endNode.titleEs || endNode.title}</span>
             </div>
           </div>
 
@@ -469,19 +601,42 @@ export default function ConexionPage() {
           )}
         </div>
 
-        {/* ======== Game board with perspective ======== */}
+        {/* ======== Game board with perspective + movement ======== */}
         {!won && !surrendered && currentNode && (
           <div
             className="fixed inset-0 flex items-center justify-center"
-            style={{ paddingTop: '90px', paddingBottom: '130px' }}
+            style={{ paddingTop: '110px', paddingBottom: '140px' }}
           >
             <div
               className="relative"
               style={{
-                transform: 'perspective(600px) rotateX(20deg)',
+                transform: `perspective(600px) rotateX(20deg) translate(${boardOffset.x}px, ${boardOffset.y}px)`,
                 transformStyle: 'preserve-3d',
+                transition: boardPhase === 'moving'
+                  ? 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                  : boardPhase === 'idle'
+                    ? 'transform 0.15s ease-out'
+                    : 'none',
               }}
             >
+              {/* Breadcrumb trail — visited positions */}
+              {visitedPositions.map((pos, i) => (
+                <div
+                  key={`crumb-${i}`}
+                  className="absolute pointer-events-none"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(${pos.x - 16}px, ${pos.y - 16}px)`,
+                    opacity: 0.2,
+                  }}
+                >
+                  <div className="w-8 h-8 rounded overflow-hidden ring-1 ring-yellow-400/30">
+                    <Image src={`${TMDB_IMG}${pos.poster}`} alt="" width={32} height={32} className="w-full h-full object-cover" unoptimized />
+                  </div>
+                </div>
+              ))}
+
               {/* SVG connection lines */}
               <svg
                 className="absolute pointer-events-none"
@@ -545,7 +700,7 @@ export default function ConexionPage() {
                   <button
                     key={n.id}
                     onClick={() => !alreadyVisited && selectMovie(n.id)}
-                    disabled={alreadyVisited}
+                    disabled={alreadyVisited || boardPhase !== 'idle'}
                     className="absolute pointer-events-auto"
                     style={{
                       top: '50%',
@@ -607,37 +762,16 @@ export default function ConexionPage() {
               marginTop: '-20px',
             }}
           >
-            <video
-              src="/loading.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-12 h-12 object-contain"
-              style={{
-                mixBlendMode: 'screen',
-                filter: 'drop-shadow(0 0 8px rgba(250,204,21,0.5))',
-              }}
-            />
+            <SpinningTop />
           </div>
         )}
 
         {/* Win trompo spin ---------------------------------------- */}
         {won && (
           <div className="fixed top-1/2 left-1/2 z-[100] flex flex-col items-center pointer-events-none" style={{ transform: 'translate(-50%, -50%)' }}>
-            <video
-              src="/loading.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-24 h-24 object-contain"
-              style={{
-                mixBlendMode: 'screen',
-                filter: 'drop-shadow(0 0 12px rgba(250,204,21,0.6))',
-                animation: winCelebrating ? 'trompo-mega-spin 0.8s ease-out' : undefined,
-              }}
-            />
+            <div style={{ animation: winCelebrating ? 'trompo-mega-spin 0.8s ease-out' : undefined }}>
+              <SpinningTop size="lg" />
+            </div>
           </div>
         )}
 
@@ -707,28 +841,137 @@ export default function ConexionPage() {
           </div>
         )}
 
+        {/* ======== Movie Chooser Modal ======== */}
+        {chooserOpen && (
+          <div className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-start justify-center pt-16 px-4">
+            <div className="bg-zinc-900 rounded-2xl p-5 w-full max-w-sm border border-yellow-400/30">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-yellow-400 font-bold text-base">Elegir peliculas</h3>
+                <button onClick={() => { setChooserOpen(false); setChooserError(null); setChooserFocused(null) }} className="text-zinc-500 text-xl leading-none">&times;</button>
+              </div>
+
+              {/* Start search */}
+              <div className="mb-3 relative">
+                <label className="text-[10px] text-green-400 uppercase tracking-wider mb-1 block">Pelicula inicio</label>
+                {chosenStart ? (
+                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-2">
+                    <div className="relative w-8 h-12 rounded overflow-hidden shrink-0">
+                      <Image src={`${TMDB_IMG}${chosenStart.poster}`} alt="" fill className="object-cover" sizes="32px" unoptimized />
+                    </div>
+                    <span className="text-white text-xs flex-1 line-clamp-2">{chosenStart.titleEs || chosenStart.title}</span>
+                    <button onClick={() => { setChosenStart(null); setSearchStart('') }} className="text-zinc-500 text-sm">&times;</button>
+                  </div>
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      value={searchStart}
+                      onChange={(e) => setSearchStart(e.target.value)}
+                      onFocus={() => setChooserFocused('start')}
+                      placeholder="Buscar pelicula..."
+                      className="w-full bg-zinc-800 text-white text-sm rounded-lg px-3 py-2 outline-none border border-zinc-700 focus:border-green-500"
+                    />
+                    {chooserFocused === 'start' && searchStartResults.length > 0 && (
+                      <div className="absolute left-0 right-0 top-full mt-1 bg-zinc-800 rounded-lg border border-zinc-700 max-h-48 overflow-y-auto z-10">
+                        {searchStartResults.map((n) => (
+                          <button
+                            key={n.id}
+                            onClick={() => { setChosenStart(n); setSearchStart(''); setChooserFocused(null) }}
+                            className="flex items-center gap-2 w-full px-3 py-2 hover:bg-zinc-700 text-left"
+                          >
+                            <div className="relative w-6 h-9 rounded overflow-hidden shrink-0">
+                              <Image src={`${TMDB_IMG}${n.poster}`} alt="" fill className="object-cover" sizes="24px" unoptimized />
+                            </div>
+                            <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* End search */}
+              <div className="mb-4 relative">
+                <label className="text-[10px] text-red-400 uppercase tracking-wider mb-1 block">Pelicula destino</label>
+                {chosenEnd ? (
+                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-2">
+                    <div className="relative w-8 h-12 rounded overflow-hidden shrink-0">
+                      <Image src={`${TMDB_IMG}${chosenEnd.poster}`} alt="" fill className="object-cover" sizes="32px" unoptimized />
+                    </div>
+                    <span className="text-white text-xs flex-1 line-clamp-2">{chosenEnd.titleEs || chosenEnd.title}</span>
+                    <button onClick={() => { setChosenEnd(null); setSearchEnd('') }} className="text-zinc-500 text-sm">&times;</button>
+                  </div>
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      value={searchEnd}
+                      onChange={(e) => setSearchEnd(e.target.value)}
+                      onFocus={() => setChooserFocused('end')}
+                      placeholder="Buscar pelicula..."
+                      className="w-full bg-zinc-800 text-white text-sm rounded-lg px-3 py-2 outline-none border border-zinc-700 focus:border-red-500"
+                    />
+                    {chooserFocused === 'end' && searchEndResults.length > 0 && (
+                      <div className="absolute left-0 right-0 top-full mt-1 bg-zinc-800 rounded-lg border border-zinc-700 max-h-48 overflow-y-auto z-10">
+                        {searchEndResults.map((n) => (
+                          <button
+                            key={n.id}
+                            onClick={() => { setChosenEnd(n); setSearchEnd(''); setChooserFocused(null) }}
+                            className="flex items-center gap-2 w-full px-3 py-2 hover:bg-zinc-700 text-left"
+                          >
+                            <div className="relative w-6 h-9 rounded overflow-hidden shrink-0">
+                              <Image src={`${TMDB_IMG}${n.poster}`} alt="" fill className="object-cover" sizes="24px" unoptimized />
+                            </div>
+                            <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {chooserError && <p className="text-red-400 text-xs mb-3 text-center">{chooserError}</p>}
+
+              <button
+                onClick={handleChooserStart}
+                className="w-full py-2.5 bg-yellow-400 text-black font-semibold rounded-xl text-sm"
+              >
+                Jugar
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* ======== Fixed bottom bar ======== */}
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-8 pb-safe">
           {/* Action buttons */}
-          <div className="flex justify-center gap-3 px-4 mb-2">
+          <div className="flex justify-center gap-2 px-4 mb-2 flex-wrap">
             {!won && !surrendered && (
               <button
                 onClick={surrender}
-                className="px-4 py-1.5 bg-zinc-800/80 text-red-400 text-xs font-medium rounded-lg border border-red-500/30"
+                className="px-3 py-1.5 bg-zinc-800/80 text-red-400 text-xs font-medium rounded-lg border border-red-500/30"
               >
                 Rendirse
               </button>
             )}
             <button
               onClick={startGame}
-              className="px-4 py-1.5 bg-zinc-800/80 text-zinc-300 text-xs font-medium rounded-lg border border-zinc-700"
+              className="px-3 py-1.5 bg-zinc-800/80 text-zinc-300 text-xs font-medium rounded-lg border border-zinc-700"
             >
               Cambiar
+            </button>
+            <button
+              onClick={() => { setChooserOpen(true); setChooserError(null); setChosenStart(null); setChosenEnd(null); setSearchStart(''); setSearchEnd('') }}
+              className="px-3 py-1.5 bg-zinc-800/80 text-yellow-400 text-xs font-medium rounded-lg border border-yellow-400/30"
+            >
+              Elegir peliculas
             </button>
             {!won && !surrendered && path.length > 1 && (
               <button
                 onClick={undo}
-                className="px-4 py-1.5 bg-zinc-800/80 text-yellow-400 text-xs font-medium rounded-lg border border-yellow-400/30"
+                className="px-3 py-1.5 bg-zinc-800/80 text-yellow-400 text-xs font-medium rounded-lg border border-yellow-400/30"
               >
                 Deshacer
               </button>
@@ -770,9 +1013,9 @@ export default function ConexionPage() {
         {/* CSS animations ----------------------------------------- */}
         <style jsx>{`
           @keyframes trompo-mega-spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-            50% { transform: translate(-50%, -50%) rotate(720deg) scale(1.5); }
-            100% { transform: translate(-50%, -50%) rotate(1080deg) scale(1); }
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(720deg) scale(1.5); }
+            100% { transform: rotate(1080deg) scale(1); }
           }
           ${Array.from({ length: 4 }).map((_, i) => `
             @keyframes particle-explode-${i} {

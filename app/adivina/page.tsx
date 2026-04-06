@@ -12,6 +12,8 @@ interface Enriquecimiento {
   generos: string[] | null
   sinopsis_chilensis: string | null
   keywords: string | null
+  compositor: string | null
+  actores_oscars: string | null
 }
 
 interface Movie {
@@ -22,7 +24,14 @@ interface Movie {
   nota_imdb: number | null
   poster_path: string | null
   backdrop_path: string | null
+  oscars: string | null
+  categoria: string | null
   enriquecimiento: Enriquecimiento | null
+}
+
+interface GraphData {
+  nodes: { id: string }[]
+  edges: { source: string; target: string; weight: number }[]
 }
 
 interface GuessResult {
@@ -30,6 +39,11 @@ interface GuessResult {
   matchGenre: boolean
   matchDecade: boolean
   matchDirector: boolean
+  matchCast: boolean
+  matchOscars: boolean
+  matchCompositor: boolean
+  matchMood: boolean
+  graphDistance: number | null // null = not connected
 }
 
 interface GameState {
@@ -125,11 +139,54 @@ function saveStats(stats: Stats) {
   localStorage.setItem('cinebret-adivina-stats', JSON.stringify(stats))
 }
 
+/* ─── Graph helpers ─── */
+function buildAdjacency(edges: GraphData['edges']): Map<string, Set<string>> {
+  const adj = new Map<string, Set<string>>()
+  for (const e of edges) {
+    if (!adj.has(e.source)) adj.set(e.source, new Set())
+    if (!adj.has(e.target)) adj.set(e.target, new Set())
+    adj.get(e.source)!.add(e.target)
+    adj.get(e.target)!.add(e.source)
+  }
+  return adj
+}
+
+function bfsDistance(adj: Map<string, Set<string>>, from: string, to: string): number | null {
+  if (from === to) return 0
+  if (!adj.has(from) || !adj.has(to)) return null
+  const visited = new Set<string>([from])
+  const queue: [string, number][] = [[from, 0]]
+  let head = 0
+  while (head < queue.length) {
+    const [node, dist] = queue[head++]
+    const neighbors = adj.get(node)
+    if (!neighbors) continue
+    for (const n of neighbors) {
+      if (n === to) return dist + 1
+      if (!visited.has(n)) {
+        visited.add(n)
+        queue.push([n, dist + 1])
+      }
+    }
+  }
+  return null
+}
+
+function hasOscars(movie: Movie): boolean {
+  return movie.oscars != null && movie.oscars !== '' && movie.oscars !== 'N/A'
+}
+
+function parseActors(actorsStr: string | null | undefined): string[] {
+  if (!actorsStr) return []
+  return actorsStr.split(',').map((a) => a.trim().toLowerCase()).filter(Boolean)
+}
+
 /* ─── Component ─── */
 export default function AdivinaPage() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [targetMovie, setTargetMovie] = useState<Movie | null>(null)
+  const [graphAdj, setGraphAdj] = useState<Map<string, Set<string>> | null>(null)
   const [guesses, setGuesses] = useState<GuessResult[]>([])
   const [solved, setSolved] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -149,20 +206,27 @@ export default function AdivinaPage() {
   // Fetch movies
   useEffect(() => {
     async function load() {
-      const raw = await fetchAllPages<any>(
-        (from, to) =>
-          supabase
-            .from('peliculas')
-            .select(`
-              id, titulo, titulo_ingles, anio, nota_imdb, poster_path, backdrop_path,
-              enriquecimiento (director, actores, generos, sinopsis_chilensis, keywords)
-            `)
-            .gte('nota_imdb', 7.5)
-            .not('poster_path', 'is', null)
-            .not('backdrop_path', 'is', null)
-            .range(from, to),
-        1000,
-      )
+      const [raw, graphRes] = await Promise.all([
+        fetchAllPages<any>(
+          (from, to) =>
+            supabase
+              .from('peliculas')
+              .select(`
+                id, titulo, titulo_ingles, anio, nota_imdb, poster_path, backdrop_path, oscars, categoria,
+                enriquecimiento (director, actores, generos, sinopsis_chilensis, keywords, compositor, actores_oscars)
+              `)
+              .gte('nota_imdb', 7.5)
+              .not('poster_path', 'is', null)
+              .not('backdrop_path', 'is', null)
+              .range(from, to),
+          1000,
+        ),
+        fetch('/movie-graph.json').then((r) => r.json()).catch(() => null) as Promise<GraphData | null>,
+      ])
+
+      if (graphRes) {
+        setGraphAdj(buildAdjacency(graphRes.edges))
+      }
 
       const parsed: Movie[] = raw.map((p: any) => ({
         id: p.id,
@@ -172,6 +236,8 @@ export default function AdivinaPage() {
         nota_imdb: p.nota_imdb,
         poster_path: p.poster_path,
         backdrop_path: p.backdrop_path,
+        oscars: p.oscars ?? null,
+        categoria: p.categoria ?? null,
         enriquecimiento: p.enriquecimiento ?? null,
       }))
 
@@ -191,7 +257,7 @@ export default function AdivinaPage() {
             .map((gid) => {
               const m = parsed.find((p) => p.id === gid)
               if (!m || !target) return null
-              return buildGuessResult(m, target)
+              return buildGuessResult(m, target, graphRes ? buildAdjacency(graphRes.edges) : null)
             })
             .filter(Boolean) as GuessResult[]
           setGuesses(restoredGuesses)
@@ -206,7 +272,7 @@ export default function AdivinaPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  function buildGuessResult(guessed: Movie, target: Movie): GuessResult {
+  function buildGuessResult(guessed: Movie, target: Movie, adj?: Map<string, Set<string>> | null): GuessResult {
     const tEnr = target.enriquecimiento
     const gEnr = guessed.enriquecimiento
     const matchGenre =
@@ -218,7 +284,30 @@ export default function AdivinaPage() {
       !!tEnr?.director &&
       !!gEnr?.director &&
       tEnr.director.toLowerCase() === gEnr.director.toLowerCase()
-    return { movie: guessed, matchGenre, matchDecade, matchDirector }
+
+    // CAST: shares any actor
+    const targetActors = parseActors(tEnr?.actores)
+    const guessedActors = parseActors(gEnr?.actores)
+    const matchCast = targetActors.length > 0 && guessedActors.length > 0 &&
+      targetActors.some((a) => guessedActors.includes(a))
+
+    // OSC: same oscar status
+    const matchOscars = hasOscars(target) === hasOscars(guessed)
+
+    // COMP: same compositor
+    const tComp = tEnr?.compositor?.trim().toLowerCase() ?? ''
+    const gComp = gEnr?.compositor?.trim().toLowerCase() ?? ''
+    const matchCompositor = tComp !== '' && gComp !== '' && tComp === gComp
+
+    // MOOD: same CineBret categoria
+    const matchMood =
+      !!target.categoria && !!guessed.categoria &&
+      target.categoria.trim().toLowerCase() === guessed.categoria.trim().toLowerCase()
+
+    // Graph distance
+    const graphDistance = adj ? bfsDistance(adj, guessed.id, target.id) : null
+
+    return { movie: guessed, matchGenre, matchDecade, matchDirector, matchCast, matchOscars, matchCompositor, matchMood, graphDistance }
   }
 
   // Click outside to close suggestions
@@ -250,7 +339,7 @@ export default function AdivinaPage() {
   const submitGuess = useCallback(
     (movie: Movie) => {
       if (!targetMovie || gameOver) return
-      const result = buildGuessResult(movie, targetMovie)
+      const result = buildGuessResult(movie, targetMovie, graphAdj)
       const newGuesses = [...guesses, result]
       setGuesses(newGuesses)
       setSearchText('')
@@ -287,7 +376,7 @@ export default function AdivinaPage() {
         setStats(s)
       }
     },
-    [targetMovie, gameOver, guesses, today],
+    [targetMovie, gameOver, guesses, today, graphAdj],
   )
 
   const shareText = useMemo(() => {
@@ -463,19 +552,29 @@ export default function AdivinaPage() {
           <div className="mb-4 space-y-2">
             {guesses.map((g, i) => {
               const isCorrect = g.movie.id === targetMovie.id
+              const distLabel =
+                g.graphDistance === null
+                  ? { text: 'Sin conexión en el grafo', color: 'text-zinc-500', icon: '' }
+                  : g.graphDistance <= 2
+                    ? { text: `A ${g.graphDistance} películas`, color: 'text-green-400', icon: '\uD83D\uDD25 Muy cerca!' }
+                    : g.graphDistance <= 4
+                      ? { text: `A ${g.graphDistance} películas`, color: 'text-yellow-400', icon: 'Cerca' }
+                      : { text: `A ${g.graphDistance} películas`, color: 'text-red-400', icon: 'Lejos' }
               return (
                 <div
                   key={i}
-                  className={`flex items-center gap-2 rounded-lg px-3 py-2 border ${
+                  className={`rounded-lg px-3 py-2 border ${
                     isCorrect
                       ? 'bg-green-950/50 border-green-700'
                       : 'bg-zinc-900 border-zinc-800'
                   }`}
                 >
-                  <span className="text-sm font-medium flex-1 truncate">
-                    {isCorrect ? '✅' : '❌'} {g.movie.titulo} ({g.movie.anio ?? '?'})
-                  </span>
-                  <div className="flex gap-1 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium flex-1 truncate">
+                      {isCorrect ? '✅' : '❌'} {g.movie.titulo} ({g.movie.anio ?? '?'})
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-1.5">
                     <span
                       className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
                         g.matchDecade ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
@@ -500,7 +599,44 @@ export default function AdivinaPage() {
                     >
                       DIR
                     </span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                        g.matchCast ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                      }`}
+                      title="Comparten actor"
+                    >
+                      CAST
+                    </span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                        g.matchOscars ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                      }`}
+                      title="Mismo estado Oscars"
+                    >
+                      OSC
+                    </span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                        g.matchCompositor ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                      }`}
+                      title="Mismo compositor"
+                    >
+                      COMP
+                    </span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                        g.matchMood ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                      }`}
+                      title="Misma categoría CineBret"
+                    >
+                      MOOD
+                    </span>
                   </div>
+                  {!isCorrect && (
+                    <div className={`text-[11px] mt-1 ${distLabel.color}`}>
+                      {distLabel.icon ? `${distLabel.icon} — ${distLabel.text}` : distLabel.text}
+                    </div>
+                  )}
                 </div>
               )
             })}

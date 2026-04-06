@@ -32,7 +32,8 @@ type RawGraph = {
 type ScoredResult = {
   node: GraphNode
   score: number
-  matchCount: number
+  genreOverlap: number
+  graphConnections: number
   maxPossible: number
 }
 
@@ -158,41 +159,85 @@ export default function FusionadorPage() {
     requestAnimationFrame(() => {
       const selectedIds = new Set(selected.map((s) => s.id))
 
-      // For each candidate node (not in selected), compute score
+      // 1. Combine characteristics of selected movies
+      const combinedGenres = new Set<string>()
+      let imdbSum = 0
+      let imdbCount = 0
+      const combinedCategories = new Set<string>()
+
+      for (const sel of selected) {
+        if (sel.genres) sel.genres.forEach((g) => combinedGenres.add(g))
+        if (sel.imdb > 0) {
+          imdbSum += sel.imdb
+          imdbCount++
+        }
+        if (sel.categoria) combinedCategories.add(sel.categoria)
+      }
+
+      const avgImdb = imdbCount > 0 ? imdbSum / imdbCount : 0
+      const combinedGenresArr = Array.from(combinedGenres)
+      const totalGenres = combinedGenresArr.length || 1
+
+      // 2. Score every movie in the graph
       const candidates: ScoredResult[] = []
 
       for (const node of graph.nodes) {
         if (selectedIds.has(node.id)) continue
 
-        const nodeAdj = adjacency.get(node.id)
-        if (!nodeAdj) continue
-
         let score = 0
-        let matchCount = 0
 
-        for (const sel of selected) {
-          const w = nodeAdj.get(sel.id)
-          if (w !== undefined) {
-            score += w
-            matchCount++
+        // Genre overlap: matching genres / total combined genres * 40 points
+        const nodeGenres = new Set(node.genres || [])
+        let genreMatches = 0
+        for (const g of combinedGenresArr) {
+          if (nodeGenres.has(g)) genreMatches++
+        }
+        const genreScore = (genreMatches / totalGenres) * 40
+        score += genreScore
+
+        // IMDB proximity: (1 - abs(movie.imdb - avgImdb) / 10) * 20 points
+        if (node.imdb > 0 && avgImdb > 0) {
+          const imdbProximity = Math.max(0, 1 - Math.abs(node.imdb - avgImdb) / 10)
+          score += imdbProximity * 20
+        }
+
+        // Category bonus: if movie shares a category with any selected, +10 points
+        if (node.categoria && combinedCategories.has(node.categoria)) {
+          score += 10
+        }
+
+        // Graph connection bonus
+        const nodeAdj = adjacency.get(node.id)
+        let graphConnections = 0
+        if (nodeAdj) {
+          for (const sel of selected) {
+            const w = nodeAdj.get(sel.id)
+            if (w !== undefined) {
+              // Direct connection: edge weight * 5 points
+              score += w * 5
+              graphConnections++
+            }
+          }
+          // Bonus for being connected to multiple selected movies: +10 per extra connection
+          if (graphConnections > 1) {
+            score += (graphConnections - 1) * 10
           }
         }
 
-        if (matchCount === 0) continue
+        // Skip movies with negligible similarity
+        if (score < 1) continue
 
         candidates.push({
           node,
           score,
-          matchCount,
+          genreOverlap: genreMatches,
+          graphConnections,
           maxPossible: selected.length,
         })
       }
 
-      // Sort: first by matchCount desc, then by score desc
-      candidates.sort((a, b) => {
-        if (b.matchCount !== a.matchCount) return b.matchCount - a.matchCount
-        return b.score - a.score
-      })
+      // Sort by total score descending
+      candidates.sort((a, b) => b.score - a.score)
 
       const top = candidates.slice(0, TOP_RESULTS)
       setResults(top)
@@ -336,8 +381,8 @@ export default function FusionadorPage() {
             <span className="text-yellow-400">Fusionador</span> de Pelis
           </h1>
           <p className="text-sm text-zinc-400">
-            Elige entre 2 y 5 pelis y encontramos el punto de equilibrio: la peli que las conecta a
-            todas.
+            Elige entre 2 y 5 pelis y fusionamos sus características para encontrar las más
+            parecidas.
           </p>
         </div>
 
@@ -469,7 +514,7 @@ export default function FusionadorPage() {
                   {/* Mini-graph */}
                   <div className="mb-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
                     <p className="mb-3 text-center text-xs font-medium text-zinc-400">
-                      El punto de equilibrio es...
+                      La fusión más compatible es...
                     </p>
                     <canvas
                       ref={canvasRef}
@@ -525,9 +570,16 @@ export default function FusionadorPage() {
                               {r.node.imdb > 0 && (
                                 <span className="text-xs text-yellow-400">★ {r.node.imdb}</span>
                               )}
-                              <span className="text-xs text-zinc-500">
-                                {r.matchCount}/{r.maxPossible} conexiones
-                              </span>
+                              {r.genreOverlap > 0 && (
+                                <span className="text-xs text-zinc-500">
+                                  {r.genreOverlap} géneros en común
+                                </span>
+                              )}
+                              {r.graphConnections > 0 && (
+                                <span className="text-xs text-zinc-500">
+                                  {r.graphConnections}/{r.maxPossible} conexiones
+                                </span>
+                              )}
                             </div>
 
                             {/* Compatibility bar */}

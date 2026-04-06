@@ -13,6 +13,7 @@ type Movie = {
   nota_imdb: number | null
   poster_path: string | null
   oscars: string | null
+  runtime: number | null
   generos: string[] | null
   director: string | null
   actores: string | null
@@ -20,6 +21,7 @@ type Movie = {
   keywords: string | null
   director_oscars: string | null
   actores_oscars: string | null
+  compositor: string | null
 }
 
 type QuestionEntry = {
@@ -83,6 +85,53 @@ const PLATFORM_MAP: Record<string, string[]> = {
   netflix: ['netflix'],
   disney_plus: ['disney_plus', 'disney+', 'disney plus'],
   hbo_max: ['hbo_max', 'hbo', 'max'],
+  amazon_prime: ['amazon_prime', 'amazon prime', 'prime video'],
+  apple_tv: ['apple_tv', 'apple tv', 'apple tv+'],
+  paramount_plus: ['paramount_plus', 'paramount+', 'paramount plus'],
+}
+
+const FAMOUS_COMPOSERS = [
+  'hans zimmer', 'john williams', 'ennio morricone', 'howard shore',
+  'james horner', 'danny elfman', 'alexandre desplat', 'thomas newman',
+  'michael giacchino', 'ludwigöransson', 'ludwig göransson', 'joe hisaishi',
+  'alan silvestri', 'bernard herrmann', 'jerry goldsmith', 'john barry',
+  'trent reznor', 'jonny greenwood', 'carter burwell', 'nicholas britell',
+  'hildur guðnadóttir', 'hildur gudnadottir', 'ar rahman', 'a.r. rahman',
+]
+
+function hasFamousComposer(m: Movie): boolean {
+  if (!m.compositor) return false
+  const comp = m.compositor.toLowerCase()
+  return FAMOUS_COMPOSERS.some(c => comp.includes(c))
+}
+
+function oscarsWonCount(oscarsField: string | null): number {
+  if (!oscarsField) return 0
+  // Try to extract number of oscars won
+  const match = oscarsField.match(/won\s+(\d+)/i) || oscarsField.match(/ganó\s+(\d+)/i) || oscarsField.match(/(\d+)\s*oscar/i)
+  return match ? parseInt(match[1], 10) : 0
+}
+
+function directorWonOscar(dirOscars: string | null): boolean {
+  if (!dirOscars) return false
+  const lower = dirOscars.toLowerCase()
+  return /won/i.test(lower) || /ganó/i.test(lower) || /winner/i.test(lower) || /best director/i.test(lower)
+}
+
+function freeTextMatch(m: Movie, question: string): boolean {
+  const q = question.toLowerCase()
+    .replace(/[¿?¡!.,]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 2) // skip tiny words
+  const haystack = [
+    m.titulo, m.titulo_ingles, m.director, m.actores,
+    m.compositor, m.sinopsis_chilensis, m.keywords,
+    ...(m.generos ?? []),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+  return q.some(word => haystack.includes(word))
 }
 
 function hasOscar(oscarsField: string | null): boolean {
@@ -103,6 +152,10 @@ const CATEGORIES: Category[] = [
   {
     label: 'Época',
     questions: [
+      { text: '¿Es de antes de 1970?', evaluate: (m) => (m.anio ?? 2000) < 1970 },
+      { text: '¿Es de los 70s?', evaluate: (m) => (m.anio ?? 0) >= 1970 && (m.anio ?? 0) < 1980 },
+      { text: '¿Es de los 80s?', evaluate: (m) => (m.anio ?? 0) >= 1980 && (m.anio ?? 0) < 1990 },
+      { text: '¿Es de los 90s?', evaluate: (m) => (m.anio ?? 0) >= 1990 && (m.anio ?? 0) < 2000 },
       { text: '¿Es de antes del 2000?', evaluate: (m) => (m.anio ?? 2000) < 2000 },
       { text: '¿Es de los 2010s?', evaluate: (m) => (m.anio ?? 0) >= 2010 && (m.anio ?? 0) < 2020 },
       { text: '¿Es de los 2020s?', evaluate: (m) => (m.anio ?? 0) >= 2020 },
@@ -117,6 +170,14 @@ const CATEGORIES: Category[] = [
       { text: '¿Es terror?', evaluate: (m) => hasGenre(m, 'terror') },
       { text: '¿Es ciencia ficción?', evaluate: (m) => hasGenre(m, 'ciencia ficción') },
       { text: '¿Es animación?', evaluate: (m) => hasGenre(m, 'animación') },
+      { text: '¿Es western?', evaluate: (m) => hasGenre(m, 'western') },
+      { text: '¿Es musical?', evaluate: (m) => hasGenre(m, 'música') },
+      { text: '¿Es documental?', evaluate: (m) => hasGenre(m, 'documental') },
+      { text: '¿Es thriller?', evaluate: (m) => hasGenre(m, 'thriller') },
+      { text: '¿Es de guerra?', evaluate: (m) => hasGenre(m, 'guerra') },
+      { text: '¿Es misterio?', evaluate: (m) => hasGenre(m, 'misterio') },
+      { text: '¿Es aventura?', evaluate: (m) => hasGenre(m, 'aventura') },
+      { text: '¿Es biografía?', evaluate: (m) => hasGenre(m, 'biografía') },
     ],
   },
   {
@@ -124,6 +185,8 @@ const CATEGORIES: Category[] = [
     questions: [
       { text: '¿Ganó un Oscar?', evaluate: (m) => hasOscar(m.oscars) },
       { text: '¿Fue nominada al Oscar?', evaluate: (m) => wasNominated(m.oscars) },
+      { text: '¿Ganó más de 3 Oscars?', evaluate: (m) => oscarsWonCount(m.oscars) > 3 },
+      { text: '¿El director ganó Oscar de dirección?', evaluate: (m) => directorWonOscar(m.director_oscars) },
     ],
   },
   {
@@ -136,6 +199,30 @@ const CATEGORIES: Category[] = [
       {
         text: '¿Tiene actores ganadores de Oscar?',
         evaluate: (m) => !!m.actores_oscars && m.actores_oscars.trim().length > 0,
+      },
+      {
+        text: '¿El director es mujer?',
+        evaluate: (m) => {
+          if (!m.director) return false
+          const d = m.director.toLowerCase()
+          const femaleDirectors = [
+            'greta gerwig', 'kathryn bigelow', 'chloe zhao', 'chloé zhao', 'sofia coppola',
+            'patty jenkins', 'ava duvernay', 'jane campion', 'sarah polley', 'emerald fennell',
+            'dee rees', 'lulu wang', 'olivia wilde', 'marielle heller', 'celine sciamma',
+            'céline sciamma', 'lynne ramsay', 'kelly reichardt', 'denis villeneuve',
+            'andrea arnold', 'mimi leder', 'nora ephron', 'penny marshall',
+            'justine triet', 'coralie fargeat', 'payal kapadia',
+          ]
+          return femaleDirectors.some(f => d.includes(f))
+        },
+      },
+      {
+        text: '¿Tiene elenco principalmente femenino?',
+        evaluate: (m) => keywordsContain(m, 'female protagonist', 'woman', 'women', 'female lead', 'girl', 'heroine', 'protagonista femenina'),
+      },
+      {
+        text: '¿El compositor es famoso?',
+        evaluate: (m) => hasFamousComposer(m),
       },
     ],
   },
@@ -154,25 +241,81 @@ const CATEGORIES: Category[] = [
         text: '¿Está en HBO?',
         evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.hbo_max.includes(p.toLowerCase())),
       },
+      {
+        text: '¿Está en Amazon Prime?',
+        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.amazon_prime.includes(p.toLowerCase())),
+      },
+      {
+        text: '¿Está en Apple TV+?',
+        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.apple_tv.includes(p.toLowerCase())),
+      },
+      {
+        text: '¿Está en Paramount+?',
+        evaluate: (_m, wp) => wp.some(p => PLATFORM_MAP.paramount_plus.includes(p.toLowerCase())),
+      },
     ],
   },
   {
     label: 'Rating',
     questions: [
+      { text: '¿Tiene menos de 7 en IMDB?', evaluate: (m) => (m.nota_imdb ?? 0) < 7 },
+      { text: '¿Está entre 7 y 8?', evaluate: (m) => (m.nota_imdb ?? 0) >= 7 && (m.nota_imdb ?? 0) <= 8 },
       { text: '¿Tiene más de 8 en IMDB?', evaluate: (m) => (m.nota_imdb ?? 0) > 8 },
       { text: '¿Tiene más de 9 en IMDB?', evaluate: (m) => (m.nota_imdb ?? 0) > 9 },
     ],
   },
   {
-    label: 'Otros',
+    label: 'Características',
     questions: [
+      { text: '¿Dura más de 2 horas?', evaluate: (m) => (m.runtime ?? 0) > 120 },
+      {
+        text: '¿Es basada en un libro?',
+        evaluate: (m) => keywordsContain(m, 'based-on-novel', 'based on novel', 'book adaptation', 'novel', 'literary', 'libro', 'novela'),
+      },
+      {
+        text: '¿Tiene secuela?',
+        evaluate: (m) => keywordsContain(m, 'sequel', 'secuela', 'franchise', 'saga'),
+      },
+      {
+        text: '¿Es remake?',
+        evaluate: (m) => keywordsContain(m, 'remake', 'reboot'),
+      },
+      {
+        text: '¿Es en inglés?',
+        evaluate: (m) => {
+          // If title_ingles exists and matches titulo, likely English
+          // Also check keywords for English-language indicators
+          if (!m.titulo_ingles) return false
+          const eng = m.titulo_ingles.toLowerCase()
+          const esp = m.titulo.toLowerCase()
+          // If titles are the same, likely English original
+          return eng === esp || keywordsContain(m, 'english', 'american', 'british', 'hollywood')
+        },
+      },
       {
         text: '¿Es basada en hechos reales?',
         evaluate: (m) => keywordsContain(m, 'based-on-true', 'based on true', 'biography', 'biographical', 'true story', 'real event', 'hechos reales'),
       },
+    ],
+  },
+  {
+    label: 'Mood',
+    questions: [
       {
-        text: '¿Es una secuela?',
-        evaluate: (m) => keywordsContain(m, 'sequel', 'secuela'),
+        text: "¿Es pa'l domingo de bajón?",
+        evaluate: (m) => hasGenre(m, 'drama') && !hasGenre(m, 'acción') && !hasGenre(m, 'terror'),
+      },
+      {
+        text: "¿Es pa' saltar del sillón?",
+        evaluate: (m) => hasGenre(m, 'acción') || hasGenre(m, 'terror') || hasGenre(m, 'thriller'),
+      },
+      {
+        text: "¿Es pa' quedar con el cerebro como licuadora?",
+        evaluate: (m) => hasGenre(m, 'ciencia ficción') || hasGenre(m, 'misterio') || keywordsContain(m, 'twist', 'mind-bending', 'puzzle', 'psychological', 'nonlinear'),
+      },
+      {
+        text: "¿Es pa' llorar a moco tendido?",
+        evaluate: (m) => keywordsContain(m, 'death', 'dying', 'loss', 'grief', 'tragic', 'tearjerker', 'sad', 'emotional') || (hasGenre(m, 'drama') && hasGenre(m, 'romance')),
       },
     ],
   },
@@ -192,7 +335,9 @@ export default function QuienSoyPage() {
   const [suggestions, setSuggestions] = useState<Movie[]>([])
   const [wrongGuess, setWrongGuess] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
+  const [freeQuestion, setFreeQuestion] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const freeRef = useRef<HTMLInputElement>(null)
 
   const remaining = MAX_QUESTIONS - asked.length
 
@@ -204,7 +349,7 @@ export default function QuienSoyPage() {
       const peliculas = await fetchAllPages<any>((from, to) =>
         supabase
           .from('peliculas')
-          .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, oscars')
+          .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path, oscars, runtime')
           .gte('nota_imdb', 7.5)
           .not('poster_path', 'is', null)
           .range(from, to),
@@ -215,7 +360,7 @@ export default function QuienSoyPage() {
       const enrData = await fetchAllPages<any>((from, to) =>
         supabase
           .from('enriquecimiento')
-          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, keywords, director_oscars, actores_oscars')
+          .select('pelicula_id, generos, director, actores, sinopsis_chilensis, keywords, director_oscars, actores_oscars, compositor')
           .range(from, to),
       )
       const enrMap = new Map<string, any>()
@@ -231,6 +376,7 @@ export default function QuienSoyPage() {
           nota_imdb: p.nota_imdb,
           poster_path: p.poster_path,
           oscars: p.oscars,
+          runtime: p.runtime ?? null,
           generos: enr.generos ?? null,
           director: enr.director ?? null,
           actores: enr.actores ?? null,
@@ -238,6 +384,7 @@ export default function QuienSoyPage() {
           keywords: enr.keywords ?? null,
           director_oscars: enr.director_oscars ?? null,
           actores_oscars: enr.actores_oscars ?? null,
+          compositor: enr.compositor ?? null,
         }
       })
 
@@ -274,6 +421,15 @@ export default function QuienSoyPage() {
     },
     [secret, secretProviders, remaining],
   )
+
+  /* ─── free text question ─── */
+  const askFreeQuestion = useCallback(() => {
+    if (!secret || remaining <= 0 || freeQuestion.trim().length < 3) return
+    const text = freeQuestion.trim()
+    const answer = freeTextMatch(secret, text)
+    setAsked(prev => [...prev, { text: `Libre: ${text}`, answer }])
+    setFreeQuestion('')
+  }, [secret, remaining, freeQuestion])
 
   /* ─── guess handling ─── */
   const handleGuessChange = (val: string) => {
@@ -323,6 +479,7 @@ export default function QuienSoyPage() {
     setSuggestions([])
     setWrongGuess(false)
     setOpenCategory(null)
+    setFreeQuestion('')
 
     const picked = allMovies[Math.floor(Math.random() * allMovies.length)]
     setSecret(picked)
@@ -447,11 +604,39 @@ export default function QuienSoyPage() {
               </div>
             </div>
 
+            {/* Free text question */}
+            {phase === 'asking' && remaining > 0 && (
+              <div className="bg-zinc-900 rounded-xl p-4 mb-4">
+                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2 block">
+                  Pregunta libre
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    ref={freeRef}
+                    value={freeQuestion}
+                    onChange={e => setFreeQuestion(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') askFreeQuestion() }}
+                    placeholder="Escribe cualquier pregunta de sí/no..."
+                    className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-yellow-400 transition"
+                  />
+                  <button
+                    onClick={askFreeQuestion}
+                    disabled={freeQuestion.trim().length < 3 || remaining <= 0}
+                    className="bg-yellow-400 text-black font-bold px-4 py-2 rounded-lg text-sm hover:bg-yellow-300 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Preguntar
+                  </button>
+                </div>
+                <p className="text-xs text-zinc-600 mt-1">Busca coincidencias en título, sinopsis, keywords, género, director, actores y compositor.</p>
+              </div>
+            )}
+
             {/* Question categories */}
             {phase === 'asking' && remaining > 0 && (
               <div className="space-y-2 mb-6">
                 {CATEGORIES.map(cat => {
-                  const allAsked = cat.questions.every(q => isAsked(q.text))
+                  const askedCount = cat.questions.filter(q => isAsked(q.text)).length
+                  const allAsked = askedCount === cat.questions.length
                   if (allAsked) return null
                   const isOpen = openCategory === cat.label
                   return (
@@ -460,7 +645,12 @@ export default function QuienSoyPage() {
                         onClick={() => setOpenCategory(isOpen ? null : cat.label)}
                         className="w-full flex items-center justify-between px-4 py-3 text-left"
                       >
-                        <span className="text-sm font-semibold text-zinc-200">{cat.label}</span>
+                        <span className="text-sm font-semibold text-zinc-200">
+                          {cat.label}
+                          {askedCount > 0 && (
+                            <span className="ml-2 text-xs text-zinc-500">({askedCount}/{cat.questions.length})</span>
+                          )}
+                        </span>
                         <svg
                           className={`w-4 h-4 text-zinc-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                           fill="none"
@@ -475,17 +665,23 @@ export default function QuienSoyPage() {
                         <div className="px-4 pb-3 flex flex-wrap gap-2">
                           {cat.questions.map(q => {
                             const done = isAsked(q.text)
+                            const entry = asked.find(a => a.text === q.text)
                             return (
                               <button
                                 key={q.text}
                                 disabled={done || remaining <= 0}
-                                onClick={() => askQuestion(q.text, q.evaluate)}
-                                className={`text-xs px-3 py-2 rounded-lg transition ${
+                                onClick={() => { if (!done && remaining > 0) askQuestion(q.text, q.evaluate) }}
+                                className={`text-xs px-3 py-2 rounded-lg transition flex items-center gap-1.5 ${
                                   done
-                                    ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
-                                    : 'bg-zinc-800 text-white hover:bg-yellow-400 hover:text-black'
+                                    ? entry?.answer
+                                      ? 'bg-green-900/40 text-green-400 border border-green-800/40 cursor-not-allowed'
+                                      : 'bg-red-900/40 text-red-400 border border-red-800/40 cursor-not-allowed'
+                                    : 'bg-zinc-800 text-white hover:bg-yellow-400 hover:text-black active:scale-95'
                                 }`}
                               >
+                                {done && (
+                                  <span className="text-[10px]">{entry?.answer ? 'S' : 'N'}</span>
+                                )}
                                 {q.text}
                               </button>
                             )

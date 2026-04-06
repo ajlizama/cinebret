@@ -9,6 +9,7 @@ import YouTubeClip from '@/components/YouTubeClip'
 import SpotifyPlayer from '@/components/SpotifyPlayer'
 import ShareButton from '@/components/ShareButton'
 import TemporadasBrowser from './TemporadasBrowser'
+import ParentGuide from '@/components/ParentGuide'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -229,6 +230,9 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                 </div>
               </div>
             )}
+
+            {/* Guía Parental */}
+            <ParentGuide serieId={serie.id} />
 
             {/* Creador / Equipo */}
             <div className="grid grid-cols-2 gap-6">

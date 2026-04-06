@@ -16,6 +16,7 @@ import { extractYouTubeId } from '@/lib/youtube'
 import SpotifyPlayer from '@/components/SpotifyPlayer'
 import WatchProviderButtons from '@/components/WatchProviderButtons'
 import ShareButton from '@/components/ShareButton'
+import ParentGuide from '@/components/ParentGuide'
 
 const PLATAFORMAS = [
   { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
@@ -214,6 +215,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 </div>
               </div>
             )}
+
+            {/* Guía Parental */}
+            <ParentGuide peliculaId={pelicula.id} />
 
             {/* Equipo */}
             <div className="grid grid-cols-2 gap-6">

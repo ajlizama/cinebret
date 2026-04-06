@@ -231,9 +231,6 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
               </div>
             )}
 
-            {/* Guía Parental */}
-            <ParentGuide serieId={serie.id} />
-
             {/* Creador / Equipo */}
             <div className="grid grid-cols-2 gap-6">
               {enr?.director && (
@@ -331,6 +328,9 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                 </div>
               )
             })()}
+
+            {/* Guía Parental */}
+            <ParentGuide serieId={serie.id} />
 
             {/* Keywords */}
             {enr?.keywords && (enr.keywords as string[]).length > 0 && (

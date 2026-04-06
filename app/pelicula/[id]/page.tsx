@@ -216,9 +216,6 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               </div>
             )}
 
-            {/* Guía Parental */}
-            <ParentGuide peliculaId={pelicula.id} />
-
             {/* Equipo */}
             <div className="grid grid-cols-2 gap-6">
               {enr?.director && (
@@ -323,6 +320,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 </div>
               )
             })()}
+
+            {/* Guía Parental */}
+            <ParentGuide peliculaId={pelicula.id} />
 
             {/* Keywords */}
             {enr?.keywords && (enr.keywords as string[]).length > 0 && (

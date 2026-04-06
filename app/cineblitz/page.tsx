@@ -33,7 +33,7 @@ type Particle = {
 }
 
 /* ─── Constants ─── */
-const TIMER_DURATION = 3000
+const TIMER_DURATION = 5000
 const SWIPE_THRESHOLD = 60
 const PARTICLE_COLORS = ['#facc15', '#f59e0b', '#fb923c', '#fbbf24', '#fde68a']
 const GENRE_POOL = [
@@ -41,11 +41,12 @@ const GENRE_POOL = [
   'Thriller', 'Romance', 'Documental', 'Western', 'Guerra', 'Crimen',
   'Aventura', 'Fantasía', 'Misterio', 'Musical', 'Biografía', 'Historia',
 ]
+const DECADE_POOL = ['60s', '70s', '80s', '90s', '2000s', '2010s', '2020s']
 
 const MODE_CONFIG: Record<GameMode, { emoji: string; title: string; description: string }> = {
   'mas-menos': { emoji: '⚖️', title: '¿Más o Menos?', description: '¿Tiene mayor o menor nota IMDb que la anterior?' },
   'genero': { emoji: '🎭', title: '¿Qué Género?', description: 'Elige el género correcto de la película' },
-  'decada': { emoji: '📅', title: '¿Qué Década?', description: '¿Es del 2000 en adelante o anterior?' },
+  'decada': { emoji: '📅', title: '¿Qué Década?', description: '¿De qué década es esta película?' },
   'director': { emoji: '🎬', title: '¿Quién Dirigió?', description: 'Elige el director correcto' },
 }
 
@@ -102,12 +103,31 @@ async function fetchMovies(): Promise<BlitzMovie[]> {
 }
 
 /* ─── Helpers ─── */
-function pickRandomGenre(correctGenres: string[], allGenres: string[]): { correct: string; wrong: string; correctSide: 'left' | 'right' } {
+function pickRandomGenre(correctGenres: string[], allGenres: string[]): { correct: string; wrong: string; correctSide: 'left' | 'right' } | null {
   const correct = correctGenres[Math.floor(Math.random() * correctGenres.length)]
   const available = allGenres.filter(g => !correctGenres.some(cg => cg.toLowerCase() === g.toLowerCase()))
-  const wrong = available[Math.floor(Math.random() * available.length)] || 'Musical'
+  if (available.length === 0) return null // Can't find a wrong genre
+  const wrong = available[Math.floor(Math.random() * available.length)]
   const correctSide = Math.random() < 0.5 ? 'left' : 'right'
   return { correct, wrong, correctSide }
+}
+
+function getDecadeLabel(year: number): string {
+  if (year >= 2020) return '2020s'
+  if (year >= 2010) return '2010s'
+  if (year >= 2000) return '2000s'
+  if (year >= 1990) return '90s'
+  if (year >= 1980) return '80s'
+  if (year >= 1970) return '70s'
+  return '60s'
+}
+
+function pickDecadeOptions(year: number): { correct: string; wrong: string; correctSide: 'left' | 'right' } {
+  const correctDecade = getDecadeLabel(year)
+  const otherDecades = DECADE_POOL.filter(d => d !== correctDecade)
+  const wrong = otherDecades[Math.floor(Math.random() * otherDecades.length)]
+  const correctSide: 'left' | 'right' = Math.random() < 0.5 ? 'left' : 'right'
+  return { correct: correctDecade, wrong, correctSide }
 }
 
 function pickDirectorOptions(correctDirector: string, allMovies: BlitzMovie[]): { correct: string; wrong: string; correctSide: 'left' | 'right' } {
@@ -236,8 +256,8 @@ export default function CineBlitzPage() {
         }
         const correctSide: 'left' | 'right' = (movie.nota_imdb ?? 0) >= (prevMovie.nota_imdb ?? 0) ? 'right' : 'left'
         correctSideRef.current = correctSide
-        setRoundOptions({ left: '⬇️ Menos', right: '⬆️ Más', correctSide })
-        setQuestionText(`¿Más o menos que ${prevMovie.titulo} (${prevMovie.nota_imdb})?`)
+        setRoundOptions({ left: '⬇️ Menor nota', right: '⬆️ Mayor nota', correctSide })
+        setQuestionText(`¿${movie.titulo} tiene mayor o menor nota que ${prevMovie.titulo}?`)
         break
       }
       case 'genero': {
@@ -246,7 +266,13 @@ export default function CineBlitzPage() {
           setCurrentIndex(index + 1)
           return
         }
-        const { correct, wrong, correctSide } = pickRandomGenre(movie.generos, allGenres)
+        const genreResult = pickRandomGenre(movie.generos, allGenres)
+        if (!genreResult) {
+          // Can't find a wrong genre, skip movie
+          setCurrentIndex(index + 1)
+          return
+        }
+        const { correct, wrong, correctSide } = genreResult
         correctSideRef.current = correctSide
         setRoundOptions({
           left: correctSide === 'left' ? correct : wrong,
@@ -257,11 +283,18 @@ export default function CineBlitzPage() {
         break
       }
       case 'decada': {
-        const is2000Plus = (movie.anio ?? 2000) >= 2000
-        const correctSide: 'left' | 'right' = is2000Plus ? 'right' : 'left'
-        correctSideRef.current = correctSide
-        setRoundOptions({ left: '📼 Pre-2000', right: '💿 2000+', correctSide })
-        setQuestionText('¿Es del 2000 en adelante o anterior?')
+        if (!movie.anio) {
+          setCurrentIndex(index + 1)
+          return
+        }
+        const { correct: decCorrect, wrong: decWrong, correctSide: decSide } = pickDecadeOptions(movie.anio)
+        correctSideRef.current = decSide
+        setRoundOptions({
+          left: decSide === 'left' ? decCorrect : decWrong,
+          right: decSide === 'right' ? decCorrect : decWrong,
+          correctSide: decSide,
+        })
+        setQuestionText('¿De qué década es esta película?')
         break
       }
       case 'director': {
@@ -329,7 +362,7 @@ export default function CineBlitzPage() {
     if (isCorrect) {
       // Score calculation
       const basePoints = 100
-      const speedBonus = Math.max(0, Math.floor((TIMER_DURATION / 1000 - timeUsed) * 50))
+      const speedBonus = Math.max(0, Math.floor((TIMER_DURATION / 1000 - timeUsed) * 30))
       const newStreak = streak + 1
       const streakMultiplier = 1 + newStreak * 0.1
       const roundScore = Math.floor((basePoints + speedBonus) * streakMultiplier)
@@ -337,7 +370,7 @@ export default function CineBlitzPage() {
       setScore(prev => prev + roundScore)
       setStreak(newStreak)
       setCorrectCount(prev => prev + 1)
-      if (timeUsed < 1) setSpeedLabel('⚡ RÁPIDO')
+      if (timeUsed < 2) setSpeedLabel('⚡ RÁPIDO')
 
       // Visual feedback
       setFlashColor('green')
@@ -465,7 +498,7 @@ export default function CineBlitzPage() {
           </h1>
           <p className="text-yellow-400 text-2xl mt-1">⚡</p>
         </div>
-        <p className="text-white/50 text-[16px] mb-6">3 segundos. Una respuesta. Sin piedad.</p>
+        <p className="text-white/50 text-[16px] mb-6">5 segundos. Una respuesta. Sin piedad.</p>
 
         {/* Best score */}
         {bestScore > 0 && (
@@ -563,6 +596,7 @@ export default function CineBlitzPage() {
 
   const streakLabel = getStreakLabel(streak)
   const backdropUrl = `https://image.tmdb.org/t/p/w1280${currentMovie.backdrop_path}`
+  const isMasMenos = mode === 'mas-menos' && previousMovie
 
   return (
     <div
@@ -572,23 +606,77 @@ export default function CineBlitzPage() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Backdrop image */}
-      <div className={`absolute inset-0 transition-transform duration-500 ease-out ${
-        swipeDir === 'left' ? '-translate-x-full -rotate-12' :
-        swipeDir === 'right' ? 'translate-x-full rotate-12' : ''
-      }`}>
-        <Image
-          src={backdropUrl}
-          alt={currentMovie.titulo}
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent" />
-      </div>
+      {isMasMenos ? (
+        /* ─── MAS/MENOS: Split view ─── */
+        <div className={`absolute inset-0 flex flex-col md:flex-row transition-transform duration-500 ease-out ${
+          swipeDir === 'left' ? '-translate-x-full -rotate-12' :
+          swipeDir === 'right' ? 'translate-x-full rotate-12' : ''
+        }`}>
+          {/* Left / Top: Previous movie */}
+          <div className="relative flex-1 overflow-hidden">
+            <Image
+              src={`https://image.tmdb.org/t/p/w1280${previousMovie.backdrop_path}`}
+              alt={previousMovie.titulo}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+            <div className="absolute bottom-3 left-0 right-0 text-center px-4">
+              <h3 className="text-white text-xl md:text-2xl font-black drop-shadow-lg leading-tight">{previousMovie.titulo}</h3>
+              <p className="text-yellow-400 text-lg font-bold drop-shadow-lg mt-1">
+                {previousMovie.nota_imdb} <span className="text-white/50 text-sm">IMDb</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="relative z-10 flex items-center justify-center md:flex-col">
+            <div className="absolute bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
+              <span className="text-black font-black text-sm">VS</span>
+            </div>
+            <div className="w-full h-px md:w-px md:h-full bg-yellow-400/40" />
+          </div>
+
+          {/* Right / Bottom: Current movie */}
+          <div className="relative flex-1 overflow-hidden">
+            <Image
+              src={backdropUrl}
+              alt={currentMovie.titulo}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+            <div className="absolute bottom-3 left-0 right-0 text-center px-4">
+              <h3 className="text-white text-xl md:text-2xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h3>
+              <p className="text-white/40 text-lg font-bold drop-shadow-lg mt-1">
+                ? <span className="text-white/30 text-sm">IMDb</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* ─── Other modes: Single backdrop ─── */
+        <>
+          <div className={`absolute inset-0 transition-transform duration-500 ease-out ${
+            swipeDir === 'left' ? '-translate-x-full -rotate-12' :
+            swipeDir === 'right' ? 'translate-x-full rotate-12' : ''
+          }`}>
+            <Image
+              src={backdropUrl}
+              alt={currentMovie.titulo}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent" />
+          </div>
+        </>
+      )}
 
       {/* Preload next image */}
       {preloadedSrc && (
@@ -666,16 +754,18 @@ export default function CineBlitzPage() {
 
       {/* Question text */}
       <div className="absolute top-[calc(max(env(safe-area-inset-top),12px)+60px)] left-0 right-0 z-20 text-center px-6">
-        <p className="text-white/80 text-[14px] font-medium drop-shadow-lg">{questionText}</p>
+        <p className="text-white/80 text-[14px] font-medium drop-shadow-lg backdrop-blur-sm bg-black/30 inline-block px-3 py-1 rounded-lg">{questionText}</p>
       </div>
 
-      {/* Movie title */}
-      <div className="absolute bottom-36 left-0 right-0 z-20 text-center px-6">
-        <h2 className="text-white text-3xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h2>
-        {currentMovie.anio && (
-          <p className="text-white/60 text-[16px] mt-1 drop-shadow-lg">{currentMovie.anio}</p>
-        )}
-      </div>
+      {/* Movie title (hidden for mas-menos since titles are in split view) */}
+      {!isMasMenos && (
+        <div className="absolute bottom-36 left-0 right-0 z-20 text-center px-6">
+          <h2 className="text-white text-3xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h2>
+          {currentMovie.anio && (
+            <p className="text-white/60 text-[16px] mt-1 drop-shadow-lg">{currentMovie.anio}</p>
+          )}
+        </div>
+      )}
 
       {/* Answer options */}
       <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-between px-4 gap-3 pb-[max(env(safe-area-inset-bottom),8px)]">

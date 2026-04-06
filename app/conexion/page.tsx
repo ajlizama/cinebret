@@ -354,26 +354,47 @@ export default function ConexionPage() {
   }
 
   /* ================================================================ */
-  /*  MOBILE EXPLORER VIEW                                            */
+  /*  MOBILE EXPLORER VIEW — Isometric Board Game                     */
   /* ================================================================ */
+
+  const BOARD_POSITIONS = [
+    { x: 0, y: -120 },    // top
+    { x: 85, y: -85 },    // top-right
+    { x: 120, y: 0 },     // right
+    { x: 85, y: 85 },     // bottom-right
+    { x: 0, y: 120 },     // bottom
+    { x: -85, y: 85 },    // bottom-left
+    { x: -120, y: 0 },    // left
+    { x: -85, y: -85 },   // top-left
+  ]
+
   if (isMobile) {
     return (
-      <div className="fixed inset-0 bg-zinc-950 z-40 overflow-hidden" style={{ perspective: '800px' }}>
+      <div className="fixed inset-0 bg-zinc-950 z-40 overflow-hidden">
 
         {/* Background: current movie poster, large, low opacity ---- */}
         {currentNode && (
-          <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute inset-0 opacity-15 pointer-events-none">
             <Image
               src={`${TMDB_IMG}${currentNode.poster}`}
               alt=""
               fill
-              className="object-cover blur-sm"
+              className="object-cover blur-md"
               sizes="100vw"
               unoptimized
               priority
             />
           </div>
         )}
+
+        {/* Subtle grid pattern for board feel ---------------------- */}
+        <div
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #facc15 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
 
         {/* Win celebration overlay -------------------------------- */}
         {won && winCelebrating && (
@@ -388,7 +409,6 @@ export default function ConexionPage() {
                 unoptimized
               />
             </div>
-            {/* Particles */}
             {Array.from({ length: 20 }).map((_, i) => (
               <div
                 key={`particle-${i}`}
@@ -405,8 +425,8 @@ export default function ConexionPage() {
           </div>
         )}
 
-        {/* HUD: top bar ------------------------------------------- */}
-        <div className="absolute top-0 inset-x-0 z-50 safe-area-top">
+        {/* ======== HUD: Fixed top bar ======== */}
+        <div className="fixed top-0 left-0 right-0 z-50 safe-area-top bg-gradient-to-b from-zinc-950 via-zinc-950/90 to-transparent pb-4">
           <div className="flex items-center justify-between px-3 pt-3 pb-1">
             {/* Start poster */}
             <div className="flex items-center gap-1.5">
@@ -449,16 +469,142 @@ export default function ConexionPage() {
           )}
         </div>
 
-        {/* Center: trompo spinning -------------------------------- */}
+        {/* ======== Game board with perspective ======== */}
         {!won && !surrendered && currentNode && (
           <div
-            className="absolute top-1/2 left-1/2 z-30 flex flex-col items-center pointer-events-none"
+            className="fixed inset-0 flex items-center justify-center"
+            style={{ paddingTop: '90px', paddingBottom: '130px' }}
+          >
+            <div
+              className="relative"
+              style={{
+                transform: 'perspective(600px) rotateX(20deg)',
+                transformStyle: 'preserve-3d',
+              }}
+            >
+              {/* SVG connection lines */}
+              <svg
+                className="absolute pointer-events-none"
+                style={{
+                  overflow: 'visible',
+                  top: '50%',
+                  left: '50%',
+                  width: '0',
+                  height: '0',
+                }}
+              >
+                {mobileConnections.map((n, i) => {
+                  const pos = BOARD_POSITIONS[i % BOARD_POSITIONS.length]
+                  const weight = edgeWeights.get(`${currentId}::${n.id}`) ?? 1
+                  const strokeW = Math.max(1, Math.min(3, weight / 2))
+                  return (
+                    <line
+                      key={`line-${n.id}`}
+                      x1={0}
+                      y1={0}
+                      x2={pos.x}
+                      y2={pos.y}
+                      stroke="#facc15"
+                      strokeOpacity={0.25}
+                      strokeWidth={strokeW}
+                      strokeDasharray="4 4"
+                      style={{
+                        opacity: mobileTransition ? 0 : 1,
+                        transition: 'opacity 0.3s ease',
+                      }}
+                    />
+                  )
+                })}
+              </svg>
+
+              {/* Current movie poster as ground tile */}
+              <div className="relative w-32 h-44 rounded-xl overflow-hidden shadow-2xl shadow-black/80 ring-2 ring-yellow-400/60 mx-auto">
+                <Image
+                  src={`${TMDB_IMG}${currentNode.poster}`}
+                  alt={currentNode.titleEs || currentNode.title}
+                  fill
+                  className="object-cover"
+                  sizes="128px"
+                  unoptimized
+                />
+                {/* Dark overlay with title */}
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1">
+                  <p className="text-white text-[10px] font-bold text-center leading-tight line-clamp-2 drop-shadow-lg">
+                    {currentNode.titleEs || currentNode.title}
+                  </p>
+                </div>
+              </div>
+
+              {/* Connected movies positioned around the center */}
+              {mobileConnections.map((n, i) => {
+                const pos = BOARD_POSITIONS[i % BOARD_POSITIONS.length]
+                const isTarget = n.id === endNode.id
+                const alreadyVisited = path.includes(n.id)
+
+                return (
+                  <button
+                    key={n.id}
+                    onClick={() => !alreadyVisited && selectMovie(n.id)}
+                    disabled={alreadyVisited}
+                    className="absolute pointer-events-auto"
+                    style={{
+                      top: '50%',
+                      left: '50%',
+                      transform: mobileTransition
+                        ? `translate(${pos.x - (isTarget ? 48 : 40)}px, ${pos.y - (isTarget ? 64 : 56)}px) translateZ(20px) scale(0.5)`
+                        : `translate(${pos.x - (isTarget ? 48 : 40)}px, ${pos.y - (isTarget ? 64 : 56)}px) translateZ(20px) scale(1)`,
+                      opacity: mobileTransition ? 0 : alreadyVisited ? 0.3 : 1,
+                      transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease',
+                      filter: alreadyVisited ? 'grayscale(1)' : 'none',
+                    }}
+                  >
+                    <div
+                      className={`relative overflow-hidden shadow-xl shadow-black/60 ${
+                        isTarget ? 'w-24 h-32 rounded-xl' : 'w-20 h-28 rounded-lg'
+                      }`}
+                      style={{
+                        boxShadow: isTarget
+                          ? '0 0 16px rgba(239,68,68,0.5), 0 8px 24px rgba(0,0,0,0.6)'
+                          : '0 8px 24px rgba(0,0,0,0.5)',
+                      }}
+                    >
+                      <Image
+                        src={`${TMDB_IMG}${n.poster}`}
+                        alt={n.titleEs || n.title}
+                        fill
+                        className="object-cover"
+                        sizes={isTarget ? '96px' : '80px'}
+                        unoptimized
+                      />
+                      {isTarget && (
+                        <div className="absolute inset-0 border-2 border-red-500 rounded-xl animate-pulse" />
+                      )}
+                    </div>
+                    <p className={`text-[9px] text-center mt-0.5 drop-shadow-lg leading-tight line-clamp-2 max-w-[80px] ${
+                      isTarget ? 'text-red-400 font-bold' : 'text-white/90'
+                    }`}>
+                      {n.titleEs || n.title}
+                    </p>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ======== Trompo — FIXED, centered, outside perspective ======== */}
+        {!won && !surrendered && currentNode && (
+          <div
+            className="fixed z-[100] pointer-events-none"
             style={{
+              top: '50%',
+              left: '50%',
               transform: trompoEntered
-                ? 'translate(-50%, -50%) translateY(0px)'
-                : 'translate(-50%, -50%) translateY(-200px)',
+                ? 'translate(-50%, -50%)'
+                : 'translate(-50%, calc(-50% - 200px))',
               opacity: trompoEntered ? 1 : 0,
               transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease',
+              marginTop: '-20px',
             }}
           >
             <video
@@ -467,18 +613,18 @@ export default function ConexionPage() {
               muted
               loop
               playsInline
-              className="w-16 h-16 object-contain"
-              style={{ mixBlendMode: 'lighten' }}
+              className="w-12 h-12 object-contain"
+              style={{
+                mixBlendMode: 'screen',
+                filter: 'drop-shadow(0 0 8px rgba(250,204,21,0.5))',
+              }}
             />
-            <p className="text-white text-[10px] text-center mt-0.5 font-bold drop-shadow-lg max-w-[100px] leading-tight">
-              {currentNode.titleEs || currentNode.title}
-            </p>
           </div>
         )}
 
         {/* Win trompo spin ---------------------------------------- */}
         {won && (
-          <div className="absolute top-1/2 left-1/2 z-30 flex flex-col items-center pointer-events-none" style={{ transform: 'translate(-50%, -50%)' }}>
+          <div className="fixed top-1/2 left-1/2 z-[100] flex flex-col items-center pointer-events-none" style={{ transform: 'translate(-50%, -50%)' }}>
             <video
               src="/loading.mp4"
               autoPlay
@@ -487,70 +633,17 @@ export default function ConexionPage() {
               playsInline
               className="w-24 h-24 object-contain"
               style={{
-                mixBlendMode: 'lighten',
+                mixBlendMode: 'screen',
+                filter: 'drop-shadow(0 0 12px rgba(250,204,21,0.6))',
                 animation: winCelebrating ? 'trompo-mega-spin 0.8s ease-out' : undefined,
               }}
             />
           </div>
         )}
 
-        {/* Connected movies in circle ----------------------------- */}
-        {!won && !surrendered && currentNode && (
-          <div className="absolute inset-0 z-20 pointer-events-none">
-            {mobileConnections.map((n, i) => {
-              const total = mobileConnections.length
-              const angle = (i / total) * 2 * Math.PI - Math.PI / 2
-              const radius = 130
-              const x = Math.cos(angle) * radius
-              const y = Math.sin(angle) * radius
-              const isTarget = n.id === endNode.id
-              const alreadyVisited = path.includes(n.id)
-              const rotateY = angle > 0 && angle < Math.PI ? -10 : 10
-
-              return (
-                <button
-                  key={n.id}
-                  onClick={() => !alreadyVisited && selectMovie(n.id)}
-                  disabled={alreadyVisited}
-                  className="absolute pointer-events-auto"
-                  style={{
-                    top: '50%',
-                    left: '50%',
-                    width: '72px',
-                    marginTop: '-56px',
-                    marginLeft: '-36px',
-                    transform: mobileTransition
-                      ? `translate(${x}px, ${y}px) perspective(600px) rotateY(${rotateY}deg) scale(0.3)`
-                      : `translate(${x}px, ${y}px) perspective(600px) rotateY(${rotateY}deg) scale(${isTarget ? 1.1 : 0.85})`,
-                    opacity: mobileTransition ? 0 : alreadyVisited ? 0.25 : 1,
-                    transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease',
-                  }}
-                >
-                  <div className="relative w-[72px] h-[100px] rounded-lg overflow-hidden shadow-lg shadow-black/50">
-                    <Image
-                      src={`${TMDB_IMG}${n.poster}`}
-                      alt={n.titleEs || n.title}
-                      fill
-                      className="object-cover"
-                      sizes="72px"
-                      unoptimized
-                    />
-                    {isTarget && (
-                      <div className="absolute inset-0 border-2 border-red-500 rounded-lg animate-pulse" />
-                    )}
-                  </div>
-                  <p className={`text-[9px] text-center mt-0.5 drop-shadow leading-tight line-clamp-2 ${isTarget ? 'text-red-400 font-bold' : 'text-white'}`}>
-                    {n.titleEs || n.title}
-                  </p>
-                </button>
-              )
-            })}
-          </div>
-        )}
-
         {/* Win screen overlay ------------------------------------- */}
         {won && (
-          <div className="absolute inset-0 z-40 flex items-center justify-center">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center">
             <div className="bg-zinc-900/90 backdrop-blur-sm rounded-2xl p-6 mx-6 border border-yellow-400/30 text-center">
               <p className="text-3xl mb-2">{getRating()}</p>
               <p className="text-yellow-400 font-bold text-lg mb-1">
@@ -579,7 +672,7 @@ export default function ConexionPage() {
 
         {/* Surrender screen overlay ------------------------------- */}
         {surrendered && (
-          <div className="absolute inset-0 z-40 flex items-center justify-center overflow-y-auto py-20">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto py-20">
             <div className="bg-zinc-900/90 backdrop-blur-sm rounded-2xl p-5 mx-4 border border-red-400/30 text-center">
               <p className="text-red-400 font-bold text-base mb-3">El camino optimo era:</p>
               <div className="flex items-center justify-center gap-1 flex-wrap mb-3">
@@ -614,8 +707,8 @@ export default function ConexionPage() {
           </div>
         )}
 
-        {/* Bottom: buttons + path --------------------------------- */}
-        <div className="absolute bottom-0 inset-x-0 z-50 bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-8 pb-safe">
+        {/* ======== Fixed bottom bar ======== */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-8 pb-safe">
           {/* Action buttons */}
           <div className="flex justify-center gap-3 px-4 mb-2">
             {!won && !surrendered && (
@@ -674,12 +767,12 @@ export default function ConexionPage() {
           </div>
         </div>
 
-        {/* CSS animations for particles + trompo ------------------- */}
+        {/* CSS animations ----------------------------------------- */}
         <style jsx>{`
           @keyframes trompo-mega-spin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(720deg) scale(1.5); }
-            100% { transform: rotate(1080deg) scale(1); }
+            0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(720deg) scale(1.5); }
+            100% { transform: translate(-50%, -50%) rotate(1080deg) scale(1); }
           }
           ${Array.from({ length: 4 }).map((_, i) => `
             @keyframes particle-explode-${i} {

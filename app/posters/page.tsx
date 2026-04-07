@@ -1792,7 +1792,7 @@ const PLATFORM_LOGOS_PNG: Record<string, string> = {
 }
 
 const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function MovieDetailSVG(
-  { movie, connectionCount }: MovieDetailSVGProps,
+  { movie }: MovieDetailSVGProps,
   ref: Ref<SVGSVGElement>,
 ) {
   const headerH = 220
@@ -2144,79 +2144,49 @@ const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function M
       <rect x="0" y={POSTER_H - footerH} width={POSTER_W} height={footerH} fill="#0c0a09" />
       <line x1="60" y1={POSTER_H - footerH} x2={POSTER_W - 60} y2={POSTER_H - footerH} stroke="#facc15" strokeWidth="3" />
 
-      {/* Platforms or fallback */}
+      {/* Platforms — only render if there are any */}
       {(() => {
         const plats = (movie.platforms || []).filter((p) => PLATFORM_LOGOS_PNG[p]).slice(0, 6)
-        if (plats.length > 0) {
-          const logoSize = 56
-          const gap = 16
-          const startX = 60
-          const labelY = POSTER_H - footerH + 50
-          const logoY = POSTER_H - footerH + 60
-          return (
-            <g>
-              <text
-                x={startX}
-                y={labelY}
-                fill="#a8a29e"
-                fontFamily="Inter, system-ui, sans-serif"
-                fontSize="14"
-                fontWeight="700"
-                letterSpacing="2.5"
-              >
-                DISPONIBLE EN
-              </text>
-              {plats.map((p, i) => (
-                <g key={p}>
-                  <rect
-                    x={startX + i * (logoSize + gap)}
-                    y={logoY}
-                    width={logoSize}
-                    height={logoSize}
-                    rx="10"
-                    ry="10"
-                    fill="#FAFAF9"
-                  />
-                  <image
-                    href={PLATFORM_LOGOS_PNG[p]}
-                    x={startX + i * (logoSize + gap) + 6}
-                    y={logoY + 6}
-                    width={logoSize - 12}
-                    height={logoSize - 12}
-                    preserveAspectRatio="xMidYMid meet"
-                  />
-                </g>
-              ))}
-            </g>
-          )
-        }
-        // Fallback: connection count
+        if (plats.length === 0) return null
+        const logoSize = 56
+        const gap = 16
+        const startX = 60
+        const labelY = POSTER_H - footerH + 50
+        const logoY = POSTER_H - footerH + 60
         return (
           <g>
             <text
-              x="60"
-              y={POSTER_H - footerH + 56}
-              fill="#FAFAF9"
-              fontFamily="Inter, system-ui, sans-serif"
-              fontSize="22"
-              fontWeight="800"
-              letterSpacing="0.5"
-            >
-              {connectionCount > 0
-                ? `Conectada con ${connectionCount} película${connectionCount === 1 ? '' : 's'} en CineBret`
-                : 'Una pieza única en CineBret'}
-            </text>
-            <text
-              x="60"
-              y={POSTER_H - footerH + 88}
+              x={startX}
+              y={labelY}
               fill="#a8a29e"
               fontFamily="Inter, system-ui, sans-serif"
-              fontSize="16"
-              fontWeight="600"
-              letterSpacing="1"
+              fontSize="14"
+              fontWeight="700"
+              letterSpacing="2.5"
             >
-              No disponible en streaming actualmente
+              DISPONIBLE EN
             </text>
+            {plats.map((p, i) => (
+              <g key={p}>
+                <rect
+                  x={startX + i * (logoSize + gap)}
+                  y={logoY}
+                  width={logoSize}
+                  height={logoSize}
+                  rx="10"
+                  ry="10"
+                  fill="#FAFAF9"
+                />
+                <image
+                  href={PLATFORM_LOGOS_PNG[p]}
+                  x={startX + i * (logoSize + gap) + 6}
+                  y={logoY + 6}
+                  width={logoSize - 12}
+                  height={logoSize - 12}
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              </g>
+            ))}
           </g>
         )
       })()}

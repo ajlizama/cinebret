@@ -800,27 +800,54 @@ export default function PostersPage() {
     if (!svg) return
     setDownloading(true)
     try {
-      // Inline images may have CORS issues. We pre-fetch each image and convert to data URL.
-      const imageEls = Array.from(svg.querySelectorAll('image'))
-      await Promise.all(
-        imageEls.map(async (el) => {
-          const href = el.getAttribute('href') || el.getAttribute('xlink:href')
-          if (!href || href.startsWith('data:')) return
+      // Pre-fetch every image to a data URL with retries.
+      // Use sequential loading + retry to avoid TMDB rate limits / CORS hiccups.
+      async function fetchAsDataUrl(url: string, attempts = 3): Promise<string | null> {
+        for (let i = 0; i < attempts; i++) {
           try {
-            const res = await fetch(href, { mode: 'cors' })
+            const res = await fetch(url, { mode: 'cors', cache: 'force-cache' })
+            if (!res.ok) throw new Error(`HTTP ${res.status}`)
             const blob = await res.blob()
-            const dataUrl: string = await new Promise((resolve, reject) => {
+            return await new Promise<string>((resolve, reject) => {
               const reader = new FileReader()
               reader.onloadend = () => resolve(reader.result as string)
               reader.onerror = reject
               reader.readAsDataURL(blob)
             })
-            el.setAttribute('href', dataUrl)
-          } catch {
-            /* ignore individual failures */
+          } catch (err) {
+            if (i < attempts - 1) {
+              await new Promise((r) => setTimeout(r, 300 * (i + 1)))
+            }
           }
-        }),
-      )
+        }
+        return null
+      }
+
+      const imageEls = Array.from(svg.querySelectorAll('image'))
+      const failed: string[] = []
+      // Process in chunks of 4 to avoid overwhelming TMDB
+      const chunkSize = 4
+      for (let i = 0; i < imageEls.length; i += chunkSize) {
+        const chunk = imageEls.slice(i, i + chunkSize)
+        await Promise.all(
+          chunk.map(async (el) => {
+            const href = el.getAttribute('href') || el.getAttribute('xlink:href')
+            if (!href || href.startsWith('data:')) return
+            const dataUrl = await fetchAsDataUrl(href)
+            if (dataUrl) {
+              el.setAttribute('href', dataUrl)
+            } else {
+              failed.push(href)
+              // Replace failed image with a placeholder using fill color
+              el.setAttribute('href', '')
+              el.setAttribute('opacity', '0')
+            }
+          }),
+        )
+      }
+      if (failed.length > 0) {
+        console.warn(`${failed.length} images failed to load:`, failed)
+      }
 
       const xml = new XMLSerializer().serializeToString(svg)
       const svgBlob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' })
@@ -1397,7 +1424,7 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
               <circle cx={p.x} cy={p.y} r={radius + 14} fill={m.groupColor} opacity="0.12" />
               {/* Poster */}
               <image
-                href={`https://image.tmdb.org/t/p/w342${m.poster_path}`}
+                href={`/api/tmdb-image?path=${encodeURIComponent(m.poster_path)}&size=w342`}
                 x={p.x - radius}
                 y={p.y - radius}
                 width={radius * 2}

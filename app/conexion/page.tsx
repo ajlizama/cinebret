@@ -122,6 +122,14 @@ export default function ConexionPage() {
   const [error, setError] = useState<string | null>(null)
   const pathRef = useRef<HTMLDivElement>(null)
 
+  // Movie chooser state
+  const [chooserOpen, setChooserOpen] = useState(false)
+  const [searchStart, setSearchStart] = useState('')
+  const [searchEnd, setSearchEnd] = useState('')
+  const [chosenStart, setChosenStart] = useState<GraphNode | null>(null)
+  const [chosenEnd, setChosenEnd] = useState<GraphNode | null>(null)
+  const [chooserError, setChooserError] = useState('')
+
   /* Load graph ---------------------------------------------------- */
   useEffect(() => {
     fetch('/movie-graph.json')
@@ -162,6 +170,37 @@ export default function ConexionPage() {
   useEffect(() => {
     if (graph) startGame()
   }, [graph, startGame])
+
+  // Search results for movie chooser
+  const startResults = graph && searchStart.length >= 2
+    ? graph.nodes.filter(n => (n.title || '').toLowerCase().includes(searchStart.toLowerCase()) || (n.titleEs || '').toLowerCase().includes(searchStart.toLowerCase())).slice(0, 6)
+    : []
+  const endResults = graph && searchEnd.length >= 2
+    ? graph.nodes.filter(n => (n.title || '').toLowerCase().includes(searchEnd.toLowerCase()) || (n.titleEs || '').toLowerCase().includes(searchEnd.toLowerCase())).slice(0, 6)
+    : []
+
+  function startCustomGame() {
+    if (!chosenStart || !chosenEnd || !adj) return
+    if (chosenStart.id === chosenEnd.id) { setChooserError('Elige dos películas distintas'); return }
+    const p = bfs(adj, chosenStart.id, chosenEnd.id)
+    if (!p) { setChooserError('No hay conexión entre estas películas'); return }
+    if (p.length < 5) { setChooserError(`Están a solo ${p.length - 1} pasos. El mínimo es 4.`); return }
+    setStartNode(chosenStart)
+    setEndNode(chosenEnd)
+    setPath([chosenStart.id])
+    setOptimalLen(p.length)
+    setOptimalPath(p)
+    setWon(false)
+    setSurrendered(false)
+    setPrevDist(p.length - 1)
+    setError(null)
+    setChooserOpen(false)
+    setChooserError('')
+    setSearchStart('')
+    setSearchEnd('')
+    setChosenStart(null)
+    setChosenEnd(null)
+  }
 
   /* Scroll path strip to end ------------------------------------- */
   useEffect(() => {
@@ -333,12 +372,18 @@ export default function ConexionPage() {
         )}
 
         {/* Action buttons */}
-        <div className="flex justify-center gap-3 mt-3">
+        <div className="flex justify-center gap-3 mt-3 flex-wrap">
           <button
             onClick={startGame}
             className="px-4 py-1.5 bg-zinc-800 text-zinc-300 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-zinc-700"
           >
             Cambiar películas
+          </button>
+          <button
+            onClick={() => setChooserOpen(true)}
+            className="px-4 py-1.5 bg-zinc-800 text-yellow-400 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-yellow-400/30"
+          >
+            Elegir películas
           </button>
           {!won && !surrendered && (
             <button
@@ -349,6 +394,102 @@ export default function ConexionPage() {
             </button>
           )}
         </div>
+
+        {/* Movie Chooser Modal */}
+        {chooserOpen && (
+          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setChooserOpen(false)}>
+            <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-5 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+              <h3 className="text-white font-bold text-lg mb-1">Elegir películas</h3>
+              <p className="text-zinc-500 text-xs mb-4">Mínimo 4 pasos de distancia</p>
+
+              {/* Start movie search */}
+              <div className="mb-3 relative">
+                <label className="text-zinc-400 text-xs mb-1 block">Película inicio</label>
+                {chosenStart ? (
+                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-2">
+                    <div className="w-8 h-12 rounded overflow-hidden shrink-0 bg-zinc-700">
+                      {chosenStart.poster && <img src={`${TMDB_IMG}${chosenStart.poster}`} alt="" className="w-full h-full object-cover" />}
+                    </div>
+                    <span className="text-white text-sm flex-1 line-clamp-1">{chosenStart.titleEs || chosenStart.title}</span>
+                    <button onClick={() => { setChosenStart(null); setSearchStart('') }} className="text-zinc-500 text-xs">✕</button>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="text" value={searchStart} onChange={e => setSearchStart(e.target.value)}
+                      placeholder="Buscar película..." autoFocus
+                      className="w-full bg-zinc-800 rounded-lg px-3 py-2 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-yellow-400/30"
+                    />
+                    {startResults.length > 0 && (
+                      <div className="absolute left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden z-10 max-h-48 overflow-y-auto">
+                        {startResults.map(n => (
+                          <button key={n.id} onClick={() => { setChosenStart(n); setSearchStart('') }}
+                            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left">
+                            <div className="w-6 h-9 rounded overflow-hidden shrink-0 bg-zinc-700">
+                              {n.poster && <img src={`${TMDB_IMG}${n.poster}`} alt="" className="w-full h-full object-cover" />}
+                            </div>
+                            <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* End movie search */}
+              <div className="mb-4 relative">
+                <label className="text-zinc-400 text-xs mb-1 block">Película destino</label>
+                {chosenEnd ? (
+                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-2">
+                    <div className="w-8 h-12 rounded overflow-hidden shrink-0 bg-zinc-700">
+                      {chosenEnd.poster && <img src={`${TMDB_IMG}${chosenEnd.poster}`} alt="" className="w-full h-full object-cover" />}
+                    </div>
+                    <span className="text-white text-sm flex-1 line-clamp-1">{chosenEnd.titleEs || chosenEnd.title}</span>
+                    <button onClick={() => { setChosenEnd(null); setSearchEnd('') }} className="text-zinc-500 text-xs">✕</button>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="text" value={searchEnd} onChange={e => setSearchEnd(e.target.value)}
+                      placeholder="Buscar película..."
+                      className="w-full bg-zinc-800 rounded-lg px-3 py-2 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-yellow-400/30"
+                    />
+                    {endResults.length > 0 && (
+                      <div className="absolute left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden z-10 max-h-48 overflow-y-auto">
+                        {endResults.map(n => (
+                          <button key={n.id} onClick={() => { setChosenEnd(n); setSearchEnd('') }}
+                            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left">
+                            <div className="w-6 h-9 rounded overflow-hidden shrink-0 bg-zinc-700">
+                              {n.poster && <img src={`${TMDB_IMG}${n.poster}`} alt="" className="w-full h-full object-cover" />}
+                            </div>
+                            <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {chooserError && <p className="text-red-400 text-xs mb-3">{chooserError}</p>}
+
+              <div className="flex gap-2">
+                <button
+                  onClick={startCustomGame}
+                  disabled={!chosenStart || !chosenEnd}
+                  className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-700 disabled:text-zinc-500 text-zinc-950 font-bold py-2.5 rounded-xl text-sm transition-colors"
+                >
+                  Jugar
+                </button>
+                <button onClick={() => { setChooserOpen(false); setChooserError('') }}
+                  className="px-4 py-2.5 bg-zinc-800 text-zinc-400 rounded-xl text-sm hover:bg-zinc-700 transition-colors">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Win screen ------------------------------------------------ */}

@@ -171,30 +171,63 @@ type GraphData = {
 
 function buildConnectionsFromGraph(movies: PosterMovie[], graph: GraphData | null, maxPerNode = 10): Connection[] {
   if (!graph) return []
-  // Build edge weight lookup
+  // Match the /mapa logic: only keep edges where BOTH movies are in each other's top-N
+  // First, build per-movie sorted edge lists from the FULL graph
+  const movieEdges = new Map<string, Array<{ other: string; weight: number }>>()
+  for (const e of graph.edges) {
+    if (!movieEdges.has(e.source)) movieEdges.set(e.source, [])
+    if (!movieEdges.has(e.target)) movieEdges.set(e.target, [])
+    movieEdges.get(e.source)!.push({ other: e.target, weight: e.weight })
+    movieEdges.get(e.target)!.push({ other: e.source, weight: e.weight })
+  }
+  // Sort each movie's edges by weight desc
+  for (const [, list] of movieEdges) {
+    list.sort((a, b) => b.weight - a.weight)
+  }
+  // Get top-10 for each movie globally (mimics /mapa default behavior)
+  const TOP_N = 10
+  const topNeighbors = new Map<string, Set<string>>()
+  for (const [id, list] of movieEdges) {
+    topNeighbors.set(id, new Set(list.slice(0, TOP_N).map((x) => x.other)))
+  }
+
+  // Now keep only edges between selected movies where BOTH are in each other's top-N
   const idToIdx = new Map<string, number>()
   movies.forEach((m, i) => idToIdx.set(m.id, i))
-  const all: Connection[] = []
-  for (const e of graph.edges) {
-    const si = idToIdx.get(e.source)
-    const ti = idToIdx.get(e.target)
-    if (si === undefined || ti === undefined || si === ti) continue
-    all.push({ source: si, target: ti, strength: e.weight, shared: [] })
-  }
-  // Sort by weight desc
-  all.sort((a, b) => b.strength - a.strength)
-  // Cap per node
-  const perNode = new Map<number, number>()
   const kept: Connection[] = []
-  for (const c of all) {
+  const seenPairs = new Set<string>()
+  for (let i = 0; i < movies.length; i++) {
+    const a = movies[i]
+    const aTop = topNeighbors.get(a.id)
+    if (!aTop) continue
+    for (let j = i + 1; j < movies.length; j++) {
+      const b = movies[j]
+      const bTop = topNeighbors.get(b.id)
+      if (!bTop) continue
+      // Bidirectional check
+      if (!aTop.has(b.id) || !bTop.has(a.id)) continue
+      const key = `${a.id}::${b.id}`
+      if (seenPairs.has(key)) continue
+      seenPairs.add(key)
+      // Get weight from original edges
+      const edge = graph.edges.find((e) => (e.source === a.id && e.target === b.id) || (e.source === b.id && e.target === a.id))
+      const weight = edge?.weight ?? 1
+      kept.push({ source: i, target: j, strength: weight, shared: [] })
+    }
+  }
+  // Cap per node to avoid clutter
+  kept.sort((a, b) => b.strength - a.strength)
+  const perNode = new Map<number, number>()
+  const final: Connection[] = []
+  for (const c of kept) {
     const cs = perNode.get(c.source) ?? 0
     const ct = perNode.get(c.target) ?? 0
     if (cs >= maxPerNode || ct >= maxPerNode) continue
-    kept.push(c)
+    final.push(c)
     perNode.set(c.source, cs + 1)
     perNode.set(c.target, ct + 1)
   }
-  return kept
+  return final
 }
 
 // Force-directed layout: connected movies pull together, all repel each other
@@ -221,11 +254,19 @@ function forceLayout(
     })
   }
 
-  const REPULSION = 250000
-  const ATTRACTION = 0.008
-  const CENTER_PULL = 0.003
+  const REPULSION = 180000
+  const ATTRACTION = 0.012
+  const CENTER_PULL = 0.006
+  const ISOLATED_PULL = 0.025 // stronger pull for nodes without connections
   const DAMPING = 0.88
-  const MIN_DIST = 200 // minimum distance between any two nodes
+  const MIN_DIST = 180 // minimum distance between any two nodes
+
+  // Find isolated nodes (no connections)
+  const connectedSet = new Set<number>()
+  for (const c of connections) {
+    connectedSet.add(c.source)
+    connectedSet.add(c.target)
+  }
 
   for (let iter = 0; iter < iterations; iter++) {
     // Apply repulsion between all pairs
@@ -261,12 +302,14 @@ function forceLayout(
       b.vy -= (dy / dist) * force
     }
 
-    // Pull all toward center (mild)
-    for (const p of positions) {
+    // Pull all toward center (mild). Isolated nodes get stronger pull.
+    for (let i = 0; i < positions.length; i++) {
+      const p = positions[i]
       const dx = cx - p.x
       const dy = cy - p.y
-      p.vx += dx * CENTER_PULL
-      p.vy += dy * CENTER_PULL
+      const pull = connectedSet.has(i) ? CENTER_PULL : ISOLATED_PULL
+      p.vx += dx * pull
+      p.vy += dy * pull
     }
 
     // Apply velocity with damping

@@ -169,65 +169,20 @@ type GraphData = {
   edges: Array<{ source: string; target: string; weight: number }>
 }
 
-function buildConnectionsFromGraph(movies: PosterMovie[], graph: GraphData | null, maxPerNode = 10): Connection[] {
+function buildConnectionsFromGraph(movies: PosterMovie[], graph: GraphData | null, _maxPerNode = 999): Connection[] {
   if (!graph) return []
-  // Match the /mapa logic: only keep edges where BOTH movies are in each other's top-N
-  // First, build per-movie sorted edge lists from the FULL graph
-  const movieEdges = new Map<string, Array<{ other: string; weight: number }>>()
-  for (const e of graph.edges) {
-    if (!movieEdges.has(e.source)) movieEdges.set(e.source, [])
-    if (!movieEdges.has(e.target)) movieEdges.set(e.target, [])
-    movieEdges.get(e.source)!.push({ other: e.target, weight: e.weight })
-    movieEdges.get(e.target)!.push({ other: e.source, weight: e.weight })
-  }
-  // Sort each movie's edges by weight desc
-  for (const [, list] of movieEdges) {
-    list.sort((a, b) => b.weight - a.weight)
-  }
-  // Get top-10 for each movie globally (mimics /mapa default behavior)
-  const TOP_N = 10
-  const topNeighbors = new Map<string, Set<string>>()
-  for (const [id, list] of movieEdges) {
-    topNeighbors.set(id, new Set(list.slice(0, TOP_N).map((x) => x.other)))
-  }
-
-  // Now keep only edges between selected movies where BOTH are in each other's top-N
+  // Match /mapa logic exactly: keep ALL edges where BOTH source and target
+  // are in the selected movies set. No top-N filter, no bidirectional check.
   const idToIdx = new Map<string, number>()
   movies.forEach((m, i) => idToIdx.set(m.id, i))
   const kept: Connection[] = []
-  const seenPairs = new Set<string>()
-  for (let i = 0; i < movies.length; i++) {
-    const a = movies[i]
-    const aTop = topNeighbors.get(a.id)
-    if (!aTop) continue
-    for (let j = i + 1; j < movies.length; j++) {
-      const b = movies[j]
-      const bTop = topNeighbors.get(b.id)
-      if (!bTop) continue
-      // Bidirectional check
-      if (!aTop.has(b.id) || !bTop.has(a.id)) continue
-      const key = `${a.id}::${b.id}`
-      if (seenPairs.has(key)) continue
-      seenPairs.add(key)
-      // Get weight from original edges
-      const edge = graph.edges.find((e) => (e.source === a.id && e.target === b.id) || (e.source === b.id && e.target === a.id))
-      const weight = edge?.weight ?? 1
-      kept.push({ source: i, target: j, strength: weight, shared: [] })
-    }
+  for (const e of graph.edges) {
+    const si = idToIdx.get(e.source)
+    const ti = idToIdx.get(e.target)
+    if (si === undefined || ti === undefined || si === ti) continue
+    kept.push({ source: si, target: ti, strength: e.weight, shared: [] })
   }
-  // Cap per node to avoid clutter
-  kept.sort((a, b) => b.strength - a.strength)
-  const perNode = new Map<number, number>()
-  const final: Connection[] = []
-  for (const c of kept) {
-    const cs = perNode.get(c.source) ?? 0
-    const ct = perNode.get(c.target) ?? 0
-    if (cs >= maxPerNode || ct >= maxPerNode) continue
-    final.push(c)
-    perNode.set(c.source, cs + 1)
-    perNode.set(c.target, ct + 1)
-  }
-  return final
+  return kept
 }
 
 // Force-directed layout: connected movies pull together, all repel each other

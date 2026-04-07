@@ -20,7 +20,12 @@ type Movie = {
   anio: number | null
   nota_imdb: number | null
   poster_path: string
-  cast: CastMember[]
+}
+
+type Challenge = {
+  startMovie: Movie
+  targetMovie: Movie
+  optimalPath: string[]
 }
 
 type ChainLink = {
@@ -28,813 +33,1035 @@ type ChainLink = {
   actor: CastMember | null
 }
 
-type GameMode = 'classic' | 'blitz'
+type GameStatus = 'loading' | 'intro' | 'playing' | 'won' | 'lost' | 'already-played'
+type Feedback = 'closer' | 'further' | null
+
+type DailyResult = {
+  won: boolean
+  steps: number
+  optimal: number
+  completed: boolean
+  chainTitles?: string[]
+}
+
+type Stats = {
+  played: number
+  won: number
+  current_streak: number
+  max_streak: number
+  distribution: number[]
+}
 
 const POSTER_BASE = 'https://image.tmdb.org/t/p/w500'
 const PROFILE_BASE = 'https://image.tmdb.org/t/p/w185'
-const BLITZ_TIME = 30
-const BEST_KEY = 'actorchain-best'
+const PAGE_SIZE = 1000
+const EPOCH = new Date('2026-01-01T00:00:00Z').getTime()
 
-function scoreForLink(linkIndex: number): number {
-  // linkIndex 0 = first jump (link 1) = 100, then *1.5
-  let pts = 100
-  for (let i = 0; i < linkIndex; i++) pts *= 1.5
-  return Math.round(pts)
+function todayKey(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+function dailySeed(): number {
+  const today = todayKey()
+  let h = 0
+  for (let i = 0; i < today.length; i++) h = ((h << 5) - h) + today.charCodeAt(i)
+  return Math.abs(h)
+}
+
+function dayNumber(): number {
+  const now = new Date()
+  const t = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  return Math.max(1, Math.floor((t - EPOCH) / 86400000) + 1)
+}
+
+function bfs(
+  actorToMovies: Map<string, Set<string>>,
+  movieToActors: Map<string, CastMember[]>,
+  startId: string,
+  endId: string,
+  maxDepth: number = 8
+): string[] | null {
+  if (startId === endId) return [startId]
+  const visited = new Set<string>([startId])
+  const queue: Array<{ id: string; path: string[] }> = [{ id: startId, path: [startId] }]
+  while (queue.length) {
+    const { id, path } = queue.shift()!
+    if (path.length > maxDepth) continue
+    const cast = movieToActors.get(id)
+    if (!cast) continue
+    for (const actor of cast) {
+      const movies = actorToMovies.get(actor.name)
+      if (!movies) continue
+      for (const nextId of movies) {
+        if (visited.has(nextId)) continue
+        if (nextId === endId) return [...path, nextId]
+        visited.add(nextId)
+        queue.push({ id: nextId, path: [...path, nextId] })
+      }
+    }
+  }
+  return null
+}
+
+function bfsDistance(
+  actorToMovies: Map<string, Set<string>>,
+  movieToActors: Map<string, CastMember[]>,
+  startId: string,
+  endId: string,
+  maxDepth: number = 8
+): number {
+  const path = bfs(actorToMovies, movieToActors, startId, endId, maxDepth)
+  if (!path) return Infinity
+  return path.length - 1
 }
 
 export default function ActorChainPage() {
-  const [loading, setLoading] = useState(true)
+  const [status, setStatus] = useState<GameStatus>('loading')
   const [loadProgress, setLoadProgress] = useState(0)
-  const [movies, setMovies] = useState<Movie[]>([])
-  const [actorToMovies, setActorToMovies] = useState<Map<string, Set<string>>>(new Map())
-  const [movieToActors, setMovieToActors] = useState<Map<string, CastMember[]>>(new Map())
-  const movieByIdRef = useRef<Map<string, Movie>>(new Map())
+  const [loadLabel, setLoadLabel] = useState('Cargando universo cinematográfico…')
 
-  const [mode, setMode] = useState<GameMode | null>(null)
+  const actorToMoviesRef = useRef<Map<string, Set<string>>>(new Map())
+  const movieToActorsRef = useRef<Map<string, CastMember[]>>(new Map())
+  const movieMapRef = useRef<Map<string, Movie>>(new Map())
+
+  const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [chain, setChain] = useState<ChainLink[]>([])
   const [usedMovies, setUsedMovies] = useState<Set<string>>(new Set())
   const [usedActors, setUsedActors] = useState<Set<string>>(new Set())
   const [currentChoices, setCurrentChoices] = useState<CastMember[]>([])
-  const [score, setScore] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(BLITZ_TIME)
-  const [gameOver, setGameOver] = useState(false)
-  const [bestScore, setBestScore] = useState(0)
+  const [feedback, setFeedback] = useState<Feedback>(null)
+  const [prevDistance, setPrevDistance] = useState<number>(Infinity)
+  const [currentDistance, setCurrentDistance] = useState<number>(Infinity)
   const [transitioning, setTransitioning] = useState(false)
+  const [dailyResult, setDailyResult] = useState<DailyResult | null>(null)
+  const [showShareCopied, setShowShareCopied] = useState(false)
 
-  const breadcrumbsRef = useRef<HTMLDivElement>(null)
+  const dayNum = useMemo(() => dayNumber(), [])
 
-  // Load best score
-  useEffect(() => {
-    try {
-      const b = localStorage.getItem(BEST_KEY)
-      if (b) setBestScore(parseInt(b, 10) || 0)
-    } catch {}
-  }, [])
-
-  // Load data
+  // ---------- Data Loading ----------
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      setLoading(true)
-
-      // Fetch all enriquecimiento with cast_json paginated
-      const allEnr: { pelicula_id: string; cast_json: CastMember[] | null }[] = []
-      let offset = 0
-      while (true) {
-        const { data, error } = await supabase
-          .from('enriquecimiento')
-          .select('pelicula_id, cast_json')
-          .not('cast_json', 'is', null)
-          .range(offset, offset + 999)
-        if (error || !data || data.length === 0) break
-        allEnr.push(...(data as any))
+      try {
+        setLoadLabel('Cargando películas…')
+        const movies: Movie[] = []
+        {
+          let from = 0
+          while (true) {
+            const { data, error } = await supabase
+              .from('peliculas')
+              .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path')
+              .gte('nota_imdb', 6.5)
+              .not('poster_path', 'is', null)
+              .order('id', { ascending: true })
+              .range(from, from + PAGE_SIZE - 1)
+            if (error) throw error
+            if (!data || data.length === 0) break
+            movies.push(...(data as Movie[]))
+            if (!cancelled) setLoadProgress(Math.min(40, Math.round((movies.length / 3000) * 40)))
+            if (data.length < PAGE_SIZE) break
+            from += PAGE_SIZE
+          }
+        }
         if (cancelled) return
-        setLoadProgress(allEnr.length)
-        if (data.length < 1000) break
-        offset += 1000
-      }
 
-      const enrMap = new Map<string, CastMember[]>()
-      for (const e of allEnr) {
-        if (Array.isArray(e.cast_json) && e.cast_json.length > 0) {
-          enrMap.set(e.pelicula_id, e.cast_json as CastMember[])
+        setLoadLabel('Cargando elencos…')
+        const enrichRows: Array<{ pelicula_id: string; cast_json: CastMember[] }> = []
+        {
+          let from = 0
+          while (true) {
+            const { data, error } = await supabase
+              .from('enriquecimiento')
+              .select('pelicula_id, cast_json')
+              .not('cast_json', 'is', null)
+              .order('pelicula_id', { ascending: true })
+              .range(from, from + PAGE_SIZE - 1)
+            if (error) throw error
+            if (!data || data.length === 0) break
+            for (const r of data as Array<{ pelicula_id: string; cast_json: unknown }>) {
+              if (Array.isArray(r.cast_json)) {
+                enrichRows.push({ pelicula_id: r.pelicula_id, cast_json: r.cast_json as CastMember[] })
+              }
+            }
+            if (!cancelled) setLoadProgress(40 + Math.min(40, Math.round((enrichRows.length / 3000) * 40)))
+            if (data.length < PAGE_SIZE) break
+            from += PAGE_SIZE
+          }
         }
-      }
-
-      // Fetch all movies with poster + nota_imdb >= 6.5 paginated
-      const allPels: any[] = []
-      offset = 0
-      while (true) {
-        const { data, error } = await supabase
-          .from('peliculas')
-          .select('id, titulo, titulo_ingles, anio, nota_imdb, poster_path')
-          .not('poster_path', 'is', null)
-          .gte('nota_imdb', 6.5)
-          .range(offset, offset + 999)
-        if (error || !data || data.length === 0) break
-        allPels.push(...data)
         if (cancelled) return
-        if (data.length < 1000) break
-        offset += 1000
-      }
 
-      // Build movies array filtered to those with cast
-      const builtMovies: Movie[] = []
-      const m2a = new Map<string, CastMember[]>()
-      const a2m = new Map<string, Set<string>>()
+        setLoadLabel('Tejiendo conexiones…')
+        const movieMap = new Map<string, Movie>()
+        for (const m of movies) movieMap.set(String(m.id), m)
 
-      for (const p of allPels) {
-        const cast = enrMap.get(p.id)
-        if (!cast || cast.length === 0) continue
-        // sort by order ascending, take top ~15 to keep things relevant
-        const sortedCast = [...cast]
-          .filter(c => c && c.name)
-          .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
-          .slice(0, 15)
-        if (sortedCast.length === 0) continue
+        const movieToActors = new Map<string, CastMember[]>()
+        const rawActorToMovies = new Map<string, Set<string>>()
 
-        const movie: Movie = {
-          id: String(p.id),
-          titulo: p.titulo,
-          titulo_ingles: p.titulo_ingles,
-          anio: p.anio,
-          nota_imdb: p.nota_imdb,
-          poster_path: p.poster_path,
-          cast: sortedCast,
+        for (const row of enrichRows) {
+          const mid = String(row.pelicula_id)
+          if (!movieMap.has(mid)) continue
+          const topCast = row.cast_json
+            .filter((c) => c && typeof c.name === 'string')
+            .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+            .slice(0, 15)
+          movieToActors.set(mid, topCast)
+          for (const actor of topCast) {
+            if (!rawActorToMovies.has(actor.name)) rawActorToMovies.set(actor.name, new Set())
+            rawActorToMovies.get(actor.name)!.add(mid)
+          }
         }
-        builtMovies.push(movie)
-        m2a.set(movie.id, sortedCast)
-        for (const c of sortedCast) {
-          if (!a2m.has(c.name)) a2m.set(c.name, new Set())
-          a2m.get(c.name)!.add(movie.id)
+
+        // keep actors in 2+ movies
+        const actorToMovies = new Map<string, Set<string>>()
+        for (const [name, set] of rawActorToMovies) {
+          if (set.size >= 2) actorToMovies.set(name, set)
         }
-      }
-
-      // Filter to actors with 2+ movies
-      const validActors = new Set<string>()
-      for (const [name, set] of a2m.entries()) {
-        if (set.size >= 2) validActors.add(name)
-      }
-      // Remove invalid actors from sets
-      const cleanedA2M = new Map<string, Set<string>>()
-      for (const name of validActors) cleanedA2M.set(name, a2m.get(name)!)
-
-      const cleanedM2A = new Map<string, CastMember[]>()
-      for (const [id, cast] of m2a.entries()) {
-        const filtered = cast.filter(c => validActors.has(c.name))
-        if (filtered.length > 0) cleanedM2A.set(id, filtered)
-      }
-
-      const finalMovies = builtMovies.filter(m => cleanedM2A.has(m.id))
-      const movieById = new Map<string, Movie>()
-      for (const m of finalMovies) {
-        m.cast = cleanedM2A.get(m.id)!
-        movieById.set(m.id, m)
-      }
-
-      if (cancelled) return
-      movieByIdRef.current = movieById
-      setMovies(finalMovies)
-      setActorToMovies(cleanedA2M)
-      setMovieToActors(cleanedM2A)
-      setLoading(false)
-    })()
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  // Pick 3 best actor choices for current movie
-  const pickChoices = useCallback(
-    (movie: Movie, usedM: Set<string>, usedA: Set<string>): CastMember[] => {
-      const candidates: { actor: CastMember; interest: number }[] = []
-      for (const actor of movie.cast) {
-        if (usedA.has(actor.name)) continue
-        const moviesForActor = actorToMovies.get(actor.name)
-        if (!moviesForActor) continue
-        let interest = 0
-        for (const mid of moviesForActor) {
-          if (!usedM.has(mid)) interest++
+        // filter movieToActors to only include kept actors
+        for (const [mid, cast] of movieToActors) {
+          movieToActors.set(mid, cast.filter((c) => actorToMovies.has(c.name)))
         }
-        if (interest > 0) {
-          candidates.push({ actor, interest })
+
+        actorToMoviesRef.current = actorToMovies
+        movieToActorsRef.current = movieToActors
+        movieMapRef.current = movieMap
+
+        setLoadProgress(90)
+        setLoadLabel('Eligiendo desafío del día…')
+
+        // ---------- Pick daily challenge ----------
+        const candidates: Movie[] = []
+        for (const [mid, cast] of movieToActors) {
+          const m = movieMap.get(mid)
+          if (!m) continue
+          if ((m.nota_imdb ?? 0) < 7.5) continue
+          if (cast.length < 5) continue
+          candidates.push(m)
         }
-      }
-      if (candidates.length === 0) return []
-      // Sort by interest desc
-      candidates.sort((a, b) => b.interest - a.interest)
-      // Take top 6, then randomly pick 3 with weighted preference for higher interest
-      const pool = candidates.slice(0, Math.min(6, candidates.length))
-      const picked: CastMember[] = []
-      const usedIdx = new Set<number>()
-      while (picked.length < 3 && usedIdx.size < pool.length) {
-        // Weighted random
-        const totalWeight = pool.reduce(
-          (acc, c, i) => (usedIdx.has(i) ? acc : acc + Math.max(1, c.interest)),
-          0
-        )
-        let r = Math.random() * totalWeight
-        let chosenIdx = -1
-        for (let i = 0; i < pool.length; i++) {
-          if (usedIdx.has(i)) continue
-          r -= Math.max(1, pool[i].interest)
-          if (r <= 0) {
-            chosenIdx = i
+        candidates.sort((a, b) => String(a.id).localeCompare(String(b.id)))
+
+        if (candidates.length < 2) throw new Error('No hay suficientes películas para un desafío')
+
+        const seed = dailySeed()
+        let picked: Challenge | null = null
+        const aIdx = seed % candidates.length
+        const startMovie = candidates[aIdx]
+        // try up to N candidates for B
+        const tryOrder: number[] = []
+        for (let i = 0; i < candidates.length; i++) {
+          tryOrder.push((aIdx + 1 + ((seed >> 3) + i * 97)) % candidates.length)
+        }
+        for (const bIdx of tryOrder) {
+          if (bIdx === aIdx) continue
+          const endMovie = candidates[bIdx]
+          const path = bfs(actorToMovies, movieToActors, String(startMovie.id), String(endMovie.id), 6)
+          if (!path) continue
+          const dist = path.length - 1
+          if (dist >= 3 && dist <= 5) {
+            picked = { startMovie, targetMovie: endMovie, optimalPath: path }
             break
           }
         }
-        if (chosenIdx === -1) {
-          for (let i = 0; i < pool.length; i++) {
-            if (!usedIdx.has(i)) {
-              chosenIdx = i
+        // Fallback: accept distance 2-6
+        if (!picked) {
+          for (const bIdx of tryOrder) {
+            if (bIdx === aIdx) continue
+            const endMovie = candidates[bIdx]
+            const path = bfs(actorToMovies, movieToActors, String(startMovie.id), String(endMovie.id), 7)
+            if (!path) continue
+            const dist = path.length - 1
+            if (dist >= 2 && dist <= 6) {
+              picked = { startMovie, targetMovie: endMovie, optimalPath: path }
               break
             }
           }
         }
-        if (chosenIdx === -1) break
-        usedIdx.add(chosenIdx)
-        picked.push(pool[chosenIdx].actor)
-      }
-      return picked
-    },
-    [actorToMovies]
-  )
+        if (!picked) throw new Error('No se pudo generar el desafío del día')
 
-  // Start game
-  const startGame = useCallback(
-    (m: GameMode) => {
-      if (movies.length === 0) return
-      // Pick a random starting movie that has at least 1 valid actor with another movie
-      let attempts = 0
-      let startMovie: Movie | null = null
-      while (attempts < 50) {
-        const candidate = movies[Math.floor(Math.random() * movies.length)]
-        const choices = pickChoices(candidate, new Set([candidate.id]), new Set())
-        if (choices.length > 0) {
-          startMovie = candidate
-          break
+        if (cancelled) return
+        setChallenge(picked)
+        setLoadProgress(100)
+
+        // Check if already played
+        const stored = typeof window !== 'undefined'
+          ? window.localStorage.getItem(`actorchain-daily-${todayKey()}`)
+          : null
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored) as DailyResult
+            if (parsed.completed) {
+              setDailyResult(parsed)
+              setStatus('already-played')
+              return
+            }
+          } catch {}
         }
-        attempts++
-      }
-      if (!startMovie) startMovie = movies[Math.floor(Math.random() * movies.length)]
 
-      const newUsedM = new Set([startMovie.id])
-      const newUsedA = new Set<string>()
-      const choices = pickChoices(startMovie, newUsedM, newUsedA)
-      setMode(m)
-      setChain([{ movie: startMovie, actor: null }])
-      setUsedMovies(newUsedM)
-      setUsedActors(newUsedA)
-      setCurrentChoices(choices)
-      setScore(0)
-      setGameOver(false)
-      setTimeLeft(BLITZ_TIME)
-      setTransitioning(false)
+        setStatus('intro')
+      } catch (e) {
+        console.error(e)
+        if (!cancelled) {
+          setLoadLabel('Error cargando el desafío. Intenta recargar.')
+        }
+      }
+    })()
+    return () => { cancelled = true }
+  }, [])
+
+  // ---------- A* Actor Recommendations ----------
+  const computeChoices = useCallback(
+    (currentMovieId: string, targetId: string, usedM: Set<string>, usedA: Set<string>) => {
+      const actorToMovies = actorToMoviesRef.current
+      const movieToActors = movieToActorsRef.current
+      const cast = movieToActors.get(currentMovieId) || []
+      const scored: Array<{ actor: CastMember; score: number; movieCount: number }> = []
+      for (const actor of cast) {
+        if (usedA.has(actor.name)) continue
+        const movies = actorToMovies.get(actor.name)
+        if (!movies) continue
+        let best = Infinity
+        let viableCount = 0
+        for (const nextId of movies) {
+          if (nextId === currentMovieId) continue
+          if (usedM.has(nextId)) continue
+          viableCount++
+          if (nextId === targetId) { best = 1; continue }
+          const d = bfsDistance(actorToMovies, movieToActors, nextId, targetId, 6)
+          const total = d + 1
+          if (total < best) best = total
+        }
+        if (viableCount === 0) continue
+        scored.push({ actor, score: best, movieCount: movies.size })
+      }
+      scored.sort((a, b) => a.score - b.score || b.movieCount - a.movieCount)
+      return scored.slice(0, 3).map((s) => s.actor)
     },
-    [movies, pickChoices]
+    []
   )
 
-  // Blitz timer
-  useEffect(() => {
-    if (mode !== 'blitz' || gameOver || !chain.length) return
-    if (timeLeft <= 0) {
-      setGameOver(true)
-      return
-    }
-    if (timeLeft <= 5 && timeLeft > 0) {
-      try {
-        navigator.vibrate?.(50)
-      } catch {}
-    }
-    const t = setTimeout(() => setTimeLeft(prev => prev - 1), 1000)
-    return () => clearTimeout(t)
-  }, [mode, gameOver, timeLeft, chain.length])
+  // ---------- Start game ----------
+  const startGame = useCallback(() => {
+    if (!challenge) return
+    const startId = String(challenge.startMovie.id)
+    const targetId = String(challenge.targetMovie.id)
+    const initialChain: ChainLink[] = [{ movie: challenge.startMovie, actor: null }]
+    const um = new Set<string>([startId])
+    const ua = new Set<string>()
+    setChain(initialChain)
+    setUsedMovies(um)
+    setUsedActors(ua)
+    const choices = computeChoices(startId, targetId, um, ua)
+    setCurrentChoices(choices)
+    const d = bfsDistance(actorToMoviesRef.current, movieToActorsRef.current, startId, targetId, 8)
+    setPrevDistance(d)
+    setCurrentDistance(d)
+    setFeedback(null)
+    setStatus('playing')
+  }, [challenge, computeChoices])
 
-  // Auto-scroll breadcrumbs to end
-  useEffect(() => {
-    if (breadcrumbsRef.current) {
-      breadcrumbsRef.current.scrollTo({
-        left: breadcrumbsRef.current.scrollWidth,
-        behavior: 'smooth',
-      })
+  // ---------- Persist daily result ----------
+  const persistResult = useCallback((result: DailyResult) => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem(`actorchain-daily-${todayKey()}`, JSON.stringify(result))
+    const statsRaw = window.localStorage.getItem('actorchain-stats')
+    let stats: Stats = statsRaw
+      ? JSON.parse(statsRaw)
+      : { played: 0, won: 0, current_streak: 0, max_streak: 0, distribution: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
+    stats.played++
+    if (result.won) {
+      stats.won++
+      stats.current_streak++
+      if (stats.current_streak > stats.max_streak) stats.max_streak = stats.current_streak
+      const idx = Math.min(9, Math.max(0, result.steps - 1))
+      stats.distribution[idx] = (stats.distribution[idx] || 0) + 1
+    } else {
+      stats.current_streak = 0
     }
-  }, [chain.length])
+    window.localStorage.setItem('actorchain-stats', JSON.stringify(stats))
+  }, [])
 
-  // Save best score on game over
-  useEffect(() => {
-    if (gameOver && score > bestScore) {
-      setBestScore(score)
-      try {
-        localStorage.setItem(BEST_KEY, String(score))
-      } catch {}
-    }
-  }, [gameOver, score, bestScore])
-
-  const currentMovie = chain.length > 0 ? chain[chain.length - 1].movie : null
-
-  const handlePickActor = useCallback(
+  // ---------- Pick an actor ----------
+  const pickActor = useCallback(
     (actor: CastMember) => {
-      if (transitioning || gameOver || !currentMovie) return
-      const moviesForActor = actorToMovies.get(actor.name)
-      if (!moviesForActor) return
-      const possibleNext: string[] = []
-      for (const mid of moviesForActor) {
-        if (!usedMovies.has(mid)) possibleNext.push(mid)
+      if (!challenge || transitioning || status !== 'playing') return
+      const currentLink = chain[chain.length - 1]
+      if (!currentLink) return
+      const currentMovieId = String(currentLink.movie.id)
+      const targetId = String(challenge.targetMovie.id)
+      const actorToMovies = actorToMoviesRef.current
+      const movieToActors = movieToActorsRef.current
+      const movieMap = movieMapRef.current
+
+      const actorMovies = actorToMovies.get(actor.name)
+      if (!actorMovies) return
+
+      // Pick next movie: prefer target, else one closest to target not used
+      let nextId: string | null = null
+      let nextDist = Infinity
+      for (const mid of actorMovies) {
+        if (mid === currentMovieId) return // defensive
+        if (usedMovies.has(mid)) continue
+        if (mid === targetId) { nextId = mid; nextDist = 0; break }
+        const d = bfsDistance(actorToMovies, movieToActors, mid, targetId, 6)
+        if (d < nextDist) {
+          nextDist = d
+          nextId = mid
+        }
       }
-      if (possibleNext.length === 0) {
-        setGameOver(true)
-        return
-      }
-      // Pick a random next movie from the actor's filmography
-      const nextId = possibleNext[Math.floor(Math.random() * possibleNext.length)]
-      const nextMovie = movieByIdRef.current.get(nextId)
-      if (!nextMovie) {
-        setGameOver(true)
-        return
-      }
+      if (!nextId) return
+      const nextMovie = movieMap.get(nextId)
+      if (!nextMovie) return
 
       setTransitioning(true)
-      const linkIdx = chain.length - 1 // current jump count
-      const pts = scoreForLink(linkIdx)
+
+      const newChainLink: ChainLink = { movie: nextMovie, actor }
+      const newChain = [...chain.slice(0, -1), { ...currentLink, actor }, newChainLink]
+      const newUsedMovies = new Set(usedMovies); newUsedMovies.add(nextId)
+      const newUsedActors = new Set(usedActors); newUsedActors.add(actor.name)
+
+      const newDistance = nextId === targetId ? 0 : nextDist
+
+      // feedback vs prevDistance
+      let fb: Feedback = null
+      if (newDistance < prevDistance) fb = 'closer'
+      else if (newDistance > prevDistance) fb = 'further'
 
       setTimeout(() => {
-        const newUsedM = new Set(usedMovies)
-        newUsedM.add(nextMovie.id)
-        const newUsedA = new Set(usedActors)
-        newUsedA.add(actor.name)
-        // Update last link's actor
-        const newChain = [...chain]
-        newChain[newChain.length - 1] = { ...newChain[newChain.length - 1], actor }
-        newChain.push({ movie: nextMovie, actor: null })
-
-        const newChoices = pickChoices(nextMovie, newUsedM, newUsedA)
         setChain(newChain)
-        setUsedMovies(newUsedM)
-        setUsedActors(newUsedA)
-        setCurrentChoices(newChoices)
-        setScore(prev => prev + pts)
-        if (mode === 'blitz') setTimeLeft(BLITZ_TIME)
-        if (newChoices.length === 0) {
-          // No more moves possible from next movie
-          setTimeout(() => setGameOver(true), 500)
+        setUsedMovies(newUsedMovies)
+        setUsedActors(newUsedActors)
+        setPrevDistance(newDistance)
+        setCurrentDistance(newDistance)
+        setFeedback(fb)
+
+        const steps = newChain.length - 1
+        const optimal = challenge.optimalPath.length - 1
+
+        if (nextId === targetId) {
+          setCurrentChoices([])
+          setStatus('won')
+          const result: DailyResult = {
+            won: true,
+            steps,
+            optimal,
+            completed: true,
+            chainTitles: newChain.map((c) => c.movie.titulo),
+          }
+          persistResult(result)
+          setDailyResult(result)
+        } else if (steps > optimal * 2) {
+          setCurrentChoices([])
+          setStatus('lost')
+          const result: DailyResult = {
+            won: false,
+            steps,
+            optimal,
+            completed: true,
+            chainTitles: newChain.map((c) => c.movie.titulo),
+          }
+          persistResult(result)
+          setDailyResult(result)
+        } else {
+          const choices = computeChoices(nextId!, targetId, newUsedMovies, newUsedActors)
+          if (choices.length === 0) {
+            setStatus('lost')
+            const result: DailyResult = {
+              won: false,
+              steps,
+              optimal,
+              completed: true,
+              chainTitles: newChain.map((c) => c.movie.titulo),
+            }
+            persistResult(result)
+            setDailyResult(result)
+          } else {
+            setCurrentChoices(choices)
+          }
         }
+
+        // Clear feedback after ~1s
+        setTimeout(() => setFeedback(null), 1100)
         setTransitioning(false)
-      }, 350)
+      }, 450)
     },
-    [transitioning, gameOver, currentMovie, actorToMovies, usedMovies, usedActors, chain, mode, pickChoices]
+    [challenge, chain, usedMovies, usedActors, prevDistance, transitioning, status, computeChoices, persistResult]
   )
 
-  const surrender = () => setGameOver(true)
+  // ---------- Share ----------
+  const shareText = useMemo(() => {
+    if (!dailyResult || !challenge) return ''
+    const optimal = dailyResult.optimal
+    const steps = dailyResult.steps
+    const stars = dailyResult.won
+      ? (steps === optimal ? '⭐⭐⭐' : steps === optimal + 1 ? '⭐⭐' : steps <= optimal + 2 ? '⭐' : '')
+      : '💔'
+    const diagram = dailyResult.won || dailyResult.completed
+      ? (dailyResult.chainTitles ?? []).map(() => '🎬').join(' 🎭 ')
+      : '🎬 💔 🎬'
+    return `🎬 ActorChain CineBret #${dayNum}\n${stars} ${steps}/${optimal} pasos\n${diagram}\ncinebret.cl/actorchain`
+  }, [dailyResult, challenge, dayNum])
 
-  const goHome = () => {
-    setMode(null)
-    setChain([])
-    setUsedMovies(new Set())
-    setUsedActors(new Set())
-    setCurrentChoices([])
-    setScore(0)
-    setGameOver(false)
-  }
-
-  const buildShareText = () => {
-    if (chain.length === 0) return ''
-    const parts: string[] = []
-    for (let i = 0; i < chain.length; i++) {
-      parts.push(chain[i].movie.titulo)
-      if (chain[i].actor) parts.push(chain[i].actor!.name)
-    }
-    return `🔗 ActorChain CineBret\n${chain.length} eslabones · ${score} pts\n${parts.join(' → ')}\ncinebret.cl/actorchain`
-  }
-
-  const handleShare = async () => {
-    const text = buildShareText()
+  const handleShare = useCallback(async () => {
+    if (!shareText) return
     try {
-      if (navigator.share) {
-        await navigator.share({ text })
+      if (typeof navigator !== 'undefined' && (navigator as Navigator & { share?: (d: ShareData) => Promise<void> }).share) {
+        await (navigator as Navigator & { share: (d: ShareData) => Promise<void> }).share({ text: shareText })
       } else {
-        await navigator.clipboard.writeText(text)
-        alert('Copiado al portapapeles')
+        await navigator.clipboard.writeText(shareText)
+        setShowShareCopied(true)
+        setTimeout(() => setShowShareCopied(false), 1800)
       }
-    } catch {}
-  }
+    } catch {
+      try {
+        await navigator.clipboard.writeText(shareText)
+        setShowShareCopied(true)
+        setTimeout(() => setShowShareCopied(false), 1800)
+      } catch {}
+    }
+  }, [shareText])
 
-  // ============ RENDER ============
+  // ---------- Derived ----------
+  const currentLink = chain[chain.length - 1]
+  const currentMovie = currentLink?.movie ?? null
+  const steps = Math.max(0, chain.length - 1)
+  const optimal = challenge ? challenge.optimalPath.length - 1 : 0
+  const maxAllowed = optimal * 2
+  const starCount = dailyResult && dailyResult.won
+    ? (dailyResult.steps === optimal ? 3 : dailyResult.steps === optimal + 1 ? 2 : dailyResult.steps <= optimal + 2 ? 1 : 0)
+    : 0
 
-  if (loading) {
-    return (
-      <div
-        className="fixed inset-0 bg-black text-white flex flex-col items-center justify-center"
-        style={{ height: '100dvh', touchAction: 'manipulation' }}
-      >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-          className="text-6xl mb-6"
-        >
-          🔗
-        </motion.div>
-        <div className="text-yellow-400 font-bold text-xl mb-2">ActorChain</div>
-        <div className="text-white/50 text-sm">Cargando cast... ({loadProgress})</div>
-      </div>
-    )
-  }
-
-  // START SCREEN
-  if (mode === null) {
-    return (
-      <div
-        className="fixed inset-0 bg-gradient-to-br from-black via-zinc-950 to-black text-white overflow-hidden"
-        style={{ height: '100dvh', touchAction: 'manipulation' }}
-      >
-        {/* decorative animated chains in background */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-6xl"
-              initial={{
-                x: `${(i * 137) % 100}%`,
-                y: `${(i * 73) % 100}%`,
-                rotate: 0,
-              }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20 + i * 2, repeat: Infinity, ease: 'linear' }}
-            >
-              🔗
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="relative h-full flex flex-col items-center justify-center px-6 max-w-md mx-auto">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="text-center mb-2"
-          >
-            <div className="text-7xl mb-4">🔗</div>
-            <h1 className="text-5xl font-black tracking-tight bg-gradient-to-r from-yellow-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
-              ACTORCHAIN
-            </h1>
-            <p className="text-white/70 mt-3 text-[16px]">Conecta películas a través del cast</p>
-          </motion.div>
-
-          {bestScore > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="mt-6 px-4 py-2 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-sm font-bold"
-            >
-              ★ Mejor puntaje: {bestScore}
-            </motion.div>
-          )}
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-8 w-full space-y-3"
-          >
-            <button
-              onClick={() => startGame('classic')}
-              className="w-full py-5 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-black text-xl shadow-lg shadow-yellow-400/20 active:scale-95 transition-transform"
-            >
-              Clásico
-            </button>
-            <button
-              onClick={() => startGame('blitz')}
-              className="w-full py-5 rounded-2xl bg-zinc-900 border border-yellow-400/40 text-yellow-400 font-black text-xl active:scale-95 transition-transform"
-            >
-              Blitz ⚡ (30s)
-            </button>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="mt-8 text-center text-white/50 text-sm leading-relaxed px-4"
-          >
-            Elige un actor → salta a otra película → repite. Sin repetir nada.
-          </motion.p>
-
-          <Link
-            href="/"
-            className="absolute top-6 left-6 text-white/60 hover:text-white text-sm"
-          >
-            ← Volver
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  // GAME OVER SCREEN
-  if (gameOver) {
-    return (
-      <div
-        className="fixed inset-0 bg-black text-white overflow-hidden flex flex-col"
-        style={{ height: '100dvh', touchAction: 'manipulation' }}
-      >
-        <div className="flex-1 overflow-y-auto px-6 pt-10 pb-32 max-w-2xl mx-auto w-full">
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 150 }}
-            className="text-center mb-6"
-          >
-            <div className="text-6xl mb-4">💔</div>
-            <h2 className="text-3xl font-black text-white">Cadena rota</h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-center mb-6"
-          >
-            <div className="text-6xl font-black text-yellow-400 leading-none">{score}</div>
-            <div className="text-white/60 text-sm mt-2">puntos</div>
-            <div className="text-white/80 mt-3 font-semibold">{chain.length} eslabones</div>
-            {score > 0 && score === bestScore && (
-              <div className="mt-2 inline-block px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-400 text-xs font-bold">
-                ★ NUEVO RÉCORD
-              </div>
-            )}
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="space-y-2"
-          >
-            {chain.map((link, i) => (
-              <motion.div
-                key={`${link.movie.id}-${i}`}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.5 + i * 0.05 }}
-                className="flex items-center gap-3 bg-white/5 rounded-xl p-3"
-              >
-                <div className="relative w-12 h-16 rounded-md overflow-hidden flex-shrink-0 bg-zinc-800">
-                  <Image
-                    src={`${POSTER_BASE}${link.movie.poster_path}`}
-                    alt={link.movie.titulo}
-                    fill
-                    sizes="48px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-sm truncate">{link.movie.titulo}</div>
-                  <div className="text-white/40 text-xs">{link.movie.anio}</div>
-                  {link.actor && (
-                    <div className="text-yellow-400 text-xs mt-1 truncate">
-                      → {link.actor.name}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/95 to-transparent space-y-2">
-          <div className="max-w-md mx-auto space-y-2">
-            <button
-              onClick={handleShare}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-black active:scale-95 transition-transform"
-            >
-              Compartir
-            </button>
-            <button
-              onClick={() => startGame(mode!)}
-              className="w-full py-4 rounded-2xl bg-zinc-900 border border-white/20 text-white font-bold active:scale-95 transition-transform"
-            >
-              Jugar de nuevo
-            </button>
-            <button
-              onClick={goHome}
-              className="w-full py-2 text-white/60 text-sm"
-            >
-              Volver al inicio
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // GAME SCREEN
-  if (!currentMovie) return null
-
+  // ---------- Render ----------
   return (
     <div
-      className="fixed inset-0 bg-black text-white overflow-hidden"
+      className="fixed inset-0 w-screen overflow-hidden bg-black text-white"
       style={{ height: '100dvh', touchAction: 'manipulation' }}
     >
       {/* Background poster */}
       <AnimatePresence mode="wait">
-        <motion.div
-          key={`bg-${currentMovie.id}`}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={`${POSTER_BASE}${currentMovie.poster_path}`}
-            alt=""
-            fill
-            sizes="100vw"
-            priority
-            className="object-cover blur-2xl scale-110 opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black" />
-        </motion.div>
+        {currentMovie && (status === 'playing' || status === 'won' || status === 'lost') && (
+          <motion.div
+            key={`bg-${currentMovie.id}`}
+            initial={{ opacity: 0, scale: 1.12 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={`${POSTER_BASE}${currentMovie.poster_path}`}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover blur-xl scale-110 opacity-60"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/95" />
+            <div className="absolute inset-0 bg-black/40" />
+          </motion.div>
+        )}
       </AnimatePresence>
 
-      {/* TOP HUD */}
-      <div className="relative z-20 pt-3 px-3">
-        {/* Score + length */}
-        <div className="flex items-start justify-between mb-2">
-          <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-3 py-1.5">
-            <div className="text-[10px] text-white/50 uppercase tracking-wide">Eslabones</div>
-            <div className="text-lg font-black text-white leading-none">{chain.length - 1}</div>
-          </div>
-          <div className="bg-black/60 backdrop-blur-md border border-yellow-400/30 rounded-xl px-3 py-1.5 text-right">
-            <div className="text-[10px] text-yellow-400/70 uppercase tracking-wide">Score</div>
-            <div className="text-lg font-black text-yellow-400 leading-none">{score}</div>
-          </div>
-        </div>
-
-        {/* Blitz Timer */}
-        {mode === 'blitz' && (
-          <div className="mb-2">
-            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                key={`timer-${chain.length}`}
-                initial={{ width: '100%' }}
-                animate={{ width: `${(timeLeft / BLITZ_TIME) * 100}%` }}
-                transition={{ duration: 0.95, ease: 'linear' }}
-                className={`h-full rounded-full ${
-                  timeLeft <= 5
-                    ? 'bg-red-500 animate-pulse'
-                    : 'bg-gradient-to-r from-yellow-400 to-amber-500'
-                }`}
-              />
-            </div>
-            <div
-              className={`text-center text-xs mt-1 font-bold ${
-                timeLeft <= 5 ? 'text-red-400' : 'text-white/60'
-              }`}
-            >
-              {timeLeft}s
-            </div>
-          </div>
-        )}
-
-        {/* Breadcrumbs chain */}
-        <div
-          ref={breadcrumbsRef}
-          className="overflow-x-auto scrollbar-hide bg-black/50 backdrop-blur-md rounded-2xl border border-white/10 p-2"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          <div className="flex items-center gap-1.5 min-w-max">
-            <AnimatePresence>
-              {chain.map((link, i) => (
-                <motion.div
-                  key={`bc-${link.movie.id}-${i}`}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{
-                    scale: 0,
-                    opacity: 0,
-                    rotate: Math.random() * 180 - 90,
-                    x: Math.random() * 200 - 100,
-                    y: Math.random() * 200 - 100,
-                  }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 16, delay: i === chain.length - 1 ? 0.1 : 0 }}
-                  className="flex items-center gap-1.5"
-                >
-                  <div className="relative w-9 h-12 rounded-md overflow-hidden bg-zinc-800 ring-1 ring-white/20 flex-shrink-0">
-                    <Image
-                      src={`${POSTER_BASE}${link.movie.poster_path}`}
-                      alt={link.movie.titulo}
-                      fill
-                      sizes="36px"
-                      className="object-cover"
-                    />
-                  </div>
-                  {link.actor && (
-                    <>
-                      <div className="text-yellow-400/70 text-xs">→</div>
-                      <div className="bg-yellow-400/20 border border-yellow-400/40 rounded-full px-2 py-1 text-yellow-300 text-[11px] font-bold whitespace-nowrap">
-                        {link.actor.name}
-                      </div>
-                      <div className="text-yellow-400/70 text-xs">→</div>
-                    </>
-                  )}
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
-
-      {/* CENTER POSTER */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-6 mt-2">
-        <AnimatePresence mode="wait">
+      {/* LOADING */}
+      {status === 'loading' && (
+        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
           <motion.div
-            key={`center-${currentMovie.id}`}
-            initial={{ opacity: 0, x: 100, rotate: 8, scale: 0.8 }}
-            animate={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.2, filter: 'blur(20px)' }}
-            transition={{ type: 'spring', stiffness: 180, damping: 20 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <div className="relative w-40 h-60 sm:w-48 sm:h-72 mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-black ring-2 ring-white/20">
-              <Image
-                src={`${POSTER_BASE}${currentMovie.poster_path}`}
-                alt={currentMovie.titulo}
-                fill
-                sizes="(max-width: 640px) 160px, 192px"
-                priority
-                className="object-cover"
+            <div className="mb-6 text-5xl">🎬</div>
+            <div className="text-xl font-semibold tracking-tight">ActorChain</div>
+            <div className="mt-1 text-sm text-white/60">{loadLabel}</div>
+            <div className="mt-6 h-1.5 w-56 overflow-hidden rounded-full bg-white/10">
+              <motion.div
+                className="h-full bg-gradient-to-r from-amber-400 to-rose-500"
+                initial={{ width: 0 }}
+                animate={{ width: `${loadProgress}%` }}
+                transition={{ ease: 'easeOut', duration: 0.4 }}
               />
             </div>
-            <div className="mt-3 px-4">
-              <h2 className="text-xl font-black text-white drop-shadow-lg line-clamp-2">
-                {currentMovie.titulo}
-              </h2>
-              <div className="flex items-center justify-center gap-3 mt-1 text-white/70 text-sm">
-                {currentMovie.anio && <span>{currentMovie.anio}</span>}
-                {currentMovie.nota_imdb && (
-                  <span className="text-yellow-400 font-bold">★ {currentMovie.nota_imdb.toFixed(1)}</span>
+          </motion.div>
+        </div>
+      )}
+
+      {/* INTRO */}
+      {status === 'intro' && challenge && (
+        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full max-w-md text-center"
+          >
+            <div className="text-xs uppercase tracking-[0.2em] text-amber-400">Desafío diario #{dayNum}</div>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">ActorChain</h1>
+            <p className="mt-3 text-sm text-white/70">
+              Conecta dos películas a través de actores compartidos. Mientras más corta la cadena, mejor.
+            </p>
+
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <motion.div
+                initial={{ rotate: -6, opacity: 0 }}
+                animate={{ rotate: -6, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="relative aspect-[2/3] w-28 overflow-hidden rounded-xl shadow-2xl ring-1 ring-white/10"
+              >
+                <Image
+                  src={`${POSTER_BASE}${challenge.startMovie.poster_path}`}
+                  alt={challenge.startMovie.titulo}
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                />
+              </motion.div>
+              <motion.div
+                animate={{ x: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 1.6 }}
+                className="text-3xl text-white/60"
+              >
+                →
+              </motion.div>
+              <motion.div
+                initial={{ rotate: 6, opacity: 0 }}
+                animate={{ rotate: 6, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="relative aspect-[2/3] w-28 overflow-hidden rounded-xl shadow-2xl ring-1 ring-white/10"
+              >
+                <Image
+                  src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
+                  alt={challenge.targetMovie.titulo}
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                />
+              </motion.div>
+            </div>
+
+            <div className="mt-6 flex items-center justify-center gap-3 text-sm">
+              <div className="rounded-full bg-emerald-500/20 px-3 py-1 text-emerald-300">
+                {challenge.startMovie.titulo}
+              </div>
+              <span className="text-white/40">a</span>
+              <div className="rounded-full bg-rose-500/20 px-3 py-1 text-rose-300">
+                {challenge.targetMovie.titulo}
+              </div>
+            </div>
+
+            <div className="mt-4 text-xs text-white/50">
+              Ruta óptima: {optimal} {optimal === 1 ? 'paso' : 'pasos'} · Máximo permitido: {maxAllowed}
+            </div>
+
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              whileHover={{ scale: 1.02 }}
+              onClick={startGame}
+              className="mt-8 w-full rounded-2xl bg-gradient-to-r from-amber-400 to-rose-500 px-8 py-4 text-lg font-bold tracking-wide text-black shadow-2xl shadow-rose-500/30"
+            >
+              JUGAR
+            </motion.button>
+
+            <div className="mt-6">
+              <Link href="/" className="text-xs text-white/40 hover:text-white/70">
+                ← volver a cinebret
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* ALREADY PLAYED */}
+      {status === 'already-played' && dailyResult && challenge && (
+        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-md text-center"
+          >
+            <div className="text-xs uppercase tracking-[0.2em] text-amber-400">Desafío #{dayNum}</div>
+            <h1 className="mt-2 text-2xl font-bold">
+              {dailyResult.won ? '¡Ya completaste hoy!' : 'Cadena rota de hoy'}
+            </h1>
+            <div className="mt-4 text-5xl">
+              {dailyResult.won
+                ? (dailyResult.steps === dailyResult.optimal ? '⭐⭐⭐' : dailyResult.steps === dailyResult.optimal + 1 ? '⭐⭐' : '⭐')
+                : '💔'}
+            </div>
+            <div className="mt-3 text-lg">
+              {dailyResult.steps}/{dailyResult.optimal} pasos
+            </div>
+            <div className="mt-8 text-sm text-white/60">Vuelve mañana para el próximo desafío</div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={handleShare}
+                className="flex-1 rounded-2xl bg-white/10 px-6 py-3 font-semibold backdrop-blur hover:bg-white/20"
+              >
+                {showShareCopied ? '¡Copiado!' : 'Compartir'}
+              </button>
+              <Link
+                href="/"
+                className="flex-1 rounded-2xl bg-white/5 px-6 py-3 text-center font-semibold backdrop-blur hover:bg-white/10"
+              >
+                Volver
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* PLAYING */}
+      {status === 'playing' && challenge && currentMovie && (
+        <>
+          {/* Top HUD: breadcrumbs + target */}
+          <div className="absolute left-0 right-0 top-0 z-20 px-3 pt-[max(env(safe-area-inset-top),12px)]">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 overflow-x-auto scrollbar-none">
+                <div className="flex items-center gap-1.5 rounded-full bg-black/50 px-2 py-1.5 backdrop-blur-xl ring-1 ring-white/10">
+                  <AnimatePresence initial={false}>
+                    {chain.map((link, i) => {
+                      const isFirst = i === 0
+                      const isCurrent = i === chain.length - 1
+                      return (
+                        <motion.div
+                          key={`${link.movie.id}-${i}`}
+                          layout
+                          initial={{ scale: 0.6, opacity: 0, y: -8 }}
+                          animate={{
+                            scale: 1,
+                            opacity: 1,
+                            y: 0,
+                            rotate: 0,
+                            x: 0,
+                          }}
+                          exit={{
+                            scale: 0,
+                            rotate: Math.random() * 60 - 30,
+                            x: Math.random() * 200 - 100,
+                            y: Math.random() * 200,
+                            opacity: 0,
+                          }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 24 }}
+                          className="flex items-center gap-1.5 shrink-0"
+                        >
+                          {i > 0 && <span className="text-[10px] text-white/40">→</span>}
+                          <div
+                            className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-medium ring-1 ${
+                              isFirst
+                                ? 'bg-emerald-500/30 text-emerald-100 ring-emerald-400/40'
+                                : isCurrent
+                                ? 'bg-amber-400/30 text-amber-100 ring-amber-400/40'
+                                : 'bg-white/10 text-white/80 ring-white/10'
+                            }`}
+                          >
+                            <div className="relative h-5 w-5 overflow-hidden rounded-full ring-1 ring-white/20">
+                              <Image
+                                src={`${POSTER_BASE}${link.movie.poster_path}`}
+                                alt=""
+                                fill
+                                sizes="20px"
+                                className="object-cover"
+                              />
+                            </div>
+                            <span className="max-w-[100px] truncate">{link.movie.titulo}</span>
+                          </div>
+                        </motion.div>
+                      )
+                    })}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Target locked poster */}
+              <motion.div
+                animate={
+                  currentDistance <= 2
+                    ? { scale: [1, 1.08, 1], boxShadow: ['0 0 0px rgba(244,63,94,0)', '0 0 24px rgba(244,63,94,0.6)', '0 0 0px rgba(244,63,94,0)'] }
+                    : { scale: 1 }
+                }
+                transition={{ repeat: currentDistance <= 2 ? Infinity : 0, duration: 1.4 }}
+                className="relative shrink-0"
+              >
+                <div className="relative aspect-[2/3] w-12 overflow-hidden rounded-lg ring-2 ring-rose-400/50">
+                  <Image
+                    src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
+                    alt={challenge.targetMovie.titulo}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 to-transparent">
+                    <div className="w-full px-0.5 pb-0.5 text-center text-[8px] font-bold text-rose-200">
+                      META
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* progress bar */}
+            <div className="mt-2 flex items-center gap-2 px-1">
+              <div className="flex-1 h-1 rounded-full bg-white/10 overflow-hidden">
+                <motion.div
+                  className={`h-full ${steps > optimal ? 'bg-amber-400' : 'bg-emerald-400'}`}
+                  animate={{ width: `${Math.min(100, (steps / maxAllowed) * 100)}%` }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 30 }}
+                />
+              </div>
+              <div className="text-[10px] tabular-nums text-white/60">
+                {steps}/{maxAllowed}
+              </div>
+            </div>
+          </div>
+
+          {/* Center current movie */}
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pt-20 pb-[260px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`center-${currentMovie.id}`}
+                initial={{ x: 120, rotate: 8, opacity: 0, scale: 0.85 }}
+                animate={{ x: 0, rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ x: -120, rotate: -8, opacity: 0, scale: 0.85 }}
+                transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+                className="flex flex-col items-center"
+              >
+                <div className="relative aspect-[2/3] w-40 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/20">
+                  <Image
+                    src={`${POSTER_BASE}${currentMovie.poster_path}`}
+                    alt={currentMovie.titulo}
+                    fill
+                    sizes="160px"
+                    priority
+                    className="object-cover"
+                  />
+                </div>
+                <div className="mt-3 max-w-[80vw] text-center text-lg font-semibold tracking-tight">
+                  {currentMovie.titulo}
+                </div>
+                {currentMovie.anio && (
+                  <div className="text-xs text-white/50">{currentMovie.anio}</div>
+                )}
+
+                <div className="mt-3 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white/80 backdrop-blur ring-1 ring-white/10">
+                  {currentDistance === Infinity
+                    ? 'sin ruta directa'
+                    : currentDistance === 0
+                    ? '¡llegaste!'
+                    : `${currentDistance} ${currentDistance === 1 ? 'paso' : 'pasos'} al objetivo`}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Feedback flash */}
+            <AnimatePresence>
+              {feedback && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.7 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.7 }}
+                  transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                  className={`absolute top-[48%] rounded-full px-4 py-2 text-sm font-bold backdrop-blur-xl ring-1 ${
+                    feedback === 'closer'
+                      ? 'bg-emerald-500/30 text-emerald-100 ring-emerald-400/50'
+                      : 'bg-rose-500/30 text-rose-100 ring-rose-400/50'
+                  }`}
+                >
+                  {feedback === 'closer' ? '🔥 Más cerca' : '❄️ Más lejos'}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom: actor choices */}
+          <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-[max(env(safe-area-inset-bottom),14px)] pt-2">
+            <div className="rounded-3xl bg-black/55 p-3 backdrop-blur-2xl ring-1 ring-white/10">
+              <div className="mb-2 px-1 text-[10px] uppercase tracking-[0.18em] text-white/50">
+                Elige un actor para saltar a otra película
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {currentChoices.map((actor, idx) => {
+                  const count = actorToMoviesRef.current.get(actor.name)?.size ?? 0
+                  return (
+                    <motion.button
+                      key={`${actor.name}-${idx}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.08, type: 'spring', stiffness: 220, damping: 22 }}
+                      whileTap={{ scale: 0.94 }}
+                      onClick={() => pickActor(actor)}
+                      disabled={transitioning}
+                      className="group relative flex flex-col items-center overflow-hidden rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 active:bg-white/10 disabled:opacity-50"
+                    >
+                      <div className="relative aspect-square w-full max-w-[96px] overflow-hidden rounded-xl ring-1 ring-white/15">
+                        {actor.profile_path ? (
+                          <Image
+                            src={`${PROFILE_BASE}${actor.profile_path}`}
+                            alt={actor.name}
+                            fill
+                            sizes="100px"
+                            className="object-cover transition-transform group-active:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-white/5 text-2xl">
+                            🎭
+                          </div>
+                        )}
+                      </div>
+                      <div className="mt-1.5 line-clamp-2 text-center text-[11px] font-semibold leading-tight">
+                        {actor.name}
+                      </div>
+                      {actor.character && (
+                        <div className="line-clamp-1 text-center text-[9px] text-white/50">
+                          {actor.character}
+                        </div>
+                      )}
+                      <div className="mt-0.5 rounded-full bg-white/10 px-1.5 py-0.5 text-[9px] text-white/70">
+                        {count} {count === 1 ? 'película' : 'películas'}
+                      </div>
+                    </motion.button>
+                  )
+                })}
+                {currentChoices.length === 0 && (
+                  <div className="col-span-3 py-8 text-center text-sm text-white/60">
+                    Sin actores disponibles…
+                  </div>
                 )}
               </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+          </div>
+        </>
+      )}
 
-      {/* BOTTOM ACTOR CHOICES */}
-      <div className="relative z-20 px-3 pb-4">
-        <div className="text-center text-white/50 text-xs uppercase tracking-widest mb-2">
-          Elige un actor para saltar
-        </div>
-        <AnimatePresence mode="wait">
+      {/* WIN */}
+      {status === 'won' && challenge && dailyResult && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 px-6 backdrop-blur-md">
           <motion.div
-            key={`choices-${currentMovie.id}`}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="grid grid-cols-3 gap-2"
+            initial={{ scale: 0.3, opacity: 0, x: 120, y: 120 }}
+            animate={{ scale: 1, opacity: 1, x: 0, y: 0 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+            className="w-full max-w-md text-center"
           >
-            {currentChoices.map((actor, i) => {
-              const totalMovies = actorToMovies.get(actor.name)?.size ?? 0
-              return (
-                <motion.button
-                  key={`${actor.name}-${i}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.08, type: 'spring', stiffness: 200 }}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={() => handlePickActor(actor)}
-                  disabled={transitioning}
-                  className="bg-black/70 backdrop-blur-md border border-white/15 rounded-2xl p-2 text-left active:border-yellow-400 transition-colors disabled:opacity-50"
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.4, type: 'spring', stiffness: 260, damping: 18 }}
+              className="relative mx-auto aspect-[2/3] w-44 overflow-hidden rounded-2xl shadow-2xl ring-2 ring-amber-400/50"
+            >
+              <Image
+                src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
+                alt={challenge.targetMovie.titulo}
+                fill
+                sizes="180px"
+                className="object-cover"
+              />
+              {/* particle burst */}
+              {Array.from({ length: 14 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ x: 0, y: 0, opacity: 1 }}
+                  animate={{
+                    x: Math.cos((i / 14) * Math.PI * 2) * 180,
+                    y: Math.sin((i / 14) * Math.PI * 2) * 180,
+                    opacity: 0,
+                  }}
+                  transition={{ delay: 0.6, duration: 1.1, ease: 'easeOut' }}
+                  className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-amber-400"
+                />
+              ))}
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+            >
+              <div className="mt-5 text-3xl font-bold tracking-tight">¡Conectaste!</div>
+              <div className="mt-1 text-sm text-white/70">{challenge.targetMovie.titulo}</div>
+              <div className="mt-3 text-lg">
+                {dailyResult.steps} pasos · Óptimo: {dailyResult.optimal}
+              </div>
+              <div className="mt-3 text-4xl">
+                {'⭐'.repeat(starCount)}
+                <span className="text-white/20">{'⭐'.repeat(3 - starCount)}</span>
+              </div>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={handleShare}
+                  className="flex-1 rounded-2xl bg-gradient-to-r from-amber-400 to-rose-500 px-6 py-3 font-bold text-black shadow-xl"
                 >
-                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-zinc-800 mb-2">
-                    {actor.profile_path ? (
+                  {showShareCopied ? '¡Copiado!' : 'Compartir'}
+                </button>
+                <Link
+                  href="/"
+                  className="flex-1 rounded-2xl bg-white/10 px-6 py-3 text-center font-semibold backdrop-blur"
+                >
+                  Salir
+                </Link>
+              </div>
+              <div className="mt-4 text-xs text-white/40">Vuelve mañana para el próximo desafío</div>
+            </motion.div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* LOSE */}
+      {status === 'lost' && challenge && dailyResult && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/80 px-6 backdrop-blur-md">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="w-full max-w-md text-center"
+          >
+            <motion.div
+              animate={{ x: [0, -8, 8, -6, 6, 0], rotate: [0, -2, 2, -1, 1, 0] }}
+              transition={{ duration: 0.6 }}
+              className="text-5xl"
+            >
+              💔
+            </motion.div>
+            <div className="mt-4 text-3xl font-bold tracking-tight">Cadena rota</div>
+            <div className="mt-2 text-sm text-white/70">
+              Usaste {dailyResult.steps} pasos · Óptimo era {dailyResult.optimal}
+            </div>
+
+            <div className="mt-6 text-xs uppercase tracking-[0.2em] text-white/50">Ruta óptima</div>
+            <div className="mt-3 flex items-center justify-center gap-2 overflow-x-auto">
+              {challenge.optimalPath.map((mid, i) => {
+                const m = movieMapRef.current.get(mid)
+                if (!m) return null
+                return (
+                  <div key={`${mid}-${i}`} className="flex items-center gap-2 shrink-0">
+                    {i > 0 && <span className="text-white/40">→</span>}
+                    <div className="relative aspect-[2/3] w-12 overflow-hidden rounded-lg ring-1 ring-white/20">
                       <Image
-                        src={`${PROFILE_BASE}${actor.profile_path}`}
-                        alt={actor.name}
+                        src={`${POSTER_BASE}${m.poster_path}`}
+                        alt={m.titulo}
                         fill
-                        sizes="(max-width: 640px) 33vw, 150px"
+                        sizes="48px"
                         className="object-cover"
                       />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-yellow-400/20 to-amber-700/20 text-3xl font-black text-yellow-400">
-                        {actor.name.charAt(0)}
-                      </div>
-                    )}
-                  </div>
-                  <div className="font-bold text-white text-[13px] leading-tight line-clamp-2">
-                    {actor.name}
-                  </div>
-                  {actor.character && (
-                    <div className="text-white/50 text-[11px] mt-0.5 line-clamp-1 italic">
-                      {actor.character}
                     </div>
-                  )}
-                  <div className="text-yellow-400 text-[11px] font-bold mt-1">
-                    → {totalMovies} pelis
                   </div>
-                </motion.button>
-              )
-            })}
+                )
+              })}
+            </div>
+
+            <div className="mt-8 flex gap-3">
+              <button
+                onClick={handleShare}
+                className="flex-1 rounded-2xl bg-white/10 px-6 py-3 font-semibold backdrop-blur"
+              >
+                {showShareCopied ? '¡Copiado!' : 'Compartir'}
+              </button>
+              <Link
+                href="/"
+                className="flex-1 rounded-2xl bg-white/5 px-6 py-3 text-center font-semibold backdrop-blur"
+              >
+                Salir
+              </Link>
+            </div>
+            <div className="mt-4 text-xs text-white/40">Vuelve mañana para el próximo desafío</div>
           </motion.div>
-        </AnimatePresence>
-
-        <div className="flex items-center justify-between mt-3 px-1">
-          <Link href="/" className="text-white/40 text-xs">
-            ← Inicio
-          </Link>
-          <button onClick={surrender} className="text-white/40 text-xs hover:text-red-400">
-            Rendirse
-          </button>
         </div>
-      </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+      )}
     </div>
   )
 }

@@ -203,7 +203,7 @@ function forceLayout(
   connections: Connection[],
   width: number,
   height: number,
-  iterations = 300,
+  iterations = 500,
 ): { x: number; y: number }[] {
   const cx = width / 2
   const cy = height / 2 + 60
@@ -221,11 +221,11 @@ function forceLayout(
     })
   }
 
-  const REPULSION = 80000
-  const ATTRACTION = 0.015
-  const CENTER_PULL = 0.005
-  const DAMPING = 0.85
-  const MIN_DIST = 140 // minimum distance between any two nodes
+  const REPULSION = 250000
+  const ATTRACTION = 0.008
+  const CENTER_PULL = 0.003
+  const DAMPING = 0.88
+  const MIN_DIST = 200 // minimum distance between any two nodes
 
   for (let iter = 0; iter < iterations; iter++) {
     // Apply repulsion between all pairs
@@ -298,21 +298,23 @@ function forceLayout(
     }
   }
 
-  // Center and scale to fit
+  // Center and scale to fit — use as much space as possible
   const xs = positions.map((p) => p.x)
   const ys = positions.map((p) => p.y)
   const minX = Math.min(...xs)
   const maxX = Math.max(...xs)
   const minY = Math.min(...ys)
   const maxY = Math.max(...ys)
-  const w = maxX - minX
-  const h = maxY - minY
-  const padding = 120
+  const w = maxX - minX || 1
+  const h = maxY - minY || 1
+  const padding = 100 // edge padding for posters not to be cut
   const availW = width - padding * 2
-  const availH = height - 350 // leave room for header/footer
-  const scale = Math.min(availW / w, availH / h, 1.2)
+  const headerSpace = 280
+  const footerSpace = 200
+  const availH = height - headerSpace - footerSpace
+  const scale = Math.min(availW / w, availH / h, 1.5)
   const offsetX = (width - w * scale) / 2 - minX * scale
-  const offsetY = 200 + (availH - h * scale) / 2 - minY * scale
+  const offsetY = headerSpace + (availH - h * scale) / 2 - minY * scale
 
   return positions.map((p) => ({
     x: p.x * scale + offsetX,
@@ -631,6 +633,11 @@ export default function PostersPage() {
   )
   const [downloading, setDownloading] = useState(false)
   const [graph, setGraph] = useState<GraphData | null>(null)
+  const [customOpen, setCustomOpen] = useState(false)
+  const [customSearch, setCustomSearch] = useState('')
+  const [customResults, setCustomResults] = useState<RawMovie[]>([])
+  const [customSelected, setCustomSelected] = useState<RawMovie[]>([])
+  const [customLoading, setCustomLoading] = useState(false)
   const svgRef = useRef<SVGSVGElement>(null)
 
   // Load movie graph for connections
@@ -640,6 +647,67 @@ export default function PostersPage() {
       .then((data) => setGraph(data))
       .catch(() => {})
   }, [])
+
+  // Search movies for custom builder
+  useEffect(() => {
+    if (!customSearch || customSearch.length < 2) {
+      setCustomResults([])
+      return
+    }
+    let cancelled = false
+    const t = setTimeout(async () => {
+      setCustomLoading(true)
+      try {
+        const q = customSearch.trim()
+        const { data } = await supabase
+          .from('peliculas')
+          .select(SELECT_FIELDS)
+          .or(`titulo.ilike.%${q}%,titulo_ingles.ilike.%${q}%`)
+          .not('poster_path', 'is', null)
+          .limit(8)
+        if (!cancelled) setCustomResults((data || []) as unknown as RawMovie[])
+      } catch {}
+      setCustomLoading(false)
+    }, 300)
+    return () => { cancelled = true; clearTimeout(t) }
+  }, [customSearch])
+
+  async function buildCustomTheme() {
+    if (customSelected.length < 2) return
+    const customTheme: Theme = {
+      id: 'imdb_top', // reuse id for storage purposes
+      title: 'Mi Selección',
+      subtitle: `${customSelected.length} películas`,
+      caption: 'Tu selección personalizada',
+      groupBy: 'decade',
+      build: async () => customSelected,
+    }
+    setCustomOpen(false)
+    setActiveTheme(customTheme)
+    setMovies([])
+    setConnections([])
+    setLoading(true)
+    let g = graph
+    if (!g) {
+      try { const r = await fetch('/movie-graph.json'); g = await r.json(); setGraph(g) } catch {}
+    }
+    try {
+      const colorMap = new Map<string, string>()
+      const posterMovies: PosterMovie[] = []
+      for (const r of customSelected) {
+        const pm = toPosterMovie(r, 'decade', colorMap)
+        if (pm) posterMovies.push(pm)
+      }
+      const sliced = posterMovies.slice(0, 20)
+      const conns = buildConnectionsFromGraph(sliced, g, 10)
+      setMovies(sliced)
+      setConnections(conns)
+    } catch (e) {
+      setError((e as Error).message || 'Error')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Fetch a representative poster for each theme card (just one image, lightweight)
   useEffect(() => {
@@ -839,6 +907,23 @@ export default function PostersPage() {
           </header>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {/* Custom theme card */}
+            <button
+              type="button"
+              onClick={() => setCustomOpen(true)}
+              className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-500 to-amber-700 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
+            >
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-900 p-6">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-4">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <h3 className="text-2xl font-black mb-1">Crear tu poster</h3>
+                <p className="text-sm font-semibold text-zinc-800 text-center">Elige tus propias películas</p>
+                <p className="text-xs text-zinc-700 mt-3">Hasta 20 películas</p>
+              </div>
+            </button>
+
             {THEMES.map((theme, idx) => (
               <ThemeCard
                 key={theme.id}
@@ -851,6 +936,109 @@ export default function PostersPage() {
           </div>
         </main>
       )}
+
+      {/* ───────────── Custom builder modal ───────────── */}
+      <AnimatePresence>
+        {customOpen && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
+            onClick={() => setCustomOpen(false)}
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 50, opacity: 0 }}
+              className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-5 border-b border-zinc-800">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-white font-bold text-lg">Crear tu poster</h3>
+                  <button onClick={() => setCustomOpen(false)} className="text-zinc-500 hover:text-white text-sm">✕</button>
+                </div>
+                <p className="text-zinc-400 text-xs mb-3">{customSelected.length}/20 películas seleccionadas</p>
+                <input
+                  type="text"
+                  value={customSearch}
+                  onChange={(e) => setCustomSearch(e.target.value)}
+                  placeholder="Buscar película..."
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Selected pills */}
+              {customSelected.length > 0 && (
+                <div className="p-4 border-b border-zinc-800 max-h-32 overflow-y-auto">
+                  <div className="flex flex-wrap gap-2">
+                    {customSelected.map((m) => (
+                      <button
+                        key={m.id}
+                        onClick={() => setCustomSelected((prev) => prev.filter((x) => x.id !== m.id))}
+                        className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 rounded-full px-3 py-1 text-xs hover:bg-yellow-400/20 transition"
+                      >
+                        {m.titulo_ingles || m.titulo} ✕
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Search results */}
+              <div className="flex-1 overflow-y-auto p-4">
+                {customLoading && <p className="text-zinc-500 text-xs text-center">Buscando...</p>}
+                {!customLoading && customSearch.length >= 2 && customResults.length === 0 && (
+                  <p className="text-zinc-500 text-xs text-center">Sin resultados</p>
+                )}
+                <div className="space-y-2">
+                  {customResults.map((m) => {
+                    const isSelected = customSelected.some((x) => x.id === m.id)
+                    const isFull = customSelected.length >= 20
+                    return (
+                      <button
+                        key={m.id}
+                        disabled={isSelected || (isFull && !isSelected)}
+                        onClick={() => {
+                          if (!isSelected && customSelected.length < 20) {
+                            setCustomSelected((prev) => [...prev, m])
+                            setCustomSearch('')
+                            setCustomResults([])
+                          }
+                        }}
+                        className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed text-left transition"
+                      >
+                        <div className="w-10 h-14 rounded overflow-hidden bg-zinc-800 shrink-0">
+                          {m.poster_path && <img src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" className="w-full h-full object-cover" />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm font-medium line-clamp-1">{m.titulo_ingles || m.titulo}</p>
+                          <p className="text-zinc-500 text-xs">{m.anio} · ⭐ {m.nota_imdb}</p>
+                        </div>
+                        {isSelected && <span className="text-yellow-400 text-xs">✓</span>}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Action footer */}
+              <div className="p-4 border-t border-zinc-800 flex gap-2">
+                <button
+                  onClick={() => { setCustomSelected([]); setCustomSearch(''); setCustomResults([]) }}
+                  className="px-4 py-2.5 bg-zinc-800 text-zinc-400 rounded-lg text-sm hover:bg-zinc-700 transition"
+                >
+                  Limpiar
+                </button>
+                <button
+                  onClick={buildCustomTheme}
+                  disabled={customSelected.length < 2}
+                  className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold py-2.5 rounded-lg text-sm transition"
+                >
+                  Generar poster ({customSelected.length})
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ───────────── Poster view ───────────── */}
       <AnimatePresence>
@@ -1122,11 +1310,18 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
         <rect width={POSTER_W} height={headerH} fill="url(#header-grad)" />
         <line x1="60" y1={headerH} x2={POSTER_W - 60} y2={headerH} stroke="#facc15" strokeWidth="3" />
 
-        {/* CineBret label top */}
+        {/* CineBret logo top-left */}
         <g>
-          <rect x="60" y="56" width="14" height="44" fill="#facc15" />
+          <image
+            href="/logo-oficial.png"
+            x="60"
+            y="50"
+            width="120"
+            height="80"
+            preserveAspectRatio="xMidYMid meet"
+          />
           <text
-            x="86"
+            x="200"
             y="92"
             fill="#FAFAF9"
             fontFamily="Inter, system-ui, sans-serif"
@@ -1137,7 +1332,7 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
             CINEBRET
           </text>
           <text
-            x="86"
+            x="200"
             y="120"
             fill="#a8a29e"
             fontFamily="Inter, system-ui, sans-serif"

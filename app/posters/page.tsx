@@ -29,6 +29,7 @@ type RawMovie = {
   runtime: number | null
   enriquecimiento: {
     director: string | null
+    compositor: string | null
     generos: string[] | null
     cast_json: CastMember[] | null
   } | null
@@ -43,8 +44,11 @@ type PosterMovie = {
   nota_imdb: number | null
   runtime: number | null
   director: string | null
+  compositor: string | null
+  oscars: string | null
   actors: string[]
   genres: string[]
+  platforms: string[]
   shortLabel: string
   groupKey: string
   groupColor: string
@@ -100,7 +104,7 @@ const GROUP_PALETTE = [
 
 const SELECT_FIELDS = `
   id, titulo, titulo_ingles, poster_path, anio, nota_imdb, oscars, runtime,
-  enriquecimiento (director, generos, cast_json)
+  enriquecimiento (director, compositor, generos, cast_json)
 `.trim()
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -161,8 +165,11 @@ function toPosterMovie(raw: RawMovie, groupBy: Theme['groupBy'], colorMap: Map<s
     nota_imdb: raw.nota_imdb,
     runtime: raw.runtime ?? null,
     director,
+    compositor: enr?.compositor ?? null,
+    oscars: raw.oscars ?? null,
     actors,
     genres: enr?.generos ?? [],
+    platforms: [],
     shortLabel: abbreviate(raw.titulo_ingles || raw.titulo),
     groupKey,
     groupColor: colorMap.get(groupKey)!,
@@ -646,6 +653,26 @@ export default function PostersPage() {
   const [selectedMovie, setSelectedMovie] = useState<PosterMovie | null>(null)
   const movieSvgRef = useRef<SVGSVGElement>(null)
   const [movieDownloading, setMovieDownloading] = useState(false)
+
+  // Fetch platforms for selected movie
+  useEffect(() => {
+    if (!selectedMovie) return
+    if (selectedMovie.platforms && selectedMovie.platforms.length > 0) return
+    let cancelled = false
+    ;(async () => {
+      const { data } = await supabase
+        .from('watch_providers')
+        .select('platform_key')
+        .eq('pelicula_id', selectedMovie.id)
+        .eq('provider_type', 'flatrate')
+        .not('platform_key', 'is', null)
+      if (!cancelled && data) {
+        const plats = [...new Set(data.map((d: any) => d.platform_key as string).filter(Boolean))]
+        setSelectedMovie((prev) => (prev && prev.id === selectedMovie.id ? { ...prev, platforms: plats } : prev))
+      }
+    })()
+    return () => { cancelled = true }
+  }, [selectedMovie?.id])
 
   // Load movie graph for connections
   useEffect(() => {
@@ -1731,6 +1758,39 @@ function truncate(s: string, n: number): string {
   return s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s
 }
 
+function parseOscarInfo(oscars: string | null): string | null {
+  if (!oscars || oscars === 'N/A') return null
+  const o = oscars.toLowerCase()
+  const wonMatch = o.match(/gan(?:ó|o)\s+(\d+)/i)
+  if (wonMatch) {
+    const n = parseInt(wonMatch[1])
+    return `${n} OSCAR${n === 1 ? '' : 'S'} GANADOS`
+  }
+  if (o.startsWith('ganó') || o.startsWith('gano')) {
+    return '1 OSCAR GANADO'
+  }
+  const nomMatch = o.match(/(\d+)\s+nominaci/i)
+  if (nomMatch) {
+    const n = parseInt(nomMatch[1])
+    return `${n} NOMINACIONES`
+  }
+  if (o.includes('nominad')) {
+    return 'NOMINADA AL OSCAR'
+  }
+  return null
+}
+
+const PLATFORM_LOGOS_PNG: Record<string, string> = {
+  netflix: '/netflix.png',
+  disney_plus: '/disney_plus.svg',
+  hbo_max: '/hbo_max.png',
+  amazon_prime: '/amazon_prime.png',
+  apple_tv: '/apple_tv.png',
+  paramount_plus: '/paramount_plus.svg',
+  mubi: '/mubi.png',
+  crunchyroll: '/crunchyroll.png',
+}
+
 const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function MovieDetailSVG(
   { movie, connectionCount }: MovieDetailSVGProps,
   ref: Ref<SVGSVGElement>,
@@ -1749,7 +1809,6 @@ const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function M
   const genrePills = (movie.genres || []).slice(0, 4)
   const castTop = (movie.actors || []).slice(0, 3).join(', ')
   const runtimeStr = formatRuntime(movie.runtime)
-  const decadeStr = movie.anio ? `Década ${Math.floor(movie.anio / 10) * 10}` : null
 
   // Meta rows baseline under poster
   const metaStartY = posterY + posterH + 90
@@ -1843,25 +1902,80 @@ const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function M
         {titleDisplay}
       </text>
 
-      {/* Rating · year · genres count */}
-      <text
-        x={POSTER_W / 2}
-        y={headerH - 18}
-        textAnchor="middle"
-        fill="#facc15"
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize="22"
-        fontWeight="700"
-        letterSpacing="1.5"
-      >
-        {[
-          movie.nota_imdb ? `★ ${movie.nota_imdb.toFixed(1)}` : null,
-          movie.anio ? `${movie.anio}` : null,
-          movie.genres?.length ? `${movie.genres.length} géneros` : null,
-        ]
-          .filter(Boolean)
-          .join('   ·   ')}
-      </text>
+      {/* Rating row: IMDb logo + score · year · oscars */}
+      {(() => {
+        const oscarText = parseOscarInfo(movie.oscars)
+        const ratingY = headerH - 24
+        const cx = POSTER_W / 2
+        // Estimate widths: IMDb badge ~80, gap, rating, gap, year, gap, oscar
+        const ratingStr = movie.nota_imdb ? movie.nota_imdb.toFixed(1) : ''
+        const yearStr = movie.anio ? `${movie.anio}` : ''
+        const parts: { text: string; w: number }[] = []
+        if (ratingStr) parts.push({ text: ratingStr, w: ratingStr.length * 14 + 10 })
+        if (yearStr) parts.push({ text: yearStr, w: yearStr.length * 14 })
+        if (oscarText) parts.push({ text: oscarText, w: oscarText.length * 12 })
+        const sepW = 30
+        const imdbW = 64
+        const totalW = imdbW + 10 + parts.reduce((s, p, i) => s + p.w + (i > 0 ? sepW : 0), 0)
+        let cursorX = cx - totalW / 2
+        return (
+          <g>
+            {/* IMDb badge */}
+            <rect x={cursorX} y={ratingY - 22} width={imdbW} height={28} rx="4" ry="4" fill="#f5c518" />
+            <text
+              x={cursorX + imdbW / 2}
+              y={ratingY - 1}
+              textAnchor="middle"
+              fill="#000000"
+              fontFamily="Inter, system-ui, sans-serif"
+              fontSize="20"
+              fontWeight="900"
+              letterSpacing="0.5"
+            >
+              IMDb
+            </text>
+            {(() => {
+              cursorX += imdbW + 10
+              return parts.map((p, i) => {
+                const elements = []
+                if (i > 0) {
+                  elements.push(
+                    <text
+                      key={`sep-${i}`}
+                      x={cursorX + sepW / 2}
+                      y={ratingY}
+                      textAnchor="middle"
+                      fill="#facc15"
+                      fontFamily="Inter, system-ui, sans-serif"
+                      fontSize="22"
+                      fontWeight="700"
+                    >
+                      ·
+                    </text>,
+                  )
+                  cursorX += sepW
+                }
+                elements.push(
+                  <text
+                    key={`part-${i}`}
+                    x={cursorX}
+                    y={ratingY}
+                    fill="#facc15"
+                    fontFamily="Inter, system-ui, sans-serif"
+                    fontSize="22"
+                    fontWeight="700"
+                    letterSpacing="1"
+                  >
+                    {p.text}
+                  </text>,
+                )
+                cursorX += p.w
+                return <g key={`group-${i}`}>{elements}</g>
+              })
+            })()}
+          </g>
+        )
+      })()}
 
       {/* Colored glow behind poster */}
       <rect
@@ -1986,47 +2100,127 @@ const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function M
         </g>
       )}
 
-      {(runtimeStr || decadeStr) && (
+      {/* Compositor row */}
+      {movie.compositor && (
+        <g>
+          <text
+            x={60}
+            y={metaStartY + 68}
+            fill="#a8a29e"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontSize="16"
+            fontWeight="700"
+            letterSpacing="2.5"
+          >
+            MÚSICA
+          </text>
+          <text
+            x={170}
+            y={metaStartY + 68}
+            fill="#FAFAF9"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontSize="20"
+            fontWeight="700"
+          >
+            {truncate(movie.compositor, 38)}
+          </text>
+        </g>
+      )}
+      {runtimeStr && (
         <text
           x={60}
-          y={metaStartY + 68}
+          y={metaStartY + 102}
           fill="#a8a29e"
           fontFamily="Inter, system-ui, sans-serif"
           fontSize="18"
           fontWeight="600"
           letterSpacing="1"
         >
-          {[runtimeStr, decadeStr].filter(Boolean).join('  ·  ')}
+          {runtimeStr}
         </text>
       )}
 
       {/* Footer band */}
       <rect x="0" y={POSTER_H - footerH} width={POSTER_W} height={footerH} fill="#0c0a09" />
       <line x1="60" y1={POSTER_H - footerH} x2={POSTER_W - 60} y2={POSTER_H - footerH} stroke="#facc15" strokeWidth="3" />
-      <text
-        x="60"
-        y={POSTER_H - footerH + 56}
-        fill="#FAFAF9"
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize="26"
-        fontWeight="800"
-        letterSpacing="0.5"
-      >
-        {connectionCount > 0
-          ? `Conectada con ${connectionCount} película${connectionCount === 1 ? '' : 's'} en CineBret`
-          : 'Una pieza única en CineBret'}
-      </text>
-      <text
-        x="60"
-        y={POSTER_H - footerH + 92}
-        fill="#a8a29e"
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize="18"
-        fontWeight="600"
-        letterSpacing="1"
-      >
-        Descubre más en cinebret.cl
-      </text>
+
+      {/* Platforms or fallback */}
+      {(() => {
+        const plats = (movie.platforms || []).filter((p) => PLATFORM_LOGOS_PNG[p]).slice(0, 6)
+        if (plats.length > 0) {
+          const logoSize = 56
+          const gap = 16
+          const startX = 60
+          const labelY = POSTER_H - footerH + 50
+          const logoY = POSTER_H - footerH + 60
+          return (
+            <g>
+              <text
+                x={startX}
+                y={labelY}
+                fill="#a8a29e"
+                fontFamily="Inter, system-ui, sans-serif"
+                fontSize="14"
+                fontWeight="700"
+                letterSpacing="2.5"
+              >
+                DISPONIBLE EN
+              </text>
+              {plats.map((p, i) => (
+                <g key={p}>
+                  <rect
+                    x={startX + i * (logoSize + gap)}
+                    y={logoY}
+                    width={logoSize}
+                    height={logoSize}
+                    rx="10"
+                    ry="10"
+                    fill="#FAFAF9"
+                  />
+                  <image
+                    href={PLATFORM_LOGOS_PNG[p]}
+                    x={startX + i * (logoSize + gap) + 6}
+                    y={logoY + 6}
+                    width={logoSize - 12}
+                    height={logoSize - 12}
+                    preserveAspectRatio="xMidYMid meet"
+                  />
+                </g>
+              ))}
+            </g>
+          )
+        }
+        // Fallback: connection count
+        return (
+          <g>
+            <text
+              x="60"
+              y={POSTER_H - footerH + 56}
+              fill="#FAFAF9"
+              fontFamily="Inter, system-ui, sans-serif"
+              fontSize="22"
+              fontWeight="800"
+              letterSpacing="0.5"
+            >
+              {connectionCount > 0
+                ? `Conectada con ${connectionCount} película${connectionCount === 1 ? '' : 's'} en CineBret`
+                : 'Una pieza única en CineBret'}
+            </text>
+            <text
+              x="60"
+              y={POSTER_H - footerH + 88}
+              fill="#a8a29e"
+              fontFamily="Inter, system-ui, sans-serif"
+              fontSize="16"
+              fontWeight="600"
+              letterSpacing="1"
+            >
+              No disponible en streaming actualmente
+            </text>
+          </g>
+        )
+      })()}
+
       <text
         x={POSTER_W - 60}
         y={POSTER_H - 40}

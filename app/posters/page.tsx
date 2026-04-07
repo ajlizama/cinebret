@@ -164,7 +164,7 @@ function toPosterMovie(raw: RawMovie, groupBy: Theme['groupBy'], colorMap: Map<s
   }
 }
 
-function buildConnections(movies: PosterMovie[], maxPerNode = 4): Connection[] {
+function buildConnections(movies: PosterMovie[], maxPerNode = 8): Connection[] {
   const all: Connection[] = []
   for (let i = 0; i < movies.length; i++) {
     for (let j = i + 1; j < movies.length; j++) {
@@ -196,29 +196,32 @@ function buildConnections(movies: PosterMovie[], maxPerNode = 4): Connection[] {
 function generatePositions(count: number, width: number, height: number) {
   const positions: { x: number; y: number }[] = []
   const cx = width / 2
-  const cy = height / 2
-  // 3 concentric rings tuned for ~20 nodes
-  // Inner: 4, Middle: 8, Outer: rest
+  const cy = height / 2 + 40 // shift down a bit to balance with header
+  // Wider, more spread layout
+  // Inner: 1 (center), Middle: 6, Outer: 13
   const layout = [
-    { count: 4, r: 110 },
-    { count: 8, r: 220 },
-    { count: 8, r: 340 },
+    { count: 1, r: 0 },
+    { count: 6, r: 200 },
+    { count: 13, r: 400 },
   ]
   let idx = 0
   for (let ring = 0; ring < layout.length && idx < count; ring++) {
     const ringCount = Math.min(layout[ring].count, count - idx)
     const r = layout[ring].r
-    const angleOffset = ring % 2 === 0 ? -Math.PI / 2 : -Math.PI / 2 + Math.PI / ringCount
+    const angleOffset = ring === 1 ? -Math.PI / 2 : -Math.PI / 2 + Math.PI / ringCount
     for (let i = 0; i < ringCount; i++) {
-      const angle = angleOffset + (i / ringCount) * Math.PI * 2
-      // small jitter for organic feel
-      const jitter = 12
-      const jx = ((i * 73) % jitter) - jitter / 2
-      const jy = ((i * 41) % jitter) - jitter / 2
-      positions.push({
-        x: cx + Math.cos(angle) * r + jx,
-        y: cy + Math.sin(angle) * r + jy,
-      })
+      if (ring === 0) {
+        positions.push({ x: cx, y: cy })
+      } else {
+        const angle = angleOffset + (i / ringCount) * Math.PI * 2
+        const jitter = 18
+        const jx = ((i * 73) % jitter) - jitter / 2
+        const jy = ((i * 41) % jitter) - jitter / 2
+        positions.push({
+          x: cx + Math.cos(angle) * r + jx,
+          y: cy + Math.sin(angle) * r + jy,
+        })
+      }
       idx++
     }
   }
@@ -226,7 +229,7 @@ function generatePositions(count: number, width: number, height: number) {
   while (idx < count) {
     const i = idx
     const angle = (i / count) * Math.PI * 2
-    positions.push({ x: cx + Math.cos(angle) * 380, y: cy + Math.sin(angle) * 380 })
+    positions.push({ x: cx + Math.cos(angle) * 440, y: cy + Math.sin(angle) * 440 })
     idx++
   }
   return positions
@@ -268,9 +271,14 @@ const THEMES: Theme[] = [
         .not('poster_path', 'is', null)
         .ilike('oscars', 'Ganó Mejor Película%')
         .order('anio', { ascending: false })
-        .limit(20)
+        .limit(60)
       if (error) throw error
-      return (data || []) as unknown as RawMovie[]
+      // Filter out Animada and Internacional/Extranjera
+      const filtered = (data || []).filter((m: any) => {
+        const o = (m.oscars || '').toLowerCase()
+        return !o.includes('animad') && !o.includes('internacional') && !o.includes('extranjera') && !o.includes('habla no inglesa')
+      })
+      return filtered.slice(0, 20) as unknown as RawMovie[]
     },
   },
   {
@@ -709,9 +717,9 @@ export default function PostersPage() {
               background: 'linear-gradient(180deg, #0c0a09 0%, #1c1917 60%, #0c0a09 100%)',
             }}
           >
-            <div className="min-h-[100dvh] flex flex-col items-center pt-6 pb-16 px-4">
+            <div className="min-h-[100dvh] flex flex-col items-center pt-6 pb-16">
               {/* Top bar */}
-              <div className="w-full max-w-2xl flex items-center justify-between mb-6">
+              <div className="w-full max-w-2xl flex items-center justify-between mb-6 px-4">
                 <button
                   type="button"
                   onClick={closePoster}
@@ -729,7 +737,7 @@ export default function PostersPage() {
               </div>
 
               {/* Poster card */}
-              <div className="w-full max-w-[500px]">
+              <div className="w-full">
                 {loading ? (
                   <div
                     className="w-full rounded-2xl flex items-center justify-center bg-stone-900/60 border border-stone-800"
@@ -760,7 +768,7 @@ export default function PostersPage() {
 
               {/* Action buttons */}
               {!loading && !error && movies.length > 0 && (
-                <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-[500px]">
+                <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-2xl px-4">
                   <button
                     type="button"
                     onClick={downloadAsImage}
@@ -803,7 +811,7 @@ export default function PostersPage() {
 
               {/* Hint */}
               {!loading && !error && movies.length > 0 && (
-                <p className="mt-6 text-center text-xs text-stone-500 max-w-md">
+                <p className="mt-6 text-center text-xs text-stone-500 max-w-md px-4">
                   Las líneas conectan películas que comparten actores o director. Mientras más gruesa, más conexiones en común.
                 </p>
               )}
@@ -921,8 +929,8 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
   { theme, movies, connections, positions }: PosterSVGProps,
   ref: Ref<SVGSVGElement>,
 ) {
-  const radius = 78
-  const ringStroke = 6
+  const radius = 56
+  const ringStroke = 5
   const headerH = 220
   const footerH = 130
 
@@ -1007,12 +1015,12 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
         </text>
 
         {/* Connections */}
-        <g opacity="0.55">
+        <g>
           {connections.map((c, i) => {
             const a = positions[c.source]
             const b = positions[c.target]
             if (!a || !b) return null
-            const sw = Math.min(5, 1 + c.strength * 0.8)
+            const sw = Math.min(7, 2 + c.strength * 1.2)
             return (
               <line
                 key={`conn-${i}`}
@@ -1022,7 +1030,7 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
                 y2={b.y}
                 stroke="#FAFAF9"
                 strokeWidth={sw}
-                strokeOpacity={0.4 + Math.min(0.4, c.strength * 0.1)}
+                strokeOpacity={0.7 + Math.min(0.3, c.strength * 0.1)}
                 strokeLinecap="round"
               />
             )

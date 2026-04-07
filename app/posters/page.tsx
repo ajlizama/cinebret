@@ -164,22 +164,26 @@ function toPosterMovie(raw: RawMovie, groupBy: Theme['groupBy'], colorMap: Map<s
   }
 }
 
-function buildConnections(movies: PosterMovie[], maxPerNode = 8): Connection[] {
+type GraphData = {
+  nodes: Array<{ id: string }>
+  edges: Array<{ source: string; target: string; weight: number }>
+}
+
+function buildConnectionsFromGraph(movies: PosterMovie[], graph: GraphData | null, maxPerNode = 10): Connection[] {
+  if (!graph) return []
+  // Build edge weight lookup
+  const idToIdx = new Map<string, number>()
+  movies.forEach((m, i) => idToIdx.set(m.id, i))
   const all: Connection[] = []
-  for (let i = 0; i < movies.length; i++) {
-    for (let j = i + 1; j < movies.length; j++) {
-      const a = movies[i]
-      const b = movies[j]
-      const sharedActors = a.actors.filter((x) => b.actors.includes(x))
-      const sharedDirector = a.director && b.director && a.director === b.director ? [a.director!] : []
-      const shared = [...sharedActors, ...sharedDirector]
-      if (shared.length > 0) {
-        all.push({ source: i, target: j, strength: shared.length, shared })
-      }
-    }
+  for (const e of graph.edges) {
+    const si = idToIdx.get(e.source)
+    const ti = idToIdx.get(e.target)
+    if (si === undefined || ti === undefined || si === ti) continue
+    all.push({ source: si, target: ti, strength: e.weight, shared: [] })
   }
-  // Cap connections per node to avoid clutter
+  // Sort by weight desc
   all.sort((a, b) => b.strength - a.strength)
+  // Cap per node
   const perNode = new Map<number, number>()
   const kept: Connection[] = []
   for (const c of all) {
@@ -191,6 +195,129 @@ function buildConnections(movies: PosterMovie[], maxPerNode = 8): Connection[] {
     perNode.set(c.target, ct + 1)
   }
   return kept
+}
+
+// Force-directed layout: connected movies pull together, all repel each other
+function forceLayout(
+  movieCount: number,
+  connections: Connection[],
+  width: number,
+  height: number,
+  iterations = 300,
+): { x: number; y: number }[] {
+  const cx = width / 2
+  const cy = height / 2 + 60
+  const positions: { x: number; y: number; vx: number; vy: number }[] = []
+
+  // Initial: random positions in a circle around center
+  for (let i = 0; i < movieCount; i++) {
+    const angle = (i / movieCount) * Math.PI * 2
+    const r = 250
+    positions.push({
+      x: cx + Math.cos(angle) * r,
+      y: cy + Math.sin(angle) * r,
+      vx: 0,
+      vy: 0,
+    })
+  }
+
+  const REPULSION = 80000
+  const ATTRACTION = 0.015
+  const CENTER_PULL = 0.005
+  const DAMPING = 0.85
+  const MIN_DIST = 140 // minimum distance between any two nodes
+
+  for (let iter = 0; iter < iterations; iter++) {
+    // Apply repulsion between all pairs
+    for (let i = 0; i < positions.length; i++) {
+      for (let j = i + 1; j < positions.length; j++) {
+        const a = positions[i]
+        const b = positions[j]
+        const dx = b.x - a.x
+        const dy = b.y - a.y
+        const distSq = dx * dx + dy * dy + 1
+        const dist = Math.sqrt(distSq)
+        const force = REPULSION / distSq
+        const fx = (dx / dist) * force
+        const fy = (dy / dist) * force
+        a.vx -= fx
+        a.vy -= fy
+        b.vx += fx
+        b.vy += fy
+      }
+    }
+
+    // Apply attraction along connections (proportional to weight)
+    for (const c of connections) {
+      const a = positions[c.source]
+      const b = positions[c.target]
+      const dx = b.x - a.x
+      const dy = b.y - a.y
+      const dist = Math.sqrt(dx * dx + dy * dy) + 1
+      const force = ATTRACTION * Math.max(0.5, c.strength) * dist
+      a.vx += (dx / dist) * force
+      a.vy += (dy / dist) * force
+      b.vx -= (dx / dist) * force
+      b.vy -= (dy / dist) * force
+    }
+
+    // Pull all toward center (mild)
+    for (const p of positions) {
+      const dx = cx - p.x
+      const dy = cy - p.y
+      p.vx += dx * CENTER_PULL
+      p.vy += dy * CENTER_PULL
+    }
+
+    // Apply velocity with damping
+    for (const p of positions) {
+      p.vx *= DAMPING
+      p.vy *= DAMPING
+      p.x += p.vx
+      p.y += p.vy
+    }
+
+    // Enforce minimum distance after movement
+    for (let i = 0; i < positions.length; i++) {
+      for (let j = i + 1; j < positions.length; j++) {
+        const a = positions[i]
+        const b = positions[j]
+        const dx = b.x - a.x
+        const dy = b.y - a.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        if (dist < MIN_DIST && dist > 0) {
+          const push = (MIN_DIST - dist) / 2
+          const ux = dx / dist
+          const uy = dy / dist
+          a.x -= ux * push
+          a.y -= uy * push
+          b.x += ux * push
+          b.y += uy * push
+        }
+      }
+    }
+  }
+
+  // Center and scale to fit
+  const xs = positions.map((p) => p.x)
+  const ys = positions.map((p) => p.y)
+  const minX = Math.min(...xs)
+  const maxX = Math.max(...xs)
+  const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  const w = maxX - minX
+  const h = maxY - minY
+  const padding = 120
+  const availW = width - padding * 2
+  const availH = height - 350 // leave room for header/footer
+  const scale = Math.min(availW / w, availH / h, 1.2)
+  const offsetX = (width - w * scale) / 2 - minX * scale
+  const offsetY = 200 + (availH - h * scale) / 2 - minY * scale
+
+  return positions.map((p) => ({
+    x: p.x * scale + offsetX,
+    y: p.y * scale + offsetY,
+  }))
 }
 
 function generatePositions(count: number, width: number, height: number) {
@@ -503,7 +630,16 @@ export default function PostersPage() {
       Object.fromEntries(THEMES.map((t) => [t.id, null])) as Record<ThemeId, string | null>,
   )
   const [downloading, setDownloading] = useState(false)
+  const [graph, setGraph] = useState<GraphData | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
+
+  // Load movie graph for connections
+  useEffect(() => {
+    fetch('/movie-graph.json')
+      .then((r) => r.json())
+      .then((data) => setGraph(data))
+      .catch(() => {})
+  }, [])
 
   // Fetch a representative poster for each theme card (just one image, lightweight)
   useEffect(() => {
@@ -548,6 +684,15 @@ export default function PostersPage() {
     setConnections([])
     setError(null)
     setLoading(true)
+    // Wait for graph if not loaded yet
+    let g = graph
+    if (!g) {
+      try {
+        const r = await fetch('/movie-graph.json')
+        g = await r.json()
+        setGraph(g)
+      } catch {}
+    }
     try {
       const raw = await theme.build()
       const colorMap = new Map<string, string>()
@@ -557,7 +702,8 @@ export default function PostersPage() {
         if (pm) posterMovies.push(pm)
       }
       const sliced = posterMovies.slice(0, 20)
-      const conns = buildConnections(sliced, 4)
+      // Use the movie similarity graph for connections (much better than actor sharing)
+      const conns = buildConnectionsFromGraph(sliced, g, 10)
       setMovies(sliced)
       setConnections(conns)
     } catch (e) {
@@ -574,8 +720,11 @@ export default function PostersPage() {
     setError(null)
   }
 
-  // Pre-compute positions for current movie set
-  const positions = useMemo(() => generatePositions(movies.length, POSTER_W, POSTER_H), [movies.length])
+  // Pre-compute positions using force-directed layout based on connections
+  const positions = useMemo(
+    () => (movies.length > 0 ? forceLayout(movies.length, connections, POSTER_W, POSTER_H) : []),
+    [movies.length, connections],
+  )
 
   // Download SVG as PNG using native canvas
   async function downloadAsImage() {

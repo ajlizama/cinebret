@@ -26,6 +26,7 @@ type RawMovie = {
   anio: number | null
   nota_imdb: number | null
   oscars: string | null
+  runtime: number | null
   enriquecimiento: {
     director: string | null
     generos: string[] | null
@@ -40,8 +41,10 @@ type PosterMovie = {
   poster_path: string
   anio: number | null
   nota_imdb: number | null
+  runtime: number | null
   director: string | null
   actors: string[]
+  genres: string[]
   shortLabel: string
   groupKey: string
   groupColor: string
@@ -96,7 +99,7 @@ const GROUP_PALETTE = [
 ]
 
 const SELECT_FIELDS = `
-  id, titulo, titulo_ingles, poster_path, anio, nota_imdb, oscars,
+  id, titulo, titulo_ingles, poster_path, anio, nota_imdb, oscars, runtime,
   enriquecimiento (director, generos, cast_json)
 `.trim()
 
@@ -156,8 +159,10 @@ function toPosterMovie(raw: RawMovie, groupBy: Theme['groupBy'], colorMap: Map<s
     poster_path: raw.poster_path,
     anio: raw.anio,
     nota_imdb: raw.nota_imdb,
+    runtime: raw.runtime ?? null,
     director,
     actors,
+    genres: enr?.generos ?? [],
     shortLabel: abbreviate(raw.titulo_ingles || raw.titulo),
     groupKey,
     groupColor: colorMap.get(groupKey)!,
@@ -638,6 +643,9 @@ export default function PostersPage() {
   const [customSelected, setCustomSelected] = useState<RawMovie[]>([])
   const [customLoading, setCustomLoading] = useState(false)
   const svgRef = useRef<SVGSVGElement>(null)
+  const [selectedMovie, setSelectedMovie] = useState<PosterMovie | null>(null)
+  const movieSvgRef = useRef<SVGSVGElement>(null)
+  const [movieDownloading, setMovieDownloading] = useState(false)
 
   // Load movie graph for connections
   useEffect(() => {
@@ -887,6 +895,109 @@ export default function PostersPage() {
     }
   }
 
+  // Count how many edges reference the selected movie in current theme
+  const selectedMovieConnCount = useMemo(() => {
+    if (!selectedMovie) return 0
+    return connections.filter((c) => {
+      const src = movies[c.source]
+      const tgt = movies[c.target]
+      return src?.id === selectedMovie.id || tgt?.id === selectedMovie.id
+    }).length
+  }, [selectedMovie, connections, movies])
+
+  async function downloadMovieAsImage() {
+    const svg = movieSvgRef.current
+    if (!svg || !selectedMovie) return
+    setMovieDownloading(true)
+    try {
+      async function fetchAsDataUrl(url: string, attempts = 3): Promise<string | null> {
+        for (let i = 0; i < attempts; i++) {
+          try {
+            const res = await fetch(url, { mode: 'cors', cache: 'force-cache' })
+            if (!res.ok) throw new Error(`HTTP ${res.status}`)
+            const blob = await res.blob()
+            return await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onloadend = () => resolve(reader.result as string)
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
+            })
+          } catch {
+            if (i < attempts - 1) await new Promise((r) => setTimeout(r, 300 * (i + 1)))
+          }
+        }
+        return null
+      }
+
+      const imageEls = Array.from(svg.querySelectorAll('image'))
+      for (const el of imageEls) {
+        const href = el.getAttribute('href') || el.getAttribute('xlink:href')
+        if (!href || href.startsWith('data:')) continue
+        const dataUrl = await fetchAsDataUrl(href)
+        if (dataUrl) el.setAttribute('href', dataUrl)
+        else {
+          el.setAttribute('href', '')
+          el.setAttribute('opacity', '0')
+        }
+      }
+
+      const xml = new XMLSerializer().serializeToString(svg)
+      const svgBlob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' })
+      const svgUrl = URL.createObjectURL(svgBlob)
+
+      const img = new window.Image()
+      img.crossOrigin = 'anonymous'
+      const loaded = new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve()
+        img.onerror = (e) => reject(e)
+      })
+      img.src = svgUrl
+      await loaded
+
+      const canvas = document.createElement('canvas')
+      canvas.width = POSTER_W
+      canvas.height = POSTER_H
+      const ctx = canvas.getContext('2d')
+      if (!ctx) throw new Error('No 2d context')
+      ctx.fillStyle = '#0c0a09'
+      ctx.fillRect(0, 0, POSTER_W, POSTER_H)
+      ctx.drawImage(img, 0, 0, POSTER_W, POSTER_H)
+      URL.revokeObjectURL(svgUrl)
+
+      const pngUrl = canvas.toDataURL('image/png')
+      const a = document.createElement('a')
+      a.href = pngUrl
+      a.download = `cinebret-pelicula-${selectedMovie.shortLabel}.png`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    } catch (e) {
+      console.error('Download failed', e)
+      alert('No pudimos descargar la imagen. Toma una captura de pantalla.')
+    } finally {
+      setMovieDownloading(false)
+    }
+  }
+
+  async function shareMoviePoster() {
+    if (!selectedMovie) return
+    const title = selectedMovie.titulo_ingles || selectedMovie.titulo
+    const shareData = {
+      title: `CineBret · ${title}`,
+      text: `${title} en CineBret`,
+      url: typeof window !== 'undefined' ? window.location.href : 'https://cinebret.cl',
+    }
+    try {
+      if (navigator.share) await navigator.share(shareData)
+      else {
+        await navigator.clipboard.writeText(`${shareData.title} — ${shareData.url}`)
+        alert('Enlace copiado al portapapeles')
+      }
+    } catch {
+      /* user cancelled */
+    }
+  }
+
   async function sharePoster() {
     if (!activeTheme) return
     const shareData = {
@@ -1132,6 +1243,7 @@ export default function PostersPage() {
                     movies={movies}
                     connections={connections}
                     positions={positions}
+                    onMovieClick={(m) => setSelectedMovie(m)}
                   />
                 )}
               </div>
@@ -1185,6 +1297,86 @@ export default function PostersPage() {
                   Las líneas conectan películas similares según el grafo de CineBret (mismos keywords, género, director, etc). Mientras más gruesa, más fuerte la conexión.
                 </p>
               )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ───────────── Individual movie poster modal ───────────── */}
+      <AnimatePresence>
+        {selectedMovie && (
+          <motion.div
+            key="movie-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-sm"
+            onClick={() => setSelectedMovie(null)}
+          >
+            <div className="min-h-[100dvh] flex flex-col items-center pt-4 pb-16 px-4" onClick={(e) => e.stopPropagation()}>
+              {/* Top bar */}
+              <div className="w-full max-w-2xl flex items-center justify-end mb-6">
+                <button
+                  type="button"
+                  onClick={() => setSelectedMovie(null)}
+                  aria-label="Cerrar"
+                  className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-zinc-900 border border-zinc-700 hover:border-yellow-400/50 text-white transition-colors duration-200 cursor-pointer"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="w-full max-w-2xl">
+                <MovieDetailSVG
+                  ref={movieSvgRef}
+                  movie={selectedMovie}
+                  connectionCount={selectedMovieConnCount}
+                />
+              </div>
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-2xl">
+                <button
+                  type="button"
+                  onClick={downloadMovieAsImage}
+                  disabled={movieDownloading}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-stone-900 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ background: '#facc15' }}
+                >
+                  {movieDownloading ? (
+                    <>
+                      <span className="inline-block h-4 w-4 rounded-full border-2 border-stone-900/30 border-t-stone-900 animate-spin" />
+                      Generando…
+                    </>
+                  ) : (
+                    <>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </svg>
+                      Descargar PNG
+                    </>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={shareMoviePoster}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white border border-stone-700 hover:bg-stone-800 transition-colors duration-200"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="18" cy="5" r="3" />
+                    <circle cx="6" cy="12" r="3" />
+                    <circle cx="18" cy="19" r="3" />
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                  </svg>
+                  Compartir
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
@@ -1293,10 +1485,11 @@ type PosterSVGProps = {
   movies: PosterMovie[]
   connections: Connection[]
   positions: { x: number; y: number }[]
+  onMovieClick?: (movie: PosterMovie) => void
 }
 
 const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
-  { theme, movies, connections, positions }: PosterSVGProps,
+  { theme, movies, connections, positions, onMovieClick }: PosterSVGProps,
   ref: Ref<SVGSVGElement>,
 ) {
   const radius = 56
@@ -1419,7 +1612,11 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
           const p = positions[i]
           if (!p) return null
           return (
-            <g key={`node-${m.id}`}>
+            <g
+              key={`node-${m.id}`}
+              onClick={onMovieClick ? () => onMovieClick(m) : undefined}
+              style={onMovieClick ? { cursor: 'pointer' } : undefined}
+            >
               {/* Subtle outer glow */}
               <circle cx={p.x} cy={p.y} r={radius + 14} fill={m.groupColor} opacity="0.12" />
               {/* Poster */}
@@ -1511,3 +1708,337 @@ const PosterSVG = forwardRef<SVGSVGElement, PosterSVGProps>(function PosterSVG(
     )
   },
 )
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Individual movie detail poster SVG
+// ─────────────────────────────────────────────────────────────────────────────
+
+type MovieDetailSVGProps = {
+  movie: PosterMovie
+  connectionCount: number
+}
+
+function formatRuntime(mins: number | null): string | null {
+  if (!mins || mins <= 0) return null
+  const h = Math.floor(mins / 60)
+  const m = mins % 60
+  if (h === 0) return `${m}min`
+  if (m === 0) return `${h}h`
+  return `${h}h ${m}min`
+}
+
+function truncate(s: string, n: number): string {
+  return s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s
+}
+
+const MovieDetailSVG = forwardRef<SVGSVGElement, MovieDetailSVGProps>(function MovieDetailSVG(
+  { movie, connectionCount }: MovieDetailSVGProps,
+  ref: Ref<SVGSVGElement>,
+) {
+  const headerH = 220
+  const footerH = 130
+
+  // Poster box dims/position
+  const posterW = 520
+  const posterH = 780
+  const posterX = (POSTER_W - posterW) / 2
+  const posterY = headerH + 40
+
+  const title = movie.titulo_ingles || movie.titulo
+  const titleDisplay = truncate(title, 22).toUpperCase()
+  const genrePills = (movie.genres || []).slice(0, 4)
+  const castTop = (movie.actors || []).slice(0, 3).join(', ')
+  const runtimeStr = formatRuntime(movie.runtime)
+  const decadeStr = movie.anio ? `Década ${Math.floor(movie.anio / 10) * 10}` : null
+
+  // Meta rows baseline under poster
+  const metaStartY = posterY + posterH + 90
+
+  // Genre pills layout (centered)
+  const pillHeight = 40
+  const pillPaddingX = 22
+  const pillGap = 12
+  const approxCharW = 11
+  const pillWidths = genrePills.map((g) => Math.max(90, g.length * approxCharW + pillPaddingX * 2))
+  const pillsTotalW = pillWidths.reduce((a, b) => a + b, 0) + pillGap * Math.max(0, pillWidths.length - 1)
+  let pillCursorX = (POSTER_W - pillsTotalW) / 2
+  const pillsY = posterY + posterH + 22
+
+  return (
+    <svg
+      ref={ref}
+      id="movie-detail-svg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={`0 0 ${POSTER_W} ${POSTER_H}`}
+      className="w-full h-auto rounded-2xl shadow-2xl shadow-black/60"
+      style={{ display: 'block' }}
+    >
+      <defs>
+        <linearGradient id="md-bg-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0c0a09" />
+          <stop offset="50%" stopColor="#1c1917" />
+          <stop offset="100%" stopColor="#0c0a09" />
+        </linearGradient>
+        <linearGradient id="md-header-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0c0a09" />
+          <stop offset="100%" stopColor="#1c1917" />
+        </linearGradient>
+        <clipPath id="md-poster-clip">
+          <rect x={posterX} y={posterY} width={posterW} height={posterH} rx="24" ry="24" />
+        </clipPath>
+      </defs>
+
+      {/* Background */}
+      <rect width={POSTER_W} height={POSTER_H} fill="url(#md-bg-grad)" />
+
+      {/* Header band */}
+      <rect width={POSTER_W} height={headerH} fill="url(#md-header-grad)" />
+      <line x1="60" y1={headerH} x2={POSTER_W - 60} y2={headerH} stroke="#facc15" strokeWidth="3" />
+
+      {/* Logo + wordmark */}
+      <g>
+        <image
+          href="/logo-oficial.png"
+          x="60"
+          y="50"
+          width="120"
+          height="80"
+          preserveAspectRatio="xMidYMid meet"
+        />
+        <text
+          x="200"
+          y="92"
+          fill="#FAFAF9"
+          fontFamily="Inter, system-ui, sans-serif"
+          fontSize="34"
+          fontWeight="900"
+          letterSpacing="2"
+        >
+          CINEBRET
+        </text>
+        <text
+          x="200"
+          y="120"
+          fill="#a8a29e"
+          fontFamily="Inter, system-ui, sans-serif"
+          fontSize="18"
+          fontWeight="600"
+          letterSpacing="3"
+        >
+          POSTERS · PELÍCULA
+        </text>
+      </g>
+
+      {/* Movie title */}
+      <text
+        x={POSTER_W / 2}
+        y={headerH - 52}
+        textAnchor="middle"
+        fill="#FAFAF9"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={titleDisplay.length > 16 ? 48 : 58}
+        fontWeight="900"
+        letterSpacing="-1"
+      >
+        {titleDisplay}
+      </text>
+
+      {/* Rating · year · genres count */}
+      <text
+        x={POSTER_W / 2}
+        y={headerH - 18}
+        textAnchor="middle"
+        fill="#facc15"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize="22"
+        fontWeight="700"
+        letterSpacing="1.5"
+      >
+        {[
+          movie.nota_imdb ? `★ ${movie.nota_imdb.toFixed(1)}` : null,
+          movie.anio ? `${movie.anio}` : null,
+          movie.genres?.length ? `${movie.genres.length} géneros` : null,
+        ]
+          .filter(Boolean)
+          .join('   ·   ')}
+      </text>
+
+      {/* Colored glow behind poster */}
+      <rect
+        x={posterX - 18}
+        y={posterY - 18}
+        width={posterW + 36}
+        height={posterH + 36}
+        rx="32"
+        ry="32"
+        fill={movie.groupColor}
+        opacity="0.14"
+      />
+
+      {/* Poster image (clipped to rounded rect) */}
+      <image
+        href={`/api/tmdb-image?path=${encodeURIComponent(movie.poster_path)}&size=w500`}
+        x={posterX}
+        y={posterY}
+        width={posterW}
+        height={posterH}
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#md-poster-clip)"
+      />
+
+      {/* Ring border around poster */}
+      <rect
+        x={posterX}
+        y={posterY}
+        width={posterW}
+        height={posterH}
+        rx="24"
+        ry="24"
+        fill="none"
+        stroke={movie.groupColor}
+        strokeWidth="6"
+      />
+
+      {/* Genre pills below poster */}
+      {genrePills.map((g, i) => {
+        const w = pillWidths[i]
+        const x = pillCursorX
+        pillCursorX += w + pillGap
+        return (
+          <g key={`pill-${i}`}>
+            <rect
+              x={x}
+              y={pillsY}
+              width={w}
+              height={pillHeight}
+              rx={pillHeight / 2}
+              ry={pillHeight / 2}
+              fill="#0c0a09"
+              stroke={movie.groupColor}
+              strokeWidth="2"
+            />
+            <text
+              x={x + w / 2}
+              y={pillsY + pillHeight / 2 + 7}
+              textAnchor="middle"
+              fill="#FAFAF9"
+              fontFamily="Inter, system-ui, sans-serif"
+              fontSize="18"
+              fontWeight="700"
+              letterSpacing="0.5"
+            >
+              {g}
+            </text>
+          </g>
+        )
+      })}
+
+      {/* Meta info (DIR, CAST, runtime/decade) */}
+      {movie.director && (
+        <g>
+          <text
+            x={60}
+            y={metaStartY}
+            fill="#a8a29e"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontSize="16"
+            fontWeight="700"
+            letterSpacing="2.5"
+          >
+            DIR.
+          </text>
+          <text
+            x={130}
+            y={metaStartY}
+            fill="#FAFAF9"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontSize="20"
+            fontWeight="700"
+          >
+            {truncate(movie.director, 42)}
+          </text>
+        </g>
+      )}
+
+      {castTop && (
+        <g>
+          <text
+            x={60}
+            y={metaStartY + 34}
+            fill="#a8a29e"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontSize="16"
+            fontWeight="700"
+            letterSpacing="2.5"
+          >
+            CAST.
+          </text>
+          <text
+            x={130}
+            y={metaStartY + 34}
+            fill="#FAFAF9"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontSize="20"
+            fontWeight="700"
+          >
+            {truncate(castTop, 42)}
+          </text>
+        </g>
+      )}
+
+      {(runtimeStr || decadeStr) && (
+        <text
+          x={60}
+          y={metaStartY + 68}
+          fill="#a8a29e"
+          fontFamily="Inter, system-ui, sans-serif"
+          fontSize="18"
+          fontWeight="600"
+          letterSpacing="1"
+        >
+          {[runtimeStr, decadeStr].filter(Boolean).join('  ·  ')}
+        </text>
+      )}
+
+      {/* Footer band */}
+      <rect x="0" y={POSTER_H - footerH} width={POSTER_W} height={footerH} fill="#0c0a09" />
+      <line x1="60" y1={POSTER_H - footerH} x2={POSTER_W - 60} y2={POSTER_H - footerH} stroke="#facc15" strokeWidth="3" />
+      <text
+        x="60"
+        y={POSTER_H - footerH + 56}
+        fill="#FAFAF9"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize="26"
+        fontWeight="800"
+        letterSpacing="0.5"
+      >
+        {connectionCount > 0
+          ? `Conectada con ${connectionCount} película${connectionCount === 1 ? '' : 's'} en CineBret`
+          : 'Una pieza única en CineBret'}
+      </text>
+      <text
+        x="60"
+        y={POSTER_H - footerH + 92}
+        fill="#a8a29e"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize="18"
+        fontWeight="600"
+        letterSpacing="1"
+      >
+        Descubre más en cinebret.cl
+      </text>
+      <text
+        x={POSTER_W - 60}
+        y={POSTER_H - 40}
+        textAnchor="end"
+        fill="#facc15"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize="22"
+        fontWeight="900"
+        letterSpacing="1.5"
+      >
+        cinebret.cl
+      </text>
+    </svg>
+  )
+})

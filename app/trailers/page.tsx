@@ -254,12 +254,7 @@ export default function TrailersPage() {
         <p className="text-white text-sm font-semibold line-clamp-1">
           {m.titulo_ingles || m.titulo}
         </p>
-        <div className="flex items-center gap-2">
-          {m.titulo_ingles && m.titulo_ingles !== m.titulo && (
-            <p className="text-zinc-500 text-xs line-clamp-1">{m.titulo}</p>
-          )}
-          {m.anio && <p className="text-zinc-600 text-xs tabular-nums">{m.anio}</p>}
-        </div>
+        {m.anio && <p className="text-zinc-600 text-xs tabular-nums mt-0.5">{m.anio}</p>}
       </button>
     )
   }

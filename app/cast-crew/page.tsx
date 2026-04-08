@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -218,15 +218,18 @@ export default function CastCrewPage() {
     })()
   }, [])
 
-  // Backfill missing TMDB photos for directors / composers in the background.
-  // Actors usually have photos via cast_json — directors / composers don't.
+  // Backfill missing TMDB photos for directors / composers ONCE in the
+  // background. Guarded with a ref so we don't loop on every setPeople.
+  const backfilledRef = useRef(false)
   useEffect(() => {
+    if (backfilledRef.current) return
     if (people.length === 0) return
     const missing = people
       .filter((p) => !p.photo && (p.type === 'director' || p.type === 'compositor'))
       .map((p) => p.name)
       .slice(0, 200)
     if (missing.length === 0) return
+    backfilledRef.current = true
 
     let cancelled = false
     ;(async () => {
@@ -240,9 +243,15 @@ export default function CastCrewPage() {
         const data = await res.json()
         const photos: Record<string, string | null> = data.photos ?? {}
         if (cancelled) return
-        setPeople((prev) =>
-          prev.map((p) => (p.photo || !(p.name in photos) ? p : { ...p, photo: photos[p.name] })),
-        )
+        setPeople((prev) => {
+          let changed = false
+          const next = prev.map((p) => {
+            if (p.photo || !photos[p.name]) return p
+            changed = true
+            return { ...p, photo: photos[p.name] }
+          })
+          return changed ? next : prev
+        })
       } catch {}
     })()
     return () => {

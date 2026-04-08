@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase'
-import Nav from '@/components/Nav'
 import EstadisticasInteractivas, { type PeliculaRow, type AnalisisCatalogo } from './EstadisticasInteractivas'
-import BackButton from '@/components/BackButton'
+import { PageShell } from '@/components/ui'
 
 const GENEROS_NORMALIZE: Record<string, string> = {
   'Action': 'Acción', 'Adventure': 'Aventura', 'Animation': 'Animación',
@@ -21,14 +20,14 @@ const GENEROS_NORMALIZE: Record<string, string> = {
 const normalizarGenero = (g: string) => GENEROS_NORMALIZE[g] ?? g
 
 const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
-  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700', logo: '/hbo_max.png' },
-  { id: 'amazon_prime', nombre: 'Prime', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
-  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-gray-800', logo: '/apple_tv.png' },
-  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
-  { id: 'mubi', nombre: 'MUBI', color: 'bg-blue-800', logo: '/mubi.png' },
-  { id: 'crunchyroll', nombre: 'Crunchyroll', color: 'bg-orange-600', logo: '/crunchyroll.png' },
+  { id: 'netflix',         nombre: 'Netflix' },
+  { id: 'disney_plus',     nombre: 'Disney+' },
+  { id: 'hbo_max',         nombre: 'HBO Max' },
+  { id: 'amazon_prime',    nombre: 'Prime' },
+  { id: 'apple_tv',        nombre: 'Apple TV+' },
+  { id: 'paramount_plus',  nombre: 'Paramount+' },
+  { id: 'mubi',            nombre: 'MUBI' },
+  { id: 'crunchyroll',     nombre: 'Crunchyroll' },
 ]
 
 async function fetchAllPages<T>(
@@ -48,7 +47,6 @@ async function fetchAllPages<T>(
 }
 
 export default async function EstadisticasPage() {
-  // Usar la fecha más reciente disponible en catalogos (no necesariamente hoy)
   const { data: fechaRow } = await supabase
     .from('catalogos')
     .select('fecha')
@@ -81,15 +79,10 @@ export default async function EstadisticasPage() {
       .maybeSingle(),
   ])
 
-  const analisis = analisisRow.data as {
-    plataformas: Record<string, string>
-    comparativo: string
-    fecha_catalogo: string
-    created_at: string
-  } | null
+  const analisis = analisisRow.data as AnalisisCatalogo
 
   const platMap: Record<string, string[]> = {}
-  catalogosRaw.forEach(c => {
+  catalogosRaw.forEach((c: any) => {
     if (!platMap[c.pelicula_id]) platMap[c.pelicula_id] = []
     if (!platMap[c.pelicula_id].includes(c.plataforma)) platMap[c.pelicula_id].push(c.plataforma)
   })
@@ -116,17 +109,12 @@ export default async function EstadisticasPage() {
   })
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav  />
-
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        <BackButton />
-        <EstadisticasInteractivas
-          peliculas={peliculas}
-          plataformas={PLATAFORMAS}
-          analisis={analisis}
-        />
-      </div>
-    </main>
+    <PageShell maxWidth="7xl">
+      <EstadisticasInteractivas
+        peliculas={peliculas}
+        plataformas={PLATAFORMAS}
+        analisis={analisis}
+      />
+    </PageShell>
   )
 }

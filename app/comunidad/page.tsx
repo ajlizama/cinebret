@@ -1,17 +1,25 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'
-// ParaTi moved to home page (catalogo)
 import AutorReviewLike from '@/app/pelicula/[id]/AutorReviewLike'
 import CuestionarioOnboarding from '@/app/perfil/CuestionarioOnboarding'
 import YouTubeClip from '@/components/YouTubeClip'
-import Loading from '@/components/Loading'
 import { extractYouTubeId } from '@/lib/youtube'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  Button,
+  IconButton,
+  LoadingState,
+  EmptyState,
+  Modal,
+  Icon,
+} from '@/components/ui'
 
 type Perfil = {
   user_id: string
@@ -131,10 +139,12 @@ function AutoplayClip({ url }: { url: string }) {
         onClick={() => setMuted(m => !m)}
       />
       <button
+        type="button"
         onClick={e => { e.stopPropagation(); setMuted(m => !m) }}
-        className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center text-white text-xs"
+        aria-label={muted ? 'Activar sonido' : 'Silenciar'}
+        className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center text-white"
       >
-        {muted ? <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><line x1="23" y1="9" x2="17" y2="15" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" strokeLinecap="round"/></svg> : <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+        {muted ? <Icon.VolumeOff className="w-4 h-4" /> : <Icon.VolumeOn className="w-4 h-4" />}
       </button>
     </div>
   )
@@ -151,18 +161,20 @@ function FeedCard({
   const [expandido, setExpandido] = useState(false)
 
   return (
-    <div className="bg-black border-t border-b border-zinc-800 overflow-hidden">
+    <article className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800/60">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pt-4 pb-3">
         {item.isCineBret ? (
           <>
             <AvatarCineBret size={36} />
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-white text-sm font-semibold">CineBret</span>
-                <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-1.5 py-0.5 rounded-full leading-none">Autor</span>
+                <span className="inline-flex items-center rounded-full bg-yellow-400/15 border border-yellow-400/30 px-2 py-0.5 text-[10px] font-bold text-yellow-400 uppercase tracking-wider">
+                  Autor
+                </span>
               </div>
-              <p className="text-zinc-500 text-xs">Review oficial</p>
+              <p className="text-zinc-500 text-xs">Reseña oficial</p>
             </div>
           </>
         ) : (
@@ -171,12 +183,17 @@ function FeedCard({
               <Avatar url={item.avatar_url} username={item.username} size={36} />
             </Link>
             <div className="flex-1 min-w-0">
-              <Link href={`/perfil/${item.username}`} className="text-white text-sm font-medium hover:text-zinc-300">
+              <Link href={`/perfil/${item.username}`} className="text-white text-sm font-medium hover:text-zinc-300 truncate block">
                 @{item.username}
               </Link>
               <p className="text-zinc-500 text-xs">{item.created_at ? tiempoRelativo(item.created_at) : ''}</p>
             </div>
-            {item.rating && <span className="text-yellow-400 font-bold text-sm shrink-0">{item.rating}/10</span>}
+            {item.rating && (
+              <span className="inline-flex items-center gap-1 text-yellow-400 font-bold text-sm shrink-0">
+                <Icon.Star filled className="w-3.5 h-3.5" />
+                {item.rating}/10
+              </span>
+            )}
           </>
         )}
       </div>
@@ -195,21 +212,21 @@ function FeedCard({
             <p className="text-white text-sm font-semibold mb-1 leading-snug">{item.titulo_ingles || item.titulo}</p>
           </Link>
           {item.isCineBret && item.sinopsis && (
-            <p className="text-zinc-400 text-sm italic leading-relaxed mb-2 border-l-2 border-zinc-700 pl-3">{item.sinopsis}</p>
+            <p className="text-zinc-400 text-sm italic leading-relaxed mb-2 border-l-2 border-yellow-400/40 pl-3">{item.sinopsis}</p>
           )}
           <p
             onClick={() => setExpandido(v => !v)}
-            className={`text-sm leading-relaxed cursor-pointer ${expandido ? '' : 'line-clamp-4'} ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}
+            className={`text-sm leading-relaxed cursor-pointer whitespace-pre-wrap ${expandido ? '' : 'line-clamp-4'} ${item.isCineBret ? 'text-zinc-300' : 'text-zinc-400'}`}
           >
             {item.review_text}
           </p>
           {!expandido && item.review_text.length > 200 && (
-            <button onClick={() => setExpandido(true)} className="text-xs text-zinc-500 hover:text-zinc-300 mt-1 transition-colors">
+            <button type="button" onClick={() => setExpandido(true)} className="text-xs font-semibold text-yellow-400 hover:text-yellow-300 mt-1 transition-colors">
               Ver más
             </button>
           )}
           {expandido && (
-            <button onClick={() => setExpandido(false)} className="text-xs text-zinc-500 hover:text-zinc-300 mt-1 transition-colors">
+            <button type="button" onClick={() => setExpandido(false)} className="text-xs font-semibold text-yellow-400 hover:text-yellow-300 mt-1 transition-colors">
               Ver menos
             </button>
           )}
@@ -224,40 +241,60 @@ function FeedCard({
       )}
 
       {/* Acciones */}
-      <div className="flex items-center gap-3 px-4 pb-3">
+      <div className="flex items-center gap-2 px-4 pb-4 pt-1">
         {item.isCineBret ? (
           <AutorReviewLike peliculaId={item.pelicula_id} />
         ) : (
           <>
             {/* Like review */}
             <button
+              type="button"
               onClick={onToggleLike}
-              className={`flex items-center gap-1 text-xs transition-colors ${youLiked ? 'text-yellow-400' : 'text-zinc-600 hover:text-zinc-400'}`}
+              aria-label={youLiked ? 'Quitar me gusta' : 'Me gusta'}
+              className={`inline-flex items-center gap-1.5 text-xs min-h-[44px] px-3 rounded-full border transition-colors ${
+                youLiked
+                  ? 'border-yellow-400/60 bg-yellow-400/10 text-yellow-400'
+                  : 'border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
+              }`}
             >
-              <span className="text-sm leading-none">{youLiked ? '♥' : '♡'}</span>
-              {(likes ?? 0) > 0 && <span>{likes}</span>}
+              <Icon.Heart filled={!!youLiked} className="w-4 h-4" />
+              {(likes ?? 0) > 0 && <span className="tabular-nums">{likes}</span>}
             </button>
-            {/* Vista */}
+            {/* Vista / Watchlist */}
             {hasUser && (
               <>
                 <button
+                  type="button"
                   onClick={onToggleVisto}
-                  className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-colors ${visto ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
+                  aria-label={visto ? 'Marcar como no vista' : 'Marcar como vista'}
+                  className={`inline-flex items-center gap-1.5 text-xs min-h-[44px] px-3 rounded-full border transition-colors ${
+                    visto
+                      ? 'border-yellow-400/60 bg-yellow-400/10 text-yellow-400'
+                      : 'border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
+                  }`}
                 >
-                  {visto ? '✓ Vista' : '○ Vista'}
+                  {visto ? <Icon.Check className="w-4 h-4" /> : <Icon.Eye className="w-4 h-4" />}
+                  <span>Vista</span>
                 </button>
                 <button
+                  type="button"
                   onClick={onToggleWatchlist}
-                  className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-colors ${watchlist ? 'bg-yellow-400/20 border-yellow-400 text-yellow-400' : 'border-zinc-700 text-zinc-500 hover:border-zinc-500'}`}
+                  aria-label={watchlist ? 'Quitar de watchlist' : 'Añadir a watchlist'}
+                  className={`inline-flex items-center gap-1.5 text-xs min-h-[44px] px-3 rounded-full border transition-colors ${
+                    watchlist
+                      ? 'border-yellow-400/60 bg-yellow-400/10 text-yellow-400'
+                      : 'border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
+                  }`}
                 >
-                  {watchlist ? '★' : '☆'}
+                  <Icon.Bookmark filled={!!watchlist} className="w-4 h-4" />
+                  <span>Watchlist</span>
                 </button>
               </>
             )}
           </>
         )}
       </div>
-    </div>
+    </article>
   )
 }
 
@@ -285,10 +322,10 @@ export default function ComunidadPage() {
   const [misPeliculasMap, setMisPeliculasMap] = useState<Record<string, { visto: boolean; watchlist: boolean }>>({})
   const [cuestionarioAbierto, setCuestionarioAbierto] = useState(false)
   const [preferencias, setPreferencias] = useState<PerfilPreferencias | null>(null)
-  const [preferenciasLoaded, setPreferenciasLoaded] = useState(false)
-  const [paraTiKey, setParaTiKey] = useState(0)
+  const [, setPreferenciasLoaded] = useState(false)
+  const [, setParaTiKey] = useState(0)
 
-  // Fetch preferencias del usuario — incrementa paraTiKey cuando estén listas
+  // Fetch preferencias del usuario
   useEffect(() => {
     if (!user) { setPreferenciasLoaded(true); return }
     supabase
@@ -316,20 +353,19 @@ export default function ComunidadPage() {
       if (!profiles || profiles.length === 0) { setCargandoTodos(false); return }
 
       const userIds = profiles.map((p: any) => p.user_id)
-      const { data: vistas } = await supabase
-        .from('user_peliculas')
-        .select('user_id')
-        .eq('visto', true)
-        .in('user_id', userIds)
+
+      // Parallelize vistas + follows
+      const [{ data: vistas }, followsRes] = await Promise.all([
+        supabase.from('user_peliculas').select('user_id').eq('visto', true).in('user_id', userIds),
+        user
+          ? supabase.from('follows').select('following_id').eq('follower_id', user.id)
+          : Promise.resolve({ data: [] as any[] }),
+      ])
 
       const vistasMap: Record<string, number> = {}
       ;(vistas ?? []).forEach((v: any) => { vistasMap[v.user_id] = (vistasMap[v.user_id] ?? 0) + 1 })
 
-      let sigosSet: Set<string> = new Set()
-      if (user) {
-        const { data: followsData } = await supabase.from('follows').select('following_id').eq('follower_id', user.id)
-        sigosSet = new Set((followsData ?? []).map((f: any) => f.following_id))
-      }
+      const sigosSet: Set<string> = new Set(((followsRes as any)?.data ?? []).map((f: any) => f.following_id))
 
       const merged: Perfil[] = profiles
         .filter((p: any) => !user || p.user_id !== user.id)
@@ -539,86 +575,98 @@ export default function ComunidadPage() {
   }
 
   // Feed combinado: reviews de seguidores primero, luego CineBret
-  const feedCombinado: FeedItem[] = [...feedSeguidores, ...feedCineBret]
+  const feedCombinado = useMemo<FeedItem[]>(
+    () => [...feedSeguidores, ...feedCineBret],
+    [feedSeguidores, feedCineBret],
+  )
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav active="comunidad" />
+    <PageShell maxWidth="4xl">
+      <PageHeader
+        title="Comunidad"
+        subtitle="Reseñas de la comunidad CineBret y del autor."
+        icon={<Icon.Users className="w-8 h-8" />}
+      />
 
-      {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950 pt-6 pb-4">
-        <div className="relative flex flex-col items-center justify-center px-4">
-          <h1 className="text-2xl md:text-4xl font-bold text-white text-center mb-4 tracking-tight">
-            Comunidad <span className="text-yellow-400">CineBret</span>
-          </h1>
-        </div>
-      </div>
-
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-3">
-
-        {/* Contenido principal — ancho completo */}
-        <div>
-            {/* Explorar todos los perfiles */}
-            <div className="mb-6">
-              <button
-                onClick={() => setMostrarTodos(v => !v)}
-                className="flex items-center gap-2 w-full text-left text-sm text-zinc-400 hover:text-white transition-colors mb-3"
-              >
-                <span className="text-xs">{mostrarTodos ? <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 12.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414 0z"/></svg> : <svg className="w-3 h-3 inline-block" viewBox="0 0 20 20" fill="currentColor"><path d="M14.707 7.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 10.586l3.293-3.293a1 1 0 011.414 0z"/></svg>}</span>
-                <span className="font-medium">Explorar perfiles</span>
-                {!cargandoTodos && <span className="text-zinc-600 text-xs">({todosPerfiles.length})</span>}
-              </button>
-
-              {mostrarTodos && (
-                <div className="max-h-72 overflow-y-auto rounded-xl space-y-2 pr-1">
-                  {cargandoTodos ? (
-                    <Loading text="Cargando..." size="sm" />
-                  ) : todosPerfiles.length === 0 ? (
-                    <p className="text-zinc-600 text-sm">Sin perfiles aún</p>
-                  ) : (
-                    todosPerfiles.map(perfil => {
-                      const sigoEste = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
-                      return (
-                        <div key={perfil.user_id} className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
-                          <Link href={`/perfil/${perfil.username}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                            <Avatar url={perfil.avatar_url} username={perfil.username} size={36} />
-                            <div>
-                              <p className="text-white text-sm font-medium">@{perfil.username}</p>
-                              <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
-                            </div>
-                          </Link>
-                          {user && (
-                            <button
-                              onClick={() => toggleFollow(perfil)}
-                              className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                                sigoEste
-                                  ? 'border-zinc-600 text-zinc-400 hover:border-red-500 hover:text-red-400'
-                                  : 'bg-yellow-400 border-yellow-400 text-zinc-950 hover:bg-yellow-300'
-                              }`}
-                            >
-                              {sigoEste ? 'Siguiendo' : '+ Seguir'}
-                            </button>
-                          )}
-                        </div>
-                      )
-                    })
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Feed */}
-            {cargandoFeed && <Loading text="Cargando..." size="sm" />}
-
-            {!cargandoFeed && feedCombinado.length === 0 && (
-              <p className="text-zinc-500 text-sm text-center mt-8">Sin contenido aún</p>
+      {/* Explorar perfiles */}
+      <Section
+        label="Explorar perfiles"
+        count={!cargandoTodos ? todosPerfiles.length : undefined}
+        action={
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMostrarTodos(v => !v)}
+            iconRight={
+              mostrarTodos
+                ? <Icon.ChevronUp className="w-4 h-4" />
+                : <Icon.ChevronDown className="w-4 h-4" />
+            }
+          >
+            {mostrarTodos ? 'Ocultar' : 'Mostrar'}
+          </Button>
+        }
+      >
+        {mostrarTodos && (
+          <div className="max-h-96 overflow-y-auto rounded-2xl space-y-2 pr-1">
+            {cargandoTodos ? (
+              <LoadingState text="Cargando perfiles..." size="sm" />
+            ) : todosPerfiles.length === 0 ? (
+              <EmptyState
+                icon={<Icon.Users className="w-12 h-12" />}
+                title="Sin perfiles aún"
+                description="Todavía no hay más personas en la comunidad."
+              />
+            ) : (
+              todosPerfiles.map(perfil => {
+                const sigoEste = siguiendoMap[perfil.user_id] !== undefined ? siguiendoMap[perfil.user_id] : perfil.sigo
+                return (
+                  <div
+                    key={perfil.user_id}
+                    className="flex items-center justify-between gap-3 bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3"
+                  >
+                    <Link
+                      href={`/perfil/${perfil.username}`}
+                      className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-80 transition-opacity"
+                    >
+                      <Avatar url={perfil.avatar_url} username={perfil.username} size={40} />
+                      <div className="min-w-0">
+                        <p className="text-white text-sm font-semibold truncate">@{perfil.username}</p>
+                        <p className="text-zinc-500 text-xs">{perfil.vistas} películas vistas</p>
+                      </div>
+                    </Link>
+                    {user && (
+                      <Button
+                        size="sm"
+                        variant={sigoEste ? 'secondary' : 'primary'}
+                        onClick={() => toggleFollow(perfil)}
+                        iconLeft={sigoEste ? <Icon.Check className="w-3.5 h-3.5" /> : <Icon.Plus className="w-3.5 h-3.5" />}
+                      >
+                        {sigoEste ? 'Siguiendo' : 'Seguir'}
+                      </Button>
+                    )}
+                  </div>
+                )
+              })
             )}
+          </div>
+        )}
+      </Section>
 
-            {!cargandoFeed && feedCombinado.length > 0 && (
+      {/* Feed */}
+      {cargandoFeed ? (
+        <LoadingState text="Cargando reseñas..." />
+      ) : feedCombinado.length === 0 ? (
+        <EmptyState
+          icon={<Icon.Film className="w-12 h-12" />}
+          title="Sin reseñas aún"
+          description="Sigue a otras personas para ver sus reseñas aquí."
+        />
+      ) : (
+        <>
+          {feedSeguidores.length > 0 && (
+            <Section label="Reseñas de la comunidad" count={feedSeguidores.length}>
               <div className="space-y-4">
-                {feedSeguidores.length > 0 && (
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews</p>
-                )}
                 {feedSeguidores.map(item => (
                   <FeedCard
                     key={item.id}
@@ -633,22 +681,33 @@ export default function ComunidadPage() {
                     hasUser={!!user}
                   />
                 ))}
-
-                {feedCineBret.length > 0 && (
-                  <div className="flex items-center gap-3 pt-2">
-                    <AvatarCineBret size={28} />
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide">Reviews de CineBret</p>
-                  </div>
-                )}
-                {feedCineBret.map(item => <FeedCard key={item.id} item={item} hasUser={!!user} />)}
               </div>
-            )}
+            </Section>
+          )}
 
-        </div>
-      </div>
+          {feedCineBret.length > 0 && (
+            <Section
+              label="Reseñas de CineBret"
+              count={feedCineBret.length}
+              action={<AvatarCineBret size={28} />}
+            >
+              <div className="space-y-4">
+                {feedCineBret.map(item => (
+                  <FeedCard key={item.id} item={item} hasUser={!!user} />
+                ))}
+              </div>
+            </Section>
+          )}
+        </>
+      )}
 
       {/* Modal cuestionario */}
-      {cuestionarioAbierto && (
+      <Modal
+        open={cuestionarioAbierto}
+        onClose={() => setCuestionarioAbierto(false)}
+        size="lg"
+        showCloseButton={false}
+      >
         <CuestionarioOnboarding
           onComplete={async () => {
             setCuestionarioAbierto(false)
@@ -665,7 +724,7 @@ export default function ComunidadPage() {
           onDismiss={() => setCuestionarioAbierto(false)}
           preferenciasIniciales={preferencias}
         />
-      )}
-    </main>
+      </Modal>
+    </PageShell>
   )
 }

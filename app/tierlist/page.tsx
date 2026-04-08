@@ -188,7 +188,7 @@ const THEME_LIST: ThemeConfig[] = [
   {
     id: 'random',
     title: 'Aleatorio',
-    description: '16 películas al azar',
+    description: 'Hasta 16 películas al azar',
     filter: 'custom',
   },
   {
@@ -282,13 +282,15 @@ export default function TierListPage() {
     setSelectedTheme(theme)
     setSelectedMovie(null)
 
-    if (pool.length < 16) {
-      setError(`Solo hay ${pool.length} películas para "${theme.title}". Se necesitan al menos 16.`)
+    if (pool.length < 6) {
+      setError(`Solo hay ${pool.length} películas para "${theme.title}". Se necesitan al menos 6.`)
       setPhase('tierlist')
       return
     }
 
-    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 16)
+    // Use up to 16 movies, but accept any pool size from 6 upward
+    const target = Math.min(pool.length, 16)
+    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, target)
     setUnranked(shuffled)
     setTiers({ S: [], A: [], B: [], C: [], D: [], F: [] })
     setPhase('tierlist')
@@ -406,7 +408,8 @@ export default function TierListPage() {
   }
 
   const totalPlaced = TIERS.reduce((sum, t) => sum + tiers[t.name].length, 0)
-  const allPlaced = totalPlaced === 16 && unranked.length === 0
+  const totalMovies = totalPlaced + unranked.length
+  const allPlaced = totalMovies > 0 && unranked.length === 0
 
   const handleShare = async () => {
     if (!selectedTheme) return
@@ -475,7 +478,7 @@ export default function TierListPage() {
     <PageShell maxWidth="4xl">
       <PageHeader
         title="Tier List"
-        subtitle="Clasifica 16 películas de S a F según tu criterio."
+        subtitle="Clasifica películas de S a F según tu criterio."
         icon={<Icon.Trophy className="w-8 h-8" />}
       />
 
@@ -586,7 +589,7 @@ export default function TierListPage() {
                   <span className="hidden md:inline">Arrastra las películas a los tiers</span>
                   <span className="md:hidden">Toca una película, luego toca un tier para colocarla</span>
                   {' · '}
-                  <span className="text-yellow-400 font-semibold tabular-nums">{totalPlaced}/16</span>
+                  <span className="text-yellow-400 font-semibold tabular-nums">{totalPlaced}/{totalMovies}</span>
                   {' clasificadas'}
                 </p>
               )}

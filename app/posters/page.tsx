@@ -352,8 +352,8 @@ function generatePositions(count: number, width: number, height: number) {
   // Inner: 1 (center), Middle: 6, Outer: 13
   const layout = [
     { count: 1, r: 0 },
-    { count: 6, r: 200 },
-    { count: 13, r: 400 },
+    { count: 5, r: 220 },
+    { count: 9, r: 420 },
   ]
   let idx = 0
   for (let ring = 0; ring < layout.length && idx < count; ring++) {
@@ -394,7 +394,7 @@ const THEMES: Theme[] = [
   {
     id: 'imdb_top',
     title: 'Mejores del IMDB',
-    subtitle: 'Top 20 según puntuación',
+    subtitle: 'Top 15 según puntuación',
     caption: 'Las películas mejor valoradas en IMDB',
     groupBy: 'decade',
     build: async () => {
@@ -404,7 +404,7 @@ const THEMES: Theme[] = [
         .not('poster_path', 'is', null)
         .not('nota_imdb', 'is', null)
         .order('nota_imdb', { ascending: false })
-        .limit(20)
+        .limit(15)
       if (error) throw error
       return (data || []) as unknown as RawMovie[]
     },
@@ -416,20 +416,28 @@ const THEMES: Theme[] = [
     caption: 'Películas que ganaron el Oscar a Mejor Película',
     groupBy: 'decade',
     build: async () => {
+      // The oscars column stores values like "Ganó 4 (Mejor Película,
+      // Mejor Director, ...)". We can't use ilike on the prefix, so we
+      // pull all "Ganó*" rows that mention "Mejor Película" and filter
+      // out the qualified categories (Animada / Extranjera / Internacional /
+      // Habla no inglesa) in JS.
       const { data, error } = await supabase
         .from('peliculas')
         .select(SELECT_FIELDS)
         .not('poster_path', 'is', null)
-        .ilike('oscars', 'Ganó Mejor Película%')
+        .ilike('oscars', 'Ganó%')
+        .ilike('oscars', '%Mejor Película%')
         .order('anio', { ascending: false })
-        .limit(60)
+        .limit(200)
       if (error) throw error
-      // Filter out Animada and Internacional/Extranjera
       const filtered = (data || []).filter((m: any) => {
-        const o = (m.oscars || '').toLowerCase()
-        return !o.includes('animad') && !o.includes('internacional') && !o.includes('extranjera') && !o.includes('habla no inglesa')
+        const o = m.oscars || ''
+        // Must mention "Mejor Película" without a disqualifying suffix.
+        // Match "Mejor Película" only when followed by , ) or end.
+        const hasBestPicture = /Mejor Película(?!\s+(Animada|Extranjera|Internacional|de Habla))/i.test(o)
+        return hasBestPicture
       })
-      return filtered.slice(0, 20) as unknown as RawMovie[]
+      return filtered.slice(0, 15) as unknown as RawMovie[]
     },
   },
   {
@@ -446,7 +454,7 @@ const THEMES: Theme[] = [
         .not('nota_imdb', 'is', null)
         .contains('enriquecimiento.generos', ['Animación'])
         .order('nota_imdb', { ascending: false })
-        .limit(20)
+        .limit(15)
       if (error) {
         // Fallback: fetch a wider pool and filter client side
         const { data: pool } = await supabase
@@ -459,7 +467,7 @@ const THEMES: Theme[] = [
         const filtered = ((pool || []) as unknown as RawMovie[]).filter((p) =>
           (p.enriquecimiento?.generos || []).some((g) => /animaci/i.test(g)),
         )
-        return filtered.slice(0, 20)
+        return filtered.slice(0, 15)
       }
       return (data || []) as unknown as RawMovie[]
     },
@@ -511,7 +519,7 @@ const THEMES: Theme[] = [
         .lte('anio', 1999)
         .not('nota_imdb', 'is', null)
         .order('nota_imdb', { ascending: false })
-        .limit(20)
+        .limit(15)
       if (error) throw error
       return (data || []) as unknown as RawMovie[]
     },
@@ -531,7 +539,7 @@ const THEMES: Theme[] = [
         .lte('anio', 2009)
         .not('nota_imdb', 'is', null)
         .order('nota_imdb', { ascending: false })
-        .limit(20)
+        .limit(15)
       if (error) throw error
       return (data || []) as unknown as RawMovie[]
     },
@@ -553,7 +561,7 @@ const THEMES: Theme[] = [
       const filtered = ((pool || []) as unknown as RawMovie[]).filter((p) =>
         (p.enriquecimiento?.generos || []).some((g) => /document/i.test(g)),
       )
-      return filtered.slice(0, 20)
+      return filtered.slice(0, 15)
     },
   },
   {
@@ -573,7 +581,7 @@ const THEMES: Theme[] = [
       const filtered = ((pool || []) as unknown as RawMovie[]).filter((p) =>
         (p.enriquecimiento?.generos || []).some((g) => /ciencia\s*ficci|sci.?fi|science fiction/i.test(g)),
       )
-      return filtered.slice(0, 20)
+      return filtered.slice(0, 15)
     },
   },
   {
@@ -594,7 +602,7 @@ const THEMES: Theme[] = [
       const filtered = ((pool || []) as unknown as RawMovie[]).filter((p) =>
         (p.enriquecimiento?.generos || []).some((g) => /terror|horror/i.test(g)),
       )
-      return filtered.slice(0, 20)
+      return filtered.slice(0, 15)
     },
   },
   {
@@ -632,7 +640,7 @@ const THEMES: Theme[] = [
         .not('nota_imdb', 'is', null)
         .gte('anio', currentYear - 1)
         .order('nota_imdb', { ascending: false })
-        .limit(20)
+        .limit(15)
       if (error) throw error
       return (data || []) as unknown as RawMovie[]
     },
@@ -745,7 +753,7 @@ export default function PostersPage() {
         const pm = toPosterMovie(r, 'decade', colorMap)
         if (pm) posterMovies.push(pm)
       }
-      const sliced = posterMovies.slice(0, 20)
+      const sliced = posterMovies.slice(0, 15)
       const conns = buildConnectionsFromGraph(sliced, g, 10)
       setMovies(sliced)
       setConnections(conns)
@@ -816,7 +824,7 @@ export default function PostersPage() {
         const pm = toPosterMovie(r, theme.groupBy, colorMap)
         if (pm) posterMovies.push(pm)
       }
-      const sliced = posterMovies.slice(0, 20)
+      const sliced = posterMovies.slice(0, 15)
       // Use the movie similarity graph for connections (much better than actor sharing)
       const conns = buildConnectionsFromGraph(sliced, g, 10)
       setMovies(sliced)
@@ -1066,21 +1074,25 @@ export default function PostersPage() {
             subtitle="Genera infografías visuales de cómo se conectan películas según el grafo de similitud de CineBret. Listas para compartir en Instagram."
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Custom theme card */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            {/* Custom theme card — compact */}
             <motion.button
               type="button"
               onClick={() => setCustomOpen(true)}
-              whileHover={{ y: -4 }}
-              className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-300 to-yellow-600 cursor-pointer transition-transform duration-300"
+              whileHover={{ y: -2 }}
+              className="group relative h-28 rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-300 to-yellow-600 cursor-pointer transition-transform duration-300"
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-950 p-6">
-                <Icon.Plus className="w-14 h-14 mb-4" strokeWidth={2} />
-                <h3 className="text-2xl font-black mb-1">Crear tu poster</h3>
-                <p className="text-sm font-semibold text-zinc-900 text-center">
-                  Elige tus propias películas
-                </p>
-                <p className="text-xs text-zinc-800 mt-3">Hasta 20 películas</p>
+              <div className="absolute inset-0 flex items-center gap-4 px-5 text-zinc-950">
+                <div className="shrink-0 w-14 h-14 rounded-xl bg-zinc-950/15 flex items-center justify-center">
+                  <Icon.Plus className="w-7 h-7" strokeWidth={2.5} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-lg font-black leading-tight">Crear tu poster</h3>
+                  <p className="text-xs font-semibold text-zinc-900/90 mt-0.5">
+                    Elige tus propias películas
+                  </p>
+                  <p className="text-[10px] text-zinc-800/80 mt-0.5">Hasta 15 películas</p>
+                </div>
               </div>
             </motion.button>
 
@@ -1400,12 +1412,11 @@ function ThemeCard({
     <motion.button
       type="button"
       onClick={onClick}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: index * 0.04 }}
-      whileHover={{ y: -4 }}
-      className="group relative overflow-hidden rounded-2xl text-left bg-zinc-900 border border-zinc-800 transition-all duration-300 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10 cursor-pointer"
-      style={{ aspectRatio: '4 / 5' }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.3) }}
+      whileHover={{ y: -2 }}
+      className="group relative h-28 overflow-hidden rounded-2xl text-left bg-zinc-900 border border-zinc-800 transition-all duration-300 hover:border-yellow-400/50 hover:shadow-xl hover:shadow-yellow-400/10 cursor-pointer"
     >
       {/* Background poster */}
       {previewPoster ? (
@@ -1413,7 +1424,7 @@ function ThemeCard({
           src={`https://image.tmdb.org/t/p/w500${previewPoster}`}
           alt=""
           fill
-          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+          sizes="(min-width:640px) 50vw, 100vw"
           className="object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-500"
           style={{ filter: 'blur(8px)' }}
         />
@@ -1422,33 +1433,14 @@ function ThemeCard({
       )}
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 to-zinc-950/95" />
+      <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/70 to-zinc-950/30" />
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-6 sm:p-8">
-        <div>
-          <Pill variant="gold" size="sm" className="mb-4 uppercase tracking-wider">
-            Tema {String(index + 1).padStart(2, '0')}
-          </Pill>
-          <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight">
-            {theme.title}
-          </h2>
-          <p className="mt-2 text-sm text-zinc-300/90 leading-relaxed">{theme.subtitle}</p>
-        </div>
-
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-500">
-              ~20 películas
-            </p>
-            <p className="mt-1 text-sm font-bold text-yellow-400 group-hover:text-yellow-300 transition-colors inline-flex items-center gap-1">
-              Ver red
-              <Icon.ArrowRight className="w-3.5 h-3.5" />
-            </p>
-          </div>
+      {/* Content — compact horizontal */}
+      <div className="relative z-10 h-full flex items-center gap-4 px-5">
+        <div className="shrink-0 w-14 h-14 rounded-xl bg-yellow-400/10 border border-yellow-400/30 flex items-center justify-center">
           <svg
-            width="32"
-            height="32"
+            width="26"
+            height="26"
             viewBox="0 0 32 32"
             fill="none"
             className="text-yellow-400 group-hover:rotate-12 transition-transform duration-300"
@@ -1465,6 +1457,16 @@ function ThemeCard({
             <line x1="16" y1="16" x2="26" y2="26" stroke="currentColor" strokeWidth="1.5" />
           </svg>
         </div>
+        <div className="min-w-0 flex-1">
+          <h2 className="text-base sm:text-lg font-black text-white leading-tight line-clamp-1">
+            {theme.title}
+          </h2>
+          <p className="mt-0.5 text-xs text-zinc-400 line-clamp-1">{theme.subtitle}</p>
+          <p className="mt-1 text-[10px] font-semibold tracking-wider uppercase text-yellow-400/80">
+            15 películas · Ver red
+          </p>
+        </div>
+        <Icon.ArrowRight className="w-4 h-4 text-yellow-400 shrink-0 group-hover:translate-x-1 transition-transform" />
       </div>
     </motion.button>
   )

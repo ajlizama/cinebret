@@ -804,7 +804,7 @@ export default function AdivinaPage() {
                   )}
                   {m.anio && (
                     <span className="text-zinc-500 text-xs ml-1">
-                      · {m.anio}
+                      · {Math.floor(m.anio / 10) * 10}s
                     </span>
                   )}
                 </button>

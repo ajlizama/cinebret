@@ -1,17 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { motion } from 'framer-motion'
 import {
   PageShell,
   PageHeader,
-  Section,
-  StatCard,
-  AchievementCard,
   LoadingState,
   Pill,
   ProgressBar,
   Button,
+  Modal,
+  Icon,
 } from '@/components/ui'
 
 type Tier = 'bronze' | 'silver' | 'gold' | null
@@ -498,6 +498,36 @@ function LevelIcon({ level }: { level: string }) {
 /* ───────────────────────────────────────────
    Main Page
    ─────────────────────────────────────────── */
+/* ───────────────────────────────────────────
+   Tier visual config
+   ─────────────────────────────────────────── */
+const TIER_RING: Record<NonNullable<Tier> | 'locked', string> = {
+  gold: 'ring-2 ring-yellow-400/70 shadow-[0_0_24px_-4px_rgba(250,204,21,0.45)]',
+  silver: 'ring-2 ring-zinc-400/60',
+  bronze: 'ring-2 ring-[#92410e]/70',
+  locked: 'ring-1 ring-zinc-800',
+}
+
+const TIER_ICON_BG: Record<NonNullable<Tier> | 'locked', string> = {
+  gold: 'bg-gradient-to-br from-yellow-400/25 to-yellow-600/10 text-yellow-400',
+  silver: 'bg-gradient-to-br from-zinc-300/15 to-zinc-500/5 text-zinc-200',
+  bronze: 'bg-gradient-to-br from-[#d97706]/20 to-[#92410e]/5 text-[#f59e0b]',
+  locked: 'bg-zinc-900 text-zinc-700',
+}
+
+const TIER_LABEL: Record<NonNullable<Tier>, string> = {
+  gold: 'Oro',
+  silver: 'Plata',
+  bronze: 'Bronce',
+}
+
+const PROGRESS_COLOR: Record<NonNullable<Tier> | 'locked', string> = {
+  gold: 'bg-yellow-400',
+  silver: 'bg-zinc-300',
+  bronze: 'bg-[#d97706]',
+  locked: 'bg-zinc-700',
+}
+
 export default function CineQuestPage() {
   const { user, loading } = useAuth()
   const [achievements, setAchievements] = useState<Achievement[]>([])
@@ -505,6 +535,7 @@ export default function CineQuestPage() {
   const [tierCount, setTierCount] = useState(0)
   const [overallLevel, setOverallLevel] = useState('')
   const [cargando, setCargando] = useState(true)
+  const [selected, setSelected] = useState<Achievement | null>(null)
 
   useEffect(() => {
     if (!loading && !user) return
@@ -521,6 +552,18 @@ export default function CineQuestPage() {
       })
       .catch(() => setCargando(false))
   }, [user, loading])
+
+  const sortedAchievements = useMemo(() => {
+    return [...achievements].sort((a, b) => {
+      // Gold first, then silver, then bronze, then locked; within same tier by progress %
+      const tierOrder = (t: Tier) =>
+        t === 'gold' ? 3 : t === 'silver' ? 2 : t === 'bronze' ? 1 : 0
+      const ta = tierOrder(a.tier)
+      const tb = tierOrder(b.tier)
+      if (ta !== tb) return tb - ta
+      return b.progress / (b.total || 1) - a.progress / (a.total || 1)
+    })
+  }, [achievements])
 
   if (loading) {
     return (
@@ -563,116 +606,193 @@ export default function CineQuestPage() {
   const totalCount = achievements.length
   const overallPct = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0
 
-  const sortedAchievements = [...achievements].sort((a, b) => {
-    // Gold first, then silver, then bronze, then locked; within same tier by progress %
-    const tierOrder = (t: Tier) => t === 'gold' ? 3 : t === 'silver' ? 2 : t === 'bronze' ? 1 : 0
-    const ta = tierOrder(a.tier)
-    const tb = tierOrder(b.tier)
-    if (ta !== tb) return tb - ta
-    return (b.progress / (b.total || 1)) - (a.progress / (a.total || 1))
-  })
-
   return (
     <PageShell maxWidth="7xl">
       <PageHeader
         title="CineQuest"
-        subtitle="Desafíos y logros cinematográficos para medir tu recorrido por el cine."
+        subtitle="Tus logros cinematográficos. Toca un trofeo para ver el detalle."
       />
 
-      {/* Nivel general */}
-      <Section label="Tu nivel">
-        <div className="bg-zinc-900 rounded-2xl p-5 sm:p-6 flex items-center gap-4 sm:gap-5">
-          <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-zinc-800 flex items-center justify-center">
+      {/* Compact level + progress strip */}
+      <div className="mb-8 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 items-stretch">
+        <div className="bg-zinc-900 rounded-2xl px-5 py-4 flex items-center gap-4">
+          <div className="shrink-0 w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center">
             <LevelIcon level={overallLevel} />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xl sm:text-2xl font-black text-white truncate">
+            <p className="text-xs uppercase tracking-widest text-zinc-500 font-bold">
+              Nivel actual
+            </p>
+            <p className="text-base sm:text-lg font-black text-white truncate">
               {overallLevel}
             </p>
-            <p className="text-xs sm:text-sm text-zinc-500 mt-1">
-              {tierCount} niveles desbloqueados
-            </p>
-          </div>
-          <Pill variant="gold" size="md">
-            {unlockedCount}/{totalCount}
-          </Pill>
-        </div>
-
-        <div className="mt-4 bg-zinc-900 rounded-2xl p-5 sm:p-6">
-          <ProgressBar
-            value={unlockedCount}
-            max={Math.max(totalCount, 1)}
-            color="gold"
-            size="md"
-            label={`Progreso total · ${overallPct}%`}
-            showValue
-          />
-        </div>
-      </Section>
-
-      {/* Estadísticas */}
-      <Section label="Estadísticas">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-          <StatCard
-            value={unlockedCount}
-            label="Logros"
-            sub={`de ${totalCount}`}
-            color="gold"
-          />
-          {stats ? (
-            <>
-              <StatCard
-                value={stats.totalWatched}
-                label="Películas vistas"
-                color="white"
-              />
-              <StatCard
-                value={stats.avgRating ? stats.avgRating : '—'}
-                label="Nota promedio"
-                color="white"
-              />
-              <StatCard
-                value={stats.uniqueGenres}
-                label="Géneros explorados"
-                color="white"
-              />
-            </>
-          ) : null}
-        </div>
-      </Section>
-
-      {/* Logros */}
-      <Section label="Logros" count={totalCount}>
-        {achievements.length === 0 ? (
-          <div className="bg-zinc-900 rounded-2xl p-10 flex flex-col items-center text-center">
-            <div className="w-12 h-12 mb-4 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-500">
-              <QuestIcon name="film" className="w-6 h-6" />
+            <div className="mt-2">
+              <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-yellow-400 transition-all duration-700"
+                  style={{ width: `${overallPct}%` }}
+                />
+              </div>
+              <p className="mt-1 text-[11px] text-zinc-500 tabular-nums">
+                {unlockedCount}/{totalCount} logros · {overallPct}%
+              </p>
             </div>
-            <p className="text-zinc-500 text-sm">
-              Marca películas como vistas para desbloquear logros.
-            </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {sortedAchievements.map(a => (
-              <AchievementCard
-                key={a.id}
-                achievement={{
-                  id: a.id,
-                  name: a.name,
-                  description: a.nextTierName
-                    ? `${a.description} · Siguiente: ${a.nextTierName} (${a.progress}/${a.nextTierTotal})`
-                    : a.description,
-                  icon: <QuestIcon name={a.icon} className="w-7 h-7" />,
-                }}
-                unlocked={a.unlocked}
-                tier={a.tier ?? undefined}
-                progress={{ current: a.progress, total: a.total }}
-              />
-            ))}
+        </div>
+
+        {stats && (
+          <div className="bg-zinc-900 rounded-2xl px-5 py-4 flex md:flex-col items-center md:items-end justify-between md:justify-center gap-3 md:min-w-[160px]">
+            <div className="text-center md:text-right">
+              <p className="text-2xl sm:text-3xl font-black text-yellow-400 tabular-nums">
+                {stats.totalWatched.toLocaleString('es')}
+              </p>
+              <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
+                Películas vistas
+              </p>
+            </div>
+            <div className="hidden md:block w-full h-px bg-zinc-800 my-1" />
+            <div className="text-center md:text-right">
+              <p className="text-base font-bold text-white tabular-nums">
+                {stats.avgRating || '—'}
+                <span className="text-zinc-500 text-xs"> · {stats.uniqueGenres} géneros</span>
+              </p>
+            </div>
           </div>
         )}
-      </Section>
+      </div>
+
+      {/* Trophies grid — Pokemon-style */}
+      {achievements.length === 0 ? (
+        <div className="bg-zinc-900 rounded-2xl p-10 flex flex-col items-center text-center">
+          <div className="w-12 h-12 mb-4 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-500">
+            <QuestIcon name="film" className="w-6 h-6" />
+          </div>
+          <p className="text-zinc-500 text-sm">
+            Marca películas como vistas para desbloquear logros.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 sm:gap-4">
+          {sortedAchievements.map((a, i) => {
+            const tierKey = (a.unlocked && a.tier ? a.tier : 'locked') as keyof typeof TIER_RING
+            const pct = Math.min(100, (a.progress / Math.max(a.total, 1)) * 100)
+            return (
+              <motion.button
+                key={a.id}
+                type="button"
+                onClick={() => setSelected(a)}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(i * 0.015, 0.4), duration: 0.3 }}
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.96 }}
+                className="group flex flex-col items-center text-center cursor-pointer"
+                aria-label={a.name}
+              >
+                <div
+                  className={`relative w-full aspect-square rounded-2xl flex items-center justify-center ${TIER_ICON_BG[tierKey]} ${TIER_RING[tierKey]} transition-transform`}
+                >
+                  <QuestIcon
+                    name={a.icon}
+                    className={`w-1/2 h-1/2 ${
+                      a.unlocked ? '' : 'grayscale opacity-30'
+                    }`}
+                  />
+                  {!a.unlocked && (
+                    <div className="absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-zinc-950/90 flex items-center justify-center">
+                      <Icon.Lock className="w-3 h-3 text-zinc-500" />
+                    </div>
+                  )}
+                  {a.unlocked && a.tier && (
+                    <div
+                      className={`absolute -top-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider shadow-md ${
+                        a.tier === 'gold'
+                          ? 'bg-yellow-400 text-zinc-950'
+                          : a.tier === 'silver'
+                          ? 'bg-zinc-300 text-zinc-950'
+                          : 'bg-[#d97706] text-zinc-950'
+                      }`}
+                    >
+                      {TIER_LABEL[a.tier]}
+                    </div>
+                  )}
+                </div>
+                <p className="mt-2 text-[11px] sm:text-xs font-semibold text-zinc-300 line-clamp-2 leading-tight px-0.5">
+                  {a.name}
+                </p>
+                <div className="mt-1.5 w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-700 ${PROGRESS_COLOR[tierKey]}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </motion.button>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Detail modal */}
+      <Modal
+        open={!!selected}
+        onClose={() => setSelected(null)}
+        title={selected?.name}
+        size="sm"
+      >
+        {selected && (
+          <div className="flex flex-col items-center text-center">
+            <div
+              className={`relative w-28 h-28 rounded-3xl flex items-center justify-center mb-4 ${
+                TIER_ICON_BG[(selected.unlocked && selected.tier ? selected.tier : 'locked') as keyof typeof TIER_ICON_BG]
+              } ${TIER_RING[(selected.unlocked && selected.tier ? selected.tier : 'locked') as keyof typeof TIER_RING]}`}
+            >
+              <QuestIcon
+                name={selected.icon}
+                className={`w-14 h-14 ${selected.unlocked ? '' : 'grayscale opacity-40'}`}
+              />
+              {!selected.unlocked && (
+                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-zinc-950/90 flex items-center justify-center">
+                  <Icon.Lock className="w-4 h-4 text-zinc-500" />
+                </div>
+              )}
+            </div>
+
+            {selected.unlocked && selected.tier && (
+              <Pill variant="gold" size="md" className="mb-3">
+                {TIER_LABEL[selected.tier]} · Desbloqueado
+              </Pill>
+            )}
+
+            <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
+              {selected.description}
+            </p>
+
+            <div className="mt-5 w-full">
+              <ProgressBar
+                value={selected.progress}
+                max={Math.max(selected.total, 1)}
+                color="gold"
+                size="md"
+                showValue
+              />
+            </div>
+
+            {selected.nextTierName && (
+              <div className="mt-4 w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-left">
+                <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
+                  Siguiente nivel
+                </p>
+                <p className="text-sm text-white font-semibold mt-1">
+                  {selected.nextTierName}
+                </p>
+                <p className="text-xs text-zinc-500 mt-0.5 tabular-nums">
+                  {selected.progress}/{selected.nextTierTotal}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
     </PageShell>
   )
 }

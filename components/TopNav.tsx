@@ -87,7 +87,7 @@ export default function TopNav() {
   return (
     <>
       {/* Top nav bar */}
-      <nav className="sticky top-0 z-50 px-4 py-2.5 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50">
+      <nav className="sticky top-0 z-50 px-4 py-2.5 bg-zinc-950 border-b border-zinc-800/60">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           {/* Left: Logo + Toggle */}
           <div className="flex items-center gap-2.5">

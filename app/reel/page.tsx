@@ -303,18 +303,18 @@ function ReelCard({
 
       {/* Swipe indicators */}
       {swipeIndicator === 'right' && (
-        <div className="absolute top-12 left-6 z-40 border-4 border-pink-400 rounded-xl px-4 py-2 rotate-[-20deg]">
-          <span className="text-pink-400 font-black text-2xl tracking-wider">WATCHLIST</span>
+        <div className="absolute top-12 left-6 z-40 border-4 border-yellow-400 rounded-xl px-4 py-2 rotate-[-20deg]">
+          <span className="text-yellow-400 font-black text-2xl tracking-wider">WATCHLIST</span>
         </div>
       )}
       {swipeIndicator === 'left' && (
-        <div className="absolute top-12 right-6 z-40 border-4 border-red-400 rounded-xl px-4 py-2 rotate-[20deg]">
-          <span className="text-red-400 font-black text-2xl tracking-wider">PASO</span>
+        <div className="absolute top-12 right-6 z-40 border-4 border-zinc-300 rounded-xl px-4 py-2 rotate-[20deg]">
+          <span className="text-zinc-300 font-black text-2xl tracking-wider">PASO</span>
         </div>
       )}
       {swipeIndicator === 'up' && (
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 z-40 border-4 border-blue-400 rounded-xl px-4 py-2">
-          <span className="text-blue-400 font-black text-2xl tracking-wider">YA LA VI</span>
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 z-40 border-4 border-yellow-400 rounded-xl px-4 py-2">
+          <span className="text-yellow-400 font-black text-2xl tracking-wider">YA LA VI</span>
         </div>
       )}
       {swipeIndicator === 'down' && (
@@ -346,7 +346,7 @@ function ReelCard({
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             {pelicula.anio && <span className="text-zinc-400 text-sm">{pelicula.anio}</span>}
             {pelicula.nota_imdb && <span className="text-yellow-400 text-sm font-medium flex items-center gap-1"><svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>}
-            {pelicula.oscars && pelicula.oscars !== 'N/A' && <span className="text-amber-300 text-xs flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-3.5 w-auto" /> {pelicula.oscars}</span>}
+            {pelicula.oscars && pelicula.oscars !== 'N/A' && <span className="text-yellow-400 text-xs flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Óscar" className="h-3.5 w-auto" /> {pelicula.oscars}</span>}
           </div>
           {pelicula.categoria && (
             <span className="inline-block bg-white/10 backdrop-blur-sm text-zinc-300 text-xs px-2.5 py-1 rounded-full mb-2">{pelicula.categoria}</span>
@@ -381,16 +381,16 @@ function ReelCard({
             )}
             {pelicula.rt_score != null && (
               <div className="flex items-center gap-1">
-                <div className="w-9 h-9 rounded-full border-2 border-red-400 bg-black/40 flex items-center justify-center">
-                  <span className="text-red-400 font-bold text-xs">{pelicula.rt_score}%</span>
+                <div className="w-9 h-9 rounded-full border-2 border-zinc-400 bg-black/40 flex items-center justify-center">
+                  <span className="text-zinc-200 font-bold text-xs">{pelicula.rt_score}%</span>
                 </div>
                 <span className="text-zinc-500 text-xs">RT</span>
               </div>
             )}
             {pelicula.metacritic_score != null && (
               <div className="flex items-center gap-1">
-                <div className="w-9 h-9 rounded-full border-2 border-green-400 bg-black/40 flex items-center justify-center">
-                  <span className="text-green-400 font-bold text-xs">{pelicula.metacritic_score}</span>
+                <div className="w-9 h-9 rounded-full border-2 border-zinc-400 bg-black/40 flex items-center justify-center">
+                  <span className="text-zinc-200 font-bold text-xs">{pelicula.metacritic_score}</span>
                 </div>
                 <span className="text-zinc-500 text-xs">MC</span>
               </div>
@@ -415,7 +415,7 @@ function ReelCard({
 
           {/* Oscars */}
           {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-            <p className="text-amber-300 text-xs mb-3 flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-3.5 w-auto" /> {pelicula.oscars}</p>
+            <p className="text-yellow-400 text-xs mb-3 flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Óscar" className="h-3.5 w-auto" /> {pelicula.oscars}</p>
           )}
 
           {/* Sinopsis */}
@@ -466,23 +466,23 @@ function ReelCard({
             </div>
           )}
 
-          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${pelicula.id}`} className="block mt-4 text-yellow-400 text-xs font-medium">Ver ficha completa →</Link>
+          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${pelicula.id}`} className="inline-flex items-center gap-1 mt-4 text-yellow-400 text-xs font-semibold">Ver ficha completa <Icon.ArrowRight className="w-3 h-3" /></Link>
         </div>
       )}
 
       {/* ══ SLIDE 2: Reviews ══ */}
       {slide === 2 && (
         <div className="absolute inset-x-0 bottom-24 top-10 overflow-y-auto p-4 z-10 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <h3 className="text-white font-bold text-base mb-3">Reviews</h3>
-          {reviewsCargando && <p className="text-zinc-500 text-xs text-center pt-4">Cargando reviews...</p>}
+          <h3 className="text-white font-bold text-base mb-3">Reseñas</h3>
+          {reviewsCargando && <p className="text-zinc-500 text-xs text-center pt-4">Cargando reseñas...</p>}
           {!reviewsCargando && reviews.length === 0 && (
-            <p className="text-zinc-500 text-sm text-center pt-8">Sin reviews aún para esta película.</p>
+            <p className="text-zinc-500 text-sm text-center pt-8">Sin reseñas aún para esta película.</p>
           )}
           {reviews.map(r => (
             <div key={r.id} className="mb-4">
               <div className="flex items-center gap-2 mb-1.5">
                 {r.isAutor ? (
-                  <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">Review CineBret</span>
+                  <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-0.5 rounded-full">Reseña CineBret</span>
                 ) : (
                   <>
                     <div className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0 overflow-hidden">
@@ -497,7 +497,7 @@ function ReelCard({
               <p className="text-zinc-300 text-sm leading-relaxed">{r.review_text}</p>
             </div>
           ))}
-          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${pelicula.id}#reviews`} className="block mt-2 text-yellow-400 text-xs font-medium">Ver todas en la ficha →</Link>
+          <Link href={`${isSeries ? '/serie' : '/pelicula'}/${pelicula.id}#reviews`} className="inline-flex items-center gap-1 mt-2 text-yellow-400 text-xs font-semibold">Ver todas en la ficha <Icon.ArrowRight className="w-3 h-3" /></Link>
         </div>
       )}
 

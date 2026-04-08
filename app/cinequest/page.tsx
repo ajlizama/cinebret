@@ -489,7 +489,7 @@ function LevelIcon({ level }: { level: string }) {
     case 'Cinefilo veterano':
       return <QuestIcon name="star" className={`${base} text-zinc-300`} />
     case 'Cinefilo en formacion':
-      return <QuestIcon name="film" className={`${base} text-amber-500`} />
+      return <QuestIcon name="film" className={`${base} text-yellow-500`} />
     default:
       return <QuestIcon name="eye" className={`${base} text-zinc-500`} />
   }

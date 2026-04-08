@@ -773,71 +773,78 @@ export default function ReelPage() {
   return (
     <PageShell fullBleed>
       <div
-        className="flex flex-col items-center px-4 pt-3 pb-4 overflow-hidden"
+        className="flex flex-col items-stretch overflow-hidden"
         style={{ height: 'calc(100dvh - 57px)' }}
       >
-        <div className="relative w-full max-w-sm flex-1 min-h-0">
+        <div className="relative w-full flex-1 min-h-0">
           {peliculas.slice(0, 3).map((p, i) => (
-            <div key={p.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 10}px)`, zIndex: 3 - i }}>
+            <div
+              key={p.id}
+              className="absolute inset-0"
+              style={{
+                transform: `scale(${1 - i * 0.03}) translateY(${i * 8}px)`,
+                zIndex: 3 - i,
+              }}
+            >
               <ReelCard
-                pelicula={p} onSwipe={handleSwipe} isTop={i === 0}
-                onVista={() => handleSwipe('up')} onWatchlist={() => handleSwipe('right')}
-                currentUserId={user?.id} isSeries={isSeries}
+                pelicula={p}
+                onSwipe={handleSwipe}
+                isTop={i === 0}
+                onVista={() => handleSwipe('up')}
+                onWatchlist={() => handleSwipe('right')}
+                currentUserId={user?.id}
+                isSeries={isSeries}
               />
               {i === 0 && guestBlocked && <GuestLimitModal />}
             </div>
           ))}
-        </div>
 
-        {/* ── Bottom action buttons ── */}
-        <div className="flex items-start gap-6 mt-4 relative z-10 shrink-0">
-          <div className="flex flex-col items-center gap-1.5">
-            <IconButton
-              icon={<Icon.Close className="w-6 h-6" />}
-              label="No me interesa"
-              variant="secondary"
-              size="lg"
-              onClick={() => handleSwipe('left')}
-              className="!w-16 !h-16 !rounded-full shadow-lg"
-            />
-            <span className="text-zinc-400 text-xs font-semibold leading-tight text-center">
-              No me<br />interesa
-            </span>
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <IconButton
-              icon={<Icon.Eye className="w-6 h-6" />}
-              label="Ya la vi"
-              variant="secondary"
-              size="lg"
-              onClick={() => handleSwipe('up')}
-              className="!w-16 !h-16 !rounded-full shadow-lg"
-            />
-            <span className="text-zinc-400 text-xs font-semibold">Ya la vi</span>
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <IconButton
-              icon={<Icon.Heart className="w-6 h-6" />}
-              label="Añadir a Watchlist"
-              variant="primary"
-              size="lg"
-              onClick={() => handleSwipe('right')}
-              className="!w-16 !h-16 !rounded-full shadow-lg"
-            />
-            <span className="text-yellow-400 text-xs font-semibold">Watchlist</span>
-          </div>
-        </div>
+          {/* ── Floating action bar — overlaps the bottom of the poster ── */}
+          {!guestBlocked && peliculas.length > 0 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+              <div className="flex items-center gap-0.5 bg-zinc-950/40 backdrop-blur-md rounded-full px-1 py-1 border border-yellow-400/20 shadow-2xl">
+                <button
+                  type="button"
+                  onClick={() => handleSwipe('left')}
+                  aria-label="No me interesa"
+                  className="group flex flex-col items-center gap-0.5 w-20 py-2 rounded-full cursor-pointer transition-all hover:bg-yellow-400/10 active:scale-90"
+                >
+                  <Icon.Close className="w-6 h-6 text-yellow-400" />
+                  <span className="text-yellow-400 text-[10px] font-semibold">Paso</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSwipe('up')}
+                  aria-label="Ya la vi"
+                  className="group flex flex-col items-center gap-0.5 w-20 py-2 rounded-full cursor-pointer transition-all hover:bg-yellow-400/10 active:scale-90"
+                >
+                  <Icon.Eye className="w-6 h-6 text-yellow-400" />
+                  <span className="text-yellow-400 text-[10px] font-semibold">Ya la vi</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSwipe('right')}
+                  aria-label="Añadir a Watchlist"
+                  className="group flex flex-col items-center gap-0.5 w-20 py-2 rounded-full cursor-pointer transition-all hover:bg-yellow-400/10 active:scale-90"
+                >
+                  <Icon.Heart className="w-6 h-6 text-yellow-400" filled />
+                  <span className="text-yellow-400 text-[10px] font-semibold">Watchlist</span>
+                </button>
+              </div>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleUndo}
-          disabled={!lastAction}
-          iconLeft={<Icon.Refresh className="w-4 h-4" />}
-          className="mt-1"
-        >
-          Deshacer
-        </Button>
+              {lastAction && (
+                <button
+                  type="button"
+                  onClick={handleUndo}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/40 backdrop-blur-md border border-zinc-700/50 text-zinc-300 text-[11px] font-semibold cursor-pointer hover:text-white transition-colors"
+                >
+                  <Icon.Refresh className="w-3.5 h-3.5" />
+                  Deshacer
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <OnboardingModal open={showOnboarding} onDone={onboardingDone} />

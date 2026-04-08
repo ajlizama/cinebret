@@ -791,91 +791,100 @@ export default function MapaPage() {
           </div>
         )}
 
-        {/* Selected node — mobile sheet */}
+        {/* Selected node — mobile peek sheet (35vh peek, drag up to expand) */}
         <Sheet
           open={!!selectedNode && !pathNodes.length && isMobile}
           onClose={deselectNode}
-          title={selectedNode?.title}
+          peek={38}
         >
           {selectedNode && (
             <div>
-              <div className="flex items-start gap-3 mb-4">
+              {/* Compact header — visible in peek mode */}
+              <div className="flex items-start gap-3 mb-3">
                 {selectedNode.poster && (
                   <img
                     src={`https://image.tmdb.org/t/p/w185${selectedNode.poster}`}
                     alt=""
-                    className="w-24 rounded-lg object-cover shrink-0"
+                    className="w-20 rounded-lg object-cover shrink-0"
                     style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
                   />
                 )}
                 <div className="min-w-0 flex-1">
+                  <h2 className="text-white font-bold text-lg leading-tight line-clamp-1">
+                    {selectedNode.title}
+                  </h2>
                   {selectedNode.title !== selectedNode.titleEs && (
-                    <p className="text-zinc-500 text-xs mb-1">{selectedNode.titleEs}</p>
+                    <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1">{selectedNode.titleEs}</p>
                   )}
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="inline-flex items-center gap-1 text-yellow-400 text-sm font-bold">
+                  <div className="flex items-center gap-3 mt-1.5">
+                    <span className="inline-flex items-center gap-1 text-yellow-400 text-sm font-bold tabular-nums">
                       <Icon.Star filled className="w-4 h-4" />
                       {selectedNode.imdb}
                     </span>
-                    <span className="text-zinc-500 text-xs">
+                    <span className="text-zinc-500 text-xs tabular-nums">
                       {selectedNode.connections} conexiones
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {selectedNode.genres.map(g => (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {selectedNode.genres.slice(0, 3).map((g) => (
                       <Pill key={g} variant="default" size="sm">{g}</Pill>
                     ))}
                   </div>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    iconRight={<Icon.ArrowRight className="w-4 h-4" />}
-                    onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
-                  >
-                    Ver ficha
-                  </Button>
                 </div>
               </div>
 
+              <Button
+                variant="primary"
+                size="sm"
+                fullWidth
+                iconRight={<Icon.ArrowRight className="w-4 h-4" />}
+                onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                className="mb-4"
+              >
+                Ver ficha
+              </Button>
+
+              {/* Connected movies — horizontal carousel in peek view */}
               {connectedNodes.length > 0 && (
                 <div>
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-wide font-semibold mb-2">
-                    Películas conectadas
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-2">
+                    Películas conectadas · {connectedNodes.length}
                   </p>
-                  <div className="space-y-1.5">
-                    {connectedNodes.map(({ node: cn, weight }) => (
-                      <button
-                        key={cn.id}
-                        onClick={() => focusNode(cn)}
-                        className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-zinc-800/70 text-left cursor-pointer min-h-[44px]"
-                      >
-                        {cn.poster ? (
-                          <img
-                            src={`https://image.tmdb.org/t/p/w92${cn.poster}`}
-                            alt=""
-                            className="w-10 rounded object-cover shrink-0"
-                            style={{ aspectRatio: '2/3' }}
-                          />
-                        ) : (
-                          <div className="w-10 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium line-clamp-1">{cn.title}</p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="inline-flex items-center gap-0.5 text-yellow-400 text-[11px]">
-                              <Icon.Star filled className="w-3 h-3" />
-                              {cn.imdb}
-                            </span>
-                            <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-yellow-400/60 rounded-full"
-                                style={{ width: `${(weight / 4) * 100}%` }}
-                              />
-                            </div>
+                  <div className="-mx-5 px-5 overflow-x-auto no-scrollbar pb-2">
+                    <div className="flex gap-3 snap-x">
+                      {connectedNodes.map(({ node: cn, weight }) => (
+                        <button
+                          key={cn.id}
+                          type="button"
+                          onClick={() => focusNode(cn)}
+                          className="snap-start shrink-0 w-24 text-left cursor-pointer"
+                        >
+                          {cn.poster ? (
+                            <img
+                              src={`https://image.tmdb.org/t/p/w185${cn.poster}`}
+                              alt=""
+                              className="w-24 rounded-lg object-cover"
+                              style={{ aspectRatio: '2/3' }}
+                            />
+                          ) : (
+                            <div className="w-24 rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3' }} />
+                          )}
+                          <p className="text-white text-[11px] font-semibold line-clamp-2 mt-1.5 leading-tight">
+                            {cn.title}
+                          </p>
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <Icon.Star filled className="w-2.5 h-2.5 text-yellow-400" />
+                            <span className="text-yellow-400 text-[10px] font-bold tabular-nums">{cn.imdb}</span>
                           </div>
-                        </div>
-                      </button>
-                    ))}
+                          <div className="mt-1 h-0.5 bg-zinc-800 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-yellow-400/70 rounded-full"
+                              style={{ width: `${(weight / 4) * 100}%` }}
+                            />
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}

@@ -772,8 +772,11 @@ export default function ReelPage() {
 
   return (
     <PageShell fullBleed>
-      <div className="flex flex-col items-center px-4 pt-1 pb-1 overflow-hidden">
-        <div className="relative w-full max-w-sm flex-1" style={{ maxHeight: '70vh' }}>
+      <div
+        className="flex flex-col items-center px-4 pt-3 pb-4 overflow-hidden"
+        style={{ height: 'calc(100dvh - 57px)' }}
+      >
+        <div className="relative w-full max-w-sm flex-1 min-h-0">
           {peliculas.slice(0, 3).map((p, i) => (
             <div key={p.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 10}px)`, zIndex: 3 - i }}>
               <ReelCard
@@ -786,8 +789,8 @@ export default function ReelPage() {
           ))}
         </div>
 
-        {/* ── Bottom action buttons (overlapping poster) ── */}
-        <div className="flex items-start gap-6 -mt-20 relative z-10">
+        {/* ── Bottom action buttons ── */}
+        <div className="flex items-start gap-6 mt-4 relative z-10 shrink-0">
           <div className="flex flex-col items-center gap-1.5">
             <IconButton
               icon={<Icon.Close className="w-6 h-6" />}

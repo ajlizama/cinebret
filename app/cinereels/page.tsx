@@ -690,9 +690,21 @@ export default function CineReelsPage() {
 
         {/* Current video */}
         <div className="absolute inset-0">
-          {/* YouTube player fullscreen */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div ref={playerDivRef} className="absolute" style={{ width: '300%', height: '100%', left: '-100%', top: '0' }} />
+          {/* YouTube player fullscreen — sized to cover both dimensions.
+              The 16:9 iframe is scaled so its height matches the viewport
+              and overflows horizontally, mimicking object-cover. The
+              minWidth ensures landscape phones still get full coverage. */}
+          <div className="absolute inset-0 overflow-hidden bg-black flex items-center justify-center">
+            <div
+              ref={playerDivRef}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+              style={{
+                width: 'max(177.78vh, 100%)',
+                height: 'max(56.25vw, 100%)',
+                minWidth: '100%',
+                minHeight: '100%',
+              }}
+            />
           </div>
 
           {/* Tap for mute */}

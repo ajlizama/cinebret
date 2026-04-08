@@ -5,7 +5,19 @@ import type { Ref } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
-import Nav from '@/components/Nav'
+import {
+  PageShell,
+  PageHeader,
+  Card,
+  Button,
+  IconButton,
+  SearchInput,
+  LoadingState,
+  ErrorState,
+  Modal,
+  Pill,
+  Icon,
+} from '@/components/ui'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -1045,49 +1057,32 @@ export default function PostersPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-stone-50 text-stone-900">
-      <Nav />
-
+    <>
       {/* ───────────── Theme selector ───────────── */}
       {!activeTheme && (
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-24">
-          <header className="mb-12 sm:mb-16">
-            <div className="flex items-center gap-3 mb-4">
-              <span
-                aria-hidden
-                className="inline-block h-8 w-1.5 rounded-full"
-                style={{ background: '#CA8A04' }}
-              />
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-stone-500">
-                Infografías visuales
-              </span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-stone-900 leading-[0.95]">
-              CineBret <span style={{ color: '#CA8A04' }}>Posters</span>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-stone-600 leading-relaxed">
-              Genera infografías visuales de cómo se conectan películas según el grafo de similitud de CineBret.
-              Listas para compartir en Instagram.
-            </p>
-          </header>
+        <PageShell maxWidth="7xl">
+          <PageHeader
+            title="Posters"
+            subtitle="Genera infografías visuales de cómo se conectan películas según el grafo de similitud de CineBret. Listas para compartir en Instagram."
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Custom theme card */}
-            <button
+            <motion.button
               type="button"
               onClick={() => setCustomOpen(true)}
-              className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-500 to-amber-700 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
+              whileHover={{ y: -4 }}
+              className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-300 to-yellow-600 cursor-pointer transition-transform duration-300"
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-900 p-6">
-                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-4">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-950 p-6">
+                <Icon.Plus className="w-14 h-14 mb-4" strokeWidth={2} />
                 <h3 className="text-2xl font-black mb-1">Crear tu poster</h3>
-                <p className="text-sm font-semibold text-zinc-800 text-center">Elige tus propias películas</p>
-                <p className="text-xs text-zinc-700 mt-3">Hasta 20 películas</p>
+                <p className="text-sm font-semibold text-zinc-900 text-center">
+                  Elige tus propias películas
+                </p>
+                <p className="text-xs text-zinc-800 mt-3">Hasta 20 películas</p>
               </div>
-            </button>
+            </motion.button>
 
             {THEMES.map((theme, idx) => (
               <ThemeCard
@@ -1099,119 +1094,139 @@ export default function PostersPage() {
               />
             ))}
           </div>
-        </main>
+        </PageShell>
       )}
 
       {/* ───────────── Custom builder modal ───────────── */}
-      <AnimatePresence>
-        {customOpen && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
-            onClick={() => setCustomOpen(false)}
-          >
-            <motion.div
-              initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 50, opacity: 0 }}
-              className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-5 border-b border-zinc-800">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-white font-bold text-lg">Crear tu poster</h3>
-                  <button onClick={() => setCustomOpen(false)} className="text-zinc-500 hover:text-white text-sm">✕</button>
-                </div>
-                <input
-                  type="text"
-                  value={customTitle}
-                  onChange={(e) => setCustomTitle(e.target.value)}
-                  placeholder="Título del poster (ej: Mis favoritas de los 80s)"
-                  maxLength={40}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-yellow-400 mb-3"
-                />
-                <p className="text-zinc-400 text-xs mb-3">{customSelected.length}/20 películas seleccionadas</p>
-                <input
-                  type="text"
-                  value={customSearch}
-                  onChange={(e) => setCustomSearch(e.target.value)}
-                  placeholder="Buscar película..."
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-yellow-400"
-                />
-              </div>
+      <Modal
+        open={customOpen}
+        onClose={() => setCustomOpen(false)}
+        title="Crear tu poster"
+        size="md"
+      >
+        <div className="space-y-4">
+          <div>
+            <input
+              type="text"
+              value={customTitle}
+              onChange={(e) => setCustomTitle(e.target.value)}
+              placeholder="Título del poster (ej: Mis favoritas de los 80s)"
+              maxLength={40}
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 min-h-[44px]"
+            />
+            <p className="text-zinc-400 text-xs mt-2">
+              {customSelected.length}/20 películas seleccionadas
+            </p>
+          </div>
 
-              {/* Selected pills */}
-              {customSelected.length > 0 && (
-                <div className="p-4 border-b border-zinc-800 max-h-32 overflow-y-auto">
-                  <div className="flex flex-wrap gap-2">
-                    {customSelected.map((m) => (
-                      <button
-                        key={m.id}
-                        onClick={() => setCustomSelected((prev) => prev.filter((x) => x.id !== m.id))}
-                        className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 rounded-full px-3 py-1 text-xs hover:bg-yellow-400/20 transition"
-                      >
-                        {m.titulo_ingles || m.titulo} ✕
-                      </button>
-                    ))}
-                  </div>
-                </div>
+          <SearchInput
+            value={customSearch}
+            onChange={setCustomSearch}
+            placeholder="Buscar película..."
+          />
+
+          {/* Selected pills */}
+          {customSelected.length > 0 && (
+            <div className="max-h-32 overflow-y-auto border-t border-zinc-800 pt-4">
+              <div className="flex flex-wrap gap-2">
+                {customSelected.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() =>
+                      setCustomSelected((prev) => prev.filter((x) => x.id !== m.id))
+                    }
+                    className="inline-flex items-center gap-1.5 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 rounded-full pl-3 pr-2 py-1 text-xs hover:bg-yellow-400/20 transition-colors"
+                  >
+                    <span>{m.titulo_ingles || m.titulo}</span>
+                    <Icon.Close className="w-3.5 h-3.5" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Search results */}
+          <div className="max-h-72 overflow-y-auto border-t border-zinc-800 pt-4">
+            {customLoading && (
+              <p className="text-zinc-500 text-xs text-center py-4">Buscando...</p>
+            )}
+            {!customLoading &&
+              customSearch.length >= 2 &&
+              customResults.length === 0 && (
+                <p className="text-zinc-500 text-xs text-center py-4">
+                  No se encontraron resultados
+                </p>
               )}
+            <div className="space-y-2">
+              {customResults.map((m) => {
+                const isSelected = customSelected.some((x) => x.id === m.id)
+                const isFull = customSelected.length >= 20
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    disabled={isSelected || (isFull && !isSelected)}
+                    onClick={() => {
+                      if (!isSelected && customSelected.length < 20) {
+                        setCustomSelected((prev) => [...prev, m])
+                        setCustomSearch('')
+                        setCustomResults([])
+                      }
+                    }}
+                    className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed text-left transition-colors min-h-[44px]"
+                  >
+                    <div className="w-10 h-14 rounded overflow-hidden bg-zinc-800 shrink-0">
+                      {m.poster_path && (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-sm font-medium line-clamp-1">
+                        {m.titulo_ingles || m.titulo}
+                      </p>
+                      <p className="text-zinc-500 text-xs flex items-center gap-1.5">
+                        <span>{m.anio}</span>
+                        <span>·</span>
+                        <Icon.Star filled className="w-3 h-3 text-yellow-400" />
+                        <span>{m.nota_imdb}</span>
+                      </p>
+                    </div>
+                    {isSelected && (
+                      <Icon.Check className="w-4 h-4 text-yellow-400 shrink-0" />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
-              {/* Search results */}
-              <div className="flex-1 overflow-y-auto p-4">
-                {customLoading && <p className="text-zinc-500 text-xs text-center">Buscando...</p>}
-                {!customLoading && customSearch.length >= 2 && customResults.length === 0 && (
-                  <p className="text-zinc-500 text-xs text-center">Sin resultados</p>
-                )}
-                <div className="space-y-2">
-                  {customResults.map((m) => {
-                    const isSelected = customSelected.some((x) => x.id === m.id)
-                    const isFull = customSelected.length >= 20
-                    return (
-                      <button
-                        key={m.id}
-                        disabled={isSelected || (isFull && !isSelected)}
-                        onClick={() => {
-                          if (!isSelected && customSelected.length < 20) {
-                            setCustomSelected((prev) => [...prev, m])
-                            setCustomSearch('')
-                            setCustomResults([])
-                          }
-                        }}
-                        className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed text-left transition"
-                      >
-                        <div className="w-10 h-14 rounded overflow-hidden bg-zinc-800 shrink-0">
-                          {m.poster_path && <img src={`https://image.tmdb.org/t/p/w92${m.poster_path}`} alt="" className="w-full h-full object-cover" />}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium line-clamp-1">{m.titulo_ingles || m.titulo}</p>
-                          <p className="text-zinc-500 text-xs">{m.anio} · ⭐ {m.nota_imdb}</p>
-                        </div>
-                        {isSelected && <span className="text-yellow-400 text-xs">✓</span>}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-
-              {/* Action footer */}
-              <div className="p-4 border-t border-zinc-800 flex gap-2">
-                <button
-                  onClick={() => { setCustomSelected([]); setCustomSearch(''); setCustomResults([]) }}
-                  className="px-4 py-2.5 bg-zinc-800 text-zinc-400 rounded-lg text-sm hover:bg-zinc-700 transition"
-                >
-                  Limpiar
-                </button>
-                <button
-                  onClick={buildCustomTheme}
-                  disabled={customSelected.length < 2}
-                  className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold py-2.5 rounded-lg text-sm transition"
-                >
-                  Generar poster ({customSelected.length})
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Action footer */}
+          <div className="flex gap-2 pt-4 border-t border-zinc-800">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setCustomSelected([])
+                setCustomSearch('')
+                setCustomResults([])
+              }}
+            >
+              Limpiar
+            </Button>
+            <Button
+              onClick={buildCustomTheme}
+              disabled={customSelected.length < 2}
+              fullWidth
+            >
+              Generar poster ({customSelected.length})
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       {/* ───────────── Poster view ───────────── */}
       <AnimatePresence>
@@ -1222,46 +1237,38 @@ export default function PostersPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 overflow-y-auto"
-            style={{
-              background: 'linear-gradient(180deg, #0c0a09 0%, #1c1917 60%, #0c0a09 100%)',
-            }}
+            className="fixed inset-0 z-40 overflow-y-auto bg-zinc-950"
           >
-            <Nav active="inicio" />
-            <div className="min-h-[100dvh] flex flex-col items-center pt-4 pb-16">
+            <PageShell maxWidth="2xl">
               {/* Top bar */}
-              <div className="w-full max-w-2xl flex items-center justify-between mb-6 px-4">
-                <button
-                  type="button"
+              <div className="flex items-center justify-between mb-6">
+                <Button
+                  variant="secondary"
                   onClick={closePoster}
-                  className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-700 hover:border-yellow-400/50 text-white transition-colors duration-200 text-sm font-semibold rounded-lg px-4 py-2 cursor-pointer"
+                  iconLeft={<Icon.ArrowLeft className="w-4 h-4" />}
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M19 12H5" />
-                    <path d="m12 19-7-7 7-7" />
-                  </svg>
                   Volver a temas
-                </button>
+                </Button>
               </div>
 
               {/* Poster card */}
               <div className="w-full">
                 {loading ? (
                   <div
-                    className="w-full rounded-2xl flex items-center justify-center bg-stone-900/60 border border-stone-800"
+                    className="w-full rounded-2xl flex items-center justify-center bg-zinc-900 border border-zinc-800"
                     style={{ aspectRatio: '4 / 5' }}
                   >
-                    <div className="text-center">
-                      <div className="mx-auto mb-4 h-10 w-10 rounded-full border-2 border-stone-700 border-t-yellow-400 animate-spin" />
-                      <p className="text-stone-400 text-sm font-semibold tracking-wider uppercase">Construyendo red…</p>
-                    </div>
+                    <LoadingState text="Construyendo red..." size="lg" />
                   </div>
                 ) : error ? (
                   <div
-                    className="w-full rounded-2xl flex items-center justify-center bg-stone-900/60 border border-red-900/50 p-8"
+                    className="w-full rounded-2xl flex items-center justify-center bg-zinc-900 border border-zinc-800"
                     style={{ aspectRatio: '4 / 5' }}
                   >
-                    <p className="text-red-300 text-center text-sm">{error}</p>
+                    <ErrorState
+                      description={error}
+                      onRetry={() => activeTheme && selectTheme(activeTheme)}
+                    />
                   </div>
                 ) : (
                   <PosterSVG
@@ -1277,54 +1284,37 @@ export default function PostersPage() {
 
               {/* Action buttons */}
               {!loading && !error && movies.length > 0 && (
-                <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-2xl px-4">
-                  <button
-                    type="button"
+                <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                  <Button
                     onClick={downloadAsImage}
-                    disabled={downloading}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-stone-900 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
-                    style={{ background: '#facc15' }}
+                    loading={downloading}
+                    fullWidth
+                    size="lg"
+                    iconLeft={<Icon.Download className="w-4 h-4" />}
                   >
-                    {downloading ? (
-                      <>
-                        <span className="inline-block h-4 w-4 rounded-full border-2 border-stone-900/30 border-t-stone-900 animate-spin" />
-                        Generando…
-                      </>
-                    ) : (
-                      <>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                          <polyline points="7 10 12 15 17 10" />
-                          <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                        Descargar PNG
-                      </>
-                    )}
-                  </button>
-                  <button
-                    type="button"
+                    {downloading ? 'Generando...' : 'Descargar PNG'}
+                  </Button>
+                  <Button
+                    variant="secondary"
                     onClick={sharePoster}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white border border-stone-700 hover:bg-stone-800 transition-colors duration-200"
+                    fullWidth
+                    size="lg"
+                    iconLeft={<Icon.Share className="w-4 h-4" />}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <circle cx="18" cy="5" r="3" />
-                      <circle cx="6" cy="12" r="3" />
-                      <circle cx="18" cy="19" r="3" />
-                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                    </svg>
                     Compartir
-                  </button>
+                  </Button>
                 </div>
               )}
 
               {/* Hint */}
               {!loading && !error && movies.length > 0 && (
-                <p className="mt-6 text-center text-xs text-stone-500 max-w-md px-4">
-                  Las líneas conectan películas similares según el grafo de CineBret (mismos keywords, género, director, etc). Mientras más gruesa, más fuerte la conexión.
+                <p className="mt-6 text-center text-xs text-zinc-500 max-w-md mx-auto">
+                  Las líneas conectan películas similares según el grafo de CineBret
+                  (mismos keywords, género, director, etc). Mientras más gruesa, más
+                  fuerte la conexión.
                 </p>
               )}
-            </div>
+            </PageShell>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1341,20 +1331,18 @@ export default function PostersPage() {
             className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-sm"
             onClick={() => setSelectedMovie(null)}
           >
-            <div className="min-h-[100dvh] flex flex-col items-center pt-4 pb-16 px-4" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="min-h-[100dvh] flex flex-col items-center pt-4 pb-16 px-4"
+              onClick={(e) => e.stopPropagation()}
+            >
               {/* Top bar */}
               <div className="w-full max-w-2xl flex items-center justify-end mb-6">
-                <button
-                  type="button"
+                <IconButton
+                  icon={<Icon.Close className="w-5 h-5" />}
+                  label="Cerrar"
+                  variant="secondary"
                   onClick={() => setSelectedMovie(null)}
-                  aria-label="Cerrar"
-                  className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-zinc-900 border border-zinc-700 hover:border-yellow-400/50 text-white transition-colors duration-200 cursor-pointer"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
+                />
               </div>
 
               <div className="w-full max-w-2xl">
@@ -1366,49 +1354,30 @@ export default function PostersPage() {
               </div>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-2xl">
-                <button
-                  type="button"
+                <Button
                   onClick={downloadMovieAsImage}
-                  disabled={movieDownloading}
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-stone-900 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
-                  style={{ background: '#facc15' }}
+                  loading={movieDownloading}
+                  fullWidth
+                  size="lg"
+                  iconLeft={<Icon.Download className="w-4 h-4" />}
                 >
-                  {movieDownloading ? (
-                    <>
-                      <span className="inline-block h-4 w-4 rounded-full border-2 border-stone-900/30 border-t-stone-900 animate-spin" />
-                      Generando…
-                    </>
-                  ) : (
-                    <>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="7 10 12 15 17 10" />
-                        <line x1="12" y1="15" x2="12" y2="3" />
-                      </svg>
-                      Descargar PNG
-                    </>
-                  )}
-                </button>
-                <button
-                  type="button"
+                  {movieDownloading ? 'Generando...' : 'Descargar PNG'}
+                </Button>
+                <Button
+                  variant="secondary"
                   onClick={shareMoviePoster}
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white border border-stone-700 hover:bg-stone-800 transition-colors duration-200"
+                  fullWidth
+                  size="lg"
+                  iconLeft={<Icon.Share className="w-4 h-4" />}
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <circle cx="18" cy="5" r="3" />
-                    <circle cx="6" cy="12" r="3" />
-                    <circle cx="18" cy="19" r="3" />
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                  </svg>
                   Compartir
-                </button>
+                </Button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   )
 }
 
@@ -1435,7 +1404,7 @@ function ThemeCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.04 }}
       whileHover={{ y: -4 }}
-      className="group relative overflow-hidden rounded-2xl text-left bg-stone-900 border border-stone-800 transition-all duration-300 hover:border-yellow-500/50 hover:shadow-2xl hover:shadow-yellow-500/10"
+      className="group relative overflow-hidden rounded-2xl text-left bg-zinc-900 border border-zinc-800 transition-all duration-300 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10 cursor-pointer"
       style={{ aspectRatio: '4 / 5' }}
     >
       {/* Background poster */}
@@ -1449,34 +1418,32 @@ function ThemeCard({
           style={{ filter: 'blur(8px)' }}
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-900" />
+        <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900" />
       )}
 
       {/* Dark overlay */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(12,10,9,0.4) 0%, rgba(12,10,9,0.95) 100%)' }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 to-zinc-950/95" />
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col justify-between p-6 sm:p-8">
         <div>
-          <span
-            className="inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.15em] uppercase text-stone-900 mb-4"
-            style={{ background: '#facc15' }}
-          >
+          <Pill variant="gold" size="sm" className="mb-4 uppercase tracking-wider">
             Tema {String(index + 1).padStart(2, '0')}
-          </span>
+          </Pill>
           <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight">
             {theme.title}
           </h2>
-          <p className="mt-2 text-sm text-stone-300/90 leading-relaxed">{theme.subtitle}</p>
+          <p className="mt-2 text-sm text-zinc-300/90 leading-relaxed">{theme.subtitle}</p>
         </div>
 
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-stone-500">
+            <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-zinc-500">
               ~20 películas
             </p>
-            <p className="mt-1 text-sm font-bold text-yellow-400 group-hover:text-yellow-300 transition-colors">
-              Ver red →
+            <p className="mt-1 text-sm font-bold text-yellow-400 group-hover:text-yellow-300 transition-colors inline-flex items-center gap-1">
+              Ver red
+              <Icon.ArrowRight className="w-3.5 h-3.5" />
             </p>
           </div>
           <svg

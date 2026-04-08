@@ -2,8 +2,19 @@
 
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import Image from 'next/image'
-import Nav from '@/components/Nav'
 import { supabase } from '@/lib/supabase'
+import {
+  PageShell,
+  PageHeader,
+  Card,
+  Button,
+  IconButton,
+  Pill,
+  LoadingState,
+  ErrorState,
+  Modal,
+  Icon,
+} from '@/components/ui'
 
 /* ─── Types ─── */
 interface Enriquecimiento {
@@ -435,7 +446,7 @@ export default function AdivinaPage() {
       .map((g) => (g.movie.id === targetMovie?.id ? '🟩' : '🟥'))
       .join('')
     const score = solved ? `${guesses.length}/6` : 'X/6'
-    return `🎬 Adivina la Peli CineBret #${dayNumber}\n${squares} (${score})\ncinebret.cl/adivina`
+    return `🎬 Adivina la Película CineBret #${dayNumber}\n${squares} (${score})\ncinebret.cl/adivina`
   }, [solved, failed, guesses, targetMovie, dayNumber])
 
   async function handleShare() {
@@ -457,29 +468,33 @@ export default function AdivinaPage() {
   }
 
   /* ─── Hints ─── */
-  function getHints(): string[] {
+  type Hint = { label: string; value: string }
+  function getHints(): Hint[] {
     if (!targetMovie) return []
     const enr = targetMovie.enriquecimiento
-    const hints: string[] = []
+    const hints: Hint[] = []
     const attempts = guesses.length
 
     if (attempts >= 1) {
       const decade = getDecade(targetMovie.anio)
-      hints.push(`📅 Año: ${targetMovie.anio ?? '?'} (década del ${decade ?? '?'})`)
+      hints.push({
+        label: 'Año',
+        value: `${targetMovie.anio ?? '?'} (década del ${decade ?? '?'})`,
+      })
     }
     if (attempts >= 2 && enr?.generos) {
-      hints.push(`🎭 Géneros: ${enr.generos.join(', ')}`)
+      hints.push({ label: 'Géneros', value: enr.generos.join(', ') })
     }
     if (attempts >= 3 && enr?.director) {
-      hints.push(`🎬 Director: ${enr.director.charAt(0)}...`)
+      hints.push({ label: 'Director', value: `${enr.director.charAt(0)}...` })
     }
     if (attempts >= 4 && enr?.actores) {
       const first = enr.actores.split(',')[0]?.trim()
-      if (first) hints.push(`⭐ Actor: ${first}`)
+      if (first) hints.push({ label: 'Actor', value: first })
     }
     if (attempts >= 5 && enr?.sinopsis_chilensis) {
       const firstLine = enr.sinopsis_chilensis.split('.')[0]
-      hints.push(`📝 "${firstLine}..."`)
+      hints.push({ label: 'Sinopsis', value: `"${firstLine}..."` })
     }
     return hints
   }
@@ -487,35 +502,71 @@ export default function AdivinaPage() {
   /* ─── Render ─── */
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white">
-        <Nav active="inicio" />
-        <div className="flex items-center justify-center pt-32">
-          <div className="animate-spin h-8 w-8 border-2 border-yellow-400 border-t-transparent rounded-full" />
-        </div>
-      </div>
+      <PageShell maxWidth="lg">
+        <LoadingState text="Cargando el desafío..." />
+      </PageShell>
     )
   }
 
   if (!targetMovie) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white">
-        <Nav active="inicio" />
-        <div className="text-center pt-32 text-zinc-400">No se pudo cargar el juego.</div>
-      </div>
+      <PageShell maxWidth="lg">
+        <ErrorState
+          title="No se pudo cargar el juego"
+          description="Inténtalo de nuevo en unos segundos."
+          onRetry={() => window.location.reload()}
+        />
+      </PageShell>
     )
   }
 
-  const blurPx = gameOver
-    ? 0
-    : getBlur(guesses.length)
-
+  const blurPx = gameOver ? 0 : getBlur(guesses.length)
   const hints = getHints()
   const maxDist = Math.max(...stats.guess_distribution, 1)
 
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <Nav active="inicio" />
+  type CategoryKey = 'DEC' | 'GEN' | 'DIR' | 'CAST' | 'OSC' | 'COMP' | 'MOOD'
+  const CATEGORY_LABELS: Record<CategoryKey, string> = {
+    DEC: 'Década',
+    GEN: 'Género',
+    DIR: 'Director',
+    CAST: 'Reparto',
+    OSC: 'Estado Oscars',
+    COMP: 'Compositor',
+    MOOD: 'Mood CineBret',
+  }
+  const CATEGORY_DESCRIPTIONS: Record<CategoryKey, string> = {
+    DEC: 'Misma década',
+    GEN: 'Comparte algún género',
+    DIR: 'Mismo director',
+    CAST: 'Comparte algún actor',
+    OSC: 'Mismo estado de Oscar',
+    COMP: 'Mismo compositor',
+    MOOD: 'Misma categoría CineBret',
+  }
 
+  function CategoryChip({
+    code,
+    match,
+  }: {
+    code: CategoryKey
+    match: boolean
+  }) {
+    return (
+      <span
+        title={CATEGORY_LABELS[code]}
+        className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded ${
+          match
+            ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30'
+            : 'bg-zinc-800 text-zinc-500 border border-zinc-800'
+        }`}
+      >
+        {code}
+      </span>
+    )
+  }
+
+  return (
+    <PageShell maxWidth="lg">
       {/* Confetti */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
@@ -531,10 +582,10 @@ export default function AdivinaPage() {
               }}
             >
               <div
-                className="w-2 h-3 rounded-sm"
+                className="w-1.5 h-3 rounded-sm bg-yellow-400"
                 style={{
-                  backgroundColor: ['#facc15', '#ef4444', '#22c55e', '#3b82f6', '#a855f7', '#f97316'][i % 6],
                   transform: `rotate(${Math.random() * 360}deg)`,
+                  opacity: 0.6 + Math.random() * 0.4,
                 }}
               />
             </div>
@@ -551,46 +602,66 @@ export default function AdivinaPage() {
         </div>
       )}
 
-      <div className="max-w-lg mx-auto px-4 pt-4 pb-20">
-        {/* Header */}
-        <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold text-yellow-400">Adivina la Peli</h1>
-          <p className="text-zinc-400 text-sm">
-            {isFreeMode ? 'Modo libre' : `Desafío diario #${dayNumber}`} &middot; {guesses.length}/6 intentos
-          </p>
-          <div className="flex items-center justify-center gap-3 mt-1">
-            <button
-              onClick={() => { setStats(loadStats()); setShowStats(true) }}
-              className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
+      <PageHeader
+        title="Adivina la Película"
+        subtitle={
+          isFreeMode
+            ? `Modo libre · ${guesses.length}/6 intentos`
+            : `Desafío diario #${dayNumber} · ${guesses.length}/6 intentos`
+        }
+        icon={<Icon.Sparkles className="w-7 h-7" />}
+        actions={
+          <>
+            <Button
+              variant="secondary"
+              size="sm"
+              iconLeft={<Icon.Trophy className="w-4 h-4" />}
+              onClick={() => {
+                setStats(loadStats())
+                setShowStats(true)
+              }}
             >
-              📊 Estadísticas
-            </button>
-            <button
+              Estadísticas
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              iconLeft={<Icon.Info className="w-4 h-4" />}
               onClick={() => setShowLegend((v) => !v)}
-              className="text-xs text-zinc-500 hover:text-yellow-400 transition-colors"
-              title="¿Qué significan las siglas?"
             >
-              ℹ️ Siglas
-            </button>
-          </div>
-        </div>
+              Siglas
+            </Button>
+          </>
+        }
+      />
 
-        {/* Legend */}
-        {showLegend && (
-          <div className="mb-4 bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-xs text-zinc-300 space-y-1">
-            <p className="text-yellow-400 font-semibold mb-1.5">¿Qué significan las siglas?</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">DEC</span> Década — verde si misma década</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">GEN</span> Género — verde si comparte algún género</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">DIR</span> Director — verde si mismo director</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">CAST</span> Reparto — verde si comparte algún actor</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">OSC</span> Oscars — verde si mismo status de Oscar</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">COMP</span> Compositor — verde si mismo compositor</p>
-            <p><span className="inline-block w-11 font-bold bg-green-600 text-white text-center rounded px-1 mr-1.5">MOOD</span> Mood CineBret — verde si misma categoría</p>
+      {/* Legend */}
+      {showLegend && (
+        <Card padding="md" className="mb-6">
+          <p className="text-yellow-400 font-bold text-sm mb-3">
+            ¿Qué significa cada sigla?
+          </p>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {(Object.keys(CATEGORY_LABELS) as CategoryKey[]).map((k) => (
+              <div key={k} className="flex items-center gap-2 text-xs text-zinc-300">
+                <span className="inline-flex items-center justify-center w-12 shrink-0 px-1.5 py-0.5 rounded bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 font-bold text-[10px] uppercase tracking-wide">
+                  {k}
+                </span>
+                <span className="text-zinc-400">
+                  <span className="text-white font-semibold">
+                    {CATEGORY_LABELS[k]}
+                  </span>{' '}
+                  — {CATEGORY_DESCRIPTIONS[k]}
+                </span>
+              </div>
+            ))}
           </div>
-        )}
+        </Card>
+      )}
 
-        {/* Backdrop image */}
-        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 bg-zinc-900">
+      {/* Backdrop image */}
+      <Card padding="none" className="overflow-hidden mb-6">
+        <div className="relative w-full aspect-video bg-zinc-950">
           <Image
             src={`https://image.tmdb.org/t/p/w1280${targetMovie.backdrop_path}`}
             alt="¿Qué película es?"
@@ -601,127 +672,107 @@ export default function AdivinaPage() {
           />
           {!gameOver && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-4xl font-bold text-white/30 select-none">?</span>
+              <span
+                aria-hidden="true"
+                className="text-6xl font-black text-white/20 select-none"
+              >
+                ?
+              </span>
             </div>
           )}
         </div>
+      </Card>
 
-        {/* Hints */}
-        {hints.length > 0 && !gameOver && (
-          <div className="mb-4 space-y-1">
-            {hints.map((h, i) => (
-              <div
-                key={i}
-                className="text-sm bg-zinc-900 rounded-lg px-3 py-1.5 text-zinc-300 border border-zinc-800"
-              >
-                {h}
+      {/* Hints */}
+      {hints.length > 0 && !gameOver && (
+        <div className="mb-6 space-y-2">
+          {hints.map((h, i) => (
+            <Card key={i} padding="sm" className="flex items-start gap-3">
+              <span className="text-yellow-400 mt-0.5">
+                <Icon.Sparkles className="w-4 h-4" />
+              </span>
+              <div className="text-sm text-zinc-300 leading-relaxed">
+                <span className="text-zinc-500 font-semibold uppercase tracking-wide text-[10px] mr-2">
+                  {h.label}
+                </span>
+                {h.value}
               </div>
-            ))}
-          </div>
-        )}
+            </Card>
+          ))}
+        </div>
+      )}
 
-        {/* Guess list */}
-        {guesses.length > 0 && (
-          <div className="mb-4 space-y-2">
-            {guesses.map((g, i) => {
-              const isCorrect = g.movie.id === targetMovie.id
-              const pct = distanceToPercent(g.graphDistance)
-              const pctColor = pct > 70 ? 'bg-green-500' : pct >= 30 ? 'bg-yellow-500' : 'bg-red-500'
-              const pctTextColor = pct > 70 ? 'text-green-400' : pct >= 30 ? 'text-yellow-400' : 'text-red-400'
-              return (
-                <div
-                  key={i}
-                  className={`rounded-lg px-3 py-2 border ${
-                    isCorrect
-                      ? 'bg-green-950/50 border-green-700'
-                      : 'bg-zinc-900 border-zinc-800'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium flex-1 truncate">
-                      {isCorrect ? '✅' : '❌'} {g.movie.titulo} ({g.movie.anio ?? '?'})
+      {/* Guess list */}
+      {guesses.length > 0 && (
+        <div className="mb-6 space-y-3">
+          {guesses.map((g, i) => {
+            const isCorrect = g.movie.id === targetMovie.id
+            const pct = distanceToPercent(g.graphDistance)
+            return (
+              <Card
+                key={i}
+                padding="sm"
+                className={
+                  isCorrect
+                    ? 'ring-1 ring-yellow-400/50 bg-yellow-400/5'
+                    : ''
+                }
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className={
+                      isCorrect ? 'text-yellow-400' : 'text-zinc-500'
+                    }
+                    aria-hidden="true"
+                  >
+                    {isCorrect ? (
+                      <Icon.Check className="w-4 h-4" />
+                    ) : (
+                      <Icon.Close className="w-4 h-4" />
+                    )}
+                  </span>
+                  <span className="text-sm font-semibold text-white flex-1 truncate">
+                    {g.movie.titulo}{' '}
+                    <span className="text-zinc-500 font-normal">
+                      ({g.movie.anio ?? '?'})
                     </span>
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchDecade ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Década"
-                    >
-                      DEC
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchGenre ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Género"
-                    >
-                      GEN
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchDirector ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Director"
-                    >
-                      DIR
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchCast ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Comparten actor"
-                    >
-                      CAST
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchOscars ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Mismo estado Oscars"
-                    >
-                      OSC
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchCompositor ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Mismo compositor"
-                    >
-                      COMP
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        g.matchMood ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                      }`}
-                      title="Misma categoría CineBret"
-                    >
-                      MOOD
-                    </span>
-                  </div>
-                  {!isCorrect && (
-                    <div className="mt-1.5 flex items-center gap-2">
-                      <span className={`text-[11px] font-semibold ${pctTextColor}`}>
-                        Conexión: {pct}%
-                      </span>
-                      <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all ${pctColor}`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  </span>
                 </div>
-              )
-            })}
-          </div>
-        )}
+                <div className="flex flex-wrap gap-1 mt-2">
+                  <CategoryChip code="DEC" match={g.matchDecade} />
+                  <CategoryChip code="GEN" match={g.matchGenre} />
+                  <CategoryChip code="DIR" match={g.matchDirector} />
+                  <CategoryChip code="CAST" match={g.matchCast} />
+                  <CategoryChip code="OSC" match={g.matchOscars} />
+                  <CategoryChip code="COMP" match={g.matchCompositor} />
+                  <CategoryChip code="MOOD" match={g.matchMood} />
+                </div>
+                {!isCorrect && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-[11px] font-bold text-yellow-400 tabular-nums">
+                      Conexión {pct}%
+                    </span>
+                    <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-yellow-400 transition-all"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </Card>
+            )
+          })}
+        </div>
+      )}
 
-        {/* Search input */}
-        {!gameOver && (
-          <div className="relative mb-4" ref={suggestionsRef}>
+      {/* Search input */}
+      {!gameOver && (
+        <div className="relative mb-6" ref={suggestionsRef}>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none">
+              <Icon.Search className="w-5 h-5" />
+            </span>
             <input
               ref={inputRef}
               type="text"
@@ -732,198 +783,188 @@ export default function AdivinaPage() {
               }}
               onFocus={() => setShowSuggestions(true)}
               placeholder="¿Qué película es? Escribe el nombre..."
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400 transition-colors"
+              className="w-full min-h-[52px] bg-zinc-900 border border-zinc-800 rounded-2xl pl-11 pr-4 py-3 text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400 transition-colors"
             />
-            {showSuggestions && filteredMovies.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden z-20 max-h-64 overflow-y-auto">
-                {filteredMovies.map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => submitGuess(m)}
-                    className="w-full text-left px-4 py-2.5 hover:bg-zinc-800 transition-colors border-b border-zinc-800 last:border-0"
-                  >
-                    <span className="text-white text-sm font-medium">{m.titulo}</span>
-                    {m.titulo_ingles && (
-                      <span className="text-zinc-500 text-xs ml-2">({m.titulo_ingles})</span>
-                    )}
-                    {m.anio && (
-                      <span className="text-zinc-500 text-xs ml-1">&middot; {m.anio}</span>
-                    )}
-                  </button>
-                ))}
-              </div>
+          </div>
+          {showSuggestions && filteredMovies.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden z-20 max-h-72 overflow-y-auto shadow-2xl">
+              {filteredMovies.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => submitGuess(m)}
+                  className="w-full text-left px-4 py-3 min-h-[44px] hover:bg-zinc-800 transition-colors border-b border-zinc-800 last:border-0"
+                >
+                  <span className="text-white text-sm font-semibold">
+                    {m.titulo}
+                  </span>
+                  {m.titulo_ingles && (
+                    <span className="text-zinc-500 text-xs ml-2">
+                      ({m.titulo_ingles})
+                    </span>
+                  )}
+                  {m.anio && (
+                    <span className="text-zinc-500 text-xs ml-1">
+                      · {m.anio}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Result state (win / lose) */}
+      {gameOver && (
+        <Card padding="lg" className="text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            {solved ? (
+              <Pill variant="gold" size="md" icon={<Icon.Check className="w-4 h-4" />}>
+                ¡Adivinaste!
+              </Pill>
+            ) : (
+              <Pill variant="danger" size="md" icon={<Icon.Close className="w-4 h-4" />}>
+                No acertaste
+              </Pill>
             )}
           </div>
-        )}
 
-        {/* Win state */}
-        {solved && (
-          <div className="text-center space-y-4">
-            <div className="text-2xl font-bold text-green-400">
-              ¡Adivinaste!
-            </div>
-            <div className="flex justify-center">
-              <div className="relative w-40 aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${targetMovie.poster_path}`}
-                  alt={targetMovie.titulo}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-yellow-400">{targetMovie.titulo}</p>
-              {targetMovie.titulo_ingles && (
-                <p className="text-zinc-400 text-sm">{targetMovie.titulo_ingles}</p>
-              )}
-              <p className="text-zinc-400 text-sm">
-                {targetMovie.anio} &middot; IMDb {targetMovie.nota_imdb}
-              </p>
-              {targetMovie.enriquecimiento?.director && (
-                <p className="text-zinc-500 text-xs mt-1">Dir: {targetMovie.enriquecimiento.director}</p>
-              )}
-              {targetMovie.enriquecimiento?.generos && (
-                <p className="text-zinc-500 text-xs">{targetMovie.enriquecimiento.generos.join(', ')}</p>
-              )}
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              {!isFreeMode && (
-                <button
-                  onClick={handleShare}
-                  className="inline-flex items-center gap-2 bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-colors"
-                >
-                  {copied ? '¡Copiado!' : '📋 Compartir resultado'}
-                </button>
-              )}
-              <button
-                onClick={startFreeGame}
-                className="inline-flex items-center gap-2 bg-zinc-800 text-yellow-400 border border-zinc-700 font-bold px-6 py-2.5 rounded-full hover:bg-zinc-700 transition-colors text-sm"
-              >
-                🎬 Jugar otra película
-              </button>
+          <p className="text-sm text-zinc-400 mb-4">
+            {solved ? 'La película era:' : 'La película era:'}
+          </p>
+
+          <div className="flex justify-center mb-4">
+            <div className="relative w-40 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl ring-1 ring-zinc-800">
+              <Image
+                src={`https://image.tmdb.org/t/p/w500${targetMovie.poster_path}`}
+                alt={targetMovie.titulo}
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
-        )}
 
-        {/* Lose state */}
-        {failed && (
-          <div className="text-center space-y-4">
-            <div className="text-xl font-bold text-red-400">
-              No era esa... La película era:
-            </div>
-            <div className="flex justify-center">
-              <div className="relative w-40 aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${targetMovie.poster_path}`}
-                  alt={targetMovie.titulo}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-yellow-400">{targetMovie.titulo}</p>
-              {targetMovie.titulo_ingles && (
-                <p className="text-zinc-400 text-sm">{targetMovie.titulo_ingles}</p>
-              )}
+          <div className="mb-5">
+            <p className="text-xl font-black text-yellow-400">
+              {targetMovie.titulo}
+            </p>
+            {targetMovie.titulo_ingles && (
               <p className="text-zinc-400 text-sm">
-                {targetMovie.anio} &middot; IMDb {targetMovie.nota_imdb}
+                {targetMovie.titulo_ingles}
               </p>
-              {targetMovie.enriquecimiento?.director && (
-                <p className="text-zinc-500 text-xs mt-1">Dir: {targetMovie.enriquecimiento.director}</p>
-              )}
-              {targetMovie.enriquecimiento?.generos && (
-                <p className="text-zinc-500 text-xs">{targetMovie.enriquecimiento.generos.join(', ')}</p>
-              )}
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              {!isFreeMode && (
-                <button
-                  onClick={handleShare}
-                  className="inline-flex items-center gap-2 bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-full hover:bg-yellow-300 transition-colors"
-                >
-                  {copied ? '¡Copiado!' : '📋 Compartir resultado'}
-                </button>
-              )}
-              <button
-                onClick={startFreeGame}
-                className="inline-flex items-center gap-2 bg-zinc-800 text-yellow-400 border border-zinc-700 font-bold px-6 py-2.5 rounded-full hover:bg-zinc-700 transition-colors text-sm"
-              >
-                🎬 Jugar otra película
-              </button>
-            </div>
+            )}
+            <p className="text-zinc-500 text-sm mt-1">
+              {targetMovie.anio} · IMDb {targetMovie.nota_imdb}
+            </p>
+            {targetMovie.enriquecimiento?.director && (
+              <p className="text-zinc-500 text-xs mt-1">
+                Director: {targetMovie.enriquecimiento.director}
+              </p>
+            )}
+            {targetMovie.enriquecimiento?.generos && (
+              <p className="text-zinc-500 text-xs">
+                {targetMovie.enriquecimiento.generos.join(', ')}
+              </p>
+            )}
           </div>
-        )}
-      </div>
+
+          <div className="flex flex-col items-center gap-2">
+            {!isFreeMode && (
+              <Button
+                variant="primary"
+                onClick={handleShare}
+                iconLeft={<Icon.Share className="w-4 h-4" />}
+              >
+                {copied ? '¡Copiado!' : 'Compartir resultado'}
+              </Button>
+            )}
+            <Button
+              variant="secondary"
+              onClick={startFreeGame}
+              iconLeft={<Icon.Refresh className="w-4 h-4" />}
+            >
+              Jugar otra película
+            </Button>
+          </div>
+        </Card>
+      )}
 
       {/* Stats modal */}
-      {showStats && (
-        <div
-          className="fixed inset-0 bg-black/70 z-40 flex items-center justify-center p-4"
-          onClick={() => setShowStats(false)}
-        >
-          <div
-            className="bg-zinc-900 rounded-2xl p-6 w-full max-w-sm border border-zinc-700"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-yellow-400">Estadísticas</h2>
-              <button
-                onClick={() => setShowStats(false)}
-                className="text-zinc-400 hover:text-white text-xl"
-              >
-                ✕
-              </button>
+      <Modal
+        open={showStats}
+        onClose={() => setShowStats(false)}
+        title="Estadísticas"
+        size="sm"
+      >
+        <div className="grid grid-cols-4 gap-3 mb-6 text-center">
+          <div>
+            <div className="text-2xl font-black text-yellow-400 tabular-nums">
+              {stats.games_played}
             </div>
-
-            <div className="grid grid-cols-4 gap-3 mb-6 text-center">
-              <div>
-                <div className="text-2xl font-bold">{stats.games_played}</div>
-                <div className="text-[10px] text-zinc-400 uppercase">Jugadas</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">
-                  {stats.games_played > 0 ? Math.round((stats.games_won / stats.games_played) * 100) : 0}%
-                </div>
-                <div className="text-[10px] text-zinc-400 uppercase">Ganadas</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">{stats.current_streak}</div>
-                <div className="text-[10px] text-zinc-400 uppercase">Racha</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold">{stats.max_streak}</div>
-                <div className="text-[10px] text-zinc-400 uppercase">Max racha</div>
-              </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Jugadas
             </div>
-
-            <div className="space-y-1.5">
-              <p className="text-xs text-zinc-400 uppercase font-medium mb-2">Distribución</p>
-              {stats.guess_distribution.map((count, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <span className="text-xs text-zinc-400 w-3 text-right">{i + 1}</span>
-                  <div className="flex-1 h-5 bg-zinc-800 rounded overflow-hidden">
-                    <div
-                      className={`h-full rounded flex items-center justify-end px-1.5 text-[10px] font-bold transition-all ${
-                        solved && guesses.length === i + 1
-                          ? 'bg-green-500 text-white'
-                          : 'bg-zinc-600 text-zinc-300'
-                      }`}
-                      style={{
-                        width: `${Math.max((count / maxDist) * 100, count > 0 ? 10 : 0)}%`,
-                        minWidth: count > 0 ? '20px' : '0',
-                      }}
-                    >
-                      {count > 0 ? count : ''}
-                    </div>
-                  </div>
-                </div>
-              ))}
+          </div>
+          <div>
+            <div className="text-2xl font-black text-yellow-400 tabular-nums">
+              {stats.games_played > 0
+                ? Math.round((stats.games_won / stats.games_played) * 100)
+                : 0}
+              %
+            </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Ganadas
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-black text-yellow-400 tabular-nums">
+              {stats.current_streak}
+            </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Racha
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-black text-yellow-400 tabular-nums">
+              {stats.max_streak}
+            </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Máx. racha
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        <div className="space-y-1.5">
+          <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wide mb-2">
+            Distribución
+          </p>
+          {stats.guess_distribution.map((count, i) => {
+            const isHighlight = solved && guesses.length === i + 1
+            return (
+              <div key={i} className="flex items-center gap-2">
+                <span className="text-xs text-zinc-500 w-3 text-right font-bold">
+                  {i + 1}
+                </span>
+                <div className="flex-1 h-5 bg-zinc-800 rounded overflow-hidden">
+                  <div
+                    className={`h-full rounded flex items-center justify-end px-1.5 text-[10px] font-bold transition-all ${
+                      isHighlight
+                        ? 'bg-yellow-400 text-zinc-950'
+                        : 'bg-zinc-700 text-zinc-300'
+                    }`}
+                    style={{
+                      width: `${Math.max((count / maxDist) * 100, count > 0 ? 10 : 0)}%`,
+                      minWidth: count > 0 ? '20px' : '0',
+                    }}
+                  >
+                    {count > 0 ? count : ''}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </Modal>
+    </PageShell>
   )
 }

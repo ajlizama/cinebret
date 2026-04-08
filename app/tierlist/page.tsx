@@ -2,7 +2,18 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
-import Nav from '@/components/Nav'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  Card,
+  Button,
+  FilterChips,
+  Pill,
+  LoadingState,
+  ErrorState,
+  Icon,
+} from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 
 type TierMovie = {
@@ -33,16 +44,15 @@ const TIERS: { name: TierName; color: string; bg: string; border: string }[] = [
 
 type ThemeConfig = {
   id: string
-  emoji: string
   title: string
   description: string
   filter: 'custom' | 'personalizado' | ((m: TierMovie) => boolean)
 }
 
 const GENRE_OPTIONS = [
-  'Drama', 'Comedia', 'Accion', 'Terror', 'Ciencia ficcion', 'Animacion',
-  'Thriller', 'Romance', 'Documental', 'Western', 'Guerra', 'Biografia',
-  'Crimen', 'Aventura', 'Fantasia', 'Misterio', 'Musical', 'Historia',
+  'Drama', 'Comedia', 'Acción', 'Terror', 'Ciencia ficción', 'Animación',
+  'Thriller', 'Romance', 'Documental', 'Western', 'Guerra', 'Biografía',
+  'Crimen', 'Aventura', 'Fantasía', 'Misterio', 'Musical', 'Historia',
 ]
 
 const DECADE_OPTIONS = [
@@ -57,156 +67,134 @@ const DECADE_OPTIONS = [
 const THEME_LIST: ThemeConfig[] = [
   {
     id: 'drama90s',
-    emoji: '\u{1F3AD}',
     title: 'Drama de los 90s',
-    description: 'Los mejores dramas de la decada dorada',
+    description: 'Los mejores dramas de la década dorada',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('drama')) && (m.anio ?? 0) >= 1990 && (m.anio ?? 0) <= 1999,
   },
   {
     id: 'oscar_winners',
-    emoji: '\u{1F3C6}',
-    title: 'Ganadoras de Mejor Pelicula',
-    description: 'Las que se llevaron el Oscar gordo',
+    title: 'Ganadoras de Mejor Película',
+    description: 'Las que ganaron el Oscar principal',
     filter: (m) => !!(m.oscars && m.oscars.toLowerCase().startsWith('gan')),
   },
   {
     id: 'tarantino',
-    emoji: '\u{1F52A}',
-    title: 'Peliculas de Tarantino',
-    description: 'Sangre, dialogos y soundtracks',
+    title: 'Películas de Tarantino',
+    description: 'Diálogos, estilo y bandas sonoras',
     filter: (m) => !!(m.director && m.director.toLowerCase().includes('tarantino')),
   },
   {
     id: 'nolan',
-    emoji: '\u{1F570}\u{FE0F}',
-    title: 'Peliculas de Nolan',
-    description: 'Tiempo, espacio y la mente',
+    title: 'Películas de Nolan',
+    description: 'Tiempo, espacio y mente',
     filter: (m) => !!(m.director && m.director.toLowerCase().includes('nolan')),
   },
   {
     id: 'zimmer',
-    emoji: '\u{1F3B5}',
     title: 'Soundtracks de Hans Zimmer',
     description: 'Las mejores bandas sonoras',
     filter: (m) => !!(m.compositor && m.compositor.toLowerCase().includes('zimmer')),
   },
   {
     id: 'comedy2000s',
-    emoji: '\u{1F923}',
     title: 'Comedias de los 2000s',
     description: 'Risas del nuevo milenio',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('comedia') || g.toLowerCase().includes('comedy')) && (m.anio ?? 0) >= 2000 && (m.anio ?? 0) <= 2009,
   },
   {
     id: 'horror_classic',
-    emoji: '\u{1F47B}',
-    title: 'Terror Clasico',
-    description: 'Las que te quitaron el sueno',
+    title: 'Terror clásico',
+    description: 'Las que quitan el sueño',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('terror') || g.toLowerCase().includes('horror')) && (m.anio ?? 0) < 2010,
   },
   {
     id: 'scifi',
-    emoji: '\u{1F680}',
-    title: 'Ciencia Ficcion',
+    title: 'Ciencia ficción',
     description: 'Futuros posibles e imposibles',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('ciencia ficci') || g.toLowerCase().includes('sci-fi') || g.toLowerCase().includes('science fiction')),
   },
   {
     id: 'animation_adult',
-    emoji: '\u{1F3A8}',
-    title: 'Animacion para adultos',
-    description: 'Animacion con nota alta en IMDb',
+    title: 'Animación para adultos',
+    description: 'Animación con nota alta en IMDb',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('animaci') || g.toLowerCase().includes('animation')) && (m.nota_imdb ?? 0) >= 7.5,
   },
   {
     id: 'thriller_psych',
-    emoji: '\u{1F9E0}',
-    title: 'Thrillers Psicologicos',
-    description: 'Te vuelan la cabeza',
+    title: 'Thrillers psicológicos',
+    description: 'Para pensar hasta el final',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('thriller') || g.toLowerCase().includes('suspense')),
   },
   {
     id: 'spielberg',
-    emoji: '\u{1F3AC}',
-    title: 'Peliculas de Spielberg',
+    title: 'Películas de Spielberg',
     description: 'El maestro del cine popular',
     filter: (m) => !!(m.director && m.director.toLowerCase().includes('spielberg')),
   },
   {
     id: 'romance_epic',
-    emoji: '\u{2764}\u{FE0F}',
-    title: 'Romance Epico',
+    title: 'Romance épico',
     description: 'Historias de amor inolvidables',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('romance') || g.toLowerCase().includes('romanc')) && (m.nota_imdb ?? 0) >= 7,
   },
   {
     id: 'action80s',
-    emoji: '\u{1F4A5}',
-    title: 'Accion de los 80s',
-    description: 'Explosiones y musculos',
+    title: 'Acción de los 80s',
+    description: 'Explosiones y adrenalina',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('acci') || g.toLowerCase().includes('action')) && (m.anio ?? 0) >= 1980 && (m.anio ?? 0) <= 1989,
   },
   {
     id: 'docs_top',
-    emoji: '\u{1F4F9}',
-    title: 'Documentales Top',
-    description: 'La realidad supera la ficcion',
+    title: 'Documentales top',
+    description: 'La realidad supera la ficción',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('documental') || g.toLowerCase().includes('documentary')) && (m.nota_imdb ?? 0) >= 8,
   },
   {
     id: 'imdb9',
-    emoji: '\u{2B50}',
-    title: 'Peliculas con +9 IMDB',
+    title: 'Películas con IMDb +9',
     description: 'Lo mejor de lo mejor',
     filter: (m) => (m.nota_imdb ?? 0) >= 9,
   },
   {
     id: 'western',
-    emoji: '\u{1F920}',
     title: 'Western',
     description: 'Duelos al atardecer',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('western')),
   },
   {
     id: 'war',
-    emoji: '\u{2694}\u{FE0F}',
-    title: 'Guerra y Conflicto',
+    title: 'Guerra y conflicto',
     description: 'Batallas que marcaron la historia',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('guerra') || g.toLowerCase().includes('war') || g.toLowerCase().includes('belic')),
   },
   {
     id: 'biography',
-    emoji: '\u{1F4D6}',
-    title: 'Biografias Epicas',
-    description: 'Vidas que merecen una pelicula',
+    title: 'Biografías épicas',
+    description: 'Vidas que merecen una película',
     filter: (m) => (m.generos ?? []).some(g => g.toLowerCase().includes('biograf') || g.toLowerCase().includes('biography')),
   },
   {
     id: 'classics',
-    emoji: '\u{1F39E}\u{FE0F}',
-    title: 'Clasicos (+30 anos)',
+    title: 'Clásicos (+30 años)',
     description: 'Las que resisten el paso del tiempo',
     filter: (m) => (m.anio ?? 2000) < 1996,
   },
   {
     id: 'recent',
-    emoji: '\u{1F195}',
-    title: 'Estrenos Recientes',
-    description: 'Lo mas nuevo del cine',
+    title: 'Estrenos recientes',
+    description: 'Lo más nuevo del cine',
     filter: (m) => (m.anio ?? 0) >= 2023,
   },
   {
     id: 'random',
-    emoji: '\u{1F3B2}',
     title: 'Aleatorio',
-    description: '16 peliculas al azar',
+    description: '16 películas al azar',
     filter: 'custom',
   },
   {
     id: 'personalizado',
-    emoji: '\u{1F527}',
     title: 'Personalizado',
-    description: 'Elige genero + decada',
+    description: 'Elige género y década',
     filter: 'personalizado',
   },
 ]
@@ -295,7 +283,7 @@ export default function TierListPage() {
     setSelectedMovie(null)
 
     if (pool.length < 16) {
-      setError(`Solo hay ${pool.length} peliculas para "${theme.title}". Se necesitan al menos 16.`)
+      setError(`Solo hay ${pool.length} películas para "${theme.title}". Se necesitan al menos 16.`)
       setPhase('tierlist')
       return
     }
@@ -339,7 +327,6 @@ export default function TierListPage() {
 
     const customTheme: ThemeConfig = {
       id: 'custom_user',
-      emoji: '\u{1F527}',
       title: `${customGenres.join(', ') || 'Todas'}${customDecade ? ` (${customDecade.min}s)` : ''}`,
       description: 'Tier list personalizada',
       filter: 'personalizado',
@@ -423,7 +410,7 @@ export default function TierListPage() {
 
   const handleShare = async () => {
     if (!selectedTheme) return
-    let text = `\u{1F3AC} Mi Tier List CineBret: ${selectedTheme.title}\n`
+    let text = `Mi Tier List CineBret: ${selectedTheme.title}\n`
     for (const t of TIERS) {
       const movies = tiers[t.name]
       if (movies.length > 0) {
@@ -481,214 +468,215 @@ export default function TierListPage() {
     )
   }
 
+  const genreChips = GENRE_OPTIONS.map(g => ({ key: g, label: g }))
+  const decadeChips = DECADE_OPTIONS.map(d => ({ key: String(d.min), label: d.label }))
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <Nav active="inicio" />
+    <PageShell maxWidth="4xl">
+      <PageHeader
+        title="Tier List"
+        subtitle="Clasifica 16 películas de S a F según tu criterio."
+        icon={<Icon.Trophy className="w-8 h-8" />}
+      />
 
-      <main className="max-w-5xl mx-auto px-4 pt-4 pb-20">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl md:text-4xl font-black">
-            <span className="text-yellow-400">Tier List</span> CineBret
-          </h1>
-          <p className="text-zinc-400 text-sm mt-1">Clasifica 16 peliculas de S a F</p>
-        </div>
+      {allLoading && <LoadingState text="Cargando películas..." size="lg" />}
 
-        {/* Loading */}
-        {allLoading && (
-          <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <div className="w-10 h-10 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin" />
-            <p className="text-zinc-400 text-sm">Cargando peliculas...</p>
-          </div>
-        )}
-
-        {/* THEME SELECTION */}
-        {!allLoading && phase === 'theme' && (
-          <div>
-            <h2 className="text-lg md:text-xl font-bold text-center mb-6 text-zinc-200">
-              Elige un tema para tu tier list
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {THEME_LIST.map((theme) => (
-                <button
-                  key={theme.id}
-                  onClick={() => handleThemeSelect(theme)}
-                  className="flex flex-col items-center text-center p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-yellow-400/60 hover:bg-zinc-800/80 transition-all duration-200 group cursor-pointer active:scale-95"
-                >
-                  <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">{theme.emoji}</span>
-                  <span className="text-sm font-bold text-white group-hover:text-yellow-400 transition-colors leading-tight">
+      {/* THEME SELECTION */}
+      {!allLoading && phase === 'theme' && (
+        <Section label="Elige un tema">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {THEME_LIST.map((theme) => (
+              <Card
+                key={theme.id}
+                as="button"
+                interactive
+                padding="md"
+                onClick={() => handleThemeSelect(theme)}
+                className="text-left border border-zinc-800 hover:border-yellow-400/60 min-h-[44px]"
+              >
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm font-bold text-white leading-tight">
                     {theme.title}
                   </span>
-                  <span className="text-[11px] text-zinc-500 mt-1 leading-tight">{theme.description}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* PERSONALIZADO */}
-        {!allLoading && phase === 'personalizado' && (
-          <div className="max-w-lg mx-auto">
-            <button onClick={goToThemes} className="text-yellow-400 text-sm mb-4 hover:underline">
-              {'<'} Volver a temas
-            </button>
-            <h2 className="text-lg font-bold mb-4 text-zinc-200">Crear tier list personalizada</h2>
-
-            <div className="mb-6">
-              <h3 className="text-sm font-bold text-zinc-400 mb-2 uppercase tracking-wide">Generos (opcional)</h3>
-              <div className="flex flex-wrap gap-2">
-                {GENRE_OPTIONS.map(g => (
-                  <button
-                    key={g}
-                    onClick={() => setCustomGenres(prev => prev.includes(g) ? prev.filter(x => x !== g) : [...prev, g])}
-                    className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-                      customGenres.includes(g)
-                        ? 'bg-yellow-400 text-black border-yellow-400 font-bold'
-                        : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-zinc-500'
-                    }`}
-                  >
-                    {g}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <h3 className="text-sm font-bold text-zinc-400 mb-2 uppercase tracking-wide">Decada (opcional)</h3>
-              <div className="flex flex-wrap gap-2">
-                {DECADE_OPTIONS.map(d => (
-                  <button
-                    key={d.label}
-                    onClick={() => setCustomDecade(prev => prev?.min === d.min ? null : { min: d.min, max: d.max })}
-                    className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-                      customDecade?.min === d.min
-                        ? 'bg-yellow-400 text-black border-yellow-400 font-bold'
-                        : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-zinc-500'
-                    }`}
-                  >
-                    {d.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={handleCustomStart}
-              className="w-full bg-yellow-400 text-black font-bold py-3 rounded-xl hover:bg-yellow-300 transition text-sm"
-            >
-              Crear tier list
-            </button>
-          </div>
-        )}
-
-        {/* TIER LIST */}
-        {!allLoading && (phase === 'tierlist' || phase === 'done') && (
-          <>
-            {error && (
-              <div className="text-center py-20">
-                <p className="text-red-400 mb-4">{error}</p>
-                <button onClick={goToThemes} className="bg-yellow-400 text-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-300 transition">
-                  Elegir otro tema
-                </button>
-              </div>
-            )}
-
-            {!error && (
-              <div>
-                {/* Theme badge */}
-                {selectedTheme && (
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="text-lg">{selectedTheme.emoji}</span>
-                    <span className="text-sm font-bold text-yellow-400">{selectedTheme.title}</span>
-                    <button onClick={goToThemes} className="text-zinc-500 text-xs hover:text-zinc-300 ml-2 underline">
-                      cambiar
-                    </button>
-                  </div>
-                )}
-
-                {/* Instructions */}
-                {!allPlaced && (
-                  <p className="text-center text-zinc-500 text-xs mb-4">
-                    <span className="hidden md:inline">Arrastra peliculas a los tiers</span>
-                    <span className="md:hidden">Toca una pelicula, luego toca un tier para colocarla</span>
-                    {' '} &middot; {totalPlaced}/16 clasificadas
-                  </p>
-                )}
-
-                {/* Tier rows */}
-                <div className="space-y-2 mb-6">
-                  {TIERS.map(tier => (
-                    <div
-                      key={tier.name}
-                      onDragOver={handleDragOver}
-                      onDrop={() => handleDropOnTier(tier.name)}
-                      onClick={() => handleTierTap(tier.name)}
-                      className={`
-                        flex items-stretch min-h-[72px] md:min-h-[88px] rounded-lg border transition-colors
-                        ${tier.border} ${tier.bg}
-                        ${selectedMovie ? 'cursor-pointer hover:brightness-125' : ''}
-                      `}
-                    >
-                      {/* Tier label */}
-                      <div className={`flex items-center justify-center w-12 md:w-16 flex-shrink-0 font-black text-2xl md:text-3xl ${tier.color} border-r ${tier.border}`}>
-                        {tier.name}
-                      </div>
-                      {/* Movies in tier */}
-                      <div className="flex items-center gap-1.5 p-1.5 flex-wrap flex-1 min-h-[72px] md:min-h-[88px]">
-                        {tiers[tier.name].length === 0 && (
-                          <span className="text-zinc-600 text-xs px-2">
-                            {selectedMovie ? 'Toca para colocar aqui' : ''}
-                          </span>
-                        )}
-                        {tiers[tier.name].map(movie => renderMovieCard(movie, tier.name, true))}
-                      </div>
-                    </div>
-                  ))}
+                  <span className="text-[11px] text-zinc-500 leading-snug">
+                    {theme.description}
+                  </span>
                 </div>
+              </Card>
+            ))}
+          </div>
+        </Section>
+      )}
 
-                {/* Unranked pool */}
-                {unranked.length > 0 && (
+      {/* PERSONALIZADO */}
+      {!allLoading && phase === 'personalizado' && (
+        <div className="max-w-2xl mx-auto">
+          <button
+            type="button"
+            onClick={goToThemes}
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-yellow-400 transition-colors text-sm font-semibold cursor-pointer mb-6 min-h-[44px]"
+          >
+            <Icon.ArrowLeft className="w-4 h-4" />
+            <span>Volver a temas</span>
+          </button>
+
+          <h2 className="text-2xl font-black text-white mb-6">
+            Crear tier list personalizada
+          </h2>
+
+          <Section label="Géneros (opcional)">
+            <FilterChips
+              chips={genreChips}
+              value={customGenres}
+              onChange={(val) => setCustomGenres(Array.isArray(val) ? val : [val])}
+              multi
+            />
+          </Section>
+
+          <Section label="Década (opcional)">
+            <FilterChips
+              chips={decadeChips}
+              value={customDecade ? String(customDecade.min) : ''}
+              onChange={(val) => {
+                const key = Array.isArray(val) ? val[0] : val
+                const match = DECADE_OPTIONS.find(d => String(d.min) === key)
+                setCustomDecade(prev => {
+                  if (!match) return null
+                  if (prev?.min === match.min) return null
+                  return { min: match.min, max: match.max }
+                })
+              }}
+            />
+          </Section>
+
+          <Button onClick={handleCustomStart} size="lg" fullWidth>
+            Crear tier list
+          </Button>
+        </div>
+      )}
+
+      {/* TIER LIST */}
+      {!allLoading && (phase === 'tierlist' || phase === 'done') && (
+        <>
+          {error && (
+            <ErrorState
+              title="No hay suficientes películas"
+              description={error}
+              onRetry={goToThemes}
+            />
+          )}
+
+          {!error && (
+            <div>
+              {/* Theme badge */}
+              {selectedTheme && (
+                <div className="flex items-center justify-center gap-3 mb-6 flex-wrap">
+                  <Pill variant="gold" size="md" icon={<Icon.Film className="w-4 h-4" />}>
+                    {selectedTheme.title}
+                  </Pill>
+                  <Button variant="ghost" size="sm" onClick={goToThemes}>
+                    Cambiar tema
+                  </Button>
+                </div>
+              )}
+
+              {/* Instructions */}
+              {!allPlaced && (
+                <p className="text-center text-zinc-500 text-xs mb-4">
+                  <span className="hidden md:inline">Arrastra las películas a los tiers</span>
+                  <span className="md:hidden">Toca una película, luego toca un tier para colocarla</span>
+                  {' · '}
+                  <span className="text-yellow-400 font-semibold tabular-nums">{totalPlaced}/16</span>
+                  {' clasificadas'}
+                </p>
+              )}
+
+              {/* Tier rows — colors retained because they encode rank meaning */}
+              <div className="space-y-2 mb-6">
+                {TIERS.map(tier => (
+                  <div
+                    key={tier.name}
+                    onDragOver={handleDragOver}
+                    onDrop={() => handleDropOnTier(tier.name)}
+                    onClick={() => handleTierTap(tier.name)}
+                    className={`
+                      flex items-stretch min-h-[72px] md:min-h-[88px] rounded-lg border transition-colors
+                      ${tier.border} ${tier.bg}
+                      ${selectedMovie ? 'cursor-pointer hover:brightness-125' : ''}
+                    `}
+                  >
+                    {/* Tier label */}
+                    <div className={`flex items-center justify-center w-12 md:w-16 flex-shrink-0 font-black text-2xl md:text-3xl ${tier.color} border-r ${tier.border}`}>
+                      {tier.name}
+                    </div>
+                    {/* Movies in tier */}
+                    <div className="flex items-center gap-1.5 p-1.5 flex-wrap flex-1 min-h-[72px] md:min-h-[88px]">
+                      {tiers[tier.name].length === 0 && (
+                        <span className="text-zinc-600 text-xs px-2">
+                          {selectedMovie ? 'Toca para colocar aquí' : ''}
+                        </span>
+                      )}
+                      {tiers[tier.name].map(movie => renderMovieCard(movie, tier.name, true))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Unranked pool */}
+              {unranked.length > 0 && (
+                <Card
+                  padding="md"
+                  className="border border-zinc-800"
+                  onClick={undefined}
+                >
                   <div
                     onDragOver={handleDragOver}
                     onDrop={handleDropOnUnranked}
-                    className="border border-zinc-800 rounded-lg p-3 bg-zinc-900/50"
                   >
-                    <h3 className="text-sm font-bold text-zinc-400 mb-3 uppercase tracking-wide">
+                    <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-3">
                       Sin clasificar ({unranked.length})
                     </h3>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {unranked.map(movie => renderMovieCard(movie, 'unranked'))}
                     </div>
                   </div>
-                )}
+                </Card>
+              )}
 
-                {/* Done state */}
-                {allPlaced && (
-                  <div className="text-center mt-8 space-y-4">
-                    <h2 className="text-xl md:text-2xl font-black text-yellow-400">
-                      Tier List completa!
+              {/* Done state */}
+              {allPlaced && (
+                <div className="text-center mt-10 space-y-5">
+                  <div className="flex items-center justify-center gap-3">
+                    <Icon.Trophy className="w-8 h-8 text-yellow-400" />
+                    <h2 className="text-2xl md:text-3xl font-black text-yellow-400">
+                      Tier list completa
                     </h2>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
-                      <button
-                        onClick={handleShare}
-                        className="flex-1 bg-yellow-400 text-black font-bold py-3 px-6 rounded-xl hover:bg-yellow-300 transition text-sm"
-                      >
-                        {showCopied ? 'Copiado!' : 'Compartir'}
-                      </button>
-                      <button
-                        onClick={goToThemes}
-                        className="flex-1 bg-zinc-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-zinc-700 transition text-sm"
-                      >
-                        Jugar de nuevo
-                      </button>
-                    </div>
                   </div>
-                )}
-              </div>
-            )}
-          </>
-        )}
-      </main>
-    </div>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+                    <Button
+                      onClick={handleShare}
+                      size="lg"
+                      fullWidth
+                      iconLeft={showCopied ? <Icon.Check className="w-4 h-4" /> : <Icon.Share className="w-4 h-4" />}
+                    >
+                      {showCopied ? 'Copiado' : 'Compartir'}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      fullWidth
+                      onClick={goToThemes}
+                      iconLeft={<Icon.Refresh className="w-4 h-4" />}
+                    >
+                      Jugar de nuevo
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </PageShell>
   )
 }

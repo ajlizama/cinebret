@@ -807,7 +807,7 @@ export default function BatallaPage() {
                   onClick={goToThemes}
                   className="mt-4 text-yellow-400 hover:text-yellow-300 font-bold text-sm underline underline-offset-4 transition"
                 >
-                  Juega de nuevo wn!
+                  Jugar de nuevo
                 </button>
 
                 {renderBracketTree()}

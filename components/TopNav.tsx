@@ -7,6 +7,8 @@ import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
 
+const ADMIN_ID = 'b5eafe05-9ec8-4b23-b0b4-137148ecbac2'
+
 const MENU_ITEMS = [
   { href: '/reel', label: 'Tinder', color: 'text-orange-400', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 2c0 4-4 6-4 10a4 4 0 008 0c0-4-4-6-4-10z" strokeLinecap="round" strokeLinejoin="round"/></svg> },
   { href: '/comunidad', label: 'Comunidad', color: 'text-violet-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> },
@@ -19,7 +21,6 @@ const MENU_ITEMS = [
   { href: '/musica', label: 'Música', color: 'text-zinc-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg> },
   { href: '/cinequest', label: 'CineQuest', color: 'text-zinc-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
   { href: '/calculadora', label: 'Calculadora', color: 'text-zinc-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4m-4 4h4"/></svg> },
-  { href: '/juntos', label: 'Juntos', color: 'text-zinc-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> },
   null,
   { href: '/cineblitz', label: 'CineBlitz', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> },
   { href: '/actorchain', label: 'ActorChain', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg> },
@@ -30,10 +31,10 @@ const MENU_ITEMS = [
   { href: '/conexion', label: 'Conexión Cinéfila', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.59 8.59L15.42 15.42"/></svg> },
   { href: '/quien-soy', label: '¿Quién soy?', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
   { href: '/fusionador', label: 'Fusionador', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> },
-  { href: '/juntos-nuevo', label: 'Ver Juntos', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> },
+  { href: '/juntos', label: 'Ver Juntos', color: 'text-yellow-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg> },
   null,
   { href: '/estadisticas', label: 'Estadísticas', color: 'text-zinc-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> },
-  { href: '/cambios', label: 'Plataformas', color: 'text-zinc-400', icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> },
+  { href: '/cambios', label: 'Plataformas', color: 'text-zinc-400', adminOnly: true, icon: <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> },
 ]
 
 type SearchResult = { id: string; titulo: string; titulo_ingles: string | null; poster_path: string | null; anio: number | null; nota_imdb: number | null; _isSerie?: boolean }
@@ -195,6 +196,7 @@ export default function TopNav() {
           <div className="absolute top-16 right-4 w-72 max-h-[70vh] overflow-y-auto bg-zinc-900 border border-zinc-700 rounded-2xl p-2 shadow-2xl" onClick={e => e.stopPropagation()}>
             {MENU_ITEMS.map((item, i) => {
               if (!item) return <div key={`div-${i}`} className="border-t border-zinc-800 my-1" />
+              if ((item as any).adminOnly && user?.id !== ADMIN_ID) return null
               return (
                 <Link key={item.href} href={item.href}
                   className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-zinc-800 transition-colors"

@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import BackButton from '@/components/BackButton'
+import AdminGate from './AdminGate'
 
 export const revalidate = 21600 // 6 hours
 
@@ -86,6 +87,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
     <main className="min-h-screen bg-zinc-950">
       <Nav active="inicio" />
 
+      <AdminGate>
       <div className="max-w-7xl mx-auto px-6 py-10">
         <BackButton />
         <div className="mb-8">
@@ -230,6 +232,7 @@ export default async function CambiosPage({ searchParams }: { searchParams: Prom
           </>
         )}
       </div>
+      </AdminGate>
     </main>
   )
 }

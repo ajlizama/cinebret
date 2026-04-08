@@ -760,7 +760,7 @@ export default function AdivinaPage() {
         {solved && (
           <div className="text-center space-y-4">
             <div className="text-2xl font-bold text-green-400">
-              ¡La cachaste! 🎉
+              ¡Adivinaste!
             </div>
             <div className="flex justify-center">
               <div className="relative w-40 aspect-[2/3] rounded-lg overflow-hidden shadow-lg">

@@ -189,17 +189,17 @@ export default function EstRenosPage() {
         {!loading && !error && movies.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
             {([
-              { key: 'todos' as Filter, label: `Todos (${movies.length})`, color: 'amber' },
-              { key: 'en_cines' as Filter, label: `En cines (${enCinesCount})`, color: 'amber' },
-              { key: 'proximamente' as Filter, label: `Proximamente (${proximamenteCount})`, color: 'red' },
-              { key: 'streaming' as Filter, label: `Streaming (${streamingCount})`, color: 'blue' },
+              { key: 'todos' as Filter, label: `Todos (${movies.length})` },
+              { key: 'en_cines' as Filter, label: `En cines (${enCinesCount})` },
+              { key: 'proximamente' as Filter, label: `Próximamente (${proximamenteCount})` },
+              { key: 'streaming' as Filter, label: `Streaming (${streamingCount})` },
             ]).map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setFilter(tab.key)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                   filter === tab.key
-                    ? `bg-${tab.color}-500/20 text-${tab.color}-400 border border-${tab.color}-500/30`
+                    ? 'bg-yellow-400/20 text-yellow-400 border border-yellow-400/30'
                     : 'bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700 hover:text-zinc-300'
                 }`}
               >

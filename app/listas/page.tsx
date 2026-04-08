@@ -351,7 +351,7 @@ export default function ListasPage() {
                   type="text"
                   value={nombre}
                   onChange={e => setNombre(e.target.value)}
-                  placeholder="Ej. Pelis del finde"
+                  placeholder="Ej. Películas del fin de semana"
                   className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
                 />
               </div>

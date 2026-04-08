@@ -378,10 +378,10 @@ export default function FusionadorPage() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-3xl font-bold sm:text-4xl">
-            <span className="text-yellow-400">Fusionador</span> de Pelis
+            <span className="text-yellow-400">Fusionador</span> de Películas
           </h1>
           <p className="text-sm text-zinc-400">
-            Elige entre 2 y 5 pelis y fusionamos sus características para encontrar las más
+            Elige entre 2 y 5 películas y fusionamos sus características para encontrar las más
             parecidas.
           </p>
         </div>
@@ -496,9 +496,9 @@ export default function FusionadorPage() {
                   Fusionando...
                 </span>
               ) : selected.length < MIN_MOVIES ? (
-                `Elige al menos ${MIN_MOVIES} pelis`
+                `Elige al menos ${MIN_MOVIES} películas`
               ) : (
-                `Fusionar ${selected.length} pelis`
+                `Fusionar ${selected.length} películas`
               )}
             </button>
 
@@ -606,7 +606,7 @@ export default function FusionadorPage() {
                 <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
                   <p className="text-lg font-bold text-zinc-400">No encontramos conexiones</p>
                   <p className="mt-1 text-sm text-zinc-500">
-                    Prueba con otras pelis o combinaciones distintas.
+                    Prueba con otras películas o combinaciones distintas.
                   </p>
                 </div>
               )}

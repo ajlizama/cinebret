@@ -7,9 +7,29 @@ import { useAuth } from '@/context/AuthContext'
 import { useMediaMode } from '@/context/MediaModeContext'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
-import Nav from '@/components/Nav'
 import EnrichedDetails from '@/components/EnrichedDetails'
 import ShareButton from '@/components/ShareButton'
+import {
+  PageShell,
+  IconButton,
+  Pill,
+  PlatformLogo,
+  LoadingState,
+  Sheet,
+  Icon,
+  type Platform,
+} from '@/components/ui'
+
+const PLATFORM_KEYS: Platform[] = [
+  'netflix',
+  'disney_plus',
+  'hbo_max',
+  'amazon_prime',
+  'apple_tv',
+  'paramount_plus',
+  'mubi',
+  'crunchyroll',
+]
 
 type ReelMovie = {
   id: string
@@ -25,17 +45,6 @@ type ReelMovie = {
   plataformas: string[]
   source: 'upcoming' | 'trending' | 'catalog'
 }
-
-const PLATAFORMAS = [
-  { id: 'netflix', logo: '/netflix.png' },
-  { id: 'disney_plus', logo: '/disney_plus.svg' },
-  { id: 'hbo_max', logo: '/hbo_max.png' },
-  { id: 'amazon_prime', logo: '/amazon_prime.png' },
-  { id: 'apple_tv', logo: '/apple_tv.png' },
-  { id: 'paramount_plus', logo: '/paramount_plus.svg' },
-  { id: 'mubi', logo: '/mubi.png' },
-  { id: 'crunchyroll', logo: '/crunchyroll.png' },
-]
 
 function extractYTId(url: string): string | null {
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
@@ -96,82 +105,113 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
   visto: boolean; watchlist: boolean; onVisto: () => void; onWatchlist: () => void; isSeries?: boolean
 }) {
   const isUpcoming = movie.source === 'upcoming'
+  const activePlatforms = PLATFORM_KEYS.filter((key) => movie.plataformas.includes(key))
+
   return (
     <>
       {/* Mute indicator */}
-      <div className="absolute top-24 right-4 z-30">
-        <div className="bg-black/50 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs pointer-events-none">
-          {muted ? <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><line x1="23" y1="9" x2="17" y2="15" strokeLinecap="round"/><line x1="17" y1="9" x2="23" y2="15" strokeLinecap="round"/></svg> : <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M11 5L6 9H2v6h4l5 4V5z" strokeLinecap="round" strokeLinejoin="round"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+      <div className="absolute top-4 right-4 z-30 pointer-events-none">
+        <div className="bg-black/50 rounded-full w-9 h-9 flex items-center justify-center text-white">
+          {muted ? (
+            <Icon.VolumeOff className="w-4 h-4" />
+          ) : (
+            <Icon.VolumeOn className="w-4 h-4" />
+          )}
         </div>
       </div>
 
       {/* Movie logo below nav */}
       {movie.logo_path && (
-        <div className="absolute top-36 left-4 z-20 pointer-events-none">
-          <img loading="lazy" src={`https://image.tmdb.org/t/p/w500${movie.logo_path}`} alt="" className="h-20 md:h-28 w-auto max-w-[75vw] object-contain drop-shadow-2xl" />
+        <div className="absolute top-16 left-4 z-20 pointer-events-none">
+          <img
+            loading="lazy"
+            src={`https://image.tmdb.org/t/p/w500${movie.logo_path}`}
+            alt=""
+            className="h-20 md:h-28 w-auto max-w-[75vw] object-contain drop-shadow-2xl"
+          />
         </div>
       )}
 
       {/* Bottom info */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}>
+      <div
+        className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}
+      >
         <div className="p-5 pb-8">
           {isUpcoming && (
-            <span className="inline-block mb-1.5 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide bg-yellow-400 text-zinc-950 rounded-sm">
-              Proximamente
-            </span>
+            <div className="mb-2">
+              <Pill variant="gold" size="sm">Próximamente</Pill>
+            </div>
           )}
           <Link href={`${isSeries ? '/serie' : '/pelicula'}/${movie.id}`} className="pointer-events-auto">
-            {!movie.logo_path && <h3 className="text-white font-bold text-xl drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
-            {movie.logo_path && <h3 className="text-white font-bold text-lg drop-shadow-lg">{movie.titulo_ingles || movie.titulo}</h3>}
+            <h3
+              className={`text-white font-bold drop-shadow-lg ${
+                movie.logo_path ? 'text-lg' : 'text-xl'
+              }`}
+            >
+              {movie.titulo_ingles || movie.titulo}
+            </h3>
           </Link>
           {movie.titulo_ingles && movie.titulo !== movie.titulo_ingles && (
             <p className="text-zinc-400 text-sm mt-0.5">{movie.titulo}</p>
           )}
           <div className="flex items-center gap-3 mt-1.5 text-sm text-zinc-300">
             {movie.anio && <span>{movie.anio}</span>}
-            {movie.nota_imdb && <span className="text-yellow-400 font-bold flex items-center gap-0.5"><svg className="w-3 h-3 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {movie.nota_imdb}</span>}
+            {movie.nota_imdb && (
+              <span className="text-yellow-400 font-bold inline-flex items-center gap-1">
+                <Icon.Star filled className="w-3 h-3" />
+                {movie.nota_imdb}
+              </span>
+            )}
             {movie.director && <span className="text-zinc-400">Dir. {movie.director}</span>}
           </div>
           {movie.categoria && <p className="text-zinc-500 text-xs mt-1">{movie.categoria}</p>}
-          {/* Platform logos — double size */}
-          {movie.plataformas.length > 0 && (
+          {/* Platform logos */}
+          {activePlatforms.length > 0 && (
             <div className="flex gap-2 mt-2">
-              {PLATAFORMAS.filter(pl => movie.plataformas.includes(pl.id)).map(pl => (
-                <div key={pl.id} className="bg-white/90 rounded-md px-1.5 py-1">
-                  <img loading="lazy" src={pl.logo} alt="" className="h-6 w-auto object-contain" />
-                </div>
+              {activePlatforms.map((key) => (
+                <PlatformLogo key={key} platform={key} size="md" />
               ))}
             </div>
           )}
         </div>
       </div>
+
       {/* Right side action buttons (TikTok style) */}
       <div className="absolute right-3 bottom-40 z-30 flex flex-col items-center gap-4">
-        <button onClick={onVisto} className="flex flex-col items-center gap-1">
-          <div className={`w-10 h-10 min-h-[44px] min-w-[44px] rounded-full flex items-center justify-center ${visto ? 'bg-emerald-500' : 'bg-black/50'}`}>
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
+        <div className="flex flex-col items-center gap-1">
+          <IconButton
+            icon={<Icon.Eye className="w-5 h-5" />}
+            label={visto ? 'Marcada como vista' : 'Marcar como vista'}
+            variant={visto ? 'primary' : 'secondary'}
+            size="md"
+            onClick={onVisto}
+            className="rounded-full"
+          />
           <span className="text-white text-[11px]">{visto ? 'Vista' : 'Ya la vi'}</span>
-        </button>
-        <button onClick={onWatchlist} className="flex flex-col items-center gap-1">
-          <div className={`w-10 h-10 min-h-[44px] min-w-[44px] rounded-full flex items-center justify-center ${watchlist ? 'bg-yellow-400' : 'bg-black/50'}`}>
-            <svg className={`w-5 h-5 ${watchlist ? 'text-zinc-950' : 'text-white'}`} fill={watchlist ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-            </svg>
-          </div>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <IconButton
+            icon={<Icon.Bookmark filled={watchlist} className="w-5 h-5" />}
+            label={watchlist ? 'Quitar de watchlist' : 'Añadir a watchlist'}
+            variant={watchlist ? 'primary' : 'secondary'}
+            size="md"
+            onClick={onWatchlist}
+            className="rounded-full"
+          />
           <span className="text-white text-[11px]">{watchlist ? 'Guardada' : 'Watchlist'}</span>
-        </button>
-        <button onClick={onShowInfo} className="flex flex-col items-center gap-1">
-          <div className="w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <IconButton
+            icon={<Icon.Info className="w-5 h-5" />}
+            label="Ver información"
+            variant="secondary"
+            size="md"
+            onClick={onShowInfo}
+            className="rounded-full"
+          />
           <span className="text-white text-[11px]">Info</span>
-        </button>
+        </div>
         <ShareButton
           data={{
             title: movie.titulo_ingles || movie.titulo,
@@ -180,13 +220,12 @@ function MovieOverlay({ movie, index, total, muted, onShowInfo, visto, watchlist
           }}
           className="flex flex-col items-center gap-1"
         >
-          <div className="w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round"
-                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-              />
-            </svg>
-          </div>
+          <span
+            className="w-11 h-11 min-h-[44px] min-w-[44px] rounded-full bg-zinc-900 border border-zinc-800 text-white inline-flex items-center justify-center"
+            aria-label="Compartir"
+          >
+            <Icon.Share className="w-5 h-5" />
+          </span>
           <span className="text-white text-[11px]">Compartir</span>
         </ShareButton>
       </div>
@@ -609,9 +648,11 @@ export default function CineReelsPage() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-        <video src="/loading.mp4" autoPlay muted loop playsInline className="w-20 h-20 object-contain" style={{ mixBlendMode: 'lighten' }} />
-      </div>
+      <PageShell fullBleed>
+        <div className="relative w-full bg-black flex items-center justify-center h-[calc(100dvh-3.5rem)]">
+          <LoadingState text="Cargando CineReels..." size="lg" />
+        </div>
+      </PageShell>
     )
   }
 
@@ -623,7 +664,8 @@ export default function CineReelsPage() {
   const up = userStates[movie.id] ?? { visto: false, watchlist: false }
 
   return (
-    <div className="fixed inset-0 bg-black z-50 overflow-hidden"
+    <PageShell fullBleed>
+    <div className="relative w-full bg-black overflow-hidden h-[calc(100dvh-3.5rem)]"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -683,38 +725,24 @@ export default function CineReelsPage() {
         )}
       </div>
 
-      {/* Nav overlay */}
-      <div className="absolute top-0 left-0 right-0 z-40">
-        <Nav active="cinereels" transparent />
-      </div>
-
-      {/* Info panel (slides up like TikTok comments) */}
       {guestBlocked && <GuestLimitModal />}
-
-      {showInfo && (
-        <>
-          <div className="fixed inset-0 z-50" onClick={() => setShowInfo(false)} />
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-zinc-900 rounded-t-2xl max-h-[60vh] overflow-y-auto pb-[env(safe-area-inset-bottom)]"
-            style={{ animation: 'slideUp 0.3s ease-out' }}>
-            <div className="sticky top-0 bg-zinc-900 px-4 pt-3 pb-2 flex items-center justify-between border-b border-zinc-800">
-              <h3 className="text-white font-bold text-sm">{movie.titulo_ingles || movie.titulo}</h3>
-              <button onClick={() => setShowInfo(false)} className="text-zinc-500 hover:text-white text-lg">✕</button>
-            </div>
-            <div className="px-4 py-3">
-              <EnrichedDetails peliculaId={movie.id} isSerie={isSeries} />
-              <Link href={`${isSeries ? '/serie' : '/pelicula'}/${movie.id}`} className="inline-block mt-3 text-xs text-yellow-400 hover:text-yellow-300 font-medium">
-                Ver ficha completa →
-              </Link>
-            </div>
-          </div>
-          <style jsx>{`
-            @keyframes slideUp {
-              from { transform: translateY(100%); }
-              to { transform: translateY(0); }
-            }
-          `}</style>
-        </>
-      )}
     </div>
+
+    {/* Info panel (slides up from bottom) */}
+    <Sheet
+      open={showInfo}
+      onClose={() => setShowInfo(false)}
+      title={movie.titulo_ingles || movie.titulo}
+    >
+      <EnrichedDetails peliculaId={movie.id} isSerie={isSeries} />
+      <Link
+        href={`${isSeries ? '/serie' : '/pelicula'}/${movie.id}`}
+        className="inline-flex items-center gap-1 mt-3 text-xs text-yellow-400 hover:text-yellow-300 font-medium"
+      >
+        Ver ficha completa
+        <Icon.ArrowRight className="w-3 h-3" />
+      </Link>
+    </Sheet>
+    </PageShell>
   )
 }

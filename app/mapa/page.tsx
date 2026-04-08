@@ -2,12 +2,23 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import Nav from '@/components/Nav'
 import { useMediaMode } from '@/context/MediaModeContext'
 import { useAuth } from '@/context/AuthContext'
 import { normalize } from '@/lib/normalize'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
+import {
+  PageShell,
+  SearchInput,
+  IconButton,
+  Card,
+  Sheet,
+  Modal,
+  Pill,
+  Button,
+  LoadingState,
+  Icon,
+} from '@/components/ui'
 
 type GraphNode = {
   id: string
@@ -36,9 +47,9 @@ type RawGraph = {
 
 const CAT_LABELS: Record<string, string> = {
   "Pa'l domingo de bajón": 'Bajón',
-  "Pa' saltar del sillón": 'Sillón',
-  "Pa' quedar con el cerebro como licuadora": 'Licuadora',
-  "Pa' llorar a moco tendido": 'Moco tendido',
+  "Pa' saltar del sillón": 'Acción',
+  "Pa' quedar con el cerebro como licuadora": 'Mente',
+  "Pa' llorar a moco tendido": 'Drama',
 }
 
 const CAT_COLORS: Record<string, string> = {
@@ -47,8 +58,6 @@ const CAT_COLORS: Record<string, string> = {
   "Pa' quedar con el cerebro como licuadora": '#3b82f6',
   "Pa' llorar a moco tendido": '#a855f7',
 }
-
-const LIMIT_OPTIONS = [500, 1000, 1500, 2000, 3000]
 
 export default function MapaPage() {
   const router = useRouter()
@@ -79,6 +88,16 @@ export default function MapaPage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const minimapRef = useRef<HTMLCanvasElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Track mobile viewport for conditional Sheet rendering
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   // Load ForceGraph2D dynamically
   useEffect(() => {
@@ -100,7 +119,7 @@ export default function MapaPage() {
     update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
-  }, [])
+  }, [loading, ForceGraph])
 
   // Load raw graph data — switches between movies and series
   useEffect(() => {
@@ -538,224 +557,321 @@ export default function MapaPage() {
     }
   }, [selectedNode, pathEdges, pathNodes])
 
+  const mediaLabel = isSeries ? 'series' : 'películas'
+
+  const clearPath = () => {
+    setPathNodes([])
+    setPathEdges(new Set())
+    setSearchQuery('')
+  }
+
+  const finishOnboarding = () => {
+    setShowOnboarding(false)
+    setShowInstructions(false)
+    if (typeof window !== 'undefined') localStorage.setItem('mapa_onboarding_done', '1')
+  }
+
   if (loading || !ForceGraph) {
     return (
-      <main className="min-h-screen bg-zinc-950">
-        <Nav />
-        <div className="flex items-center justify-center h-[80vh]">
-          <div className="text-center">
-            <div className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-zinc-400 text-sm">Cargando mapa de {isSeries ? 'series' : 'películas'}...</p>
-          </div>
+      <PageShell fullBleed>
+        <div className="flex items-center justify-center h-[calc(100dvh-57px)]">
+          <LoadingState text={`Cargando mapa de ${mediaLabel}...`} size="lg" />
         </div>
-      </main>
+      </PageShell>
     )
   }
 
   return (
-    <main className="fixed inset-0 flex flex-col bg-zinc-950 overflow-hidden">
-      <Nav />
-      <div ref={containerRef} className="relative flex-1 min-h-0">
-        {/* Controls — top left: compact search + collapsible settings */}
-        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
-          {/* Search bar — always visible, compact */}
+    <PageShell fullBleed>
+      <div
+        ref={containerRef}
+        className="relative h-[calc(100dvh-57px)] w-full overflow-hidden bg-zinc-950"
+      >
+        {/* Top-left controls: search + settings */}
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 w-[min(22rem,calc(100vw-1.5rem))]">
           <div className="relative">
-            <div className="flex items-center gap-1 bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-lg">
-              <svg className="w-3.5 h-3.5 text-zinc-500 ml-2.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Buscar o A, B..."
-                className="w-28 md:w-40 bg-transparent py-1.5 pr-2 text-[16px] md:text-[11px] text-white placeholder:text-zinc-500 focus:outline-none"
-              />
-              {!showControls && (
-                <button onClick={() => setShowControls(true)} className="px-2 py-1.5 text-zinc-500 hover:text-white border-l border-zinc-800">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 007.92 12.446m-9.09 2.778A7.5 7.5 0 014.085 5.736"/><path strokeLinecap="round" strokeLinejoin="round" d="M16 12h6M19 9v6"/></svg>
-                </button>
-              )}
-            </div>
-            {searchResults.length > 0 && (
-              <div className="absolute top-full mt-1 left-0 w-52 bg-zinc-900/95 border border-zinc-700 rounded-lg shadow-2xl overflow-hidden max-h-52 overflow-y-auto z-20 backdrop-blur-sm">
-                {searchResults.map(n => (
-                  <button
-                    key={n.id}
-                    onClick={() => focusNode(n)}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-zinc-800 text-left"
-                  >
-                    {n.poster && (
-                      <img src={`https://image.tmdb.org/t/p/w92${n.poster}`} alt="" className="w-5 h-8 rounded object-cover shrink-0" />
-                    )}
-                    <div className="min-w-0">
-                      <p className="text-white text-[11px] font-medium line-clamp-1">{n.title}</p>
-                      <span className="text-yellow-400 text-[9px]">⭐ {n.imdb}</span>
-                    </div>
-                  </button>
-                ))}
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <SearchInput
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Buscar o escribir A, B para ruta..."
+                />
               </div>
+              <IconButton
+                icon={<Icon.Settings className="w-5 h-5" />}
+                label="Ajustes del mapa"
+                variant="secondary"
+                active={showControls}
+                onClick={() => setShowControls(v => !v)}
+              />
+            </div>
+
+            {searchResults.length > 0 && (
+              <Card padding="none" className="absolute top-full mt-2 left-0 right-0 border border-zinc-800 max-h-72 overflow-y-auto z-20 shadow-2xl">
+                <ul className="divide-y divide-zinc-800/60">
+                  {searchResults.map(n => (
+                    <li key={n.id}>
+                      <button
+                        onClick={() => focusNode(n)}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-800/70 text-left min-h-[44px] cursor-pointer transition-colors"
+                      >
+                        {n.poster ? (
+                          <img
+                            src={`https://image.tmdb.org/t/p/w92${n.poster}`}
+                            alt=""
+                            className="w-8 h-12 rounded object-cover shrink-0"
+                          />
+                        ) : (
+                          <div className="w-8 h-12 rounded bg-zinc-800 shrink-0" />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <p className="text-white text-sm font-medium line-clamp-1">{n.title}</p>
+                          <span className="inline-flex items-center gap-1 text-yellow-400 text-xs mt-0.5">
+                            <Icon.Star filled className="w-3 h-3" />
+                            {n.imdb}
+                          </span>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
             )}
           </div>
 
-          {/* Collapsible settings panel */}
           {showControls && (
-            <div className="bg-zinc-900/90 backdrop-blur-sm border border-zinc-800 rounded-lg px-3 py-2 w-44 md:w-52 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] text-zinc-500 uppercase tracking-wide">Ajustes</span>
-                <button onClick={() => setShowControls(false)} className="text-zinc-500 hover:text-white text-xs">✕</button>
+            <Card padding="sm" className="border border-zinc-800">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] text-zinc-500 uppercase tracking-wide font-semibold">Ajustes</span>
+                <IconButton
+                  icon={<Icon.Close className="w-4 h-4" />}
+                  label="Cerrar ajustes"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setShowControls(false)}
+                />
               </div>
 
-              {/* Slider */}
-              <div>
-                <div className="flex justify-between text-[9px] text-zinc-500 mb-0.5">
-                  <span>Películas</span>
+              <div className="mb-3">
+                <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                  <span>Películas visibles</span>
                   <span className="text-white font-bold">{nodeLimit}</span>
                 </div>
                 <input
-                  type="range" min={200} max={rawGraph?.nodes.length || 3000} step={100}
+                  type="range"
+                  min={200}
+                  max={rawGraph?.nodes.length || 3000}
+                  step={100}
                   value={nodeLimit}
-                  onChange={e => { setNodeLimit(Number(e.target.value)); deselectNode(); if (fgRef.current) fgRef.current.d3ReheatSimulation() }}
+                  onChange={e => {
+                    setNodeLimit(Number(e.target.value))
+                    deselectNode()
+                    if (fgRef.current) fgRef.current.d3ReheatSimulation()
+                  }}
                   className="w-full accent-yellow-400 h-1"
                 />
               </div>
 
-              {/* Legend */}
-              <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+              <div className="flex flex-wrap gap-1.5 mb-2">
                 {Object.entries(CAT_COLORS).map(([cat, color]) => (
-                  <div key={cat} className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
-                    <span className="text-[8px] text-zinc-500">{CAT_LABELS[cat]}</span>
-                  </div>
+                  <span key={cat} className="inline-flex items-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-800/60 rounded-full px-2 py-0.5">
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                    {CAT_LABELS[cat]}
+                  </span>
                 ))}
               </div>
 
-              <p className="text-[8px] text-zinc-600">{graphData?.nodes.length} nodos · {graphData?.links.length} conexiones</p>
-            </div>
+              <p className="text-[10px] text-zinc-500">
+                {graphData?.nodes.length} nodos · {graphData?.links.length} conexiones
+              </p>
+            </Card>
           )}
         </div>
 
-        {/* Selected node panel — desktop: sidebar, mobile: bottom sheet */}
-        {selectedNode && (
-          <>
-            {/* Mobile: fixed selected poster + scrollable connections */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
-              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-3 pb-2 px-2">
-                <div className="flex gap-2 pb-1">
-                  {/* Selected movie — fixed, not scrollable, with golden glow */}
-                  <div className="shrink-0 relative" onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}>
+        {/* Selected node — desktop sidebar */}
+        {selectedNode && !pathNodes.length && (
+          <div className="hidden md:block absolute top-3 right-3 z-10 w-80 max-h-[calc(100dvh-100px)]">
+            <Card padding="none" className="border border-zinc-800 overflow-hidden">
+              <div className="max-h-[calc(100dvh-100px)] overflow-y-auto">
+                <div className="p-4 border-b border-zinc-800 relative">
+                  <IconButton
+                    icon={<Icon.Close className="w-4 h-4" />}
+                    label="Cerrar"
+                    size="sm"
+                    variant="ghost"
+                    className="absolute top-2 right-2"
+                    onClick={deselectNode}
+                  />
+                  <div className="flex items-start gap-3 pr-8">
                     {selectedNode.poster && (
                       <img
-                        src={`https://image.tmdb.org/t/p/w185${selectedNode.poster}`}
+                        src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
                         alt=""
-                        className="h-36 rounded-lg shadow-[0_0_15px_rgba(250,204,21,0.4)]"
-                        style={{ aspectRatio: '2/3', border: `3px solid #facc15` }}
+                        className="w-20 rounded-lg object-cover shrink-0"
+                        style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
                       />
                     )}
-                    <div className="absolute bottom-1 left-1 right-1 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg px-1 pt-3 pb-0.5">
-                      <p className="text-white text-[9px] font-bold leading-tight line-clamp-1">{selectedNode.title}</p>
-                      <span className="text-yellow-400 text-[10px] font-black flex items-center gap-0.5">
-                        <svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
-                        {selectedNode.imdb}
-                      </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-white text-sm font-bold leading-tight">{selectedNode.title}</p>
+                      {selectedNode.title !== selectedNode.titleEs && (
+                        <p className="text-zinc-500 text-[11px] mt-0.5">{selectedNode.titleEs}</p>
+                      )}
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="inline-flex items-center gap-1 text-yellow-400 text-xs font-bold">
+                          <Icon.Star filled className="w-3 h-3" />
+                          {selectedNode.imdb}
+                        </span>
+                        <span className="text-zinc-500 text-[11px]">
+                          {selectedNode.connections} conexiones
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {selectedNode.genres.map(g => (
+                          <Pill key={g} variant="default" size="sm">{g}</Pill>
+                        ))}
+                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="mt-3"
+                        iconRight={<Icon.ArrowRight className="w-3.5 h-3.5" />}
+                        onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                      >
+                        Ver ficha completa
+                      </Button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Connected movies — scrollable, slightly smaller */}
-                  <div className="flex-1 overflow-x-auto scrollbar-none">
-                    <div className="flex gap-1.5 h-28">
-                      {connectedNodes.map(({ node: cn }) => (
-                        <div key={cn.id} className="shrink-0 relative h-full" onClick={() => focusNode(cn)}>
+                {connectedNodes.length > 0 && (
+                  <div className="p-4">
+                    <p className="text-[10px] text-zinc-500 uppercase tracking-wide font-semibold mb-2">
+                      Películas conectadas
+                    </p>
+                    <div className="space-y-1.5">
+                      {connectedNodes.map(({ node: cn, weight }) => (
+                        <button
+                          key={cn.id}
+                          onClick={() => focusNode(cn)}
+                          className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-zinc-800/70 transition-colors text-left cursor-pointer min-h-[44px]"
+                        >
                           {cn.poster ? (
                             <img
-                              src={`https://image.tmdb.org/t/p/w154${cn.poster}`}
+                              src={`https://image.tmdb.org/t/p/w92${cn.poster}`}
                               alt=""
-                              className="h-full rounded-lg"
-                              style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }}
+                              className="w-9 rounded object-cover shrink-0"
+                              style={{ aspectRatio: '2/3' }}
                             />
                           ) : (
-                            <div className="h-full rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3', border: `2px solid ${cn.color}` }} />
+                            <div className="w-9 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
                           )}
-                          <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
-                            <span className="text-yellow-400 text-[8px] font-bold">{cn.imdb}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white text-xs font-medium line-clamp-1">{cn.title}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="inline-flex items-center gap-0.5 text-yellow-400 text-[10px]">
+                                <Icon.Star filled className="w-2.5 h-2.5" />
+                                {cn.imdb}
+                              </span>
+                              <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-yellow-400/60 rounded-full"
+                                  style={{ width: `${(weight / 4) * 100}%` }}
+                                />
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>
-                </div>
-
-                {/* Watermark */}
-                <div className="flex items-center justify-center gap-1.5 mt-0.5 opacity-25">
-                  <img src="/logo-oficial.png" alt="CineBret" className="h-2.5 w-auto" />
-                  <span className="text-zinc-600 text-[6px]">cinebret.cl/mapa</span>
-                </div>
+                )}
               </div>
-            </div>
+            </Card>
+          </div>
+        )}
 
-            {/* Mobile: minimapa arriba derecha */}
-            <div className="md:hidden absolute top-2 right-2 z-10 bg-zinc-900/80 border border-zinc-700 rounded-lg overflow-hidden" style={{ width: 100, height: 100 }}>
-              <canvas ref={minimapRef} width={100} height={100} className="w-full h-full" />
-            </div>
-
-            {/* Desktop: sidebar */}
-            <div className="hidden md:block absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-72 max-h-[80vh] overflow-y-auto">
-              <div className="p-3 border-b border-zinc-800">
-                <div className="flex items-start gap-3">
-                  {selectedNode.poster && (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w154${selectedNode.poster}`}
-                      alt=""
-                      className="w-16 rounded-lg object-cover shrink-0"
-                      style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
-                    />
+        {/* Selected node — mobile sheet */}
+        <Sheet
+          open={!!selectedNode && !pathNodes.length && isMobile}
+          onClose={deselectNode}
+          title={selectedNode?.title}
+        >
+          {selectedNode && (
+            <div>
+              <div className="flex items-start gap-3 mb-4">
+                {selectedNode.poster && (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w185${selectedNode.poster}`}
+                    alt=""
+                    className="w-24 rounded-lg object-cover shrink-0"
+                    style={{ aspectRatio: '2/3', border: `2px solid ${selectedNode.color}` }}
+                  />
+                )}
+                <div className="min-w-0 flex-1">
+                  {selectedNode.title !== selectedNode.titleEs && (
+                    <p className="text-zinc-500 text-xs mb-1">{selectedNode.titleEs}</p>
                   )}
-                  <div className="min-w-0">
-                    <p className="text-white text-sm font-bold leading-tight">{selectedNode.title}</p>
-                    {selectedNode.title !== selectedNode.titleEs && (
-                      <p className="text-zinc-500 text-[10px] mt-0.5">{selectedNode.titleEs}</p>
-                    )}
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-yellow-400 text-xs font-bold">⭐ {selectedNode.imdb}</span>
-                      <span className="text-zinc-500 text-[10px]">{selectedNode.connections} conexiones</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-1.5">
-                      {selectedNode.genres.map(g => (
-                        <span key={g} className="text-[8px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{g}</span>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
-                      className="mt-2 text-[10px] text-yellow-400 hover:text-yellow-300 font-medium"
-                    >
-                      Ver ficha completa →
-                    </button>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="inline-flex items-center gap-1 text-yellow-400 text-sm font-bold">
+                      <Icon.Star filled className="w-4 h-4" />
+                      {selectedNode.imdb}
+                    </span>
+                    <span className="text-zinc-500 text-xs">
+                      {selectedNode.connections} conexiones
+                    </span>
                   </div>
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {selectedNode.genres.map(g => (
+                      <Pill key={g} variant="default" size="sm">{g}</Pill>
+                    ))}
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    iconRight={<Icon.ArrowRight className="w-4 h-4" />}
+                    onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                  >
+                    Ver ficha
+                  </Button>
                 </div>
               </div>
+
               {connectedNodes.length > 0 && (
-                <div className="p-3">
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-2">
-                    Si te gustó {selectedNode.title}
+                <div>
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-wide font-semibold mb-2">
+                    Películas conectadas
                   </p>
                   <div className="space-y-1.5">
                     {connectedNodes.map(({ node: cn, weight }) => (
                       <button
                         key={cn.id}
                         onClick={() => focusNode(cn)}
-                        className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
+                        className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-zinc-800/70 text-left cursor-pointer min-h-[44px]"
                       >
                         {cn.poster ? (
-                          <img src={`https://image.tmdb.org/t/p/w92${cn.poster}`} alt="" className="w-8 rounded object-cover shrink-0" style={{ aspectRatio: '2/3' }} />
+                          <img
+                            src={`https://image.tmdb.org/t/p/w92${cn.poster}`}
+                            alt=""
+                            className="w-10 rounded object-cover shrink-0"
+                            style={{ aspectRatio: '2/3' }}
+                          />
                         ) : (
-                          <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+                          <div className="w-10 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
                         )}
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-[11px] font-medium line-clamp-1">{cn.title}</p>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-yellow-400 text-[9px]">⭐ {cn.imdb}</span>
+                          <p className="text-white text-sm font-medium line-clamp-1">{cn.title}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="inline-flex items-center gap-0.5 text-yellow-400 text-[11px]">
+                              <Icon.Star filled className="w-3 h-3" />
+                              {cn.imdb}
+                            </span>
                             <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
-                              <div className="h-full bg-yellow-400/60 rounded-full" style={{ width: `${(weight / 4) * 100}%` }} />
+                              <div
+                                className="h-full bg-yellow-400/60 rounded-full"
+                                style={{ width: `${(weight / 4) * 100}%` }}
+                              />
                             </div>
-                            <span className="text-zinc-600 text-[8px]">{weight.toFixed(1)}</span>
                           </div>
                         </div>
                       </button>
@@ -764,169 +880,230 @@ export default function MapaPage() {
                 </div>
               )}
             </div>
-          </>
+          )}
+        </Sheet>
+
+        {/* Minimap on mobile when a node is selected */}
+        {selectedNode && !pathNodes.length && (
+          <div
+            className="md:hidden absolute top-3 right-3 z-10 bg-zinc-900/80 border border-zinc-800 rounded-xl overflow-hidden"
+            style={{ width: 100, height: 100 }}
+          >
+            <canvas ref={minimapRef} width={100} height={100} className="w-full h-full" />
+          </div>
         )}
 
-        {/* Path result panel — mobile: bottom horizontal, desktop: sidebar */}
+        {/* Path result panel — desktop sidebar */}
         {pathNodes.length > 0 && graphData && (
-          <>
-            {/* Mobile: horizontal bottom strip */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-20">
-              <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-3 pb-2 px-2">
-                <div className="flex items-center justify-between mb-1.5 px-1">
-                  <p className="text-[10px] text-zinc-400 font-semibold">{pathNodes.length - 1} pasos</p>
-                  <button onClick={() => { setPathNodes([]); setPathEdges(new Set()); setSearchQuery('') }} className="text-zinc-500 text-xs px-1">✕</button>
+          <div className="hidden md:block absolute top-3 right-3 z-10 w-80 max-h-[calc(100dvh-100px)]">
+            <Card padding="none" className="border border-zinc-800 overflow-hidden">
+              <div className="max-h-[calc(100dvh-100px)] overflow-y-auto">
+                <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] text-zinc-500 uppercase tracking-wide font-semibold">Camino encontrado</p>
+                    <p className="text-white text-sm font-bold mt-0.5">{pathNodes.length - 1} pasos</p>
+                  </div>
+                  <IconButton
+                    icon={<Icon.Close className="w-4 h-4" />}
+                    label="Cerrar ruta"
+                    size="sm"
+                    variant="ghost"
+                    onClick={clearPath}
+                  />
                 </div>
-                <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1">
+                <div className="p-4 space-y-1">
                   {pathNodes.map((id, i) => {
                     const node = graphData.nodes.find((n: any) => n.id === id)
                     if (!node) return null
                     return (
-                      <div key={id} className="flex items-center shrink-0">
-                        <button onClick={() => focusNode(node)} className="relative">
+                      <div key={id}>
+                        <button
+                          onClick={() => focusNode(node)}
+                          className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-zinc-800/70 transition-colors text-left cursor-pointer min-h-[44px]"
+                        >
                           {node.poster ? (
                             <img
-                              src={`https://image.tmdb.org/t/p/w154${node.poster}`}
+                              src={`https://image.tmdb.org/t/p/w92${node.poster}`}
                               alt=""
-                              className="h-28 rounded-lg"
-                              style={{ aspectRatio: '2/3', border: i === 0 || i === pathNodes.length - 1 ? '2px solid #facc15' : '2px solid #3f3f46' }}
+                              className="w-9 rounded object-cover shrink-0"
+                              style={{ aspectRatio: '2/3' }}
                             />
                           ) : (
-                            <div className="h-28 rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3' }} />
+                            <div className="w-9 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
                           )}
-                          <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5">
-                            <span className="text-yellow-400 text-[8px] font-bold">{node.imdb}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white text-xs font-medium line-clamp-1">{node.title}</p>
+                            <span className="inline-flex items-center gap-0.5 text-yellow-400 text-[10px] mt-0.5">
+                              <Icon.Star filled className="w-2.5 h-2.5" />
+                              {node.imdb}
+                            </span>
                           </div>
-                          {i === 0 && <div className="absolute bottom-1 left-1 bg-yellow-400 text-zinc-950 text-[7px] font-bold px-1 rounded">INICIO</div>}
-                          {i === pathNodes.length - 1 && <div className="absolute bottom-1 left-1 bg-yellow-400 text-zinc-950 text-[7px] font-bold px-1 rounded">FIN</div>}
+                          {i === 0 && <Pill variant="gold" size="sm">Inicio</Pill>}
+                          {i === pathNodes.length - 1 && <Pill variant="gold" size="sm">Fin</Pill>}
                         </button>
                         {i < pathNodes.length - 1 && (
-                          <svg className="w-4 h-4 text-yellow-400/60 shrink-0 mx-0.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M9 5l7 7-7 7"/></svg>
+                          <div className="flex items-center gap-1 pl-5 py-0.5">
+                            <div className="w-px h-3 bg-yellow-400/50" />
+                            <Icon.ChevronDown className="w-3 h-3 text-yellow-400/50" />
+                          </div>
                         )}
                       </div>
                     )
                   })}
                 </div>
-                <div className="flex items-center justify-center gap-1.5 mt-1 opacity-25">
-                  <img src="/logo-oficial.png" alt="CineBret" className="h-2.5 w-auto" />
-                  <span className="text-zinc-600 text-[6px]">cinebret.cl/mapa</span>
-                </div>
               </div>
-            </div>
+            </Card>
+          </div>
+        )}
 
-            {/* Desktop: sidebar */}
-            <div className="hidden md:block absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl w-72 max-h-[70vh] overflow-y-auto">
-              <div className="p-3 border-b border-zinc-800 flex items-center justify-between">
-                <p className="text-xs text-zinc-400 font-semibold">Camino encontrado ({pathNodes.length - 1} pasos)</p>
-                <button onClick={() => { setPathNodes([]); setPathEdges(new Set()); setSearchQuery('') }} className="text-zinc-500 hover:text-white text-xs">✕</button>
+        {/* Path — mobile horizontal strip */}
+        {pathNodes.length > 0 && graphData && (
+          <div className="md:hidden fixed bottom-0 left-0 right-0 z-20 pointer-events-none">
+            <div className="bg-gradient-to-t from-zinc-950 via-zinc-950/95 to-transparent pt-4 pb-3 px-3 pointer-events-auto">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <p className="text-xs text-zinc-300 font-semibold">{pathNodes.length - 1} pasos</p>
+                <IconButton
+                  icon={<Icon.Close className="w-4 h-4" />}
+                  label="Cerrar ruta"
+                  size="sm"
+                  variant="ghost"
+                  onClick={clearPath}
+                />
               </div>
-              <div className="p-3 space-y-1">
+              <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
                 {pathNodes.map((id, i) => {
                   const node = graphData.nodes.find((n: any) => n.id === id)
                   if (!node) return null
+                  const isEndpoint = i === 0 || i === pathNodes.length - 1
                   return (
-                    <div key={id}>
-                      <button
-                        onClick={() => focusNode(node)}
-                        className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-zinc-800/70 transition-colors text-left"
-                      >
+                    <div key={id} className="flex items-center shrink-0">
+                      <button onClick={() => focusNode(node)} className="relative cursor-pointer">
                         {node.poster ? (
-                          <img src={`https://image.tmdb.org/t/p/w92${node.poster}`} alt="" className="w-8 rounded object-cover shrink-0" style={{ aspectRatio: '2/3' }} />
+                          <img
+                            src={`https://image.tmdb.org/t/p/w154${node.poster}`}
+                            alt=""
+                            className="h-28 rounded-lg"
+                            style={{
+                              aspectRatio: '2/3',
+                              border: isEndpoint ? '2px solid #facc15' : '2px solid #3f3f46',
+                            }}
+                          />
                         ) : (
-                          <div className="w-8 rounded bg-zinc-800 shrink-0" style={{ aspectRatio: '2/3' }} />
+                          <div className="h-28 rounded-lg bg-zinc-800" style={{ aspectRatio: '2/3' }} />
                         )}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white text-[11px] font-medium line-clamp-1">{node.title}</p>
-                          <span className="text-yellow-400 text-[9px]">⭐ {node.imdb}</span>
+                        <div className="absolute top-1 right-1 bg-black/70 rounded px-1 py-0.5 inline-flex items-center gap-0.5">
+                          <Icon.Star filled className="w-2 h-2 text-yellow-400" />
+                          <span className="text-yellow-400 text-[9px] font-bold">{node.imdb}</span>
                         </div>
-                        {i === 0 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">INICIO</span>}
-                        {i === pathNodes.length - 1 && <span className="text-[8px] bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded font-bold">FIN</span>}
+                        {i === 0 && (
+                          <div className="absolute bottom-1 left-1 bg-yellow-400 text-zinc-950 text-[8px] font-bold px-1.5 rounded">
+                            Inicio
+                          </div>
+                        )}
+                        {i === pathNodes.length - 1 && (
+                          <div className="absolute bottom-1 left-1 bg-yellow-400 text-zinc-950 text-[8px] font-bold px-1.5 rounded">
+                            Fin
+                          </div>
+                        )}
                       </button>
                       {i < pathNodes.length - 1 && (
-                        <div className="flex items-center gap-1 pl-5 py-0.5">
-                          <div className="w-px h-3 bg-yellow-400/50" />
-                          <svg className="w-3 h-3 text-yellow-400/50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" d="M12 5v14m0 0l-4-4m4 4l4-4"/></svg>
-                        </div>
+                        <Icon.ChevronRight className="w-4 h-4 text-yellow-400/60 shrink-0 mx-0.5" />
                       )}
                     </div>
                   )
                 })}
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {/* Hover tooltip (only when no selection) */}
-        {hoveredNode && !selectedNode && (
-          <div className="absolute top-2 right-2 z-10 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-xl px-3 py-2.5">
-            <p className="text-white text-sm font-bold">{hoveredNode.title}</p>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="text-yellow-400 text-xs">⭐ {hoveredNode.imdb}</span>
-              <span className="text-zinc-500 text-[10px]">{hoveredNode.connections} conexiones</span>
-            </div>
+        {hoveredNode && !selectedNode && !pathNodes.length && (
+          <div className="hidden md:block absolute top-3 right-3 z-10">
+            <Card padding="sm" className="border border-zinc-800">
+              <p className="text-white text-sm font-bold">{hoveredNode.title}</p>
+              <div className="flex items-center gap-3 mt-1">
+                <span className="inline-flex items-center gap-1 text-yellow-400 text-xs">
+                  <Icon.Star filled className="w-3 h-3" />
+                  {hoveredNode.imdb}
+                </span>
+                <span className="text-zinc-500 text-[11px]">
+                  {hoveredNode.connections} conexiones
+                </span>
+              </div>
+            </Card>
           </div>
         )}
 
-        {/* Onboarding overlay */}
+        {/* Guest limit modal */}
         {guestBlocked && <GuestLimitModal />}
 
-        {showOnboarding && !loading && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center" onClick={() => { setShowOnboarding(false); setShowInstructions(false) }}>
-            <div className="absolute inset-0 bg-black/50" onClick={() => { setShowOnboarding(false); localStorage.setItem('mapa_onboarding_done', '1') }} />
-            <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-5 max-w-xs mx-4 text-center" onClick={e => e.stopPropagation()}>
-              {onboardingStep === 0 && (
-                <>
-                  <div className="w-12 h-12 rounded-full bg-yellow-400/20 flex items-center justify-center mx-auto mb-3">
-                    <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" strokeLinecap="round"/></svg>
-                  </div>
-                  <h3 className="text-white font-bold text-sm mb-1">Busca películas</h3>
-                  <p className="text-zinc-400 text-xs">Usa el buscador arriba para encontrar cualquier película y ver sus conexiones</p>
-                </>
+        {/* Onboarding modal */}
+        <Modal
+          open={showOnboarding && !loading}
+          onClose={finishOnboarding}
+          showCloseButton={false}
+          size="sm"
+        >
+          <div className="text-center">
+            {onboardingStep === 0 && (
+              <>
+                <div className="w-14 h-14 rounded-full bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center mx-auto mb-4">
+                  <Icon.Search className="w-7 h-7 text-yellow-400" />
+                </div>
+                <h3 className="text-white font-bold text-base mb-2">Busca películas</h3>
+                <p className="text-zinc-400 text-sm">
+                  Usa el buscador superior para encontrar cualquier película y ver sus conexiones.
+                </p>
+              </>
+            )}
+            {onboardingStep === 1 && (
+              <>
+                <div className="w-14 h-14 rounded-full bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center mx-auto mb-4">
+                  <Icon.Map className="w-7 h-7 text-yellow-400" />
+                </div>
+                <h3 className="text-white font-bold text-base mb-2">Explora el mapa</h3>
+                <p className="text-zinc-400 text-sm">
+                  Arrastra para moverte y usa scroll o pellizcar para hacer zoom. Los pósters aparecen al acercarte.
+                </p>
+              </>
+            )}
+            {onboardingStep === 2 && (
+              <>
+                <div className="w-14 h-14 rounded-full bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center mx-auto mb-4">
+                  <Icon.Sparkles className="w-7 h-7 text-yellow-400" />
+                </div>
+                <h3 className="text-white font-bold text-base mb-2">Toca una película</h3>
+                <p className="text-zinc-400 text-sm">
+                  Selecciona cualquier nodo para ver sus conexiones y descubrir películas similares.
+                </p>
+              </>
+            )}
+
+            <div className="flex items-center justify-center gap-3 mt-5">
+              {onboardingStep < 2 ? (
+                <Button variant="primary" size="md" onClick={() => setOnboardingStep(s => s + 1)}>
+                  Siguiente
+                </Button>
+              ) : (
+                <Button variant="primary" size="md" onClick={finishOnboarding}>
+                  Explorar
+                </Button>
               )}
-              {onboardingStep === 1 && (
-                <>
-                  <div className="w-12 h-12 rounded-full bg-blue-400/20 flex items-center justify-center mx-auto mb-3">
-                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                  <h3 className="text-white font-bold text-sm mb-1">Explora el mapa</h3>
-                  <p className="text-zinc-400 text-xs">Arrastra para moverte y haz scroll/pinch para hacer zoom. Los posters aparecen al acercarte</p>
-                </>
-              )}
-              {onboardingStep === 2 && (
-                <>
-                  <div className="w-12 h-12 rounded-full bg-pink-400/20 flex items-center justify-center mx-auto mb-3">
-                    <svg className="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                  <h3 className="text-white font-bold text-sm mb-1">Toca una película</h3>
-                  <p className="text-zinc-400 text-xs">Click en cualquier nodo para ver sus conexiones y descubrir películas similares</p>
-                </>
-              )}
-              <div className="flex items-center justify-center gap-3 mt-4">
-                {onboardingStep < 2 ? (
-                  <button
-                    onClick={() => setOnboardingStep(s => s + 1)}
-                    className="bg-yellow-400 text-zinc-950 text-xs font-bold px-5 py-2 rounded-lg"
-                  >
-                    Siguiente
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => { setShowOnboarding(false); setShowInstructions(false); localStorage.setItem('mapa_onboarding_done', '1') }}
-                    className="bg-yellow-400 text-zinc-950 text-xs font-bold px-5 py-2 rounded-lg"
-                  >
-                    Explorar
-                  </button>
-                )}
-              </div>
-              {/* Step dots */}
-              <div className="flex justify-center gap-1.5 mt-3">
-                {[0, 1, 2].map(i => (
-                  <div key={i} className={`w-1.5 h-1.5 rounded-full ${i === onboardingStep ? 'bg-yellow-400' : 'bg-zinc-700'}`} />
-                ))}
-              </div>
+            </div>
+
+            <div className="flex justify-center gap-1.5 mt-4">
+              {[0, 1, 2].map(i => (
+                <div
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === onboardingStep ? 'w-6 bg-yellow-400' : 'w-1.5 bg-zinc-700'
+                  }`}
+                />
+              ))}
             </div>
           </div>
-        )}
+        </Modal>
 
         {graphData && (
           <ForceGraph
@@ -962,6 +1139,6 @@ export default function MapaPage() {
           />
         )}
       </div>
-    </main>
+    </PageShell>
   )
 }

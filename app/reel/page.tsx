@@ -3,15 +3,21 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
 import { useMediaMode } from '@/context/MediaModeContext'
 import { supabase } from '@/lib/supabase'
-import Loading from '@/components/Loading'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
+import {
+  PageShell,
+  Button,
+  IconButton,
+  Modal,
+  EmptyState,
+  Icon,
+} from '@/components/ui'
 
 type Pelicula = {
   id: string; titulo: string; titulo_ingles: string | null; anio: number | null
@@ -65,30 +71,44 @@ function tiempoRelativo(iso: string) {
 }
 
 /* ── Onboarding ── */
-function OnboardingOverlay({ onDone }: { onDone: () => void }) {
+function OnboardingModal({ open, onDone }: { open: boolean; onDone: () => void }) {
   const [step, setStep] = useState(0)
   const pasos = [
-    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-pink-400', label: 'Desliza → Watchlist' },
-    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-red-400', label: 'Desliza ← No me interesa' },
-    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 19V5M5 12l7-7 7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-blue-400', label: 'Desliza ↑ Ya la vi' },
-    { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>, color: 'text-zinc-300', label: 'Desliza ↓ Otra película' },
+    { icon: <Icon.Heart className="w-7 h-7" />, label: 'Desliza a la derecha para añadir a tu Watchlist' },
+    { icon: <Icon.Close className="w-7 h-7" />, label: 'Desliza a la izquierda si no te interesa' },
+    { icon: <Icon.Eye className="w-7 h-7" />, label: 'Desliza hacia arriba si ya la viste' },
+    { icon: <Icon.Refresh className="w-7 h-7" />, label: 'Desliza hacia abajo para ver otra película' },
   ]
   useEffect(() => {
+    if (!open) return
     if (step >= pasos.length) { onDone(); return }
     const t = setTimeout(() => setStep(s => s + 1), 1200)
     return () => clearTimeout(t)
-  }, [step])
-  if (step >= pasos.length) return null
-  const p = pasos[step]
+  }, [step, open])
+  const p = pasos[Math.min(step, pasos.length - 1)]
   return (
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm rounded-2xl cursor-pointer"
-      onClick={() => { setStep(pasos.length); onDone() }}>
-      <div className="flex flex-col items-center gap-3 animate-pulse">
-        <span className={`${p.color}`}>{p.icon}</span>
-        <span className={`text-lg font-semibold ${p.color}`}>{p.label}</span>
+    <Modal open={open && step < pasos.length} onClose={onDone} showCloseButton={false} size="sm">
+      <div
+        className="flex flex-col items-center text-center gap-4 py-6 cursor-pointer"
+        onClick={() => { setStep(pasos.length); onDone() }}
+      >
+        <div className="w-16 h-16 rounded-full bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center text-yellow-400 animate-pulse">
+          {p.icon}
+        </div>
+        <p className="text-white text-base font-semibold max-w-xs">{p.label}</p>
+        <div className="flex gap-1.5 mt-2">
+          {pasos.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all ${
+                i === step ? 'w-6 bg-yellow-400' : 'w-1.5 bg-zinc-700'
+              }`}
+            />
+          ))}
+        </div>
+        <p className="text-zinc-500 text-xs mt-2">Toca para saltar</p>
       </div>
-      <p className="text-zinc-500 text-xs mt-8">Toca para saltar</p>
-    </div>
+    </Modal>
   )
 }
 
@@ -723,9 +743,8 @@ export default function ReelPage() {
   }
 
   if (cargando) return (
-    <main className="min-h-screen bg-zinc-950 flex flex-col">
-      <Nav active="reel" />
-      <div className="flex-1 flex items-center justify-center">
+    <PageShell fullBleed>
+      <div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
         <div className="w-72 space-y-3">
           {/* Skeleton card */}
           <div className="w-72 h-[420px] rounded-3xl bg-zinc-800 animate-pulse" />
@@ -736,20 +755,24 @@ export default function ReelPage() {
           </div>
         </div>
       </div>
-    </main>
+    </PageShell>
   )
 
   if (peliculas.length === 0) return (
-    <main className="min-h-screen bg-zinc-950 flex flex-col">
-      <Nav active="reel" />
-      <div className="flex-1 flex items-center justify-center px-6"><p className="text-zinc-500 text-sm text-center">No hay más películas disponibles.</p></div>
-    </main>
+    <PageShell fullBleed>
+      <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-6">
+        <EmptyState
+          icon={<Icon.Film className="w-16 h-16" />}
+          title="No hay más títulos por ahora"
+          description="Ya revisaste todo el catálogo disponible. Vuelve pronto para descubrir nuevos estrenos."
+        />
+      </div>
+    </PageShell>
   )
 
   return (
-    <main className="min-h-screen bg-zinc-950 flex flex-col overflow-hidden">
-      <Nav active="reel" />
-      <div className="flex-1 flex flex-col items-center px-4 pt-1 pb-1">
+    <PageShell fullBleed>
+      <div className="flex flex-col items-center px-4 pt-1 pb-1 overflow-hidden">
         <div className="relative w-full max-w-sm flex-1" style={{ maxHeight: '70vh' }}>
           {peliculas.slice(0, 3).map((p, i) => (
             <div key={p.id} className="absolute inset-0" style={{ transform: `scale(${1 - i * 0.04}) translateY(${i * 10}px)`, zIndex: 3 - i }}>
@@ -758,7 +781,6 @@ export default function ReelPage() {
                 onVista={() => handleSwipe('up')} onWatchlist={() => handleSwipe('right')}
                 currentUserId={user?.id} isSeries={isSeries}
               />
-              {i === 0 && showOnboarding && <OnboardingOverlay onDone={onboardingDone} />}
               {i === 0 && guestBlocked && <GuestLimitModal />}
             </div>
           ))}
@@ -766,27 +788,56 @@ export default function ReelPage() {
 
         {/* ── Bottom action buttons (overlapping poster) ── */}
         <div className="flex items-start gap-6 -mt-20 relative z-10">
-          <button onClick={() => handleSwipe('left')} className="flex flex-col items-center gap-1">
-            <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-red-500/60 flex items-center justify-center text-red-400 text-3xl shadow-lg backdrop-blur-sm">✕</div>
-            <span className="text-red-400 text-xs font-semibold leading-tight text-center">No me<br/>interesa</span>
-          </button>
-          <button onClick={() => handleSwipe('up')} className="flex flex-col items-center gap-1">
-            <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-blue-500/60 flex items-center justify-center shadow-lg backdrop-blur-sm">
-              <svg width="26" height="26" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" className="text-blue-400">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            </div>
-            <span className="text-blue-400 text-xs font-semibold">Ya la vi</span>
-          </button>
-          <button onClick={() => handleSwipe('right')} className="flex flex-col items-center gap-1">
-            <div className="w-16 h-16 rounded-full bg-zinc-900/90 border-2 border-pink-500/60 flex items-center justify-center text-pink-400 text-3xl shadow-lg backdrop-blur-sm">♥</div>
-            <span className="text-pink-400 text-xs font-semibold">Watchlist</span>
-          </button>
+          <div className="flex flex-col items-center gap-1.5">
+            <IconButton
+              icon={<Icon.Close className="w-6 h-6" />}
+              label="No me interesa"
+              variant="secondary"
+              size="lg"
+              onClick={() => handleSwipe('left')}
+              className="!w-16 !h-16 !rounded-full shadow-lg"
+            />
+            <span className="text-zinc-400 text-xs font-semibold leading-tight text-center">
+              No me<br />interesa
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <IconButton
+              icon={<Icon.Eye className="w-6 h-6" />}
+              label="Ya la vi"
+              variant="secondary"
+              size="lg"
+              onClick={() => handleSwipe('up')}
+              className="!w-16 !h-16 !rounded-full shadow-lg"
+            />
+            <span className="text-zinc-400 text-xs font-semibold">Ya la vi</span>
+          </div>
+          <div className="flex flex-col items-center gap-1.5">
+            <IconButton
+              icon={<Icon.Heart className="w-6 h-6" />}
+              label="Añadir a Watchlist"
+              variant="primary"
+              size="lg"
+              onClick={() => handleSwipe('right')}
+              className="!w-16 !h-16 !rounded-full shadow-lg"
+            />
+            <span className="text-yellow-400 text-xs font-semibold">Watchlist</span>
+          </div>
         </div>
-        <button onClick={handleUndo} disabled={!lastAction}
-          className="mt-1 text-zinc-600 text-xs disabled:opacity-20 hover:text-zinc-400 transition-colors">↩ Deshacer</button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleUndo}
+          disabled={!lastAction}
+          iconLeft={<Icon.Refresh className="w-4 h-4" />}
+          className="mt-1"
+        >
+          Deshacer
+        </Button>
       </div>
-    </main>
+
+      <OnboardingModal open={showOnboarding} onDone={onboardingDone} />
+    </PageShell>
   )
 }

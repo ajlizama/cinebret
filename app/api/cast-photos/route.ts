@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { fetchPersonByName } from '@/lib/tmdb-person'
 
-// In-memory cache (per server instance) on top of the Next fetch cache.
-// Avoids re-running the same TMDB lookups for the duration of the process.
-const memCache = new Map<string, string | null>()
+// Per-instance cache for resolved hits only — never cache nulls so a
+// transient TMDB miss doesn't poison subsequent requests.
+const memCache = new Map<string, string>()
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
 
     const result: Record<string, string | null> = {}
 
-    // Resolve in parallel, falling back to mem cache
     await Promise.all(
       unique.map(async (name) => {
         if (memCache.has(name)) {
@@ -26,7 +25,7 @@ export async function POST(req: NextRequest) {
         }
         const person = await fetchPersonByName(name)
         const path = person?.profile_path ?? null
-        memCache.set(name, path)
+        if (path) memCache.set(name, path)
         result[name] = path
       }),
     )

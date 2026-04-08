@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -209,55 +209,41 @@ export default function CastCrewPage() {
           .sort((a, b) => b.score - a.score)
       }
 
-      setPeople([
+      const initialPeople = [
         ...buildList(actors, 'actor'),
         ...buildList(directors, 'director'),
         ...buildList(composers, 'compositor'),
-      ])
+      ]
+      setPeople(initialPeople)
       setLoading(false)
+
+      // Backfill TMDB photos for directors / composers in the background.
+      // Done inside load() to avoid React effect race conditions.
+      const missing = initialPeople
+        .filter((p) => !p.photo && (p.type === 'director' || p.type === 'compositor'))
+        .map((p) => p.name)
+      if (missing.length === 0) return
+
+      // Chunk requests so we don't slam TMDB with one giant batch
+      const CHUNK = 60
+      for (let i = 0; i < missing.length; i += CHUNK) {
+        const chunk = missing.slice(i, i + CHUNK)
+        try {
+          const res = await fetch('/api/cast-photos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ names: chunk }),
+          })
+          if (!res.ok) continue
+          const data = await res.json()
+          const photos: Record<string, string | null> = data.photos ?? {}
+          setPeople((prev) =>
+            prev.map((p) => (p.photo || !photos[p.name] ? p : { ...p, photo: photos[p.name] })),
+          )
+        } catch {}
+      }
     })()
   }, [])
-
-  // Backfill missing TMDB photos for directors / composers ONCE in the
-  // background. Guarded with a ref so we don't loop on every setPeople.
-  const backfilledRef = useRef(false)
-  useEffect(() => {
-    if (backfilledRef.current) return
-    if (people.length === 0) return
-    const missing = people
-      .filter((p) => !p.photo && (p.type === 'director' || p.type === 'compositor'))
-      .map((p) => p.name)
-      .slice(0, 200)
-    if (missing.length === 0) return
-    backfilledRef.current = true
-
-    let cancelled = false
-    ;(async () => {
-      try {
-        const res = await fetch('/api/cast-photos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ names: missing }),
-        })
-        if (!res.ok) return
-        const data = await res.json()
-        const photos: Record<string, string | null> = data.photos ?? {}
-        if (cancelled) return
-        setPeople((prev) => {
-          let changed = false
-          const next = prev.map((p) => {
-            if (p.photo || !photos[p.name]) return p
-            changed = true
-            return { ...p, photo: photos[p.name] }
-          })
-          return changed ? next : prev
-        })
-      } catch {}
-    })()
-    return () => {
-      cancelled = true
-    }
-  }, [people])
 
   const filtered = useMemo(() => {
     const tokens = tokenize(searchCrew)

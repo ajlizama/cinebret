@@ -17,6 +17,7 @@ import {
 import YouTubeClip from '@/components/YouTubeClip'
 import { extractYouTubeId } from '@/lib/youtube'
 import { supabase } from '@/lib/supabase'
+import { buildHaystack, tokenize, matchTokens } from '@/lib/smartSearch'
 
 type TrailerMovie = {
   id: string
@@ -27,6 +28,14 @@ type TrailerMovie = {
   anio: number | null
   video_clip_url: string | null
   youtube_trailer_key: string | null
+  // Smart search fields (filled from enriquecimiento)
+  director: string | null
+  compositor: string | null
+  generos: string[]
+  categoria: string | null
+  keywords: string[]
+  cast: string[]
+  haystack: string
 }
 
 type SectionData = {
@@ -67,16 +76,15 @@ export default function TrailersPage() {
 
   useEffect(() => {
     ;(async () => {
-      // Parallelize the two big fetches: enriquecimiento clips + peliculas with trailers
-      const [clipRows, baseMovies] = await Promise.all([
-        fetchAllPages<{ pelicula_id: string; video_clip_url: string }>((from, to) =>
+      // Parallelize the three big fetches
+      const [enrRows, baseMovies] = await Promise.all([
+        fetchAllPages<any>((from, to) =>
           supabase
             .from('enriquecimiento')
-            .select('pelicula_id, video_clip_url')
-            .not('video_clip_url', 'is', null)
+            .select('pelicula_id, video_clip_url, director, compositor, generos, categoria, keywords, cast_json')
             .range(from, to) as any,
         ),
-        fetchAllPages<TrailerMovie>((from, to) =>
+        fetchAllPages<any>((from, to) =>
           supabase
             .from('peliculas')
             .select('id, titulo, titulo_ingles, nota_imdb, poster_path, anio, youtube_trailer_key')
@@ -85,19 +93,60 @@ export default function TrailersPage() {
         ),
       ])
 
-      const clipMap: Record<string, string> = {}
-      clipRows.forEach((c) => {
-        clipMap[c.pelicula_id] = c.video_clip_url
+      const enrMap: Record<string, any> = {}
+      enrRows.forEach((e) => {
+        enrMap[e.pelicula_id] = e
       })
 
       const seen = new Set<string>()
-      const allMovies: TrailerMovie[] = baseMovies.map((m) => {
+      const allMovies: TrailerMovie[] = []
+      const buildEntry = (m: any): TrailerMovie => {
+        const enr = enrMap[m.id] ?? {}
+        const cast: string[] = Array.isArray(enr.cast_json)
+          ? enr.cast_json.slice(0, 8).map((c: any) => c?.name).filter(Boolean)
+          : []
+        const generos: string[] = enr.generos ?? []
+        const keywords: string[] = enr.keywords ?? []
+        const haystack = buildHaystack([
+          m.titulo,
+          m.titulo_ingles,
+          String(m.anio ?? ''),
+          enr.director ?? null,
+          enr.compositor ?? null,
+          enr.categoria ?? null,
+          generos,
+          keywords,
+          cast,
+        ])
+        return {
+          id: m.id,
+          titulo: m.titulo,
+          titulo_ingles: m.titulo_ingles,
+          nota_imdb: m.nota_imdb,
+          poster_path: m.poster_path,
+          anio: m.anio,
+          youtube_trailer_key: m.youtube_trailer_key,
+          video_clip_url: enr.video_clip_url ?? null,
+          director: enr.director ?? null,
+          compositor: enr.compositor ?? null,
+          generos,
+          categoria: enr.categoria ?? null,
+          keywords,
+          cast,
+          haystack,
+        }
+      }
+
+      baseMovies.forEach((m) => {
         seen.add(m.id)
-        return { ...m, video_clip_url: clipMap[m.id] || null }
+        allMovies.push(buildEntry(m))
       })
 
-      // Add movies that only have video_clip_url but no youtube_trailer_key
-      const clipOnlyIds = Object.keys(clipMap).filter((id) => !seen.has(id))
+      // Movies with clip but no youtube_trailer_key
+      const clipOnlyIds = enrRows
+        .filter((e) => e.video_clip_url && !seen.has(e.pelicula_id))
+        .map((e) => e.pelicula_id)
+
       const chunks: Promise<void>[] = []
       for (let i = 0; i < clipOnlyIds.length; i += 100) {
         const chunk = clipOnlyIds.slice(i, i + 100)
@@ -108,7 +157,7 @@ export default function TrailersPage() {
               .select('id, titulo, titulo_ingles, nota_imdb, poster_path, anio, youtube_trailer_key')
               .in('id', chunk)
             ;(data ?? []).forEach((m: any) => {
-              allMovies.push({ ...m, video_clip_url: clipMap[m.id] || null })
+              allMovies.push(buildEntry(m))
             })
           })(),
         )
@@ -120,15 +169,11 @@ export default function TrailersPage() {
     })()
   }, [])
 
-  // Filter by search
+  // Smart filter
   const filtered = useMemo(() => {
-    if (!searchTrailer) return movies
-    const q = searchTrailer.toLowerCase()
-    return movies.filter(
-      (m) =>
-        m.titulo.toLowerCase().includes(q) ||
-        (m.titulo_ingles || '').toLowerCase().includes(q),
-    )
+    const tokens = tokenize(searchTrailer)
+    if (tokens.length === 0) return movies
+    return movies.filter((m) => matchTokens(m.haystack, tokens))
   }, [movies, searchTrailer])
 
   // Categorize into sections
@@ -163,21 +208,140 @@ export default function TrailersPage() {
 
   const totalCount = filtered.length
 
+  function renderCard(m: TrailerMovie) {
+    const ytId = getYouTubeId(m)
+    const isClip = !!m.video_clip_url
+    return (
+      <button
+        type="button"
+        onClick={() => setExpandedId(m.id)}
+        className="group block text-left cursor-pointer w-full"
+      >
+        <div className="relative aspect-video rounded-xl overflow-hidden bg-zinc-900 ring-1 ring-zinc-800/60 group-hover:ring-yellow-400/40 transition-all mb-2">
+          {ytId ? (
+            <img
+              loading="lazy"
+              src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+              alt={m.titulo}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : m.poster_path ? (
+            <Image
+              src={`https://image.tmdb.org/t/p/w342${m.poster_path}`}
+              alt={m.titulo}
+              fill
+              className="object-cover"
+            />
+          ) : null}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+            <div className="w-12 h-12 rounded-full bg-yellow-400/95 text-zinc-950 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <Icon.Play className="w-5 h-5" filled />
+            </div>
+          </div>
+          {m.nota_imdb && (
+            <div className="absolute top-2 left-2">
+              <Pill variant="gold" size="sm" icon={<Icon.Star className="w-3 h-3" filled />}>
+                {m.nota_imdb}
+              </Pill>
+            </div>
+          )}
+          <div className="absolute top-2 right-2">
+            <Pill variant={isClip ? 'gold' : 'default'} size="sm">
+              {isClip ? 'CLIP' : 'TRÁILER'}
+            </Pill>
+          </div>
+        </div>
+        <p className="text-white text-sm font-semibold line-clamp-1">
+          {m.titulo_ingles || m.titulo}
+        </p>
+        <div className="flex items-center gap-2">
+          {m.titulo_ingles && m.titulo_ingles !== m.titulo && (
+            <p className="text-zinc-500 text-xs line-clamp-1">{m.titulo}</p>
+          )}
+          {m.anio && <p className="text-zinc-600 text-xs tabular-nums">{m.anio}</p>}
+        </div>
+      </button>
+    )
+  }
+
+  function renderExpanded(m: TrailerMovie) {
+    const ytId = getYouTubeId(m)
+    return (
+      <div className="bg-zinc-900 rounded-2xl overflow-hidden ring-1 ring-yellow-400/30 mb-6">
+        <div className="relative">
+          {ytId && <YouTubeClip videoId={ytId} />}
+          <div className="absolute top-3 right-3 z-30">
+            <IconButton
+              icon={<Icon.Close className="w-5 h-5" />}
+              label="Cerrar reproductor"
+              onClick={() => setExpandedId(null)}
+              variant="ghost"
+              className="bg-black/70 hover:bg-black/90 text-white"
+            />
+          </div>
+        </div>
+        <div className="p-4 flex items-center gap-3">
+          {m.poster_path && (
+            <div className="relative w-12 h-16 rounded-lg overflow-hidden shrink-0">
+              <Image
+                src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                alt={m.titulo}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <p className="text-white font-semibold text-sm truncate">
+              {m.titulo_ingles || m.titulo}
+            </p>
+            <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5 flex-wrap">
+              {m.anio && <span className="tabular-nums">{m.anio}</span>}
+              {m.nota_imdb && (
+                <span className="text-yellow-400 font-bold flex items-center gap-0.5 tabular-nums">
+                  <Icon.Star className="w-3 h-3" filled />
+                  {m.nota_imdb}
+                </span>
+              )}
+              {m.director && <span className="text-zinc-500">· {m.director}</span>}
+            </div>
+          </div>
+          <Link
+            href={`/pelicula/${m.id}`}
+            className="text-xs text-yellow-400 hover:text-yellow-300 font-semibold shrink-0 inline-flex items-center gap-1"
+          >
+            Ver ficha
+            <Icon.ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  // The expanded clip is rendered ABOVE the carousel of its section so it
+  // doesn't break the 2-row grid flow.
+  const expandedMovie = useMemo(
+    () => (expandedId ? movies.find((m) => m.id === expandedId) ?? null : null),
+    [expandedId, movies],
+  )
+
   return (
     <PageShell maxWidth="7xl">
       <PageHeader
         title="Trailers & Clips"
-        subtitle="Mira tráileres y clips exclusivos de las películas del catálogo."
+        subtitle="Mira tráileres y clips exclusivos. Buscá por título, director, género, actor o palabra clave."
         count={totalCount}
       />
 
-      <div className="mb-8 max-w-md">
+      <div className="mb-8 max-w-xl">
         <SearchInput
           value={searchTrailer}
           onChange={setSearchTrailer}
-          placeholder="Buscar película..."
+          placeholder="Ej: Nolan, terror, viajes en el tiempo, Margot Robbie..."
         />
       </div>
+
+      {expandedMovie && renderExpanded(expandedMovie)}
 
       {loading ? (
         <LoadingState text="Cargando tráileres..." />
@@ -191,114 +355,20 @@ export default function TrailersPage() {
         <div className="space-y-10">
           {sections.map((section) => (
             <Section key={section.key} label={section.label} count={section.movies.length}>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {section.movies.map((m) => {
-                  const ytId = getYouTubeId(m)
-                  const isExpanded = expandedId === m.id
-                  return (
-                    <div key={m.id} className={isExpanded ? 'col-span-2 md:col-span-3' : ''}>
-                      {!isExpanded ? (
-                        <button
-                          type="button"
-                          onClick={() => setExpandedId(m.id)}
-                          className="group block w-full text-left cursor-pointer"
-                        >
-                          <div className="relative aspect-video rounded-xl overflow-hidden bg-zinc-900 ring-1 ring-zinc-800/60 group-hover:ring-yellow-400/40 transition-all mb-2">
-                            {ytId ? (
-                              <img
-                                loading="lazy"
-                                src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
-                                alt={m.titulo}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                            ) : m.poster_path ? (
-                              <Image
-                                src={`https://image.tmdb.org/t/p/w342${m.poster_path}`}
-                                alt={m.titulo}
-                                fill
-                                className="object-cover"
-                              />
-                            ) : null}
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
-                              <div className="w-14 h-14 rounded-full bg-yellow-400/95 text-zinc-950 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                <Icon.Play className="w-6 h-6" filled />
-                              </div>
-                            </div>
-                            {m.nota_imdb && (
-                              <div className="absolute top-2 left-2">
-                                <Pill variant="gold" size="sm" icon={<Icon.Star className="w-3 h-3" filled />}>
-                                  {m.nota_imdb}
-                                </Pill>
-                              </div>
-                            )}
-                            {m.video_clip_url && (
-                              <div className="absolute top-2 right-2">
-                                <Pill variant="gold" size="sm">CLIP</Pill>
-                              </div>
-                            )}
-                          </div>
-                          <p className="text-white text-sm font-semibold line-clamp-1">
-                            {m.titulo_ingles || m.titulo}
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {m.titulo_ingles && m.titulo_ingles !== m.titulo && (
-                              <p className="text-zinc-500 text-xs line-clamp-1">{m.titulo}</p>
-                            )}
-                            {m.anio && <p className="text-zinc-600 text-xs tabular-nums">{m.anio}</p>}
-                          </div>
-                        </button>
-                      ) : (
-                        <div className="bg-zinc-900 rounded-2xl overflow-hidden my-2 ring-1 ring-yellow-400/30">
-                          <div className="relative">
-                            {ytId && <YouTubeClip videoId={ytId} />}
-                            <div className="absolute top-3 right-3 z-30">
-                              <IconButton
-                                icon={<Icon.Close className="w-5 h-5" />}
-                                label="Cerrar reproductor"
-                                onClick={() => setExpandedId(null)}
-                                variant="ghost"
-                                className="bg-black/70 hover:bg-black/90 text-white"
-                              />
-                            </div>
-                          </div>
-                          <div className="p-4 flex items-center gap-3">
-                            {m.poster_path && (
-                              <div className="relative w-12 h-16 rounded-lg overflow-hidden shrink-0">
-                                <Image
-                                  src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
-                                  alt={m.titulo}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <p className="text-white font-semibold text-sm truncate">
-                                {m.titulo_ingles || m.titulo}
-                              </p>
-                              <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
-                                {m.anio && <span className="tabular-nums">{m.anio}</span>}
-                                {m.nota_imdb && (
-                                  <span className="text-yellow-400 font-bold flex items-center gap-0.5 tabular-nums">
-                                    <Icon.Star className="w-3 h-3" filled />
-                                    {m.nota_imdb}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            <Link
-                              href={`/pelicula/${m.id}`}
-                              className="text-xs text-yellow-400 hover:text-yellow-300 font-semibold shrink-0 inline-flex items-center gap-1"
-                            >
-                              Ver ficha
-                              <Icon.ArrowRight className="w-3 h-3" />
-                            </Link>
-                          </div>
-                        </div>
-                      )}
+              {/* 2-row horizontal scrollable carousel.
+                  grid-flow-col + grid-rows-2 = first 2 cards in column 1,
+                  next 2 in column 2, etc. snap-x for tactile scroll. */}
+              <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 overflow-x-auto no-scrollbar pb-2">
+                <div
+                  className="grid grid-flow-col grid-rows-2 gap-3 sm:gap-4 snap-x"
+                  style={{ gridAutoColumns: 'clamp(150px, 42vw, 240px)' }}
+                >
+                  {section.movies.map((m) => (
+                    <div key={m.id} className="snap-start">
+                      {renderCard(m)}
                     </div>
-                  )
-                })}
+                  ))}
+                </div>
               </div>
             </Section>
           ))}

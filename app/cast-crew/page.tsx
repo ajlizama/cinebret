@@ -16,6 +16,7 @@ import {
 } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 import EnrichedDetails from '@/components/EnrichedDetails'
+import { buildHaystack, tokenize, matchTokens } from '@/lib/smartSearch'
 
 type PersonMovie = {
   id: string
@@ -35,6 +36,7 @@ type Person = {
   oscars: number
   type: 'actor' | 'director' | 'compositor'
   topMovies: PersonMovie[]
+  haystack: string
 }
 
 async function fetchAllPages<T>(
@@ -69,12 +71,13 @@ export default function CastCrewPage() {
     ;(async () => {
       setLoading(true)
 
-      // Parallelize the two big fetches
+      // Parallelize the two big fetches. Enriquecimiento now also pulls
+      // generos / categoria / keywords so smart search can match them.
       const [allEnr, allPels] = await Promise.all([
         fetchAllPages<any>((from, to) =>
           supabase
             .from('enriquecimiento')
-            .select('pelicula_id, director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, cast_json')
+            .select('pelicula_id, director, director_oscars, actores, actores_oscars, compositor, compositor_oscars, cast_json, generos, categoria, keywords')
             .range(from, to) as any,
         ),
         fetchAllPages<any>((from, to) =>
@@ -84,6 +87,11 @@ export default function CastCrewPage() {
             .range(from, to) as any,
         ),
       ])
+
+      const enrMap: Record<string, any> = {}
+      allEnr.forEach((e) => {
+        enrMap[e.pelicula_id] = e
+      })
 
       const pelMap: Record<string, any> = {}
       allPels.forEach((p) => {
@@ -158,6 +166,34 @@ export default function CastCrewPage() {
                 poster_path: m.poster_path,
                 anio: m.anio,
               }))
+
+            // Build a smart-search haystack: name + every movie's title +
+            // collected genres/categorias/keywords from the person's films.
+            const allGeneros = new Set<string>()
+            const allKeywords = new Set<string>()
+            const allCategorias = new Set<string>()
+            const allTitles: string[] = []
+            for (const id of v.movies) {
+              const enr = enrMap[id]
+              const pel = pelMap[id]
+              if (pel) {
+                allTitles.push(pel.titulo)
+                if (pel.titulo_ingles) allTitles.push(pel.titulo_ingles)
+              }
+              if (enr) {
+                ;(enr.generos ?? []).forEach((g: string) => allGeneros.add(g))
+                ;(enr.keywords ?? []).forEach((k: string) => allKeywords.add(k))
+                if (enr.categoria) allCategorias.add(enr.categoria)
+              }
+            }
+            const haystack = buildHaystack([
+              name,
+              allTitles.slice(0, 60),
+              Array.from(allGeneros),
+              Array.from(allCategorias),
+              Array.from(allKeywords).slice(0, 80),
+            ])
+
             return {
               name,
               photo: (v as any).photo ?? null,
@@ -167,6 +203,7 @@ export default function CastCrewPage() {
               oscars: v.oscars,
               type,
               topMovies,
+              haystack,
             }
           })
           .sort((a, b) => b.score - a.score)
@@ -181,11 +218,43 @@ export default function CastCrewPage() {
     })()
   }, [])
 
+  // Backfill missing TMDB photos for directors / composers in the background.
+  // Actors usually have photos via cast_json — directors / composers don't.
+  useEffect(() => {
+    if (people.length === 0) return
+    const missing = people
+      .filter((p) => !p.photo && (p.type === 'director' || p.type === 'compositor'))
+      .map((p) => p.name)
+      .slice(0, 200)
+    if (missing.length === 0) return
+
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch('/api/cast-photos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ names: missing }),
+        })
+        if (!res.ok) return
+        const data = await res.json()
+        const photos: Record<string, string | null> = data.photos ?? {}
+        if (cancelled) return
+        setPeople((prev) =>
+          prev.map((p) => (p.photo || !(p.name in photos) ? p : { ...p, photo: photos[p.name] })),
+        )
+      } catch {}
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [people])
+
   const filtered = useMemo(() => {
+    const tokens = tokenize(searchCrew)
     let list = people.filter((p) => p.type === tab)
-    if (searchCrew) {
-      const q = searchCrew.toLowerCase()
-      list = list.filter((p) => p.name.toLowerCase().includes(q))
+    if (tokens.length > 0) {
+      list = list.filter((p) => matchTokens(p.haystack, tokens))
     }
     return list
   }, [people, tab, searchCrew])
@@ -240,13 +309,17 @@ export default function CastCrewPage() {
   )
 
   const placeholderByTab =
-    tab === 'actor' ? 'Buscar actor...' : tab === 'director' ? 'Buscar director...' : 'Buscar compositor...'
+    tab === 'actor'
+      ? 'Buscar actor, película, género o keyword...'
+      : tab === 'director'
+      ? 'Buscar director, película, género o keyword...'
+      : 'Buscar compositor, película, género o keyword...'
 
   return (
     <PageShell maxWidth="7xl">
       <PageHeader
         title="Cast & Crew"
-        subtitle="Ranking por nota IMDb promedio × raíz de películas, con bonus por Óscares."
+        subtitle="Ranking por nota IMDb promedio × raíz de películas, con bonus por Óscares. Buscá por nombre, película, género o palabra clave."
       />
 
       <div className="mb-4">

@@ -9,6 +9,7 @@ import {
   PageHeader,
   Section,
   FilterChips,
+  SearchInput,
   Pill,
   IconButton,
   LoadingState,
@@ -16,6 +17,7 @@ import {
   ErrorState,
   Icon,
 } from '@/components/ui'
+import { buildHaystack, tokenize, matchTokens } from '@/lib/smartSearch'
 
 type Movie = {
   id: number
@@ -110,6 +112,20 @@ export default function EstRenosPage() {
   const [error, setError] = useState<string | null>(null)
   const [reminders, setReminders] = useState<Set<number>>(new Set())
   const [filter, setFilter] = useState<Filter>('todos')
+  const [search, setSearch] = useState('')
+
+  // Pre-compute haystacks for fast smart search
+  const movieHaystacks = useMemo(() => {
+    const map = new Map<number, string>()
+    for (const m of movies) {
+      const year = m.release_date?.split('-')[0]
+      map.set(
+        m.id,
+        buildHaystack([m.title, m.original_title, m.genres, year]),
+      )
+    }
+    return map
+  }, [movies])
 
   useEffect(() => {
     try {
@@ -163,13 +179,32 @@ export default function EstRenosPage() {
     })
   }
 
-  const filteredMovies = useMemo(() => movies.filter(m => {
-    if (filter === 'todos') return true
-    if (filter === 'en_cines') return m.status === 'en_cines'
-    if (filter === 'proximamente') return m.status === 'proximamente_cine' || m.status === 'proximamente_streaming' || m.status === 'proximamente'
-    if (filter === 'streaming') return m.status === 'en_streaming' || m.status === 'proximamente_streaming'
-    return true
-  }), [movies, filter])
+  const filteredMovies = useMemo(() => {
+    const tokens = tokenize(search)
+    return movies.filter((m) => {
+      // Status filter
+      if (filter === 'en_cines' && m.status !== 'en_cines') return false
+      if (
+        filter === 'proximamente' &&
+        m.status !== 'proximamente_cine' &&
+        m.status !== 'proximamente_streaming' &&
+        m.status !== 'proximamente'
+      )
+        return false
+      if (
+        filter === 'streaming' &&
+        m.status !== 'en_streaming' &&
+        m.status !== 'proximamente_streaming'
+      )
+        return false
+      // Smart search
+      if (tokens.length > 0) {
+        const hay = movieHaystacks.get(m.id) ?? ''
+        if (!matchTokens(hay, tokens)) return false
+      }
+      return true
+    })
+  }, [movies, filter, search, movieHaystacks])
 
   const monthGroups = useMemo(() => groupByMonth(filteredMovies), [filteredMovies])
 
@@ -191,12 +226,19 @@ export default function EstRenosPage() {
     <PageShell maxWidth="7xl">
       <PageHeader
         title="Calendario de estrenos"
-        subtitle="Cine y streaming en Chile."
+        subtitle="Cine y streaming en Chile. Buscá por título o género."
         icon={<Icon.Calendar className="w-7 h-7" />}
       />
 
       {!loading && !error && movies.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-8 space-y-4">
+          <div className="max-w-xl">
+            <SearchInput
+              value={search}
+              onChange={setSearch}
+              placeholder="Ej: terror, drama, Avatar, 2026..."
+            />
+          </div>
           <FilterChips
             chips={chips}
             value={filter}

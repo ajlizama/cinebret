@@ -1,10 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Nav from '@/components/Nav'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  FilterChips,
+  Pill,
+  IconButton,
+  LoadingState,
+  EmptyState,
+  ErrorState,
+  Icon,
+} from '@/components/ui'
 
 type Movie = {
   id: number
@@ -54,43 +65,37 @@ function groupByMonth(movies: Movie[]): MonthGroup[] {
   })
 }
 
-const CINEMA_ICON = (
-  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h2v2H4V5zm4 0h4v2H8V5zm6 0h2v2h-2V5zM4 9h2v2H4V9zm4 0h4v2H8V9zm6 0h2v2h-2V9zM4 13h2v2H4v-2zm4 0h4v2H8v-2zm6 0h2v2h-2v-2z"/>
-  </svg>
-)
-
 function StatusBadge({ status }: { status: Movie['status'] }) {
   switch (status) {
     case 'en_cines':
       return (
-        <span className="bg-amber-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
-          {CINEMA_ICON} En cines
-        </span>
+        <Pill variant="gold" icon={<Icon.Film className="w-3 h-3" />}>
+          En cines
+        </Pill>
       )
     case 'proximamente_cine':
       return (
-        <span className="bg-red-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
-          {CINEMA_ICON} Pronto en cines
-        </span>
+        <Pill variant="gold" icon={<Icon.Film className="w-3 h-3" />}>
+          Pronto en cines
+        </Pill>
       )
     case 'en_streaming':
       return (
-        <span className="bg-blue-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
+        <Pill variant="gold" icon={<Icon.Tv className="w-3 h-3" />}>
           En streaming
-        </span>
+        </Pill>
       )
     case 'proximamente_streaming':
       return (
-        <span className="bg-indigo-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
+        <Pill variant="gold" icon={<Icon.Tv className="w-3 h-3" />}>
           Pronto en streaming
-        </span>
+        </Pill>
       )
     case 'proximamente':
       return (
-        <span className="bg-zinc-600/90 backdrop-blur-sm text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
-          Proximamente
-        </span>
+        <Pill variant="gold" icon={<Icon.Calendar className="w-3 h-3" />}>
+          Próximamente
+        </Pill>
       )
     default:
       return null
@@ -158,168 +163,155 @@ export default function EstRenosPage() {
     })
   }
 
-  const filteredMovies = movies.filter(m => {
+  const filteredMovies = useMemo(() => movies.filter(m => {
     if (filter === 'todos') return true
     if (filter === 'en_cines') return m.status === 'en_cines'
     if (filter === 'proximamente') return m.status === 'proximamente_cine' || m.status === 'proximamente_streaming' || m.status === 'proximamente'
     if (filter === 'streaming') return m.status === 'en_streaming' || m.status === 'proximamente_streaming'
     return true
-  })
+  }), [movies, filter])
 
-  const monthGroups = groupByMonth(filteredMovies)
+  const monthGroups = useMemo(() => groupByMonth(filteredMovies), [filteredMovies])
 
-  const enCinesCount = movies.filter(m => m.status === 'en_cines').length
-  const proximamenteCount = movies.filter(m => m.status.startsWith('proximamente')).length
-  const streamingCount = movies.filter(m => m.status === 'en_streaming' || m.status === 'proximamente_streaming').length
+  const counts = useMemo(() => ({
+    todos: movies.length,
+    enCines: movies.filter(m => m.status === 'en_cines').length,
+    proximamente: movies.filter(m => m.status.startsWith('proximamente')).length,
+    streaming: movies.filter(m => m.status === 'en_streaming' || m.status === 'proximamente_streaming').length,
+  }), [movies])
+
+  const chips = [
+    { key: 'todos', label: 'Todos', count: counts.todos },
+    { key: 'en_cines', label: 'En cines', count: counts.enCines },
+    { key: 'proximamente', label: 'Próximamente', count: counts.proximamente },
+    { key: 'streaming', label: 'Streaming', count: counts.streaming },
+  ]
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-      <div className="max-w-6xl mx-auto px-4 pt-6 pb-16">
+    <PageShell maxWidth="7xl">
+      <PageHeader
+        title="Calendario de estrenos"
+        subtitle="Cine y streaming en Chile."
+        icon={<Icon.Calendar className="w-7 h-7" />}
+      />
+
+      {!loading && !error && movies.length > 0 && (
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-            Calendario de Estrenos
-          </h1>
-          <p className="text-zinc-400 mt-2 text-sm md:text-base">
-            Cine y streaming en Chile
-          </p>
+          <FilterChips
+            chips={chips}
+            value={filter}
+            onChange={(v) => setFilter(v as Filter)}
+          />
         </div>
+      )}
 
-        {/* Filter tabs */}
-        {!loading && !error && movies.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8">
-            {([
-              { key: 'todos' as Filter, label: `Todos (${movies.length})` },
-              { key: 'en_cines' as Filter, label: `En cines (${enCinesCount})` },
-              { key: 'proximamente' as Filter, label: `Próximamente (${proximamenteCount})` },
-              { key: 'streaming' as Filter, label: `Streaming (${streamingCount})` },
-            ]).map(tab => (
-              <button
-                key={tab.key}
-                onClick={() => setFilter(tab.key)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                  filter === tab.key
-                    ? 'bg-yellow-400/20 text-yellow-400 border border-yellow-400/30'
-                    : 'bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700 hover:text-zinc-300'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        )}
+      {loading && <LoadingState text="Cargando estrenos..." size="lg" />}
 
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-zinc-500 text-sm">Cargando estrenos...</p>
-          </div>
-        )}
+      {error && !loading && (
+        <ErrorState
+          title="No se pudieron cargar los estrenos"
+          description={error}
+        />
+      )}
 
-        {error && !loading && (
-          <div className="text-center py-20"><p className="text-red-400">{error}</p></div>
-        )}
+      {!loading && !error && filteredMovies.length === 0 && (
+        <EmptyState
+          icon={<Icon.Calendar className="w-16 h-16" />}
+          title="No hay estrenos"
+          description="No se encontraron estrenos para este filtro."
+        />
+      )}
 
-        {!loading && !error && filteredMovies.length === 0 && (
-          <div className="text-center py-20"><p className="text-zinc-500">No se encontraron estrenos.</p></div>
-        )}
+      {!loading && !error && monthGroups.map((group) => (
+        <Section
+          key={group.key}
+          label={group.label}
+          count={group.movies.length}
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {group.movies.map((movie) => {
+              const isReminded = reminders.has(movie.id)
+              const title = movie.original_title || movie.title
 
-        {!loading && !error && monthGroups.map((group, gi) => (
-          <section key={group.key} className={gi > 0 ? 'mt-12' : ''}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1 h-8 bg-amber-500 rounded-full" />
-              <h2 className="text-xl md:text-2xl font-bold text-white">{group.label}</h2>
-              <span className="text-xs text-zinc-500 bg-zinc-800/60 px-2 py-0.5 rounded-full">
-                {group.movies.length} {group.movies.length === 1 ? 'titulo' : 'titulos'}
-              </span>
-            </div>
+              const Poster = (
+                <div className="block relative aspect-[2/3] bg-zinc-800 overflow-hidden rounded-t-2xl">
+                  {movie.poster_path && (
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                    />
+                  )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {group.movies.map((movie) => {
-                const isReminded = reminders.has(movie.id)
-                const CardWrapper = movie.peliculaId
-                  ? ({ children, className }: { children: React.ReactNode; className: string }) => (
-                      <Link href={`/pelicula/${movie.peliculaId}`} className={className}>{children}</Link>
-                    )
-                  : ({ children, className }: { children: React.ReactNode; className: string }) => (
-                      <div className={className}>{children}</div>
-                    )
+                  {/* Date badge */}
+                  <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-semibold px-2 py-1 rounded-md">
+                    {formatDate(movie.release_date)}
+                  </div>
 
-                return (
-                  <div key={movie.id} className="group bg-zinc-900/60 border border-zinc-800/50 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-0.5">
-                    {/* Poster - clickable if we have the movie in our DB */}
-                    <CardWrapper className="block relative aspect-[2/3] bg-zinc-800 overflow-hidden cursor-pointer">
-                      {movie.poster_path && (
-                        <Image
-                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                          alt={movie.original_title || movie.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-                        />
-                      )}
+                  {/* Rating */}
+                  {movie.vote_average && movie.vote_average > 0 && (
+                    <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-yellow-400 text-[10px] font-bold px-1.5 py-1 rounded-md inline-flex items-center gap-0.5">
+                      <Icon.Star filled className="w-2.5 h-2.5" />
+                      {movie.vote_average.toFixed(1)}
+                    </div>
+                  )}
 
-                      {/* Date badge */}
-                      <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-semibold px-2 py-1 rounded-md">
-                        {formatDate(movie.release_date)}
+                  {/* Status badge */}
+                  <div className="absolute bottom-2 left-2">
+                    <StatusBadge status={movie.status} />
+                  </div>
+                </div>
+              )
+
+              return (
+                <div
+                  key={movie.id}
+                  className="group bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800/50 hover:border-yellow-400/30 transition-colors flex flex-col"
+                >
+                  {movie.peliculaId ? (
+                    <Link href={`/pelicula/${movie.peliculaId}`} className="block">
+                      {Poster}
+                    </Link>
+                  ) : (
+                    Poster
+                  )}
+
+                  <div className="p-3 flex flex-col flex-1">
+                    <h3 className="text-sm font-semibold text-white leading-tight line-clamp-2 mb-1">
+                      {title}
+                    </h3>
+                    {movie.original_title && movie.original_title !== movie.title && (
+                      <p className="text-[11px] text-zinc-500 leading-tight line-clamp-1 mb-1.5 italic">
+                        {movie.title}
+                      </p>
+                    )}
+
+                    {movie.genres.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {movie.genres.slice(0, 3).map(g => (
+                          <Pill key={g} variant="default" size="sm">{g}</Pill>
+                        ))}
                       </div>
+                    )}
 
-                      {/* Rating - only if meaningful */}
-                      {movie.vote_average && movie.vote_average > 0 && (
-                        <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-amber-400 text-[10px] font-bold px-1.5 py-1 rounded-md flex items-center gap-0.5">
-                          <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          {movie.vote_average.toFixed(1)}
-                        </div>
-                      )}
-
-                      {/* Status badge */}
-                      <div className="absolute bottom-2 left-2">
-                        <StatusBadge status={movie.status} />
-                      </div>
-                    </CardWrapper>
-
-                    {/* Info */}
-                    <div className="p-3">
-                      <h3 className="text-sm font-semibold text-white leading-tight line-clamp-2 mb-1">
-                        {movie.original_title || movie.title}
-                      </h3>
-                      {movie.original_title && movie.original_title !== movie.title && (
-                        <p className="text-[11px] text-zinc-500 leading-tight line-clamp-1 mb-1.5 italic">
-                          {movie.title}
-                        </p>
-                      )}
-
-                      {movie.genres.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {movie.genres.slice(0, 3).map(g => (
-                            <span key={g} className="text-[10px] text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded">{g}</span>
-                          ))}
-                        </div>
-                      )}
-
-                      <button
+                    <div className="mt-auto flex items-center justify-end">
+                      <IconButton
+                        icon={<Icon.Bookmark filled={isReminded} className="w-5 h-5" />}
+                        label={isReminded ? 'Quitar recordatorio' : 'Recordarme este estreno'}
+                        variant="ghost"
+                        active={isReminded}
                         onClick={(e) => { e.preventDefault(); toggleReminder(movie.id) }}
-                        className={`w-full flex items-center justify-center gap-1.5 text-xs font-medium py-2 rounded-lg transition-all duration-200 ${
-                          isReminded
-                            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                            : 'bg-zinc-800 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700 hover:text-zinc-300'
-                        }`}
-                      >
-                        <svg className="w-3.5 h-3.5" fill={isReminded ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                        </svg>
-                        {isReminded ? 'Recordatorio activo' : 'Recordarme'}
-                      </button>
+                      />
                     </div>
                   </div>
-                )
-              })}
-            </div>
-          </section>
-        ))}
-      </div>
-    </main>
+                </div>
+              )
+            })}
+          </div>
+        </Section>
+      ))}
+    </PageShell>
   )
 }

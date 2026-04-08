@@ -1,9 +1,18 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Nav from '@/components/Nav'
 import { useAuth } from '@/context/AuthContext'
-import Loading from '@/components/Loading'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  StatCard,
+  AchievementCard,
+  LoadingState,
+  Pill,
+  ProgressBar,
+  Button,
+} from '@/components/ui'
 
 type Tier = 'bronze' | 'silver' | 'gold' | null
 
@@ -468,132 +477,6 @@ function QuestIcon({ name, className = '' }: { name: string; className?: string 
 }
 
 /* ───────────────────────────────────────────
-   Tier styles
-   ─────────────────────────────────────────── */
-const TIER_COLORS = {
-  bronze: {
-    ring: 'ring-amber-700',
-    bg: 'from-amber-950/60 to-amber-900/30',
-    glow: 'shadow-amber-800/40',
-    label: 'Bronce',
-    text: 'text-amber-600',
-    barFrom: 'from-amber-700',
-    barTo: 'to-amber-500',
-    badgeBg: 'bg-amber-700',
-    badgeText: 'text-amber-100',
-    iconColor: 'text-amber-500',
-  },
-  silver: {
-    ring: 'ring-zinc-400',
-    bg: 'from-zinc-700/40 to-zinc-600/20',
-    glow: 'shadow-zinc-400/30',
-    label: 'Plata',
-    text: 'text-zinc-300',
-    barFrom: 'from-zinc-400',
-    barTo: 'to-zinc-300',
-    badgeBg: 'bg-zinc-400',
-    badgeText: 'text-zinc-950',
-    iconColor: 'text-zinc-300',
-  },
-  gold: {
-    ring: 'ring-yellow-400',
-    bg: 'from-yellow-900/50 to-amber-800/30',
-    glow: 'shadow-yellow-400/40',
-    label: 'Oro',
-    text: 'text-yellow-400',
-    barFrom: 'from-yellow-400',
-    barTo: 'to-amber-300',
-    badgeBg: 'bg-yellow-400',
-    badgeText: 'text-zinc-950',
-    iconColor: 'text-yellow-400',
-  },
-}
-
-/* ───────────────────────────────────────────
-   Achievement Card
-   ─────────────────────────────────────────── */
-function AchievementCard({ achievement }: { achievement: Achievement }) {
-  const { name, description, icon, unlocked, progress, total, tier, nextTierName, nextTierTotal } = achievement
-  const pct = total > 0 ? Math.round((progress / total) * 100) : 0
-  const tierStyle = tier ? TIER_COLORS[tier] : null
-
-  return (
-    <div
-      className={`relative rounded-2xl border p-5 transition-all duration-300 ${
-        unlocked
-          ? `border-transparent bg-gradient-to-br ${tierStyle?.bg ?? 'from-zinc-800 to-zinc-900'} ring-1 ${tierStyle?.ring ?? 'ring-zinc-700'} shadow-lg ${tierStyle?.glow ?? ''} hover:scale-[1.02]`
-          : 'border-zinc-800 bg-zinc-900/60 opacity-60 hover:opacity-80'
-      }`}
-    >
-      {/* Tier badge */}
-      {tier && unlocked && tierStyle && (
-        <div className={`absolute -top-2 -right-2 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${tierStyle.badgeBg} ${tierStyle.badgeText}`}>
-          {tierStyle.label}
-        </div>
-      )}
-
-      {/* Icon */}
-      <div className={`mb-3 ${unlocked && tierStyle ? tierStyle.iconColor : unlocked ? 'text-amber-400' : 'text-zinc-600'}`}>
-        <QuestIcon name={icon} className="w-9 h-9" />
-      </div>
-
-      {/* Name */}
-      <h3 className={`font-bold text-sm mb-1 ${unlocked ? 'text-white' : 'text-zinc-500'}`}>
-        {name}
-      </h3>
-
-      {/* Description */}
-      <p className={`text-xs leading-relaxed mb-3 ${unlocked ? 'text-zinc-400' : 'text-zinc-600'}`}>
-        {description}
-      </p>
-
-      {/* Progress bar for tiered/multi-step */}
-      {total > 1 && (
-        <div>
-          <div className="flex justify-between mb-1">
-            <span className={`text-[10px] font-medium ${unlocked && tierStyle ? tierStyle.text : unlocked ? 'text-amber-400' : 'text-zinc-600'}`}>
-              {progress}/{total}
-            </span>
-            <span className={`text-[10px] ${unlocked && tierStyle ? tierStyle.text : unlocked ? 'text-amber-400' : 'text-zinc-600'}`}>
-              {pct}%
-            </span>
-          </div>
-          <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-700 ${
-                unlocked && tierStyle
-                  ? `bg-gradient-to-r ${tierStyle.barFrom} ${tierStyle.barTo}`
-                  : unlocked ? 'bg-gradient-to-r from-amber-500 to-yellow-400'
-                  : 'bg-zinc-700'
-              }`}
-              style={{ width: `${pct}%` }}
-            />
-          </div>
-          {/* Next tier indicator */}
-          {nextTierName && (
-            <p className="text-[10px] text-zinc-500 mt-1">
-              Siguiente: {nextTierName} ({progress}/{nextTierTotal})
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Boolean achievements */}
-      {total === 1 && (
-        <div className={`text-xs font-medium ${unlocked ? (tierStyle?.text ?? 'text-amber-400') : 'text-zinc-600'}`}>
-          {unlocked ? 'Desbloqueado' : 'Bloqueado'}
-        </div>
-      )}
-
-      {/* Glow overlay */}
-      {unlocked && (
-        <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-t from-transparent via-transparent to-white/[0.03]" />
-      )}
-    </div>
-  )
-}
-
-/* ───────────────────────────────────────────
    Level Icon
    ─────────────────────────────────────────── */
 function LevelIcon({ level }: { level: string }) {
@@ -639,150 +522,157 @@ export default function CineQuestPage() {
       .catch(() => setCargando(false))
   }, [user, loading])
 
-  if (loading) return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-      <div className="flex items-center justify-center h-64">
-        <Loading text="Cargando logros..." />
-      </div>
-    </main>
-  )
+  if (loading) {
+    return (
+      <PageShell maxWidth="7xl">
+        <LoadingState text="Cargando logros..." size="lg" />
+      </PageShell>
+    )
+  }
 
-  if (!user) return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-      <div className="flex items-center justify-center h-[60vh] px-6">
-        <div className="text-center max-w-sm">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-zinc-800 flex items-center justify-center">
-            <QuestIcon name="trophy" className="w-8 h-8 text-amber-500" />
+  if (!user) {
+    return (
+      <PageShell maxWidth="2xl">
+        <div className="flex flex-col items-center justify-center text-center py-20">
+          <div className="w-16 h-16 mb-4 rounded-2xl bg-zinc-900 flex items-center justify-center text-yellow-400">
+            <QuestIcon name="trophy" className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">CineQuest</h1>
-          <p className="text-zinc-400 text-sm mb-6">
-            Inicia sesion para desbloquear logros y desafios cinematograficos.
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white mb-3">
+            CineQuest
+          </h1>
+          <p className="text-zinc-400 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
+            Inicia sesión para desbloquear logros y desafíos cinematográficos.
           </p>
-          <a
-            href="/catalogo"
-            className="inline-block bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-3 rounded-xl transition-colors text-sm"
-          >
-            Ir al catalogo
+          <a href="/catalogo">
+            <Button variant="primary">Ir al catálogo</Button>
           </a>
         </div>
-      </div>
-    </main>
-  )
+      </PageShell>
+    )
+  }
 
-  if (cargando) return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-      <div className="flex items-center justify-center h-64">
-        <Loading text="Cargando logros..." />
-      </div>
-    </main>
-  )
+  if (cargando) {
+    return (
+      <PageShell maxWidth="7xl">
+        <LoadingState text="Cargando logros..." size="lg" />
+      </PageShell>
+    )
+  }
 
   const unlockedCount = achievements.filter(a => a.unlocked).length
   const totalCount = achievements.length
+  const overallPct = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0
+
+  const sortedAchievements = [...achievements].sort((a, b) => {
+    // Gold first, then silver, then bronze, then locked; within same tier by progress %
+    const tierOrder = (t: Tier) => t === 'gold' ? 3 : t === 'silver' ? 2 : t === 'bronze' ? 1 : 0
+    const ta = tierOrder(a.tier)
+    const tb = tierOrder(b.tier)
+    if (ta !== tb) return tb - ta
+    return (b.progress / (b.total || 1)) - (a.progress / (a.total || 1))
+  })
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-      <div className="max-w-5xl mx-auto px-4 py-8">
+    <PageShell maxWidth="7xl">
+      <PageHeader
+        title="CineQuest"
+        subtitle="Desafíos y logros cinematográficos para medir tu recorrido por el cine."
+      />
 
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-white tracking-tight mb-2">
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
-              CineQuest
-            </span>
-          </h1>
-          <p className="text-zinc-500 text-sm">
-            Desafios y logros cinematograficos
-          </p>
+      {/* Nivel general */}
+      <Section label="Tu nivel">
+        <div className="bg-zinc-900 rounded-2xl p-5 sm:p-6 flex items-center gap-4 sm:gap-5">
+          <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-zinc-800 flex items-center justify-center">
+            <LevelIcon level={overallLevel} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xl sm:text-2xl font-black text-white truncate">
+              {overallLevel}
+            </p>
+            <p className="text-xs sm:text-sm text-zinc-500 mt-1">
+              {tierCount} niveles desbloqueados
+            </p>
+          </div>
+          <Pill variant="gold" size="md">
+            {unlockedCount}/{totalCount}
+          </Pill>
         </div>
 
-        {/* Overall level */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <LevelIcon level={overallLevel} />
-          <div className="text-center">
-            <p className="text-lg font-bold text-white">{overallLevel}</p>
-            <p className="text-xs text-zinc-500">{tierCount} niveles desbloqueados</p>
-          </div>
+        <div className="mt-4 bg-zinc-900 rounded-2xl p-5 sm:p-6">
+          <ProgressBar
+            value={unlockedCount}
+            max={Math.max(totalCount, 1)}
+            color="gold"
+            size="md"
+            label={`Progreso total · ${overallPct}%`}
+            showValue
+          />
         </div>
+      </Section>
 
-        {/* Stats summary */}
-        <div className="flex items-center justify-center gap-4 mb-10 flex-wrap">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 text-center min-w-[100px]">
-            <div className="flex items-center justify-center gap-1.5 mb-1">
-              <QuestIcon name="trophy" className="w-4 h-4 text-amber-400" />
-              <p className="text-2xl font-bold text-amber-400">{unlockedCount}</p>
-            </div>
-            <p className="text-zinc-500 text-xs">de {totalCount} logros</p>
-          </div>
-          {stats && (
+      {/* Estadísticas */}
+      <Section label="Estadísticas">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <StatCard
+            value={unlockedCount}
+            label="Logros"
+            sub={`de ${totalCount}`}
+            color="gold"
+          />
+          {stats ? (
             <>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 text-center min-w-[100px]">
-                <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <QuestIcon name="film" className="w-4 h-4 text-zinc-400" />
-                  <p className="text-2xl font-bold text-white">{stats.totalWatched}</p>
-                </div>
-                <p className="text-zinc-500 text-xs">peliculas vistas</p>
-              </div>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 text-center min-w-[100px]">
-                <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <QuestIcon name="star" className="w-4 h-4 text-zinc-400" />
-                  <p className="text-2xl font-bold text-white">{stats.avgRating || '--'}</p>
-                </div>
-                <p className="text-zinc-500 text-xs">rating promedio</p>
-              </div>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 text-center min-w-[100px]">
-                <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <QuestIcon name="palette" className="w-4 h-4 text-zinc-400" />
-                  <p className="text-2xl font-bold text-white">{stats.uniqueGenres}</p>
-                </div>
-                <p className="text-zinc-500 text-xs">generos explorados</p>
-              </div>
+              <StatCard
+                value={stats.totalWatched}
+                label="Películas vistas"
+                color="white"
+              />
+              <StatCard
+                value={stats.avgRating ? stats.avgRating : '—'}
+                label="Nota promedio"
+                color="white"
+              />
+              <StatCard
+                value={stats.uniqueGenres}
+                label="Géneros explorados"
+                color="white"
+              />
             </>
-          )}
+          ) : null}
         </div>
+      </Section>
 
-        {/* Progress bar overall */}
-        <div className="mb-10 max-w-md mx-auto">
-          <div className="flex justify-between mb-2">
-            <span className="text-xs text-zinc-500">Progreso total</span>
-            <span className="text-xs text-amber-400 font-medium">{totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0}%</span>
+      {/* Logros */}
+      <Section label="Logros" count={totalCount}>
+        {achievements.length === 0 ? (
+          <div className="bg-zinc-900 rounded-2xl p-10 flex flex-col items-center text-center">
+            <div className="w-12 h-12 mb-4 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-500">
+              <QuestIcon name="film" className="w-6 h-6" />
+            </div>
+            <p className="text-zinc-500 text-sm">
+              Marca películas como vistas para desbloquear logros.
+            </p>
           </div>
-          <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full transition-all duration-1000"
-              style={{ width: `${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Achievement grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {achievements
-            .sort((a, b) => {
-              // Gold first, then silver, then bronze, then locked; within same tier by progress %
-              const tierOrder = (t: Tier) => t === 'gold' ? 3 : t === 'silver' ? 2 : t === 'bronze' ? 1 : 0
-              const ta = tierOrder(a.tier)
-              const tb = tierOrder(b.tier)
-              if (ta !== tb) return tb - ta
-              return (b.progress / (b.total || 1)) - (a.progress / (a.total || 1))
-            })
-            .map(a => (
-              <AchievementCard key={a.id} achievement={a} />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {sortedAchievements.map(a => (
+              <AchievementCard
+                key={a.id}
+                achievement={{
+                  id: a.id,
+                  name: a.name,
+                  description: a.nextTierName
+                    ? `${a.description} · Siguiente: ${a.nextTierName} (${a.progress}/${a.nextTierTotal})`
+                    : a.description,
+                  icon: <QuestIcon name={a.icon} className="w-7 h-7" />,
+                }}
+                unlocked={a.unlocked}
+                tier={a.tier ?? undefined}
+                progress={{ current: a.progress, total: a.total }}
+              />
             ))}
-        </div>
-
-        {/* Empty state */}
-        {achievements.length === 0 && (
-          <div className="text-center py-16">
-            <QuestIcon name="film" className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
-            <p className="text-zinc-500 text-sm">Marca peliculas como vistas para desbloquear logros.</p>
           </div>
         )}
-      </div>
-    </main>
+      </Section>
+    </PageShell>
   )
 }

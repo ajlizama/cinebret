@@ -32,6 +32,8 @@ type GraphNode = {
   genres: string[]
   clusterId?: number
   clusterColor?: string
+  subclusterId?: number
+  subclusterColor?: string
   x?: number
   y?: number
 }
@@ -744,11 +746,11 @@ export default function MapaPage() {
                 />
               </div>
 
-              <div className="flex flex-wrap gap-1.5 mb-2">
+              <div className="flex flex-wrap gap-1 mb-2">
                 {(rawGraph?.clusters ?? []).map(cl => (
-                  <span key={cl.id} className="inline-flex items-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-800/60 rounded-full px-2 py-0.5">
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: cl.color }} />
-                    {cl.name}
+                  <span key={cl.id} className="inline-flex items-center gap-1 text-[9px] text-zinc-400 bg-zinc-800/60 rounded-full px-2 py-0.5">
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cl.color }} />
+                    {cl.name} <span className="text-zinc-600">({cl.size})</span>
                   </span>
                 ))}
               </div>
@@ -1249,30 +1251,70 @@ export default function MapaPage() {
             onBackgroundClick={() => deselectNode()}
             onZoom={() => { if (showInstructions) setShowInstructions(false) }}
             onRenderFramePost={(ctx: CanvasRenderingContext2D, globalScale: number) => {
-              // Draw cluster labels when zoomed out (< 0.8 scale)
-              if (globalScale > 0.8 || !rawGraph?.clusters || !graphData) return
-              const clusterCentroids: Record<number, { x: number; y: number; count: number }> = {}
-              for (const node of graphData.nodes as GraphNode[]) {
-                const cid = node.clusterId ?? 0
-                if (!isFinite(node.x ?? NaN) || !isFinite(node.y ?? NaN)) continue
-                if (!clusterCentroids[cid]) clusterCentroids[cid] = { x: 0, y: 0, count: 0 }
-                clusterCentroids[cid].x += node.x!
-                clusterCentroids[cid].y += node.y!
-                clusterCentroids[cid].count++
+              if (!graphData) return
+              const gnodes = graphData.nodes as GraphNode[]
+
+              // ── Level 0 labels: mega-clusters (zoom < 0.5) ──
+              if (globalScale < 0.5 && rawGraph?.clusters) {
+                const centroids: Record<number, { x: number; y: number; count: number }> = {}
+                for (const node of gnodes) {
+                  const cid = node.clusterId ?? 0
+                  if (!isFinite(node.x ?? NaN) || !isFinite(node.y ?? NaN)) continue
+                  if (!centroids[cid]) centroids[cid] = { x: 0, y: 0, count: 0 }
+                  centroids[cid].x += node.x!
+                  centroids[cid].y += node.y!
+                  centroids[cid].count++
+                }
+                for (const cl of rawGraph.clusters) {
+                  const c = centroids[cl.id]
+                  if (!c || c.count === 0) continue
+                  const cx = c.x / c.count
+                  const cy = c.y / c.count
+                  const fontSize = Math.max(16, 50 / globalScale)
+                  ctx.font = `900 ${fontSize}px Inter, sans-serif`
+                  ctx.textAlign = 'center'
+                  ctx.textBaseline = 'middle'
+                  ctx.globalAlpha = Math.min(0.75, (0.5 - globalScale) * 4)
+                  // Text shadow for readability
+                  ctx.fillStyle = 'rgba(0,0,0,0.6)'
+                  ctx.fillText(cl.name.toUpperCase(), cx + 1.5, cy + 1.5)
+                  ctx.fillStyle = cl.color
+                  ctx.fillText(cl.name.toUpperCase(), cx, cy)
+                  ctx.globalAlpha = 1
+                }
               }
-              for (const cl of rawGraph.clusters) {
-                const c = clusterCentroids[cl.id]
-                if (!c || c.count === 0) continue
-                const cx = c.x / c.count
-                const cy = c.y / c.count
-                const fontSize = Math.max(14, 40 / globalScale)
-                ctx.font = `800 ${fontSize}px Inter, sans-serif`
-                ctx.textAlign = 'center'
-                ctx.textBaseline = 'middle'
-                ctx.globalAlpha = Math.min(0.7, (0.8 - globalScale) * 3)
-                ctx.fillStyle = cl.color
-                ctx.fillText(cl.name.toUpperCase(), cx, cy)
-                ctx.globalAlpha = 1
+
+              // ── Level 1 labels: subclusters (zoom 0.3 - 1.0) ──
+              if (globalScale > 0.25 && globalScale < 1.0 && (rawGraph as any)?.subclusters) {
+                const subclusters = (rawGraph as any).subclusters as { id: number; name: string; size: number; color: string; parentId: number }[]
+                const subCentroids: Record<number, { x: number; y: number; count: number }> = {}
+                for (const node of gnodes) {
+                  const sid = (node as any).subclusterId ?? 0
+                  if (!isFinite(node.x ?? NaN) || !isFinite(node.y ?? NaN)) continue
+                  if (!subCentroids[sid]) subCentroids[sid] = { x: 0, y: 0, count: 0 }
+                  subCentroids[sid].x += node.x!
+                  subCentroids[sid].y += node.y!
+                  subCentroids[sid].count++
+                }
+                for (const sc of subclusters) {
+                  const c = subCentroids[sc.id]
+                  if (!c || c.count < 10) continue
+                  const cx = c.x / c.count
+                  const cy = c.y / c.count
+                  const fontSize = Math.max(8, 22 / globalScale)
+                  ctx.font = `700 ${fontSize}px Inter, sans-serif`
+                  ctx.textAlign = 'center'
+                  ctx.textBaseline = 'middle'
+                  // Fade in as you zoom in from 0.25, fade out as you approach 1.0
+                  const fadeIn = Math.min(1, (globalScale - 0.25) * 5)
+                  const fadeOut = Math.min(1, (1.0 - globalScale) * 3)
+                  ctx.globalAlpha = Math.min(0.6, fadeIn * fadeOut)
+                  ctx.fillStyle = 'rgba(0,0,0,0.5)'
+                  ctx.fillText(sc.name, cx + 1, cy + 1)
+                  ctx.fillStyle = sc.color
+                  ctx.fillText(sc.name, cx, cy)
+                  ctx.globalAlpha = 1
+                }
               }
             }}
             enableNodeDrag={true}

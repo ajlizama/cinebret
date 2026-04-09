@@ -400,11 +400,14 @@ export default function ActorChainPage() {
       const actorMovies = actorToMovies.get(actor.name)
       if (!actorMovies) return
 
-      // Pick next movie: prefer target, else one closest to target not used
+      // Pick next movie: prefer target, else one closest to target not used.
+      // The actor is in the current movie's cast (that's why they appear), so
+      // their `actorMovies` set always includes the current movie — we must
+      // SKIP it (continue), not RETURN out of the entire callback.
       let nextId: string | null = null
       let nextDist = Infinity
       for (const mid of actorMovies) {
-        if (mid === currentMovieId) return // defensive
+        if (mid === currentMovieId) continue
         if (usedMovies.has(mid)) continue
         if (mid === targetId) { nextId = mid; nextDist = 0; break }
         const d = bfsDistance(actorToMovies, movieToActors, mid, targetId, 6)

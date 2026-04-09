@@ -24,11 +24,14 @@ type BlitzMovie = {
   nota_imdb: number | null
   poster_path: string
   backdrop_path: string
+  logo_path: string | null
   generos: string[]
   director: string | null
   actores: string | null
   compositor: string | null
 }
+
+const ROUNDS_PER_GAME = 15
 
 type GameMode = 'mas-menos' | 'genero' | 'decada' | 'director'
 type Screen = 'start' | 'playing' | 'gameover'
@@ -91,7 +94,7 @@ async function fetchMovies(): Promise<BlitzMovie[]> {
     const { data, error } = await supabase
       .from('peliculas')
       .select(`
-        id, titulo, anio, nota_imdb, poster_path, backdrop_path,
+        id, titulo, anio, nota_imdb, poster_path, backdrop_path, logo_path,
         enriquecimiento (generos, director, actores, compositor)
       `)
       .gte('nota_imdb', 7)
@@ -112,6 +115,7 @@ async function fetchMovies(): Promise<BlitzMovie[]> {
           nota_imdb: p.nota_imdb,
           poster_path: p.poster_path!,
           backdrop_path: p.backdrop_path!,
+          logo_path: (p as any).logo_path ?? null,
           generos: enr.generos ?? [],
           director: enr.director ?? null,
           actores: enr.actores ?? null,
@@ -424,7 +428,8 @@ export default function CineBlitzPage() {
       setSwipeDir(null)
 
       const nextIndex = currentIndex + 1
-      if (nextIndex >= movies.length) {
+      // End after ROUNDS_PER_GAME questions (or if we run out of movies)
+      if (nextIndex >= ROUNDS_PER_GAME || nextIndex >= movies.length) {
         endGame()
         return
       }
@@ -667,13 +672,18 @@ export default function CineBlitzPage() {
       onTouchEnd={handleTouchEnd}
     >
       {isMasMenos ? (
-        /* ─── MAS/MENOS: Split view ─── */
+        /* ─── MAS/MENOS: Split view — tap top or bottom to answer directly ─── */
         <div className={`absolute inset-0 flex flex-col md:flex-row transition-transform duration-500 ease-out ${
           swipeDir === 'left' ? '-translate-x-full -rotate-12' :
           swipeDir === 'right' ? 'translate-x-full rotate-12' : ''
         }`}>
-          {/* Left / Top: Previous movie */}
-          <div className="relative flex-1 overflow-hidden">
+          {/* Top half: Previous movie. Tap = "current is LOWER" (previous wins) */}
+          <button
+            type="button"
+            onClick={() => !answered && handleAnswer('left')}
+            disabled={answered}
+            className="relative flex-1 overflow-hidden text-left cursor-pointer disabled:cursor-default group"
+          >
             <Image
               src={`https://image.tmdb.org/t/p/w1280${previousMovie.backdrop_path}`}
               alt={previousMovie.titulo}
@@ -682,24 +692,39 @@ export default function CineBlitzPage() {
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-            <div className="absolute bottom-3 left-0 right-0 text-center px-4">
-              <h3 className="text-white text-xl md:text-2xl font-black drop-shadow-lg leading-tight">{previousMovie.titulo}</h3>
-              <p className="text-yellow-400 text-lg font-bold drop-shadow-lg mt-1 tabular-nums">
-                {previousMovie.nota_imdb} <span className="text-zinc-400 text-sm">IMDb</span>
+            {/* Logo or title */}
+            <div className="absolute bottom-4 left-0 right-0 text-center px-4 flex flex-col items-center">
+              {previousMovie.logo_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${previousMovie.logo_path}`}
+                  alt={previousMovie.titulo}
+                  className="max-h-16 sm:max-h-20 max-w-[70%] object-contain drop-shadow-2xl"
+                />
+              ) : (
+                <h3 className="text-white text-2xl md:text-3xl font-black drop-shadow-lg leading-tight">{previousMovie.titulo}</h3>
+              )}
+              <p className="text-yellow-400 text-2xl font-black drop-shadow-lg mt-2 tabular-nums">
+                {previousMovie.nota_imdb}
+                <span className="text-zinc-300 text-xs ml-1.5 font-bold">IMDb</span>
               </p>
             </div>
-          </div>
+          </button>
 
           {/* Divider */}
-          <div className="relative z-10 flex items-center justify-center md:flex-col">
-            <div className="absolute bg-yellow-400 rounded-full w-9 h-9 flex items-center justify-center shadow-lg">
+          <div className="relative z-10 flex items-center justify-center md:flex-col pointer-events-none">
+            <div className="absolute bg-yellow-400 rounded-full w-10 h-10 flex items-center justify-center shadow-lg">
               <span className="text-zinc-950 font-black text-xs tracking-wider">VS</span>
             </div>
             <div className="w-full h-px md:w-px md:h-full bg-yellow-400/40" />
           </div>
 
-          {/* Right / Bottom: Current movie */}
-          <div className="relative flex-1 overflow-hidden">
+          {/* Bottom half: Current movie. Tap = "current is HIGHER" */}
+          <button
+            type="button"
+            onClick={() => !answered && handleAnswer('right')}
+            disabled={answered}
+            className="relative flex-1 overflow-hidden text-left cursor-pointer disabled:cursor-default group"
+          >
             <Image
               src={backdropUrl}
               alt={currentMovie.titulo}
@@ -708,13 +733,22 @@ export default function CineBlitzPage() {
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-            <div className="absolute bottom-3 left-0 right-0 text-center px-4">
-              <h3 className="text-white text-xl md:text-2xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h3>
-              <p className="text-zinc-400 text-lg font-bold drop-shadow-lg mt-1">
-                ? <span className="text-zinc-500 text-sm">IMDb</span>
+            <div className="absolute bottom-4 left-0 right-0 text-center px-4 flex flex-col items-center">
+              {currentMovie.logo_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${currentMovie.logo_path}`}
+                  alt={currentMovie.titulo}
+                  className="max-h-16 sm:max-h-20 max-w-[70%] object-contain drop-shadow-2xl"
+                />
+              ) : (
+                <h3 className="text-white text-2xl md:text-3xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h3>
+              )}
+              <p className="text-zinc-300 text-2xl font-black drop-shadow-lg mt-2">
+                ?
+                <span className="text-zinc-400 text-xs ml-1.5 font-bold">IMDb</span>
               </p>
             </div>
-          </div>
+          </button>
         </div>
       ) : (
         /* ─── Other modes: Single backdrop ─── */
@@ -806,10 +840,16 @@ export default function CineBlitzPage() {
 
         <IconButton
           icon={<Icon.Close className="w-5 h-5" />}
-          label="Salir del juego"
+          label="Volver al menú"
           variant="secondary"
           size="md"
-          onClick={() => endGame()}
+          onClick={() => {
+            // Stop timer, abandon round, return to mode select
+            setTimerActive(false)
+            if (timerRef.current) clearTimeout(timerRef.current)
+            setScreen('start')
+            setMode(null)
+          }}
           className="backdrop-blur-md bg-zinc-950/60 border-yellow-400/30 text-white"
         />
       </div>
@@ -817,40 +857,61 @@ export default function CineBlitzPage() {
       {/* Timer ring */}
       <TimerRing active={timerActive} startTime={timerStart} duration={TIMER_DURATION} />
 
-      {/* Question text */}
-      <div className="absolute top-[calc(max(env(safe-area-inset-top),12px)+112px)] left-0 right-0 z-20 text-center px-6">
-        <p className="text-white text-sm font-medium drop-shadow-lg backdrop-blur-md bg-zinc-950/50 inline-block px-3.5 py-1.5 rounded-full border border-white/10">{questionText}</p>
+      {/* Round counter */}
+      <div className="absolute top-[calc(max(env(safe-area-inset-top),12px)+72px)] left-1/2 -translate-x-1/2 z-20">
+        <div className="backdrop-blur-md bg-zinc-950/60 rounded-full px-3 py-1 border border-yellow-400/30">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 tabular-nums">
+            <span className="text-yellow-400">{currentIndex + 1}</span> / {ROUNDS_PER_GAME}
+          </p>
+        </div>
       </div>
 
-      {/* Movie title (hidden for mas-menos since titles are in split view) */}
+      {/* Question text — only for non-mas-menos modes (mas-menos uses tap-to-answer) */}
       {!isMasMenos && (
-        <div className="absolute bottom-44 left-0 right-0 z-20 text-center px-6">
-          <h2 className="text-white text-3xl sm:text-4xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h2>
+        <div className="absolute top-[calc(max(env(safe-area-inset-top),12px)+112px)] left-0 right-0 z-20 text-center px-6">
+          <p className="text-white text-sm font-medium drop-shadow-lg backdrop-blur-md bg-zinc-950/50 inline-block px-3.5 py-1.5 rounded-full border border-white/10">{questionText}</p>
+        </div>
+      )}
+
+      {/* Movie title / logo overlay (hidden for mas-menos since titles are in split view) */}
+      {!isMasMenos && (
+        <div className="absolute bottom-44 left-0 right-0 z-20 text-center px-6 flex flex-col items-center">
+          {currentMovie.logo_path ? (
+            <img
+              src={`https://image.tmdb.org/t/p/w500${currentMovie.logo_path}`}
+              alt={currentMovie.titulo}
+              className="max-h-20 sm:max-h-28 max-w-[70%] object-contain drop-shadow-2xl"
+            />
+          ) : (
+            <h2 className="text-white text-3xl sm:text-4xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h2>
+          )}
           {currentMovie.anio && (
-            <p className="text-zinc-300 text-base mt-1 drop-shadow-lg tabular-nums">{currentMovie.anio}</p>
+            <p className="text-zinc-300 text-base mt-2 drop-shadow-lg tabular-nums">{currentMovie.anio}</p>
           )}
         </div>
       )}
 
-      {/* Answer options */}
-      <div className="absolute bottom-10 left-0 right-0 z-20 flex justify-between px-4 gap-3 pb-[max(env(safe-area-inset-bottom),8px)]">
-        <button
-          type="button"
-          onClick={() => !answered && handleAnswer('left')}
-          disabled={answered}
-          className="flex-1 min-h-[64px] bg-zinc-950/60 hover:bg-zinc-900/70 active:scale-95 backdrop-blur-md border border-yellow-400/30 hover:border-yellow-400/60 rounded-2xl py-5 px-4 transition-all"
-        >
-          <p className="text-white text-base sm:text-lg font-bold drop-shadow-lg text-center leading-tight">{roundOptions.left}</p>
-        </button>
-        <button
-          type="button"
-          onClick={() => !answered && handleAnswer('right')}
-          disabled={answered}
-          className="flex-1 min-h-[64px] bg-zinc-950/60 hover:bg-zinc-900/70 active:scale-95 backdrop-blur-md border border-yellow-400/30 hover:border-yellow-400/60 rounded-2xl py-5 px-4 transition-all"
-        >
-          <p className="text-white text-base sm:text-lg font-bold drop-shadow-lg text-center leading-tight">{roundOptions.right}</p>
-        </button>
-      </div>
+      {/* Answer options — only for non-mas-menos modes */}
+      {!isMasMenos && (
+        <div className="absolute bottom-10 left-0 right-0 z-20 flex justify-between px-4 gap-3 pb-[max(env(safe-area-inset-bottom),8px)]">
+          <button
+            type="button"
+            onClick={() => !answered && handleAnswer('left')}
+            disabled={answered}
+            className="flex-1 min-h-[64px] bg-zinc-950/60 hover:bg-zinc-900/70 active:scale-95 backdrop-blur-md border border-yellow-400/30 hover:border-yellow-400/60 rounded-2xl py-5 px-4 transition-all"
+          >
+            <p className="text-white text-base sm:text-lg font-bold drop-shadow-lg text-center leading-tight">{roundOptions.left}</p>
+          </button>
+          <button
+            type="button"
+            onClick={() => !answered && handleAnswer('right')}
+            disabled={answered}
+            className="flex-1 min-h-[64px] bg-zinc-950/60 hover:bg-zinc-900/70 active:scale-95 backdrop-blur-md border border-yellow-400/30 hover:border-yellow-400/60 rounded-2xl py-5 px-4 transition-all"
+          >
+            <p className="text-white text-base sm:text-lg font-bold drop-shadow-lg text-center leading-tight">{roundOptions.right}</p>
+          </button>
+        </div>
+      )}
 
       {/* Round counter */}
       <div className="absolute bottom-2 left-0 right-0 z-20 text-center pb-[max(env(safe-area-inset-bottom),2px)]">

@@ -253,27 +253,16 @@ export default function ConexionPage() {
   /* Tap a connected movie ---------------------------------------- */
   function selectMovie(id: string) {
     if (won || surrendered) return
-    if (path.includes(id)) return // already in path
+    // Cannot go directly back to the immediately previous movie. The user
+    // CAN revisit the same movie later (after going through others) so
+    // path.includes() is intentionally NOT a block.
+    const previousId = path.length >= 2 ? path[path.length - 2] : null
+    if (previousId && id === previousId) return
     // Save current distance as previous before updating path
     if (currentDistToTarget !== null) setPrevDist(currentDistToTarget)
     const newPath = [...path, id]
     setPath(newPath)
     if (id === endNode?.id) setWon(true)
-  }
-
-  /* Undo --------------------------------------------------------- */
-  function undo() {
-    if (path.length <= 1 || won || surrendered) return
-    const newPath = path.slice(0, -1)
-    setPath(newPath)
-    // Recalculate prevDist for the step before the new current
-    if (newPath.length >= 2 && endNode) {
-      const prevId = newPath[newPath.length - 2]
-      const prevBfs = bfs(adj, prevId, endNode.id)
-      setPrevDist(prevBfs ? prevBfs.length - 1 : null)
-    } else {
-      setPrevDist(optimalLen > 0 ? optimalLen - 1 : null)
-    }
   }
 
   /* Share --------------------------------------------------------- */
@@ -560,6 +549,42 @@ export default function ConexionPage() {
           <p className="text-zinc-400 text-sm mb-5">
             Camino óptimo: {optimalLen - 1} pasos
           </p>
+
+          {/* Ideal path reveal */}
+          {optimalPath.length > 0 && (
+            <div className="mb-5">
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-3">
+                Camino óptimo
+              </p>
+              <div className="flex items-center justify-center gap-1 flex-wrap">
+                {optimalPath.map((id, i) => {
+                  const n = nodeMap.get(id)
+                  if (!n) return null
+                  return (
+                    <div key={`win-opt-${id}-${i}`} className="flex items-center shrink-0">
+                      {i > 0 && <Icon.ChevronRight className="w-3 h-3 text-zinc-600 mx-0.5" />}
+                      <div className="flex flex-col items-center w-16">
+                        <div className="relative w-14 h-[84px] rounded-lg overflow-hidden ring-1 ring-yellow-400/50">
+                          <Image
+                            src={`${TMDB_IMG}${n.poster}`}
+                            alt={n.titleEs || n.title}
+                            fill
+                            className="object-cover"
+                            sizes="56px"
+                            unoptimized
+                          />
+                        </div>
+                        <span className="text-[9px] text-center mt-1 text-zinc-400 leading-tight line-clamp-2">
+                          {n.titleEs || n.title}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           <div className="flex justify-center gap-3 flex-wrap">
             <Button onClick={share} iconLeft={<Icon.Share className="w-4 h-4" />}>
               Compartir
@@ -672,16 +697,19 @@ export default function ConexionPage() {
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-[42vh] overflow-y-auto pr-1">
             {connectedNodes.map((n) => {
               const isTarget = n.id === endNode.id
-              const alreadyVisited = path.includes(n.id)
+              // The user can revisit movies, but not the IMMEDIATELY previous one.
+              const previousId = path.length >= 2 ? path[path.length - 2] : null
+              const isImmediatelyPrevious = previousId === n.id
               return (
                 <button
                   key={n.id}
                   onClick={() => selectMovie(n.id)}
-                  disabled={alreadyVisited}
+                  disabled={isImmediatelyPrevious}
                   className={`flex flex-col items-center rounded-xl p-2 transition min-h-[44px]
                     ${isTarget ? 'bg-yellow-400/10 ring-2 ring-yellow-400' : 'bg-zinc-900/40'}
-                    ${alreadyVisited ? 'opacity-30 cursor-not-allowed' : 'hover:bg-zinc-800 active:scale-95 cursor-pointer'}
+                    ${isImmediatelyPrevious ? 'opacity-30 cursor-not-allowed' : 'hover:bg-zinc-800 active:scale-95 cursor-pointer'}
                   `}
+                  title={isImmediatelyPrevious ? 'No puedes volver inmediatamente atrás' : undefined}
                 >
                   <div className="relative w-full aspect-[2/3] rounded-lg overflow-hidden ring-1 ring-zinc-800/60">
                     <Image
@@ -709,20 +737,6 @@ export default function ConexionPage() {
 
       {/* Path strip at bottom ------------------------------------- */}
       <div className="fixed bottom-0 inset-x-0 bg-zinc-900/95 backdrop-blur border-t border-zinc-800 z-40">
-        {/* Undo button */}
-        {!won && !surrendered && path.length > 1 && (
-          <div className="flex justify-end px-4 pt-2">
-            <button
-              type="button"
-              onClick={undo}
-              className="inline-flex items-center gap-1 text-xs text-yellow-400 hover:text-yellow-300 transition font-medium min-h-[44px] px-2 cursor-pointer"
-            >
-              <Icon.ArrowLeft className="w-4 h-4" />
-              Deshacer
-            </button>
-          </div>
-        )}
-
         {/* Horizontal path */}
         <div ref={pathRef} className="flex items-center gap-1 px-4 py-3 overflow-x-auto scrollbar-hide">
           {path.map((id, i) => {

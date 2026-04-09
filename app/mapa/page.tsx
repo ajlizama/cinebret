@@ -458,6 +458,11 @@ export default function MapaPage() {
     const hasPath = pathNodes.length > 0
     const dimmed = hasPath ? !isOnPath : (selectedNode && !isSelected && !isConnectedToSelected)
 
+    // Guard: node positions may be undefined during force-graph warmup
+    if (node.x == null || node.y == null || !isFinite(node.x) || !isFinite(node.y)) {
+      return
+    }
+
     ctx.save()
     ctx.globalAlpha = dimmed ? 0.15 : 1
 
@@ -569,6 +574,9 @@ export default function MapaPage() {
     const sy = link.source.y
     const tx = link.target.x
     const ty = link.target.y
+
+    // Guard: positions may be undefined during warmup
+    if (!isFinite(sx) || !isFinite(sy) || !isFinite(tx) || !isFinite(ty)) return
 
     // Curved bezier — control point offset perpendicular to the line
     const dx = tx - sx

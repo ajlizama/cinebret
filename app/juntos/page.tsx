@@ -3,8 +3,19 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
-import Loading from '@/components/Loading'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  Card,
+  Button,
+  IconButton,
+  Pill,
+  Modal,
+  LoadingState,
+  EmptyState,
+  Icon,
+} from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 
 // ── Types ──
@@ -209,7 +220,7 @@ export default function JuntosNuevoPage() {
   const handleJoin = async () => {
     const code = joinInput.toUpperCase().trim()
     if (code.length !== 6) {
-      setError('El codigo debe tener 6 caracteres')
+      setError('El código debe tener 6 caracteres')
       return
     }
     setLoading(true)
@@ -388,7 +399,7 @@ export default function JuntosNuevoPage() {
   const handleShare = async () => {
     if (!results.length) return
     const top = results[0]
-    const text = `Usamos Ver Juntos en CineBret y nuestra pelicula perfecta es: ${top.titulo_ingles || top.titulo} (${top.anio ?? ''}) - Match ${top.match_score}%`
+    const text = `Usamos Ver Juntos en CineBret y nuestra película perfecta es: ${top.titulo_ingles || top.titulo} (${top.anio ?? ''}) - Match ${top.match_score}%`
     if (navigator.share) {
       try {
         await navigator.share({ title: 'Ver Juntos - CineBret', text })
@@ -416,666 +427,679 @@ export default function JuntosNuevoPage() {
   const currentMovie = pool[swipeIndex] ?? null
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav active="inicio" />
+    <PageShell maxWidth="lg">
 
-      <div className="max-w-lg mx-auto px-4 py-6 pb-24">
+      {/* ════════ START SCREEN ════════ */}
+      {phase === 'start' && (
+        <div className="flex flex-col items-center pt-12">
+          <Icon.Users className="w-14 h-14 text-yellow-400 mb-4" />
+          <PageHeader
+            title="Ver Juntos"
+            subtitle="¿Qué vemos esta noche? Encuentren la película perfecta para los dos, desde sus celulares."
+            className="text-center mb-10 [&_header]:justify-center [&_h1]:text-center [&_p]:mx-auto"
+          />
 
-        {/* ════════ START SCREEN ════════ */}
-        {phase === 'start' && (
-          <div className="flex flex-col items-center pt-12">
-            <div className="text-6xl mb-4">🎬</div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white text-center mb-2">
-              Ver Juntos
-            </h1>
-            <p className="text-zinc-400 text-center text-sm mb-10 max-w-xs">
-              ¿Que vemos esta noche? Encuentren la pelicula perfecta para los dos, desde sus celulares.
-            </p>
-
-            <div className="w-full space-y-4">
-              <button
-                onClick={handleCreate}
-                disabled={loading}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 disabled:opacity-50 text-zinc-950 font-bold rounded-2xl py-4 text-lg transition-colors"
-              >
-                {loading ? 'Creando...' : 'Crear sala'}
-              </button>
-
-              <div className="flex items-center gap-3">
-                <div className="h-px flex-1 bg-zinc-800" />
-                <span className="text-zinc-600 text-xs uppercase tracking-wider">o</span>
-                <div className="h-px flex-1 bg-zinc-800" />
-              </div>
-
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  value={joinInput}
-                  onChange={e => setJoinInput(e.target.value.toUpperCase().slice(0, 6))}
-                  placeholder="Codigo de sala (6 letras)"
-                  maxLength={6}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 text-center text-white text-xl font-mono tracking-[0.3em] placeholder:text-zinc-600 placeholder:text-sm placeholder:tracking-normal placeholder:font-sans focus:outline-none focus:border-yellow-400/50 transition-colors"
-                />
-                <button
-                  onClick={handleJoin}
-                  disabled={loading || joinInput.length !== 6}
-                  className="w-full border-2 border-yellow-400/50 hover:border-yellow-400 disabled:border-zinc-800 disabled:text-zinc-600 text-yellow-400 font-bold rounded-2xl py-3.5 text-base transition-colors"
-                >
-                  Unirse a sala
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
-            )}
-          </div>
-        )}
-
-        {/* ════════ PLATFORM SELECTION (room creation) ════════ */}
-        {phase === 'platforms' && (
-          <div className="pt-6">
-            <div className="text-center mb-6">
-              <div className="text-5xl mb-3">📺</div>
-              <h2 className="text-2xl font-bold text-white mb-1">¿Que plataformas tienen?</h2>
-              <p className="text-zinc-400 text-sm">Elige las plataformas que comparten. Aplican para ambos.</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              {PLATFORMS.map(p => (
-                <button
-                  key={p.key}
-                  onClick={() => togglePlatform(p.key)}
-                  className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3.5 transition-all ${
-                    selectedPlatforms.includes(p.key)
-                      ? 'border-yellow-400 bg-yellow-400/10'
-                      : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
-                  }`}
-                >
-                  <Image
-                    src={p.icon}
-                    alt={p.name}
-                    width={28}
-                    height={28}
-                    className="rounded-md shrink-0"
-                  />
-                  <span className={`text-sm font-medium ${selectedPlatforms.includes(p.key) ? 'text-white' : 'text-zinc-400'}`}>
-                    {p.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => { setPhase('start'); setSelectedPlatforms([]); setError('') }}
-                className="flex-1 border border-zinc-700 text-zinc-400 font-medium rounded-2xl py-3.5 transition-colors hover:border-zinc-500"
-              >
-                Atras
-              </button>
-              <button
-                onClick={handleCreateWithPlatforms}
-                disabled={selectedPlatforms.length === 0 || loading}
-                className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold rounded-2xl py-3.5 transition-colors"
-              >
-                {loading ? 'Creando...' : 'Crear sala'}
-              </button>
-            </div>
-
-            {error && (
-              <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
-            )}
-          </div>
-        )}
-
-        {/* ════════ WAITING ROOM ════════ */}
-        {phase === 'waiting' && (
-          <div className="flex flex-col items-center pt-16">
-            <div className="text-5xl mb-6">👀</div>
-            <h2 className="text-2xl font-bold text-white mb-3">Tu sala esta lista</h2>
-            <p className="text-zinc-400 text-sm mb-8 text-center">
-              Comparte este codigo con tu cómplice
-            </p>
-
-            <div className="bg-zinc-900 border-2 border-yellow-400/30 rounded-2xl px-8 py-6 mb-6">
-              <p className="text-yellow-400 text-5xl font-mono font-black tracking-[0.4em] text-center select-all">
-                {roomCode}
-              </p>
-            </div>
-
-            <button
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({ title: 'Ver Juntos', text: `Unite a mi sala en CineBret: ${roomCode}` })
-                } else {
-                  navigator.clipboard.writeText(roomCode)
-                  alert('Codigo copiado')
-                }
-              }}
-              className="text-yellow-400 text-sm font-medium mb-10 hover:text-yellow-300 transition-colors"
+          <div className="w-full space-y-4">
+            <Button
+              onClick={handleCreate}
+              disabled={loading}
+              loading={loading}
+              size="lg"
+              fullWidth
+              className="rounded-2xl py-4 text-lg"
             >
-              Copiar / Compartir codigo
-            </button>
+              Crear sala
+            </Button>
 
-            <Loading text="Esperando a tu cómplice..." />
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-zinc-800" />
+              <span className="text-zinc-600 text-xs uppercase tracking-wider">o</span>
+              <div className="h-px flex-1 bg-zinc-800" />
+            </div>
 
-            <button
-              onClick={handleReset}
-              className="mt-8 text-zinc-600 text-xs hover:text-zinc-400 transition-colors"
-            >
-              Cancelar
-            </button>
+            <div className="space-y-3">
+              <input
+                type="text"
+                value={joinInput}
+                onChange={e => setJoinInput(e.target.value.toUpperCase().slice(0, 6))}
+                placeholder="Código de sala (6 letras)"
+                maxLength={6}
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 text-center text-white text-xl font-mono tracking-[0.3em] placeholder:text-zinc-600 placeholder:text-sm placeholder:tracking-normal placeholder:font-sans focus:outline-none focus:border-yellow-400/50 transition-colors min-h-[44px]"
+              />
+              <Button
+                onClick={handleJoin}
+                disabled={loading || joinInput.length !== 6}
+                variant="secondary"
+                size="lg"
+                fullWidth
+                className="rounded-2xl"
+              >
+                Unirse a sala
+              </Button>
+            </div>
           </div>
-        )}
 
-        {/* ════════ PREFERENCES ════════ */}
-        {phase === 'prefs' && (
-          <div className="pt-6">
-            <div className="text-center mb-6">
-              <p className="text-zinc-500 text-xs font-mono mb-1">Sala {roomCode}</p>
-              <h2 className="text-2xl font-bold text-white mb-1">Tus preferencias</h2>
-              <p className="text-zinc-400 text-sm">
-                {slot === 'user1' ? 'Persona 1' : 'Persona 2'} — Paso {prefsStep} de 3
-              </p>
-            </div>
+          {error && (
+            <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
+          )}
+        </div>
+      )}
 
-            {/* Progress dots */}
-            <div className="flex justify-center gap-2 mb-8">
-              {[1, 2, 3].map(s => (
-                <div
-                  key={s}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                    s === prefsStep ? 'bg-yellow-400' : s < prefsStep ? 'bg-yellow-400/40' : 'bg-zinc-800'
-                  }`}
+      {/* ════════ PLATFORM SELECTION (room creation) ════════ */}
+      {phase === 'platforms' && (
+        <div className="pt-6">
+          <div className="text-center mb-6">
+            <Icon.Tv className="w-12 h-12 text-yellow-400 mx-auto mb-3" />
+            <h2 className="text-2xl font-bold text-white mb-1">¿Qué plataformas tienen?</h2>
+            <p className="text-zinc-400 text-sm">Elige las plataformas que comparten. Aplican para ambos.</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {PLATFORMS.map(p => (
+              <button
+                key={p.key}
+                onClick={() => togglePlatform(p.key)}
+                className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3.5 transition-all min-h-[44px] ${
+                  selectedPlatforms.includes(p.key)
+                    ? 'border-yellow-400 bg-yellow-400/10'
+                    : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+                }`}
+              >
+                <Image
+                  src={p.icon}
+                  alt={p.name}
+                  width={28}
+                  height={28}
+                  className="rounded-md shrink-0"
                 />
-              ))}
-            </div>
+                <span className={`text-sm font-medium ${selectedPlatforms.includes(p.key) ? 'text-white' : 'text-zinc-400'}`}>
+                  {p.name}
+                </span>
+              </button>
+            ))}
+          </div>
 
-            {/* Q1: Mood */}
-            {prefsStep === 1 && (
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold text-lg text-center mb-2">¿Que mood tienes?</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {MOODS.map(m => (
-                    <button
-                      key={m.key}
-                      onClick={() => setSelectedMood(m.key)}
-                      className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-5 transition-all ${
-                        selectedMood === m.key
-                          ? 'border-yellow-400 bg-yellow-400/10'
-                          : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
-                      }`}
-                    >
-                      <span className="text-3xl">{m.emoji}</span>
-                      <span className="text-white font-bold text-sm">{m.label}</span>
-                      <span className="text-zinc-500 text-xs">{m.desc}</span>
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={() => selectedMood && setPrefsStep(2)}
-                  disabled={!selectedMood}
-                  className="w-full bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold rounded-2xl py-3.5 mt-4 transition-colors"
+          <div className="flex gap-3">
+            <Button
+              onClick={() => { setPhase('start'); setSelectedPlatforms([]); setError('') }}
+              variant="ghost"
+              size="lg"
+              className="flex-1 border border-zinc-700 rounded-2xl"
+            >
+              Atrás
+            </Button>
+            <Button
+              onClick={handleCreateWithPlatforms}
+              disabled={selectedPlatforms.length === 0 || loading}
+              loading={loading}
+              size="lg"
+              className="flex-1 rounded-2xl"
+            >
+              Crear sala
+            </Button>
+          </div>
+
+          {error && (
+            <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
+          )}
+        </div>
+      )}
+
+      {/* ════════ WAITING ROOM ════════ */}
+      {phase === 'waiting' && (
+        <div className="flex flex-col items-center pt-16">
+          <Icon.Eye className="w-12 h-12 text-yellow-400 mb-6" />
+          <h2 className="text-2xl font-bold text-white mb-3">Tu sala está lista</h2>
+          <p className="text-zinc-400 text-sm mb-8 text-center">
+            Comparte este código con tu compañero/a
+          </p>
+
+          <Card padding="lg" className="border-2 border-yellow-400/30 mb-6">
+            <p className="text-yellow-400 text-5xl font-mono font-black tracking-[0.4em] text-center select-all">
+              {roomCode}
+            </p>
+          </Card>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: 'Ver Juntos', text: `Únete a mi sala en CineBret: ${roomCode}` })
+              } else {
+                navigator.clipboard.writeText(roomCode)
+                alert('Código copiado')
+              }
+            }}
+            iconLeft={<Icon.Share className="w-4 h-4" />}
+            className="text-yellow-400 mb-10"
+          >
+            Copiar / Compartir código
+          </Button>
+
+          <LoadingState text="Esperando a tu compañero/a..." />
+
+          <Button
+            onClick={handleReset}
+            variant="ghost"
+            size="sm"
+            className="mt-8 text-zinc-600"
+          >
+            Cancelar
+          </Button>
+        </div>
+      )}
+
+      {/* ════════ PREFERENCES ════════ */}
+      {phase === 'prefs' && (
+        <div className="pt-6">
+          <div className="text-center mb-6">
+            <p className="text-zinc-500 text-xs font-mono mb-1">Sala {roomCode}</p>
+            <h2 className="text-2xl font-bold text-white mb-1">Tus preferencias</h2>
+            <p className="text-zinc-400 text-sm">
+              {slot === 'user1' ? 'Persona 1' : 'Persona 2'} — Paso {prefsStep} de 3
+            </p>
+          </div>
+
+          {/* Progress dots */}
+          <div className="flex justify-center gap-2 mb-8">
+            {[1, 2, 3].map(s => (
+              <div
+                key={s}
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  s === prefsStep ? 'bg-yellow-400' : s < prefsStep ? 'bg-yellow-400/40' : 'bg-zinc-800'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Q1: Mood */}
+          {prefsStep === 1 && (
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold text-lg text-center mb-2">¿Qué ánimo tienes?</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {MOODS.map(m => (
+                  <button
+                    key={m.key}
+                    onClick={() => setSelectedMood(m.key)}
+                    className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-5 transition-all min-h-[44px] ${
+                      selectedMood === m.key
+                        ? 'border-yellow-400 bg-yellow-400/10'
+                        : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span className="text-3xl">{m.emoji}</span>
+                    <span className="text-white font-bold text-sm">{m.label}</span>
+                    <span className="text-zinc-500 text-xs">{m.desc}</span>
+                  </button>
+                ))}
+              </div>
+              <Button
+                onClick={() => selectedMood && setPrefsStep(2)}
+                disabled={!selectedMood}
+                size="lg"
+                fullWidth
+                className="rounded-2xl mt-4"
+              >
+                Siguiente
+              </Button>
+            </div>
+          )}
+
+          {/* Q2: Genres */}
+          {prefsStep === 2 && (
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold text-lg text-center mb-2">¿Qué géneros quieres?</h3>
+              <p className="text-zinc-500 text-xs text-center">Elige al menos 1</p>
+              <div className="flex flex-wrap justify-center gap-2.5">
+                {GENRES.map(g => (
+                  <Pill
+                    key={g}
+                    variant="filter"
+                    size="md"
+                    active={selectedGenres.includes(g)}
+                    onClick={() => toggleGenre(g)}
+                    className="border-2"
+                  >
+                    {g}
+                  </Pill>
+                ))}
+              </div>
+              <div className="flex gap-3 mt-4">
+                <Button
+                  onClick={() => setPrefsStep(1)}
+                  variant="ghost"
+                  size="lg"
+                  className="flex-1 border border-zinc-700 rounded-2xl"
+                >
+                  Atrás
+                </Button>
+                <Button
+                  onClick={() => selectedGenres.length > 0 && setPrefsStep(3)}
+                  disabled={selectedGenres.length === 0}
+                  size="lg"
+                  className="flex-1 rounded-2xl"
                 >
                   Siguiente
-                </button>
+                </Button>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Q2: Genres */}
-            {prefsStep === 2 && (
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold text-lg text-center mb-2">¿Que generos quieres?</h3>
-                <p className="text-zinc-500 text-xs text-center">Elige al menos 1</p>
-                <div className="flex flex-wrap justify-center gap-2.5">
-                  {GENRES.map(g => (
-                    <button
-                      key={g}
-                      onClick={() => toggleGenre(g)}
-                      className={`px-4 py-2.5 rounded-full border-2 text-sm font-medium transition-all ${
-                        selectedGenres.includes(g)
-                          ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
-                          : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                    >
-                      {g}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex gap-3 mt-4">
-                  <button
-                    onClick={() => setPrefsStep(1)}
-                    className="flex-1 border border-zinc-700 text-zinc-400 font-medium rounded-2xl py-3 transition-colors hover:border-zinc-500"
-                  >
-                    Atras
-                  </button>
-                  <button
-                    onClick={() => selectedGenres.length > 0 && setPrefsStep(3)}
-                    disabled={selectedGenres.length === 0}
-                    className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold rounded-2xl py-3 transition-colors"
-                  >
-                    Siguiente
-                  </button>
-                </div>
-              </div>
-            )}
+          {/* Q3: Reference Movie */}
+          {prefsStep === 3 && (
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold text-lg text-center mb-2">Elige una película de referencia</h3>
+              <p className="text-zinc-500 text-xs text-center">Busca una película que te guste para afinar las recomendaciones</p>
 
-            {/* Q3: Reference Movie */}
-            {prefsStep === 3 && (
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold text-lg text-center mb-2">Elige una pelicula de referencia</h3>
-                <p className="text-zinc-500 text-xs text-center">Busca una pelicula que te guste para afinar las recomendaciones</p>
-
-                {/* Selected movie display */}
-                {selectedReference ? (
-                  <div className="flex items-center gap-3 bg-zinc-900 border-2 border-yellow-400 rounded-xl p-3">
-                    <div className="w-10 h-14 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
-                      {selectedReference.poster_path && (
-                        <img
-                          src={`https://image.tmdb.org/t/p/w92${selectedReference.poster_path}`}
-                          alt=""
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-semibold truncate">
-                        {selectedReference.titulo_ingles || selectedReference.titulo}
-                      </p>
-                      {selectedReference.titulo_ingles && selectedReference.titulo !== selectedReference.titulo_ingles && (
-                        <p className="text-zinc-500 text-xs truncate">{selectedReference.titulo}</p>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => { setSelectedReference(null); setMovieSearch('') }}
-                      className="text-zinc-500 hover:text-zinc-300 p-1 transition-colors"
-                    >
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                      </svg>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={movieSearch}
-                      onChange={e => setMovieSearch(e.target.value)}
-                      placeholder="Buscar pelicula..."
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-yellow-400/50 transition-colors"
-                    />
-                    {/* Dropdown results */}
-                    {movieSearchResults.length > 0 && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden z-20 shadow-xl">
-                        {movieSearchResults.map(m => (
-                          <button
-                            key={m.id}
-                            onClick={() => {
-                              setSelectedReference(m)
-                              setMovieSearch('')
-                            }}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-800 transition-colors text-left"
-                          >
-                            <div className="w-8 h-11 rounded-md overflow-hidden bg-zinc-800 shrink-0">
-                              {m.poster_path && (
-                                <img
-                                  src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
-                                  alt=""
-                                  className="w-full h-full object-cover"
-                                />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-white text-sm font-medium truncate">
-                                {m.titulo_ingles || m.titulo}
-                              </p>
-                              {m.titulo_ingles && m.titulo !== m.titulo_ingles && (
-                                <p className="text-zinc-500 text-xs truncate">{m.titulo}</p>
-                              )}
-                            </div>
-                          </button>
-                        ))}
-                      </div>
+              {/* Selected movie display */}
+              {selectedReference ? (
+                <div className="flex items-center gap-3 bg-zinc-900 border-2 border-yellow-400 rounded-xl p-3">
+                  <div className="w-10 h-14 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
+                    {selectedReference.poster_path && (
+                      <img
+                        src={`https://image.tmdb.org/t/p/w92${selectedReference.poster_path}`}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
                     )}
                   </div>
-                )}
-
-                <div className="flex gap-3 mt-4">
-                  <button
-                    onClick={() => setPrefsStep(2)}
-                    className="flex-1 border border-zinc-700 text-zinc-400 font-medium rounded-2xl py-3 transition-colors hover:border-zinc-500"
-                  >
-                    Atras
-                  </button>
-                  <button
-                    onClick={handleSubmitPrefs}
-                    disabled={!selectedReference || loading}
-                    className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-800 disabled:text-zinc-600 text-zinc-950 font-bold rounded-2xl py-3 transition-colors"
-                  >
-                    {loading ? 'Enviando...' : 'Listo'}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {error && (
-              <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
-            )}
-          </div>
-        )}
-
-        {/* ════════ WAITING FOR OTHER PERSON'S PREFS ════════ */}
-        {phase === 'waiting_prefs' && (
-          <div className="flex flex-col items-center pt-20">
-            <Loading text="Esperando las preferencias de tu cómplice..." />
-            <p className="text-zinc-600 text-xs mt-6">Cuando ambos terminen, generaremos las peliculas</p>
-          </div>
-        )}
-
-        {/* ════════ SWIPE PHASE ════════ */}
-        {phase === 'swipe' && currentMovie && (
-          <div className="pt-4">
-            <div className="text-center mb-4">
-              <p className="text-zinc-500 text-xs font-mono mb-1">Sala {roomCode}</p>
-              <h2 className="text-xl font-bold text-white">¿Te interesa?</h2>
-            </div>
-
-            {/* Progress */}
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-zinc-500 text-xs">{swipeIndex + 1}/{pool.length}</span>
-              <div className="flex-1 mx-3 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-yellow-400 rounded-full transition-all duration-300"
-                  style={{ width: `${((swipeIndex + 1) / pool.length) * 100}%` }}
-                />
-              </div>
-              <span className="text-zinc-500 text-xs">{pool.length - swipeIndex - 1} restantes</span>
-            </div>
-
-            {/* Movie Card */}
-            <div
-              className={`relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition-all duration-300 ${
-                swipeAnim === 'right' ? 'translate-x-[120%] rotate-12 opacity-0' :
-                swipeAnim === 'left' ? '-translate-x-[120%] -rotate-12 opacity-0' :
-                ''
-              }`}
-            >
-              {/* Backdrop */}
-              <div className="relative h-56 sm:h-72 bg-zinc-800">
-                {currentMovie.backdrop_path ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w780${currentMovie.backdrop_path}`}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                ) : currentMovie.poster_path ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w342${currentMovie.poster_path}`}
-                    alt=""
-                    className="w-full h-full object-cover blur-sm scale-110"
-                  />
-                ) : null}
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent" />
-              </div>
-
-              {/* Info */}
-              <div className="relative -mt-16 px-5 pb-5">
-                <h3 className="text-white text-xl sm:text-2xl font-black leading-tight mb-1.5">
-                  {currentMovie.titulo_ingles || currentMovie.titulo}
-                </h3>
-                <div className="flex items-center gap-3 mb-3 flex-wrap">
-                  {currentMovie.anio && (
-                    <span className="text-zinc-400 text-sm">{currentMovie.anio}</span>
-                  )}
-                  {currentMovie.nota_imdb && (
-                    <span className="text-yellow-400 text-sm font-semibold flex items-center gap-1">
-                      <svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20">
-                        <path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/>
-                      </svg>
-                      {currentMovie.nota_imdb}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {currentMovie.generos.slice(0, 4).map(g => (
-                    <span key={g} className="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full">{g}</span>
-                  ))}
-                </div>
-
-                {/* Platforms */}
-                {currentMovie.plataformas.length > 0 && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-zinc-600 text-xs">En:</span>
-                    {PLATFORMS.filter(pl => currentMovie.plataformas.includes(pl.key)).map(pl => (
-                      <div key={pl.key} className="rounded-lg px-1.5 py-1 bg-white/90" style={{ height: 22 }}>
-                        <img src={pl.icon} alt={pl.name} className="h-3.5 w-auto object-contain" />
-                      </div>
-                    ))}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-semibold truncate">
+                      {selectedReference.titulo_ingles || selectedReference.titulo}
+                    </p>
+                    {selectedReference.titulo_ingles && selectedReference.titulo !== selectedReference.titulo_ingles && (
+                      <p className="text-zinc-500 text-xs truncate">{selectedReference.titulo}</p>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* Swipe Buttons */}
-            <div className="flex items-center justify-center gap-6 mt-6">
-              <button
-                onClick={() => handleSwipe(false)}
-                className="w-16 h-16 rounded-full border-2 border-zinc-700 bg-zinc-900 flex items-center justify-center text-2xl hover:border-red-400 hover:bg-red-400/10 transition-all active:scale-90"
-                aria-label="No me interesa"
-              >
-                <svg className="w-7 h-7 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-                  <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
-              </button>
-              <button
-                onClick={() => handleSwipe(true)}
-                className="w-20 h-20 rounded-full border-2 border-yellow-400 bg-yellow-400/10 flex items-center justify-center text-3xl hover:bg-yellow-400/20 transition-all active:scale-90"
-                aria-label="Me interesa"
-              >
-                <svg className="w-9 h-9 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-              </button>
-            </div>
-
-            <p className="text-center text-zinc-600 text-xs mt-3">
-              Desliza o usa los botones
-            </p>
-          </div>
-        )}
-
-        {/* Swipe phase done, pool empty edge case */}
-        {phase === 'swipe' && !currentMovie && swipeIndex >= pool.length && (
-          <div className="flex flex-col items-center pt-20">
-            <Loading text="Enviando tus respuestas..." />
-          </div>
-        )}
-
-        {/* ════════ WAITING FOR OTHER PERSON'S SWIPES ════════ */}
-        {phase === 'waiting_swipes' && (
-          <div className="flex flex-col items-center pt-20">
-            <Loading text="Esperando a que tu cómplice termine de elegir..." />
-            <p className="text-zinc-600 text-xs mt-6">Ya casi esta</p>
-          </div>
-        )}
-
-        {/* ════════ RESULTS ════════ */}
-        {phase === 'results' && (
-          <div className="pt-4">
-            {results.length === 0 ? (
-              <div className="text-center pt-16">
-                <div className="text-5xl mb-4">😅</div>
-                <h2 className="text-2xl font-bold text-white mb-2">No hubo match</h2>
-                <p className="text-zinc-400 text-sm mb-8">No coincidieron en ninguna pelicula. Intenten de nuevo.</p>
-                <button
-                  onClick={handleReset}
-                  className="bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-bold rounded-2xl px-8 py-3.5 transition-colors"
-                >
-                  Jugar de nuevo
-                </button>
-              </div>
-            ) : (
-              <>
-                {/* Header celebration */}
-                <div className="text-center mb-6">
-                  <div className="text-5xl mb-2">🎉</div>
-                  <h2 className="text-2xl font-bold text-white">Match perfecto</h2>
-                  <p className="text-zinc-400 text-sm">Esta es su pelicula</p>
+                  <IconButton
+                    icon={<Icon.Close className="w-5 h-5" />}
+                    label="Quitar selección"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => { setSelectedReference(null); setMovieSearch('') }}
+                  />
                 </div>
-
-                {/* #1 Big Card */}
-                {(() => {
-                  const top = results[0]
-                  return (
-                    <Link href={`/pelicula/${top.id}`} className="block mb-8">
-                      <div className="relative overflow-hidden rounded-2xl border-2 border-yellow-400/40 bg-zinc-900">
-                        <div className="relative h-52 sm:h-64 bg-zinc-800">
-                          {top.backdrop_path ? (
-                            <img
-                              src={`https://image.tmdb.org/t/p/w780${top.backdrop_path}`}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          ) : top.poster_path ? (
-                            <img
-                              src={`https://image.tmdb.org/t/p/w342${top.poster_path}`}
-                              alt=""
-                              className="w-full h-full object-cover blur-sm scale-110"
-                            />
-                          ) : null}
-                          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/50 to-transparent" />
-
-                          {/* Match badge */}
-                          <div className="absolute top-3 right-3 bg-yellow-400 text-zinc-950 font-black text-sm rounded-full px-3 py-1">
-                            Match {top.match_score}%
-                          </div>
-
-                          {/* #1 badge */}
-                          <div className="absolute top-3 left-3 bg-zinc-950/80 border border-yellow-400/50 text-yellow-400 font-bold text-xs rounded-full px-2.5 py-1">
-                            #1
-                          </div>
-                        </div>
-
-                        <div className="px-5 pb-5 -mt-10 relative">
-                          <h3 className="text-white text-2xl font-black mb-1.5">
-                            {top.titulo_ingles || top.titulo}
-                          </h3>
-                          <div className="flex items-center gap-3 mb-3 flex-wrap">
-                            {top.anio && <span className="text-zinc-400 text-sm">{top.anio}</span>}
-                            {top.nota_imdb && (
-                              <span className="text-yellow-400 text-sm font-semibold flex items-center gap-1">
-                                <svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20">
-                                  <path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/>
-                                </svg>
-                                {top.nota_imdb}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex flex-wrap gap-1.5 mb-3">
-                            {top.generos.slice(0, 4).map(g => (
-                              <span key={g} className="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full">{g}</span>
-                            ))}
-                          </div>
-                          {top.plataformas.length > 0 && (
-                            <div className="flex items-center gap-2">
-                              <span className="text-zinc-600 text-xs">Disponible en:</span>
-                              {PLATFORMS.filter(pl => top.plataformas.includes(pl.key)).map(pl => (
-                                <div key={pl.key} className="rounded-lg px-1.5 py-1 bg-white/90" style={{ height: 22 }}>
-                                  <img src={pl.icon} alt={pl.name} className="h-3.5 w-auto object-contain" />
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
-                  )
-                })()}
-
-                {/* Rest of results */}
-                {results.length > 1 && (
-                  <>
-                    <h3 className="text-white font-bold text-sm mb-3">Tambien les gusto:</h3>
-                    <div className="space-y-3">
-                      {results.slice(1).map((movie, i) => (
-                        <Link
-                          key={movie.id}
-                          href={`/pelicula/${movie.id}`}
-                          className="flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 hover:border-yellow-400/30 transition-colors"
+              ) : (
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={movieSearch}
+                    onChange={e => setMovieSearch(e.target.value)}
+                    placeholder="Buscar película..."
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-yellow-400/50 transition-colors min-h-[44px]"
+                  />
+                  {/* Dropdown results */}
+                  {movieSearchResults.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden z-20 shadow-xl">
+                      {movieSearchResults.map(m => (
+                        <button
+                          key={m.id}
+                          onClick={() => {
+                            setSelectedReference(m)
+                            setMovieSearch('')
+                          }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-800 transition-colors text-left min-h-[44px]"
                         >
-                          {/* Rank */}
-                          <span className="text-zinc-600 text-xs font-mono w-5 text-center shrink-0">
-                            #{i + 2}
-                          </span>
-
-                          {/* Poster */}
-                          <div className="w-12 h-16 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
-                            {movie.poster_path ? (
+                          <div className="w-8 h-11 rounded-md overflow-hidden bg-zinc-800 shrink-0">
+                            {m.poster_path && (
                               <img
-                                src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                                src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
                                 alt=""
                                 className="w-full h-full object-cover"
                               />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-zinc-700 text-[8px]">
-                                ?
-                              </div>
                             )}
                           </div>
-
-                          {/* Info */}
                           <div className="flex-1 min-w-0">
-                            <p className="text-white text-sm font-semibold truncate">
-                              {movie.titulo_ingles || movie.titulo}
+                            <p className="text-white text-sm font-medium truncate">
+                              {m.titulo_ingles || m.titulo}
                             </p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              {movie.anio && <span className="text-zinc-500 text-xs">{movie.anio}</span>}
-                              {movie.nota_imdb && (
-                                <span className="text-yellow-400 text-xs flex items-center gap-0.5">
-                                  <svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20">
-                                    <path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/>
-                                  </svg>
-                                  {movie.nota_imdb}
-                                </span>
-                              )}
-                            </div>
+                            {m.titulo_ingles && m.titulo !== m.titulo_ingles && (
+                              <p className="text-zinc-500 text-xs truncate">{m.titulo}</p>
+                            )}
                           </div>
-
-                          {/* Match score */}
-                          <div className={`shrink-0 rounded-lg px-2.5 py-1 text-xs font-bold ${
-                            movie.match_score >= 80
-                              ? 'bg-yellow-400/20 text-yellow-400'
-                              : 'bg-zinc-800 text-zinc-400'
-                          }`}>
-                            {movie.match_score}%
-                          </div>
-                        </Link>
+                        </button>
                       ))}
                     </div>
-                  </>
-                )}
-
-                {/* Action buttons */}
-                <div className="flex gap-3 mt-8">
-                  <button
-                    onClick={handleShare}
-                    className="flex-1 bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-bold rounded-2xl py-3.5 text-sm transition-colors"
-                  >
-                    Compartir
-                  </button>
-                  <button
-                    onClick={handleReset}
-                    className="flex-1 border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white font-medium rounded-2xl py-3.5 text-sm transition-colors"
-                  >
-                    Jugar de nuevo
-                  </button>
+                  )}
                 </div>
-              </>
-            )}
-          </div>
-        )}
+              )}
 
-      </div>
-    </main>
+              <div className="flex gap-3 mt-4">
+                <Button
+                  onClick={() => setPrefsStep(2)}
+                  variant="ghost"
+                  size="lg"
+                  className="flex-1 border border-zinc-700 rounded-2xl"
+                >
+                  Atrás
+                </Button>
+                <Button
+                  onClick={handleSubmitPrefs}
+                  disabled={!selectedReference || loading}
+                  loading={loading}
+                  size="lg"
+                  className="flex-1 rounded-2xl"
+                >
+                  Listo
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {error && (
+            <p className="mt-4 text-red-400 text-sm text-center">{error}</p>
+          )}
+        </div>
+      )}
+
+      {/* ════════ WAITING FOR OTHER PERSON'S PREFS ════════ */}
+      {phase === 'waiting_prefs' && (
+        <div className="flex flex-col items-center pt-20">
+          <LoadingState text="Esperando las preferencias de tu compañero/a..." />
+          <p className="text-zinc-600 text-xs mt-6">Cuando ambos terminen, generaremos las películas</p>
+        </div>
+      )}
+
+      {/* ════════ SWIPE PHASE ════════ */}
+      {phase === 'swipe' && currentMovie && (
+        <div className="pt-4">
+          <div className="text-center mb-4">
+            <p className="text-zinc-500 text-xs font-mono mb-1">Sala {roomCode}</p>
+            <h2 className="text-xl font-bold text-white">¿Te interesa?</h2>
+          </div>
+
+          {/* Progress */}
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-zinc-500 text-xs">{swipeIndex + 1}/{pool.length}</span>
+            <div className="flex-1 mx-3 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-yellow-400 rounded-full transition-all duration-300"
+                style={{ width: `${((swipeIndex + 1) / pool.length) * 100}%` }}
+              />
+            </div>
+            <span className="text-zinc-500 text-xs">{pool.length - swipeIndex - 1} restantes</span>
+          </div>
+
+          {/* Movie Card */}
+          <div
+            className={`relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition-all duration-300 ${
+              swipeAnim === 'right' ? 'translate-x-[120%] rotate-12 opacity-0' :
+              swipeAnim === 'left' ? '-translate-x-[120%] -rotate-12 opacity-0' :
+              ''
+            }`}
+          >
+            {/* Backdrop */}
+            <div className="relative h-56 sm:h-72 bg-zinc-800">
+              {currentMovie.backdrop_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w780${currentMovie.backdrop_path}`}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : currentMovie.poster_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w342${currentMovie.poster_path}`}
+                  alt=""
+                  className="w-full h-full object-cover blur-sm scale-110"
+                />
+              ) : null}
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent" />
+            </div>
+
+            {/* Info */}
+            <div className="relative -mt-16 px-5 pb-5">
+              <h3 className="text-white text-xl sm:text-2xl font-black leading-tight mb-1.5">
+                {currentMovie.titulo_ingles || currentMovie.titulo}
+              </h3>
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
+                {currentMovie.anio && (
+                  <span className="text-zinc-400 text-sm">{currentMovie.anio}</span>
+                )}
+                {currentMovie.nota_imdb && (
+                  <span className="text-yellow-400 text-sm font-semibold flex items-center gap-1">
+                    <Icon.Star filled className="w-3.5 h-3.5" />
+                    {currentMovie.nota_imdb}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {currentMovie.generos.slice(0, 4).map(g => (
+                  <Pill key={g} variant="default" size="sm">{g}</Pill>
+                ))}
+              </div>
+
+              {/* Platforms */}
+              {currentMovie.plataformas.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span className="text-zinc-600 text-xs">En:</span>
+                  {PLATFORMS.filter(pl => currentMovie.plataformas.includes(pl.key)).map(pl => (
+                    <div key={pl.key} className="rounded-lg px-1.5 py-1 bg-white/90" style={{ height: 22 }}>
+                      <img src={pl.icon} alt={pl.name} className="h-3.5 w-auto object-contain" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Swipe Buttons */}
+          <div className="flex items-center justify-center gap-6 mt-6">
+            <IconButton
+              icon={<Icon.Close className="w-7 h-7" />}
+              label="No me interesa"
+              variant="secondary"
+              size="lg"
+              onClick={() => handleSwipe(false)}
+              className="w-16 h-16 rounded-full hover:border-red-400 hover:bg-red-400/10 active:scale-90 transition-all"
+            />
+            <IconButton
+              icon={<Icon.Heart filled className="w-9 h-9 text-yellow-400" />}
+              label="Me interesa"
+              variant="secondary"
+              size="lg"
+              onClick={() => handleSwipe(true)}
+              className="w-20 h-20 rounded-full border-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20 active:scale-90 transition-all"
+            />
+          </div>
+
+          <p className="text-center text-zinc-600 text-xs mt-3">
+            Desliza o usa los botones
+          </p>
+        </div>
+      )}
+
+      {/* Swipe phase done, pool empty edge case */}
+      {phase === 'swipe' && !currentMovie && swipeIndex >= pool.length && (
+        <div className="flex flex-col items-center pt-20">
+          <LoadingState text="Enviando tus respuestas..." />
+        </div>
+      )}
+
+      {/* ════════ WAITING FOR OTHER PERSON'S SWIPES ════════ */}
+      {phase === 'waiting_swipes' && (
+        <div className="flex flex-col items-center pt-20">
+          <LoadingState text="Esperando a que tu compañero/a termine de elegir..." />
+          <p className="text-zinc-600 text-xs mt-6">Ya casi está</p>
+        </div>
+      )}
+
+      {/* ════════ RESULTS ════════ */}
+      {phase === 'results' && (
+        <div className="pt-4">
+          {results.length === 0 ? (
+            <EmptyState
+              icon={<Icon.Close className="w-16 h-16" />}
+              title="No hubo match"
+              description="No coincidieron en ninguna película. Intenten de nuevo."
+              action={
+                <Button onClick={handleReset} size="lg" className="rounded-2xl">
+                  Jugar de nuevo
+                </Button>
+              }
+              className="pt-16"
+            />
+          ) : (
+            <>
+              {/* Header celebration */}
+              <div className="text-center mb-6">
+                <Icon.Sparkles className="w-12 h-12 text-yellow-400 mx-auto mb-2" />
+                <h2 className="text-2xl font-bold text-white">Match perfecto</h2>
+                <p className="text-zinc-400 text-sm">Esta es su película</p>
+              </div>
+
+              {/* #1 Big Card */}
+              {(() => {
+                const top = results[0]
+                return (
+                  <Link href={`/pelicula/${top.id}`} className="block mb-8">
+                    <div className="relative overflow-hidden rounded-2xl border-2 border-yellow-400/40 bg-zinc-900">
+                      <div className="relative h-52 sm:h-64 bg-zinc-800">
+                        {top.backdrop_path ? (
+                          <img
+                            src={`https://image.tmdb.org/t/p/w780${top.backdrop_path}`}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
+                        ) : top.poster_path ? (
+                          <img
+                            src={`https://image.tmdb.org/t/p/w342${top.poster_path}`}
+                            alt=""
+                            className="w-full h-full object-cover blur-sm scale-110"
+                          />
+                        ) : null}
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/50 to-transparent" />
+
+                        {/* Match badge */}
+                        <Pill variant="gold" className="absolute top-3 right-3 bg-yellow-400 text-zinc-950 font-black border-0">
+                          Match {top.match_score}%
+                        </Pill>
+
+                        {/* #1 badge */}
+                        <Pill variant="default" className="absolute top-3 left-3 bg-zinc-950/80 border border-yellow-400/50 text-yellow-400 font-bold">
+                          #1
+                        </Pill>
+                      </div>
+
+                      <div className="px-5 pb-5 -mt-10 relative">
+                        <h3 className="text-white text-2xl font-black mb-1.5">
+                          {top.titulo_ingles || top.titulo}
+                        </h3>
+                        <div className="flex items-center gap-3 mb-3 flex-wrap">
+                          {top.anio && <span className="text-zinc-400 text-sm">{top.anio}</span>}
+                          {top.nota_imdb && (
+                            <span className="text-yellow-400 text-sm font-semibold flex items-center gap-1">
+                              <Icon.Star filled className="w-3.5 h-3.5" />
+                              {top.nota_imdb}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          {top.generos.slice(0, 4).map(g => (
+                            <Pill key={g} variant="default" size="sm">{g}</Pill>
+                          ))}
+                        </div>
+                        {top.plataformas.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-zinc-600 text-xs">Disponible en:</span>
+                            {PLATFORMS.filter(pl => top.plataformas.includes(pl.key)).map(pl => (
+                              <div key={pl.key} className="rounded-lg px-1.5 py-1 bg-white/90" style={{ height: 22 }}>
+                                <img src={pl.icon} alt={pl.name} className="h-3.5 w-auto object-contain" />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })()}
+
+              {/* Rest of results */}
+              {results.length > 1 && (
+                <Section label="También les gustó">
+                  <div className="space-y-3">
+                    {results.slice(1).map((movie, i) => (
+                      <Link
+                        key={movie.id}
+                        href={`/pelicula/${movie.id}`}
+                        className="flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 hover:border-yellow-400/30 transition-colors min-h-[44px]"
+                      >
+                        {/* Rank */}
+                        <span className="text-zinc-600 text-xs font-mono w-5 text-center shrink-0">
+                          #{i + 2}
+                        </span>
+
+                        {/* Poster */}
+                        <div className="w-12 h-16 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
+                          {movie.poster_path ? (
+                            <img
+                              src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-zinc-700 text-[8px]">
+                              ?
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm font-semibold truncate">
+                            {movie.titulo_ingles || movie.titulo}
+                          </p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            {movie.anio && <span className="text-zinc-500 text-xs">{movie.anio}</span>}
+                            {movie.nota_imdb && (
+                              <span className="text-yellow-400 text-xs flex items-center gap-0.5">
+                                <Icon.Star filled className="w-2.5 h-2.5" />
+                                {movie.nota_imdb}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Match score */}
+                        <Pill
+                          variant={movie.match_score >= 80 ? 'gold' : 'default'}
+                          size="sm"
+                          className="shrink-0 font-bold"
+                        >
+                          {movie.match_score}%
+                        </Pill>
+                      </Link>
+                    ))}
+                  </div>
+                </Section>
+              )}
+
+              {/* Action buttons */}
+              <div className="flex gap-3 mt-8">
+                <Button
+                  onClick={handleShare}
+                  size="lg"
+                  className="flex-1 rounded-2xl"
+                  iconLeft={<Icon.Share className="w-4 h-4" />}
+                >
+                  Compartir
+                </Button>
+                <Button
+                  onClick={handleReset}
+                  variant="secondary"
+                  size="lg"
+                  className="flex-1 rounded-2xl"
+                  iconLeft={<Icon.Refresh className="w-4 h-4" />}
+                >
+                  Jugar de nuevo
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+    </PageShell>
   )
 }

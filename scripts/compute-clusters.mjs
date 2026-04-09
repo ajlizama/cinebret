@@ -323,18 +323,81 @@ for (const l0cl of l0clusters) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// PRE-COMPUTE POSITIONS with d3-force + cluster separation
+// ═══════════════════════════════════════════════════════════════════
+
+import { forceSimulation, forceLink, forceManyBody, forceCenter, forceX, forceY } from 'd3-force'
+
+console.log('\n── Pre-computing positions with d3-force ──')
+
+// Arrange cluster targets in a circle
+const numL0 = l0clusters.length
+const layoutRadius = Math.sqrt(nodes.length) * 18
+const clusterTargets = new Map()
+l0clusters.forEach((cl, i) => {
+  const angle = (i / numL0) * Math.PI * 2 - Math.PI / 2
+  clusterTargets.set(cl.id, {
+    x: Math.cos(angle) * layoutRadius,
+    y: Math.sin(angle) * layoutRadius,
+  })
+})
+
+// Build simulation nodes with cluster targets as initial positions
+const simNodes = nodes.map(n => {
+  const cid = l0map.get(n.id) ?? 0
+  const target = clusterTargets.get(cid) || { x: 0, y: 0 }
+  // Scatter around cluster center with some jitter
+  return {
+    id: n.id,
+    clusterId: cid,
+    x: target.x + (Math.random() - 0.5) * layoutRadius * 0.4,
+    y: target.y + (Math.random() - 0.5) * layoutRadius * 0.4,
+  }
+})
+
+const simEdges = edges.map(e => ({ source: e.source, target: e.target, weight: e.weight }))
+const nodeIdToIdx = new Map(simNodes.map((n, i) => [n.id, i]))
+
+const sim = forceSimulation(simNodes)
+  .force('link', forceLink(simEdges)
+    .id(d => d.id)
+    .distance(d => 30 / Math.max(0.5, d.weight))
+    .strength(d => Math.min(0.3, d.weight * 0.08))
+  )
+  .force('charge', forceManyBody().strength(-15).distanceMax(300))
+  .force('center', forceCenter(0, 0).strength(0.005))
+  // Cluster separation: pull nodes toward their cluster's target position
+  .force('clusterX', forceX(d => clusterTargets.get(d.clusterId)?.x ?? 0).strength(0.12))
+  .force('clusterY', forceY(d => clusterTargets.get(d.clusterId)?.y ?? 0).strength(0.12))
+  .stop()
+
+// Run 400 ticks to stabilize
+for (let i = 0; i < 400; i++) sim.tick()
+console.log(`  Simulation ran 400 ticks`)
+
+// Extract final positions
+const posMap = new Map()
+for (const sn of simNodes) {
+  posMap.set(sn.id, { x: Math.round(sn.x * 10) / 10, y: Math.round(sn.y * 10) / 10 })
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // OUTPUT
 // ═══════════════════════════════════════════════════════════════════
 
-const outNodes = nodes.map(n => ({
-  ...n,
-  clusterId: l0map.get(n.id) ?? 0,
-  clusterColor: l0clusters[l0map.get(n.id) ?? 0]?.color || '#52525b',
-  subclusterId: l1map.get(n.id) ?? 0,
-  subclusterColor: allSubclusters[l1map.get(n.id) ?? 0]?.color || '#52525b',
-  // Use subcluster color as the node's display color for maximum visual detail
-  color: allSubclusters[l1map.get(n.id) ?? 0]?.color || '#52525b',
-}))
+const outNodes = nodes.map(n => {
+  const pos = posMap.get(n.id) || { x: 0, y: 0 }
+  return {
+    ...n,
+    clusterId: l0map.get(n.id) ?? 0,
+    clusterColor: l0clusters[l0map.get(n.id) ?? 0]?.color || '#52525b',
+    subclusterId: l1map.get(n.id) ?? 0,
+    subclusterColor: allSubclusters[l1map.get(n.id) ?? 0]?.color || '#52525b',
+    color: allSubclusters[l1map.get(n.id) ?? 0]?.color || '#52525b',
+    fx: pos.x, // fixed x position — force-graph will respect these
+    fy: pos.y, // fixed y position
+  }
+})
 
 const output = {
   nodes: outNodes,
@@ -344,4 +407,4 @@ const output = {
 }
 
 writeFileSync(outPath, JSON.stringify(output))
-console.log(`\nWritten: ${outNodes.length} nodes, ${graph.edges.length} edges, ${l0clusters.length} clusters, ${allSubclusters.length} subclusters`)
+console.log(`Written: ${outNodes.length} nodes, ${graph.edges.length} edges, ${l0clusters.length} clusters, ${allSubclusters.length} subclusters`)

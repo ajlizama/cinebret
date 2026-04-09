@@ -169,12 +169,19 @@ export default function MapaPage() {
       return false
     })
 
-    // Create fresh node objects without stale x/y positions
+    // Preserve pre-computed x/y positions from the clusters JSON.
+    // fx/fy are "fixed" positions that d3-force respects as initial placement.
     const updatedNodes: GraphNode[] = limitedNodes.map(n => ({
       id: n.id, title: n.title, titleEs: n.titleEs, imdb: n.imdb,
       poster: n.poster, categoria: n.categoria, color: n.color,
       genres: n.genres,
+      clusterId: (n as any).clusterId,
+      clusterColor: (n as any).clusterColor,
+      subclusterId: (n as any).subclusterId,
+      subclusterColor: (n as any).subclusterColor,
       connections: connCount.get(n.id) || 0,
+      x: (n as any).fx ?? undefined,
+      y: (n as any).fy ?? undefined,
     }))
 
     // Fresh edge objects with string IDs (not object references)
@@ -187,59 +194,9 @@ export default function MapaPage() {
     return { nodes: updatedNodes, links: freshEdges }
   }, [rawGraph, nodeLimit])
 
-  // ── Inject cluster separation forces ──
-  // d3Force expects proper force functions with an .initialize(nodes) method.
-  // We create a single custom force that pushes nodes toward their cluster's
-  // target position (arranged in a circle around the origin).
-  useEffect(() => {
-    if (!fgRef.current || !graphData || !rawGraph?.clusters) return
-    const fg = fgRef.current
-    const clusters = rawGraph.clusters
-    const numClusters = clusters.length
-    const spreadRadius = Math.sqrt(graphData.nodes.length) * 14
-
-    // Target positions: clusters arranged in a circle
-    const clusterTargets: Record<number, { x: number; y: number }> = {}
-    clusters.forEach((cl, i) => {
-      const angle = (i / numClusters) * Math.PI * 2 - Math.PI / 2
-      clusterTargets[cl.id] = {
-        x: Math.cos(angle) * spreadRadius,
-        y: Math.sin(angle) * spreadRadius,
-      }
-    })
-
-    // Proper d3 force function with initialize + force methods
-    function clusterForce() {
-      let nodes: any[] = []
-      const strength = 0.06
-
-      function force(alpha: number) {
-        for (const node of nodes) {
-          const target = clusterTargets[node.clusterId ?? 0]
-          if (!target) continue
-          if (!isFinite(node.x) || !isFinite(node.y)) continue
-          node.vx += (target.x - node.x) * alpha * strength
-          node.vy += (target.y - node.y) * alpha * strength
-        }
-      }
-
-      force.initialize = function (_nodes: any[]) {
-        nodes = _nodes
-      }
-
-      return force
-    }
-
-    try {
-      fg.d3Force('cluster', clusterForce())
-      // Weaken the default center force so clusters can actually separate
-      const center = fg.d3Force('center')
-      if (center?.strength) center.strength(0.01)
-      fg.d3ReheatSimulation()
-    } catch (e) {
-      console.warn('Failed to inject cluster force:', e)
-    }
-  }, [graphData, rawGraph?.clusters])
+  // Cluster separation is handled by pre-computed positions in the JSON
+  // (computed by scripts/compute-clusters.mjs with d3-force + cluster forces).
+  // No runtime force injection needed.
 
   // Find shortest path between two movies (Dijkstra with inverse weight = strongest path)
   const findPath = useCallback((startId: string, endId: string): string[] | null => {

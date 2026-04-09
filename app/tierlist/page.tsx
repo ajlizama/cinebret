@@ -1645,10 +1645,11 @@ const TierListShareSVG = forwardRef<
                     />
                   )
                 }
+                // Use the CORS-safe proxy so the canvas raster can read pixels
                 return (
                   <image
                     key={m.id}
-                    href={`https://image.tmdb.org/t/p/w342${m.poster_path}`}
+                    href={`/api/tmdb-image?path=${encodeURIComponent(m.poster_path)}&size=w342`}
                     x={x}
                     y={posterY}
                     width={posterW}

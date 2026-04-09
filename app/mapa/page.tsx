@@ -7,6 +7,8 @@ import { useAuth } from '@/context/AuthContext'
 import { normalize } from '@/lib/normalize'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
+import NextImage from 'next/image'
+import Link from 'next/link'
 import {
   PageShell,
   SearchInput,
@@ -18,7 +20,10 @@ import {
   Button,
   LoadingState,
   Icon,
+  ScoreBadge,
 } from '@/components/ui'
+import { supabase } from '@/lib/supabase'
+import { AnimatePresence, motion } from 'framer-motion'
 
 type GraphNode = {
   id: string
@@ -87,6 +92,37 @@ export default function MapaPage() {
   const minimapRef = useRef<HTMLCanvasElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
   const [isMobile, setIsMobile] = useState(false)
+
+  // ── Dive-into-poster portal ──
+  const [diveNode, setDiveNode] = useState<GraphNode | null>(null)
+  const [diveData, setDiveData] = useState<any>(null)
+  const [diveLoading, setDiveLoading] = useState(false)
+
+  const enterDive = useCallback(async (node: GraphNode) => {
+    setDiveNode(node)
+    setDiveLoading(true)
+    setDiveData(null)
+    try {
+      const { data } = await supabase
+        .from(isSeries ? 'series' : 'peliculas')
+        .select(`
+          id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score,
+          poster_path, backdrop_path, oscars, runtime, categoria,
+          enriquecimiento${isSeries ? '_series' : ''} (
+            director, actores, compositor, generos, sinopsis_chilensis, review_autor
+          )
+        `)
+        .eq('id', node.id)
+        .maybeSingle()
+      setDiveData(data)
+    } catch {}
+    setDiveLoading(false)
+  }, [isSeries])
+
+  const exitDive = useCallback(() => {
+    setDiveNode(null)
+    setDiveData(null)
+  }, [])
 
   // Track mobile viewport for conditional Sheet rendering
   useEffect(() => {
@@ -815,15 +851,23 @@ export default function MapaPage() {
                           <Pill key={g} variant="default" size="sm">{g}</Pill>
                         ))}
                       </div>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="mt-3"
-                        iconRight={<Icon.ArrowRight className="w-3.5 h-3.5" />}
-                        onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
-                      >
-                        Ver ficha completa
-                      </Button>
+                      <div className="flex gap-2 mt-3">
+                        <Button
+                          size="sm"
+                          iconLeft={<Icon.Eye className="w-3.5 h-3.5" />}
+                          onClick={() => enterDive(selectedNode)}
+                        >
+                          Explorar
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          iconRight={<Icon.ArrowRight className="w-3.5 h-3.5" />}
+                          onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                        >
+                          Ver ficha
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -907,14 +951,24 @@ export default function MapaPage() {
                     </span>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
-                  className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-400 text-zinc-950 text-xs font-bold cursor-pointer hover:bg-yellow-300 transition-colors min-h-[36px]"
-                >
-                  Ficha
-                  <Icon.ArrowRight className="w-3 h-3" />
-                </button>
+                <div className="shrink-0 flex gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => enterDive(selectedNode)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-400 text-zinc-950 text-xs font-bold cursor-pointer hover:bg-yellow-300 transition-colors min-h-[36px]"
+                  >
+                    <Icon.Eye className="w-3 h-3" />
+                    Explorar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 text-xs font-bold cursor-pointer hover:bg-zinc-700 transition-colors min-h-[36px]"
+                  >
+                    Ficha
+                    <Icon.ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
 
               {/* Connected movies — horizontal carousel in peek view */}
@@ -1344,6 +1398,231 @@ export default function MapaPage() {
           />
         )}
       </div>
+
+      {/* ── Dive-into-poster portal overlay ── */}
+      <AnimatePresence>
+        {diveNode && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-[70] bg-zinc-950/95 backdrop-blur-md overflow-y-auto"
+          >
+            {/* Close / back button */}
+            <div className="sticky top-0 z-10 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),8px)] pb-2 bg-zinc-950/80 backdrop-blur-xl">
+              <button
+                type="button"
+                onClick={exitDive}
+                className="inline-flex items-center gap-2 text-zinc-400 hover:text-yellow-400 text-sm font-semibold cursor-pointer transition-colors min-h-[44px]"
+              >
+                <Icon.ArrowLeft className="w-4 h-4" />
+                Volver al mapa
+              </button>
+              <Link
+                href={`${isSeries ? '/serie' : '/pelicula'}/${diveNode.id}`}
+                className="inline-flex items-center gap-1 text-yellow-400 text-xs font-semibold hover:text-yellow-300 transition-colors min-h-[44px]"
+              >
+                Ficha completa
+                <Icon.ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            {diveLoading ? (
+              <div className="flex items-center justify-center h-64">
+                <LoadingState text="Cargando..." size="md" />
+              </div>
+            ) : diveData ? (
+              <motion.div
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.4 }}
+              >
+                {/* Backdrop hero */}
+                <div className="relative w-full aspect-video max-h-[35vh] overflow-hidden">
+                  {diveData.backdrop_path ? (
+                    <NextImage
+                      src={`https://image.tmdb.org/t/p/w1280${diveData.backdrop_path}`}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="100vw"
+                      priority
+                    />
+                  ) : diveData.poster_path ? (
+                    <NextImage
+                      src={`https://image.tmdb.org/t/p/w780${diveData.poster_path}`}
+                      alt=""
+                      fill
+                      className="object-cover object-top blur-xl scale-110 opacity-50"
+                      sizes="100vw"
+                    />
+                  ) : null}
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+                </div>
+
+                {/* Content */}
+                <div className="relative -mt-20 px-5 pb-10 max-w-2xl mx-auto">
+                  <div className="flex gap-4 items-end">
+                    {/* Poster */}
+                    {diveData.poster_path && (
+                      <div className="relative w-28 shrink-0 rounded-xl overflow-hidden shadow-2xl ring-2 ring-yellow-400/40" style={{ aspectRatio: '2/3' }}>
+                        <NextImage
+                          src={`https://image.tmdb.org/t/p/w342${diveData.poster_path}`}
+                          alt={diveData.titulo}
+                          fill
+                          className="object-cover"
+                          sizes="112px"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0 pb-1">
+                      <h1 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+                        {diveData.titulo_ingles || diveData.titulo}
+                      </h1>
+                      {diveData.titulo_ingles && diveData.titulo !== diveData.titulo_ingles && (
+                        <p className="text-zinc-400 text-sm mt-0.5">{diveData.titulo}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Metadata row */}
+                  <div className="flex items-center gap-3 mt-4 flex-wrap">
+                    {diveData.anio && <span className="text-zinc-400 text-sm tabular-nums">{diveData.anio}</span>}
+                    {diveData.runtime && <span className="text-zinc-500 text-sm">{Math.floor(diveData.runtime / 60)}h {diveData.runtime % 60}min</span>}
+                    {diveData.nota_imdb != null && <ScoreBadge source="imdb" value={diveData.nota_imdb} size="sm" />}
+                    {diveData.rt_score != null && <ScoreBadge source="rt" value={diveData.rt_score} size="sm" />}
+                    {diveData.metacritic_score != null && <ScoreBadge source="mc" value={diveData.metacritic_score} size="sm" />}
+                    {diveData.oscars && diveData.oscars !== 'N/A' && (
+                      <span className="flex items-center gap-1 text-yellow-400 text-xs">
+                        <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
+                        {diveData.oscars.match(/\d+/)?.[0]}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Category */}
+                  {diveData.categoria && (
+                    <div className="mt-3">
+                      <Pill variant="gold" size="sm">{diveData.categoria}</Pill>
+                    </div>
+                  )}
+
+                  {/* Genres */}
+                  {(() => {
+                    const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
+                    const generos = enr.generos ?? []
+                    return generos.length > 0 ? (
+                      <div className="flex flex-wrap gap-1.5 mt-3">
+                        {generos.map((g: string) => (
+                          <Pill key={g} variant="default" size="sm">{g}</Pill>
+                        ))}
+                      </div>
+                    ) : null
+                  })()}
+
+                  {/* Sinopsis */}
+                  {(() => {
+                    const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
+                    return enr.sinopsis_chilensis ? (
+                      <div className="mt-5">
+                        <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold mb-2">Sinopsis</p>
+                        <p className="text-zinc-300 text-sm leading-relaxed italic">
+                          {enr.sinopsis_chilensis}
+                        </p>
+                      </div>
+                    ) : null
+                  })()}
+
+                  {/* Director / Cast / Compositor */}
+                  {(() => {
+                    const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
+                    return (
+                      <div className="grid grid-cols-2 gap-4 mt-5">
+                        {enr.director && (
+                          <div>
+                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Director</p>
+                            <Link href={`/director/${encodeURIComponent(enr.director)}`} className="text-sm text-white hover:text-yellow-400 transition-colors">
+                              {enr.director}
+                            </Link>
+                          </div>
+                        )}
+                        {enr.compositor && (
+                          <div>
+                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Compositor</p>
+                            <Link href={`/compositor/${encodeURIComponent(enr.compositor)}`} className="text-sm text-white hover:text-yellow-400 transition-colors">
+                              {enr.compositor}
+                            </Link>
+                          </div>
+                        )}
+                        {enr.actores && (
+                          <div className="col-span-2">
+                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Reparto</p>
+                            <p className="text-sm text-zinc-300 leading-relaxed">
+                              {(Array.isArray(enr.actores) ? enr.actores.join(', ') : enr.actores).slice(0, 200)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })()}
+
+                  {/* Connected movies in the graph */}
+                  {connectedNodes.length > 0 && (
+                    <div className="mt-6">
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-3">
+                        Películas conectadas · {connectedNodes.length}
+                      </p>
+                      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-5 px-5">
+                        {connectedNodes.map(({ node: cn }) => (
+                          <button
+                            key={cn.id}
+                            type="button"
+                            onClick={() => {
+                              exitDive()
+                              setTimeout(() => focusNode(cn), 100)
+                            }}
+                            className="shrink-0 w-20 text-left cursor-pointer group"
+                          >
+                            <div className="relative w-20 rounded-lg overflow-hidden ring-1 ring-zinc-800 group-hover:ring-yellow-400/50 transition-all" style={{ aspectRatio: '2/3' }}>
+                              {cn.poster && (
+                                <NextImage
+                                  src={`https://image.tmdb.org/t/p/w185${cn.poster}`}
+                                  alt={cn.title}
+                                  fill
+                                  className="object-cover"
+                                  sizes="80px"
+                                />
+                              )}
+                            </div>
+                            <p className="text-[10px] text-zinc-300 font-semibold line-clamp-2 mt-1.5 leading-tight group-hover:text-yellow-400 transition-colors">
+                              {cn.title}
+                            </p>
+                            <span className="text-[9px] text-yellow-400 tabular-nums">{cn.imdb}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Full ficha CTA */}
+                  <div className="mt-8">
+                    <Link href={`${isSeries ? '/serie' : '/pelicula'}/${diveNode.id}`}>
+                      <Button fullWidth size="lg" iconRight={<Icon.ArrowRight className="w-4 h-4" />}>
+                        Ver ficha completa
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <div className="flex items-center justify-center h-64">
+                <p className="text-zinc-500 text-sm">No se encontró información</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageShell>
   )
 }

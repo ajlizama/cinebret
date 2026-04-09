@@ -69,6 +69,34 @@ interface Stats {
   current_streak: number
   max_streak: number
   guess_distribution: number[] // index 0 = 1 guess, index 5 = 6 guesses
+  // v2 fields — added later, optional for back-compat
+  best_time_seconds?: number       // fastest solve ever
+  total_time_seconds?: number      // sum of all daily play time
+  last_time_seconds?: number       // most recent daily solve time
+}
+
+const FREE_ROUNDS_PER_DAY = 3
+const FREE_ROUNDS_KEY = 'cinebret-adivina-free-rounds'
+function getFreeRoundsUsed(date: string): number {
+  try {
+    const raw = localStorage.getItem(FREE_ROUNDS_KEY)
+    if (!raw) return 0
+    const parsed = JSON.parse(raw) as { date: string; count: number }
+    if (parsed.date !== date) return 0
+    return parsed.count
+  } catch { return 0 }
+}
+function incrementFreeRounds(date: string): number {
+  const next = getFreeRoundsUsed(date) + 1
+  try { localStorage.setItem(FREE_ROUNDS_KEY, JSON.stringify({ date, count: next })) } catch {}
+  return next
+}
+
+function formatTime(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds < 0) return '—'
+  const m = Math.floor(seconds / 60)
+  const s = Math.floor(seconds % 60)
+  return `${m}:${s.toString().padStart(2, '0')}`
 }
 
 /* ─── Helpers ─── */
@@ -134,7 +162,18 @@ function loadStats(): Stats {
   try {
     const raw = localStorage.getItem('cinebret-adivina-stats')
     if (!raw) throw new Error('none')
-    return JSON.parse(raw) as Stats
+    const parsed = JSON.parse(raw) as Stats
+    // Backfill v2 fields for users from before timer support
+    return {
+      games_played: parsed.games_played ?? 0,
+      games_won: parsed.games_won ?? 0,
+      current_streak: parsed.current_streak ?? 0,
+      max_streak: parsed.max_streak ?? 0,
+      guess_distribution: parsed.guess_distribution ?? [0, 0, 0, 0, 0, 0],
+      best_time_seconds: parsed.best_time_seconds,
+      total_time_seconds: parsed.total_time_seconds,
+      last_time_seconds: parsed.last_time_seconds,
+    }
   } catch {
     return {
       games_played: 0,
@@ -221,12 +260,20 @@ export default function AdivinaPage() {
   const [showLegend, setShowLegend] = useState(false)
   const [isFreeMode, setIsFreeMode] = useState(false)
   const [allMovies, setAllMovies] = useState<Movie[]>([]) // all valid movies for free mode picks
+  const [freeRoundsUsed, setFreeRoundsUsed] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
+
+  // Timer — only ticks for the daily official game while it's not over and the
+  // tab is visible. Persists elapsed seconds in localStorage so a refresh
+  // doesn't reset the clock.
+  const [elapsedSeconds, setElapsedSeconds] = useState(0)
+  const lastTickRef = useRef<number | null>(null)
 
   const today = useMemo(() => getToday(), [])
   const dayNumber = useMemo(() => getDayNumber(), [])
   const gameOver = solved || failed
+  const TIMER_KEY = `cinebret-adivina-timer-${today}`
 
   // Fetch movies
   useEffect(() => {
@@ -310,6 +357,63 @@ export default function AdivinaPage() {
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Restore persisted timer + free-rounds-used on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(TIMER_KEY)
+      if (raw) {
+        const seconds = parseInt(raw, 10)
+        if (Number.isFinite(seconds) && seconds >= 0) setElapsedSeconds(seconds)
+      }
+    } catch {}
+    setFreeRoundsUsed(getFreeRoundsUsed(today))
+  }, [TIMER_KEY, today])
+
+  // Daily timer — only ticks when:
+  //   - Daily mode (not free)
+  //   - Game not over
+  //   - Tab visible
+  //   - Game data loaded
+  useEffect(() => {
+    if (isFreeMode || gameOver || loading || !targetMovie) return
+
+    let rafActive = true
+    function tick() {
+      if (!rafActive) return
+      const now = Date.now()
+      if (lastTickRef.current !== null) {
+        const delta = (now - lastTickRef.current) / 1000
+        setElapsedSeconds((prev) => {
+          const next = prev + delta
+          try { localStorage.setItem(TIMER_KEY, String(Math.floor(next))) } catch {}
+          return next
+        })
+      }
+      lastTickRef.current = now
+    }
+
+    const interval = setInterval(tick, 1000)
+    lastTickRef.current = Date.now()
+
+    function handleVisibility() {
+      if (document.hidden) {
+        rafActive = false
+        lastTickRef.current = null
+      } else {
+        rafActive = true
+        lastTickRef.current = Date.now()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      rafActive = false
+      lastTickRef.current = null
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [isFreeMode, gameOver, loading, targetMovie, TIMER_KEY])
 
   function buildGuessResult(guessed: Movie, target: Movie, adj?: Map<string, Set<string>> | null): GuessResult {
     const tEnr = target.enriquecimiento
@@ -404,11 +508,17 @@ export default function AdivinaPage() {
         // Only update stats for daily game
         if (!isFreeMode) {
           const s = loadStats()
+          const finalSeconds = Math.floor(elapsedSeconds)
           s.games_played += 1
           s.games_won += 1
           s.current_streak += 1
           if (s.current_streak > s.max_streak) s.max_streak = s.current_streak
           s.guess_distribution[newGuesses.length - 1] += 1
+          s.last_time_seconds = finalSeconds
+          s.total_time_seconds = (s.total_time_seconds ?? 0) + finalSeconds
+          if (s.best_time_seconds == null || finalSeconds < s.best_time_seconds) {
+            s.best_time_seconds = finalSeconds
+          }
           saveStats(s)
           setStats(s)
         }
@@ -417,18 +527,22 @@ export default function AdivinaPage() {
         // Only update stats for daily game
         if (!isFreeMode) {
           const s = loadStats()
+          const finalSeconds = Math.floor(elapsedSeconds)
           s.games_played += 1
           s.current_streak = 0
+          s.last_time_seconds = finalSeconds
+          s.total_time_seconds = (s.total_time_seconds ?? 0) + finalSeconds
           saveStats(s)
           setStats(s)
         }
       }
     },
-    [targetMovie, gameOver, guesses, today, graphAdj, isFreeMode],
+    [targetMovie, gameOver, guesses, today, graphAdj, isFreeMode, elapsedSeconds],
   )
 
   const startFreeGame = useCallback(() => {
     if (allMovies.length === 0) return
+    if (freeRoundsUsed >= FREE_ROUNDS_PER_DAY) return
     const randomIdx = Math.floor(Math.random() * allMovies.length)
     const newTarget = allMovies[randomIdx]
     setTargetMovie(newTarget)
@@ -438,7 +552,8 @@ export default function AdivinaPage() {
     setIsFreeMode(true)
     setSearchText('')
     setShowSuggestions(false)
-  }, [allMovies])
+    setFreeRoundsUsed(incrementFreeRounds(today))
+  }, [allMovies, freeRoundsUsed, today])
 
   const shareText = useMemo(() => {
     if (!solved && !failed) return ''
@@ -446,8 +561,11 @@ export default function AdivinaPage() {
       .map((g) => (g.movie.id === targetMovie?.id ? '🟩' : '🟥'))
       .join('')
     const score = solved ? `${guesses.length}/6` : 'X/6'
-    return `🎬 Adivina la Película CineBret #${dayNumber}\n${squares} (${score})\ncinebret.cl/adivina`
-  }, [solved, failed, guesses, targetMovie, dayNumber])
+    const timeLine = !isFreeMode && solved
+      ? `\n⏱ ${formatTime(Math.floor(elapsedSeconds))}`
+      : ''
+    return `🎬 Adivina la Película CineBret #${dayNumber}\n${squares} (${score})${timeLine}\ncinebret.cl/adivina`
+  }, [solved, failed, guesses, targetMovie, dayNumber, elapsedSeconds, isFreeMode])
 
   async function handleShare() {
     try {
@@ -606,8 +724,8 @@ export default function AdivinaPage() {
         title="Adivina la Película"
         subtitle={
           isFreeMode
-            ? `Modo libre · ${guesses.length}/6 intentos`
-            : `Desafío diario #${dayNumber} · ${guesses.length}/6 intentos`
+            ? `Modo libre · ronda ${freeRoundsUsed}/${FREE_ROUNDS_PER_DAY} · ${guesses.length}/6 intentos`
+            : `Desafío diario #${dayNumber} · ${guesses.length}/6 intentos · ⏱ ${formatTime(Math.floor(elapsedSeconds))}`
         }
         icon={<Icon.Sparkles className="w-7 h-7" />}
         actions={
@@ -882,8 +1000,11 @@ export default function AdivinaPage() {
               variant="secondary"
               onClick={startFreeGame}
               iconLeft={<Icon.Refresh className="w-4 h-4" />}
+              disabled={freeRoundsUsed >= FREE_ROUNDS_PER_DAY}
             >
-              Jugar otra película
+              {freeRoundsUsed >= FREE_ROUNDS_PER_DAY
+                ? `Sin rondas extra (${FREE_ROUNDS_PER_DAY}/${FREE_ROUNDS_PER_DAY})`
+                : `Jugar otra película (${freeRoundsUsed}/${FREE_ROUNDS_PER_DAY})`}
             </Button>
           </div>
         </Card>
@@ -930,6 +1051,36 @@ export default function AdivinaPage() {
             </div>
             <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
               Máx. racha
+            </div>
+          </div>
+        </div>
+
+        {/* Time stats — only daily */}
+        <div className="grid grid-cols-3 gap-3 mb-6 text-center">
+          <div>
+            <div className="text-xl font-black text-yellow-400 tabular-nums">
+              {stats.last_time_seconds != null ? formatTime(stats.last_time_seconds) : '—'}
+            </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Hoy
+            </div>
+          </div>
+          <div>
+            <div className="text-xl font-black text-yellow-400 tabular-nums">
+              {stats.best_time_seconds != null ? formatTime(stats.best_time_seconds) : '—'}
+            </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Mejor
+            </div>
+          </div>
+          <div>
+            <div className="text-xl font-black text-yellow-400 tabular-nums">
+              {stats.total_time_seconds != null && stats.games_played > 0
+                ? formatTime(Math.round(stats.total_time_seconds / stats.games_played))
+                : '—'}
+            </div>
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wide font-bold mt-1">
+              Promedio
             </div>
           </div>
         </div>

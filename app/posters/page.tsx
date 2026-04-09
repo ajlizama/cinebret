@@ -5,6 +5,7 @@ import type { Ref } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/context/AuthContext'
 import {
   PageShell,
   PageHeader,
@@ -16,6 +17,8 @@ import {
   ErrorState,
   Modal,
   Pill,
+  Tabs,
+  EmptyState,
   Icon,
 } from '@/components/ui'
 
@@ -648,10 +651,43 @@ const THEMES: Theme[] = [
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Community / user creations types
+// ─────────────────────────────────────────────────────────────────────────────
+
+type LandingTab = 'cinebret' | 'custom' | 'community' | 'mine'
+
+type UserCreation = {
+  id: string
+  user_id: string
+  type: string
+  title: string
+  movie_ids: string[]
+  theme_id: string | null
+  is_public: boolean
+  created_at: string
+}
+
+type CreatorProfile = {
+  user_id: string
+  username: string | null
+  avatar_url: string | null
+}
+
+type CreationWithMeta = UserCreation & {
+  previewPosters: string[]
+  creator?: CreatorProfile
+}
+
+const CREATIONS_PAGE_SIZE = 20
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function PostersPage() {
+  const { user } = useAuth()
+  const [landingTab, setLandingTab] = useState<LandingTab>('cinebret')
+  const [activeThemeKey, setActiveThemeKey] = useState<string | null>(null)
   const [activeTheme, setActiveTheme] = useState<Theme | null>(null)
   const [movies, setMovies] = useState<PosterMovie[]>([])
   const [connections, setConnections] = useState<Connection[]>([])
@@ -673,6 +709,22 @@ export default function PostersPage() {
   const [selectedMovie, setSelectedMovie] = useState<PosterMovie | null>(null)
   const movieSvgRef = useRef<SVGSVGElement>(null)
   const [movieDownloading, setMovieDownloading] = useState(false)
+
+  // Save / publish state
+  const [saveModalOpen, setSaveModalOpen] = useState(false)
+  const [saveIsPublic, setSaveIsPublic] = useState(false)
+  const [saveTitle, setSaveTitle] = useState('')
+  const [saveBusy, setSaveBusy] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<string | null>(null)
+
+  // Community + Mis creaciones state
+  const [communityItems, setCommunityItems] = useState<CreationWithMeta[]>([])
+  const [communityLoading, setCommunityLoading] = useState(false)
+  const [communityPage, setCommunityPage] = useState(0)
+  const [communityHasMore, setCommunityHasMore] = useState(true)
+  const [myItems, setMyItems] = useState<CreationWithMeta[]>([])
+  const [myLoading, setMyLoading] = useState(false)
+  const [loadingCreation, setLoadingCreation] = useState(false)
 
   // Fetch platforms for selected movie
   useEffect(() => {
@@ -739,6 +791,7 @@ export default function PostersPage() {
     }
     setCustomOpen(false)
     setActiveTheme(customTheme)
+    setActiveThemeKey('custom')
     setMovies([])
     setConnections([])
     setLoading(true)
@@ -803,6 +856,7 @@ export default function PostersPage() {
 
   async function selectTheme(theme: Theme) {
     setActiveTheme(theme)
+    setActiveThemeKey(theme.id)
     setMovies([])
     setConnections([])
     setError(null)
@@ -838,10 +892,224 @@ export default function PostersPage() {
 
   function closePoster() {
     setActiveTheme(null)
+    setActiveThemeKey(null)
     setMovies([])
     setConnections([])
     setError(null)
   }
+
+  // Build a poster from a saved creation (list of movie ids)
+  async function loadCreation(creation: CreationWithMeta) {
+    setLoadingCreation(true)
+    setError(null)
+    let g = graph
+    if (!g) {
+      try {
+        const r = await fetch('/movie-graph.json')
+        g = await r.json()
+        setGraph(g)
+      } catch {}
+    }
+    try {
+      const ids = creation.movie_ids || []
+      if (ids.length === 0) {
+        setError('Esta creación no tiene películas.')
+        setLoadingCreation(false)
+        return
+      }
+      const { data, error: qErr } = await supabase
+        .from('peliculas')
+        .select(SELECT_FIELDS)
+        .in('id', ids)
+      if (qErr) throw qErr
+      const rawById = new Map<string, RawMovie>()
+      for (const row of (data || []) as unknown as RawMovie[]) rawById.set(row.id, row)
+      // Preserve original order
+      const ordered: RawMovie[] = []
+      for (const id of ids) {
+        const r = rawById.get(id)
+        if (r) ordered.push(r)
+      }
+      const theme: Theme = {
+        id: 'imdb_top',
+        title: creation.title,
+        subtitle: `${ordered.length} películas`,
+        caption: creation.title,
+        groupBy: 'decade',
+        build: async () => ordered,
+      }
+      const colorMap = new Map<string, string>()
+      const posterMovies: PosterMovie[] = []
+      for (const r of ordered) {
+        const pm = toPosterMovie(r, 'decade', colorMap)
+        if (pm) posterMovies.push(pm)
+      }
+      const sliced = posterMovies.slice(0, 15)
+      const conns = buildConnectionsFromGraph(sliced, g, 10)
+      setActiveTheme(theme)
+      setActiveThemeKey(creation.theme_id || 'custom')
+      setMovies(sliced)
+      setConnections(conns)
+    } catch (e) {
+      setError((e as Error).message || 'Error cargando la creación')
+    } finally {
+      setLoadingCreation(false)
+    }
+  }
+
+  // Save poster to user_creations
+  async function savePoster(isPublic: boolean) {
+    if (!user) {
+      setSaveMessage('Inicia sesión para guardar tu poster.')
+      return
+    }
+    if (!activeTheme || movies.length === 0) return
+    setSaveIsPublic(isPublic)
+    const defaultTitle = activeTheme.title || 'Mi poster'
+    setSaveTitle(defaultTitle)
+    setSaveMessage(null)
+    setSaveModalOpen(true)
+  }
+
+  async function confirmSavePoster() {
+    if (!user) {
+      setSaveMessage('Inicia sesión para guardar tu poster.')
+      return
+    }
+    if (!activeTheme || movies.length === 0) return
+    const title = saveTitle.trim() || activeTheme.title || 'Mi poster'
+    setSaveBusy(true)
+    setSaveMessage(null)
+    try {
+      const { error: insErr } = await supabase.from('user_creations').insert({
+        user_id: user.id,
+        type: 'poster',
+        title,
+        movie_ids: movies.map((m) => m.id),
+        theme_id: activeThemeKey || 'custom',
+        is_public: saveIsPublic,
+      })
+      if (insErr) throw insErr
+      setSaveMessage(saveIsPublic ? 'Publicado en la Comunidad.' : 'Guardado en tus creaciones.')
+      // Invalidate caches so the new item appears next time the tab opens
+      setMyItems([])
+      setCommunityItems([])
+      setCommunityPage(0)
+      setCommunityHasMore(true)
+      setTimeout(() => {
+        setSaveModalOpen(false)
+        setSaveMessage(null)
+      }, 900)
+    } catch (e) {
+      setSaveMessage((e as Error).message || 'No pudimos guardar el poster.')
+    } finally {
+      setSaveBusy(false)
+    }
+  }
+
+  // Fetch community creations (paginated)
+  async function fetchCommunityPage(page: number) {
+    setCommunityLoading(true)
+    try {
+      const from = page * CREATIONS_PAGE_SIZE
+      const to = from + CREATIONS_PAGE_SIZE - 1
+      const { data, error: qErr } = await supabase
+        .from('user_creations')
+        .select('id, user_id, type, title, movie_ids, theme_id, is_public, created_at')
+        .eq('type', 'poster')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .range(from, to)
+      if (qErr) throw qErr
+      const rows = (data || []) as UserCreation[]
+      if (rows.length < CREATIONS_PAGE_SIZE) setCommunityHasMore(false)
+      const userIds = [...new Set(rows.map((r) => r.user_id))]
+      const allMovieIds = [...new Set(rows.flatMap((r) => (r.movie_ids || []).slice(0, 6)))]
+      const [profilesRes, postersRes] = await Promise.all([
+        userIds.length > 0
+          ? supabase
+              .from('profiles')
+              .select('user_id, username, avatar_url')
+              .in('user_id', userIds)
+          : Promise.resolve({ data: [] as CreatorProfile[], error: null }),
+        allMovieIds.length > 0
+          ? supabase
+              .from('peliculas')
+              .select('id, poster_path')
+              .in('id', allMovieIds)
+          : Promise.resolve({ data: [] as Array<{ id: string; poster_path: string | null }>, error: null }),
+      ])
+      const profileById = new Map<string, CreatorProfile>()
+      for (const p of ((profilesRes.data || []) as CreatorProfile[])) {
+        profileById.set(p.user_id, p)
+      }
+      const posterById = new Map<string, string | null>()
+      for (const p of ((postersRes.data || []) as Array<{ id: string; poster_path: string | null }>)) {
+        posterById.set(p.id, p.poster_path)
+      }
+      const withMeta: CreationWithMeta[] = rows.map((r) => ({
+        ...r,
+        previewPosters: (r.movie_ids || [])
+          .slice(0, 6)
+          .map((id) => posterById.get(id) || null)
+          .filter((p): p is string => !!p),
+        creator: profileById.get(r.user_id),
+      }))
+      setCommunityItems((prev) => (page === 0 ? withMeta : [...prev, ...withMeta]))
+    } catch (e) {
+      console.error('community fetch failed', e)
+    } finally {
+      setCommunityLoading(false)
+    }
+  }
+
+  // Fetch user's own creations
+  async function fetchMyCreations() {
+    if (!user) return
+    setMyLoading(true)
+    try {
+      const { data, error: qErr } = await supabase
+        .from('user_creations')
+        .select('id, user_id, type, title, movie_ids, theme_id, is_public, created_at')
+        .eq('type', 'poster')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(200)
+      if (qErr) throw qErr
+      const rows = (data || []) as UserCreation[]
+      const allMovieIds = [...new Set(rows.flatMap((r) => (r.movie_ids || []).slice(0, 6)))]
+      const { data: postersData } = allMovieIds.length > 0
+        ? await supabase.from('peliculas').select('id, poster_path').in('id', allMovieIds)
+        : { data: [] as Array<{ id: string; poster_path: string | null }> }
+      const posterById = new Map<string, string | null>()
+      for (const p of ((postersData || []) as Array<{ id: string; poster_path: string | null }>)) {
+        posterById.set(p.id, p.poster_path)
+      }
+      const withMeta: CreationWithMeta[] = rows.map((r) => ({
+        ...r,
+        previewPosters: (r.movie_ids || [])
+          .slice(0, 6)
+          .map((id) => posterById.get(id) || null)
+          .filter((p): p is string => !!p),
+      }))
+      setMyItems(withMeta)
+    } catch (e) {
+      console.error('my creations fetch failed', e)
+    } finally {
+      setMyLoading(false)
+    }
+  }
+
+  // Lazy-load tab data on switch
+  useEffect(() => {
+    if (landingTab === 'community' && communityItems.length === 0 && communityHasMore && !communityLoading) {
+      fetchCommunityPage(0)
+    }
+    if (landingTab === 'mine' && user && myItems.length === 0 && !myLoading) {
+      fetchMyCreations()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [landingTab, user?.id])
 
   // Pre-compute positions using force-directed layout based on connections
   const positions = useMemo(
@@ -1074,38 +1342,94 @@ export default function PostersPage() {
             subtitle="Genera infografías visuales de cómo se conectan películas según el grafo de similitud de CineBret. Listas para compartir en Instagram."
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            {/* Custom theme card — compact */}
-            <motion.button
-              type="button"
-              onClick={() => setCustomOpen(true)}
-              whileHover={{ y: -2 }}
-              className="group relative h-28 rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-300 to-yellow-600 cursor-pointer transition-transform duration-300"
-            >
-              <div className="absolute inset-0 flex items-center gap-4 px-5 text-zinc-950">
-                <div className="shrink-0 w-14 h-14 rounded-xl bg-zinc-950/15 flex items-center justify-center">
-                  <Icon.Plus className="w-7 h-7" strokeWidth={2.5} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-lg font-black leading-tight">Crear tu poster</h3>
-                  <p className="text-xs font-semibold text-zinc-900/90 mt-0.5">
-                    Elige tus propias películas
-                  </p>
-                  <p className="text-[10px] text-zinc-800/80 mt-0.5">Hasta 15 películas</p>
-                </div>
-              </div>
-            </motion.button>
-
-            {THEMES.map((theme, idx) => (
-              <ThemeCard
-                key={theme.id}
-                theme={theme}
-                index={idx}
-                previewPoster={previewPosters[theme.id]}
-                onClick={() => selectTheme(theme)}
-              />
-            ))}
+          <div className="mb-6">
+            <Tabs
+              value={landingTab}
+              onChange={(k) => setLandingTab(k as LandingTab)}
+              tabs={[
+                { key: 'cinebret', label: 'CineBret' },
+                { key: 'custom', label: 'Crea el tuyo' },
+                { key: 'community', label: 'Comunidad' },
+                ...(user ? [{ key: 'mine' as const, label: 'Mis creaciones' }] : []),
+              ]}
+            />
           </div>
+
+          {landingTab === 'cinebret' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {THEMES.map((theme, idx) => (
+                <ThemeCard
+                  key={theme.id}
+                  theme={theme}
+                  index={idx}
+                  previewPoster={previewPosters[theme.id]}
+                  onClick={() => selectTheme(theme)}
+                />
+              ))}
+            </div>
+          )}
+
+          {landingTab === 'custom' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <motion.button
+                type="button"
+                onClick={() => setCustomOpen(true)}
+                whileHover={{ y: -2 }}
+                className="group relative h-28 rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-300 to-yellow-600 cursor-pointer transition-transform duration-300"
+              >
+                <div className="absolute inset-0 flex items-center gap-4 px-5 text-zinc-950">
+                  <div className="shrink-0 w-14 h-14 rounded-xl bg-zinc-950/15 flex items-center justify-center">
+                    <Icon.Plus className="w-7 h-7" strokeWidth={2.5} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg font-black leading-tight">Crear tu poster</h3>
+                    <p className="text-xs font-semibold text-zinc-900/90 mt-0.5">
+                      Elige tus propias películas
+                    </p>
+                    <p className="text-[10px] text-zinc-800/80 mt-0.5">Hasta 20 películas</p>
+                  </div>
+                </div>
+              </motion.button>
+              <div className="hidden sm:flex items-center justify-center rounded-2xl border border-dashed border-zinc-800 p-6 text-center">
+                <p className="text-xs text-zinc-500 max-w-xs">
+                  Elige manualmente las películas que quieres combinar. CineBret
+                  calcula sus conexiones automáticamente usando el grafo de similitud.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {landingTab === 'community' && (
+            <CreationsGrid
+              items={communityItems}
+              loading={communityLoading}
+              emptyTitle="Aún no hay posters en la Comunidad"
+              emptyDescription="Sé la primera persona en publicar un poster. Crea uno y pulsa Publicar."
+              showCreator
+              onOpen={loadCreation}
+              onLoadMore={
+                communityHasMore && !communityLoading
+                  ? () => {
+                      const next = communityPage + 1
+                      setCommunityPage(next)
+                      fetchCommunityPage(next)
+                    }
+                  : null
+              }
+            />
+          )}
+
+          {landingTab === 'mine' && user && (
+            <CreationsGrid
+              items={myItems}
+              loading={myLoading}
+              emptyTitle="Todavía no guardaste ningún poster"
+              emptyDescription="Genera un poster desde CineBret o Crea el tuyo y pulsa Guardar o Publicar."
+              showVisibility
+              onOpen={loadCreation}
+              onLoadMore={null}
+            />
+          )}
         </PageShell>
       )}
 
@@ -1240,6 +1564,74 @@ export default function PostersPage() {
         </div>
       </Modal>
 
+      {/* ───────────── Save / Publish modal ───────────── */}
+      <Modal
+        open={saveModalOpen}
+        onClose={() => {
+          if (!saveBusy) {
+            setSaveModalOpen(false)
+            setSaveMessage(null)
+          }
+        }}
+        title={saveIsPublic ? 'Publicar en la Comunidad' : 'Guardar poster'}
+        size="sm"
+      >
+        <div className="space-y-4">
+          {!user ? (
+            <p className="text-sm text-zinc-400">
+              Necesitas una sesión iniciada para guardar o publicar tus posters.
+            </p>
+          ) : (
+            <>
+              <div>
+                <label className="block text-xs font-semibold text-zinc-400 mb-2">
+                  Título del poster
+                </label>
+                <input
+                  type="text"
+                  value={saveTitle}
+                  onChange={(e) => setSaveTitle(e.target.value)}
+                  maxLength={60}
+                  placeholder="Título"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 min-h-[44px]"
+                />
+              </div>
+              <p className="text-xs text-zinc-500">
+                {saveIsPublic
+                  ? 'Será visible en la pestaña Comunidad para toda la gente de CineBret.'
+                  : 'Solo lo verás tú en Mis creaciones.'}
+              </p>
+              {saveMessage && (
+                <p className="text-xs text-yellow-400 text-center">{saveMessage}</p>
+              )}
+              <div className="flex gap-2 pt-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => setSaveModalOpen(false)}
+                  disabled={saveBusy}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={confirmSavePoster}
+                  loading={saveBusy}
+                  fullWidth
+                >
+                  {saveIsPublic ? 'Publicar' : 'Guardar'}
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+
+      {/* ───────────── Loading remote creation overlay ───────────── */}
+      {loadingCreation && (
+        <div className="fixed inset-0 z-[55] bg-black/80 backdrop-blur-sm flex items-center justify-center">
+          <LoadingState text="Cargando creación..." size="lg" />
+        </div>
+      )}
+
       {/* ───────────── Poster view ───────────── */}
       <AnimatePresence>
         {activeTheme && (
@@ -1296,25 +1688,47 @@ export default function PostersPage() {
 
               {/* Action buttons */}
               {!loading && !error && movies.length > 0 && (
-                <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  <Button
-                    onClick={downloadAsImage}
-                    loading={downloading}
-                    fullWidth
-                    size="lg"
-                    iconLeft={<Icon.Download className="w-4 h-4" />}
-                  >
-                    {downloading ? 'Generando...' : 'Descargar PNG'}
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={sharePoster}
-                    fullWidth
-                    size="lg"
-                    iconLeft={<Icon.Share className="w-4 h-4" />}
-                  >
-                    Compartir
-                  </Button>
+                <div className="mt-8 flex flex-col gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={downloadAsImage}
+                      loading={downloading}
+                      fullWidth
+                      size="lg"
+                      iconLeft={<Icon.Download className="w-4 h-4" />}
+                    >
+                      {downloading ? 'Generando...' : 'Descargar PNG'}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={sharePoster}
+                      fullWidth
+                      size="lg"
+                      iconLeft={<Icon.Share className="w-4 h-4" />}
+                    >
+                      Compartir
+                    </Button>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      variant="secondary"
+                      onClick={() => savePoster(false)}
+                      fullWidth
+                      size="lg"
+                      iconLeft={<Icon.Bookmark className="w-4 h-4" />}
+                    >
+                      Guardar
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => savePoster(true)}
+                      fullWidth
+                      size="lg"
+                      iconLeft={<Icon.Users className="w-4 h-4" />}
+                    >
+                      Publicar
+                    </Button>
+                  </div>
                 </div>
               )}
 
@@ -1390,6 +1804,160 @@ export default function PostersPage() {
         )}
       </AnimatePresence>
     </>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Creations grid (Comunidad / Mis creaciones)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function CreationsGrid({
+  items,
+  loading,
+  emptyTitle,
+  emptyDescription,
+  showCreator = false,
+  showVisibility = false,
+  onOpen,
+  onLoadMore,
+}: {
+  items: CreationWithMeta[]
+  loading: boolean
+  emptyTitle: string
+  emptyDescription: string
+  showCreator?: boolean
+  showVisibility?: boolean
+  onOpen: (c: CreationWithMeta) => void
+  onLoadMore: (() => void) | null
+}) {
+  if (!loading && items.length === 0) {
+    return (
+      <EmptyState
+        icon={<Icon.Sparkles className="w-12 h-12" />}
+        title={emptyTitle}
+        description={emptyDescription}
+      />
+    )
+  }
+  return (
+    <div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        {items.map((c) => (
+          <CreationCard
+            key={c.id}
+            creation={c}
+            showCreator={showCreator}
+            showVisibility={showVisibility}
+            onClick={() => onOpen(c)}
+          />
+        ))}
+      </div>
+      {loading && (
+        <div className="py-8">
+          <LoadingState text="Cargando..." size="md" />
+        </div>
+      )}
+      {onLoadMore && (
+        <div className="mt-6 flex justify-center">
+          <Button variant="secondary" onClick={onLoadMore}>
+            Cargar más
+          </Button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function CreationCard({
+  creation,
+  showCreator,
+  showVisibility,
+  onClick,
+}: {
+  creation: CreationWithMeta
+  showCreator: boolean
+  showVisibility: boolean
+  onClick: () => void
+}) {
+  const posters = creation.previewPosters.slice(0, 6)
+  const themeLabel =
+    creation.theme_id && creation.theme_id !== 'custom'
+      ? THEMES.find((t) => t.id === creation.theme_id)?.title || 'CineBret'
+      : 'Personalizado'
+  return (
+    <Card
+      as="button"
+      padding="none"
+      interactive
+      onClick={onClick}
+      className="overflow-hidden border border-zinc-800 hover:border-yellow-400/40 text-left"
+    >
+      {/* Poster thumbnail grid */}
+      <div className="relative aspect-[4/3] bg-zinc-950 grid grid-cols-3 grid-rows-2 gap-[2px]">
+        {posters.length === 0 && (
+          <div className="col-span-3 row-span-2 flex items-center justify-center text-zinc-700">
+            <Icon.Film className="w-10 h-10" />
+          </div>
+        )}
+        {posters.map((p, i) => (
+          <div key={i} className="relative overflow-hidden bg-zinc-900">
+            <img
+              src={`https://image.tmdb.org/t/p/w154${p}`}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/10 to-transparent pointer-events-none" />
+        {showVisibility && (
+          <div className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-zinc-950/80 border border-zinc-800 px-2 py-1 text-[10px] font-semibold text-yellow-400">
+            {creation.is_public ? (
+              <>
+                <Icon.Users className="w-3 h-3" />
+                <span>Público</span>
+              </>
+            ) : (
+              <>
+                <Icon.Lock className="w-3 h-3" />
+                <span>Privado</span>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+      {/* Meta */}
+      <div className="p-4 space-y-2">
+        <h3 className="text-sm font-bold text-white line-clamp-1">{creation.title}</h3>
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-yellow-400/80 line-clamp-1">
+            {themeLabel}
+          </span>
+          <span className="text-[10px] text-zinc-500 shrink-0">
+            {(creation.movie_ids || []).length} pelis
+          </span>
+        </div>
+        {showCreator && creation.creator && (
+          <div className="flex items-center gap-2 pt-2 border-t border-zinc-800">
+            <div className="w-6 h-6 rounded-full bg-zinc-800 overflow-hidden shrink-0">
+              {creation.creator.avatar_url ? (
+                <img
+                  src={creation.creator.avatar_url}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-zinc-500">
+                  <Icon.User className="w-3 h-3" />
+                </div>
+              )}
+            </div>
+            <span className="text-xs text-zinc-400 line-clamp-1">
+              {creation.creator.username || 'anónimo'}
+            </span>
+          </div>
+        )}
+      </div>
+    </Card>
   )
 }
 

@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/context/AuthContext'
+import AuthModal from '@/components/AuthModal'
 import {
   PageShell,
   PageHeader,
@@ -15,6 +17,12 @@ import {
   Modal,
   Icon,
 } from '@/components/ui'
+import {
+  loadStats as loadGameStatsRemote,
+  saveStats as saveGameStatsRemote,
+  type GameStats,
+  DEFAULT_GAME_STATS,
+} from '@/lib/gameStats'
 
 /* ─── Types ─── */
 interface Enriquecimiento {
@@ -63,17 +71,9 @@ interface GameState {
   failed: boolean
 }
 
-interface Stats {
-  games_played: number
-  games_won: number
-  current_streak: number
-  max_streak: number
-  guess_distribution: number[] // index 0 = 1 guess, index 5 = 6 guesses
-  // v2 fields — added later, optional for back-compat
-  best_time_seconds?: number       // fastest solve ever
-  total_time_seconds?: number      // sum of all daily play time
-  last_time_seconds?: number       // most recent daily solve time
-}
+// Stats type lives in @/lib/gameStats now (GameStats). Keep a local alias
+// so existing references compile without churn.
+type Stats = GameStats
 
 const FREE_ROUNDS_PER_DAY = 3
 const FREE_ROUNDS_KEY = 'cinebret-adivina-free-rounds'
@@ -158,36 +158,12 @@ function saveGameState(date: string, state: GameState) {
   localStorage.setItem(`cinebret-adivina-${date}`, JSON.stringify(state))
 }
 
-function loadStats(): Stats {
-  try {
-    const raw = localStorage.getItem('cinebret-adivina-stats')
-    if (!raw) throw new Error('none')
-    const parsed = JSON.parse(raw) as Stats
-    // Backfill v2 fields for users from before timer support
-    return {
-      games_played: parsed.games_played ?? 0,
-      games_won: parsed.games_won ?? 0,
-      current_streak: parsed.current_streak ?? 0,
-      max_streak: parsed.max_streak ?? 0,
-      guess_distribution: parsed.guess_distribution ?? [0, 0, 0, 0, 0, 0],
-      best_time_seconds: parsed.best_time_seconds,
-      total_time_seconds: parsed.total_time_seconds,
-      last_time_seconds: parsed.last_time_seconds,
-    }
-  } catch {
-    return {
-      games_played: 0,
-      games_won: 0,
-      current_streak: 0,
-      max_streak: 0,
-      guess_distribution: [0, 0, 0, 0, 0, 0],
-    }
-  }
-}
-
-function saveStats(stats: Stats) {
-  localStorage.setItem('cinebret-adivina-stats', JSON.stringify(stats))
-}
+// Stats persistence delegated to @/lib/gameStats. The wrappers below preserve
+// the synchronous API the rest of the file expects:
+//   - On mount, the AdivinaPage component fetches once via loadGameStatsRemote
+//     and stores the result in `stats` state.
+//   - Sync mutations call computeNextStats(prev, ...) and write through both
+//     local + remote via saveGameStatsRemote (fire-and-forget).
 
 /* ─── Graph helpers ─── */
 function buildAdjacency(edges: GraphData['edges']): Map<string, Set<string>> {
@@ -243,7 +219,10 @@ function distanceToPercent(d: number | null): number {
 }
 
 /* ─── Component ─── */
+const HOWTO_SEEN_KEY = 'cinebret-adivina-howto-seen'
+
 export default function AdivinaPage() {
+  const { user } = useAuth()
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [targetMovie, setTargetMovie] = useState<Movie | null>(null)
@@ -254,15 +233,43 @@ export default function AdivinaPage() {
   const [searchText, setSearchText] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [showStats, setShowStats] = useState(false)
-  const [stats, setStats] = useState<Stats>(loadStats)
+  const [stats, setStats] = useState<Stats>(DEFAULT_GAME_STATS)
   const [copied, setCopied] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [showLegend, setShowLegend] = useState(false)
+  const [showHowTo, setShowHowTo] = useState(false)
+  const [showAuth, setShowAuth] = useState(false)
   const [isFreeMode, setIsFreeMode] = useState(false)
   const [allMovies, setAllMovies] = useState<Movie[]>([]) // all valid movies for free mode picks
   const [freeRoundsUsed, setFreeRoundsUsed] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
+
+  // First-visit instructions modal
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem(HOWTO_SEEN_KEY)) setShowHowTo(true)
+    } catch {}
+  }, [])
+
+  // Load stats from local (guest) or remote (logged in) on mount and whenever
+  // user auth state changes. Logged-in users get the source-of-truth from
+  // Supabase; guests fall back to localStorage.
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      const fresh = await loadGameStatsRemote('adivina', user?.id ?? null)
+      if (!cancelled) setStats(fresh)
+    })()
+    return () => { cancelled = true }
+  }, [user?.id])
+
+  // Helper: write-through save (updates local state + persists to local +
+  // remote when applicable). Fire-and-forget — UI doesn't block on the network.
+  const persistStats = useCallback((next: Stats) => {
+    setStats(next)
+    saveGameStatsRemote('adivina', user?.id ?? null, next).catch(() => {})
+  }, [user?.id])
 
   // Timer — only ticks for the daily official game while it's not over and the
   // tab is visible. Persists elapsed seconds in localStorage so a refresh
@@ -507,37 +514,37 @@ export default function AdivinaPage() {
         setTimeout(() => setShowConfetti(false), 3000)
         // Only update stats for daily game
         if (!isFreeMode) {
-          const s = loadStats()
           const finalSeconds = Math.floor(elapsedSeconds)
-          s.games_played += 1
-          s.games_won += 1
-          s.current_streak += 1
-          if (s.current_streak > s.max_streak) s.max_streak = s.current_streak
-          s.guess_distribution[newGuesses.length - 1] += 1
-          s.last_time_seconds = finalSeconds
-          s.total_time_seconds = (s.total_time_seconds ?? 0) + finalSeconds
-          if (s.best_time_seconds == null || finalSeconds < s.best_time_seconds) {
-            s.best_time_seconds = finalSeconds
+          const next: Stats = { ...stats, guess_distribution: [...stats.guess_distribution] }
+          next.games_played += 1
+          next.games_won += 1
+          next.current_streak += 1
+          if (next.current_streak > next.max_streak) next.max_streak = next.current_streak
+          next.guess_distribution[newGuesses.length - 1] += 1
+          next.last_time_seconds = finalSeconds
+          next.total_time_seconds = (next.total_time_seconds ?? 0) + finalSeconds
+          if (next.best_time_seconds == null || finalSeconds < next.best_time_seconds) {
+            next.best_time_seconds = finalSeconds
           }
-          saveStats(s)
-          setStats(s)
+          next.last_played_date = today
+          persistStats(next)
         }
       } else if (lost) {
         setFailed(true)
         // Only update stats for daily game
         if (!isFreeMode) {
-          const s = loadStats()
           const finalSeconds = Math.floor(elapsedSeconds)
-          s.games_played += 1
-          s.current_streak = 0
-          s.last_time_seconds = finalSeconds
-          s.total_time_seconds = (s.total_time_seconds ?? 0) + finalSeconds
-          saveStats(s)
-          setStats(s)
+          const next: Stats = { ...stats, guess_distribution: [...stats.guess_distribution] }
+          next.games_played += 1
+          next.current_streak = 0
+          next.last_time_seconds = finalSeconds
+          next.total_time_seconds = (next.total_time_seconds ?? 0) + finalSeconds
+          next.last_played_date = today
+          persistStats(next)
         }
       }
     },
-    [targetMovie, gameOver, guesses, today, graphAdj, isFreeMode, elapsedSeconds],
+    [targetMovie, gameOver, guesses, today, graphAdj, isFreeMode, elapsedSeconds, stats, persistStats],
   )
 
   const startFreeGame = useCallback(() => {
@@ -734,8 +741,9 @@ export default function AdivinaPage() {
               variant="secondary"
               size="sm"
               iconLeft={<Icon.Trophy className="w-4 h-4" />}
-              onClick={() => {
-                setStats(loadStats())
+              onClick={async () => {
+                const fresh = await loadGameStatsRemote('adivina', user?.id ?? null)
+                setStats(fresh)
                 setShowStats(true)
               }}
             >
@@ -749,6 +757,13 @@ export default function AdivinaPage() {
             >
               Siglas
             </Button>
+            <IconButton
+              icon={<Icon.Info className="w-4 h-4" />}
+              label="Cómo jugar"
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowHowTo(true)}
+            />
           </>
         }
       />
@@ -986,6 +1001,36 @@ export default function AdivinaPage() {
             )}
           </div>
 
+          {/* Guest CTA — only on the daily, only when not logged in, only when game over */}
+          {!user && !isFreeMode && (
+            <Card padding="md" className="mb-5 border border-yellow-400/30 bg-yellow-400/5">
+              <div className="flex items-start gap-3">
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center">
+                  <Icon.Trophy className="w-5 h-5 text-yellow-400" />
+                </div>
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="text-white font-bold text-sm">
+                    Guardá tu progreso
+                  </p>
+                  <p className="text-zinc-400 text-xs mt-0.5">
+                    Iniciá sesión para llevar tus rachas, tiempos y estadísticas en todos tus dispositivos.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 flex justify-center">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  fullWidth
+                  iconLeft={<Icon.User className="w-4 h-4" />}
+                  onClick={() => setShowAuth(true)}
+                >
+                  Iniciar sesión / Crear cuenta
+                </Button>
+              </div>
+            </Card>
+          )}
+
           <div className="flex flex-col items-center gap-2">
             {!isFreeMode && (
               <Button
@@ -1115,7 +1160,85 @@ export default function AdivinaPage() {
             )
           })}
         </div>
+
+        {/* Source-of-truth caption */}
+        <p className="mt-4 pt-3 border-t border-zinc-800 text-[10px] text-zinc-600 text-center">
+          {user
+            ? 'Sincronizado en tu cuenta'
+            : 'Solo en este dispositivo · iniciá sesión para sincronizar'}
+        </p>
       </Modal>
+
+      {/* ─── How to play modal ─── */}
+      <Modal
+        open={showHowTo}
+        onClose={() => {
+          setShowHowTo(false)
+          try { localStorage.setItem(HOWTO_SEEN_KEY, '1') } catch {}
+        }}
+        title="Cómo jugar"
+        size="sm"
+      >
+        <div className="space-y-4">
+          <p className="text-zinc-300 text-sm leading-relaxed">
+            Adiviná la película del día en <span className="font-bold text-yellow-400">6 intentos</span>.
+            Cada intento te da pistas: cuanto más cerca estés, más datos compartirá con la película secreta.
+          </p>
+
+          <div>
+            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-2">
+              Después de cada intento
+            </p>
+            <ul className="space-y-2 text-sm text-zinc-300">
+              <li className="flex items-start gap-2">
+                <Icon.Check className="w-4 h-4 text-yellow-400 mt-0.5 shrink-0" />
+                <span>Si la pista coincide (mismo director, género, década, etc.) se marca en dorado.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Icon.Close className="w-4 h-4 text-zinc-600 mt-0.5 shrink-0" />
+                <span>Si no coincide, se queda en gris.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Icon.Eye className="w-4 h-4 text-yellow-400 mt-0.5 shrink-0" />
+                <span>La imagen detrás se va revelando con cada intento.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800">
+            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-2">
+              Pistas que comparamos
+            </p>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
+              <span className="text-zinc-400"><span className="text-white font-semibold">DEC</span> · Década</span>
+              <span className="text-zinc-400"><span className="text-white font-semibold">GEN</span> · Género</span>
+              <span className="text-zinc-400"><span className="text-white font-semibold">DIR</span> · Director</span>
+              <span className="text-zinc-400"><span className="text-white font-semibold">CAST</span> · Reparto</span>
+              <span className="text-zinc-400"><span className="text-white font-semibold">OSC</span> · Óscar</span>
+              <span className="text-zinc-400"><span className="text-white font-semibold">COMP</span> · Compositor</span>
+              <span className="text-zinc-400"><span className="text-white font-semibold">MOOD</span> · Categoría</span>
+            </div>
+          </div>
+
+          <p className="text-zinc-500 text-xs leading-relaxed">
+            Hay un desafío diario para todos. Después podés jugar hasta {FREE_ROUNDS_PER_DAY} rondas extra al azar (no cuentan para tu racha).
+          </p>
+
+          <Button
+            variant="primary"
+            fullWidth
+            onClick={() => {
+              setShowHowTo(false)
+              try { localStorage.setItem(HOWTO_SEEN_KEY, '1') } catch {}
+            }}
+          >
+            Empezar a jugar
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Auth modal — login / signup */}
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </PageShell>
   )
 }

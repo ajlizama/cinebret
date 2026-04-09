@@ -185,9 +185,9 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
             </div>
 
             {serie.categoria && (
-              <div className="shrink-0 border border-zinc-700 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
-                <p className="text-xs text-zinc-500 mb-1">Categoria CineBret</p>
-                <p className="text-sm font-semibold text-white">{serie.categoria}</p>
+              <div className="shrink-0 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-2.5 text-center">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Categoría</p>
+                <p className="text-sm font-semibold text-yellow-400">{serie.categoria}</p>
               </div>
             )}
           </div>
@@ -195,7 +195,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* ── CONTENIDO ── */}
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-6 pt-2 pb-6">
         <div className="grid md:grid-cols-3 gap-8">
 
           {/* Columna principal */}

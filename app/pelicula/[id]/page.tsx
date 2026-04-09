@@ -138,8 +138,8 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             </div>
 
             {pelicula.categoria && (
-              <div className="shrink-0 border border-yellow-400/20 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
-                <p className="text-xs text-zinc-500 mb-1">Categoría CineBret</p>
+              <div className="shrink-0 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-2.5 text-center">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Categoría</p>
                 <p className="text-sm font-semibold text-yellow-400">{pelicula.categoria}</p>
               </div>
             )}
@@ -150,7 +150,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* ── CONTENIDO: fondo negro ── */}
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-6 pt-2 pb-6">
         <div className="grid md:grid-cols-3 gap-8">
 
           {/* Columna principal */}

@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { PageShell, Section, StatCard, Pill, BackButton } from '@/components/ui'
+import { PageShell, Section, Pill, BackButton } from '@/components/ui'
 import { fetchPersonByName, calcAge } from '@/lib/tmdb-person'
 import FilmographyGrid from '@/components/FilmographyGrid'
 
@@ -77,15 +77,16 @@ export default async function CompositorPage({ params }: { params: Promise<{ nam
     return osc.startsWith('ganó') && osc.includes('mejor película') && !osc.includes('animad') && !osc.includes('internacional') && !osc.includes('documental')
   }).length
 
-  // Collaborators
+  // Collaborators — for a compositor, show directors + actors (not other
+  // composers, which would be redundant with themselves).
   const actors: Record<string, number> = {}
-  const composers: Record<string, number> = {}
+  const directors: Record<string, number> = {}
   const genres: Record<string, number> = {}
   const categories: Record<string, number> = {}
 
   for (const m of sorted) {
     const enr = enrMap[m.id]
-    if (enr?.compositor) composers[enr.compositor] = (composers[enr.compositor] ?? 0) + 1
+    if (enr?.director) directors[enr.director] = (directors[enr.director] ?? 0) + 1
     const actList = Array.isArray(enr?.actores) ? enr.actores : (enr?.actores ?? '').split(',').map((a: string) => a.trim()).filter(Boolean)
     for (const a of actList.slice(0, 5)) actors[a] = (actors[a] ?? 0) + 1
     for (const g of (enr?.generos ?? [])) { const ng = norm(g); genres[ng] = (genres[ng] ?? 0) + 1 }
@@ -93,7 +94,7 @@ export default async function CompositorPage({ params }: { params: Promise<{ nam
   }
 
   const topActors = Object.entries(actors).sort(([, a], [, b]) => b - a).slice(0, 6)
-  const topComposers = Object.entries(composers).sort(([, a], [, b]) => b - a).slice(0, 4)
+  const topDirectors = Object.entries(directors).sort(([, a], [, b]) => b - a).slice(0, 5)
   const topGenres = Object.entries(genres).sort(([, a], [, b]) => b - a).slice(0, 6)
   const topCats = Object.entries(categories).sort(([, a], [, b]) => b - a)
 
@@ -161,47 +162,61 @@ export default async function CompositorPage({ params }: { params: Promise<{ nam
           </div>
         )}
 
-        {/* Stats */}
-        <Section label="Estadísticas">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2">
-            <StatCard value={sorted.length} label="Películas" />
-            {avgImdb && <StatCard value={avgImdb} label="Nota media" sub="IMDb" />}
-            {compOscars != null && compOscars > 0 && <StatCard value={compOscars} label={compOscars > 1 ? 'Oscars' : 'Oscar'} />}
-            {bestPicture > 0 && <StatCard value={bestPicture} label="Mejor Película" />}
-          </div>
-        </Section>
+        {/* Stats — compact inline */}
+        <div className="flex items-center gap-2 flex-wrap mb-6">
+          <Pill variant="gold">{sorted.length} películas</Pill>
+          {avgImdb && <Pill variant="gold">IMDb {avgImdb}</Pill>}
+          {compOscars != null && compOscars > 0 && <Pill variant="gold">{compOscars} Óscar{compOscars > 1 ? 'es' : ''}</Pill>}
+          {bestPicture > 0 && <Pill variant="gold">{bestPicture} Mejor Película</Pill>}
+        </div>
 
-        {/* Collaborators grid */}
+        {/* Collaborators — collapsible */}
         <Section label="Colaboradores y géneros">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-zinc-900 rounded-2xl p-5">
-              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Actores frecuentes</p>
-              {topActors.map(([a, count]) => (
-                <Link key={a} href={`/actor/${encodeURIComponent(a)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
-                  {a} <span className="text-zinc-600">({count})</span>
-                </Link>
-              ))}
-            </div>
-            <div className="bg-zinc-900 rounded-2xl p-5">
-              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Compositores</p>
-              {topComposers.map(([c, count]) => (
-                <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
-                  {c} <span className="text-zinc-600">({count})</span>
-                </Link>
-              ))}
-            </div>
-            <div className="bg-zinc-900 rounded-2xl p-5">
-              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Géneros</p>
-              {topGenres.map(([g, count]) => (
-                <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
-              ))}
-            </div>
-            <div className="bg-zinc-900 rounded-2xl p-5">
-              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Categorías CineBret</p>
-              {topCats.map(([c, count]) => (
-                <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <details className="bg-zinc-900 rounded-2xl group" open>
+              <summary className="p-4 text-xs text-zinc-500 uppercase tracking-wider font-bold cursor-pointer list-none flex items-center justify-between">
+                Cast (Actores) <span className="text-zinc-600 group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="px-4 pb-4">
+                {topActors.map(([a, count]) => (
+                  <Link key={a} href={`/actor/${encodeURIComponent(a)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                    {a} <span className="text-zinc-600">({count})</span>
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <details className="bg-zinc-900 rounded-2xl group" open>
+              <summary className="p-4 text-xs text-zinc-500 uppercase tracking-wider font-bold cursor-pointer list-none flex items-center justify-between">
+                Directores <span className="text-zinc-600 group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="px-4 pb-4">
+                {topDirectors.map(([d, count]) => (
+                  <Link key={d} href={`/director/${encodeURIComponent(d)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                    {d} <span className="text-zinc-600">({count})</span>
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <details className="bg-zinc-900 rounded-2xl group">
+              <summary className="p-4 text-xs text-zinc-500 uppercase tracking-wider font-bold cursor-pointer list-none flex items-center justify-between">
+                Géneros <span className="text-zinc-600 group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="px-4 pb-4">
+                {topGenres.map(([g, count]) => (
+                  <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
+                ))}
+              </div>
+            </details>
+            <details className="bg-zinc-900 rounded-2xl group">
+              <summary className="p-4 text-xs text-zinc-500 uppercase tracking-wider font-bold cursor-pointer list-none flex items-center justify-between">
+                Categorías CineBret <span className="text-zinc-600 group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="px-4 pb-4">
+                {topCats.map(([c, count]) => (
+                  <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
+                ))}
+              </div>
+            </details>
           </div>
         </Section>
 

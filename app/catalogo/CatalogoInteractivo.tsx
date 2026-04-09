@@ -501,7 +501,7 @@ function PanelExpandido({
             {/* Badges — after cast */}
             <div className="flex gap-2 flex-wrap">
               {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded">CB Review</span>}
-              {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-2 py-0.5 rounded font-bold">★ Recomendada</span>}
+              {p.sello_bret && <span className="text-xs border border-yellow-400 text-yellow-400 px-2 py-0.5 rounded font-bold">★ Recomendada</span>}
             </div>
           </div>
         </div>
@@ -621,7 +621,7 @@ function PanelExpandido({
 
               <div className="flex gap-3 items-center flex-wrap">
                 {p.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-2 py-0.5 rounded shadow">CB Review</span>}
-                {p.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/30 px-2 py-0.5 rounded font-bold shadow">★ Recomendada</span>}
+                {p.sello_bret && <span className="text-xs border border-yellow-400 text-yellow-400 bg-black/30 px-2 py-0.5 rounded font-bold shadow">★ Recomendada</span>}
               </div>
             </div>
           </div>
@@ -668,12 +668,12 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 
   return (
     <div className="mb-4">
-      <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-2">Trending</h2>
+      <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-3">Trending</h2>
       <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
         {trendingMovies.map((p, i) => (
-          <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => onSelect(p)}>
-            <div className="relative w-32 h-48 rounded-xl overflow-hidden bg-zinc-800 mb-1">
-              <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="128px" />
+          <div key={p.id} className="shrink-0 w-36 cursor-pointer" onClick={() => onSelect(p)}>
+            <div className="relative w-36 rounded-xl overflow-hidden bg-zinc-800 mb-1 shadow-lg shadow-black/40" style={{ aspectRatio: '2/3' }}>
+              <Image src={`https://image.tmdb.org/t/p/w342${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="144px" />
               <div className="absolute top-0 left-0 bg-zinc-950/80 rounded-br-lg px-2 py-1">
                 <span className="text-white font-black text-lg leading-none">{i + 1}</span>
               </div>
@@ -908,9 +908,8 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
   return (
     <>
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-zinc-950 pt-4 pb-2">
-        <div className="relative flex flex-col items-center justify-center px-4">
-          {!hideHeroTitle && <h1 className="text-xl md:text-2xl font-bold text-white mb-2">Bienvenido a <span className="text-yellow-400">CineBret</span></h1>}
+      <div className="relative overflow-hidden bg-zinc-950 pt-2 pb-1">
+        <div className="relative flex flex-col items-center justify-center px-4 max-w-2xl mx-auto">
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
@@ -943,11 +942,16 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-2">
-        {/* ── ¿En qué mood estás? ── */}
-        <div className="mb-3">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-base md:text-xl font-bold text-white">¿En qué mood estás?</h2>
+      {/* ── Tinder slot — the hero (rendered ABOVE filters) ── */}
+      <div className="max-w-7xl mx-auto px-3 md:px-6">
+        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro, trendingIds: activeTrendingIds }) : tinderSlot}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-1">
+        {/* ── Mood chips (horizontal scroll) ── */}
+        <div className="mb-2">
+          <div className="flex items-center justify-between mb-1.5">
+            <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500">Mood</h2>
             {showModeToggleInMood && (
               <div className="flex bg-zinc-800 rounded-lg p-0.5 gap-0.5" suppressHydrationWarning>
                 <button onClick={() => setMode('peliculas')} className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Películas</button>
@@ -955,15 +959,15 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               </div>
             )}
           </div>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-3 px-3 pb-1">
             {MOOD_CATS.map(cat => {
               const activa = categoriasFiltro.includes(cat.id)
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`py-1.5 md:py-2.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-0.5 transition-all ${activa ? 'bg-yellow-400/20 text-yellow-300 shadow-[0_0_10px_rgba(250,204,21,0.15)] scale-105' : 'bg-yellow-400/5 text-zinc-400 hover:bg-yellow-400/10'}`}>
-                  <span className="text-base md:text-xl leading-none">{cat.emoji}</span>
-                  <span className="text-center leading-tight">{cat.label}</span>
+                  className={`shrink-0 min-h-[44px] rounded-full px-4 text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap ${activa ? 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 shadow-[0_0_10px_rgba(250,204,21,0.15)]' : 'bg-zinc-800/80 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                  <span className="text-sm leading-none">{cat.emoji}</span>
+                  <span>{cat.label}</span>
                 </button>
               )
             })}
@@ -971,8 +975,8 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         </div>
 
         {/* ── Plataformas ── */}
-        <div className={hidePlatformTitle ? 'mb-3 -mt-1' : 'mb-3'}>
-          {!hidePlatformTitle && <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>}
+        <div className={hidePlatformTitle ? 'mb-2 -mt-1' : 'mb-2'}>
+          {!hidePlatformTitle && <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-1.5">Plataformas</h2>}
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
@@ -987,9 +991,6 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
             })}
           </div>
         </div>
-
-        {/* ── Tinder slot (only rendered if passed) ── */}
-        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro, trendingIds: activeTrendingIds }) : tinderSlot}
 
         {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">
@@ -1059,7 +1060,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
             {(soloReviews || soloSello || soloWatchlist || filtroVistas !== 'todas' || anioDesde || anioHasta) && (
               <>
                 {soloReviews && <span onClick={() => setSoloReviews(false)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">CB Reviews <span className="text-yellow-400/60">x</span></span>}
-                {soloSello && <span onClick={() => setSoloSello(false)} className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-emerald-500/30 transition-colors">Recomendadas <span className="text-emerald-400/60">x</span></span>}
+                {soloSello && <span onClick={() => setSoloSello(false)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">Recomendadas <span className="text-yellow-400/60">x</span></span>}
                 {soloWatchlist && <span onClick={() => setSoloWatchlist(false)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">Watchlist <span className="text-yellow-400/60">x</span></span>}
                 {filtroVistas !== 'todas' && <span onClick={() => setFiltroVistas('todas')} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">{filtroVistas === 'vistas' ? 'Vistas' : 'No vistas'} <span className="text-yellow-400/60">x</span></span>}
                 {(anioDesde || anioHasta) && <span onClick={() => { setAnioDesde(''); setAnioHasta('') }} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">{anioDesde || '...'}-{anioHasta || '...'} <span className="text-yellow-400/60">x</span></span>}
@@ -1105,7 +1106,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
                 CB Reviews
               </button>
               <button onClick={() => setSoloSello(!soloSello)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloSello ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloSello ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
                 Recomendadas
               </button>
               <div className="flex items-center gap-2 md:ml-auto">
@@ -1159,7 +1160,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               filtrosCategorias={categoriasFiltro} filtrosPlataformas={plataformasFiltro} />
           ) : (
             <div>
-              <h2 className="text-base md:text-xl font-bold text-white mb-2">Para Ti</h2>
+              <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-2">Para Ti</h2>
               {/* Carrusel para usuarios sin cuestionario — contenido con plataforma, con filtros */}
               <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
                 {(() => {
@@ -1232,37 +1233,97 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
           </div>
         )}
 
-        {/* ── Catálogo ── */}
-        <div className="mb-4" ref={catalogRef}>
-          {/* Row 1: title + toggle + badges */}
-          <div className="flex items-center gap-2 mb-3 flex-wrap">
-            <h2 className="text-xl md:text-2xl font-bold text-white">Catálogo</h2>
-            <div className="flex rounded-full border border-zinc-700 overflow-hidden text-xs font-medium">
-              <button onClick={() => setVistaMode('grilla')}
-                className={`px-4 py-1.5 transition-colors ${vistaMode === 'grilla' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
-                Grilla
-              </button>
-              <button onClick={() => setVistaMode('lista')}
-                className={`px-4 py-1.5 transition-colors ${vistaMode === 'lista' ? 'bg-white text-zinc-950' : 'text-zinc-400 hover:text-white'}`}>
-                Lista
-              </button>
+        {/* ── Mood category carousels (only when no filters active) ── */}
+        {!hayFiltros && (() => {
+          const moodCarousels = MOOD_CATS.map(cat => ({
+            ...cat,
+            movies: contenido.filter(p => p.categoria === cat.id && p.poster_path)
+              .sort((a, b) => (b.nota_imdb ?? 0) - (a.nota_imdb ?? 0))
+              .slice(0, 20)
+          })).filter(c => c.movies.length > 0)
+
+          if (moodCarousels.length === 0) return null
+          return (
+            <div className="space-y-4 mb-4">
+              {moodCarousels.map(cat => (
+                <div key={cat.id}>
+                  <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-2">{cat.emoji} {cat.label}</h2>
+                  <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none -mx-3 px-3">
+                    {cat.movies.map(p => (
+                      <div key={p.id} className="shrink-0 w-28 cursor-pointer group" onClick={() => { setExpandida(prev => prev === p.id ? null : p.id); setParaTiMovie(null); setTrendingMovie(null) }}>
+                        <div className="relative w-28 rounded-lg overflow-hidden bg-zinc-800 shadow-md transition-all duration-300 group-hover:ring-2 group-hover:ring-yellow-400/40 group-hover:shadow-lg" style={{ aspectRatio: '2/3' }}>
+                          <Image src={`https://image.tmdb.org/t/p/w185${p.poster_path}`} alt={p.titulo_ingles || p.titulo} fill className="object-cover" sizes="112px" />
+                          {p.nota_imdb != null && (
+                            <div className="absolute top-1 left-1 bg-zinc-900/90 backdrop-blur-sm rounded px-1 py-0.5 flex items-center gap-0.5">
+                              <svg className="w-2 h-2 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                              <span className="text-yellow-400 font-bold text-[9px] leading-none">{p.nota_imdb}</span>
+                            </div>
+                          )}
+                          {p.plataformas.length > 0 && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-3 pb-1 px-1">
+                              <div className="flex items-center gap-0.5">
+                                {PLATAFORMAS.filter(pl => p.plataformas.includes(pl.id)).slice(0, 3).map(pl => (
+                                  <div key={pl.id} className="bg-white/90 rounded px-0.5 py-0.5" style={{ height: 11 }}>
+                                    <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-2 w-auto object-contain" />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-zinc-300 text-[10px] font-medium leading-tight line-clamp-1 mt-1">{p.titulo_ingles || p.titulo}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-            <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-              <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-xs ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
-            </button>
-            <button onClick={() => setSoloSello(!soloSello)} className={`flex items-center gap-1 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-              <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-xs ${soloSello ? 'border-emerald-400 text-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-400 text-emerald-400'}`}>★</span>
-            </button>
-            <select value={orden} onChange={e => setOrden(e.target.value as Orden)}
-              className="ml-auto bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-zinc-500 shrink-0">
-              <option value="imdb">IMDB</option>
-              <option value="rt">RT</option>
-              <option value="metacritic">MC</option>
-              <option value="boxoffice">Taquilla</option>
-              <option value="anio_desc">Recientes</option>
-              <option value="anio_asc">Antiguas</option>
-              <option value="titulo">A-Z</option>
-            </select>
+          )
+        })()}
+
+        {/* ── Catálogo header ── */}
+        <div className="mb-3" ref={catalogRef}>
+          {/* Bar: count pill + sort chips + view toggle */}
+          <div className="flex items-center gap-2 mb-2">
+            <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500">{hayFiltros ? 'Resultados' : 'Explorar todo'}</h2>
+            <span className="inline-flex items-center rounded-full bg-yellow-400/15 border border-yellow-400/30 px-2.5 py-0.5 text-[11px] font-bold text-yellow-400 tabular-nums">
+              {peliculasFiltradas.length.toLocaleString('es')} {activeMode === 'series' ? 'series' : 'películas'}
+            </span>
+            <div className="ml-auto flex items-center gap-1.5">
+              <button onClick={() => setSoloReviews(!soloReviews)} className={`flex items-center gap-1 transition-opacity ${soloReviews ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
+                <span className={`font-serif italic font-bold px-1.5 py-0.5 rounded text-xs ${soloReviews ? 'bg-yellow-400 text-zinc-950 ring-1 ring-yellow-300' : 'bg-yellow-400 text-zinc-950'}`}>CB</span>
+              </button>
+              <button onClick={() => setSoloSello(!soloSello)} className={`flex items-center gap-1 transition-opacity ${soloSello ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
+                <span className={`font-serif italic font-bold border px-1.5 py-0.5 rounded text-xs ${soloSello ? 'border-yellow-400 text-yellow-400 ring-1 ring-yellow-400/40' : 'border-yellow-400/60 text-yellow-400/60'}`}>★</span>
+              </button>
+              <div className="flex rounded-lg border border-zinc-700/50 overflow-hidden">
+                <button onClick={() => setVistaMode('grilla')} aria-label="Vista grilla"
+                  className={`w-8 h-8 flex items-center justify-center transition-colors ${vistaMode === 'grilla' ? 'bg-yellow-400/15 text-yellow-400' : 'text-zinc-500 hover:text-white'}`}>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="0" width="7" height="7" rx="1"/><rect x="9" y="0" width="7" height="7" rx="1"/><rect x="0" y="9" width="7" height="7" rx="1"/><rect x="9" y="9" width="7" height="7" rx="1"/></svg>
+                </button>
+                <button onClick={() => setVistaMode('lista')} aria-label="Vista lista"
+                  className={`w-8 h-8 flex items-center justify-center transition-colors ${vistaMode === 'lista' ? 'bg-yellow-400/15 text-yellow-400' : 'text-zinc-500 hover:text-white'}`}>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="1" width="16" height="2.5" rx="1"/><rect x="0" y="6.75" width="16" height="2.5" rx="1"/><rect x="0" y="12.5" width="16" height="2.5" rx="1"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          {/* Sort chips row */}
+          <div className="flex gap-1.5 overflow-x-auto scrollbar-none pb-1 -mx-3 px-3">
+            {([
+              { key: 'imdb' as Orden, label: 'IMDb' },
+              { key: 'rt' as Orden, label: 'RT' },
+              { key: 'metacritic' as Orden, label: 'MC' },
+              { key: 'boxoffice' as Orden, label: 'Taquilla' },
+              { key: 'anio_desc' as Orden, label: 'Recientes' },
+              { key: 'anio_asc' as Orden, label: 'Antiguas' },
+              { key: 'titulo' as Orden, label: 'A-Z' },
+            ]).map(s => (
+              <button key={s.key} onClick={() => setOrden(s.key)}
+                className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${orden === s.key ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30' : 'bg-zinc-800/80 text-zinc-500 border border-transparent hover:text-zinc-300'}`}>
+                {s.label}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -1289,63 +1350,70 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
 
               return (
                 <React.Fragment key={pelicula.id}>
-                  <div
-                    onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
-                    className={`relative rounded-xl overflow-hidden cursor-pointer group bg-zinc-800 shadow-lg hover:shadow-2xl transition-all ${isExpanded ? 'ring-2 ring-yellow-400' : ''}`}
-                    style={{ aspectRatio: '2/3' }}
-                  >
-                    {pelicula.poster_path ? (
-                      <Image src={`https://image.tmdb.org/t/p/w342${pelicula.poster_path}`} alt={pelicula.titulo_ingles || pelicula.titulo} fill
-                        className={`object-cover transition-transform duration-500 ${isExpanded ? '' : 'group-hover:scale-105'}`} sizes="(max-width: 768px) 50vw, 25vw" />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-zinc-800"><svg className="w-14 h-14 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent" />
-                    <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
-                      {pelicula.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none shadow">CB</span>}
-                      {pelicula.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 bg-black/70 px-1.5 py-0.5 rounded leading-none font-bold shadow">★</span>}
-                    </div>
-                    {user && (
-                      <div className="absolute top-2 right-2 flex flex-col gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={e => e.stopPropagation()}>
-                        <button onClick={e => toggleVisto(pelicula.id, e)}
-                          className={`w-11 h-11 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-white/70 bg-black/60 text-white hover:border-emerald-400'}`}>✓</button>
-                        <button onClick={e => toggleWatchlist(pelicula.id, e)}
-                          className={`w-11 h-11 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-white/70 bg-black/60 text-white hover:border-yellow-400'}`}>★</button>
+                  <div className="flex flex-col">
+                    <div
+                      onClick={() => { setExpandida(isExpanded ? null : pelicula.id); setParaTiMovie(null) }}
+                      className={`relative rounded-xl overflow-hidden cursor-pointer group bg-zinc-800 shadow-lg transition-all duration-300 ${isExpanded ? 'ring-2 ring-yellow-400' : 'hover:ring-2 hover:ring-yellow-400/40 hover:shadow-2xl hover:shadow-yellow-400/5'}`}
+                      style={{ aspectRatio: '2/3' }}
+                    >
+                      {pelicula.poster_path ? (
+                        <Image src={`https://image.tmdb.org/t/p/w342${pelicula.poster_path}`} alt={pelicula.titulo_ingles || pelicula.titulo} fill
+                          className={`object-cover transition-transform duration-500 ${isExpanded ? '' : 'group-hover:scale-105'}`} sizes="(max-width: 768px) 50vw, 25vw" />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-zinc-800"><svg className="w-14 h-14 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20M7 4v4M12 4v4M17 4v4" strokeLinecap="round"/></svg></div>
+                      )}
+                      {/* Overlay — lighter on mobile (poster-first), richer on hover for desktop */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent md:group-hover:from-black/95 md:group-hover:via-black/30 transition-all duration-300" />
+                      {/* IMDb badge top-left */}
+                      {pelicula.nota_imdb != null && (
+                        <div className="absolute top-1.5 left-1.5 z-10 bg-zinc-900/90 backdrop-blur-sm rounded-md px-1.5 py-0.5 flex items-center gap-1">
+                          <svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                          <span className="text-yellow-400 font-bold text-[10px] leading-none">{pelicula.nota_imdb}</span>
+                        </div>
+                      )}
+                      {/* Badges top-left below IMDb */}
+                      <div className="absolute top-7 left-1.5 flex flex-col gap-1 z-10">
+                        {pelicula.es_review_autor && <span className="font-serif italic font-bold text-[10px] bg-yellow-400 text-zinc-950 px-1 py-0.5 rounded leading-none shadow">CB</span>}
+                        {pelicula.sello_bret && <span className="text-[10px] border border-yellow-400 text-yellow-400 bg-black/70 px-1 py-0.5 rounded leading-none font-bold shadow">★</span>}
                       </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 p-3 z-10">
-                      <div className="flex items-end justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          {platsActivas.length > 0 && (
-                            <div className="flex gap-1 mb-2 flex-wrap">
-                              {platsActivas.map(pl => (
-                                <div key={pl.id} className="rounded bg-white px-1 py-0.5 flex items-center">
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-3.5 w-auto object-contain" />
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                          <p className="text-white font-bold text-sm md:text-base leading-tight line-clamp-2">{pelicula.titulo_ingles || pelicula.titulo}</p>
-                          <div className="flex items-center gap-2 mt-1 flex-wrap">
-                            {pelicula.anio && <span className="text-zinc-300 text-xs md:text-sm">{pelicula.anio}</span>}
-                            {pelicula.nota_imdb != null && <span className="text-yellow-400 font-bold text-xs md:text-sm"><svg className="w-3 h-3 inline-block fill-yellow-400 -mt-px" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>}
+                      {user && (
+                        <div className="absolute top-2 right-2 flex flex-col gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={e => e.stopPropagation()}>
+                          <button onClick={e => toggleVisto(pelicula.id, e)}
+                            className={`w-11 h-11 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.visto ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-white/70 bg-black/60 text-white hover:border-emerald-400'}`}>✓</button>
+                          <button onClick={e => toggleWatchlist(pelicula.id, e)}
+                            className={`w-11 h-11 rounded-full border text-sm font-bold flex items-center justify-center transition-colors shadow ${up?.watchlist ? 'bg-yellow-400 border-yellow-400 text-zinc-950' : 'border-white/70 bg-black/60 text-white hover:border-yellow-400'}`}>★</button>
+                        </div>
+                      )}
+                      {/* Bottom overlay: platforms + desktop hover title */}
+                      <div className="absolute inset-x-0 bottom-0 p-2 z-10">
+                        {platsActivas.length > 0 && (
+                          <div className="flex gap-0.5 mb-1">
+                            {platsActivas.slice(0, 3).map(pl => (
+                              <div key={pl.id} className="rounded bg-white/90 px-0.5 py-0.5 flex items-center" style={{ height: 14 }}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-2.5 w-auto object-contain" />
+                              </div>
+                            ))}
                           </div>
-                          {pelicula.categoria && (
-                            <span className="inline-block mt-1.5 text-xs md:text-[11px] bg-white/15 backdrop-blur-sm text-zinc-200 px-2 py-0.5 rounded-full leading-tight">
-                              {pelicula.categoria}
-                            </span>
-                          )}
+                        )}
+                        {/* Desktop: title on hover */}
+                        <div className="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white font-bold text-sm leading-tight line-clamp-2">{pelicula.titulo_ingles || pelicula.titulo}</p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            {pelicula.anio && <span className="text-zinc-300 text-xs">{pelicula.anio}</span>}
+                          </div>
                         </div>
                         {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                          <div className="shrink-0 self-end flex flex-col items-center">
+                          <div className="absolute bottom-2 right-2 flex flex-col items-center">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img loading="lazy" src="/oscar.png" alt="Oscar" className={`h-9 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
-                            {oscarNum && <span className={`text-xs font-bold leading-none -mt-1 ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
+                            <img loading="lazy" src="/oscar.png" alt="Oscar" className={`h-7 w-auto ${oscarGano ? 'opacity-100' : 'opacity-30'}`} />
+                            {oscarNum && <span className={`text-[10px] font-bold leading-none -mt-0.5 ${oscarGano ? 'text-yellow-400' : 'text-zinc-500'}`}>{oscarNum}</span>}
                           </div>
                         )}
                       </div>
                     </div>
+                    {/* Mobile: compact title below poster */}
+                    <p className="md:hidden text-white text-[10px] font-medium leading-tight line-clamp-1 mt-1 px-0.5">{pelicula.titulo_ingles || pelicula.titulo}</p>
                   </div>
                   {isExpanded && (
                     <PanelExpandido p={pelicula} up={up} user={user}
@@ -1395,7 +1463,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
                               <div className="min-w-0">
                                 <div className="flex items-center gap-1.5 mb-0.5">
                                   {pelicula.es_review_autor && <span className="font-serif italic font-bold text-xs bg-yellow-400 text-zinc-950 px-1.5 py-0.5 rounded leading-none">CB</span>}
-                                  {pelicula.sello_bret && <span className="text-xs border border-emerald-400 text-emerald-400 px-1.5 py-0.5 rounded leading-none font-bold">★</span>}
+                                  {pelicula.sello_bret && <span className="text-xs border border-yellow-400 text-yellow-400 px-1.5 py-0.5 rounded leading-none font-bold">★</span>}
                                 </div>
                                 <span className="text-white font-semibold text-sm truncate max-w-52 block">{pelicula.titulo_ingles || pelicula.titulo}</span>
                                 {pelicula.titulo_ingles && pelicula.titulo !== pelicula.titulo_ingles && (

@@ -2,7 +2,19 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
-import Nav from '@/components/Nav'
+import {
+  PageShell,
+  PageHeader,
+  Card,
+  Button,
+  IconButton,
+  SearchInput,
+  Modal,
+  LoadingState,
+  EmptyState,
+  Pill,
+  Icon,
+} from '@/components/ui'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -202,6 +214,11 @@ export default function ConexionPage() {
     setChosenEnd(null)
   }
 
+  function closeChooser() {
+    setChooserOpen(false)
+    setChooserError('')
+  }
+
   /* Scroll path strip to end ------------------------------------- */
   useEffect(() => {
     if (pathRef.current) {
@@ -263,7 +280,7 @@ export default function ConexionPage() {
   function share() {
     if (!startNode || !endNode) return
     const steps = path.length - 1
-    const text = `🔗 Conexión CineBret: Conecté ${startNode.titleEs || startNode.title} → ${endNode.titleEs || endNode.title} en ${steps} pasos (óptimo: ${optimalLen - 1})\ncinebret.cl/conexion`
+    const text = `Conexión CineBret: Conecté ${startNode.titleEs || startNode.title} → ${endNode.titleEs || endNode.title} en ${steps} pasos (óptimo: ${optimalLen - 1})\ncinebret.cl/conexion`
     if (navigator.share) {
       navigator.share({ text }).catch(() => {})
     } else {
@@ -281,9 +298,9 @@ export default function ConexionPage() {
   function getRating() {
     const steps = path.length - 1
     const optimal = optimalLen - 1
-    if (steps === optimal) return '🏆 Perfecto!'
-    if (steps <= optimal + 2) return '⭐ Muy bien!'
-    return '👍 Lo lograste'
+    if (steps === optimal) return 'Perfecto'
+    if (steps <= optimal + 2) return 'Muy bien'
+    return 'Lo lograste'
   }
 
   /* ---------------------------------------------------------------- */
@@ -292,39 +309,43 @@ export default function ConexionPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white">
-        <Nav active="inicio" />
-        <div className="flex items-center justify-center pt-32">
-          <p className="text-red-400 text-lg">{error}</p>
-        </div>
-      </div>
+      <PageShell maxWidth="2xl">
+        <EmptyState
+          icon={<Icon.Error className="w-16 h-16" />}
+          title="Algo salió mal"
+          description={error}
+          action={
+            <Button onClick={() => { setError(null); startGame() }} iconLeft={<Icon.Refresh className="w-4 h-4" />}>
+              Reintentar
+            </Button>
+          }
+        />
+      </PageShell>
     )
   }
 
   if (!graph || !startNode || !endNode) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white">
-        <Nav active="inicio" />
-        <div className="flex items-center justify-center pt-32">
-          <div className="animate-pulse text-yellow-400 text-lg">Cargando grafo de películas...</div>
-        </div>
-      </div>
+      <PageShell maxWidth="2xl">
+        <LoadingState text="Cargando grafo de películas..." size="lg" />
+      </PageShell>
     )
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pb-44">
-      <Nav active="inicio" />
+    <PageShell maxWidth="2xl" className="pb-44">
+      <PageHeader
+        title="Conexión Cinéfila"
+        subtitle="Encuentra el camino más corto entre dos películas saltando por sus conexiones."
+        icon={<Icon.Map className="w-7 h-7" />}
+      />
 
-      {/* Header: challenge ---------------------------------------- */}
-      <div className="max-w-2xl mx-auto px-4 pt-6 pb-2">
-        <h1 className="text-center text-yellow-400 font-bold text-xl mb-1">Conexión CineBret</h1>
-        <p className="text-center text-zinc-400 text-sm mb-4">¿Puedes conectar estas películas?</p>
-
+      {/* Challenge card -------------------------------------------- */}
+      <Card padding="lg" className="mb-6">
         <div className="flex items-center justify-center gap-3">
           {/* Start movie */}
           <div className="flex flex-col items-center w-24 shrink-0">
-            <div className="relative w-20 h-[120px] rounded-lg overflow-hidden ring-2 ring-green-500">
+            <div className="relative w-20 h-[120px] rounded-lg overflow-hidden ring-2 ring-yellow-400">
               <Image
                 src={`${TMDB_IMG}${startNode.poster}`}
                 alt={startNode.titleEs || startNode.title}
@@ -334,20 +355,20 @@ export default function ConexionPage() {
                 unoptimized
               />
             </div>
-            <span className="text-[11px] text-center mt-1 text-green-400 leading-tight line-clamp-2">
+            <span className="text-[11px] text-center mt-2 text-yellow-400 leading-tight line-clamp-2 font-semibold">
               {startNode.titleEs || startNode.title}
             </span>
           </div>
 
           {/* Arrow */}
-          <div className="flex flex-col items-center gap-0.5 shrink-0">
-            <span className="text-yellow-400 text-2xl">→</span>
-            <span className="text-[10px] text-zinc-500">{path.length - 1} pasos</span>
+          <div className="flex flex-col items-center gap-1 shrink-0">
+            <Icon.ArrowRight className="w-6 h-6 text-yellow-400" />
+            <span className="text-[10px] text-zinc-500 tabular-nums">{path.length - 1} pasos</span>
           </div>
 
           {/* End movie */}
           <div className="flex flex-col items-center w-24 shrink-0">
-            <div className="relative w-20 h-[120px] rounded-lg overflow-hidden ring-2 ring-red-500">
+            <div className="relative w-20 h-[120px] rounded-lg overflow-hidden ring-2 ring-yellow-400/40">
               <Image
                 src={`${TMDB_IMG}${endNode.poster}`}
                 alt={endNode.titleEs || endNode.title}
@@ -357,7 +378,7 @@ export default function ConexionPage() {
                 unoptimized
               />
             </div>
-            <span className="text-[11px] text-center mt-1 text-red-400 leading-tight line-clamp-2">
+            <span className="text-[11px] text-center mt-2 text-zinc-300 leading-tight line-clamp-2 font-semibold">
               {endNode.titleEs || endNode.title}
             </span>
           </div>
@@ -365,252 +386,290 @@ export default function ConexionPage() {
 
         {/* Initial distance info */}
         {optimalLen > 1 && (
-          <p className="text-center text-zinc-400 text-sm mt-3">
-            Están a <span className="text-yellow-400 font-bold">{optimalLen - 1} pasos</span> de distancia
-            <span className="ml-2 text-zinc-500">— Conexión: {distToPercent(optimalLen - 1)}%</span>
-          </p>
+          <div className="flex items-center justify-center gap-2 mt-5">
+            <Pill variant="gold">
+              {optimalLen - 1} pasos óptimos
+            </Pill>
+            <Pill variant="default">
+              Conexión {distToPercent(optimalLen - 1)}%
+            </Pill>
+          </div>
         )}
 
         {/* Action buttons */}
-        <div className="flex justify-center gap-3 mt-3 flex-wrap">
-          <button
+        <div className="flex justify-center gap-2 mt-5 flex-wrap">
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={startGame}
-            className="px-4 py-1.5 bg-zinc-800 text-zinc-300 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-zinc-700"
+            iconLeft={<Icon.Refresh className="w-4 h-4" />}
           >
             Cambiar películas
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => setChooserOpen(true)}
-            className="px-4 py-1.5 bg-zinc-800 text-yellow-400 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-yellow-400/30"
+            iconLeft={<Icon.Search className="w-4 h-4" />}
           >
             Elegir películas
-          </button>
+          </Button>
           {!won && !surrendered && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={surrender}
-              className="px-4 py-1.5 bg-zinc-800 text-red-400 text-xs font-medium rounded-lg hover:bg-zinc-700 transition border border-red-500/30"
             >
               Rendirse
-            </button>
+            </Button>
+          )}
+        </div>
+      </Card>
+
+      {/* Movie Chooser Modal */}
+      <Modal open={chooserOpen} onClose={closeChooser} title="Elegir películas" size="sm">
+        <p className="text-zinc-500 text-xs mb-4">Mínimo 4 pasos de distancia</p>
+
+        {/* Start movie search */}
+        <div className="mb-4 relative">
+          <label className="text-zinc-400 text-xs mb-1.5 block font-medium">Película de inicio</label>
+          {chosenStart ? (
+            <div className="flex items-center gap-2 bg-zinc-800 rounded-xl px-3 py-2 border border-zinc-800">
+              <div className="w-8 h-12 rounded overflow-hidden shrink-0 bg-zinc-700">
+                {chosenStart.poster && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={`${TMDB_IMG}${chosenStart.poster}`} alt="" className="w-full h-full object-cover" />
+                )}
+              </div>
+              <span className="text-white text-sm flex-1 line-clamp-1">{chosenStart.titleEs || chosenStart.title}</span>
+              <IconButton
+                icon={<Icon.Close className="w-4 h-4" />}
+                label="Quitar película"
+                size="sm"
+                onClick={() => { setChosenStart(null); setSearchStart('') }}
+              />
+            </div>
+          ) : (
+            <div>
+              <SearchInput
+                value={searchStart}
+                onChange={setSearchStart}
+                placeholder="Buscar película..."
+                autoFocus
+              />
+              {startResults.length > 0 && (
+                <div className="absolute left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-xl overflow-hidden z-10 max-h-48 overflow-y-auto">
+                  {startResults.map(n => (
+                    <button
+                      key={n.id}
+                      onClick={() => { setChosenStart(n); setSearchStart('') }}
+                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left transition-colors"
+                    >
+                      <div className="w-6 h-9 rounded overflow-hidden shrink-0 bg-zinc-700">
+                        {n.poster && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={`${TMDB_IMG}${n.poster}`} alt="" className="w-full h-full object-cover" />
+                        )}
+                      </div>
+                      <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 
-        {/* Movie Chooser Modal */}
-        {chooserOpen && (
-          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setChooserOpen(false)}>
-            <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-5 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
-              <h3 className="text-white font-bold text-lg mb-1">Elegir películas</h3>
-              <p className="text-zinc-500 text-xs mb-4">Mínimo 4 pasos de distancia</p>
-
-              {/* Start movie search */}
-              <div className="mb-3 relative">
-                <label className="text-zinc-400 text-xs mb-1 block">Película inicio</label>
-                {chosenStart ? (
-                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-2">
-                    <div className="w-8 h-12 rounded overflow-hidden shrink-0 bg-zinc-700">
-                      {chosenStart.poster && <img src={`${TMDB_IMG}${chosenStart.poster}`} alt="" className="w-full h-full object-cover" />}
-                    </div>
-                    <span className="text-white text-sm flex-1 line-clamp-1">{chosenStart.titleEs || chosenStart.title}</span>
-                    <button onClick={() => { setChosenStart(null); setSearchStart('') }} className="text-zinc-500 text-xs">✕</button>
-                  </div>
-                ) : (
-                  <div>
-                    <input
-                      type="text" value={searchStart} onChange={e => setSearchStart(e.target.value)}
-                      placeholder="Buscar película..." autoFocus
-                      className="w-full bg-zinc-800 rounded-lg px-3 py-2 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-yellow-400/30"
-                    />
-                    {startResults.length > 0 && (
-                      <div className="absolute left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden z-10 max-h-48 overflow-y-auto">
-                        {startResults.map(n => (
-                          <button key={n.id} onClick={() => { setChosenStart(n); setSearchStart('') }}
-                            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left">
-                            <div className="w-6 h-9 rounded overflow-hidden shrink-0 bg-zinc-700">
-                              {n.poster && <img src={`${TMDB_IMG}${n.poster}`} alt="" className="w-full h-full object-cover" />}
-                            </div>
-                            <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+        {/* End movie search */}
+        <div className="mb-4 relative">
+          <label className="text-zinc-400 text-xs mb-1.5 block font-medium">Película de destino</label>
+          {chosenEnd ? (
+            <div className="flex items-center gap-2 bg-zinc-800 rounded-xl px-3 py-2 border border-zinc-800">
+              <div className="w-8 h-12 rounded overflow-hidden shrink-0 bg-zinc-700">
+                {chosenEnd.poster && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={`${TMDB_IMG}${chosenEnd.poster}`} alt="" className="w-full h-full object-cover" />
                 )}
               </div>
-
-              {/* End movie search */}
-              <div className="mb-4 relative">
-                <label className="text-zinc-400 text-xs mb-1 block">Película destino</label>
-                {chosenEnd ? (
-                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-2">
-                    <div className="w-8 h-12 rounded overflow-hidden shrink-0 bg-zinc-700">
-                      {chosenEnd.poster && <img src={`${TMDB_IMG}${chosenEnd.poster}`} alt="" className="w-full h-full object-cover" />}
-                    </div>
-                    <span className="text-white text-sm flex-1 line-clamp-1">{chosenEnd.titleEs || chosenEnd.title}</span>
-                    <button onClick={() => { setChosenEnd(null); setSearchEnd('') }} className="text-zinc-500 text-xs">✕</button>
-                  </div>
-                ) : (
-                  <div>
-                    <input
-                      type="text" value={searchEnd} onChange={e => setSearchEnd(e.target.value)}
-                      placeholder="Buscar película..."
-                      className="w-full bg-zinc-800 rounded-lg px-3 py-2 text-[16px] text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-yellow-400/30"
-                    />
-                    {endResults.length > 0 && (
-                      <div className="absolute left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-lg overflow-hidden z-10 max-h-48 overflow-y-auto">
-                        {endResults.map(n => (
-                          <button key={n.id} onClick={() => { setChosenEnd(n); setSearchEnd('') }}
-                            className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left">
-                            <div className="w-6 h-9 rounded overflow-hidden shrink-0 bg-zinc-700">
-                              {n.poster && <img src={`${TMDB_IMG}${n.poster}`} alt="" className="w-full h-full object-cover" />}
-                            </div>
-                            <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {chooserError && <p className="text-red-400 text-xs mb-3">{chooserError}</p>}
-
-              <div className="flex gap-2">
-                <button
-                  onClick={startCustomGame}
-                  disabled={!chosenStart || !chosenEnd}
-                  className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-700 disabled:text-zinc-500 text-zinc-950 font-bold py-2.5 rounded-xl text-sm transition-colors"
-                >
-                  Jugar
-                </button>
-                <button onClick={() => { setChooserOpen(false); setChooserError('') }}
-                  className="px-4 py-2.5 bg-zinc-800 text-zinc-400 rounded-xl text-sm hover:bg-zinc-700 transition-colors">
-                  Cancelar
-                </button>
-              </div>
+              <span className="text-white text-sm flex-1 line-clamp-1">{chosenEnd.titleEs || chosenEnd.title}</span>
+              <IconButton
+                icon={<Icon.Close className="w-4 h-4" />}
+                label="Quitar película"
+                size="sm"
+                onClick={() => { setChosenEnd(null); setSearchEnd('') }}
+              />
             </div>
-          </div>
+          ) : (
+            <div>
+              <SearchInput
+                value={searchEnd}
+                onChange={setSearchEnd}
+                placeholder="Buscar película..."
+              />
+              {endResults.length > 0 && (
+                <div className="absolute left-0 right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-xl overflow-hidden z-10 max-h-48 overflow-y-auto">
+                  {endResults.map(n => (
+                    <button
+                      key={n.id}
+                      onClick={() => { setChosenEnd(n); setSearchEnd('') }}
+                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-700 text-left transition-colors"
+                    >
+                      <div className="w-6 h-9 rounded overflow-hidden shrink-0 bg-zinc-700">
+                        {n.poster && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={`${TMDB_IMG}${n.poster}`} alt="" className="w-full h-full object-cover" />
+                        )}
+                      </div>
+                      <span className="text-white text-xs line-clamp-1">{n.titleEs || n.title}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {chooserError && (
+          <p className="text-red-400 text-xs mb-3" role="alert">{chooserError}</p>
         )}
-      </div>
+
+        <div className="flex gap-2">
+          <Button
+            onClick={startCustomGame}
+            disabled={!chosenStart || !chosenEnd}
+            fullWidth
+          >
+            Jugar
+          </Button>
+          <Button variant="ghost" onClick={closeChooser}>
+            Cancelar
+          </Button>
+        </div>
+      </Modal>
 
       {/* Win screen ------------------------------------------------ */}
       {won && (
-        <div className="max-w-2xl mx-auto px-4 py-6 text-center">
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-yellow-400/30">
-            <p className="text-3xl mb-2">{getRating()}</p>
-            <p className="text-yellow-400 font-bold text-lg mb-1">
-              ¡Conectaste en {path.length - 1} pasos!
-            </p>
-            <p className="text-zinc-400 text-sm mb-4">
-              Camino óptimo: {optimalLen - 1} pasos
-            </p>
-            <div className="flex justify-center gap-3">
-              <button
-                onClick={share}
-                className="px-5 py-2.5 bg-yellow-400 text-black font-semibold rounded-xl text-sm hover:bg-yellow-300 transition"
-              >
-                Compartir
-              </button>
-              <button
-                onClick={startGame}
-                className="px-5 py-2.5 bg-zinc-800 text-white font-semibold rounded-xl text-sm hover:bg-zinc-700 transition border border-zinc-700"
-              >
-                Jugar de nuevo
-              </button>
-            </div>
+        <Card padding="lg" className="text-center mb-6 border border-yellow-400/30">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-yellow-400/15 text-yellow-400 mb-3">
+            <Icon.Trophy className="w-7 h-7" />
           </div>
-        </div>
+          <p className="text-2xl text-white font-black mb-1">{getRating()}</p>
+          <p className="text-yellow-400 font-bold text-lg mb-1">
+            Conectaste en {path.length - 1} pasos
+          </p>
+          <p className="text-zinc-400 text-sm mb-5">
+            Camino óptimo: {optimalLen - 1} pasos
+          </p>
+          <div className="flex justify-center gap-3 flex-wrap">
+            <Button onClick={share} iconLeft={<Icon.Share className="w-4 h-4" />}>
+              Compartir
+            </Button>
+            <Button variant="secondary" onClick={startGame} iconLeft={<Icon.Refresh className="w-4 h-4" />}>
+              Jugar de nuevo
+            </Button>
+          </div>
+        </Card>
       )}
 
       {/* Surrender screen --------------------------------------------- */}
       {surrendered && (
-        <div className="max-w-2xl mx-auto px-4 py-6 text-center">
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-red-400/30">
-            <p className="text-red-400 font-bold text-lg mb-3">El camino óptimo era:</p>
-            <div className="flex items-center justify-center gap-1 flex-wrap mb-4">
-              {optimalPath.map((id, i) => {
-                const n = nodeMap.get(id)
-                if (!n) return null
-                return (
-                  <div key={`opt-${id}-${i}`} className="flex items-center shrink-0">
-                    {i > 0 && <span className="text-zinc-600 text-sm mx-0.5">→</span>}
-                    <div className="flex flex-col items-center w-16">
-                      <div className="relative w-14 h-[84px] rounded-lg overflow-hidden ring-1 ring-yellow-400/50">
-                        <Image
-                          src={`${TMDB_IMG}${n.poster}`}
-                          alt={n.titleEs || n.title}
-                          fill
-                          className="object-cover"
-                          sizes="56px"
-                          unoptimized
-                        />
-                      </div>
-                      <span className="text-[9px] text-center mt-0.5 text-zinc-400 leading-tight line-clamp-2">
-                        {n.titleEs || n.title}
-                      </span>
+        <Card padding="lg" className="text-center mb-6 border border-zinc-800">
+          <p className="text-white font-bold text-lg mb-4">El camino óptimo era</p>
+          <div className="flex items-center justify-center gap-1 flex-wrap mb-4">
+            {optimalPath.map((id, i) => {
+              const n = nodeMap.get(id)
+              if (!n) return null
+              return (
+                <div key={`opt-${id}-${i}`} className="flex items-center shrink-0">
+                  {i > 0 && <Icon.ChevronRight className="w-3 h-3 text-zinc-600 mx-0.5" />}
+                  <div className="flex flex-col items-center w-16">
+                    <div className="relative w-14 h-[84px] rounded-lg overflow-hidden ring-1 ring-yellow-400/50">
+                      <Image
+                        src={`${TMDB_IMG}${n.poster}`}
+                        alt={n.titleEs || n.title}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                        unoptimized
+                      />
                     </div>
+                    <span className="text-[9px] text-center mt-1 text-zinc-400 leading-tight line-clamp-2">
+                      {n.titleEs || n.title}
+                    </span>
                   </div>
-                )
-              })}
-            </div>
-            <p className="text-zinc-500 text-sm mb-4">
-              {optimalLen - 1} pasos — Conexión: {distToPercent(optimalLen - 1)}%
-            </p>
-            <button
-              onClick={startGame}
-              className="px-5 py-2.5 bg-yellow-400 text-black font-semibold rounded-xl text-sm hover:bg-yellow-300 transition"
-            >
-              Jugar de nuevo
-            </button>
+                </div>
+              )
+            })}
           </div>
-        </div>
+          <div className="flex items-center justify-center gap-2 mb-5">
+            <Pill variant="gold">{optimalLen - 1} pasos</Pill>
+            <Pill variant="default">Conexión {distToPercent(optimalLen - 1)}%</Pill>
+          </div>
+          <Button onClick={startGame} iconLeft={<Icon.Refresh className="w-4 h-4" />}>
+            Jugar de nuevo
+          </Button>
+        </Card>
       )}
 
       {/* Current movie + connections ------------------------------- */}
       {!won && !surrendered && currentNode && (
-        <div className="max-w-2xl mx-auto px-4 pt-4">
+        <div>
           {/* Current movie info */}
-          <div className="flex items-start gap-3 mb-4">
-            <div className="relative w-16 h-24 rounded-lg overflow-hidden shrink-0 ring-2 ring-yellow-400">
-              <Image
-                src={`${TMDB_IMG}${currentNode.poster}`}
-                alt={currentNode.titleEs || currentNode.title}
-                fill
-                className="object-cover"
-                sizes="64px"
-                unoptimized
-              />
+          <Card padding="md" className="mb-4">
+            <div className="flex items-start gap-3">
+              <div className="relative w-16 h-24 rounded-lg overflow-hidden shrink-0 ring-2 ring-yellow-400">
+                <Image
+                  src={`${TMDB_IMG}${currentNode.poster}`}
+                  alt={currentNode.titleEs || currentNode.title}
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                  unoptimized
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="text-yellow-400 font-bold text-base leading-tight">
+                  {currentNode.titleEs || currentNode.title}
+                </p>
+                <p className="text-zinc-500 text-xs mt-0.5">{currentNode.title}</p>
+                <p className="text-zinc-400 text-xs mt-1">
+                  {currentNode.categoria} · IMDb {currentNode.imdb}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <p className="text-yellow-400 font-bold text-base leading-tight">
-                {currentNode.titleEs || currentNode.title}
-              </p>
-              <p className="text-zinc-500 text-xs mt-0.5">{currentNode.title}</p>
-              <p className="text-zinc-400 text-xs mt-1">
-                {currentNode.categoria} &middot; IMDb {currentNode.imdb}
-              </p>
-            </div>
-          </div>
+          </Card>
 
           {/* Distance indicator */}
           {currentDistToTarget !== null && path.length > 1 && (
             <div
-              className={`text-center text-sm font-medium mb-3 px-3 py-1.5 rounded-lg ${
+              className={`flex items-center justify-center gap-2 text-sm font-medium mb-4 px-3 py-2 rounded-xl border ${
                 isGettingCloser
-                  ? 'bg-green-500/10 text-green-400'
-                  : 'bg-red-500/10 text-red-400'
+                  ? 'bg-yellow-400/10 text-yellow-400 border-yellow-400/30'
+                  : 'bg-zinc-900 text-zinc-400 border-zinc-800'
               }`}
+              role="status"
             >
-              {isGettingCloser ? '↓' : '↑'} Estás a {currentDistToTarget} paso{currentDistToTarget !== 1 ? 's' : ''} del objetivo — Conexión: {distToPercent(currentDistToTarget)}%
+              {isGettingCloser ? (
+                <Icon.ChevronDown className="w-4 h-4" />
+              ) : (
+                <Icon.ChevronUp className="w-4 h-4" />
+              )}
+              <span>
+                A {currentDistToTarget} paso{currentDistToTarget !== 1 ? 's' : ''} del objetivo · Conexión {distToPercent(currentDistToTarget)}%
+              </span>
             </div>
           )}
 
           {/* Connections label */}
-          <p className="text-zinc-400 text-xs font-medium mb-2 uppercase tracking-wider">
-            Conexiones ({connectedNodes.length})
-          </p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-zinc-400 text-xs font-bold uppercase tracking-wider">
+              Conexiones
+            </p>
+            <span className="text-zinc-500 text-xs tabular-nums">{connectedNodes.length}</span>
+          </div>
 
           {/* Connections grid */}
-          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 max-h-[40vh] overflow-y-auto pr-1">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-[42vh] overflow-y-auto pr-1">
             {connectedNodes.map((n) => {
               const isTarget = n.id === endNode.id
               const alreadyVisited = path.includes(n.id)
@@ -619,24 +678,24 @@ export default function ConexionPage() {
                   key={n.id}
                   onClick={() => selectMovie(n.id)}
                   disabled={alreadyVisited}
-                  className={`flex flex-col items-center rounded-xl p-1.5 transition
-                    ${isTarget ? 'bg-red-500/20 ring-2 ring-red-500' : ''}
-                    ${alreadyVisited ? 'opacity-30 cursor-not-allowed' : 'hover:bg-zinc-800 active:scale-95'}
+                  className={`flex flex-col items-center rounded-xl p-2 transition min-h-[44px]
+                    ${isTarget ? 'bg-yellow-400/10 ring-2 ring-yellow-400' : 'bg-zinc-900/40'}
+                    ${alreadyVisited ? 'opacity-30 cursor-not-allowed' : 'hover:bg-zinc-800 active:scale-95 cursor-pointer'}
                   `}
                 >
-                  <div className="relative w-full aspect-[2/3] rounded-lg overflow-hidden">
+                  <div className="relative w-full aspect-[2/3] rounded-lg overflow-hidden ring-1 ring-zinc-800/60">
                     <Image
                       src={`${TMDB_IMG}${n.poster}`}
                       alt={n.titleEs || n.title}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 640px) 25vw, 100px"
+                      sizes="(max-width: 640px) 33vw, 120px"
                       unoptimized
                     />
                   </div>
                   <span
-                    className={`text-[10px] leading-tight mt-1 text-center line-clamp-2 ${
-                      isTarget ? 'text-red-400 font-bold' : 'text-zinc-300'
+                    className={`text-[11px] leading-tight mt-1.5 text-center line-clamp-2 ${
+                      isTarget ? 'text-yellow-400 font-bold' : 'text-zinc-300'
                     }`}
                   >
                     {n.titleEs || n.title}
@@ -649,15 +708,17 @@ export default function ConexionPage() {
       )}
 
       {/* Path strip at bottom ------------------------------------- */}
-      <div className="fixed bottom-0 inset-x-0 bg-zinc-900/95 backdrop-blur border-t border-zinc-800 z-50">
+      <div className="fixed bottom-0 inset-x-0 bg-zinc-900/95 backdrop-blur border-t border-zinc-800 z-40">
         {/* Undo button */}
         {!won && !surrendered && path.length > 1 && (
           <div className="flex justify-end px-4 pt-2">
             <button
+              type="button"
               onClick={undo}
-              className="text-xs text-yellow-400 hover:text-yellow-300 transition font-medium"
+              className="inline-flex items-center gap-1 text-xs text-yellow-400 hover:text-yellow-300 transition font-medium min-h-[44px] px-2 cursor-pointer"
             >
-              ← Deshacer
+              <Icon.ArrowLeft className="w-4 h-4" />
+              Deshacer
             </button>
           </div>
         )}
@@ -674,11 +735,9 @@ export default function ConexionPage() {
                 {i > 0 && <span className="text-zinc-600 text-xs mx-0.5">—</span>}
                 <div
                   className={`relative w-10 h-[60px] rounded-md overflow-hidden ring-1 ${
-                    isStart
-                      ? 'ring-green-500'
-                      : isEnd
-                        ? 'ring-red-500'
-                        : 'ring-yellow-400/50'
+                    isStart || isEnd
+                      ? 'ring-yellow-400'
+                      : 'ring-yellow-400/40'
                   }`}
                 >
                   <Image
@@ -698,7 +757,7 @@ export default function ConexionPage() {
           {!won && !surrendered && (
             <div className="flex items-center shrink-0">
               <span className="text-zinc-600 text-xs mx-0.5">···</span>
-              <div className="relative w-10 h-[60px] rounded-md overflow-hidden ring-1 ring-red-500/40 opacity-40">
+              <div className="relative w-10 h-[60px] rounded-md overflow-hidden ring-1 ring-yellow-400/30 opacity-40">
                 <Image
                   src={`${TMDB_IMG}${endNode.poster}`}
                   alt={endNode.titleEs || endNode.title}
@@ -712,6 +771,6 @@ export default function ConexionPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageShell>
   )
 }

@@ -2,8 +2,19 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  Card,
+  StatCard,
+  Button,
+  IconButton,
+  Pill,
+  LoadingState,
+  Icon,
+} from '@/components/ui'
 
 /* ─── Types ─── */
 type BlitzMovie = {
@@ -35,7 +46,7 @@ type Particle = {
 /* ─── Constants ─── */
 const TIMER_DURATION = 5000
 const SWIPE_THRESHOLD = 60
-const PARTICLE_COLORS = ['#facc15', '#f59e0b', '#fb923c', '#fbbf24', '#fde68a']
+const PARTICLE_COLORS = ['#facc15', '#f59e0b', '#fbbf24', '#fde68a', '#fef3c7']
 const GENRE_POOL = [
   'Drama', 'Comedia', 'Acción', 'Terror', 'Ciencia ficción', 'Animación',
   'Thriller', 'Romance', 'Documental', 'Western', 'Guerra', 'Crimen',
@@ -43,11 +54,30 @@ const GENRE_POOL = [
 ]
 const DECADE_POOL = ['60s', '70s', '80s', '90s', '2000s', '2010s', '2020s']
 
-const MODE_CONFIG: Record<GameMode, { emoji: string; title: string; description: string }> = {
-  'mas-menos': { emoji: '⚖️', title: '¿Más o Menos?', description: '¿Tiene mayor o menor nota IMDb que la anterior?' },
-  'genero': { emoji: '🎭', title: '¿Qué Género?', description: 'Elige el género correcto de la película' },
-  'decada': { emoji: '📅', title: '¿Qué Década?', description: '¿De qué década es esta película?' },
-  'director': { emoji: '🎬', title: '¿Quién Dirigió?', description: 'Elige el director correcto' },
+const MODE_CONFIG: Record<
+  GameMode,
+  { icon: React.ReactNode; title: string; description: string }
+> = {
+  'mas-menos': {
+    icon: <Icon.Trending className="w-6 h-6" />,
+    title: '¿Mayor o menor?',
+    description: '¿Tiene mayor o menor nota IMDb que la película anterior?',
+  },
+  'genero': {
+    icon: <Icon.Film className="w-6 h-6" />,
+    title: '¿Qué género?',
+    description: 'Elige el género correcto de la película.',
+  },
+  'decada': {
+    icon: <Icon.Calendar className="w-6 h-6" />,
+    title: '¿Qué década?',
+    description: '¿De qué década es esta película?',
+  },
+  'director': {
+    icon: <Icon.User className="w-6 h-6" />,
+    title: '¿Quién la dirigió?',
+    description: 'Elige el director correcto entre dos opciones.',
+  },
 }
 
 /* ─── Data Fetching ─── */
@@ -138,9 +168,9 @@ function pickDirectorOptions(correctDirector: string, allMovies: BlitzMovie[]): 
 }
 
 function getStreakLabel(streak: number): string {
-  if (streak >= 20) return '🔥🔥🔥 IMPARABLE'
-  if (streak >= 10) return '🔥🔥'
-  if (streak >= 5) return '🔥'
+  if (streak >= 20) return 'Imparable'
+  if (streak >= 10) return 'En racha'
+  if (streak >= 5) return 'Encendido'
   return ''
 }
 
@@ -175,7 +205,7 @@ export default function CineBlitzPage() {
   const roundStartRef = useRef(0)
 
   // Visual feedback
-  const [flashColor, setFlashColor] = useState<'green' | 'red' | null>(null)
+  const [flashColor, setFlashColor] = useState<'correct' | 'wrong' | null>(null)
   const [particles, setParticles] = useState<Particle[]>([])
   const [swipeDir, setSwipeDir] = useState<'left' | 'right' | null>(null)
   const [answered, setAnswered] = useState(false)
@@ -256,7 +286,7 @@ export default function CineBlitzPage() {
         }
         const correctSide: 'left' | 'right' = (movie.nota_imdb ?? 0) >= (prevMovie.nota_imdb ?? 0) ? 'right' : 'left'
         correctSideRef.current = correctSide
-        setRoundOptions({ left: '⬇️ Menor nota', right: '⬆️ Mayor nota', correctSide })
+        setRoundOptions({ left: 'Menor nota', right: 'Mayor nota', correctSide })
         setQuestionText(`¿${movie.titulo} tiene mayor o menor nota que ${prevMovie.titulo}?`)
         break
       }
@@ -370,16 +400,16 @@ export default function CineBlitzPage() {
       setScore(prev => prev + roundScore)
       setStreak(newStreak)
       setCorrectCount(prev => prev + 1)
-      if (timeUsed < 2) setSpeedLabel('⚡ RÁPIDO')
+      if (timeUsed < 2) setSpeedLabel('Respuesta rápida')
 
       // Visual feedback
-      setFlashColor('green')
+      setFlashColor('correct')
       spawnParticles()
       setSwipeDir(side)
     } else {
       // Wrong or timeout
       setStreak(0)
-      setFlashColor('red')
+      setFlashColor('wrong')
       if (!isTimeout) setSwipeDir(side)
 
       // Vibrate on wrong
@@ -448,7 +478,7 @@ export default function CineBlitzPage() {
   }, [])
 
   const shareResult = useCallback(() => {
-    const text = `⚡ CineBlitz: ${score} pts | Racha: ${Math.max(streak, bestStreak)} | ${correctCount}/${totalAnswered}\ncinebret.cl/cineblitz`
+    const text = `CineBlitz: ${score} pts | Racha: ${Math.max(streak, bestStreak)} | ${correctCount}/${totalAnswered}\ncinebret.cl/cineblitz`
     if (navigator.share) {
       navigator.share({ text }).catch(() => {})
     } else {
@@ -480,111 +510,141 @@ export default function CineBlitzPage() {
   // Loading
   if (loading) {
     return (
-      <div className="min-h-[100dvh] bg-gray-950 flex flex-col items-center justify-center gap-4">
-        <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
-        <p className="text-white/70 text-[16px]">Cargando películas...</p>
-      </div>
+      <PageShell maxWidth="2xl">
+        <LoadingState text="Cargando películas..." size="lg" />
+      </PageShell>
     )
   }
 
   // ─── START SCREEN ───
   if (screen === 'start') {
     return (
-      <div className="min-h-[100dvh] bg-gray-950 flex flex-col items-center px-4 py-8 overflow-y-auto">
-        {/* Title */}
-        <div className="mt-8 mb-2 text-center">
-          <h1 className="text-5xl font-black text-white tracking-tight">
-            CINE<span className="text-yellow-400">BLITZ</span>
-          </h1>
-          <p className="text-yellow-400 text-2xl mt-1">⚡</p>
-        </div>
-        <p className="text-white/50 text-[16px] mb-6">5 segundos. Una respuesta. Sin piedad.</p>
+      <PageShell maxWidth="2xl">
+        <PageHeader
+          icon={<Icon.Sparkles className="w-7 h-7" />}
+          title="CineBlitz"
+          subtitle="Cinco segundos. Una respuesta. Sin pausa."
+        />
 
-        {/* Best score */}
         {bestScore > 0 && (
-          <div className="bg-white/5 backdrop-blur rounded-xl px-6 py-3 mb-6 text-center border border-white/10">
-            <p className="text-white/40 text-sm">Mejor puntuación</p>
-            <p className="text-yellow-400 text-2xl font-bold">{bestScore} pts</p>
-            {bestStreak > 0 && <p className="text-white/40 text-sm">Mejor racha: {bestStreak}</p>}
-          </div>
+          <Section label="Tu mejor marca">
+            <div className="grid grid-cols-2 gap-3">
+              <StatCard value={bestScore} label="Puntuación" sub="récord personal" color="gold" />
+              <StatCard value={bestStreak} label="Racha máxima" color="white" />
+            </div>
+          </Section>
         )}
 
-        {/* Mode cards */}
-        <div className="w-full max-w-sm space-y-3 mb-8">
-          {(Object.keys(MODE_CONFIG) as GameMode[]).map((m) => {
-            const cfg = MODE_CONFIG[m]
-            return (
-              <button
-                key={m}
-                onClick={() => startGame(m)}
-                className="w-full bg-white/5 hover:bg-white/10 active:scale-[0.98] border border-white/10 rounded-2xl p-5 text-left transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{cfg.emoji}</span>
-                  <div>
-                    <h3 className="text-white font-bold text-[18px]">{cfg.title}</h3>
-                    <p className="text-white/50 text-[14px]">{cfg.description}</p>
+        <Section label="Elige un modo">
+          <div className="grid grid-cols-1 gap-3">
+            {(Object.keys(MODE_CONFIG) as GameMode[]).map((m) => {
+              const cfg = MODE_CONFIG[m]
+              return (
+                <Card
+                  key={m}
+                  as="button"
+                  interactive
+                  onClick={() => startGame(m)}
+                  padding="lg"
+                  className="text-left w-full"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="shrink-0 w-12 h-12 rounded-xl bg-yellow-400/15 border border-yellow-400/30 text-yellow-400 flex items-center justify-center">
+                      {cfg.icon}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-white font-bold text-base sm:text-lg">{cfg.title}</h3>
+                      <p className="text-zinc-400 text-sm mt-0.5 leading-relaxed">{cfg.description}</p>
+                    </div>
+                    <Icon.ChevronRight className="w-5 h-5 text-zinc-600 shrink-0" />
                   </div>
-                </div>
-              </button>
-            )
-          })}
-        </div>
+                </Card>
+              )
+            })}
+          </div>
+        </Section>
 
-        <Link href="/catalogo" className="text-white/30 text-[14px] hover:text-white/60 transition-colors">
-          ← Volver al catálogo
-        </Link>
-      </div>
+        <Section label="Cómo se juega">
+          <Card padding="lg">
+            <ul className="space-y-3 text-sm text-zinc-300">
+              <li className="flex gap-3">
+                <Icon.Clock className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+                <span>Tienes <span className="text-white font-semibold">5 segundos</span> por pregunta. Si se acaba el tiempo, pierdes la racha.</span>
+              </li>
+              <li className="flex gap-3">
+                <Icon.Trending className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+                <span>Cada acierto seguido <span className="text-white font-semibold">multiplica</span> tu puntaje.</span>
+              </li>
+              <li className="flex gap-3">
+                <Icon.Sparkles className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+                <span>Responder en menos de 2 segundos te da un bonus extra.</span>
+              </li>
+            </ul>
+          </Card>
+        </Section>
+      </PageShell>
     )
   }
 
   // ─── GAME OVER SCREEN ───
   if (screen === 'gameover') {
     const maxStreak = Math.max(streak, bestStreak)
+    const accuracy = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0
     return (
-      <div className="min-h-[100dvh] bg-gray-950 flex flex-col items-center justify-center px-4 py-8 text-center">
-        <p className="text-6xl mb-4">⚡</p>
-        <h2 className="text-4xl font-black text-white mb-2">GAME OVER</h2>
-        <p className="text-yellow-400 text-5xl font-black my-4">{score} pts</p>
+      <PageShell maxWidth="2xl">
+        <PageHeader
+          icon={<Icon.Trophy className="w-7 h-7" />}
+          title="Fin del juego"
+          subtitle="Aquí tienes tu desempeño en esta partida."
+        />
 
-        <div className="grid grid-cols-3 gap-4 mb-8 max-w-xs w-full">
-          <div className="bg-white/5 rounded-xl p-3 border border-white/10">
-            <p className="text-white/40 text-[12px]">Correctas</p>
-            <p className="text-white text-xl font-bold">{correctCount}/{totalAnswered}</p>
-          </div>
-          <div className="bg-white/5 rounded-xl p-3 border border-white/10">
-            <p className="text-white/40 text-[12px]">Racha</p>
-            <p className="text-white text-xl font-bold">{maxStreak}</p>
-          </div>
-          <div className="bg-white/5 rounded-xl p-3 border border-white/10">
-            <p className="text-white/40 text-[12px]">Precisión</p>
-            <p className="text-white text-xl font-bold">
-              {totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0}%
-            </p>
-          </div>
-        </div>
+        <Section label="Resultado">
+          <Card padding="lg" className="text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">Puntuación final</p>
+            <p className="text-yellow-400 text-5xl sm:text-6xl font-black tabular-nums mt-2">{score.toLocaleString('es')}</p>
+            <p className="text-zinc-500 text-sm mt-1">puntos</p>
+          </Card>
+        </Section>
 
-        <div className="flex flex-col gap-3 w-full max-w-xs">
-          <button
-            onClick={() => { setScreen('start'); setMode(null) }}
-            className="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-950 font-bold py-4 rounded-2xl text-[18px] active:scale-95 transition-all"
-          >
-            Jugar de nuevo
-          </button>
-          <button
-            onClick={shareResult}
-            className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-2xl text-[16px] active:scale-95 transition-all border border-white/10"
-          >
-            📤 Compartir resultado
-          </button>
-          <Link
-            href="/catalogo"
-            className="w-full bg-white/5 hover:bg-white/10 text-white/60 font-medium py-3 rounded-2xl text-[16px] text-center border border-white/10 transition-all"
-          >
-            Volver al catálogo
-          </Link>
-        </div>
-      </div>
+        <Section label="Estadísticas">
+          <div className="grid grid-cols-3 gap-3">
+            <StatCard value={`${correctCount}/${totalAnswered}`} label="Aciertos" color="white" />
+            <StatCard value={maxStreak} label="Racha" color="white" />
+            <StatCard value={`${accuracy}%`} label="Precisión" color="gold" />
+          </div>
+        </Section>
+
+        <Section>
+          <div className="flex flex-col gap-3">
+            <Button
+              fullWidth
+              size="lg"
+              onClick={() => { setScreen('start'); setMode(null) }}
+              iconLeft={<Icon.Refresh className="w-5 h-5" />}
+            >
+              Jugar de nuevo
+            </Button>
+            <Button
+              fullWidth
+              size="lg"
+              variant="secondary"
+              onClick={shareResult}
+              iconLeft={<Icon.Share className="w-5 h-5" />}
+            >
+              Compartir resultado
+            </Button>
+            <Button
+              fullWidth
+              size="lg"
+              variant="ghost"
+              onClick={() => { window.location.href = '/catalogo' }}
+              iconLeft={<Icon.ArrowLeft className="w-5 h-5" />}
+            >
+              Volver al catálogo
+            </Button>
+          </div>
+        </Section>
+      </PageShell>
     )
   }
 
@@ -601,7 +661,7 @@ export default function CineBlitzPage() {
   return (
     <div
       ref={gameAreaRef}
-      className="fixed inset-0 bg-black select-none overflow-hidden"
+      className="fixed inset-0 z-50 bg-zinc-950 select-none overflow-hidden"
       style={{ touchAction: 'none', height: '100dvh' }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -624,16 +684,16 @@ export default function CineBlitzPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
             <div className="absolute bottom-3 left-0 right-0 text-center px-4">
               <h3 className="text-white text-xl md:text-2xl font-black drop-shadow-lg leading-tight">{previousMovie.titulo}</h3>
-              <p className="text-yellow-400 text-lg font-bold drop-shadow-lg mt-1">
-                {previousMovie.nota_imdb} <span className="text-white/50 text-sm">IMDb</span>
+              <p className="text-yellow-400 text-lg font-bold drop-shadow-lg mt-1 tabular-nums">
+                {previousMovie.nota_imdb} <span className="text-zinc-400 text-sm">IMDb</span>
               </p>
             </div>
           </div>
 
           {/* Divider */}
           <div className="relative z-10 flex items-center justify-center md:flex-col">
-            <div className="absolute bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
-              <span className="text-black font-black text-sm">VS</span>
+            <div className="absolute bg-yellow-400 rounded-full w-9 h-9 flex items-center justify-center shadow-lg">
+              <span className="text-zinc-950 font-black text-xs tracking-wider">VS</span>
             </div>
             <div className="w-full h-px md:w-px md:h-full bg-yellow-400/40" />
           </div>
@@ -650,8 +710,8 @@ export default function CineBlitzPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
             <div className="absolute bottom-3 left-0 right-0 text-center px-4">
               <h3 className="text-white text-xl md:text-2xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h3>
-              <p className="text-white/40 text-lg font-bold drop-shadow-lg mt-1">
-                ? <span className="text-white/30 text-sm">IMDb</span>
+              <p className="text-zinc-400 text-lg font-bold drop-shadow-lg mt-1">
+                ? <span className="text-zinc-500 text-sm">IMDb</span>
               </p>
             </div>
           </div>
@@ -690,11 +750,11 @@ export default function CineBlitzPage() {
         />
       )}
 
-      {/* Flash overlay */}
+      {/* Flash overlay — gold for correct, zinc for wrong (no green/red) */}
       {flashColor && (
         <div
           className={`absolute inset-0 z-30 pointer-events-none transition-opacity duration-300 ${
-            flashColor === 'green' ? 'bg-green-500/30' : 'bg-red-500/30'
+            flashColor === 'correct' ? 'bg-yellow-400/25' : 'bg-zinc-100/15'
           }`}
         />
       )}
@@ -722,70 +782,79 @@ export default function CineBlitzPage() {
         )
       })}
 
-      {/* Top HUD: Score + Streak */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),12px)] pb-2">
-        <div className="backdrop-blur-md bg-black/40 rounded-xl px-3 py-2 border border-white/10">
-          <p className="text-yellow-400 font-bold text-[18px] drop-shadow-lg">{score}</p>
+      {/* Top HUD: Score + Streak + Exit */}
+      <div className="absolute top-0 left-0 right-0 z-20 flex items-start justify-between gap-3 px-4 pt-[max(env(safe-area-inset-top),12px)] pb-2">
+        <div className="backdrop-blur-md bg-zinc-950/60 rounded-xl px-3.5 py-2 border border-yellow-400/30">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Puntos</p>
+          <p className="text-yellow-400 font-black text-lg tabular-nums leading-none mt-0.5">{score.toLocaleString('es')}</p>
         </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-1 min-w-0">
           {streak > 0 && (
-            <div className={`backdrop-blur-md bg-black/40 rounded-xl px-4 py-2 border border-white/10 ${streak > 0 ? 'animate-pulse' : ''}`}>
-              <p className="text-white font-bold text-[20px] drop-shadow-lg">
-                {streak} {streakLabel}
+            <div className={`backdrop-blur-md bg-zinc-950/60 rounded-full px-3.5 py-1.5 border border-yellow-400/30 flex items-center gap-1.5 ${streak >= 5 ? 'animate-pulse' : ''}`}>
+              <Icon.Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+              <p className="text-white font-bold text-sm tabular-nums leading-none">
+                {streak}
+                {streakLabel && <span className="text-yellow-400 ml-1.5">· {streakLabel}</span>}
               </p>
             </div>
           )}
           {speedLabel && (
-            <p className="text-yellow-300 text-[14px] font-bold mt-1 drop-shadow-lg animate-bounce">{speedLabel}</p>
+            <Pill variant="gold" size="sm">{speedLabel}</Pill>
           )}
         </div>
 
-        <button
+        <IconButton
+          icon={<Icon.Close className="w-5 h-5" />}
+          label="Salir del juego"
+          variant="secondary"
+          size="md"
           onClick={() => endGame()}
-          className="backdrop-blur-md bg-black/40 rounded-xl px-3 py-2 border border-white/10"
-        >
-          <p className="text-white/70 text-[16px] drop-shadow-lg">✕</p>
-        </button>
+          className="backdrop-blur-md bg-zinc-950/60 border-yellow-400/30 text-white"
+        />
       </div>
 
       {/* Timer ring */}
       <TimerRing active={timerActive} startTime={timerStart} duration={TIMER_DURATION} />
 
       {/* Question text */}
-      <div className="absolute top-[calc(max(env(safe-area-inset-top),12px)+60px)] left-0 right-0 z-20 text-center px-6">
-        <p className="text-white/80 text-[14px] font-medium drop-shadow-lg backdrop-blur-sm bg-black/30 inline-block px-3 py-1 rounded-lg">{questionText}</p>
+      <div className="absolute top-[calc(max(env(safe-area-inset-top),12px)+112px)] left-0 right-0 z-20 text-center px-6">
+        <p className="text-white text-sm font-medium drop-shadow-lg backdrop-blur-md bg-zinc-950/50 inline-block px-3.5 py-1.5 rounded-full border border-white/10">{questionText}</p>
       </div>
 
       {/* Movie title (hidden for mas-menos since titles are in split view) */}
       {!isMasMenos && (
-        <div className="absolute bottom-36 left-0 right-0 z-20 text-center px-6">
-          <h2 className="text-white text-3xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h2>
+        <div className="absolute bottom-44 left-0 right-0 z-20 text-center px-6">
+          <h2 className="text-white text-3xl sm:text-4xl font-black drop-shadow-lg leading-tight">{currentMovie.titulo}</h2>
           {currentMovie.anio && (
-            <p className="text-white/60 text-[16px] mt-1 drop-shadow-lg">{currentMovie.anio}</p>
+            <p className="text-zinc-300 text-base mt-1 drop-shadow-lg tabular-nums">{currentMovie.anio}</p>
           )}
         </div>
       )}
 
       {/* Answer options */}
-      <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-between px-4 gap-3 pb-[max(env(safe-area-inset-bottom),8px)]">
+      <div className="absolute bottom-10 left-0 right-0 z-20 flex justify-between px-4 gap-3 pb-[max(env(safe-area-inset-bottom),8px)]">
         <button
+          type="button"
           onClick={() => !answered && handleAnswer('left')}
-          className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-5 px-3 active:scale-95 transition-all"
+          disabled={answered}
+          className="flex-1 min-h-[64px] bg-zinc-950/60 hover:bg-zinc-900/70 active:scale-95 backdrop-blur-md border border-yellow-400/30 hover:border-yellow-400/60 rounded-2xl py-5 px-4 transition-all"
         >
-          <p className="text-white text-[16px] font-bold drop-shadow-lg text-center leading-tight">{roundOptions.left}</p>
+          <p className="text-white text-base sm:text-lg font-bold drop-shadow-lg text-center leading-tight">{roundOptions.left}</p>
         </button>
         <button
+          type="button"
           onClick={() => !answered && handleAnswer('right')}
-          className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-5 px-3 active:scale-95 transition-all"
+          disabled={answered}
+          className="flex-1 min-h-[64px] bg-zinc-950/60 hover:bg-zinc-900/70 active:scale-95 backdrop-blur-md border border-yellow-400/30 hover:border-yellow-400/60 rounded-2xl py-5 px-4 transition-all"
         >
-          <p className="text-white text-[16px] font-bold drop-shadow-lg text-center leading-tight">{roundOptions.right}</p>
+          <p className="text-white text-base sm:text-lg font-bold drop-shadow-lg text-center leading-tight">{roundOptions.right}</p>
         </button>
       </div>
 
       {/* Round counter */}
       <div className="absolute bottom-2 left-0 right-0 z-20 text-center pb-[max(env(safe-area-inset-bottom),2px)]">
-        <p className="text-white/30 text-[12px]">{currentIndex + 1} / {movies.length}</p>
+        <p className="text-zinc-500 text-xs tabular-nums">{currentIndex + 1} / {movies.length}</p>
       </div>
 
       {/* CSS for particle animation */}
@@ -821,15 +890,15 @@ function TimerRing({ active, startTime, duration }: { active: boolean; startTime
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const size = 52
+    const size = 64
     const dpr = window.devicePixelRatio || 1
     canvas.width = size * dpr
     canvas.height = size * dpr
     ctx.scale(dpr, dpr)
 
     const center = size / 2
-    const radius = 20
-    const lineWidth = 4
+    const radius = 26
+    const lineWidth = 5
 
     function draw() {
       const elapsed = Date.now() - startTime
@@ -841,31 +910,27 @@ function TimerRing({ active, startTime, duration }: { active: boolean; startTime
       // Background circle
       ctx!.beginPath()
       ctx!.arc(center, center, radius, 0, Math.PI * 2)
-      ctx!.strokeStyle = 'rgba(255,255,255,0.1)'
+      ctx!.strokeStyle = 'rgba(255,255,255,0.12)'
       ctx!.lineWidth = lineWidth
       ctx!.stroke()
 
-      // Progress arc
+      // Progress arc — gold throughout (no green/red), faded as time runs out
       const startAngle = -Math.PI / 2
       const endAngle = startAngle + remaining * Math.PI * 2
 
       ctx!.beginPath()
       ctx!.arc(center, center, radius, startAngle, endAngle)
-
-      // Color: yellow -> orange -> red
-      let color = '#facc15'
-      if (remaining < 0.33) color = '#ef4444'
-      else if (remaining < 0.66) color = '#f97316'
-
-      ctx!.strokeStyle = color
+      ctx!.strokeStyle = '#facc15'
+      ctx!.globalAlpha = remaining < 0.33 ? 0.6 : 1
       ctx!.lineWidth = lineWidth
       ctx!.lineCap = 'round'
       ctx!.stroke()
+      ctx!.globalAlpha = 1
 
       // Time text
       const secondsLeft = Math.ceil((duration - elapsed) / 1000)
-      ctx!.fillStyle = color
-      ctx!.font = 'bold 16px system-ui'
+      ctx!.fillStyle = '#facc15'
+      ctx!.font = 'bold 18px system-ui'
       ctx!.textAlign = 'center'
       ctx!.textBaseline = 'middle'
       ctx!.fillText(Math.max(0, secondsLeft).toString(), center, center)
@@ -880,8 +945,15 @@ function TimerRing({ active, startTime, duration }: { active: boolean; startTime
   }, [active, startTime, duration])
 
   return (
-    <div className="absolute z-20" style={{ top: 'calc(max(env(safe-area-inset-top), 12px) + 48px)', left: '50%', transform: 'translateX(-50%)' }}>
-      <canvas ref={canvasRef} style={{ width: 52, height: 52 }} />
+    <div
+      className="absolute z-20"
+      style={{
+        top: 'calc(max(env(safe-area-inset-top), 12px) + 56px)',
+        left: '50%',
+        transform: 'translateX(-50%)',
+      }}
+    >
+      <canvas ref={canvasRef} style={{ width: 64, height: 64 }} />
     </div>
   )
 }

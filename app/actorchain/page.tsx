@@ -2,9 +2,15 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
+import {
+  PageShell,
+  Button,
+  Pill,
+  Modal,
+  Icon,
+} from '@/components/ui'
 
 type CastMember = {
   name: string
@@ -492,12 +498,12 @@ export default function ActorChainPage() {
     const optimal = dailyResult.optimal
     const steps = dailyResult.steps
     const stars = dailyResult.won
-      ? (steps === optimal ? '⭐⭐⭐' : steps === optimal + 1 ? '⭐⭐' : steps <= optimal + 2 ? '⭐' : '')
-      : '💔'
+      ? (steps === optimal ? '★★★' : steps === optimal + 1 ? '★★' : steps <= optimal + 2 ? '★' : '')
+      : '—'
     const diagram = dailyResult.won || dailyResult.completed
-      ? (dailyResult.chainTitles ?? []).map(() => '🎬').join(' 🎭 ')
-      : '🎬 💔 🎬'
-    return `🎬 ActorChain CineBret #${dayNum}\n${stars} ${steps}/${optimal} pasos\n${diagram}\ncinebret.cl/actorchain`
+      ? (dailyResult.chainTitles ?? []).map(() => '◆').join(' · ')
+      : '◆ — ◆'
+    return `ActorChain CineBret #${dayNum}\n${stars} ${steps}/${optimal} pasos\n${diagram}\ncinebret.cl/actorchain`
   }, [dailyResult, challenge, dayNum])
 
   const handleShare = useCallback(async () => {
@@ -531,537 +537,644 @@ export default function ActorChainPage() {
 
   // ---------- Render ----------
   return (
-    <div
-      className="fixed inset-0 w-screen overflow-hidden bg-black text-white"
-      style={{ height: '100dvh', touchAction: 'manipulation' }}
-    >
-      {/* Background poster */}
-      <AnimatePresence mode="wait">
-        {currentMovie && (status === 'playing' || status === 'won' || status === 'lost') && (
-          <motion.div
-            key={`bg-${currentMovie.id}`}
-            initial={{ opacity: 0, scale: 1.12 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={`${POSTER_BASE}${currentMovie.poster_path}`}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover blur-xl scale-110 opacity-60"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/95" />
-            <div className="absolute inset-0 bg-black/40" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* LOADING */}
-      {status === 'loading' && (
-        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <div className="mb-6 text-5xl">🎬</div>
-            <div className="text-xl font-semibold tracking-tight">ActorChain</div>
-            <div className="mt-1 text-sm text-white/60">{loadLabel}</div>
-            <div className="mt-6 h-1.5 w-56 overflow-hidden rounded-full bg-white/10">
-              <motion.div
-                className="h-full bg-gradient-to-r from-amber-400 to-rose-500"
-                initial={{ width: 0 }}
-                animate={{ width: `${loadProgress}%` }}
-                transition={{ ease: 'easeOut', duration: 0.4 }}
+    <PageShell fullBleed>
+      <div
+        className="relative w-full overflow-hidden bg-zinc-950 text-white"
+        style={{ minHeight: 'calc(100dvh - 64px)', touchAction: 'manipulation' }}
+      >
+        {/* Background poster */}
+        <AnimatePresence mode="wait">
+          {currentMovie && (status === 'playing' || status === 'won' || status === 'lost') && (
+            <motion.div
+              key={`bg-${currentMovie.id}`}
+              initial={{ opacity: 0, scale: 1.12 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={`${POSTER_BASE}${currentMovie.poster_path}`}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover blur-xl scale-110 opacity-50"
               />
-            </div>
-          </motion.div>
-        </div>
-      )}
+              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/85 via-zinc-950/70 to-zinc-950/95" />
+              <div className="absolute inset-0 bg-zinc-950/40" />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* INTRO */}
-      {status === 'intro' && challenge && (
-        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-md text-center"
+        {/* LOADING */}
+        {status === 'loading' && (
+          <div
+            className="relative z-10 flex w-full flex-col items-center justify-center px-6"
+            style={{ minHeight: 'calc(100dvh - 64px)' }}
           >
-            <div className="text-xs uppercase tracking-[0.2em] text-amber-400">Desafío diario #{dayNum}</div>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">ActorChain</h1>
-            <p className="mt-3 text-sm text-white/70">
-              Conecta dos películas a través de actores compartidos. Mientras más corta la cadena, mejor.
-            </p>
-
-            <div className="mt-8 flex items-center justify-center gap-4">
-              <motion.div
-                initial={{ rotate: -6, opacity: 0 }}
-                animate={{ rotate: -6, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="relative aspect-[2/3] w-28 overflow-hidden rounded-xl shadow-2xl ring-1 ring-white/10"
-              >
-                <Image
-                  src={`${POSTER_BASE}${challenge.startMovie.poster_path}`}
-                  alt={challenge.startMovie.titulo}
-                  fill
-                  sizes="120px"
-                  className="object-cover"
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center"
+            >
+              <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow-400/15 text-yellow-400">
+                <Icon.Film className="h-7 w-7" />
+              </div>
+              <div className="text-2xl font-black tracking-tight text-white">ActorChain</div>
+              <div className="mt-2 text-sm text-zinc-400">{loadLabel}</div>
+              <div className="mt-6 h-1.5 w-56 overflow-hidden rounded-full bg-zinc-800">
+                <motion.div
+                  className="h-full bg-yellow-400"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${loadProgress}%` }}
+                  transition={{ ease: 'easeOut', duration: 0.4 }}
                 />
-              </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* INTRO */}
+        {status === 'intro' && challenge && (
+          <div
+            className="relative z-10 flex w-full flex-col items-center justify-center px-6 py-10"
+            style={{ minHeight: 'calc(100dvh - 64px)' }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="w-full max-w-md text-center"
+            >
+              <div className="flex justify-center">
+                <Pill variant="gold" size="sm">
+                  Desafío diario #{dayNum}
+                </Pill>
+              </div>
+              <h1 className="mt-4 text-4xl font-black tracking-tight text-white">ActorChain</h1>
+              <p className="mt-3 text-base text-zinc-400 leading-relaxed">
+                Conecta dos películas a través de actores compartidos. Mientras más corta sea la cadena, mejor.
+              </p>
+
+              <div className="mt-8 flex items-center justify-center gap-4">
+                <motion.div
+                  initial={{ rotate: -6, opacity: 0 }}
+                  animate={{ rotate: -6, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="relative aspect-[2/3] w-28 overflow-hidden rounded-xl shadow-2xl ring-1 ring-zinc-800"
+                >
+                  <Image
+                    src={`${POSTER_BASE}${challenge.startMovie.poster_path}`}
+                    alt={challenge.startMovie.titulo}
+                    fill
+                    sizes="120px"
+                    className="object-cover"
+                  />
+                </motion.div>
+                <motion.div
+                  animate={{ x: [0, 6, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.6 }}
+                  className="text-yellow-400"
+                >
+                  <Icon.ArrowRight className="h-7 w-7" />
+                </motion.div>
+                <motion.div
+                  initial={{ rotate: 6, opacity: 0 }}
+                  animate={{ rotate: 6, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="relative aspect-[2/3] w-28 overflow-hidden rounded-xl shadow-2xl ring-1 ring-yellow-400/40"
+                >
+                  <Image
+                    src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
+                    alt={challenge.targetMovie.titulo}
+                    fill
+                    sizes="120px"
+                    className="object-cover"
+                  />
+                </motion.div>
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm">
+                <Pill variant="default" size="sm">
+                  {challenge.startMovie.titulo}
+                </Pill>
+                <span className="text-zinc-500">a</span>
+                <Pill variant="gold" size="sm">
+                  {challenge.targetMovie.titulo}
+                </Pill>
+              </div>
+
+              <div className="mt-4 text-xs text-zinc-500">
+                Ruta óptima: {optimal} {optimal === 1 ? 'paso' : 'pasos'} · Máximo permitido: {maxAllowed}
+              </div>
+
+              <div className="mt-8">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  onClick={startGame}
+                  iconLeft={<Icon.Play className="h-5 w-5" filled />}
+                >
+                  Jugar
+                </Button>
+              </div>
+
+              <div className="mt-6">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  iconLeft={<Icon.ChevronLeft className="h-4 w-4" />}
+                  onClick={() => { window.location.href = '/' }}
+                >
+                  Volver al inicio
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* ALREADY PLAYED */}
+        {status === 'already-played' && dailyResult && challenge && (
+          <div
+            className="relative z-10 flex w-full flex-col items-center justify-center px-6 py-10"
+            style={{ minHeight: 'calc(100dvh - 64px)' }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full max-w-md text-center"
+            >
+              <div className="flex justify-center">
+                <Pill variant="gold" size="sm">
+                  Desafío #{dayNum}
+                </Pill>
+              </div>
+              <h1 className="mt-4 text-3xl font-black tracking-tight text-white">
+                {dailyResult.won ? 'Ya completaste el de hoy' : 'Cadena rota de hoy'}
+              </h1>
+
+              <div className="mt-6 flex items-center justify-center gap-2">
+                {dailyResult.won ? (
+                  Array.from({ length: 3 }).map((_, i) => {
+                    const earned =
+                      dailyResult.steps === dailyResult.optimal
+                        ? 3
+                        : dailyResult.steps === dailyResult.optimal + 1
+                        ? 2
+                        : 1
+                    return (
+                      <Icon.Star
+                        key={i}
+                        filled={i < earned}
+                        className={`h-9 w-9 ${i < earned ? 'text-yellow-400' : 'text-zinc-700'}`}
+                      />
+                    )
+                  })
+                ) : (
+                  <Icon.Error className="h-12 w-12 text-zinc-500" />
+                )}
+              </div>
+
+              <div className="mt-4 text-lg text-white tabular-nums">
+                {dailyResult.steps}/{dailyResult.optimal} pasos
+              </div>
+              <div className="mt-6 text-sm text-zinc-500">
+                Vuelve mañana para el próximo desafío.
+              </div>
+
+              <div className="mt-8 flex gap-3">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  fullWidth
+                  onClick={handleShare}
+                  iconLeft={<Icon.Share className="h-4 w-4" />}
+                >
+                  {showShareCopied ? '¡Copiado!' : 'Compartir'}
+                </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  onClick={() => { window.location.href = '/' }}
+                >
+                  Volver
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* PLAYING */}
+        {status === 'playing' && challenge && currentMovie && (
+          <div
+            className="relative w-full"
+            style={{ minHeight: 'calc(100dvh - 64px)' }}
+          >
+            {/* Top HUD: breadcrumbs + target */}
+            <div className="absolute left-0 right-0 top-0 z-20 px-3 pt-3">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 overflow-x-auto scrollbar-none">
+                  <div className="flex items-center gap-1.5 rounded-full bg-zinc-900/80 px-2 py-1.5 backdrop-blur-xl ring-1 ring-zinc-800">
+                    <AnimatePresence initial={false}>
+                      {chain.map((link, i) => {
+                        const isFirst = i === 0
+                        const isCurrent = i === chain.length - 1
+                        return (
+                          <motion.div
+                            key={`${link.movie.id}-${i}`}
+                            layout
+                            initial={{ scale: 0.6, opacity: 0, y: -8 }}
+                            animate={{
+                              scale: 1,
+                              opacity: 1,
+                              y: 0,
+                              rotate: 0,
+                              x: 0,
+                            }}
+                            exit={{
+                              scale: 0,
+                              rotate: Math.random() * 60 - 30,
+                              x: Math.random() * 200 - 100,
+                              y: Math.random() * 200,
+                              opacity: 0,
+                            }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 24 }}
+                            className="flex items-center gap-1.5 shrink-0"
+                          >
+                            {i > 0 && (
+                              <Icon.ChevronRight className="h-3 w-3 text-zinc-600" />
+                            )}
+                            <div
+                              className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ring-1 ${
+                                isFirst
+                                  ? 'bg-zinc-800 text-zinc-200 ring-zinc-700'
+                                  : isCurrent
+                                  ? 'bg-yellow-400/20 text-yellow-300 ring-yellow-400/40'
+                                  : 'bg-zinc-800/70 text-zinc-300 ring-zinc-700'
+                              }`}
+                            >
+                              <div className="relative h-5 w-5 overflow-hidden rounded-full ring-1 ring-zinc-700">
+                                <Image
+                                  src={`${POSTER_BASE}${link.movie.poster_path}`}
+                                  alt=""
+                                  fill
+                                  sizes="20px"
+                                  className="object-cover"
+                                />
+                              </div>
+                              <span className="max-w-[100px] truncate">{link.movie.titulo}</span>
+                            </div>
+                          </motion.div>
+                        )
+                      })}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* Target locked poster */}
+                <motion.div
+                  animate={
+                    currentDistance <= 2
+                      ? {
+                          scale: [1, 1.08, 1],
+                          boxShadow: [
+                            '0 0 0px rgba(250,204,21,0)',
+                            '0 0 24px rgba(250,204,21,0.55)',
+                            '0 0 0px rgba(250,204,21,0)',
+                          ],
+                        }
+                      : { scale: 1 }
+                  }
+                  transition={{ repeat: currentDistance <= 2 ? Infinity : 0, duration: 1.4 }}
+                  className="relative shrink-0"
+                >
+                  <div className="relative aspect-[2/3] w-12 overflow-hidden rounded-lg ring-2 ring-yellow-400/60">
+                    <Image
+                      src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
+                      alt={challenge.targetMovie.titulo}
+                      fill
+                      sizes="48px"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-zinc-950/90 to-transparent">
+                      <div className="w-full px-0.5 pb-0.5 text-center text-[8px] font-bold uppercase tracking-wider text-yellow-300">
+                        Meta
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* progress bar */}
+              <div className="mt-2 flex items-center gap-2 px-1">
+                <div className="flex-1 h-1 rounded-full bg-zinc-800 overflow-hidden">
+                  <motion.div
+                    className={`h-full ${steps > optimal ? 'bg-yellow-400/70' : 'bg-yellow-400'}`}
+                    animate={{ width: `${Math.min(100, (steps / maxAllowed) * 100)}%` }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 30 }}
+                  />
+                </div>
+                <div className="text-[10px] tabular-nums text-zinc-500">
+                  {steps}/{maxAllowed}
+                </div>
+              </div>
+            </div>
+
+            {/* Center current movie */}
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pt-24 pb-[280px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`center-${currentMovie.id}`}
+                  initial={{ x: 120, rotate: 8, opacity: 0, scale: 0.85 }}
+                  animate={{ x: 0, rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ x: -120, rotate: -8, opacity: 0, scale: 0.85 }}
+                  transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+                  className="flex flex-col items-center"
+                >
+                  <div className="relative aspect-[2/3] w-40 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-zinc-700">
+                    <Image
+                      src={`${POSTER_BASE}${currentMovie.poster_path}`}
+                      alt={currentMovie.titulo}
+                      fill
+                      sizes="160px"
+                      priority
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="mt-3 max-w-[80vw] text-center text-lg font-bold tracking-tight text-white">
+                    {currentMovie.titulo}
+                  </div>
+                  {currentMovie.anio && (
+                    <div className="text-xs text-zinc-500">{currentMovie.anio}</div>
+                  )}
+
+                  <div className="mt-3">
+                    <Pill variant="default" size="sm">
+                      {currentDistance === Infinity
+                        ? 'Sin ruta directa'
+                        : currentDistance === 0
+                        ? '¡Llegaste!'
+                        : `${currentDistance} ${currentDistance === 1 ? 'paso' : 'pasos'} al objetivo`}
+                    </Pill>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Feedback flash */}
+              <AnimatePresence>
+                {feedback && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.7 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.7 }}
+                    transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                    className={`absolute top-[48%] inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold backdrop-blur-xl ring-1 ${
+                      feedback === 'closer'
+                        ? 'bg-yellow-400/20 text-yellow-300 ring-yellow-400/50'
+                        : 'bg-zinc-800/80 text-zinc-300 ring-zinc-700'
+                    }`}
+                  >
+                    {feedback === 'closer' ? (
+                      <>
+                        <Icon.Trending className="h-4 w-4" />
+                        Más cerca
+                      </>
+                    ) : (
+                      <>
+                        <Icon.ArrowRight className="h-4 w-4 rotate-180" />
+                        Más lejos
+                      </>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Bottom: actor choices */}
+            <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-4 pt-2">
+              <div className="rounded-3xl bg-zinc-900/80 p-3 backdrop-blur-2xl ring-1 ring-zinc-800">
+                <div className="mb-2 px-1 text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-500">
+                  Elige un actor para saltar a otra película
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {currentChoices.map((actor, idx) => {
+                    const count = actorToMoviesRef.current.get(actor.name)?.size ?? 0
+                    return (
+                      <motion.button
+                        type="button"
+                        key={`${actor.name}-${idx}`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.08, type: 'spring', stiffness: 220, damping: 22 }}
+                        whileTap={{ scale: 0.94 }}
+                        onClick={() => pickActor(actor)}
+                        disabled={transitioning}
+                        className="group relative flex min-h-[44px] flex-col items-center overflow-hidden rounded-2xl bg-zinc-900 p-2 ring-1 ring-zinc-800 transition-colors hover:ring-yellow-400/40 active:bg-zinc-800 disabled:opacity-50 cursor-pointer"
+                      >
+                        <div className="relative aspect-square w-full max-w-[96px] overflow-hidden rounded-xl ring-1 ring-zinc-700">
+                          {actor.profile_path ? (
+                            <Image
+                              src={`${PROFILE_BASE}${actor.profile_path}`}
+                              alt={actor.name}
+                              fill
+                              sizes="100px"
+                              className="object-cover transition-transform group-active:scale-105"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center bg-zinc-800 text-zinc-500">
+                              <Icon.User className="h-7 w-7" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-1.5 line-clamp-2 text-center text-[11px] font-semibold leading-tight text-white">
+                          {actor.name}
+                        </div>
+                        {actor.character && (
+                          <div className="line-clamp-1 text-center text-[9px] text-zinc-500">
+                            {actor.character}
+                          </div>
+                        )}
+                        <div className="mt-1 inline-flex items-center rounded-full bg-zinc-800 px-1.5 py-0.5 text-[9px] font-medium text-zinc-400">
+                          {count} {count === 1 ? 'película' : 'películas'}
+                        </div>
+                      </motion.button>
+                    )
+                  })}
+                  {currentChoices.length === 0 && (
+                    <div className="col-span-3 py-8 text-center text-sm text-zinc-500">
+                      Sin actores disponibles…
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* WIN modal */}
+        <Modal
+          open={status === 'won' && !!challenge && !!dailyResult}
+          onClose={() => { /* terminal state, no close */ }}
+          showCloseButton={false}
+          size="md"
+        >
+          {challenge && dailyResult && status === 'won' && (
+            <div className="text-center">
               <motion.div
-                animate={{ x: [0, 6, 0] }}
-                transition={{ repeat: Infinity, duration: 1.6 }}
-                className="text-3xl text-white/60"
-              >
-                →
-              </motion.div>
-              <motion.div
-                initial={{ rotate: 6, opacity: 0 }}
-                animate={{ rotate: 6, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="relative aspect-[2/3] w-28 overflow-hidden rounded-xl shadow-2xl ring-1 ring-white/10"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1, type: 'spring', stiffness: 260, damping: 18 }}
+                className="relative mx-auto aspect-[2/3] w-40 overflow-hidden rounded-2xl shadow-2xl ring-2 ring-yellow-400/60"
               >
                 <Image
                   src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
                   alt={challenge.targetMovie.titulo}
                   fill
-                  sizes="120px"
+                  sizes="160px"
                   className="object-cover"
                 />
-              </motion.div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-center gap-3 text-sm">
-              <div className="rounded-full bg-emerald-500/20 px-3 py-1 text-emerald-300">
-                {challenge.startMovie.titulo}
-              </div>
-              <span className="text-white/40">a</span>
-              <div className="rounded-full bg-rose-500/20 px-3 py-1 text-rose-300">
-                {challenge.targetMovie.titulo}
-              </div>
-            </div>
-
-            <div className="mt-4 text-xs text-white/50">
-              Ruta óptima: {optimal} {optimal === 1 ? 'paso' : 'pasos'} · Máximo permitido: {maxAllowed}
-            </div>
-
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              whileHover={{ scale: 1.02 }}
-              onClick={startGame}
-              className="mt-8 w-full rounded-2xl bg-gradient-to-r from-amber-400 to-rose-500 px-8 py-4 text-lg font-bold tracking-wide text-black shadow-2xl shadow-rose-500/30"
-            >
-              JUGAR
-            </motion.button>
-
-            <div className="mt-6">
-              <Link href="/" className="text-xs text-white/40 hover:text-white/70">
-                ← volver a cinebret
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      {/* ALREADY PLAYED */}
-      {status === 'already-played' && dailyResult && challenge && (
-        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md text-center"
-          >
-            <div className="text-xs uppercase tracking-[0.2em] text-amber-400">Desafío #{dayNum}</div>
-            <h1 className="mt-2 text-2xl font-bold">
-              {dailyResult.won ? '¡Ya completaste hoy!' : 'Cadena rota de hoy'}
-            </h1>
-            <div className="mt-4 text-5xl">
-              {dailyResult.won
-                ? (dailyResult.steps === dailyResult.optimal ? '⭐⭐⭐' : dailyResult.steps === dailyResult.optimal + 1 ? '⭐⭐' : '⭐')
-                : '💔'}
-            </div>
-            <div className="mt-3 text-lg">
-              {dailyResult.steps}/{dailyResult.optimal} pasos
-            </div>
-            <div className="mt-8 text-sm text-white/60">Vuelve mañana para el próximo desafío</div>
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={handleShare}
-                className="flex-1 rounded-2xl bg-white/10 px-6 py-3 font-semibold backdrop-blur hover:bg-white/20"
-              >
-                {showShareCopied ? '¡Copiado!' : 'Compartir'}
-              </button>
-              <Link
-                href="/"
-                className="flex-1 rounded-2xl bg-white/5 px-6 py-3 text-center font-semibold backdrop-blur hover:bg-white/10"
-              >
-                Volver
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      {/* PLAYING */}
-      {status === 'playing' && challenge && currentMovie && (
-        <>
-          {/* Top HUD: breadcrumbs + target */}
-          <div className="absolute left-0 right-0 top-0 z-20 px-3 pt-[max(env(safe-area-inset-top),12px)]">
-            <div className="flex items-center gap-2">
-              <div className="flex-1 overflow-x-auto scrollbar-none">
-                <div className="flex items-center gap-1.5 rounded-full bg-black/50 px-2 py-1.5 backdrop-blur-xl ring-1 ring-white/10">
-                  <AnimatePresence initial={false}>
-                    {chain.map((link, i) => {
-                      const isFirst = i === 0
-                      const isCurrent = i === chain.length - 1
-                      return (
-                        <motion.div
-                          key={`${link.movie.id}-${i}`}
-                          layout
-                          initial={{ scale: 0.6, opacity: 0, y: -8 }}
-                          animate={{
-                            scale: 1,
-                            opacity: 1,
-                            y: 0,
-                            rotate: 0,
-                            x: 0,
-                          }}
-                          exit={{
-                            scale: 0,
-                            rotate: Math.random() * 60 - 30,
-                            x: Math.random() * 200 - 100,
-                            y: Math.random() * 200,
-                            opacity: 0,
-                          }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 24 }}
-                          className="flex items-center gap-1.5 shrink-0"
-                        >
-                          {i > 0 && <span className="text-[10px] text-white/40">→</span>}
-                          <div
-                            className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-medium ring-1 ${
-                              isFirst
-                                ? 'bg-emerald-500/30 text-emerald-100 ring-emerald-400/40'
-                                : isCurrent
-                                ? 'bg-amber-400/30 text-amber-100 ring-amber-400/40'
-                                : 'bg-white/10 text-white/80 ring-white/10'
-                            }`}
-                          >
-                            <div className="relative h-5 w-5 overflow-hidden rounded-full ring-1 ring-white/20">
-                              <Image
-                                src={`${POSTER_BASE}${link.movie.poster_path}`}
-                                alt=""
-                                fill
-                                sizes="20px"
-                                className="object-cover"
-                              />
-                            </div>
-                            <span className="max-w-[100px] truncate">{link.movie.titulo}</span>
-                          </div>
-                        </motion.div>
-                      )
-                    })}
-                  </AnimatePresence>
-                </div>
-              </div>
-
-              {/* Target locked poster */}
-              <motion.div
-                animate={
-                  currentDistance <= 2
-                    ? { scale: [1, 1.08, 1], boxShadow: ['0 0 0px rgba(244,63,94,0)', '0 0 24px rgba(244,63,94,0.6)', '0 0 0px rgba(244,63,94,0)'] }
-                    : { scale: 1 }
-                }
-                transition={{ repeat: currentDistance <= 2 ? Infinity : 0, duration: 1.4 }}
-                className="relative shrink-0"
-              >
-                <div className="relative aspect-[2/3] w-12 overflow-hidden rounded-lg ring-2 ring-rose-400/50">
-                  <Image
-                    src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
-                    alt={challenge.targetMovie.titulo}
-                    fill
-                    sizes="48px"
-                    className="object-cover"
+                {Array.from({ length: 14 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ x: 0, y: 0, opacity: 1 }}
+                    animate={{
+                      x: Math.cos((i / 14) * Math.PI * 2) * 180,
+                      y: Math.sin((i / 14) * Math.PI * 2) * 180,
+                      opacity: 0,
+                    }}
+                    transition={{ delay: 0.4, duration: 1.1, ease: 'easeOut' }}
+                    className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-yellow-400"
                   />
-                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 to-transparent">
-                    <div className="w-full px-0.5 pb-0.5 text-center text-[8px] font-bold text-rose-200">
-                      META
-                    </div>
-                  </div>
-                </div>
+                ))}
               </motion.div>
-            </div>
 
-            {/* progress bar */}
-            <div className="mt-2 flex items-center gap-2 px-1">
-              <div className="flex-1 h-1 rounded-full bg-white/10 overflow-hidden">
-                <motion.div
-                  className={`h-full ${steps > optimal ? 'bg-amber-400' : 'bg-emerald-400'}`}
-                  animate={{ width: `${Math.min(100, (steps / maxAllowed) * 100)}%` }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 30 }}
-                />
-              </div>
-              <div className="text-[10px] tabular-nums text-white/60">
-                {steps}/{maxAllowed}
-              </div>
-            </div>
-          </div>
-
-          {/* Center current movie */}
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pt-20 pb-[260px]">
-            <AnimatePresence mode="wait">
               <motion.div
-                key={`center-${currentMovie.id}`}
-                initial={{ x: 120, rotate: 8, opacity: 0, scale: 0.85 }}
-                animate={{ x: 0, rotate: 0, opacity: 1, scale: 1 }}
-                exit={{ x: -120, rotate: -8, opacity: 0, scale: 0.85 }}
-                transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-                className="flex flex-col items-center"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
               >
-                <div className="relative aspect-[2/3] w-40 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/20">
-                  <Image
-                    src={`${POSTER_BASE}${currentMovie.poster_path}`}
-                    alt={currentMovie.titulo}
-                    fill
-                    sizes="160px"
-                    priority
-                    className="object-cover"
-                  />
-                </div>
-                <div className="mt-3 max-w-[80vw] text-center text-lg font-semibold tracking-tight">
-                  {currentMovie.titulo}
-                </div>
-                {currentMovie.anio && (
-                  <div className="text-xs text-white/50">{currentMovie.anio}</div>
-                )}
+                <h2 className="mt-5 text-3xl font-black tracking-tight text-white">
+                  ¡Conectaste!
+                </h2>
+                <p className="mt-1 text-sm text-zinc-400">{challenge.targetMovie.titulo}</p>
 
-                <div className="mt-3 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white/80 backdrop-blur ring-1 ring-white/10">
-                  {currentDistance === Infinity
-                    ? 'sin ruta directa'
-                    : currentDistance === 0
-                    ? '¡llegaste!'
-                    : `${currentDistance} ${currentDistance === 1 ? 'paso' : 'pasos'} al objetivo`}
+                <div className="mt-3 text-base text-zinc-300 tabular-nums">
+                  {dailyResult.steps} pasos · Óptimo: {dailyResult.optimal}
+                </div>
+
+                <div className="mt-4 flex items-center justify-center gap-1.5">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <Icon.Star
+                      key={i}
+                      filled={i < starCount}
+                      className={`h-9 w-9 ${i < starCount ? 'text-yellow-400' : 'text-zinc-700'}`}
+                    />
+                  ))}
+                </div>
+
+                <div className="mt-6 flex gap-3">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    fullWidth
+                    onClick={handleShare}
+                    iconLeft={<Icon.Share className="h-4 w-4" />}
+                  >
+                    {showShareCopied ? '¡Copiado!' : 'Compartir'}
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    fullWidth
+                    onClick={() => { window.location.href = '/' }}
+                  >
+                    Salir
+                  </Button>
+                </div>
+                <div className="mt-4 text-xs text-zinc-500">
+                  Vuelve mañana para el próximo desafío.
                 </div>
               </motion.div>
-            </AnimatePresence>
+            </div>
+          )}
+        </Modal>
 
-            {/* Feedback flash */}
-            <AnimatePresence>
-              {feedback && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20, scale: 0.7 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.7 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-                  className={`absolute top-[48%] rounded-full px-4 py-2 text-sm font-bold backdrop-blur-xl ring-1 ${
-                    feedback === 'closer'
-                      ? 'bg-emerald-500/30 text-emerald-100 ring-emerald-400/50'
-                      : 'bg-rose-500/30 text-rose-100 ring-rose-400/50'
-                  }`}
-                >
-                  {feedback === 'closer' ? '🔥 Más cerca' : '❄️ Más lejos'}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+        {/* LOSE modal */}
+        <Modal
+          open={status === 'lost' && !!challenge && !!dailyResult}
+          onClose={() => { /* terminal state, no close */ }}
+          showCloseButton={false}
+          size="md"
+        >
+          {challenge && dailyResult && status === 'lost' && (
+            <div className="text-center">
+              <motion.div
+                animate={{ x: [0, -8, 8, -6, 6, 0], rotate: [0, -2, 2, -1, 1, 0] }}
+                transition={{ duration: 0.6 }}
+                className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-800 text-zinc-400"
+              >
+                <Icon.Error className="h-9 w-9" />
+              </motion.div>
+              <h2 className="mt-4 text-3xl font-black tracking-tight text-white">
+                Cadena rota
+              </h2>
+              <p className="mt-2 text-sm text-zinc-400 tabular-nums">
+                Usaste {dailyResult.steps} pasos · Óptimo era {dailyResult.optimal}
+              </p>
 
-          {/* Bottom: actor choices */}
-          <div className="absolute inset-x-0 bottom-0 z-20 px-3 pb-[max(env(safe-area-inset-bottom),14px)] pt-2">
-            <div className="rounded-3xl bg-black/55 p-3 backdrop-blur-2xl ring-1 ring-white/10">
-              <div className="mb-2 px-1 text-[10px] uppercase tracking-[0.18em] text-white/50">
-                Elige un actor para saltar a otra película
+              <div className="mt-6 text-xs uppercase tracking-[0.2em] font-bold text-zinc-500">
+                Ruta óptima
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                {currentChoices.map((actor, idx) => {
-                  const count = actorToMoviesRef.current.get(actor.name)?.size ?? 0
+              <div className="mt-3 flex items-center justify-center gap-2 overflow-x-auto pb-1">
+                {challenge.optimalPath.map((mid, i) => {
+                  const m = movieMapRef.current.get(mid)
+                  if (!m) return null
                   return (
-                    <motion.button
-                      key={`${actor.name}-${idx}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.08, type: 'spring', stiffness: 220, damping: 22 }}
-                      whileTap={{ scale: 0.94 }}
-                      onClick={() => pickActor(actor)}
-                      disabled={transitioning}
-                      className="group relative flex flex-col items-center overflow-hidden rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 active:bg-white/10 disabled:opacity-50"
-                    >
-                      <div className="relative aspect-square w-full max-w-[96px] overflow-hidden rounded-xl ring-1 ring-white/15">
-                        {actor.profile_path ? (
-                          <Image
-                            src={`${PROFILE_BASE}${actor.profile_path}`}
-                            alt={actor.name}
-                            fill
-                            sizes="100px"
-                            className="object-cover transition-transform group-active:scale-105"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-white/5 text-2xl">
-                            🎭
-                          </div>
-                        )}
+                    <div key={`${mid}-${i}`} className="flex items-center gap-2 shrink-0">
+                      {i > 0 && <Icon.ChevronRight className="h-3 w-3 text-zinc-600" />}
+                      <div className="relative aspect-[2/3] w-12 overflow-hidden rounded-lg ring-1 ring-zinc-700">
+                        <Image
+                          src={`${POSTER_BASE}${m.poster_path}`}
+                          alt={m.titulo}
+                          fill
+                          sizes="48px"
+                          className="object-cover"
+                        />
                       </div>
-                      <div className="mt-1.5 line-clamp-2 text-center text-[11px] font-semibold leading-tight">
-                        {actor.name}
-                      </div>
-                      {actor.character && (
-                        <div className="line-clamp-1 text-center text-[9px] text-white/50">
-                          {actor.character}
-                        </div>
-                      )}
-                      <div className="mt-0.5 rounded-full bg-white/10 px-1.5 py-0.5 text-[9px] text-white/70">
-                        {count} {count === 1 ? 'película' : 'películas'}
-                      </div>
-                    </motion.button>
+                    </div>
                   )
                 })}
-                {currentChoices.length === 0 && (
-                  <div className="col-span-3 py-8 text-center text-sm text-white/60">
-                    Sin actores disponibles…
-                  </div>
-                )}
               </div>
-            </div>
-          </div>
-        </>
-      )}
 
-      {/* WIN */}
-      {status === 'won' && challenge && dailyResult && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 px-6 backdrop-blur-md">
-          <motion.div
-            initial={{ scale: 0.3, opacity: 0, x: 120, y: 120 }}
-            animate={{ scale: 1, opacity: 1, x: 0, y: 0 }}
-            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-            className="w-full max-w-md text-center"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.4, type: 'spring', stiffness: 260, damping: 18 }}
-              className="relative mx-auto aspect-[2/3] w-44 overflow-hidden rounded-2xl shadow-2xl ring-2 ring-amber-400/50"
-            >
-              <Image
-                src={`${POSTER_BASE}${challenge.targetMovie.poster_path}`}
-                alt={challenge.targetMovie.titulo}
-                fill
-                sizes="180px"
-                className="object-cover"
-              />
-              {/* particle burst */}
-              {Array.from({ length: 14 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ x: 0, y: 0, opacity: 1 }}
-                  animate={{
-                    x: Math.cos((i / 14) * Math.PI * 2) * 180,
-                    y: Math.sin((i / 14) * Math.PI * 2) * 180,
-                    opacity: 0,
-                  }}
-                  transition={{ delay: 0.6, duration: 1.1, ease: 'easeOut' }}
-                  className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-amber-400"
-                />
-              ))}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-            >
-              <div className="mt-5 text-3xl font-bold tracking-tight">¡Conectaste!</div>
-              <div className="mt-1 text-sm text-white/70">{challenge.targetMovie.titulo}</div>
-              <div className="mt-3 text-lg">
-                {dailyResult.steps} pasos · Óptimo: {dailyResult.optimal}
-              </div>
-              <div className="mt-3 text-4xl">
-                {'⭐'.repeat(starCount)}
-                <span className="text-white/20">{'⭐'.repeat(3 - starCount)}</span>
-              </div>
-              <div className="mt-6 flex gap-3">
-                <button
+              <div className="mt-8 flex gap-3">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  fullWidth
                   onClick={handleShare}
-                  className="flex-1 rounded-2xl bg-gradient-to-r from-amber-400 to-rose-500 px-6 py-3 font-bold text-black shadow-xl"
+                  iconLeft={<Icon.Share className="h-4 w-4" />}
                 >
                   {showShareCopied ? '¡Copiado!' : 'Compartir'}
-                </button>
-                <Link
-                  href="/"
-                  className="flex-1 rounded-2xl bg-white/10 px-6 py-3 text-center font-semibold backdrop-blur"
+                </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  onClick={() => { window.location.href = '/' }}
                 >
                   Salir
-                </Link>
+                </Button>
               </div>
-              <div className="mt-4 text-xs text-white/40">Vuelve mañana para el próximo desafío</div>
-            </motion.div>
-          </motion.div>
-        </div>
-      )}
-
-      {/* LOSE */}
-      {status === 'lost' && challenge && dailyResult && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/80 px-6 backdrop-blur-md">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="w-full max-w-md text-center"
-          >
-            <motion.div
-              animate={{ x: [0, -8, 8, -6, 6, 0], rotate: [0, -2, 2, -1, 1, 0] }}
-              transition={{ duration: 0.6 }}
-              className="text-5xl"
-            >
-              💔
-            </motion.div>
-            <div className="mt-4 text-3xl font-bold tracking-tight">Cadena rota</div>
-            <div className="mt-2 text-sm text-white/70">
-              Usaste {dailyResult.steps} pasos · Óptimo era {dailyResult.optimal}
+              <div className="mt-4 text-xs text-zinc-500">
+                Vuelve mañana para el próximo desafío.
+              </div>
             </div>
-
-            <div className="mt-6 text-xs uppercase tracking-[0.2em] text-white/50">Ruta óptima</div>
-            <div className="mt-3 flex items-center justify-center gap-2 overflow-x-auto">
-              {challenge.optimalPath.map((mid, i) => {
-                const m = movieMapRef.current.get(mid)
-                if (!m) return null
-                return (
-                  <div key={`${mid}-${i}`} className="flex items-center gap-2 shrink-0">
-                    {i > 0 && <span className="text-white/40">→</span>}
-                    <div className="relative aspect-[2/3] w-12 overflow-hidden rounded-lg ring-1 ring-white/20">
-                      <Image
-                        src={`${POSTER_BASE}${m.poster_path}`}
-                        alt={m.titulo}
-                        fill
-                        sizes="48px"
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-
-            <div className="mt-8 flex gap-3">
-              <button
-                onClick={handleShare}
-                className="flex-1 rounded-2xl bg-white/10 px-6 py-3 font-semibold backdrop-blur"
-              >
-                {showShareCopied ? '¡Copiado!' : 'Compartir'}
-              </button>
-              <Link
-                href="/"
-                className="flex-1 rounded-2xl bg-white/5 px-6 py-3 text-center font-semibold backdrop-blur"
-              >
-                Salir
-              </Link>
-            </div>
-            <div className="mt-4 text-xs text-white/40">Vuelve mañana para el próximo desafío</div>
-          </motion.div>
-        </div>
-      )}
-    </div>
+          )}
+        </Modal>
+      </div>
+    </PageShell>
   )
 }

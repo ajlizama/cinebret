@@ -532,122 +532,8 @@ export default function MapaPage() {
     const img = imageCache[node.id]
     const hasPoster = img && img.complete && img.naturalWidth > 0
 
-    // ── DIVE MODE: zoom > 7 — poster expands into a mini-ficha ──
-    const isDiveZoom = globalScale > 7 && showPoster && hasPoster && !dimmed
-    if (isDiveZoom) {
-      const cardW = 60
-      const cardH = 80
-      const posterW = 18
-      const posterH = posterW * 1.5
-      const pad = 3
-      const fs = 3.5 // base font size in graph units
-      const lineH = fs * 1.35
-
-      // Card background with shadow
-      ctx.shadowColor = 'rgba(0,0,0,0.7)'
-      ctx.shadowBlur = 12 / globalScale
-      ctx.fillStyle = '#18181b'
-      ctx.beginPath()
-      ctx.roundRect(node.x - cardW / 2, node.y - cardH / 2, cardW, cardH, 4)
-      ctx.fill()
-      ctx.shadowColor = 'transparent'
-      ctx.shadowBlur = 0
-
-      // Gold border
-      ctx.strokeStyle = node.color
-      ctx.lineWidth = 0.8
-      ctx.beginPath()
-      ctx.roundRect(node.x - cardW / 2, node.y - cardH / 2, cardW, cardH, 4)
-      ctx.stroke()
-
-      // Poster (left side)
-      const posterX = node.x - cardW / 2 + pad
-      const posterY = node.y - cardH / 2 + pad
-      ctx.save()
-      ctx.beginPath()
-      ctx.roundRect(posterX, posterY, posterW, posterH, 2)
-      ctx.closePath()
-      ctx.clip()
-      ctx.drawImage(img, posterX, posterY, posterW, posterH)
-      ctx.restore()
-
-      // Title (right of poster)
-      const textX = posterX + posterW + pad
-      const textMaxW = cardW - posterW - pad * 3
-      let ty = posterY + fs
-
-      ctx.font = `800 ${fs}px Inter, sans-serif`
-      ctx.fillStyle = '#fafaf9'
-      ctx.textAlign = 'left'
-      ctx.textBaseline = 'top'
-      // Truncate title to fit
-      const titleText = node.title.length > 22 ? node.title.slice(0, 20) + '…' : node.title
-      ctx.fillText(titleText, textX, ty)
-      ty += lineH
-
-      // Year + IMDb
-      ctx.font = `600 ${fs * 0.75}px Inter, sans-serif`
-      ctx.fillStyle = '#facc15'
-      const metaText = `${node.anio || ''} · IMDb ${node.imdb}`
-      ctx.fillText(metaText, textX, ty)
-      ty += lineH * 0.9
-
-      // Director
-      if (node.director) {
-        ctx.font = `500 ${fs * 0.65}px Inter, sans-serif`
-        ctx.fillStyle = '#a1a1aa'
-        ctx.fillText(`Dir: ${node.director.length > 20 ? node.director.slice(0, 18) + '…' : node.director}`, textX, ty)
-        ty += lineH * 0.8
-      }
-
-      // Genres (pills)
-      if (node.genres && node.genres.length > 0) {
-        const pillH = fs * 0.7
-        let px = posterX
-        const pillY = posterY + posterH + pad
-        ctx.font = `600 ${fs * 0.55}px Inter, sans-serif`
-        for (const g of node.genres.slice(0, 3)) {
-          const tw = ctx.measureText(g).width + 3
-          ctx.fillStyle = 'rgba(250,204,21,0.15)'
-          ctx.beginPath()
-          ctx.roundRect(px, pillY, tw, pillH, pillH / 2)
-          ctx.fill()
-          ctx.fillStyle = '#facc15'
-          ctx.fillText(g, px + 1.5, pillY + 0.5)
-          px += tw + 1.5
-        }
-      }
-
-      // Sinopsis (below poster + genres area)
-      if (node.sinopsis) {
-        const sinopsisY = posterY + posterH + pad + (node.genres?.length ? 8 : 2)
-        ctx.font = `400 ${fs * 0.58}px Inter, sans-serif`
-        ctx.fillStyle = '#a1a1aa'
-        // Word-wrap sinopsis into the card width
-        const words = node.sinopsis.split(' ')
-        let line = ''
-        let sy = sinopsisY
-        const maxLines = 5
-        let lineCount = 0
-        for (const word of words) {
-          const test = line ? line + ' ' + word : word
-          if (ctx.measureText(test).width > cardW - pad * 2) {
-            ctx.fillText(line, posterX, sy)
-            sy += lineH * 0.65
-            line = word
-            lineCount++
-            if (lineCount >= maxLines) { ctx.fillText(line + '…', posterX, sy); break }
-          } else {
-            line = test
-          }
-        }
-        if (lineCount < maxLines && line) ctx.fillText(line, posterX, sy)
-      }
-
-      ctx.restore()
-
-    } else if (showPoster && hasPoster) {
-      // ── Poster mode: rounded rectangle with soft shadow ──
+    if (showPoster && hasPoster) {
+      // ── Poster mode with immersive dive at deep zoom ──
       const imgW = size * 2.4
       const imgH = imgW * 1.5
       const border = isSelected ? 2.5 : isHovered ? 2 : 0.8
@@ -665,7 +551,7 @@ export default function MapaPage() {
       ctx.roundRect(node.x - imgW / 2 - border, node.y - imgH / 2 - border, imgW + border * 2, imgH + border * 2, br + border)
       ctx.fill()
 
-      // Reset shadow before drawing poster
+      // Reset shadow
       ctx.shadowColor = 'transparent'
       ctx.shadowBlur = 0
       ctx.shadowOffsetY = 0
@@ -676,10 +562,96 @@ export default function MapaPage() {
       ctx.closePath()
       ctx.clip()
       ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
+
+      // ── DIVE: at zoom > 6, darken the poster and overlay info ──
+      // The darken and info opacity ramp from 0→1 between zoom 6 and 9
+      const diveProgress = Math.min(1, Math.max(0, (globalScale - 6) / 3))
+      if (diveProgress > 0 && !dimmed) {
+        // Darken the poster gradually
+        ctx.fillStyle = `rgba(0, 0, 0, ${diveProgress * 0.75})`
+        ctx.fillRect(node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
+
+        // All text rendered INSIDE the poster area (on top of the darkened image)
+        ctx.globalAlpha = diveProgress
+        const fs = imgW * 0.07 // font size proportional to poster width
+        const pad = imgW * 0.06
+        const leftX = node.x - imgW / 2 + pad
+        const rightX = node.x + imgW / 2 - pad
+        let ty = node.y - imgH / 2 + imgH * 0.35 // start at ~35% from top
+
+        // Title — big, bold, white
+        ctx.font = `900 ${fs * 1.6}px Inter, sans-serif`
+        ctx.fillStyle = '#fafaf9'
+        ctx.textAlign = 'left'
+        ctx.textBaseline = 'top'
+        const titleText = node.title.length > 18 ? node.title.slice(0, 16) + '…' : node.title
+        ctx.fillText(titleText, leftX, ty)
+        ty += fs * 2.2
+
+        // Year + IMDb
+        ctx.font = `700 ${fs}px Inter, sans-serif`
+        ctx.fillStyle = '#facc15'
+        ctx.fillText(`${node.anio || ''} · IMDb ${node.imdb}`, leftX, ty)
+        ty += fs * 1.6
+
+        // Director
+        if (node.director) {
+          ctx.font = `500 ${fs * 0.85}px Inter, sans-serif`
+          ctx.fillStyle = '#a1a1aa'
+          ctx.fillText(node.director, leftX, ty)
+          ty += fs * 1.4
+        }
+
+        // Genre pills
+        if (node.genres?.length > 0) {
+          ctx.font = `600 ${fs * 0.7}px Inter, sans-serif`
+          let px = leftX
+          for (const g of node.genres.slice(0, 3)) {
+            const tw = ctx.measureText(g).width + fs * 0.8
+            const pillH = fs * 1
+            ctx.fillStyle = 'rgba(250,204,21,0.2)'
+            ctx.beginPath()
+            ctx.roundRect(px, ty, tw, pillH, pillH / 2)
+            ctx.fill()
+            ctx.fillStyle = '#facc15'
+            ctx.textBaseline = 'middle'
+            ctx.fillText(g, px + fs * 0.4, ty + pillH / 2)
+            ctx.textBaseline = 'top'
+            px += tw + fs * 0.3
+          }
+          ty += fs * 1.8
+        }
+
+        // Sinopsis — small, word-wrapped
+        if (node.sinopsis) {
+          ctx.font = `400 ${fs * 0.7}px Inter, sans-serif`
+          ctx.fillStyle = 'rgba(250,250,249,0.7)'
+          const words = node.sinopsis.split(' ')
+          let line = ''
+          const maxW = imgW - pad * 2
+          let linesDrawn = 0
+          for (const word of words) {
+            const test = line ? line + ' ' + word : word
+            if (ctx.measureText(test).width > maxW) {
+              ctx.fillText(line, leftX, ty)
+              ty += fs * 1
+              line = word
+              linesDrawn++
+              if (linesDrawn >= 3) { ctx.fillText(line + '…', leftX, ty); break }
+            } else {
+              line = test
+            }
+          }
+          if (linesDrawn < 3 && line) ctx.fillText(line, leftX, ty)
+        }
+
+        ctx.globalAlpha = 1
+      }
+
       ctx.restore()
 
-      // Title below poster (with text shadow for readability)
-      if (globalScale > 2.5 && !dimmed) {
+      // Title below poster (only when NOT in dive mode)
+      if (globalScale > 2.5 && globalScale <= 6 && !dimmed) {
         const fontSize = Math.max(2.5, 11 / globalScale)
         ctx.font = `600 ${fontSize}px Inter, sans-serif`
         ctx.textAlign = 'center'

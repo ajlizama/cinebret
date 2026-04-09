@@ -1,9 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import Nav from '@/components/Nav'
-import BackButton from '@/components/BackButton'
+import { PageShell, Section, StatCard, Pill, BackButton } from '@/components/ui'
 import { fetchPersonByName, calcAge } from '@/lib/tmdb-person'
 import FilmographyGrid from '@/components/FilmographyGrid'
 
@@ -108,9 +106,7 @@ export default async function DirectorPage({ params }: { params: Promise<{ name:
   const age = person?.birthday ? calcAge(person.birthday, person.deathday) : null
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-
+    <PageShell fullBleed>
       <div className="relative w-full overflow-hidden" style={{ minHeight: '260px' }}>
         {backdrop && (
           <>
@@ -119,7 +115,7 @@ export default async function DirectorPage({ params }: { params: Promise<{ name:
           </>
         )}
 
-        <div className="relative max-w-5xl mx-auto px-6 pt-6 pb-8">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-8">
           <BackButton />
           <div className="mt-4 flex items-end gap-5">
             {person?.profile_path && (
@@ -136,56 +132,84 @@ export default async function DirectorPage({ params }: { params: Promise<{ name:
                   {person?.place_of_birth && <span className="text-zinc-500">{person.place_of_birth}</span>}
                 </div>
               )}
-              <div className="flex items-center gap-4 mt-1 text-sm text-zinc-400 flex-wrap">
-              <span>{sorted.length} películas</span>
-              {avgImdb && <span className="text-yellow-400 font-bold flex items-center gap-1"><svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {avgImdb} promedio</span>}
-              {bestPicture > 0 && <span className="text-amber-400 flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /> {bestPicture} Mejor Pelicula</span>}
-              {dirOscars != null && dirOscars > 0 && <span className="text-amber-400">{dirOscars} Oscar{dirOscars > 1 ? 's' : ''} personales</span>}
+              <div className="flex items-center gap-3 mt-2 flex-wrap">
+                <Pill variant="gold">{sorted.length} películas</Pill>
+                {avgImdb && (
+                  <Pill variant="gold">
+                    <svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                    {avgImdb} promedio
+                  </Pill>
+                )}
+                {bestPicture > 0 && (
+                  <Pill variant="gold">
+                    <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /> {bestPicture} Mejor Película
+                  </Pill>
+                )}
+                {dirOscars != null && dirOscars > 0 && (
+                  <Pill variant="gold">{dirOscars} Oscar{dirOscars > 1 ? 's' : ''} personales</Pill>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
         {person?.biography && (
           <div className="mb-8">
             <p className="text-sm text-zinc-300 leading-relaxed line-clamp-6">{person.biography}</p>
           </div>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Actores frecuentes</p>
-            {topActors.map(([a, count]) => (
-              <Link key={a} href={`/actor/${encodeURIComponent(a)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
-                {a} <span className="text-zinc-600">({count})</span>
-              </Link>
-            ))}
-          </div>
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Compositores</p>
-            {topComposers.map(([c, count]) => (
-              <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
-                {c} <span className="text-zinc-600">({count})</span>
-              </Link>
-            ))}
-          </div>
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Géneros</p>
-            {topGenres.map(([g, count]) => (
-              <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
-            ))}
-          </div>
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Categorías CineBret</p>
-            {topCats.map(([c, count]) => (
-              <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
-            ))}
-          </div>
-        </div>
 
-        <FilmographyGrid movies={sorted} />
+        {/* Stats */}
+        <Section label="Estadísticas">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2">
+            <StatCard value={sorted.length} label="Películas" />
+            {avgImdb && <StatCard value={avgImdb} label="Nota media" sub="IMDb" />}
+            {dirOscars != null && dirOscars > 0 && <StatCard value={dirOscars} label={dirOscars > 1 ? 'Oscars personales' : 'Oscar personal'} />}
+            {bestPicture > 0 && <StatCard value={bestPicture} label="Mejor Película" />}
+          </div>
+        </Section>
+
+        {/* Collaborators grid */}
+        <Section label="Colaboradores y géneros">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Actores frecuentes</p>
+              {topActors.map(([a, count]) => (
+                <Link key={a} href={`/actor/${encodeURIComponent(a)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                  {a} <span className="text-zinc-600">({count})</span>
+                </Link>
+              ))}
+            </div>
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Compositores</p>
+              {topComposers.map(([c, count]) => (
+                <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                  {c} <span className="text-zinc-600">({count})</span>
+                </Link>
+              ))}
+            </div>
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Géneros</p>
+              {topGenres.map(([g, count]) => (
+                <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Categorías CineBret</p>
+              {topCats.map(([c, count]) => (
+                <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        {/* Filmography */}
+        <Section label="Filmografía" count={sorted.length}>
+          <FilmographyGrid movies={sorted} />
+        </Section>
       </div>
-    </main>
+    </PageShell>
   )
 }

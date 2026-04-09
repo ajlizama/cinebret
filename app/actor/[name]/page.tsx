@@ -1,9 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import Nav from '@/components/Nav'
-import BackButton from '@/components/BackButton'
+import { PageShell, Section, StatCard, Pill, BackButton } from '@/components/ui'
 import { fetchPersonByName, calcAge } from '@/lib/tmdb-person'
 import FilmographyGrid from '@/components/FilmographyGrid'
 
@@ -144,9 +142,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
   const age = person?.birthday ? calcAge(person.birthday, person.deathday) : null
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <Nav />
-
+    <PageShell fullBleed>
       {/* Hero */}
       <div className="relative w-full overflow-hidden" style={{ minHeight: '260px' }}>
         {backdrop && (
@@ -157,7 +153,7 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
         )}
         {!backdrop && <div className="absolute inset-0 bg-zinc-950" />}
 
-        <div className="relative max-w-5xl mx-auto px-6 pt-6 pb-10">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-10">
           <BackButton />
           <div className="mt-4 flex items-end gap-5">
             {/* Photo */}
@@ -169,64 +165,91 @@ export default async function ActorPage({ params }: { params: Promise<{ name: st
               )}
             </div>
             <div>
+              <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Actor</p>
               <h1 className="text-3xl md:text-4xl font-bold text-white">{actorName}</h1>
               <div className="flex items-center gap-3 mt-1.5 text-sm text-zinc-400 flex-wrap">
                 {age && <span>{person?.deathday ? `${age} años (fallecido)` : `${age} años`}</span>}
                 {person?.place_of_birth && <span className="text-zinc-500">{person.place_of_birth}</span>}
               </div>
-              <div className="flex items-center gap-3 mt-1 text-sm text-zinc-400 flex-wrap">
-                <span>{sorted.length} películas en CineBret</span>
-                {avgImdb && <span className="text-yellow-400 font-bold flex items-center gap-1"><svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {avgImdb} promedio</span>}
-                {bestPictureCount > 0 && <span className="text-amber-400 flex items-center gap-1"><img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /> {bestPictureCount} Mejor Pelicula</span>}
-                {personalOscars > 0 && <span className="text-amber-400">{personalOscars} Oscar{personalOscars > 1 ? 's' : ''}</span>}
+              <div className="flex items-center gap-3 mt-2 flex-wrap">
+                <Pill variant="gold">{sorted.length} películas en CineBret</Pill>
+                {avgImdb && (
+                  <Pill variant="gold">
+                    <svg className="w-3.5 h-3.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
+                    {avgImdb} promedio
+                  </Pill>
+                )}
+                {bestPictureCount > 0 && (
+                  <Pill variant="gold">
+                    <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" /> {bestPictureCount} Mejor Película
+                  </Pill>
+                )}
+                {personalOscars > 0 && (
+                  <Pill variant="gold">{personalOscars} Oscar{personalOscars > 1 ? 's' : ''}</Pill>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-6">
-        {/* Biografía */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+        {/* Biografia */}
         {person?.biography && (
           <div className="mb-8">
             <p className="text-sm text-zinc-300 leading-relaxed line-clamp-6">{person.biography}</p>
           </div>
         )}
 
-        {/* Stats grid — modern glass style */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Directores</p>
-            {topDirectors.map(([d, count]) => (
-              <Link key={d} href={`/director/${encodeURIComponent(d)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
-                {d} <span className="text-zinc-600">({count})</span>
-              </Link>
-            ))}
+        {/* Stats */}
+        <Section label="Estadísticas">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2">
+            <StatCard value={sorted.length} label="Películas" />
+            {avgImdb && <StatCard value={avgImdb} label="Nota media" sub="IMDb" />}
+            {personalOscars > 0 && <StatCard value={personalOscars} label={personalOscars > 1 ? 'Oscars personales' : 'Oscar personal'} />}
+            {bestPictureCount > 0 && <StatCard value={bestPictureCount} label="Mejor Película" />}
           </div>
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Compositores</p>
-            {topComposers.map(([c, count]) => (
-              <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
-                {c} <span className="text-zinc-600">({count})</span>
-              </Link>
-            ))}
-          </div>
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Géneros</p>
-            {topGenres.map(([g, count]) => (
-              <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
-            ))}
-          </div>
-          <div className="bg-zinc-900/60 rounded-2xl p-4 backdrop-blur">
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Categorías CineBret</p>
-            {topCats.map(([c, count]) => (
-              <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
-            ))}
-          </div>
-        </div>
+        </Section>
 
-        <FilmographyGrid movies={sorted} />
+        {/* Collaborators grid */}
+        <Section label="Colaboradores y géneros">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Directores</p>
+              {topDirectors.map(([d, count]) => (
+                <Link key={d} href={`/director/${encodeURIComponent(d)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                  {d} <span className="text-zinc-600">({count})</span>
+                </Link>
+              ))}
+            </div>
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Compositores</p>
+              {topComposers.map(([c, count]) => (
+                <Link key={c} href={`/compositor/${encodeURIComponent(c)}`} className="block text-sm text-zinc-300 hover:text-yellow-400 transition-colors py-0.5">
+                  {c} <span className="text-zinc-600">({count})</span>
+                </Link>
+              ))}
+            </div>
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Géneros</p>
+              {topGenres.map(([g, count]) => (
+                <p key={g} className="text-sm text-zinc-300 py-0.5">{g} <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+            <div className="bg-zinc-900 rounded-2xl p-5">
+              <p className="text-xs text-zinc-500 uppercase tracking-wider font-bold mb-3">Categorías CineBret</p>
+              {topCats.map(([c, count]) => (
+                <p key={c} className="text-sm text-zinc-300 py-0.5">{c} <span className="text-zinc-600">({count})</span></p>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        {/* Filmography */}
+        <Section label="Filmografía" count={sorted.length}>
+          <FilmographyGrid movies={sorted} />
+        </Section>
       </div>
-    </main>
+    </PageShell>
   )
 }

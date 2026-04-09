@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import Nav from '@/components/Nav'
+import { PageShell, Section, Pill, ScoreBadge } from '@/components/ui'
 import SeguidosQueVieron from './SeguidosQueVieron'
 import ReviewSection from './ReviewSection'
 import UserActions from './UserActions'
@@ -17,17 +17,6 @@ import SpotifyPlayer from '@/components/SpotifyPlayer'
 import WatchProviderButtons from '@/components/WatchProviderButtons'
 import ShareButton from '@/components/ShareButton'
 import ParentGuide from '@/components/ParentGuide'
-
-const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
-  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700', logo: '/hbo_max.png' },
-  { id: 'amazon_prime', nombre: 'Prime Video', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
-  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600', logo: '/apple_tv.png' },
-  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
-  { id: 'mubi', nombre: 'MUBI', color: 'bg-blue-800', logo: '/mubi.png' },
-  { id: 'crunchyroll', nombre: 'Crunchyroll', color: 'bg-orange-600', logo: '/crunchyroll.png' },
-]
 
 async function getPelicula(id: string) {
   const { data } = await supabase
@@ -85,8 +74,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
   const tituloLocal = pelicula.titulo_latino || pelicula.titulo
 
   return (
-    <main className="min-h-screen bg-zinc-950 overflow-x-hidden">
-      <Nav />
+    <PageShell fullBleed>
 
       {/* ── HERO: backdrop or blurred poster ── */}
       <div className="relative w-full overflow-hidden" style={{ minHeight: '300px' }}>
@@ -132,13 +120,13 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                 {pelicula.anio && <span>{pelicula.anio}</span>}
                 {pelicula.runtime && <span>{pelicula.runtime} min</span>}
                 {pelicula.certification && (
-                  <span className="border border-zinc-600 rounded px-1.5 py-0.5 text-xs font-medium">{pelicula.certification}</span>
+                  <Pill size="sm">{pelicula.certification}</Pill>
                 )}
                 {pelicula.nota_imdb && (
-                  <span className="text-yellow-400 font-bold text-base flex items-center gap-1"><svg className="w-4 h-4 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {pelicula.nota_imdb}</span>
+                  <ScoreBadge source="imdb" value={pelicula.nota_imdb} size="md" />
                 )}
                 {pelicula.oscars && pelicula.oscars !== 'N/A' && (
-                  <span className="flex items-center gap-1.5 text-yellow-500">
+                  <span className="flex items-center gap-1.5 text-yellow-400">
                     <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
                     {pelicula.oscars}
                   </span>
@@ -150,9 +138,9 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
             </div>
 
             {pelicula.categoria && (
-              <div className="shrink-0 border border-zinc-700 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
+              <div className="shrink-0 border border-yellow-400/20 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
                 <p className="text-xs text-zinc-500 mb-1">Categoría CineBret</p>
-                <p className="text-sm font-semibold text-white">{pelicula.categoria}</p>
+                <p className="text-sm font-semibold text-yellow-400">{pelicula.categoria}</p>
               </div>
             )}
           </div>
@@ -173,12 +161,10 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               {tieneReviewAutor ? (
                 <>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs bg-yellow-400 text-zinc-950 font-bold px-2 py-1 rounded-full">
-                      Review CineBret
-                    </span>
+                    <Pill variant="gold" size="md">Review CineBret</Pill>
                   </div>
                   {enr.sinopsis_chilensis && (
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-4 italic border-l-2 border-zinc-700 pl-4 break-words">
+                    <p className="text-zinc-400 text-sm leading-relaxed mb-4 italic border-l-2 border-yellow-400/30 pl-4 break-words">
                       {enr.sinopsis_chilensis}
                     </p>
                   )}
@@ -190,9 +176,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               ) : enr?.sinopsis_chilensis ? (
                 <>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-1 rounded-full font-medium">
-                      Sinopsis IA
-                    </span>
+                    <Pill size="md">Sinopsis</Pill>
                     <span className="text-xs text-zinc-600">— review de autor próximamente</span>
                   </div>
                   <p className="text-zinc-300 leading-relaxed italic">{enr.sinopsis_chilensis}</p>
@@ -206,42 +190,37 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Géneros */}
             {enr?.generos && enr.generos.length > 0 && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Géneros</p>
+              <Section label="Géneros">
                 <div className="flex flex-wrap gap-2">
                   {enr.generos.map((g: string) => (
-                    <span key={g} className="text-sm bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full">{g}</span>
+                    <Pill key={g} size="md">{g}</Pill>
                   ))}
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Equipo */}
             <div className="grid grid-cols-2 gap-6">
               {enr?.director && (
-                <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Director</p>
+                <Section label="Director">
                   <Link href={`/director/${encodeURIComponent(enr.director)}`} className="text-sm text-zinc-200 hover:text-yellow-400 transition-colors">{enr.director}</Link>
-                </div>
+                </Section>
               )}
               {enr?.compositor && (
-                <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
+                <Section label="Compositor">
                   <Link href={`/compositor/${encodeURIComponent(enr.compositor)}`} className="text-sm text-zinc-200 hover:text-yellow-400 transition-colors">{enr.compositor}</Link>
-                </div>
+                </Section>
               )}
               {enr?.actores && !enr?.cast_json && (
-                <div className="col-span-2">
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Reparto</p>
+                <Section label="Reparto" className="col-span-2">
                   <p className="text-sm text-zinc-200">{enr.actores}</p>
-                </div>
+                </Section>
               )}
             </div>
 
             {/* Cast con fotos */}
             {enr?.cast_json && (enr.cast_json as any[]).length > 0 && (
-              <div className="min-w-0">
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Reparto</p>
+              <Section label="Reparto" className="min-w-0">
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-6 px-6">
                   {(enr.cast_json as any[]).map((actor: any, i: number) => (
                     <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-20 text-center group">
@@ -257,7 +236,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
                     </Link>
                   ))}
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Dónde ver — TMDB watch providers como fuente principal */}
@@ -302,22 +281,23 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               const orderMap = new Map(simIds.map((id, i) => [id, i]))
               simPels.sort((a: any, b: any) => (orderMap.get(a.tmdb_id) ?? 99) - (orderMap.get(b.tmdb_id) ?? 99))
               return (
-                <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Si te gustó esta película</p>
+                <Section label="Películas similares">
                   <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
                     {simPels.map((sim: any) => (
                       <Link key={sim.id} href={`/pelicula/${sim.id}`} className="shrink-0 w-28">
                         <div className="relative w-28 h-40 rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
                           <Image src={`https://image.tmdb.org/t/p/w185${sim.poster_path}`} alt={sim.titulo_ingles || sim.titulo} fill className="object-cover" sizes="112px" />
                           {sim.nota_imdb && (
-                            <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400 flex items-center gap-0.5"><svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg> {sim.nota_imdb}</div>
+                            <div className="absolute top-1 left-1">
+                              <ScoreBadge source="imdb" value={sim.nota_imdb} size="sm" showLabel={false} />
+                            </div>
                           )}
                         </div>
                         <p className="text-white text-[10px] font-semibold leading-snug line-clamp-2">{sim.titulo_ingles || sim.titulo}</p>
                       </Link>
                     ))}
                   </div>
-                </div>
+                </Section>
               )
             })()}
 
@@ -326,30 +306,27 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
 
             {/* Keywords */}
             {enr?.keywords && (enr.keywords as string[]).length > 0 && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Tags</p>
+              <Section label="Tags">
                 <div className="flex flex-wrap gap-1.5">
                   {(enr.keywords as string[]).map((kw: string) => (
-                    <span key={kw} className="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full">{kw}</span>
+                    <Pill key={kw} size="sm">{kw}</Pill>
                   ))}
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Budget / Revenue */}
             {(pelicula.budget || pelicula.revenue) && (
               <div className="flex gap-6">
                 {pelicula.budget > 0 && (
-                  <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Presupuesto</p>
+                  <Section label="Presupuesto">
                     <p className="text-sm text-zinc-300">${(pelicula.budget / 1_000_000).toFixed(0)}M USD</p>
-                  </div>
+                  </Section>
                 )}
                 {pelicula.revenue > 0 && (
-                  <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Recaudación</p>
+                  <Section label="Recaudación">
                     <p className="text-sm text-zinc-300">${(pelicula.revenue / 1_000_000).toFixed(0)}M USD</p>
-                  </div>
+                  </Section>
                 )}
               </div>
             )}
@@ -360,7 +337,7 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
               <AgregarAListaButton peliculaId={id} />
               {pelicula.imdb_id && (
                 <a href={`https://www.imdb.com/title/${pelicula.imdb_id}/`} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-colors rounded-lg px-4 py-2 text-sm font-medium">
+                  className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20 transition-colors rounded-lg px-4 py-2 text-sm font-medium">
                   IMDb
                 </a>
               )}
@@ -406,6 +383,6 @@ export default async function PeliculaPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
       </div>
-    </main>
+    </PageShell>
   )
 }

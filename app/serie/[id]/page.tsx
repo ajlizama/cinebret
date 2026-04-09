@@ -3,24 +3,20 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import Nav from '@/components/Nav'
-import BackButton from '@/components/BackButton'
 import YouTubeClip from '@/components/YouTubeClip'
 import SpotifyPlayer from '@/components/SpotifyPlayer'
 import ShareButton from '@/components/ShareButton'
 import TemporadasBrowser from './TemporadasBrowser'
 import ParentGuide from '@/components/ParentGuide'
-
-const PLATAFORMAS = [
-  { id: 'netflix', nombre: 'Netflix', color: 'bg-red-600', logo: '/netflix.png' },
-  { id: 'disney_plus', nombre: 'Disney+', color: 'bg-blue-700', logo: '/disney_plus.svg' },
-  { id: 'hbo_max', nombre: 'HBO Max', color: 'bg-purple-700', logo: '/hbo_max.png' },
-  { id: 'amazon_prime', nombre: 'Prime Video', color: 'bg-cyan-600', logo: '/amazon_prime.png' },
-  { id: 'apple_tv', nombre: 'Apple TV+', color: 'bg-zinc-600', logo: '/apple_tv.png' },
-  { id: 'paramount_plus', nombre: 'Paramount+', color: 'bg-blue-500', logo: '/paramount_plus.svg' },
-  { id: 'mubi', nombre: 'MUBI', color: 'bg-blue-800', logo: '/mubi.png' },
-  { id: 'crunchyroll', nombre: 'Crunchyroll', color: 'bg-orange-600', logo: '/crunchyroll.png' },
-]
+import {
+  PageShell,
+  Section,
+  Pill,
+  ScoreBadge,
+  PlatformLogo,
+  BackButton,
+} from '@/components/ui'
+import type { Platform } from '@/components/ui/PlatformLogo'
 
 async function getSerie(id: string) {
   // First fetch the serie itself — use maybeSingle() so missing rows return null instead of throwing
@@ -98,17 +94,17 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 }
 
-function estadoLabel(estado: string | null) {
+function estadoPill(estado: string | null) {
   if (!estado) return null
-  const map: Record<string, { text: string; color: string }> = {
-    'Returning Series': { text: 'En emisión', color: 'bg-green-500/20 text-green-400 border-green-500/30' },
-    'Ended': { text: 'Finalizada', color: 'bg-zinc-700/50 text-zinc-300 border-zinc-600' },
-    'Canceled': { text: 'Cancelada', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
-    'In Production': { text: 'En producción', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
-    'Planned': { text: 'Planeada', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
+  const map: Record<string, { text: string; variant: 'success' | 'default' | 'danger' | 'gold' | 'warning' }> = {
+    'Returning Series': { text: 'En emision', variant: 'success' },
+    'Ended': { text: 'Finalizada', variant: 'default' },
+    'Canceled': { text: 'Cancelada', variant: 'danger' },
+    'In Production': { text: 'En produccion', variant: 'gold' },
+    'Planned': { text: 'Planeada', variant: 'warning' },
   }
-  const info = map[estado] || { text: estado, color: 'bg-zinc-800 text-zinc-400 border-zinc-700' }
-  return <span className={`border rounded-full px-2.5 py-0.5 text-xs font-medium ${info.color}`}>{info.text}</span>
+  const info = map[estado] || { text: estado, variant: 'default' as const }
+  return <Pill variant={info.variant} size="sm">{info.text}</Pill>
 }
 
 export default async function SeriePage({ params }: { params: Promise<{ id: string }> }) {
@@ -128,8 +124,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
     : null
 
   return (
-    <main className="min-h-screen bg-zinc-950 overflow-x-hidden">
-      <Nav />
+    <PageShell fullBleed className="overflow-x-hidden">
 
       {/* ── HERO ── */}
       <div className="relative w-full overflow-hidden" style={{ minHeight: '300px' }}>
@@ -172,19 +167,16 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
               )}
               <div className="flex items-center gap-3 text-sm text-zinc-400 flex-wrap">
                 {anioRange && <span>{anioRange}</span>}
-                {estadoLabel(serie.estado)}
+                {estadoPill(serie.estado)}
                 {serie.num_temporadas && (
                   <span>{serie.num_temporadas} temporada{serie.num_temporadas > 1 ? 's' : ''}</span>
                 )}
                 {serie.episode_runtime && <span>{serie.episode_runtime} min/ep</span>}
                 {serie.certification && (
-                  <span className="border border-zinc-600 rounded px-1.5 py-0.5 text-xs font-medium">{serie.certification}</span>
+                  <Pill variant="default" size="sm">{serie.certification}</Pill>
                 )}
                 {serie.nota_imdb && (
-                  <span className="text-yellow-400 font-bold text-base flex items-center gap-1">
-                    <svg className="w-4 h-4 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
-                    {serie.nota_imdb}
-                  </span>
+                  <ScoreBadge source="imdb" value={serie.nota_imdb} size="md" />
                 )}
               </div>
               {serie.networks && serie.networks.length > 0 && (
@@ -194,7 +186,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
 
             {serie.categoria && (
               <div className="shrink-0 border border-zinc-700 bg-zinc-900/70 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
-                <p className="text-xs text-zinc-500 mb-1">Categoría CineBret</p>
+                <p className="text-xs text-zinc-500 mb-1">Categoria CineBret</p>
                 <p className="text-sm font-semibold text-white">{serie.categoria}</p>
               </div>
             )}
@@ -211,37 +203,33 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
 
             {/* Sinopsis */}
             {enr?.sinopsis_chilensis && (
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-1 rounded-full font-medium">Sinopsis</span>
-                </div>
+              <Section label="Sinopsis">
                 <p className="text-zinc-300 leading-relaxed">{enr.sinopsis_chilensis}</p>
-              </div>
+              </Section>
             )}
 
-            {/* Géneros */}
+            {/* Generos */}
             {enr?.generos && enr.generos.length > 0 && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Géneros</p>
+              <Section label="Generos">
                 <div className="flex flex-wrap gap-2">
                   {enr.generos.map((g: string) => (
-                    <span key={g} className="text-sm bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full">{g}</span>
+                    <Pill key={g} variant="default" size="md">{g}</Pill>
                   ))}
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Creador / Equipo */}
             <div className="grid grid-cols-2 gap-6">
               {enr?.director && (
                 <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Creador</p>
+                  <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-1">Creador</p>
                   <p className="text-sm text-zinc-200">{enr.director}</p>
                 </div>
               )}
               {enr?.compositor && (
                 <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">Compositor</p>
+                  <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-1">Compositor</p>
                   <p className="text-sm text-zinc-200">{enr.compositor}</p>
                 </div>
               )}
@@ -249,8 +237,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
 
             {/* Cast con fotos */}
             {enr?.cast_json && (enr.cast_json as any[]).length > 0 && (
-              <div className="min-w-0">
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Reparto</p>
+              <Section label="Reparto">
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-6 px-6">
                   {(enr.cast_json as any[]).map((actor: any, i: number) => (
                     <Link key={i} href={`/actor/${encodeURIComponent(actor.name)}`} className="shrink-0 w-20 text-center group">
@@ -266,27 +253,26 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                     </Link>
                   ))}
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Temporadas y episodios */}
             <TemporadasBrowser temporadas={temporadasRaw} />
 
-            {/* Dónde ver */}
+            {/* Donde ver */}
             {plataformas.length > 0 && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Dónde ver en Chile</p>
+              <Section label="Donde ver en Chile">
                 <div className="flex flex-wrap gap-3">
-                  {PLATAFORMAS.filter(pl => plataformas.includes(pl.id)).map(pl => (
-                    <div key={pl.id} className={`${pl.color} rounded-xl px-4 py-2.5 flex items-center gap-2.5`}>
-                      <div className="bg-white rounded px-1 py-1" style={{ height: 24 }}>
-                        <img loading="lazy" src={pl.logo} alt={pl.nombre} className="h-4 w-auto object-contain" />
-                      </div>
-                      <span className="text-white text-sm font-medium">{pl.nombre}</span>
-                    </div>
-                  ))}
+                  {plataformas
+                    .filter((key: string) =>
+                      ['netflix','disney_plus','hbo_max','amazon_prime','apple_tv','paramount_plus','mubi','crunchyroll'].includes(key)
+                    )
+                    .map((key: string) => (
+                      <PlatformLogo key={key} platform={key as Platform} size="lg" />
+                    ))
+                  }
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Soundtrack */}
@@ -307,17 +293,15 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
               const orderMap = new Map(simIds.map((id, i) => [id, i]))
               simSeries.sort((a: any, b: any) => (orderMap.get(a.tmdb_id) ?? 99) - (orderMap.get(b.tmdb_id) ?? 99))
               return (
-                <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Si te gustó esta serie</p>
+                <Section label="Si te gusto esta serie">
                   <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
                     {simSeries.map((sim: any) => (
                       <Link key={sim.id} href={`/serie/${sim.id}`} className="shrink-0 w-28">
                         <div className="relative w-28 h-40 rounded-xl overflow-hidden bg-zinc-800 mb-1 ring-2 ring-transparent hover:ring-yellow-400/50 transition-all">
                           <Image src={`https://image.tmdb.org/t/p/w185${sim.poster_path}`} alt={sim.titulo_ingles || sim.titulo} fill className="object-cover" sizes="112px" />
                           {sim.nota_imdb && (
-                            <div className="absolute top-1 left-1 bg-zinc-900/90 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-yellow-400 flex items-center gap-0.5">
-                              <svg className="w-2.5 h-2.5 fill-yellow-400" viewBox="0 0 20 20"><path d="M10 1l2.39 6.34H19l-5.3 3.87 2 6.46L10 13.79l-5.7 3.88 2-6.46L1 7.34h6.61z"/></svg>
-                              {sim.nota_imdb}
+                            <div className="absolute top-1 left-1">
+                              <ScoreBadge source="imdb" value={sim.nota_imdb} size="sm" showLabel={false} />
                             </div>
                           )}
                         </div>
@@ -325,23 +309,22 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                       </Link>
                     ))}
                   </div>
-                </div>
+                </Section>
               )
             })()}
 
-            {/* Guía Parental */}
+            {/* Guia Parental */}
             <ParentGuide serieId={serie.id} />
 
             {/* Keywords */}
             {enr?.keywords && (enr.keywords as string[]).length > 0 && (
-              <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Tags</p>
+              <Section label="Tags">
                 <div className="flex flex-wrap gap-1.5">
                   {(enr.keywords as string[]).map((kw: string) => (
-                    <span key={kw} className="text-xs bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full">{kw}</span>
+                    <Pill key={kw} variant="default" size="sm">{kw}</Pill>
                   ))}
                 </div>
-              </div>
+              </Section>
             )}
 
             {/* Links externos */}
@@ -383,7 +366,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                 className="rounded-xl w-full object-cover"
               />
             )}
-            {/* Info rápida */}
+            {/* Info rapida */}
             <div className="bg-zinc-900 rounded-xl p-4 space-y-3">
               {serie.num_episodios && (
                 <div className="flex justify-between text-sm">
@@ -399,13 +382,13 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
               )}
               {serie.episode_runtime && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Duración/ep</span>
+                  <span className="text-zinc-500">Duracion/ep</span>
                   <span className="text-zinc-200">{serie.episode_runtime} min</span>
                 </div>
               )}
               {serie.origin_country && serie.origin_country.length > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">País</span>
+                  <span className="text-zinc-500">Pais</span>
                   <span className="text-zinc-200">{serie.origin_country.join(', ')}</span>
                 </div>
               )}
@@ -413,6 +396,6 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
       </div>
-    </main>
+    </PageShell>
   )
 }

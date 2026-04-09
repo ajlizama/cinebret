@@ -52,11 +52,13 @@ const CAT_LABELS: Record<string, string> = {
   "Pa' llorar a moco tendido": 'Drama',
 }
 
+// Premium muted palette — warm gold anchor with distinguishable hues,
+// NOT neon saturated. Feels cohesive in the dark graph.
 const CAT_COLORS: Record<string, string> = {
-  "Pa'l domingo de bajón": '#facc15',
-  "Pa' saltar del sillón": '#ef4444',
-  "Pa' quedar con el cerebro como licuadora": '#3b82f6',
-  "Pa' llorar a moco tendido": '#a855f7',
+  "Pa'l domingo de bajón": '#f5c842',      // warm gold (anchor)
+  "Pa' saltar del sillón": '#e07850',      // burnt orange
+  "Pa' quedar con el cerebro como licuadora": '#6ba3d6', // steel blue
+  "Pa' llorar a moco tendido": '#b88fd6',  // soft lavender
 }
 
 export default function MapaPage() {
@@ -438,11 +440,12 @@ export default function MapaPage() {
     }
   }, [selectedNode, graphData, connectedNodes])
 
-  // Paint node — colored circle at distance, poster when zoomed in
+  // Paint node — Obsidian-inspired: glow aura + smooth detail levels
   const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
-    const minSize = 3
-    const maxSize = 16
-    const size = Math.max(minSize, Math.min(maxSize, minSize + (node.connections / 1.5)))
+    const minSize = 3.5
+    const maxSize = 18
+    // Smoother sizing: sqrt for diminishing returns on highly-connected nodes
+    const size = Math.max(minSize, Math.min(maxSize, minSize + Math.sqrt(node.connections) * 2.5))
 
     const isHovered = hoveredNode?.id === node.id
     const isSelected = selectedNode?.id === node.id
@@ -456,26 +459,50 @@ export default function MapaPage() {
     const dimmed = hasPath ? !isOnPath : (selectedNode && !isSelected && !isConnectedToSelected)
 
     ctx.save()
-    ctx.globalAlpha = dimmed ? 0.25 : 1
+    ctx.globalAlpha = dimmed ? 0.15 : 1
 
-    const showPoster = globalScale > 1.2
+    // ── Glow aura (always, stronger on hover/select) ──
+    if (!dimmed) {
+      const glowRadius = size * (isSelected ? 4 : isHovered ? 3.5 : 2)
+      const glowColor = isSelected || isHovered ? '#facc15' : node.color
+      const grad = ctx.createRadialGradient(node.x, node.y, size * 0.3, node.x, node.y, glowRadius)
+      grad.addColorStop(0, `${glowColor}${isSelected ? '50' : isHovered ? '40' : '18'}`)
+      grad.addColorStop(1, `${glowColor}00`)
+      ctx.fillStyle = grad
+      ctx.beginPath()
+      ctx.arc(node.x, node.y, glowRadius, 0, 2 * Math.PI)
+      ctx.fill()
+    }
+
+    const showPoster = globalScale > 1.4
     const img = imageCache[node.id]
     const hasPoster = img && img.complete && img.naturalWidth > 0
 
     if (showPoster && hasPoster) {
-      // Poster mode: rectangular poster with colored border
-      const imgW = size * 2.2
+      // ── Poster mode: rounded rectangle with soft shadow ──
+      const imgW = size * 2.4
       const imgH = imgW * 1.5
-      const border = isSelected ? 2 : isHovered ? 1.5 : 1
+      const border = isSelected ? 2.5 : isHovered ? 2 : 0.8
+      const borderColor = isSelected ? '#facc15' : isOnPath ? '#facc15' : isHovered ? '#facc15' : node.color
+      const br = 3
 
-      // Border
-      ctx.fillStyle = isSelected ? '#facc15' : isOnPath ? '#facc15' : isHovered ? '#ffffff' : node.color
+      // Soft shadow behind poster
+      ctx.shadowColor = 'rgba(0,0,0,0.6)'
+      ctx.shadowBlur = 8 / globalScale
+      ctx.shadowOffsetY = 2 / globalScale
+
+      // Border frame
+      ctx.fillStyle = borderColor
       ctx.beginPath()
-      const br = 2
       ctx.roundRect(node.x - imgW / 2 - border, node.y - imgH / 2 - border, imgW + border * 2, imgH + border * 2, br + border)
       ctx.fill()
 
-      // Poster
+      // Reset shadow before drawing poster
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+      ctx.shadowOffsetY = 0
+
+      // Poster image clipped to rounded rect
       ctx.beginPath()
       ctx.roundRect(node.x - imgW / 2, node.y - imgH / 2, imgW, imgH, br)
       ctx.closePath()
@@ -483,43 +510,52 @@ export default function MapaPage() {
       ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
       ctx.restore()
 
-      // Title below poster
-      if (globalScale > 3 && !dimmed) {
-        const fontSize = Math.max(2, 10 / globalScale)
-        ctx.font = `bold ${fontSize}px sans-serif`
+      // Title below poster (with text shadow for readability)
+      if (globalScale > 2.5 && !dimmed) {
+        const fontSize = Math.max(2.5, 11 / globalScale)
+        ctx.font = `600 ${fontSize}px Inter, sans-serif`
         ctx.textAlign = 'center'
-        ctx.fillStyle = 'rgba(0,0,0,0.8)'
-        ctx.fillText(node.title, node.x + 0.3, node.y + imgH / 2 + 2.3)
-        ctx.fillStyle = '#ffffff'
-        ctx.fillText(node.title, node.x, node.y + imgH / 2 + 2)
+        ctx.fillStyle = 'rgba(0,0,0,0.85)'
+        ctx.fillText(node.title, node.x + 0.3, node.y + imgH / 2 + fontSize + 1.3)
+        ctx.fillStyle = '#fafaf9'
+        ctx.fillText(node.title, node.x, node.y + imgH / 2 + fontSize + 1)
       }
     } else {
-      // Circle mode: colored dot
+      // ── Dot mode: filled circle with subtle inner gradient ──
+      const dotGrad = ctx.createRadialGradient(
+        node.x - size * 0.2, node.y - size * 0.2, 0,
+        node.x, node.y, size,
+      )
+      const baseColor = dimmed ? `${node.color}15` : node.color
+      dotGrad.addColorStop(0, dimmed ? baseColor : `${node.color}ff`)
+      dotGrad.addColorStop(1, dimmed ? baseColor : `${node.color}90`)
+
       ctx.beginPath()
       ctx.arc(node.x, node.y, size, 0, 2 * Math.PI)
-      ctx.fillStyle = dimmed ? `${node.color}20` : node.color
+      ctx.fillStyle = dotGrad
       ctx.fill()
 
-      if (isSelected || isHovered) {
-        ctx.strokeStyle = isSelected ? '#facc15' : '#ffffff'
+      // Highlight ring
+      if (isSelected || isHovered || isOnPath) {
+        ctx.strokeStyle = '#facc15'
         ctx.lineWidth = (isSelected ? 3 : 2) / globalScale
         ctx.stroke()
       }
 
       ctx.restore()
 
-      // Title
-      if (globalScale > 3.5 && !dimmed) {
-        const fontSize = Math.max(2, 9 / globalScale)
-        ctx.font = `bold ${fontSize}px sans-serif`
+      // Title near dot at medium zoom
+      if (globalScale > 3 && !dimmed) {
+        const fontSize = Math.max(2, 10 / globalScale)
+        ctx.font = `600 ${fontSize}px Inter, sans-serif`
         ctx.textAlign = 'center'
-        ctx.fillStyle = '#ffffff'
-        ctx.fillText(node.title, node.x, node.y + size + 2)
+        ctx.fillStyle = '#fafaf9'
+        ctx.fillText(node.title, node.x, node.y + size + fontSize + 0.5)
       }
     }
   }, [hoveredNode, selectedNode, imageCache, graphData, pathNodes])
 
-  // Paint link
+  // Paint link — curved bezier lines with weight-based opacity
   const paintLink = useCallback((link: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
     const sId = typeof link.source === 'object' ? link.source.id : link.source
     const tId = typeof link.target === 'object' ? link.target.id : link.target
@@ -529,27 +565,60 @@ export default function MapaPage() {
     const hasPath = pathNodes.length > 0
     const dimmed = hasPath ? !isPathEdge : (selectedNode && !isConnected)
 
-    ctx.beginPath()
-    ctx.moveTo(link.source.x, link.source.y)
-    ctx.lineTo(link.target.x, link.target.y)
-    ctx.strokeStyle = dimmed ? 'rgba(255,255,255,0.03)' : isPathEdge ? 'rgba(250,204,21,0.9)' : isConnected ? 'rgba(250,204,21,0.7)' : `rgba(255,255,255,${Math.min(0.15, link.weight * 0.04)})`
-    ctx.lineWidth = isPathEdge ? 3 / globalScale : isConnected ? 2 / globalScale : Math.max(0.2, link.weight * 0.3) / globalScale
-    ctx.stroke()
+    const sx = link.source.x
+    const sy = link.source.y
+    const tx = link.target.x
+    const ty = link.target.y
 
-    // Show percentage only on path edges (not regular connections)
+    // Curved bezier — control point offset perpendicular to the line
+    const dx = tx - sx
+    const dy = ty - sy
+    const dist = Math.sqrt(dx * dx + dy * dy)
+    const curvature = 0.15
+    const cpx = (sx + tx) / 2 + dy * curvature
+    const cpy = (sy + ty) / 2 - dx * curvature
+
+    ctx.beginPath()
+    ctx.moveTo(sx, sy)
+    ctx.quadraticCurveTo(cpx, cpy, tx, ty)
+
+    if (isPathEdge) {
+      // Path edges: gold with glow
+      ctx.strokeStyle = 'rgba(250,204,21,0.9)'
+      ctx.lineWidth = 3 / globalScale
+      ctx.shadowColor = 'rgba(250,204,21,0.5)'
+      ctx.shadowBlur = 6 / globalScale
+    } else if (isConnected) {
+      ctx.strokeStyle = 'rgba(250,204,21,0.6)'
+      ctx.lineWidth = 1.5 / globalScale
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+    } else {
+      const alpha = dimmed ? 0.02 : Math.min(0.12, link.weight * 0.035)
+      ctx.strokeStyle = `rgba(250,204,21,${alpha})`
+      ctx.lineWidth = Math.max(0.15, link.weight * 0.25) / globalScale
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+    }
+    ctx.stroke()
+    ctx.shadowColor = 'transparent'
+    ctx.shadowBlur = 0
+
+    // Percentage label on path edges
     if (isPathEdge && globalScale > 1.5) {
       const pct = Math.round((link.weight / 4) * 100)
-      const midX = (link.source.x + link.target.x) / 2
-      const midY = (link.source.y + link.target.y) / 2
+      // Point on the bezier at t=0.5
+      const midX = 0.25 * sx + 0.5 * cpx + 0.25 * tx
+      const midY = 0.25 * sy + 0.5 * cpy + 0.25 * ty
       const fontSize = Math.max(3, 12 / globalScale)
 
-      ctx.fillStyle = 'rgba(0,0,0,0.7)'
-      const textWidth = fontSize * 2.5
+      ctx.fillStyle = 'rgba(9,9,11,0.85)'
+      const textWidth = fontSize * 2.8
       ctx.beginPath()
-      ctx.roundRect(midX - textWidth / 2, midY - fontSize / 2 - 1, textWidth, fontSize + 2, fontSize / 2)
+      ctx.roundRect(midX - textWidth / 2, midY - fontSize / 2 - 1.5, textWidth, fontSize + 3, fontSize / 2)
       ctx.fill()
 
-      ctx.font = `bold ${fontSize}px sans-serif`
+      ctx.font = `bold ${fontSize}px Inter, sans-serif`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillStyle = '#facc15'

@@ -7,8 +7,6 @@ import { useAuth } from '@/context/AuthContext'
 import { normalize } from '@/lib/normalize'
 import { useGuestLimit } from '@/hooks/useGuestLimit'
 import GuestLimitModal from '@/components/GuestLimitModal'
-import NextImage from 'next/image'
-import Link from 'next/link'
 import {
   PageShell,
   SearchInput,
@@ -20,10 +18,7 @@ import {
   Button,
   LoadingState,
   Icon,
-  ScoreBadge,
 } from '@/components/ui'
-import { supabase } from '@/lib/supabase'
-import { AnimatePresence, motion } from 'framer-motion'
 
 type GraphNode = {
   id: string
@@ -92,49 +87,6 @@ export default function MapaPage() {
   const minimapRef = useRef<HTMLCanvasElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
   const [isMobile, setIsMobile] = useState(false)
-
-  // ── Immersive dive state ──
-  const [currentZoom, setCurrentZoom] = useState(1)
-  const [diveNode, setDiveNode] = useState<GraphNode | null>(null)
-  const [diveData, setDiveData] = useState<any>(null)
-  const [diveLoading, setDiveLoading] = useState(false)
-  const [diveScreenPos, setDiveScreenPos] = useState<{ x: number; y: number } | null>(null)
-
-  // Auto-enter dive when zoom > 6 on a selected node
-  useEffect(() => {
-    if (currentZoom > 6 && selectedNode && !diveNode && !diveLoading) {
-      enterDive(selectedNode)
-    }
-    if (currentZoom <= 4 && diveNode) {
-      exitDive()
-    }
-  }, [currentZoom, selectedNode, diveNode, diveLoading])
-
-  const enterDive = useCallback(async (node: GraphNode) => {
-    setDiveNode(node)
-    setDiveLoading(true)
-    setDiveData(null)
-    try {
-      const { data } = await supabase
-        .from(isSeries ? 'series' : 'peliculas')
-        .select(`
-          id, titulo, titulo_ingles, anio, nota_imdb, rt_score, metacritic_score,
-          poster_path, backdrop_path, oscars, runtime, categoria,
-          enriquecimiento${isSeries ? '_series' : ''} (
-            director, actores, compositor, generos, sinopsis_chilensis, review_autor
-          )
-        `)
-        .eq('id', node.id)
-        .maybeSingle()
-      setDiveData(data)
-    } catch {}
-    setDiveLoading(false)
-  }, [isSeries])
-
-  const exitDive = useCallback(() => {
-    setDiveNode(null)
-    setDiveData(null)
-  }, [])
 
   // Track mobile viewport for conditional Sheet rendering
   useEffect(() => {
@@ -230,13 +182,7 @@ export default function MapaPage() {
       connections: connCount.get(n.id) || 0,
       x: (n as any).fx ?? undefined,
       y: (n as any).fy ?? undefined,
-      // Enriched fields for dive mode (canvas-rendered mini-ficha)
-      director: (n as any).director ?? null,
-      compositor: (n as any).compositor ?? null,
-      sinopsis: (n as any).sinopsis ?? null,
-      anio: (n as any).anio ?? null,
-      backdrop: (n as any).backdrop ?? null,
-    } as any))
+    }))
 
     // Fresh edge objects with string IDs (not object references)
     const freshEdges = filteredEdges.map(e => ({
@@ -545,7 +491,7 @@ export default function MapaPage() {
     const hasPoster = img && img.complete && img.naturalWidth > 0
 
     if (showPoster && hasPoster) {
-      // ── Poster mode with immersive dive at deep zoom ──
+      // ── Poster mode: rounded rectangle with soft shadow ──
       const imgW = size * 2.4
       const imgH = imgW * 1.5
       const border = isSelected ? 2.5 : isHovered ? 2 : 0.8
@@ -563,7 +509,7 @@ export default function MapaPage() {
       ctx.roundRect(node.x - imgW / 2 - border, node.y - imgH / 2 - border, imgW + border * 2, imgH + border * 2, br + border)
       ctx.fill()
 
-      // Reset shadow
+      // Reset shadow before drawing poster
       ctx.shadowColor = 'transparent'
       ctx.shadowBlur = 0
       ctx.shadowOffsetY = 0
@@ -574,14 +520,10 @@ export default function MapaPage() {
       ctx.closePath()
       ctx.clip()
       ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
-
-      // Canvas dive removed — the immersive dive is now an HTML overlay
-      // positioned over the poster that scales with zoom (see JSX below).
-
       ctx.restore()
 
-      // Title below poster (only when NOT in dive mode)
-      if (globalScale > 2.5 && globalScale <= 5 && !dimmed) {
+      // Title below poster (with text shadow for readability)
+      if (globalScale > 2.5 && !dimmed) {
         const fontSize = Math.max(2.5, 11 / globalScale)
         ctx.font = `600 ${fontSize}px Inter, sans-serif`
         ctx.textAlign = 'center'
@@ -873,23 +815,15 @@ export default function MapaPage() {
                           <Pill key={g} variant="default" size="sm">{g}</Pill>
                         ))}
                       </div>
-                      <div className="flex gap-2 mt-3">
-                        <Button
-                          size="sm"
-                          iconLeft={<Icon.Eye className="w-3.5 h-3.5" />}
-                          onClick={() => enterDive(selectedNode)}
-                        >
-                          Explorar
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          iconRight={<Icon.ArrowRight className="w-3.5 h-3.5" />}
-                          onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
-                        >
-                          Ver ficha
-                        </Button>
-                      </div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="mt-3"
+                        iconRight={<Icon.ArrowRight className="w-3.5 h-3.5" />}
+                        onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                      >
+                        Ver ficha completa
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -973,24 +907,14 @@ export default function MapaPage() {
                     </span>
                   </div>
                 </div>
-                <div className="shrink-0 flex gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => enterDive(selectedNode)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-400 text-zinc-950 text-xs font-bold cursor-pointer hover:bg-yellow-300 transition-colors min-h-[36px]"
-                  >
-                    <Icon.Eye className="w-3 h-3" />
-                    Explorar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 text-xs font-bold cursor-pointer hover:bg-zinc-700 transition-colors min-h-[36px]"
-                  >
-                    Ficha
-                    <Icon.ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => router.push(`${isSeries ? '/serie' : '/pelicula'}/${selectedNode.id}`)}
+                  className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-400 text-zinc-950 text-xs font-bold cursor-pointer hover:bg-yellow-300 transition-colors min-h-[36px]"
+                >
+                  Ficha
+                  <Icon.ArrowRight className="w-3 h-3" />
+                </button>
               </div>
 
               {/* Connected movies — horizontal carousel in peek view */}
@@ -1343,18 +1267,7 @@ export default function MapaPage() {
               }
             }}
             onBackgroundClick={() => deselectNode()}
-            onZoom={(transform: any) => {
-              requestAnimationFrame(() => {
-                if (showInstructions) setShowInstructions(false)
-                const z = transform?.k ?? 1
-                setCurrentZoom(z)
-                // Track selected node screen position for the dive overlay
-                if (selectedNode && fgRef.current) {
-                  const coords = fgRef.current.graph2ScreenCoords(selectedNode.x ?? 0, selectedNode.y ?? 0)
-                  setDiveScreenPos(coords)
-                }
-              })
-            }}
+            onZoom={() => { requestAnimationFrame(() => { if (showInstructions) setShowInstructions(false) }) }}
             onRenderFramePost={(ctx: CanvasRenderingContext2D, globalScale: number) => {
               if (!graphData) return
               const gnodes = graphData.nodes as GraphNode[]
@@ -1426,212 +1339,11 @@ export default function MapaPage() {
             enableZoomInteraction={true}
             enablePanInteraction={true}
             minZoom={0.1}
-            maxZoom={80}
+            maxZoom={15}
             backgroundColor="rgba(0,0,0,0)"
           />
         )}
       </div>
-
-      {/* ── Immersive dive: HTML ficha that scales from inside the poster ── */}
-      {diveNode && diveScreenPos && currentZoom > 5 && (
-        (() => {
-          // The ficha starts as a tiny dot at the poster center and grows
-          // as you zoom in. At zoom ~25+ it fills the viewport.
-          const progress = Math.min(1, Math.max(0, (currentZoom - 6) / 20)) // 6→26
-          const opacity = progress
-          // The ficha width grows from ~10% to 100% of the viewport
-          const fichaScale = 0.1 + progress * 0.9 // 10% → 100%
-          const fichaW = dimensions.width * fichaScale
-          const fichaH = dimensions.height * fichaScale
-          // Position: starts at the poster center, eases to viewport center
-          const centerX = dimensions.width / 2
-          const centerY = dimensions.height / 2
-          const posX = diveScreenPos.x + (centerX - diveScreenPos.x) * progress - fichaW / 2
-          const posY = diveScreenPos.y + (centerY - diveScreenPos.y) * progress - fichaH / 2
-
-          return (
-            <div
-              className="absolute z-[65] pointer-events-none"
-              style={{
-                left: posX,
-                top: posY,
-                width: fichaW,
-                height: fichaH,
-                opacity,
-                overflow: 'hidden',
-                borderRadius: `${(1 - progress) * 16 + 4}px`,
-                pointerEvents: progress > 0.7 ? 'auto' : 'none',
-              }}
-            >
-              <div className="w-full h-full bg-zinc-950 overflow-y-auto">
-                {diveLoading ? (
-                  <div className="flex items-center justify-center h-full">
-                    <LoadingState text="Cargando..." size="sm" />
-                  </div>
-                ) : diveData ? (
-                  <>
-                    {/* Backdrop hero */}
-                    <div className="relative w-full aspect-video max-h-[35vh] overflow-hidden">
-                      {diveData.backdrop_path ? (
-                        <NextImage
-                          src={`https://image.tmdb.org/t/p/w1280${diveData.backdrop_path}`}
-                          alt=""
-                          fill
-                          className="object-cover"
-                          sizes="100vw"
-                          priority
-                        />
-                      ) : diveData.poster_path ? (
-                        <NextImage
-                          src={`https://image.tmdb.org/t/p/w780${diveData.poster_path}`}
-                          alt=""
-                          fill
-                          className="object-cover object-top blur-xl scale-110 opacity-50"
-                          sizes="100vw"
-                        />
-                      ) : null}
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-
-                      {/* Nav inside the ficha — only when large enough to interact */}
-                      {progress > 0.7 && (
-                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (fgRef.current) fgRef.current.zoom(3, 800)
-                            }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm text-zinc-300 text-xs font-semibold cursor-pointer hover:text-yellow-400 transition-colors min-h-[36px]"
-                          >
-                            <Icon.ArrowLeft className="w-3.5 h-3.5" />
-                            Mapa
-                          </button>
-                          <Link
-                            href={`${isSeries ? '/serie' : '/pelicula'}/${diveNode.id}`}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-400 text-zinc-950 text-xs font-bold hover:bg-yellow-300 transition-colors min-h-[36px]"
-                          >
-                            Ficha completa
-                            <Icon.ArrowRight className="w-3 h-3" />
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative -mt-16 px-5 pb-8 max-w-2xl mx-auto">
-                      <div className="flex gap-3 items-end">
-                        {diveData.poster_path && (
-                          <div className="relative w-24 shrink-0 rounded-xl overflow-hidden shadow-2xl ring-2 ring-yellow-400/40" style={{ aspectRatio: '2/3' }}>
-                            <NextImage
-                              src={`https://image.tmdb.org/t/p/w342${diveData.poster_path}`}
-                              alt={diveData.titulo}
-                              fill
-                              className="object-cover"
-                              sizes="96px"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0 pb-1">
-                          <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                            {diveData.titulo_ingles || diveData.titulo}
-                          </h1>
-                          {diveData.titulo_ingles && diveData.titulo !== diveData.titulo_ingles && (
-                            <p className="text-zinc-400 text-xs mt-0.5">{diveData.titulo}</p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 mt-3 flex-wrap">
-                        {diveData.anio && <span className="text-zinc-400 text-xs tabular-nums">{diveData.anio}</span>}
-                        {diveData.nota_imdb != null && <ScoreBadge source="imdb" value={diveData.nota_imdb} size="sm" />}
-                        {diveData.rt_score != null && <ScoreBadge source="rt" value={diveData.rt_score} size="sm" />}
-                        {diveData.metacritic_score != null && <ScoreBadge source="mc" value={diveData.metacritic_score} size="sm" />}
-                      </div>
-
-                      {(() => {
-                        const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
-                        const generos = enr.generos ?? []
-                        return (
-                          <>
-                            {generos.length > 0 && (
-                              <div className="flex flex-wrap gap-1.5 mt-3">
-                                {generos.map((g: string) => (
-                                  <Pill key={g} variant="default" size="sm">{g}</Pill>
-                                ))}
-                              </div>
-                            )}
-                            {enr.sinopsis_chilensis && (
-                              <p className="text-zinc-300 text-sm leading-relaxed italic mt-4 border-l-2 border-yellow-400/30 pl-3">
-                                {enr.sinopsis_chilensis}
-                              </p>
-                            )}
-                            <div className="grid grid-cols-2 gap-3 mt-4">
-                              {enr.director && (
-                                <div>
-                                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">Director</p>
-                                  <p className="text-sm text-white">{enr.director}</p>
-                                </div>
-                              )}
-                              {enr.compositor && (
-                                <div>
-                                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">Compositor</p>
-                                  <p className="text-sm text-white">{enr.compositor}</p>
-                                </div>
-                              )}
-                            </div>
-                            {enr.actores && (
-                              <div className="mt-3">
-                                <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">Reparto</p>
-                                <p className="text-xs text-zinc-300 leading-relaxed">
-                                  {(Array.isArray(enr.actores) ? enr.actores.join(', ') : enr.actores).slice(0, 150)}
-                                </p>
-                              </div>
-                            )}
-                          </>
-                        )
-                      })()}
-
-                      {/* Connected movies carousel */}
-                      {connectedNodes.length > 0 && (
-                        <div className="mt-5">
-                          <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-2">
-                            Conexiones · {connectedNodes.length}
-                          </p>
-                          <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-2 -mx-5 px-5">
-                            {connectedNodes.map(({ node: cn }) => (
-                              <button
-                                key={cn.id}
-                                type="button"
-                                onClick={() => {
-                                  exitDive()
-                                  setTimeout(() => focusNode(cn), 150)
-                                }}
-                                className="shrink-0 w-16 text-left cursor-pointer group"
-                              >
-                                <div className="relative w-16 rounded-md overflow-hidden ring-1 ring-zinc-800 group-hover:ring-yellow-400/50 transition-all" style={{ aspectRatio: '2/3' }}>
-                                  {cn.poster && (
-                                    <NextImage
-                                      src={`https://image.tmdb.org/t/p/w185${cn.poster}`}
-                                      alt={cn.title}
-                                      fill
-                                      className="object-cover"
-                                      sizes="64px"
-                                    />
-                                  )}
-                                </div>
-                                <p className="text-[9px] text-zinc-300 font-semibold line-clamp-2 mt-1 leading-tight">{cn.title}</p>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            </div>
-          )
-        })()
-      )}
     </PageShell>
   )
 }

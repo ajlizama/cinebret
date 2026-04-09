@@ -1239,6 +1239,13 @@ export default function MapaPage() {
             d3VelocityDecay={0.3}
             warmupTicks={100}
             cooldownTicks={200}
+            onEngineStop={() => {
+              // After simulation stabilizes, zoom to fit the entire graph
+              // so ALL cluster labels are visible on first load
+              if (fgRef.current && !selectedNode && pathNodes.length === 0) {
+                fgRef.current.zoomToFit(800, 60)
+              }
+            }}
             onNodeHover={(node: any) => setHoveredNode(node)}
             onNodeClick={(node: any) => {
               if (selectedNode?.id === node.id) {
@@ -1254,8 +1261,8 @@ export default function MapaPage() {
               if (!graphData) return
               const gnodes = graphData.nodes as GraphNode[]
 
-              // ── Level 0 labels: mega-clusters (zoom < 0.5) ──
-              if (globalScale < 0.5 && rawGraph?.clusters) {
+              // ── Level 0 labels: mega-clusters (zoom < 0.8) ──
+              if (globalScale < 0.8 && rawGraph?.clusters) {
                 const centroids: Record<number, { x: number; y: number; count: number }> = {}
                 for (const node of gnodes) {
                   const cid = node.clusterId ?? 0
@@ -1274,7 +1281,7 @@ export default function MapaPage() {
                   ctx.font = `900 ${fontSize}px Inter, sans-serif`
                   ctx.textAlign = 'center'
                   ctx.textBaseline = 'middle'
-                  ctx.globalAlpha = Math.min(0.75, (0.5 - globalScale) * 4)
+                  ctx.globalAlpha = Math.min(0.75, (0.8 - globalScale) * 2.5)
                   // Text shadow for readability
                   ctx.fillStyle = 'rgba(0,0,0,0.6)'
                   ctx.fillText(cl.name.toUpperCase(), cx + 1.5, cy + 1.5)
@@ -1284,8 +1291,8 @@ export default function MapaPage() {
                 }
               }
 
-              // ── Level 1 labels: subclusters (zoom 0.3 - 1.0) ──
-              if (globalScale > 0.25 && globalScale < 1.0 && (rawGraph as any)?.subclusters) {
+              // ── Level 1 labels: subclusters (zoom 0.4 - 1.5) ──
+              if (globalScale > 0.4 && globalScale < 1.5 && (rawGraph as any)?.subclusters) {
                 const subclusters = (rawGraph as any).subclusters as { id: number; name: string; size: number; color: string; parentId: number }[]
                 const subCentroids: Record<number, { x: number; y: number; count: number }> = {}
                 for (const node of gnodes) {
@@ -1306,8 +1313,8 @@ export default function MapaPage() {
                   ctx.textAlign = 'center'
                   ctx.textBaseline = 'middle'
                   // Fade in as you zoom in from 0.25, fade out as you approach 1.0
-                  const fadeIn = Math.min(1, (globalScale - 0.25) * 5)
-                  const fadeOut = Math.min(1, (1.0 - globalScale) * 3)
+                  const fadeIn = Math.min(1, (globalScale - 0.4) * 4)
+                  const fadeOut = Math.min(1, (1.5 - globalScale) * 2)
                   ctx.globalAlpha = Math.min(0.6, fadeIn * fadeOut)
                   ctx.fillStyle = 'rgba(0,0,0,0.5)'
                   ctx.fillText(sc.name, cx + 1, cy + 1)

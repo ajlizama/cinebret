@@ -187,6 +187,50 @@ export default function MapaPage() {
     return { nodes: updatedNodes, links: freshEdges }
   }, [rawGraph, nodeLimit])
 
+  // ── Inject cluster separation forces ──
+  // This makes nodes of the same cluster attract their cluster centroid,
+  // creating visible spatial separation between clusters in the graph.
+  useEffect(() => {
+    if (!fgRef.current || !graphData || !rawGraph?.clusters) return
+    const fg = fgRef.current
+
+    // Compute target positions: arrange cluster centroids in a circle
+    const clusters = rawGraph.clusters
+    const numClusters = clusters.length
+    const spreadRadius = Math.sqrt(graphData.nodes.length) * 12
+    const clusterTargets: Record<number, { x: number; y: number }> = {}
+    clusters.forEach((cl, i) => {
+      const angle = (i / numClusters) * Math.PI * 2 - Math.PI / 2
+      clusterTargets[cl.id] = {
+        x: Math.cos(angle) * spreadRadius,
+        y: Math.sin(angle) * spreadRadius,
+      }
+    })
+
+    // Custom force: gently pull nodes toward their cluster target position
+    const clusterForceX = (alpha: number) => {
+      for (const node of graphData.nodes as any[]) {
+        const target = clusterTargets[node.clusterId ?? 0]
+        if (!target || !isFinite(node.x)) continue
+        node.vx += (target.x - node.x) * alpha * 0.04
+      }
+    }
+    const clusterForceY = (alpha: number) => {
+      for (const node of graphData.nodes as any[]) {
+        const target = clusterTargets[node.clusterId ?? 0]
+        if (!target || !isFinite(node.y)) continue
+        node.vy += (target.y - node.y) * alpha * 0.04
+      }
+    }
+
+    // Add the custom forces to the d3 simulation
+    try {
+      fg.d3Force('clusterX', clusterForceX)
+      fg.d3Force('clusterY', clusterForceY)
+      fg.d3ReheatSimulation()
+    } catch {}
+  }, [graphData, rawGraph?.clusters])
+
   // Find shortest path between two movies (Dijkstra with inverse weight = strongest path)
   const findPath = useCallback((startId: string, endId: string): string[] | null => {
     if (!graphData) return null

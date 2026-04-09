@@ -188,16 +188,17 @@ export default function MapaPage() {
   }, [rawGraph, nodeLimit])
 
   // ── Inject cluster separation forces ──
-  // This makes nodes of the same cluster attract their cluster centroid,
-  // creating visible spatial separation between clusters in the graph.
+  // d3Force expects proper force functions with an .initialize(nodes) method.
+  // We create a single custom force that pushes nodes toward their cluster's
+  // target position (arranged in a circle around the origin).
   useEffect(() => {
     if (!fgRef.current || !graphData || !rawGraph?.clusters) return
     const fg = fgRef.current
-
-    // Compute target positions: arrange cluster centroids in a circle
     const clusters = rawGraph.clusters
     const numClusters = clusters.length
-    const spreadRadius = Math.sqrt(graphData.nodes.length) * 12
+    const spreadRadius = Math.sqrt(graphData.nodes.length) * 14
+
+    // Target positions: clusters arranged in a circle
     const clusterTargets: Record<number, { x: number; y: number }> = {}
     clusters.forEach((cl, i) => {
       const angle = (i / numClusters) * Math.PI * 2 - Math.PI / 2
@@ -207,28 +208,37 @@ export default function MapaPage() {
       }
     })
 
-    // Custom force: gently pull nodes toward their cluster target position
-    const clusterForceX = (alpha: number) => {
-      for (const node of graphData.nodes as any[]) {
-        const target = clusterTargets[node.clusterId ?? 0]
-        if (!target || !isFinite(node.x)) continue
-        node.vx += (target.x - node.x) * alpha * 0.04
+    // Proper d3 force function with initialize + force methods
+    function clusterForce() {
+      let nodes: any[] = []
+      const strength = 0.06
+
+      function force(alpha: number) {
+        for (const node of nodes) {
+          const target = clusterTargets[node.clusterId ?? 0]
+          if (!target) continue
+          if (!isFinite(node.x) || !isFinite(node.y)) continue
+          node.vx += (target.x - node.x) * alpha * strength
+          node.vy += (target.y - node.y) * alpha * strength
+        }
       }
-    }
-    const clusterForceY = (alpha: number) => {
-      for (const node of graphData.nodes as any[]) {
-        const target = clusterTargets[node.clusterId ?? 0]
-        if (!target || !isFinite(node.y)) continue
-        node.vy += (target.y - node.y) * alpha * 0.04
+
+      force.initialize = function (_nodes: any[]) {
+        nodes = _nodes
       }
+
+      return force
     }
 
-    // Add the custom forces to the d3 simulation
     try {
-      fg.d3Force('clusterX', clusterForceX)
-      fg.d3Force('clusterY', clusterForceY)
+      fg.d3Force('cluster', clusterForce())
+      // Weaken the default center force so clusters can actually separate
+      const center = fg.d3Force('center')
+      if (center?.strength) center.strength(0.01)
       fg.d3ReheatSimulation()
-    } catch {}
+    } catch (e) {
+      console.warn('Failed to inject cluster force:', e)
+    }
   }, [graphData, rawGraph?.clusters])
 
   // Find shortest path between two movies (Dijkstra with inverse weight = strongest path)
@@ -1300,7 +1310,7 @@ export default function MapaPage() {
               }
             }}
             onBackgroundClick={() => deselectNode()}
-            onZoom={() => { if (showInstructions) setShowInstructions(false) }}
+            onZoom={() => { requestAnimationFrame(() => { if (showInstructions) setShowInstructions(false) }) }}
             onRenderFramePost={(ctx: CanvasRenderingContext2D, globalScale: number) => {
               if (!graphData) return
               const gnodes = graphData.nodes as GraphNode[]

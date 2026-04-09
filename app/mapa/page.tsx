@@ -563,69 +563,112 @@ export default function MapaPage() {
       ctx.clip()
       ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
 
-      // ── DIVE: at zoom > 5, darken the poster and overlay info ──
-      // Progress ramps 0→1 between zoom 5 and 10, so by zoom 10 you're fully inside
-      const diveProgress = Math.min(1, Math.max(0, (globalScale - 5) / 5))
-      if (diveProgress > 0 && !dimmed) {
-        // Darken the poster gradually
-        ctx.fillStyle = `rgba(0, 0, 0, ${diveProgress * 0.75})`
+      // ── IMMERSIVE DIVE: zoom into the poster ──
+      // Phase 1 (zoom 5-8):  darken + title + IMDb appear
+      // Phase 2 (zoom 8-15): director + genres + category
+      // Phase 3 (zoom 15+):  sinopsis + compositor — full ficha feeling
+      // Fonts scale with 1/globalScale so they stay readable on screen
+      const diveStart = 5
+      if (globalScale > diveStart && !dimmed) {
+        const phase1 = Math.min(1, Math.max(0, (globalScale - 5) / 3))   // 5→8
+        const phase2 = Math.min(1, Math.max(0, (globalScale - 8) / 7))   // 8→15
+        const phase3 = Math.min(1, Math.max(0, (globalScale - 15) / 10)) // 15→25
+
+        // Darken poster progressively
+        ctx.fillStyle = `rgba(0, 0, 0, ${phase1 * 0.8})`
         ctx.fillRect(node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
 
-        // All text rendered INSIDE the poster area (on top of the darkened image)
-        ctx.globalAlpha = diveProgress
-        const fs = imgW * 0.07 // font size proportional to poster width
-        const pad = imgW * 0.06
+        // Font size in SCREEN pixels (constant on screen regardless of zoom)
+        // We divide by globalScale so the canvas-unit size shrinks as zoom grows,
+        // keeping the on-screen appearance constant.
+        const screenFs = 14 / globalScale  // ~14px on screen
+        const smallFs = 11 / globalScale
+        const tinyFs = 9 / globalScale
+        const pad = 8 / globalScale
         const leftX = node.x - imgW / 2 + pad
-        const rightX = node.x + imgW / 2 - pad
-        let ty = node.y - imgH / 2 + imgH * 0.35 // start at ~35% from top
+        const topY = node.y - imgH / 2 + pad
 
-        // Title — big, bold, white
-        ctx.font = `900 ${fs * 1.6}px Inter, sans-serif`
-        ctx.fillStyle = '#fafaf9'
         ctx.textAlign = 'left'
         ctx.textBaseline = 'top'
-        const titleText = node.title.length > 18 ? node.title.slice(0, 16) + '…' : node.title
-        ctx.fillText(titleText, leftX, ty)
-        ty += fs * 2.2
 
-        // Year + IMDb
-        ctx.font = `700 ${fs}px Inter, sans-serif`
-        ctx.fillStyle = '#facc15'
-        ctx.fillText(`${node.anio || ''} · IMDb ${node.imdb}`, leftX, ty)
-        ty += fs * 1.6
+        // ── Phase 1: Title + IMDb ──
+        if (phase1 > 0) {
+          ctx.globalAlpha = phase1
+          let ty = node.y - imgH * 0.15 // slightly above center
 
-        // Director
-        if (node.director) {
-          ctx.font = `500 ${fs * 0.85}px Inter, sans-serif`
-          ctx.fillStyle = '#a1a1aa'
-          ctx.fillText(node.director, leftX, ty)
-          ty += fs * 1.4
+          // Title
+          ctx.font = `900 ${screenFs * 1.8}px Inter, sans-serif`
+          ctx.fillStyle = '#fafaf9'
+          ctx.fillText(node.title, leftX, ty)
+          ty += screenFs * 2.4
+
+          // Year + IMDb
+          ctx.font = `700 ${screenFs}px Inter, sans-serif`
+          ctx.fillStyle = '#facc15'
+          ctx.fillText(`${node.anio || ''} · IMDb ${node.imdb}`, leftX, ty)
+
+          ctx.globalAlpha = 1
         }
 
-        // Genre pills
-        if (node.genres?.length > 0) {
-          ctx.font = `600 ${fs * 0.7}px Inter, sans-serif`
-          let px = leftX
-          for (const g of node.genres.slice(0, 3)) {
-            const tw = ctx.measureText(g).width + fs * 0.8
-            const pillH = fs * 1
-            ctx.fillStyle = 'rgba(250,204,21,0.2)'
-            ctx.beginPath()
-            ctx.roundRect(px, ty, tw, pillH, pillH / 2)
-            ctx.fill()
-            ctx.fillStyle = '#facc15'
-            ctx.textBaseline = 'middle'
-            ctx.fillText(g, px + fs * 0.4, ty + pillH / 2)
-            ctx.textBaseline = 'top'
-            px += tw + fs * 0.3
+        // ── Phase 2: Director + Genres + Category ──
+        if (phase2 > 0) {
+          ctx.globalAlpha = phase2
+          let ty = node.y + imgH * 0.05
+
+          // Director
+          if (node.director) {
+            ctx.font = `500 ${smallFs}px Inter, sans-serif`
+            ctx.fillStyle = '#a1a1aa'
+            ctx.fillText(`Director: ${node.director}`, leftX, ty)
+            ty += smallFs * 1.6
           }
-          ty += fs * 1.8
+
+          // Compositor
+          if (node.compositor) {
+            ctx.font = `500 ${smallFs}px Inter, sans-serif`
+            ctx.fillStyle = '#a1a1aa'
+            ctx.fillText(`Compositor: ${node.compositor}`, leftX, ty)
+            ty += smallFs * 1.6
+          }
+
+          // Genre pills
+          if (node.genres?.length > 0) {
+            ctx.font = `600 ${tinyFs}px Inter, sans-serif`
+            let px = leftX
+            const pillH = tinyFs * 1.4
+            for (const g of node.genres.slice(0, 4)) {
+              const tw = ctx.measureText(g).width + tinyFs * 1
+              ctx.fillStyle = 'rgba(250,204,21,0.2)'
+              ctx.beginPath()
+              ctx.roundRect(px, ty, tw, pillH, pillH / 2)
+              ctx.fill()
+              ctx.fillStyle = '#facc15'
+              ctx.textBaseline = 'middle'
+              ctx.fillText(g, px + tinyFs * 0.5, ty + pillH / 2)
+              ctx.textBaseline = 'top'
+              px += tw + tinyFs * 0.4
+            }
+            ty += pillH + smallFs
+          }
+
+          // Category
+          if (node.categoria) {
+            ctx.font = `600 ${tinyFs}px Inter, sans-serif`
+            ctx.fillStyle = '#facc15'
+            ctx.globalAlpha = phase2 * 0.7
+            ctx.fillText(node.categoria, leftX, ty)
+          }
+
+          ctx.globalAlpha = 1
         }
 
-        // Sinopsis — small, word-wrapped
-        if (node.sinopsis) {
-          ctx.font = `400 ${fs * 0.7}px Inter, sans-serif`
-          ctx.fillStyle = 'rgba(250,250,249,0.7)'
+        // ── Phase 3: Sinopsis ──
+        if (phase3 > 0 && node.sinopsis) {
+          ctx.globalAlpha = phase3
+          let ty = node.y + imgH * 0.25
+          ctx.font = `400 ${tinyFs}px Inter, sans-serif`
+          ctx.fillStyle = 'rgba(250,250,249,0.8)'
+
           const words = node.sinopsis.split(' ')
           let line = ''
           const maxW = imgW - pad * 2
@@ -634,18 +677,18 @@ export default function MapaPage() {
             const test = line ? line + ' ' + word : word
             if (ctx.measureText(test).width > maxW) {
               ctx.fillText(line, leftX, ty)
-              ty += fs * 1
+              ty += tinyFs * 1.4
               line = word
               linesDrawn++
-              if (linesDrawn >= 3) { ctx.fillText(line + '…', leftX, ty); break }
+              if (linesDrawn >= 5) { ctx.fillText(line + '…', leftX, ty); break }
             } else {
               line = test
             }
           }
-          if (linesDrawn < 3 && line) ctx.fillText(line, leftX, ty)
-        }
+          if (linesDrawn < 5 && line) ctx.fillText(line, leftX, ty)
 
-        ctx.globalAlpha = 1
+          ctx.globalAlpha = 1
+        }
       }
 
       ctx.restore()

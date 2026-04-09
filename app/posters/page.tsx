@@ -725,6 +725,29 @@ export default function PostersPage() {
   const [myItems, setMyItems] = useState<CreationWithMeta[]>([])
   const [myLoading, setMyLoading] = useState(false)
   const [loadingCreation, setLoadingCreation] = useState(false)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [deleteToast, setDeleteToast] = useState<string | null>(null)
+
+  // Delete a saved creation. Optimistic local removal + Supabase delete.
+  async function handleDeleteCreation(rowId: string) {
+    if (!user) return
+    setMyItems(prev => prev.filter(r => r.id !== rowId))
+    setCommunityItems(prev => prev.filter(r => r.id !== rowId))
+    setPendingDeleteId(null)
+    const { error: delErr } = await supabase
+      .from('user_creations')
+      .delete()
+      .eq('id', rowId)
+      .eq('user_id', user.id)
+    if (delErr) {
+      setDeleteToast('No se pudo eliminar. Intenta de nuevo.')
+      setTimeout(() => setDeleteToast(null), 3000)
+      fetchMyCreations()
+    } else {
+      setDeleteToast('Creación eliminada.')
+      setTimeout(() => setDeleteToast(null), 2500)
+    }
+  }
 
   // Fetch platforms for selected movie
   useEffect(() => {
@@ -1426,9 +1449,21 @@ export default function PostersPage() {
               emptyTitle="Todavía no guardaste ningún poster"
               emptyDescription="Genera un poster desde CineBret o Crea el tuyo y pulsa Guardar o Publicar."
               showVisibility
+              canDelete
+              pendingDeleteId={pendingDeleteId}
+              onRequestDelete={(id) => setPendingDeleteId(id)}
+              onConfirmDelete={(id) => handleDeleteCreation(id)}
+              onCancelDelete={() => setPendingDeleteId(null)}
               onOpen={loadCreation}
               onLoadMore={null}
             />
+          )}
+
+          {/* Delete toast */}
+          {deleteToast && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] px-4 py-2 rounded-lg bg-zinc-900 border border-yellow-400/40 text-sm text-white shadow-xl">
+              {deleteToast}
+            </div>
           )}
         </PageShell>
       )}
@@ -1820,6 +1855,11 @@ function CreationsGrid({
   showVisibility = false,
   onOpen,
   onLoadMore,
+  canDelete = false,
+  pendingDeleteId = null,
+  onRequestDelete,
+  onConfirmDelete,
+  onCancelDelete,
 }: {
   items: CreationWithMeta[]
   loading: boolean
@@ -1829,6 +1869,11 @@ function CreationsGrid({
   showVisibility?: boolean
   onOpen: (c: CreationWithMeta) => void
   onLoadMore: (() => void) | null
+  canDelete?: boolean
+  pendingDeleteId?: string | null
+  onRequestDelete?: (id: string) => void
+  onConfirmDelete?: (id: string) => void
+  onCancelDelete?: () => void
 }) {
   if (!loading && items.length === 0) {
     return (
@@ -1849,6 +1894,11 @@ function CreationsGrid({
             showCreator={showCreator}
             showVisibility={showVisibility}
             onClick={() => onOpen(c)}
+            canDelete={canDelete}
+            pendingDelete={pendingDeleteId === c.id}
+            onRequestDelete={() => onRequestDelete?.(c.id)}
+            onConfirmDelete={() => onConfirmDelete?.(c.id)}
+            onCancelDelete={() => onCancelDelete?.()}
           />
         ))}
       </div>
@@ -1873,11 +1923,21 @@ function CreationCard({
   showCreator,
   showVisibility,
   onClick,
+  canDelete = false,
+  pendingDelete = false,
+  onRequestDelete,
+  onConfirmDelete,
+  onCancelDelete,
 }: {
   creation: CreationWithMeta
   showCreator: boolean
   showVisibility: boolean
   onClick: () => void
+  canDelete?: boolean
+  pendingDelete?: boolean
+  onRequestDelete?: () => void
+  onConfirmDelete?: () => void
+  onCancelDelete?: () => void
 }) {
   const posters = creation.previewPosters.slice(0, 6)
   const themeLabel =
@@ -1885,12 +1945,13 @@ function CreationCard({
       ? THEMES.find((t) => t.id === creation.theme_id)?.title || 'CineBret'
       : 'Personalizado'
   return (
+    <div className="relative">
     <Card
       as="button"
       padding="none"
       interactive
       onClick={onClick}
-      className="overflow-hidden border border-zinc-800 hover:border-yellow-400/40 text-left"
+      className="overflow-hidden border border-zinc-800 hover:border-yellow-400/40 text-left w-full"
     >
       {/* Poster thumbnail grid */}
       <div className="relative aspect-[4/3] bg-zinc-950 grid grid-cols-3 grid-rows-2 gap-[2px]">
@@ -1933,7 +1994,7 @@ function CreationCard({
             {themeLabel}
           </span>
           <span className="text-[10px] text-zinc-500 shrink-0">
-            {(creation.movie_ids || []).length} pelis
+            {(creation.movie_ids || []).length} películas
           </span>
         </div>
         {showCreator && creation.creator && (
@@ -1958,6 +2019,46 @@ function CreationCard({
         )}
       </div>
     </Card>
+
+      {/* Delete UI — only on Mis creaciones */}
+      {canDelete && !pendingDelete && (
+        <button
+          type="button"
+          aria-label="Eliminar creación"
+          onClick={(e) => { e.stopPropagation(); onRequestDelete?.() }}
+          className="absolute top-2 left-2 z-10 w-8 h-8 rounded-full bg-zinc-950/80 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 hover:border-red-400/40 cursor-pointer transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          </svg>
+        </button>
+      )}
+      {canDelete && pendingDelete && (
+        <div
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-zinc-950/95 backdrop-blur-sm rounded-2xl border border-red-400/40 p-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <p className="text-white text-sm font-semibold text-center">¿Eliminar este poster?</p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onConfirmDelete?.() }}
+              className="px-3 py-1.5 rounded-lg bg-red-500/15 border border-red-400/40 text-red-400 text-xs font-bold hover:bg-red-500/25 cursor-pointer min-h-[36px]"
+            >
+              Sí, eliminar
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onCancelDelete?.() }}
+              className="px-3 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-bold hover:bg-zinc-700 cursor-pointer min-h-[36px]"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 

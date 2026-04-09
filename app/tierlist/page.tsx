@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, forwardRef } from 'react'
 import Image from 'next/image'
 import {
   PageShell,
@@ -20,6 +20,7 @@ import {
 } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
+import { svgElementToPngDataUrl, sharePngOrDownload } from '@/lib/svgToPng'
 
 type TierMovie = {
   id: string
@@ -35,6 +36,10 @@ type TierMovie = {
   sinopsis: string | null
   keywords: string | null
 }
+
+// Share PNG dimensions — Instagram-friendly portrait card.
+const SHARE_W = 1080
+const SHARE_H = 1350
 
 // Legacy fixed tier ids — kept as the default seed for `tierConfig`.
 type TierName = 'S' | 'A' | 'B' | 'C' | 'D' | 'F'
@@ -314,7 +319,7 @@ type CreationWithProfile = UserCreationRow & {
 type MainTab = 'cinebret' | 'crear' | 'comunidad' | 'mis'
 
 export default function TierListPage() {
-  const { user } = useAuth()
+  const { user, username } = useAuth()
   const [mainTab, setMainTab] = useState<MainTab>('cinebret')
 
   const [phase, setPhase] = useState<'theme' | 'personalizado' | 'tierlist' | 'done'>('theme')
@@ -366,6 +371,13 @@ export default function TierListPage() {
   const [myList, setMyList] = useState<CreationWithProfile[]>([])
   const [myLoading, setMyLoading] = useState(false)
 
+  // Share / download (PNG via offscreen SVG)
+  const shareSvgRef = useRef<SVGSVGElement>(null)
+  const [shareInFlight, setShareInFlight] = useState(false)
+  const [downloadInFlight, setDownloadInFlight] = useState(false)
+  // Pending delete confirmation per row id
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+
   // Load all movies
   useEffect(() => {
     let cancelled = false
@@ -404,10 +416,15 @@ export default function TierListPage() {
     const target = Math.min(pool.length, 16)
     const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, target)
     setUnranked(shuffled)
-    resetTiersForConfig(tierConfig)
+    // Per the creations pattern: every new tier list starts from the
+    // default tier config. Customizations the user made on a previous
+    // tier list don't carry over.
+    const freshConfig = DEFAULT_TIER_CONFIG.map(t => ({ ...t }))
+    setTierConfig(freshConfig)
+    resetTiersForConfig(freshConfig)
     setPhase('tierlist')
     setMainTab('crear')
-  }, [resetTiersForConfig, tierConfig])
+  }, [resetTiersForConfig])
 
   const handleThemeSelect = useCallback((theme: ThemeConfig) => {
     if (theme.filter === 'personalizado') {
@@ -599,26 +616,84 @@ export default function TierListPage() {
   const totalMovies = totalPlaced + unranked.length
   const allPlaced = totalMovies > 0 && unranked.length === 0
 
-  const handleShare = async () => {
-    if (!selectedTheme) return
-    let text = `Mi Tier List CineBret: ${selectedTheme.title}\n`
-    for (const t of tierConfig) {
-      const movies = tiers[t.id] ?? []
-      if (movies.length > 0) {
-        text += `${t.name}: ${movies.map(m => m.titulo).join(', ')}\n`
-      }
+  // Generate the offscreen tier list as a PNG. Reused by share + download.
+  const generateSharePng = useCallback(async (): Promise<string | null> => {
+    const svg = shareSvgRef.current
+    if (!svg) return null
+    try {
+      return await svgElementToPngDataUrl(svg, SHARE_W, SHARE_H, '#0c0a09')
+    } catch (e) {
+      console.error('Tier list PNG generation failed', e)
+      return null
     }
-    text += 'cinebret.cl/tierlist'
+  }, [])
 
-    if (navigator.share) {
-      try {
-        await navigator.share({ text })
+  const handleShare = async () => {
+    if (!selectedTheme || shareInFlight) return
+    setShareInFlight(true)
+    try {
+      const dataUrl = await generateSharePng()
+      if (!dataUrl) {
+        setSaveToast('No pudimos generar la imagen.')
+        setTimeout(() => setSaveToast(null), 3000)
         return
-      } catch { /* cancelled */ }
+      }
+      await sharePngOrDownload(
+        dataUrl,
+        `cinebret-tierlist-${selectedTheme.id || 'tema'}.png`,
+        {
+          title: 'Mi Tier List CineBret',
+          text: `${selectedTheme.title} · cinebret.cl/tierlist`,
+        },
+      )
+      setShowCopied(true)
+      setTimeout(() => setShowCopied(false), 2000)
+    } finally {
+      setShareInFlight(false)
     }
-    await navigator.clipboard.writeText(text)
-    setShowCopied(true)
-    setTimeout(() => setShowCopied(false), 2000)
+  }
+
+  const handleDownload = async () => {
+    if (!selectedTheme || downloadInFlight) return
+    setDownloadInFlight(true)
+    try {
+      const dataUrl = await generateSharePng()
+      if (!dataUrl) {
+        setSaveToast('No pudimos generar la imagen.')
+        setTimeout(() => setSaveToast(null), 3000)
+        return
+      }
+      const a = document.createElement('a')
+      a.href = dataUrl
+      a.download = `cinebret-tierlist-${selectedTheme.id || 'tema'}.png`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    } finally {
+      setDownloadInFlight(false)
+    }
+  }
+
+  const handleDeleteCreation = async (rowId: string) => {
+    if (!user) return
+    // Optimistic remove
+    setMyList(prev => prev.filter(r => r.id !== rowId))
+    setCommunityList(prev => prev.filter(r => r.id !== rowId))
+    setPendingDeleteId(null)
+    const { error: delErr } = await supabase
+      .from('user_creations')
+      .delete()
+      .eq('id', rowId)
+      .eq('user_id', user.id)
+    if (delErr) {
+      setSaveToast('No se pudo eliminar. Intenta de nuevo.')
+      setTimeout(() => setSaveToast(null), 3000)
+      // Reload to restore
+      loadMyCreations()
+    } else {
+      setSaveToast('Creación eliminada.')
+      setTimeout(() => setSaveToast(null), 2500)
+    }
   }
 
   // ------------------------------------------------------------------
@@ -1106,15 +1181,27 @@ export default function TierListPage() {
                           variant="secondary"
                           size="sm"
                           fullWidth
+                          loading={shareInFlight}
                           onClick={handleShare}
                           iconLeft={showCopied ? <Icon.Check className="w-4 h-4" /> : <Icon.Share className="w-4 h-4" />}
                         >
-                          {showCopied ? 'Copiado' : 'Compartir'}
+                          {showCopied ? 'Listo' : 'Compartir'}
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          fullWidth
+                          loading={downloadInFlight}
+                          onClick={handleDownload}
+                          iconLeft={<Icon.Download className="w-4 h-4" />}
+                        >
+                          Descargar
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           fullWidth
+                          className="col-span-2"
                           onClick={goToThemes}
                           iconLeft={<Icon.Refresh className="w-4 h-4" />}
                         >
@@ -1175,6 +1262,11 @@ export default function TierListPage() {
                   row={row}
                   allMovies={allMovies}
                   showVisibility
+                  canDelete
+                  pendingDelete={pendingDeleteId === row.id}
+                  onRequestDelete={() => setPendingDeleteId(row.id)}
+                  onConfirmDelete={() => handleDeleteCreation(row.id)}
+                  onCancelDelete={() => setPendingDeleteId(null)}
                   onLoad={() => handleLoadCreation(row)}
                 />
               ))}
@@ -1249,6 +1341,30 @@ export default function TierListPage() {
         }}
       />
 
+      {/* ============================= OFFSCREEN SHARE SVG ============================= */}
+      {(phase === 'tierlist' || phase === 'done') && selectedTheme && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            left: '-99999px',
+            top: 0,
+            width: SHARE_W,
+            height: SHARE_H,
+            pointerEvents: 'none',
+            opacity: 0,
+          }}
+        >
+          <TierListShareSVG
+            ref={shareSvgRef}
+            theme={selectedTheme}
+            tierConfig={tierConfig}
+            tiers={tiers}
+            username={username ?? null}
+          />
+        </div>
+      )}
+
       {/* ============================= TOAST ============================= */}
       {saveToast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] px-4 py-2 rounded-lg bg-zinc-900 border border-yellow-400/40 text-sm text-white shadow-xl">
@@ -1268,36 +1384,47 @@ function CreationCard({
   allMovies,
   onLoad,
   showVisibility = false,
+  canDelete = false,
+  pendingDelete = false,
+  onRequestDelete,
+  onConfirmDelete,
+  onCancelDelete,
 }: {
   row: CreationWithProfile
   allMovies: TierMovie[]
   onLoad: () => void
   showVisibility?: boolean
+  canDelete?: boolean
+  pendingDelete?: boolean
+  onRequestDelete?: () => void
+  onConfirmDelete?: () => void
+  onCancelDelete?: () => void
 }) {
   const byId = new Map(allMovies.map(m => [m.id, m]))
   const tiersPayload = (row.tiers ?? []) as SavedTierPayload[]
 
   return (
-    <Card
-      as="button"
-      interactive
-      padding="md"
-      onClick={onLoad}
-      className="text-left border border-zinc-800 hover:border-yellow-400/60"
-    >
-      <div className="flex items-center justify-between gap-3 mb-3">
-        <div className="min-w-0">
-          <h3 className="text-sm font-bold text-white truncate">{row.title}</h3>
-          <p className="text-[11px] text-zinc-500 truncate">
-            {row._username ? `@${row._username}` : 'Anónimo'}
-          </p>
+    <div className="relative">
+      <Card
+        as="button"
+        interactive
+        padding="md"
+        onClick={onLoad}
+        className="text-left border border-zinc-800 hover:border-yellow-400/60 w-full"
+      >
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-bold text-white truncate">{row.title}</h3>
+            <p className="text-[11px] text-zinc-500 truncate">
+              {row._username ? `@${row._username}` : 'Anónimo'}
+            </p>
+          </div>
+          {showVisibility && (
+            <Pill variant={row.is_public ? 'gold' : 'default'} size="sm">
+              {row.is_public ? 'Pública' : 'Privada'}
+            </Pill>
+          )}
         </div>
-        {showVisibility && (
-          <Pill variant={row.is_public ? 'gold' : 'default'} size="sm">
-            {row.is_public ? 'Pública' : 'Privada'}
-          </Pill>
-        )}
-      </div>
       <div className="space-y-1">
         {tiersPayload.slice(0, 6).map(t => {
           const preset = TIER_COLOR_PRESETS[t.color] ?? TIER_COLOR_PRESETS.gold
@@ -1331,8 +1458,258 @@ function CreationCard({
         })}
       </div>
     </Card>
+
+      {/* Delete UI — only on Mis creaciones */}
+      {canDelete && !pendingDelete && (
+        <button
+          type="button"
+          aria-label="Eliminar creación"
+          onClick={(e) => { e.stopPropagation(); onRequestDelete?.() }}
+          className="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-zinc-950/80 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 hover:border-red-400/40 cursor-pointer transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          </svg>
+        </button>
+      )}
+      {canDelete && pendingDelete && (
+        <div
+          className="absolute inset-0 z-20 flex items-center justify-center gap-2 bg-zinc-950/95 backdrop-blur-sm rounded-2xl border border-red-400/40 p-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <p className="text-white text-sm font-semibold mr-2">¿Eliminar?</p>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onConfirmDelete?.() }}
+            className="px-3 py-1.5 rounded-lg bg-red-500/15 border border-red-400/40 text-red-400 text-xs font-bold hover:bg-red-500/25 cursor-pointer min-h-[36px]"
+          >
+            Sí, eliminar
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onCancelDelete?.() }}
+            className="px-3 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-bold hover:bg-zinc-700 cursor-pointer min-h-[36px]"
+          >
+            Cancelar
+          </button>
+        </div>
+      )}
+    </div>
   )
 }
+
+// ============================================================================
+// TierListShareSVG — offscreen Instagram-portrait SVG used to render the
+// downloadable / shareable PNG of a finished tier list.
+// ============================================================================
+
+// Hex equivalents for the Tailwind tier presets — used by the SVG renderer.
+const TIER_HEX: Record<string, { fg: string; bg: string; border: string }> = {
+  gold:   { fg: '#facc15', bg: 'rgba(250,204,21,0.10)', border: 'rgba(250,204,21,0.40)' },
+  green:  { fg: '#4ade80', bg: 'rgba(74,222,128,0.10)', border: 'rgba(74,222,128,0.40)' },
+  blue:   { fg: '#60a5fa', bg: 'rgba(96,165,250,0.10)', border: 'rgba(96,165,250,0.40)' },
+  cream:  { fg: '#fde047', bg: 'rgba(253,224,71,0.10)', border: 'rgba(253,224,71,0.40)' },
+  orange: { fg: '#fb923c', bg: 'rgba(251,146,60,0.10)', border: 'rgba(251,146,60,0.40)' },
+  red:    { fg: '#f87171', bg: 'rgba(248,113,113,0.10)', border: 'rgba(248,113,113,0.40)' },
+  silver: { fg: '#e4e4e7', bg: 'rgba(228,228,231,0.10)', border: 'rgba(228,228,231,0.40)' },
+  bronze: { fg: '#f59e0b', bg: 'rgba(217,119,6,0.10)', border: 'rgba(217,119,6,0.40)' },
+  slate:  { fg: '#cbd5e1', bg: 'rgba(148,163,184,0.10)', border: 'rgba(148,163,184,0.40)' },
+  white:  { fg: '#ffffff', bg: 'rgba(255,255,255,0.10)', border: 'rgba(255,255,255,0.40)' },
+  purple: { fg: '#d8b4fe', bg: 'rgba(192,132,252,0.10)', border: 'rgba(192,132,252,0.40)' },
+  pink:   { fg: '#f9a8d4', bg: 'rgba(244,114,182,0.10)', border: 'rgba(244,114,182,0.40)' },
+}
+
+const TierListShareSVG = forwardRef<
+  SVGSVGElement,
+  {
+    theme: ThemeConfig
+    tierConfig: TierConfigItem[]
+    tiers: Record<string, TierMovie[]>
+    username: string | null
+  }
+>(function TierListShareSVG({ theme, tierConfig, tiers, username }, ref) {
+  const W = SHARE_W
+  const H = SHARE_H
+  const PAD = 64
+  const HEADER_H = 200
+  const FOOTER_H = 120
+  const innerW = W - PAD * 2
+  const tierAreaH = H - HEADER_H - FOOTER_H
+  const rowGap = 14
+  const rowH = (tierAreaH - rowGap * (tierConfig.length - 1)) / Math.max(1, tierConfig.length)
+  const labelW = 120
+  const posterAreaW = innerW - labelW - 20
+
+  return (
+    <svg
+      ref={ref}
+      xmlns="http://www.w3.org/2000/svg"
+      width={W}
+      height={H}
+      viewBox={`0 0 ${W} ${H}`}
+      style={{ background: '#0c0a09' }}
+    >
+      {/* Background */}
+      <rect x={0} y={0} width={W} height={H} fill="#0c0a09" />
+      {/* Subtle gold gradient corner */}
+      <defs>
+        <linearGradient id="goldFade" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#facc15" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <rect x={0} y={0} width={W} height={6} fill="url(#goldFade)" />
+
+      {/* Header */}
+      <text
+        x={PAD}
+        y={88}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={28}
+        fontWeight={700}
+        fill="#facc15"
+        letterSpacing="6"
+      >
+        CINEBRET · TIER LIST
+      </text>
+      <text
+        x={PAD}
+        y={150}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={56}
+        fontWeight={900}
+        fill="#fafaf9"
+      >
+        {theme.title.length > 28 ? theme.title.slice(0, 26) + '…' : theme.title}
+      </text>
+
+      {/* Tier rows */}
+      <g transform={`translate(${PAD}, ${HEADER_H})`}>
+        {tierConfig.map((tier, i) => {
+          const movies = tiers[tier.id] ?? []
+          const hex = TIER_HEX[tier.color] ?? TIER_HEX.gold
+          const y = i * (rowH + rowGap)
+          // Compute poster size to fit row, with min/max
+          const maxPostersInRow = Math.max(1, Math.floor(posterAreaW / 90))
+          const posterW = Math.min(120, Math.floor((posterAreaW - 8 * (maxPostersInRow - 1)) / maxPostersInRow))
+          const posterH = Math.floor(posterW * 1.5)
+          // Center vertically inside the row
+          const posterY = (rowH - posterH) / 2
+          return (
+            <g key={tier.id} transform={`translate(0, ${y})`}>
+              {/* Row background */}
+              <rect
+                x={0}
+                y={0}
+                width={innerW}
+                height={rowH}
+                rx={16}
+                fill={hex.bg}
+                stroke={hex.border}
+                strokeWidth={2}
+              />
+              {/* Tier label box */}
+              <line
+                x1={labelW}
+                y1={12}
+                x2={labelW}
+                y2={rowH - 12}
+                stroke={hex.border}
+                strokeWidth={2}
+              />
+              <text
+                x={labelW / 2}
+                y={rowH / 2 + 22}
+                textAnchor="middle"
+                fontFamily="Inter, system-ui, sans-serif"
+                fontSize={64}
+                fontWeight={900}
+                fill={hex.fg}
+              >
+                {tier.name.slice(0, 4)}
+              </text>
+              {/* Poster row */}
+              {movies.slice(0, maxPostersInRow).map((m, idx) => {
+                const x = labelW + 20 + idx * (posterW + 8)
+                if (!m.poster_path) {
+                  return (
+                    <rect
+                      key={m.id}
+                      x={x}
+                      y={posterY}
+                      width={posterW}
+                      height={posterH}
+                      rx={8}
+                      fill="#27272a"
+                    />
+                  )
+                }
+                return (
+                  <image
+                    key={m.id}
+                    href={`https://image.tmdb.org/t/p/w342${m.poster_path}`}
+                    x={x}
+                    y={posterY}
+                    width={posterW}
+                    height={posterH}
+                    preserveAspectRatio="xMidYMid slice"
+                  />
+                )
+              })}
+              {/* "+N" overflow indicator */}
+              {movies.length > maxPostersInRow && (
+                <text
+                  x={innerW - 24}
+                  y={rowH / 2 + 8}
+                  textAnchor="end"
+                  fontFamily="Inter, system-ui, sans-serif"
+                  fontSize={22}
+                  fontWeight={700}
+                  fill={hex.fg}
+                >
+                  +{movies.length - maxPostersInRow}
+                </text>
+              )}
+            </g>
+          )
+        })}
+      </g>
+
+      {/* Footer */}
+      <line
+        x1={PAD}
+        y1={H - FOOTER_H}
+        x2={W - PAD}
+        y2={H - FOOTER_H}
+        stroke="#facc15"
+        strokeWidth={2}
+        opacity={0.6}
+      />
+      <text
+        x={PAD}
+        y={H - FOOTER_H + 50}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={26}
+        fontWeight={700}
+        fill="#fafaf9"
+      >
+        {username ? `@${username}` : 'Tu tier list'}
+      </text>
+      <text
+        x={W - PAD}
+        y={H - FOOTER_H + 50}
+        textAnchor="end"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={26}
+        fontWeight={700}
+        fill="#facc15"
+      >
+        cinebret.cl
+      </text>
+    </svg>
+  )
+})
 
 // ============================================================================
 // TierEditorModal — edit names, colors, order of tiers

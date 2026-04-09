@@ -1075,38 +1075,19 @@ export default function TierListPage() {
                     </Card>
                   )}
 
-                  {/* Done state */}
+                  {/* Done state — compact action bar */}
                   {allPlaced && (
-                    <div className="text-center mt-10 space-y-5">
-                      <div className="flex items-center justify-center gap-3">
-                        <Icon.Trophy className="w-8 h-8 text-yellow-400" />
-                        <h2 className="text-2xl md:text-3xl font-black text-yellow-400">
+                    <Card padding="md" className="mt-8 max-w-xl mx-auto border border-yellow-400/30 bg-yellow-400/5">
+                      <div className="flex items-center justify-center gap-2 mb-4">
+                        <Icon.Trophy className="w-5 h-5 text-yellow-400" />
+                        <h2 className="text-base font-black text-yellow-400">
                           Tier list completa
                         </h2>
                       </div>
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-xl mx-auto">
-                        <Button
-                          onClick={handleShare}
-                          size="lg"
-                          fullWidth
-                          iconLeft={showCopied ? <Icon.Check className="w-4 h-4" /> : <Icon.Share className="w-4 h-4" />}
-                        >
-                          {showCopied ? 'Copiado' : 'Compartir'}
-                        </Button>
+                      <div className="grid grid-cols-2 gap-2">
                         <Button
                           variant="secondary"
-                          size="lg"
-                          fullWidth
-                          onClick={goToThemes}
-                          iconLeft={<Icon.Refresh className="w-4 h-4" />}
-                        >
-                          Jugar de nuevo
-                        </Button>
-                      </div>
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-xl mx-auto">
-                        <Button
-                          variant="secondary"
-                          size="lg"
+                          size="sm"
                           fullWidth
                           onClick={() => openSaveModal('save')}
                           iconLeft={<Icon.Bookmark className="w-4 h-4" />}
@@ -1114,15 +1095,33 @@ export default function TierListPage() {
                           Guardar
                         </Button>
                         <Button
-                          size="lg"
+                          size="sm"
                           fullWidth
                           onClick={() => openSaveModal('publish')}
                           iconLeft={<Icon.Sparkles className="w-4 h-4" />}
                         >
                           Publicar
                         </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          fullWidth
+                          onClick={handleShare}
+                          iconLeft={showCopied ? <Icon.Check className="w-4 h-4" /> : <Icon.Share className="w-4 h-4" />}
+                        >
+                          {showCopied ? 'Copiado' : 'Compartir'}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          fullWidth
+                          onClick={goToThemes}
+                          iconLeft={<Icon.Refresh className="w-4 h-4" />}
+                        >
+                          Jugar de nuevo
+                        </Button>
                       </div>
-                    </div>
+                    </Card>
                   )}
                 </div>
               )}

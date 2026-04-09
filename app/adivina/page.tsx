@@ -239,6 +239,8 @@ export default function AdivinaPage() {
   const [showLegend, setShowLegend] = useState(false)
   const [showHowTo, setShowHowTo] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
+  const [showResult, setShowResult] = useState(false)
+  const [resultAutoOpened, setResultAutoOpened] = useState(false)
   const [isFreeMode, setIsFreeMode] = useState(false)
   const [allMovies, setAllMovies] = useState<Movie[]>([]) // all valid movies for free mode picks
   const [freeRoundsUsed, setFreeRoundsUsed] = useState(0)
@@ -281,6 +283,17 @@ export default function AdivinaPage() {
   const dayNumber = useMemo(() => getDayNumber(), [])
   const gameOver = solved || failed
   const TIMER_KEY = `cinebret-adivina-timer-${today}`
+
+  // Auto-open result modal once when the game ends. Small delay so the user
+  // sees the last guess animate in before the popup covers the screen.
+  useEffect(() => {
+    if (!gameOver || resultAutoOpened) return
+    const t = setTimeout(() => {
+      setShowResult(true)
+      setResultAutoOpened(true)
+    }, 800)
+    return () => clearTimeout(t)
+  }, [gameOver, resultAutoOpened])
 
   // Fetch movies
   useEffect(() => {
@@ -949,109 +962,29 @@ export default function AdivinaPage() {
 
       {/* Result state (win / lose) */}
       {gameOver && (
-        <Card padding="lg" className="text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
+        <Card padding="md" className="text-center">
+          <div className="flex items-center justify-center gap-2 mb-3">
             {solved ? (
               <Pill variant="gold" size="md" icon={<Icon.Check className="w-4 h-4" />}>
                 ¡Adivinaste!
               </Pill>
             ) : (
-              <Pill variant="danger" size="md" icon={<Icon.Close className="w-4 h-4" />}>
+              <Pill variant="default" size="md" icon={<Icon.Close className="w-4 h-4" />}>
                 No acertaste
               </Pill>
             )}
           </div>
-
-          <p className="text-sm text-zinc-400 mb-4">
-            {solved ? 'La película era:' : 'La película era:'}
-          </p>
-
-          <div className="flex justify-center mb-4">
-            <div className="relative w-40 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl ring-1 ring-zinc-800">
-              <Image
-                src={`https://image.tmdb.org/t/p/w500${targetMovie.poster_path}`}
-                alt={targetMovie.titulo}
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-
-          <div className="mb-5">
-            <p className="text-xl font-black text-yellow-400">
-              {targetMovie.titulo}
-            </p>
-            {targetMovie.titulo_ingles && (
-              <p className="text-zinc-400 text-sm">
-                {targetMovie.titulo_ingles}
-              </p>
-            )}
-            <p className="text-zinc-500 text-sm mt-1">
-              {targetMovie.anio} · IMDb {targetMovie.nota_imdb}
-            </p>
-            {targetMovie.enriquecimiento?.director && (
-              <p className="text-zinc-500 text-xs mt-1">
-                Director: {targetMovie.enriquecimiento.director}
-              </p>
-            )}
-            {targetMovie.enriquecimiento?.generos && (
-              <p className="text-zinc-500 text-xs">
-                {targetMovie.enriquecimiento.generos.join(', ')}
-              </p>
-            )}
-          </div>
-
-          {/* Guest CTA — only on the daily, only when not logged in, only when game over */}
-          {!user && !isFreeMode && (
-            <Card padding="md" className="mb-5 border border-yellow-400/30 bg-yellow-400/5">
-              <div className="flex items-start gap-3">
-                <div className="shrink-0 w-10 h-10 rounded-xl bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center">
-                  <Icon.Trophy className="w-5 h-5 text-yellow-400" />
-                </div>
-                <div className="flex-1 min-w-0 text-left">
-                  <p className="text-white font-bold text-sm">
-                    Guardá tu progreso
-                  </p>
-                  <p className="text-zinc-400 text-xs mt-0.5">
-                    Iniciá sesión para llevar tus rachas, tiempos y estadísticas en todos tus dispositivos.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-3 flex justify-center">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  fullWidth
-                  iconLeft={<Icon.User className="w-4 h-4" />}
-                  onClick={() => setShowAuth(true)}
-                >
-                  Iniciar sesión / Crear cuenta
-                </Button>
-              </div>
-            </Card>
-          )}
-
-          <div className="flex flex-col items-center gap-2">
-            {!isFreeMode && (
-              <Button
-                variant="primary"
-                onClick={handleShare}
-                iconLeft={<Icon.Share className="w-4 h-4" />}
-              >
-                {copied ? '¡Copiado!' : 'Compartir resultado'}
-              </Button>
-            )}
-            <Button
-              variant="secondary"
-              onClick={startFreeGame}
-              iconLeft={<Icon.Refresh className="w-4 h-4" />}
-              disabled={freeRoundsUsed >= FREE_ROUNDS_PER_DAY}
-            >
-              {freeRoundsUsed >= FREE_ROUNDS_PER_DAY
-                ? `Sin rondas extra (${FREE_ROUNDS_PER_DAY}/${FREE_ROUNDS_PER_DAY})`
-                : `Jugar otra película (${freeRoundsUsed}/${FREE_ROUNDS_PER_DAY})`}
-            </Button>
-          </div>
+          <p className="text-zinc-400 text-xs">La película era</p>
+          <p className="text-base font-black text-yellow-400 mt-0.5">{targetMovie.titulo}</p>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="mt-4"
+            iconLeft={<Icon.Trophy className="w-4 h-4" />}
+            onClick={() => setShowResult(true)}
+          >
+            Ver resultado
+          </Button>
         </Card>
       )}
 
@@ -1167,6 +1100,137 @@ export default function AdivinaPage() {
             ? 'Sincronizado en tu cuenta'
             : 'Solo en este dispositivo · iniciá sesión para sincronizar'}
         </p>
+      </Modal>
+
+      {/* ─── Result modal — auto-opens at end of game ─── */}
+      <Modal
+        open={showResult && gameOver && !!targetMovie}
+        onClose={() => setShowResult(false)}
+        title={solved ? '¡Adivinaste!' : 'No acertaste'}
+        size="sm"
+      >
+        {targetMovie && (
+          <div className="text-center">
+            {/* Poster + title */}
+            <div className="flex justify-center mb-3">
+              <div className="relative w-32 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl ring-1 ring-zinc-800">
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${targetMovie.poster_path}`}
+                  alt={targetMovie.titulo}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <p className="text-lg font-black text-yellow-400">{targetMovie.titulo}</p>
+            {targetMovie.titulo_ingles && targetMovie.titulo_ingles !== targetMovie.titulo && (
+              <p className="text-zinc-400 text-xs">{targetMovie.titulo_ingles}</p>
+            )}
+            <p className="text-zinc-500 text-xs mt-1">
+              {targetMovie.anio} · IMDb {targetMovie.nota_imdb}
+              {!isFreeMode && solved && elapsedSeconds > 0 && ` · ⏱ ${formatTime(Math.floor(elapsedSeconds))}`}
+            </p>
+
+            {/* Logged-in: stats grid */}
+            {user && !isFreeMode && (
+              <div className="mt-5">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-2">
+                  Tus estadísticas
+                </p>
+                <div className="grid grid-cols-4 gap-2 mb-4">
+                  <div className="bg-zinc-950/60 rounded-lg py-2">
+                    <div className="text-lg font-black text-yellow-400 tabular-nums">{stats.games_played}</div>
+                    <div className="text-[9px] text-zinc-500 uppercase font-bold">Jugadas</div>
+                  </div>
+                  <div className="bg-zinc-950/60 rounded-lg py-2">
+                    <div className="text-lg font-black text-yellow-400 tabular-nums">
+                      {stats.games_played > 0 ? Math.round((stats.games_won / stats.games_played) * 100) : 0}%
+                    </div>
+                    <div className="text-[9px] text-zinc-500 uppercase font-bold">Ganadas</div>
+                  </div>
+                  <div className="bg-zinc-950/60 rounded-lg py-2">
+                    <div className="text-lg font-black text-yellow-400 tabular-nums">{stats.current_streak}</div>
+                    <div className="text-[9px] text-zinc-500 uppercase font-bold">Racha</div>
+                  </div>
+                  <div className="bg-zinc-950/60 rounded-lg py-2">
+                    <div className="text-lg font-black text-yellow-400 tabular-nums">{stats.max_streak}</div>
+                    <div className="text-[9px] text-zinc-500 uppercase font-bold">Máx</div>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  fullWidth
+                  iconLeft={<Icon.Trophy className="w-4 h-4" />}
+                  onClick={() => {
+                    setShowResult(false)
+                    setShowStats(true)
+                  }}
+                >
+                  Ver estadísticas completas
+                </Button>
+              </div>
+            )}
+
+            {/* Guest: login CTA */}
+            {!user && !isFreeMode && (
+              <div className="mt-5 bg-yellow-400/5 border border-yellow-400/30 rounded-xl p-4">
+                <div className="flex items-start gap-3 text-left">
+                  <div className="shrink-0 w-9 h-9 rounded-lg bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center">
+                    <Icon.Trophy className="w-4 h-4 text-yellow-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white font-bold text-sm">Guardá tu progreso</p>
+                    <p className="text-zinc-400 text-xs mt-0.5">
+                      Iniciá sesión para llevar tus rachas y stats en todos tus dispositivos.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  fullWidth
+                  className="mt-3"
+                  iconLeft={<Icon.User className="w-4 h-4" />}
+                  onClick={() => {
+                    setShowResult(false)
+                    setShowAuth(true)
+                  }}
+                >
+                  Iniciar sesión / Crear cuenta
+                </Button>
+              </div>
+            )}
+
+            {/* Action buttons */}
+            <div className="mt-5 flex flex-col gap-2">
+              {!isFreeMode && (
+                <Button
+                  variant="primary"
+                  fullWidth
+                  onClick={handleShare}
+                  iconLeft={<Icon.Share className="w-4 h-4" />}
+                >
+                  {copied ? '¡Copiado!' : 'Compartir resultado'}
+                </Button>
+              )}
+              <Button
+                variant="secondary"
+                fullWidth
+                onClick={() => {
+                  setShowResult(false)
+                  startFreeGame()
+                }}
+                iconLeft={<Icon.Refresh className="w-4 h-4" />}
+                disabled={freeRoundsUsed >= FREE_ROUNDS_PER_DAY}
+              >
+                {freeRoundsUsed >= FREE_ROUNDS_PER_DAY
+                  ? `Sin rondas extra (${FREE_ROUNDS_PER_DAY}/${FREE_ROUNDS_PER_DAY})`
+                  : `Jugar otra (${freeRoundsUsed}/${FREE_ROUNDS_PER_DAY})`}
+              </Button>
+            </div>
+          </div>
+        )}
       </Modal>
 
       {/* ─── How to play modal ─── */}

@@ -942,16 +942,11 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         </div>
       </div>
 
-      {/* ── Tinder slot — the hero (rendered ABOVE filters) ── */}
-      <div className="max-w-7xl mx-auto px-3 md:px-6">
-        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro, trendingIds: activeTrendingIds }) : tinderSlot}
-      </div>
-
-      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-1">
-        {/* ── Mood chips (horizontal scroll) ── */}
-        <div className="mb-2">
-          <div className="flex items-center justify-between mb-1.5">
-            <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500">Mood</h2>
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-2">
+        {/* ── ¿En qué mood estás? (grid de 4 botones, ARRIBA del tinder) ── */}
+        <div className="mb-3">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-base md:text-xl font-bold text-white">¿En qué mood estás?</h2>
             {showModeToggleInMood && (
               <div className="flex bg-zinc-800 rounded-lg p-0.5 gap-0.5" suppressHydrationWarning>
                 <button onClick={() => setMode('peliculas')} className={`px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors ${activeMode === 'peliculas' ? 'bg-yellow-400 text-zinc-950' : 'text-zinc-400 hover:text-zinc-200'}`} suppressHydrationWarning>Películas</button>
@@ -959,24 +954,24 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               </div>
             )}
           </div>
-          <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-3 px-3 pb-1">
+          <div className="grid grid-cols-4 gap-2">
             {MOOD_CATS.map(cat => {
               const activa = categoriasFiltro.includes(cat.id)
               return (
                 <button key={cat.id}
                   onClick={() => setCategoriasFiltro(prev => activa ? prev.filter(c => c !== cat.id) : [...prev, cat.id])}
-                  className={`shrink-0 min-h-[44px] rounded-full px-4 text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap ${activa ? 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 shadow-[0_0_10px_rgba(250,204,21,0.15)]' : 'bg-zinc-800/80 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
-                  <span className="text-sm leading-none">{cat.emoji}</span>
-                  <span>{cat.label}</span>
+                  className={`py-1.5 md:py-2.5 rounded-xl text-[10px] md:text-sm font-semibold flex flex-col items-center justify-center gap-0.5 transition-all min-h-[44px] ${activa ? 'bg-yellow-400/20 text-yellow-300 shadow-[0_0_10px_rgba(250,204,21,0.15)] scale-105' : 'bg-yellow-400/5 text-zinc-400 hover:bg-yellow-400/10'}`}>
+                  <span className="text-base md:text-xl leading-none">{cat.emoji}</span>
+                  <span className="text-center leading-tight">{cat.label}</span>
                 </button>
               )
             })}
           </div>
         </div>
 
-        {/* ── Plataformas ── */}
-        <div className={hidePlatformTitle ? 'mb-2 -mt-1' : 'mb-2'}>
-          {!hidePlatformTitle && <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-1.5">Plataformas</h2>}
+        {/* ── Plataformas (ARRIBA del tinder) ── */}
+        <div className={hidePlatformTitle ? 'mb-3 -mt-1' : 'mb-3'}>
+          {!hidePlatformTitle && <h2 className="text-base md:text-xl font-bold text-white mb-2">¿Qué plataformas tienes?</h2>}
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
             {PLATAFORMAS.map(plat => {
               const activa = plataformasFiltro.includes(plat.id)
@@ -991,6 +986,14 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
             })}
           </div>
         </div>
+      </div>
+
+      {/* ── Tinder slot — the hero (BELOW mood + platforms) ── */}
+      <div className="max-w-7xl mx-auto px-3 md:px-6">
+        {typeof tinderSlot === 'function' ? tinderSlot({ categorias: categoriasFiltro, plataformas: plataformasFiltro, trendingIds: activeTrendingIds }) : tinderSlot}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-3 md:px-6 pt-2">
 
         {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">

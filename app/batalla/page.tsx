@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo, forwardRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -10,11 +10,16 @@ import {
   Card,
   Button,
   Pill,
+  Tabs,
+  Modal,
+  SearchInput,
   LoadingState,
   EmptyState,
   Icon,
 } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/context/AuthContext'
+import { svgElementToPngDataUrl, sharePngOrDownload } from '@/lib/svgToPng'
 
 type BattleMovie = {
   id: string
@@ -242,12 +247,38 @@ async function fetchAllMoviesWithEnrichment(): Promise<BattleMovie[]> {
   return allMovies
 }
 
-function pickRandom16(pool: BattleMovie[]): BattleMovie[] {
+function pickRandomN(pool: BattleMovie[], size: number): BattleMovie[] {
   const shuffled = [...pool].sort(() => Math.random() - 0.5)
-  return shuffled.slice(0, 16)
+  return shuffled.slice(0, size)
 }
 
+// Bracket sizes — must be powers of 2 so the tree closes cleanly.
+const BRACKET_SIZES = [8, 16, 32, 64] as const
+type BracketSize = (typeof BRACKET_SIZES)[number]
+
+// Share PNG dimensions — Instagram-friendly portrait card.
+const SHARE_W = 1080
+const SHARE_H = 1350
+
+type CommunityRow = {
+  id: string
+  user_id: string
+  type: string
+  title: string
+  movie_ids: string[]
+  tiers: any
+  theme_id: string | null
+  is_public: boolean
+  created_at: string
+  _username?: string | null
+  _avatar_url?: string | null
+}
+
+type SaveMode = 'save' | 'publish'
+
 export default function BatallaPage() {
+  const { user, username } = useAuth()
+  const [mainTab, setMainTab] = useState<'cinebret' | 'crear' | 'comunidad' | 'mis'>('cinebret')
   const [phase, setPhase] = useState<'theme' | 'personalizado' | 'battle'>('theme')
   const [allMovies, setAllMovies] = useState<BattleMovie[]>([])
   const [allLoading, setAllLoading] = useState(true)
@@ -270,6 +301,33 @@ export default function BatallaPage() {
   const [showCopied, setShowCopied] = useState(false)
   const animTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Manual builder state ("Crea el tuyo")
+  const [builderSize, setBuilderSize] = useState<BracketSize>(16)
+  const [builderPicks, setBuilderPicks] = useState<BattleMovie[]>([])
+  const [builderQuery, setBuilderQuery] = useState('')
+
+  // Save / publish state
+  const [saveModalOpen, setSaveModalOpen] = useState(false)
+  const [saveMode, setSaveMode] = useState<SaveMode>('save')
+  const [saveTitle, setSaveTitle] = useState('')
+  const [savingInFlight, setSavingInFlight] = useState(false)
+  const [saveToast, setSaveToast] = useState<string | null>(null)
+
+  // Comunidad / Mis creaciones
+  const [communityList, setCommunityList] = useState<CommunityRow[]>([])
+  const [communityLoading, setCommunityLoading] = useState(false)
+  const [myList, setMyList] = useState<CommunityRow[]>([])
+  const [myLoading, setMyLoading] = useState(false)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+
+  // Share / download (PNG via offscreen SVG)
+  const shareSvgRef = useRef<SVGSVGElement>(null)
+  const [shareInFlight, setShareInFlight] = useState(false)
+  const [downloadInFlight, setDownloadInFlight] = useState(false)
+
+  // The original 16 (or N) ids that the bracket started with — needed for save
+  const [bracketSeed, setBracketSeed] = useState<string[]>([])
+
   // Load all movies once on mount
   useEffect(() => {
     let cancelled = false
@@ -290,7 +348,7 @@ export default function BatallaPage() {
     }
   }, [])
 
-  const startBattle = useCallback((pool: BattleMovie[], theme: ThemeConfig) => {
+  const startBattle = useCallback((pool: BattleMovie[], theme: ThemeConfig, sizeArg?: BracketSize) => {
     setError(null)
     setChampion(null)
     setChosen(null)
@@ -299,18 +357,49 @@ export default function BatallaPage() {
     setRounds([])
     setSelectedTheme(theme)
 
-    if (pool.length < 16) {
-      setError(`Solo hay ${pool.length} películas para "${theme.title}". Se necesitan al menos 16.`)
+    // Pick the largest bracket size that fits in the pool — falls back to 8.
+    let size: BracketSize = sizeArg ?? 16
+    if (!sizeArg) {
+      const fits = ([...BRACKET_SIZES].reverse() as BracketSize[]).find((s) => pool.length >= s)
+      size = fits ?? 8
+    }
+
+    if (pool.length < size) {
+      setError(`Solo hay ${pool.length} películas para "${theme.title}". Se necesitan al menos ${size}.`)
       setPhase('battle')
       setLoading(false)
       return
     }
 
-    const selected = pickRandom16(pool)
+    const selected = pickRandomN(pool, size)
     setMovies(selected)
+    setBracketSeed(selected.map((m) => m.id))
 
     const initialMatches: BracketMatch[] = []
-    for (let i = 0; i < 16; i += 2) {
+    for (let i = 0; i < size; i += 2) {
+      initialMatches.push({ a: selected[i], b: selected[i + 1], winner: null })
+    }
+    setRounds([initialMatches])
+    setPhase('battle')
+    setMainTab('cinebret')
+    setLoading(false)
+  }, [])
+
+  // Start a battle from an explicit list of movies (Crea el tuyo or
+  // loaded from Comunidad / Mis creaciones). Skips the random pick.
+  const startBattleFromMovies = useCallback((selected: BattleMovie[], theme: ThemeConfig) => {
+    setError(null)
+    setChampion(null)
+    setChosen(null)
+    setCurrentRound(0)
+    setCurrentMatch(0)
+    setRounds([])
+    setSelectedTheme(theme)
+    setMovies(selected)
+    setBracketSeed(selected.map((m) => m.id))
+
+    const initialMatches: BracketMatch[] = []
+    for (let i = 0; i < selected.length; i += 2) {
       initialMatches.push({ a: selected[i], b: selected[i + 1], winner: null })
     }
     setRounds([initialMatches])
@@ -407,19 +496,232 @@ export default function BatallaPage() {
     }, 350)
   }
 
-  const handleShare = async () => {
-    if (!champion) return
-    const themeLabel = selectedTheme ? ` [${selectedTheme.title}]` : ''
-    const text = `Mi campeón en Batalla CineBret${themeLabel}: ${champion.titulo}${champion.anio ? ` (${champion.anio})` : ''}\nIMDb ${champion.nota_imdb}\ncinebret.cl/batalla`
-    if (navigator.share) {
-      try {
-        await navigator.share({ text })
-        return
-      } catch { /* user cancelled */ }
+  // ── Share / Download as PNG ──────────────────────────────────────
+  const generateSharePng = useCallback(async (): Promise<string | null> => {
+    const svg = shareSvgRef.current
+    if (!svg) return null
+    try {
+      return await svgElementToPngDataUrl(svg, SHARE_W, SHARE_H, '#0c0a09')
+    } catch (e) {
+      console.error('Batalla PNG generation failed', e)
+      return null
     }
-    await navigator.clipboard.writeText(text)
-    setShowCopied(true)
-    setTimeout(() => setShowCopied(false), 2000)
+  }, [])
+
+  const handleShare = async () => {
+    if (!champion || shareInFlight) return
+    setShareInFlight(true)
+    try {
+      const dataUrl = await generateSharePng()
+      if (!dataUrl) {
+        setSaveToast('No pudimos generar la imagen.')
+        setTimeout(() => setSaveToast(null), 3000)
+        return
+      }
+      await sharePngOrDownload(
+        dataUrl,
+        `cinebret-batalla-${selectedTheme?.id || 'tema'}.png`,
+        {
+          title: 'Mi Batalla CineBret',
+          text: `${selectedTheme?.title ?? 'Batalla'} · cinebret.cl/batalla`,
+        },
+      )
+      setShowCopied(true)
+      setTimeout(() => setShowCopied(false), 2000)
+    } finally {
+      setShareInFlight(false)
+    }
+  }
+
+  const handleDownload = async () => {
+    if (!champion || downloadInFlight) return
+    setDownloadInFlight(true)
+    try {
+      const dataUrl = await generateSharePng()
+      if (!dataUrl) {
+        setSaveToast('No pudimos generar la imagen.')
+        setTimeout(() => setSaveToast(null), 3000)
+        return
+      }
+      const a = document.createElement('a')
+      a.href = dataUrl
+      a.download = `cinebret-batalla-${selectedTheme?.id || 'tema'}.png`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    } finally {
+      setDownloadInFlight(false)
+    }
+  }
+
+  // ── Save / publish ───────────────────────────────────────────────
+  const openSaveModal = (mode: SaveMode) => {
+    if (!user) {
+      setSaveToast('Iniciá sesión para guardar tu batalla.')
+      setTimeout(() => setSaveToast(null), 3000)
+      return
+    }
+    setSaveMode(mode)
+    setSaveTitle(selectedTheme?.title || 'Mi batalla')
+    setSaveModalOpen(true)
+  }
+
+  const handleConfirmSave = async () => {
+    if (!user || savingInFlight) return
+    setSavingInFlight(true)
+    try {
+      const { error: insertError } = await supabase
+        .from('user_creations')
+        .insert({
+          user_id: user.id,
+          type: 'batalla',
+          title: saveTitle.trim() || 'Mi batalla',
+          movie_ids: bracketSeed,
+          tiers: champion ? { champion_id: champion.id } : null,
+          theme_id: selectedTheme?.id ?? null,
+          is_public: saveMode === 'publish',
+        })
+      if (insertError) throw insertError
+      setSaveModalOpen(false)
+      setSaveToast(saveMode === 'publish' ? 'Publicada en Comunidad' : 'Guardada en Mis creaciones')
+      setTimeout(() => setSaveToast(null), 3000)
+      if (mainTab === 'mis') loadMyCreations()
+      if (mainTab === 'comunidad') loadCommunity()
+    } catch {
+      setSaveToast('No se pudo guardar. Intenta de nuevo.')
+      setTimeout(() => setSaveToast(null), 3000)
+    } finally {
+      setSavingInFlight(false)
+    }
+  }
+
+  // ── Comunidad / Mis creaciones loaders ───────────────────────────
+  const loadCommunity = useCallback(async () => {
+    setCommunityLoading(true)
+    try {
+      const { data } = await supabase
+        .from('user_creations')
+        .select('*')
+        .eq('type', 'batalla')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .range(0, 49)
+      if (!data) { setCommunityList([]); return }
+      const userIds = Array.from(new Set(data.map((r: any) => r.user_id)))
+      const { data: profs } = await supabase
+        .from('profiles')
+        .select('user_id, username, avatar_url')
+        .in('user_id', userIds)
+      const profMap = new Map<string, { username: string | null; avatar_url: string | null }>()
+      ;(profs ?? []).forEach((p: any) => profMap.set(p.user_id, { username: p.username, avatar_url: p.avatar_url }))
+      setCommunityList(data.map((r: any) => ({
+        ...r,
+        _username: profMap.get(r.user_id)?.username ?? null,
+        _avatar_url: profMap.get(r.user_id)?.avatar_url ?? null,
+      })))
+    } finally {
+      setCommunityLoading(false)
+    }
+  }, [])
+
+  const loadMyCreations = useCallback(async () => {
+    if (!user) return
+    setMyLoading(true)
+    try {
+      const { data } = await supabase
+        .from('user_creations')
+        .select('*')
+        .eq('type', 'batalla')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .range(0, 99)
+      setMyList((data ?? []) as CommunityRow[])
+    } finally {
+      setMyLoading(false)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (mainTab === 'comunidad') loadCommunity()
+    if (mainTab === 'mis') loadMyCreations()
+  }, [mainTab, loadCommunity, loadMyCreations])
+
+  const handleDeleteCreation = async (rowId: string) => {
+    if (!user) return
+    setMyList((prev) => prev.filter((r) => r.id !== rowId))
+    setCommunityList((prev) => prev.filter((r) => r.id !== rowId))
+    setPendingDeleteId(null)
+    const { error: delErr } = await supabase
+      .from('user_creations')
+      .delete()
+      .eq('id', rowId)
+      .eq('user_id', user.id)
+    if (delErr) {
+      setSaveToast('No se pudo eliminar. Intenta de nuevo.')
+      setTimeout(() => setSaveToast(null), 3000)
+      loadMyCreations()
+    } else {
+      setSaveToast('Creación eliminada.')
+      setTimeout(() => setSaveToast(null), 2500)
+    }
+  }
+
+  // Fork an existing creation: rebuild the bracket from its movie_ids
+  const handleLoadCreation = (row: CommunityRow) => {
+    if (allMovies.length === 0) return
+    const byId = new Map(allMovies.map((m) => [m.id, m]))
+    const selected = (row.movie_ids ?? [])
+      .map((id) => byId.get(id))
+      .filter(Boolean) as BattleMovie[]
+    if (selected.length < 8 || selected.length % 2 !== 0) {
+      setSaveToast('Esta batalla ya no se puede reconstruir.')
+      setTimeout(() => setSaveToast(null), 3000)
+      return
+    }
+    const theme: ThemeConfig = {
+      id: row.theme_id ?? 'forked',
+      title: row.title,
+      description: 'Batalla guardada',
+      filter: 'personalizado',
+    }
+    startBattleFromMovies(selected, theme)
+    setMainTab('cinebret')
+  }
+
+  // ── Manual builder helpers ───────────────────────────────────────
+  const builderResults = useMemo(() => {
+    if (builderQuery.trim().length < 2) return [] as BattleMovie[]
+    const q = builderQuery.toLowerCase()
+    const pickedIds = new Set(builderPicks.map((p) => p.id))
+    return allMovies
+      .filter((m) => !pickedIds.has(m.id))
+      .filter((m) =>
+        m.titulo.toLowerCase().includes(q) ||
+        (m.titulo_ingles ?? '').toLowerCase().includes(q),
+      )
+      .slice(0, 8)
+  }, [builderQuery, allMovies, builderPicks])
+
+  const addBuilderPick = (m: BattleMovie) => {
+    if (builderPicks.length >= builderSize) return
+    if (builderPicks.some((p) => p.id === m.id)) return
+    setBuilderPicks((prev) => [...prev, m])
+    setBuilderQuery('')
+  }
+
+  const removeBuilderPick = (id: string) => {
+    setBuilderPicks((prev) => prev.filter((m) => m.id !== id))
+  }
+
+  const handleBuilderStart = () => {
+    if (builderPicks.length !== builderSize) return
+    const customTheme: ThemeConfig = {
+      id: `custom_${Date.now()}`,
+      title: `Mi batalla (${builderSize})`,
+      description: 'Batalla personalizada',
+      filter: 'personalizado',
+    }
+    startBattleFromMovies([...builderPicks], customTheme)
   }
 
   const goToThemes = () => {
@@ -431,6 +733,7 @@ export default function BatallaPage() {
     setRounds([])
     setError(null)
     setLoading(false)
+    setMainTab('cinebret')
   }
 
   const totalMatchesInRound = rounds[currentRound]?.length ?? 0
@@ -537,19 +840,45 @@ export default function BatallaPage() {
     )
   }
 
+  const showTabs = phase === 'theme' && !allLoading
+
+  const tabs = useMemo(
+    () => {
+      const base = [
+        { key: 'cinebret', label: 'CineBret' },
+        { key: 'crear', label: 'Crea el tuyo' },
+        { key: 'comunidad', label: 'Comunidad' },
+      ]
+      if (user) base.push({ key: 'mis', label: 'Mis creaciones' })
+      return base
+    },
+    [user],
+  )
+
   return (
     <PageShell maxWidth="4xl">
       <PageHeader
         title="Batalla CineBret"
-        subtitle="Dieciséis películas entran al torneo. Solo una alcanza la gloria."
+        subtitle="Películas entran al torneo. Solo una alcanza la gloria."
         icon={<Icon.Trophy className="w-8 h-8" />}
       />
 
       {/* Loading all movies */}
       {allLoading && <LoadingState text="Cargando películas..." />}
 
-      {/* THEME SELECTION */}
-      {!allLoading && phase === 'theme' && (
+      {/* Tabs — only on the theme/landing screen */}
+      {showTabs && (
+        <div className="mb-6">
+          <Tabs
+            tabs={tabs}
+            value={mainTab}
+            onChange={(k) => setMainTab(k as typeof mainTab)}
+          />
+        </div>
+      )}
+
+      {/* THEME SELECTION (CineBret tab) */}
+      {!allLoading && phase === 'theme' && mainTab === 'cinebret' && (
         <Section label="Elige un tema para tu batalla">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {THEME_LIST.map((theme) => (
@@ -573,6 +902,175 @@ export default function BatallaPage() {
               </Card>
             ))}
           </div>
+        </Section>
+      )}
+
+      {/* CREA EL TUYO TAB */}
+      {!allLoading && phase === 'theme' && mainTab === 'crear' && (
+        <div className="max-w-2xl mx-auto">
+          <Section label={`Tamaño del torneo`}>
+            <div className="flex flex-wrap gap-2">
+              {BRACKET_SIZES.map((s) => (
+                <Pill
+                  key={s}
+                  variant="filter"
+                  active={builderSize === s}
+                  onClick={() => {
+                    setBuilderSize(s)
+                    // Trim picks if shrinking
+                    setBuilderPicks((prev) => prev.slice(0, s))
+                  }}
+                >
+                  {s} películas
+                </Pill>
+              ))}
+            </div>
+          </Section>
+
+          <Section label={`Tu selección · ${builderPicks.length}/${builderSize}`}>
+            {builderPicks.length === 0 ? (
+              <p className="text-zinc-500 text-sm">
+                Buscá y elegí {builderSize} películas para armar tu propio bracket.
+              </p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {builderPicks.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => removeBuilderPick(m.id)}
+                    className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-full pl-1 pr-3 py-1 text-xs text-white hover:border-yellow-400/40 cursor-pointer min-h-[36px]"
+                  >
+                    {m.poster_path && (
+                      <div className="relative w-6 h-9 rounded overflow-hidden bg-zinc-800 shrink-0">
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                          alt={m.titulo}
+                          fill
+                          className="object-cover"
+                          sizes="24px"
+                        />
+                      </div>
+                    )}
+                    <span className="truncate max-w-[140px]">{m.titulo}</span>
+                    <Icon.Close className="w-3 h-3 text-zinc-500" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </Section>
+
+          {builderPicks.length < builderSize && (
+            <div className="mt-4">
+              <SearchInput
+                value={builderQuery}
+                onChange={setBuilderQuery}
+                placeholder="Buscar película para agregar..."
+              />
+              {builderResults.length > 0 && (
+                <div className="mt-2 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                  {builderResults.map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => addBuilderPick(m)}
+                      className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-zinc-800 border-b border-zinc-800/60 last:border-0 cursor-pointer min-h-[44px]"
+                    >
+                      {m.poster_path && (
+                        <div className="relative w-8 h-12 rounded overflow-hidden bg-zinc-800 shrink-0">
+                          <Image
+                            src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                            alt={m.titulo}
+                            fill
+                            className="object-cover"
+                            sizes="32px"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-sm font-medium truncate">{m.titulo}</p>
+                        <p className="text-zinc-500 text-[11px] tabular-nums">
+                          {m.anio} · IMDb {m.nota_imdb ?? '—'}
+                        </p>
+                      </div>
+                      <Icon.Plus className="w-4 h-4 text-yellow-400 shrink-0" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          <Button
+            onClick={handleBuilderStart}
+            disabled={builderPicks.length !== builderSize}
+            fullWidth
+            size="lg"
+            className="mt-6"
+            iconLeft={<Icon.Trophy className="w-4 h-4" />}
+          >
+            {builderPicks.length === builderSize
+              ? `Iniciar batalla con ${builderSize} películas`
+              : `Faltan ${builderSize - builderPicks.length} películas`}
+          </Button>
+        </div>
+      )}
+
+      {/* COMUNIDAD TAB */}
+      {!allLoading && phase === 'theme' && mainTab === 'comunidad' && (
+        <Section label="Batallas de la comunidad">
+          {communityLoading ? (
+            <LoadingState text="Cargando batallas..." />
+          ) : communityList.length === 0 ? (
+            <EmptyState
+              icon={<Icon.Trophy className="w-16 h-16" />}
+              title="Aún no hay batallas publicadas"
+              description="Sé la primera persona en publicar una."
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {communityList.map((row) => (
+                <BatallaCreationCard
+                  key={row.id}
+                  row={row}
+                  allMovies={allMovies}
+                  onLoad={() => handleLoadCreation(row)}
+                />
+              ))}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* MIS CREACIONES TAB */}
+      {!allLoading && phase === 'theme' && mainTab === 'mis' && user && (
+        <Section label="Mis batallas">
+          {myLoading ? (
+            <LoadingState text="Cargando tus batallas..." />
+          ) : myList.length === 0 ? (
+            <EmptyState
+              icon={<Icon.Bookmark className="w-16 h-16" />}
+              title="Todavía no guardaste ninguna batalla"
+              description="Termina una batalla y pulsa Guardar o Publicar."
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {myList.map((row) => (
+                <BatallaCreationCard
+                  key={row.id}
+                  row={row}
+                  allMovies={allMovies}
+                  showVisibility
+                  canDelete
+                  pendingDelete={pendingDeleteId === row.id}
+                  onRequestDelete={() => setPendingDeleteId(row.id)}
+                  onConfirmDelete={() => handleDeleteCreation(row.id)}
+                  onCancelDelete={() => setPendingDeleteId(null)}
+                  onLoad={() => handleLoadCreation(row)}
+                />
+              ))}
+            </div>
+          )}
         </Section>
       )}
 
@@ -761,37 +1259,479 @@ export default function BatallaPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full max-w-lg">
-                <Link href={`/pelicula/${champion.id}`} className="flex-1">
-                  <Button fullWidth size="lg" iconLeft={<Icon.Film className="w-4 h-4" />}>
-                    Ver ficha de la película
+              {/* Action grid: Save / Publish / Share / Download / Ficha / Jugar de nuevo */}
+              <Card padding="md" className="mt-6 max-w-lg w-full border border-yellow-400/30 bg-yellow-400/5">
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    fullWidth
+                    onClick={() => openSaveModal('save')}
+                    iconLeft={<Icon.Bookmark className="w-4 h-4" />}
+                  >
+                    Guardar
                   </Button>
-                </Link>
-                <Button
-                  onClick={handleShare}
-                  variant="secondary"
-                  size="lg"
-                  fullWidth
-                  className="flex-1"
-                  iconLeft={<Icon.Share className="w-4 h-4" />}
-                >
-                  {showCopied ? 'Copiado' : 'Compartir'}
-                </Button>
-              </div>
-
-              <button
-                onClick={goToThemes}
-                className="mt-4 inline-flex items-center gap-2 text-yellow-400 hover:text-yellow-300 font-bold text-sm transition-colors"
-              >
-                <Icon.Refresh className="w-4 h-4" />
-                <span>Jugar de nuevo</span>
-              </button>
+                  <Button
+                    size="sm"
+                    fullWidth
+                    onClick={() => openSaveModal('publish')}
+                    iconLeft={<Icon.Sparkles className="w-4 h-4" />}
+                  >
+                    Publicar
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    fullWidth
+                    loading={shareInFlight}
+                    onClick={handleShare}
+                    iconLeft={showCopied ? <Icon.Check className="w-4 h-4" /> : <Icon.Share className="w-4 h-4" />}
+                  >
+                    {showCopied ? 'Listo' : 'Compartir'}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    fullWidth
+                    loading={downloadInFlight}
+                    onClick={handleDownload}
+                    iconLeft={<Icon.Download className="w-4 h-4" />}
+                  >
+                    Descargar
+                  </Button>
+                  <Link href={`/pelicula/${champion.id}`} className="col-span-2">
+                    <Button variant="ghost" size="sm" fullWidth iconLeft={<Icon.Film className="w-4 h-4" />}>
+                      Ver ficha de la película
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    fullWidth
+                    className="col-span-2"
+                    onClick={goToThemes}
+                    iconLeft={<Icon.Refresh className="w-4 h-4" />}
+                  >
+                    Jugar de nuevo
+                  </Button>
+                </div>
+              </Card>
 
               {renderBracketTree()}
             </div>
           )}
         </>
       )}
+
+      {/* ─── Save / Publish modal ─── */}
+      <Modal
+        open={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        title={saveMode === 'publish' ? 'Publicar en Comunidad' : 'Guardar batalla'}
+        size="sm"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-widest font-bold text-zinc-500 mb-2">
+              Título
+            </label>
+            <input
+              type="text"
+              value={saveTitle}
+              onChange={(e) => setSaveTitle(e.target.value)}
+              maxLength={60}
+              autoFocus
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 min-h-[44px]"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              fullWidth
+              onClick={() => setSaveModalOpen(false)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              fullWidth
+              loading={savingInFlight}
+              onClick={handleConfirmSave}
+            >
+              {saveMode === 'publish' ? 'Publicar' : 'Guardar'}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Offscreen share SVG */}
+      {phase === 'battle' && selectedTheme && rounds.length > 0 && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            left: '-99999px',
+            top: 0,
+            width: SHARE_W,
+            height: SHARE_H,
+            pointerEvents: 'none',
+            opacity: 0,
+          }}
+        >
+          <BatallaShareSVG
+            ref={shareSvgRef}
+            theme={selectedTheme}
+            rounds={rounds}
+            champion={champion}
+            username={username ?? null}
+          />
+        </div>
+      )}
+
+      {/* Toast */}
+      {saveToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] px-4 py-2 rounded-lg bg-zinc-900 border border-yellow-400/40 text-sm text-white shadow-xl">
+          {saveToast}
+        </div>
+      )}
     </PageShell>
   )
 }
+
+// ============================================================================
+// BatallaCreationCard — thumbnail for Comunidad / Mis creaciones
+// ============================================================================
+
+function BatallaCreationCard({
+  row,
+  allMovies,
+  onLoad,
+  showVisibility = false,
+  canDelete = false,
+  pendingDelete = false,
+  onRequestDelete,
+  onConfirmDelete,
+  onCancelDelete,
+}: {
+  row: CommunityRow
+  allMovies: BattleMovie[]
+  onLoad: () => void
+  showVisibility?: boolean
+  canDelete?: boolean
+  pendingDelete?: boolean
+  onRequestDelete?: () => void
+  onConfirmDelete?: () => void
+  onCancelDelete?: () => void
+}) {
+  const byId = new Map(allMovies.map((m) => [m.id, m]))
+  const previewMovies = (row.movie_ids ?? [])
+    .slice(0, 8)
+    .map((id) => byId.get(id))
+    .filter(Boolean) as BattleMovie[]
+
+  return (
+    <div className="relative">
+      <Card
+        as="button"
+        interactive
+        padding="md"
+        onClick={onLoad}
+        className="text-left border border-zinc-800 hover:border-yellow-400/60 w-full"
+      >
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-bold text-white truncate">{row.title}</h3>
+            <p className="text-[11px] text-zinc-500 truncate">
+              {row._username ? `@${row._username}` : 'Anónimo'}
+              {' · '}
+              {(row.movie_ids ?? []).length} películas
+            </p>
+          </div>
+          {showVisibility && (
+            <Pill variant={row.is_public ? 'gold' : 'default'} size="sm">
+              {row.is_public ? 'Pública' : 'Privada'}
+            </Pill>
+          )}
+        </div>
+        <div className="grid grid-cols-4 gap-1">
+          {previewMovies.map((m) => (
+            <div key={m.id} className="relative aspect-[2/3] rounded overflow-hidden bg-zinc-800">
+              {m.poster_path && (
+                <Image
+                  src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                  alt={m.titulo}
+                  fill
+                  className="object-cover"
+                  sizes="80px"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {canDelete && !pendingDelete && (
+        <button
+          type="button"
+          aria-label="Eliminar batalla"
+          onClick={(e) => { e.stopPropagation(); onRequestDelete?.() }}
+          className="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-zinc-950/80 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 hover:border-red-400/40 cursor-pointer transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          </svg>
+        </button>
+      )}
+      {canDelete && pendingDelete && (
+        <div
+          className="absolute inset-0 z-20 flex items-center justify-center gap-2 bg-zinc-950/95 backdrop-blur-sm rounded-2xl border border-red-400/40 p-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <p className="text-white text-sm font-semibold mr-2">¿Eliminar?</p>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onConfirmDelete?.() }}
+            className="px-3 py-1.5 rounded-lg bg-red-500/15 border border-red-400/40 text-red-400 text-xs font-bold hover:bg-red-500/25 cursor-pointer min-h-[36px]"
+          >
+            Sí, eliminar
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onCancelDelete?.() }}
+            className="px-3 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-bold hover:bg-zinc-700 cursor-pointer min-h-[36px]"
+          >
+            Cancelar
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ============================================================================
+// BatallaShareSVG — Instagram-portrait card with bracket + champion
+// ============================================================================
+
+const BatallaShareSVG = forwardRef<
+  SVGSVGElement,
+  {
+    theme: ThemeConfig
+    rounds: BracketMatch[][]
+    champion: BattleMovie | null
+    username: string | null
+  }
+>(function BatallaShareSVG({ theme, rounds, champion, username }, ref) {
+  const W = SHARE_W
+  const H = SHARE_H
+  const PAD = 64
+  const HEADER_H = 200
+  const FOOTER_H = 120
+  const innerW = W - PAD * 2
+  const treeAreaH = H - HEADER_H - FOOTER_H
+
+  // Layout: bracket as nested columns, champion in the rightmost
+  // For up-to-32 we have at most 4-5 rounds; the visual gets dense, so we draw
+  // each round as a vertical stack of small match boxes shrinking horizontally.
+  const numRounds = rounds.length || 1
+  const colWidth = innerW / Math.max(numRounds + (champion ? 1 : 0), 1)
+
+  return (
+    <svg
+      ref={ref}
+      xmlns="http://www.w3.org/2000/svg"
+      width={W}
+      height={H}
+      viewBox={`0 0 ${W} ${H}`}
+      style={{ background: '#0c0a09' }}
+    >
+      <rect x={0} y={0} width={W} height={H} fill="#0c0a09" />
+      <defs>
+        <linearGradient id="goldFade" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#facc15" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <rect x={0} y={0} width={W} height={6} fill="url(#goldFade)" />
+
+      {/* Header */}
+      <text
+        x={PAD}
+        y={88}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={28}
+        fontWeight={700}
+        fill="#facc15"
+        letterSpacing="6"
+      >
+        CINEBRET · BATALLA
+      </text>
+      <text
+        x={PAD}
+        y={150}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={56}
+        fontWeight={900}
+        fill="#fafaf9"
+      >
+        {theme.title.length > 28 ? theme.title.slice(0, 26) + '…' : theme.title}
+      </text>
+
+      {/* Tree */}
+      <g transform={`translate(${PAD}, ${HEADER_H})`}>
+        {rounds.map((round, ri) => {
+          const matchH = treeAreaH / Math.max(round.length, 1)
+          const boxH = Math.min(56, matchH - 8)
+          const x = ri * colWidth
+          return (
+            <g key={ri}>
+              {round.map((match, mi) => {
+                const y = mi * matchH + (matchH - boxH) / 2
+                const aWon = match.winner?.id === match.a?.id
+                const bWon = match.winner?.id === match.b?.id
+                return (
+                  <g key={mi} transform={`translate(${x}, ${y})`}>
+                    <rect
+                      x={0}
+                      y={0}
+                      width={colWidth - 12}
+                      height={boxH}
+                      rx={6}
+                      fill="rgba(24,24,27,0.8)"
+                      stroke="rgba(63,63,70,0.6)"
+                    />
+                    <rect
+                      x={0}
+                      y={0}
+                      width={colWidth - 12}
+                      height={boxH / 2}
+                      rx={6}
+                      fill={aWon ? 'rgba(250,204,21,0.18)' : 'transparent'}
+                    />
+                    <text
+                      x={10}
+                      y={boxH / 4 + 6}
+                      fontFamily="Inter, system-ui, sans-serif"
+                      fontSize={Math.max(11, Math.min(15, boxH / 4 + 2))}
+                      fontWeight={aWon ? 800 : 500}
+                      fill={aWon ? '#facc15' : '#a1a1aa'}
+                    >
+                      {(match.a?.titulo ?? '—').slice(0, 24)}
+                    </text>
+                    <line
+                      x1={0}
+                      y1={boxH / 2}
+                      x2={colWidth - 12}
+                      y2={boxH / 2}
+                      stroke="rgba(63,63,70,0.6)"
+                    />
+                    <rect
+                      x={0}
+                      y={boxH / 2}
+                      width={colWidth - 12}
+                      height={boxH / 2}
+                      rx={6}
+                      fill={bWon ? 'rgba(250,204,21,0.18)' : 'transparent'}
+                    />
+                    <text
+                      x={10}
+                      y={(boxH * 3) / 4 + 6}
+                      fontFamily="Inter, system-ui, sans-serif"
+                      fontSize={Math.max(11, Math.min(15, boxH / 4 + 2))}
+                      fontWeight={bWon ? 800 : 500}
+                      fill={bWon ? '#facc15' : '#a1a1aa'}
+                    >
+                      {(match.b?.titulo ?? '—').slice(0, 24)}
+                    </text>
+                  </g>
+                )
+              })}
+            </g>
+          )
+        })}
+
+        {/* Champion column */}
+        {champion && (
+          <g transform={`translate(${numRounds * colWidth}, 0)`}>
+            <text
+              x={(colWidth - 12) / 2}
+              y={28}
+              textAnchor="middle"
+              fontFamily="Inter, system-ui, sans-serif"
+              fontSize={18}
+              fontWeight={800}
+              fill="#facc15"
+              letterSpacing="3"
+            >
+              CAMPEÓN
+            </text>
+            <g transform={`translate(0, ${treeAreaH / 2 - 180})`}>
+              {champion.poster_path && (
+                <image
+                  href={`/api/tmdb-image?path=${encodeURIComponent(champion.poster_path)}&size=w500`}
+                  x={(colWidth - 12 - 200) / 2}
+                  y={0}
+                  width={200}
+                  height={300}
+                  preserveAspectRatio="xMidYMid slice"
+                />
+              )}
+              <rect
+                x={(colWidth - 12 - 200) / 2}
+                y={0}
+                width={200}
+                height={300}
+                fill="none"
+                stroke="#facc15"
+                strokeWidth={4}
+                rx={8}
+              />
+              <text
+                x={(colWidth - 12) / 2}
+                y={340}
+                textAnchor="middle"
+                fontFamily="Inter, system-ui, sans-serif"
+                fontSize={22}
+                fontWeight={900}
+                fill="#fafaf9"
+              >
+                {champion.titulo.length > 22 ? champion.titulo.slice(0, 20) + '…' : champion.titulo}
+              </text>
+            </g>
+          </g>
+        )}
+      </g>
+
+      {/* Footer */}
+      <line
+        x1={PAD}
+        y1={H - FOOTER_H}
+        x2={W - PAD}
+        y2={H - FOOTER_H}
+        stroke="#facc15"
+        strokeWidth={2}
+        opacity={0.6}
+      />
+      <text
+        x={PAD}
+        y={H - FOOTER_H + 50}
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={26}
+        fontWeight={700}
+        fill="#fafaf9"
+      >
+        {username ? `@${username}` : 'Tu batalla'}
+      </text>
+      <text
+        x={W - PAD}
+        y={H - FOOTER_H + 50}
+        textAnchor="end"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize={26}
+        fontWeight={700}
+        fill="#facc15"
+      >
+        cinebret.cl
+      </text>
+    </svg>
+  )
+})

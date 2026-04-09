@@ -218,7 +218,13 @@ export default function MapaPage() {
       connections: connCount.get(n.id) || 0,
       x: (n as any).fx ?? undefined,
       y: (n as any).fy ?? undefined,
-    }))
+      // Enriched fields for dive mode (canvas-rendered mini-ficha)
+      director: (n as any).director ?? null,
+      compositor: (n as any).compositor ?? null,
+      sinopsis: (n as any).sinopsis ?? null,
+      anio: (n as any).anio ?? null,
+      backdrop: (n as any).backdrop ?? null,
+    } as any))
 
     // Fresh edge objects with string IDs (not object references)
     const freshEdges = filteredEdges.map(e => ({
@@ -526,7 +532,121 @@ export default function MapaPage() {
     const img = imageCache[node.id]
     const hasPoster = img && img.complete && img.naturalWidth > 0
 
-    if (showPoster && hasPoster) {
+    // ── DIVE MODE: zoom > 7 — poster expands into a mini-ficha ──
+    const isDiveZoom = globalScale > 7 && showPoster && hasPoster && !dimmed
+    if (isDiveZoom) {
+      const cardW = 60
+      const cardH = 80
+      const posterW = 18
+      const posterH = posterW * 1.5
+      const pad = 3
+      const fs = 3.5 // base font size in graph units
+      const lineH = fs * 1.35
+
+      // Card background with shadow
+      ctx.shadowColor = 'rgba(0,0,0,0.7)'
+      ctx.shadowBlur = 12 / globalScale
+      ctx.fillStyle = '#18181b'
+      ctx.beginPath()
+      ctx.roundRect(node.x - cardW / 2, node.y - cardH / 2, cardW, cardH, 4)
+      ctx.fill()
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+
+      // Gold border
+      ctx.strokeStyle = node.color
+      ctx.lineWidth = 0.8
+      ctx.beginPath()
+      ctx.roundRect(node.x - cardW / 2, node.y - cardH / 2, cardW, cardH, 4)
+      ctx.stroke()
+
+      // Poster (left side)
+      const posterX = node.x - cardW / 2 + pad
+      const posterY = node.y - cardH / 2 + pad
+      ctx.save()
+      ctx.beginPath()
+      ctx.roundRect(posterX, posterY, posterW, posterH, 2)
+      ctx.closePath()
+      ctx.clip()
+      ctx.drawImage(img, posterX, posterY, posterW, posterH)
+      ctx.restore()
+
+      // Title (right of poster)
+      const textX = posterX + posterW + pad
+      const textMaxW = cardW - posterW - pad * 3
+      let ty = posterY + fs
+
+      ctx.font = `800 ${fs}px Inter, sans-serif`
+      ctx.fillStyle = '#fafaf9'
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'top'
+      // Truncate title to fit
+      const titleText = node.title.length > 22 ? node.title.slice(0, 20) + '…' : node.title
+      ctx.fillText(titleText, textX, ty)
+      ty += lineH
+
+      // Year + IMDb
+      ctx.font = `600 ${fs * 0.75}px Inter, sans-serif`
+      ctx.fillStyle = '#facc15'
+      const metaText = `${node.anio || ''} · IMDb ${node.imdb}`
+      ctx.fillText(metaText, textX, ty)
+      ty += lineH * 0.9
+
+      // Director
+      if (node.director) {
+        ctx.font = `500 ${fs * 0.65}px Inter, sans-serif`
+        ctx.fillStyle = '#a1a1aa'
+        ctx.fillText(`Dir: ${node.director.length > 20 ? node.director.slice(0, 18) + '…' : node.director}`, textX, ty)
+        ty += lineH * 0.8
+      }
+
+      // Genres (pills)
+      if (node.genres && node.genres.length > 0) {
+        const pillH = fs * 0.7
+        let px = posterX
+        const pillY = posterY + posterH + pad
+        ctx.font = `600 ${fs * 0.55}px Inter, sans-serif`
+        for (const g of node.genres.slice(0, 3)) {
+          const tw = ctx.measureText(g).width + 3
+          ctx.fillStyle = 'rgba(250,204,21,0.15)'
+          ctx.beginPath()
+          ctx.roundRect(px, pillY, tw, pillH, pillH / 2)
+          ctx.fill()
+          ctx.fillStyle = '#facc15'
+          ctx.fillText(g, px + 1.5, pillY + 0.5)
+          px += tw + 1.5
+        }
+      }
+
+      // Sinopsis (below poster + genres area)
+      if (node.sinopsis) {
+        const sinopsisY = posterY + posterH + pad + (node.genres?.length ? 8 : 2)
+        ctx.font = `400 ${fs * 0.58}px Inter, sans-serif`
+        ctx.fillStyle = '#a1a1aa'
+        // Word-wrap sinopsis into the card width
+        const words = node.sinopsis.split(' ')
+        let line = ''
+        let sy = sinopsisY
+        const maxLines = 5
+        let lineCount = 0
+        for (const word of words) {
+          const test = line ? line + ' ' + word : word
+          if (ctx.measureText(test).width > cardW - pad * 2) {
+            ctx.fillText(line, posterX, sy)
+            sy += lineH * 0.65
+            line = word
+            lineCount++
+            if (lineCount >= maxLines) { ctx.fillText(line + '…', posterX, sy); break }
+          } else {
+            line = test
+          }
+        }
+        if (lineCount < maxLines && line) ctx.fillText(line, posterX, sy)
+      }
+
+      ctx.restore()
+
+    } else if (showPoster && hasPoster) {
       // ── Poster mode: rounded rectangle with soft shadow ──
       const imgW = size * 2.4
       const imgH = imgW * 1.5

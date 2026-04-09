@@ -563,9 +563,9 @@ export default function MapaPage() {
       ctx.clip()
       ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
 
-      // ── DIVE: at zoom > 6, darken the poster and overlay info ──
-      // The darken and info opacity ramp from 0→1 between zoom 6 and 9
-      const diveProgress = Math.min(1, Math.max(0, (globalScale - 6) / 3))
+      // ── DIVE: at zoom > 5, darken the poster and overlay info ──
+      // Progress ramps 0→1 between zoom 5 and 10, so by zoom 10 you're fully inside
+      const diveProgress = Math.min(1, Math.max(0, (globalScale - 5) / 5))
       if (diveProgress > 0 && !dimmed) {
         // Darken the poster gradually
         ctx.fillStyle = `rgba(0, 0, 0, ${diveProgress * 0.75})`
@@ -651,7 +651,7 @@ export default function MapaPage() {
       ctx.restore()
 
       // Title below poster (only when NOT in dive mode)
-      if (globalScale > 2.5 && globalScale <= 6 && !dimmed) {
+      if (globalScale > 2.5 && globalScale <= 5 && !dimmed) {
         const fontSize = Math.max(2.5, 11 / globalScale)
         ctx.font = `600 ${fontSize}px Inter, sans-serif`
         ctx.textAlign = 'center'
@@ -1485,7 +1485,7 @@ export default function MapaPage() {
             enableZoomInteraction={true}
             enablePanInteraction={true}
             minZoom={0.1}
-            maxZoom={15}
+            maxZoom={80}
             backgroundColor="rgba(0,0,0,0)"
           />
         )}

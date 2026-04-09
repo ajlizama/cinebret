@@ -30,6 +30,8 @@ type GraphNode = {
   color: string
   connections: number
   genres: string[]
+  clusterId?: number
+  clusterColor?: string
   x?: number
   y?: number
 }
@@ -40,25 +42,17 @@ type GraphEdge = {
   weight: number
 }
 
+type ClusterInfo = {
+  id: number
+  name: string
+  size: number
+  color: string
+}
+
 type RawGraph = {
   nodes: GraphNode[]
   edges: GraphEdge[]
-}
-
-const CAT_LABELS: Record<string, string> = {
-  "Pa'l domingo de bajón": 'Bajón',
-  "Pa' saltar del sillón": 'Acción',
-  "Pa' quedar con el cerebro como licuadora": 'Mente',
-  "Pa' llorar a moco tendido": 'Drama',
-}
-
-// Premium muted palette — warm gold anchor with distinguishable hues,
-// NOT neon saturated. Feels cohesive in the dark graph.
-const CAT_COLORS: Record<string, string> = {
-  "Pa'l domingo de bajón": '#f5c842',      // warm gold (anchor)
-  "Pa' saltar del sillón": '#e07850',      // burnt orange
-  "Pa' quedar con el cerebro como licuadora": '#6ba3d6', // steel blue
-  "Pa' llorar a moco tendido": '#b88fd6',  // soft lavender
+  clusters?: ClusterInfo[]
 }
 
 export default function MapaPage() {
@@ -133,7 +127,7 @@ export default function MapaPage() {
     setSearchQuery('')
     originalPositions.current.clear()
 
-    const graphFile = isSeries ? '/series-graph.json' : '/movie-graph.json'
+    const graphFile = isSeries ? '/series-graph.json' : '/movie-graph-clusters.json'
     fetch(graphFile)
       .then(r => r.json())
       .then((data: RawGraph) => {
@@ -751,10 +745,10 @@ export default function MapaPage() {
               </div>
 
               <div className="flex flex-wrap gap-1.5 mb-2">
-                {Object.entries(CAT_COLORS).map(([cat, color]) => (
-                  <span key={cat} className="inline-flex items-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-800/60 rounded-full px-2 py-0.5">
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                    {CAT_LABELS[cat]}
+                {(rawGraph?.clusters ?? []).map(cl => (
+                  <span key={cl.id} className="inline-flex items-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-800/60 rounded-full px-2 py-0.5">
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: cl.color }} />
+                    {cl.name}
                   </span>
                 ))}
               </div>
@@ -1254,10 +1248,37 @@ export default function MapaPage() {
             }}
             onBackgroundClick={() => deselectNode()}
             onZoom={() => { if (showInstructions) setShowInstructions(false) }}
+            onRenderFramePost={(ctx: CanvasRenderingContext2D, globalScale: number) => {
+              // Draw cluster labels when zoomed out (< 0.8 scale)
+              if (globalScale > 0.8 || !rawGraph?.clusters || !graphData) return
+              const clusterCentroids: Record<number, { x: number; y: number; count: number }> = {}
+              for (const node of graphData.nodes as GraphNode[]) {
+                const cid = node.clusterId ?? 0
+                if (!isFinite(node.x ?? NaN) || !isFinite(node.y ?? NaN)) continue
+                if (!clusterCentroids[cid]) clusterCentroids[cid] = { x: 0, y: 0, count: 0 }
+                clusterCentroids[cid].x += node.x!
+                clusterCentroids[cid].y += node.y!
+                clusterCentroids[cid].count++
+              }
+              for (const cl of rawGraph.clusters) {
+                const c = clusterCentroids[cl.id]
+                if (!c || c.count === 0) continue
+                const cx = c.x / c.count
+                const cy = c.y / c.count
+                const fontSize = Math.max(14, 40 / globalScale)
+                ctx.font = `800 ${fontSize}px Inter, sans-serif`
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'middle'
+                ctx.globalAlpha = Math.min(0.7, (0.8 - globalScale) * 3)
+                ctx.fillStyle = cl.color
+                ctx.fillText(cl.name.toUpperCase(), cx, cy)
+                ctx.globalAlpha = 1
+              }
+            }}
             enableNodeDrag={true}
             enableZoomInteraction={true}
             enablePanInteraction={true}
-            minZoom={0.3}
+            minZoom={0.1}
             maxZoom={15}
             backgroundColor="rgba(0,0,0,0)"
           />

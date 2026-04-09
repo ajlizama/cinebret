@@ -302,6 +302,7 @@ export default function BatallaPage() {
   const animTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Manual builder state ("Crea el tuyo")
+  const [builderTitle, setBuilderTitle] = useState('')
   const [builderSize, setBuilderSize] = useState<BracketSize>(16)
   const [builderPicks, setBuilderPicks] = useState<BattleMovie[]>([])
   const [builderQuery, setBuilderQuery] = useState('')
@@ -717,7 +718,7 @@ export default function BatallaPage() {
     if (builderPicks.length !== builderSize) return
     const customTheme: ThemeConfig = {
       id: `custom_${Date.now()}`,
-      title: `Mi batalla (${builderSize})`,
+      title: builderTitle.trim() || `Mi batalla (${builderSize})`,
       description: 'Batalla personalizada',
       filter: 'personalizado',
     }
@@ -738,40 +739,105 @@ export default function BatallaPage() {
 
   const totalMatchesInRound = rounds[currentRound]?.length ?? 0
 
+  // Split round into left/right halves for the mirrored bracket
+  const splitRoundWeb = (round: BracketMatch[]): [BracketMatch[], BracketMatch[]] => {
+    const mid = Math.ceil(round.length / 2)
+    return [round.slice(0, mid), round.slice(mid)]
+  }
+
   const renderBracketTree = () => {
     if (rounds.length === 0) return null
 
     return (
       <div className="mt-10 overflow-x-auto pb-4 w-full">
         <h3 className="text-lg font-bold text-yellow-400 mb-4 text-center">Cuadro del torneo</h3>
-        <div className="flex items-center justify-center gap-2 md:gap-4 min-w-[700px] mx-auto">
-          {rounds.map((round, ri) => (
-            <div key={ri} className="flex flex-col justify-around flex-1" style={{ gap: `${Math.pow(2, ri) * 12}px` }}>
-              <div className="text-[10px] text-zinc-500 text-center mb-1 font-medium uppercase tracking-wide">
-                {ROUND_NAMES[ri] ?? `R${ri + 1}`}
+        <div className="flex items-stretch justify-center gap-1 md:gap-2 min-w-[700px] mx-auto">
+          {/* Left bracket half — outer to inner */}
+          {rounds.map((round, ri) => {
+            const [leftMatches] = splitRoundWeb(round)
+            return (
+              <div key={`L${ri}`} className="flex flex-col justify-around flex-1" style={{ gap: `${Math.pow(2, ri) * 10}px` }}>
+                {ri === 0 && (
+                  <div className="text-[9px] text-zinc-500 text-center mb-0.5 font-medium uppercase tracking-wide">
+                    {ROUND_NAMES[ri] ?? `R${ri + 1}`}
+                  </div>
+                )}
+                {leftMatches.map((match, mi) => (
+                  <div key={mi} className="flex flex-col border border-zinc-800 rounded-lg bg-zinc-900/80 overflow-hidden text-[10px]">
+                    <div className={`flex items-center gap-1.5 px-1.5 py-1 truncate border-b border-zinc-800 ${match.winner?.id === match.a?.id ? 'text-yellow-400 font-bold bg-zinc-800/60' : 'text-zinc-500'}`}>
+                      {match.a?.poster_path && (
+                        <div className="relative w-5 h-7 rounded-sm overflow-hidden bg-zinc-800 shrink-0">
+                          <Image src={`https://image.tmdb.org/t/p/w92${match.a.poster_path}`} alt="" fill className="object-cover" sizes="20px" />
+                        </div>
+                      )}
+                      <span className="truncate">{match.a?.titulo ?? '—'}</span>
+                    </div>
+                    <div className={`flex items-center gap-1.5 px-1.5 py-1 truncate ${match.winner?.id === match.b?.id ? 'text-yellow-400 font-bold bg-zinc-800/60' : 'text-zinc-500'}`}>
+                      {match.b?.poster_path && (
+                        <div className="relative w-5 h-7 rounded-sm overflow-hidden bg-zinc-800 shrink-0">
+                          <Image src={`https://image.tmdb.org/t/p/w92${match.b.poster_path}`} alt="" fill className="object-cover" sizes="20px" />
+                        </div>
+                      )}
+                      <span className="truncate">{match.b?.titulo ?? '—'}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              {round.map((match, mi) => (
-                <div key={mi} className="flex flex-col border border-zinc-800 rounded-lg bg-zinc-900/80 overflow-hidden text-[11px]">
-                  <div className={`px-2 py-1 truncate border-b border-zinc-800 ${match.winner?.id === match.a?.id ? 'text-yellow-400 font-bold bg-zinc-800/60' : 'text-zinc-500'}`}>
-                    {match.a?.titulo ?? '—'}
-                  </div>
-                  <div className={`px-2 py-1 truncate ${match.winner?.id === match.b?.id ? 'text-yellow-400 font-bold bg-zinc-800/60' : 'text-zinc-500'}`}>
-                    {match.b?.titulo ?? '—'}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
+            )
+          })}
+
+          {/* Champion center */}
           {champion && (
-            <div className="flex flex-col justify-center flex-shrink-0">
-              <div className="text-[10px] text-zinc-500 text-center mb-1 font-medium uppercase tracking-wide">
+            <div className="flex flex-col justify-center shrink-0 px-2">
+              <div className="text-[9px] text-zinc-500 text-center mb-1 font-medium uppercase tracking-wide">
                 Campeón
               </div>
-              <div className="border-2 border-yellow-400 rounded-lg bg-zinc-900 px-3 py-2 text-yellow-400 font-bold text-xs text-center max-w-[120px] truncate">
-                {champion.titulo}
+              <div className="relative w-20 mx-auto rounded-lg overflow-hidden border-2 border-yellow-400" style={{ aspectRatio: '2/3' }}>
+                {champion.poster_path && (
+                  <Image src={`https://image.tmdb.org/t/p/w185${champion.poster_path}`} alt={champion.titulo} fill className="object-cover" sizes="80px" />
+                )}
               </div>
+              <p className="text-yellow-400 font-bold text-[10px] text-center mt-1 max-w-[90px] truncate mx-auto">
+                {champion.titulo}
+              </p>
             </div>
           )}
+
+          {/* Right bracket half — outer to inner (mirrored: rightmost is ri=0) */}
+          {[...rounds].reverse().map((round, reversedIdx) => {
+            const ri = rounds.length - 1 - reversedIdx
+            const [, rightMatches] = splitRoundWeb(round)
+            if (!rightMatches || rightMatches.length === 0) return null
+            return (
+              <div key={`R${ri}`} className="flex flex-col justify-around flex-1" style={{ gap: `${Math.pow(2, ri) * 10}px` }}>
+                {ri === 0 && (
+                  <div className="text-[9px] text-zinc-500 text-center mb-0.5 font-medium uppercase tracking-wide">
+                    {ROUND_NAMES[ri] ?? `R${ri + 1}`}
+                  </div>
+                )}
+                {rightMatches.map((match, mi) => (
+                  <div key={mi} className="flex flex-col border border-zinc-800 rounded-lg bg-zinc-900/80 overflow-hidden text-[10px]">
+                    <div className={`flex items-center gap-1.5 px-1.5 py-1 truncate border-b border-zinc-800 ${match.winner?.id === match.a?.id ? 'text-yellow-400 font-bold bg-zinc-800/60' : 'text-zinc-500'}`}>
+                      {match.a?.poster_path && (
+                        <div className="relative w-5 h-7 rounded-sm overflow-hidden bg-zinc-800 shrink-0">
+                          <Image src={`https://image.tmdb.org/t/p/w92${match.a.poster_path}`} alt="" fill className="object-cover" sizes="20px" />
+                        </div>
+                      )}
+                      <span className="truncate">{match.a?.titulo ?? '—'}</span>
+                    </div>
+                    <div className={`flex items-center gap-1.5 px-1.5 py-1 truncate ${match.winner?.id === match.b?.id ? 'text-yellow-400 font-bold bg-zinc-800/60' : 'text-zinc-500'}`}>
+                      {match.b?.poster_path && (
+                        <div className="relative w-5 h-7 rounded-sm overflow-hidden bg-zinc-800 shrink-0">
+                          <Image src={`https://image.tmdb.org/t/p/w92${match.b.poster_path}`} alt="" fill className="object-cover" sizes="20px" />
+                        </div>
+                      )}
+                      <span className="truncate">{match.b?.titulo ?? '—'}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          })}
         </div>
       </div>
     )
@@ -908,6 +974,17 @@ export default function BatallaPage() {
       {/* CREA EL TUYO TAB */}
       {!allLoading && phase === 'theme' && mainTab === 'crear' && (
         <div className="max-w-2xl mx-auto">
+          <Section label="Título de tu batalla">
+            <input
+              type="text"
+              value={builderTitle}
+              onChange={(e) => setBuilderTitle(e.target.value)}
+              placeholder="Ej: Mis favoritas de los 90, Nolan vs Villeneuve..."
+              maxLength={60}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 min-h-[44px]"
+            />
+          </Section>
+
           <Section label={`Tamaño del torneo`}>
             <div className="flex flex-wrap gap-2">
               {BRACKET_SIZES.map((s) => (
@@ -1512,6 +1589,17 @@ function BatallaCreationCard({
 // BatallaShareSVG — Instagram-portrait card with bracket + champion
 // ============================================================================
 
+/**
+ * BatallaShareSVG — Instagram-portrait bracket card.
+ *
+ * Layout: bracket grows from both sides toward the center.
+ *   Left half:  round 0 (top half) → round 1 → ... → semifinal left
+ *   Center:     champion poster (large)
+ *   Right half: round 0 (bottom half) → round 1 → ... → semifinal right
+ *
+ * Each match box shows a small poster thumbnail for both movies (via
+ * /api/tmdb-image proxy so the canvas raster doesn't break on CORS).
+ */
 const BatallaShareSVG = forwardRef<
   SVGSVGElement,
   {
@@ -1523,17 +1611,81 @@ const BatallaShareSVG = forwardRef<
 >(function BatallaShareSVG({ theme, rounds, champion, username }, ref) {
   const W = SHARE_W
   const H = SHARE_H
-  const PAD = 64
-  const HEADER_H = 200
-  const FOOTER_H = 120
+  const PAD = 48
+  const HEADER_H = 180
+  const FOOTER_H = 100
   const innerW = W - PAD * 2
   const treeAreaH = H - HEADER_H - FOOTER_H
 
-  // Layout: bracket as nested columns, champion in the rightmost
-  // For up-to-32 we have at most 4-5 rounds; the visual gets dense, so we draw
-  // each round as a vertical stack of small match boxes shrinking horizontally.
   const numRounds = rounds.length || 1
-  const colWidth = innerW / Math.max(numRounds + (champion ? 1 : 0), 1)
+  // The champion column sits in the center; bracket halves on each side.
+  const champColW = champion ? 220 : 0
+  const sideW = (innerW - champColW) / 2
+  const colW = sideW / Math.max(numRounds, 1)
+
+  // Split round 0 into left/right halves; later rounds stay whole but
+  // their matches correspond to the left or right half of the bracket.
+  // For rendering: left side shows rounds left-to-right (outer→inner),
+  // right side shows rounds right-to-left (outer→inner, mirrored).
+  function renderMatch(
+    match: BracketMatch,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+  ) {
+    const posterW = Math.min(32, h * 0.35)
+    const posterH = posterW * 1.5
+    const aWon = match.winner?.id === match.a?.id
+    const bWon = match.winner?.id === match.b?.id
+    const halfH = h / 2
+    const fontSize = Math.max(9, Math.min(13, halfH / 3))
+    const textX = posterW + 8
+
+    return (
+      <g transform={`translate(${x}, ${y})`}>
+        <rect x={0} y={0} width={w} height={h} rx={6} fill="rgba(24,24,27,0.85)" stroke="rgba(63,63,70,0.5)" />
+        {/* A */}
+        <rect x={0} y={0} width={w} height={halfH} rx={6} fill={aWon ? 'rgba(250,204,21,0.15)' : 'transparent'} />
+        {match.a?.poster_path && (
+          <image
+            href={`/api/tmdb-image?path=${encodeURIComponent(match.a.poster_path)}&size=w92`}
+            x={4}
+            y={(halfH - posterH) / 2}
+            width={posterW}
+            height={posterH}
+            preserveAspectRatio="xMidYMid slice"
+          />
+        )}
+        <text x={textX} y={halfH / 2 + fontSize / 3} fontFamily="Inter,sans-serif" fontSize={fontSize} fontWeight={aWon ? 800 : 500} fill={aWon ? '#facc15' : '#a1a1aa'}>
+          {(match.a?.titulo ?? '—').slice(0, 18)}
+        </text>
+        {/* divider */}
+        <line x1={0} y1={halfH} x2={w} y2={halfH} stroke="rgba(63,63,70,0.5)" />
+        {/* B */}
+        <rect x={0} y={halfH} width={w} height={halfH} rx={6} fill={bWon ? 'rgba(250,204,21,0.15)' : 'transparent'} />
+        {match.b?.poster_path && (
+          <image
+            href={`/api/tmdb-image?path=${encodeURIComponent(match.b.poster_path)}&size=w92`}
+            x={4}
+            y={halfH + (halfH - posterH) / 2}
+            width={posterW}
+            height={posterH}
+            preserveAspectRatio="xMidYMid slice"
+          />
+        )}
+        <text x={textX} y={halfH + halfH / 2 + fontSize / 3} fontFamily="Inter,sans-serif" fontSize={fontSize} fontWeight={bWon ? 800 : 500} fill={bWon ? '#facc15' : '#a1a1aa'}>
+          {(match.b?.titulo ?? '—').slice(0, 18)}
+        </text>
+      </g>
+    )
+  }
+
+  // Split each round's matches into left/right halves.
+  function splitRound(round: BracketMatch[]): [BracketMatch[], BracketMatch[]] {
+    const mid = Math.ceil(round.length / 2)
+    return [round.slice(0, mid), round.slice(mid)]
+  }
 
   return (
     <svg
@@ -1546,190 +1698,113 @@ const BatallaShareSVG = forwardRef<
     >
       <rect x={0} y={0} width={W} height={H} fill="#0c0a09" />
       <defs>
-        <linearGradient id="goldFade" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id="goldFade2" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#facc15" stopOpacity="0.18" />
           <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <rect x={0} y={0} width={W} height={6} fill="url(#goldFade)" />
+      <rect x={0} y={0} width={W} height={6} fill="url(#goldFade2)" />
 
       {/* Header */}
-      <text
-        x={PAD}
-        y={88}
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize={28}
-        fontWeight={700}
-        fill="#facc15"
-        letterSpacing="6"
-      >
+      <text x={PAD} y={72} fontFamily="Inter,sans-serif" fontSize={24} fontWeight={700} fill="#facc15" letterSpacing="5">
         CINEBRET · BATALLA
       </text>
-      <text
-        x={PAD}
-        y={150}
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize={56}
-        fontWeight={900}
-        fill="#fafaf9"
-      >
-        {theme.title.length > 28 ? theme.title.slice(0, 26) + '…' : theme.title}
+      <text x={PAD} y={136} fontFamily="Inter,sans-serif" fontSize={48} fontWeight={900} fill="#fafaf9">
+        {theme.title.length > 30 ? theme.title.slice(0, 28) + '…' : theme.title}
       </text>
 
-      {/* Tree */}
+      {/* Bracket area */}
       <g transform={`translate(${PAD}, ${HEADER_H})`}>
+        {/* Left half — rounds go left (outer) to right (inner) */}
         {rounds.map((round, ri) => {
-          const matchH = treeAreaH / Math.max(round.length, 1)
-          const boxH = Math.min(56, matchH - 8)
-          const x = ri * colWidth
+          const [leftMatches] = splitRound(round)
+          const matchH = treeAreaH / Math.max(leftMatches.length, 1)
+          const boxH = Math.min(72, matchH - 6)
+          const x = ri * colW
           return (
-            <g key={ri}>
-              {round.map((match, mi) => {
+            <g key={`L${ri}`}>
+              {leftMatches.map((match, mi) => {
                 const y = mi * matchH + (matchH - boxH) / 2
-                const aWon = match.winner?.id === match.a?.id
-                const bWon = match.winner?.id === match.b?.id
-                return (
-                  <g key={mi} transform={`translate(${x}, ${y})`}>
-                    <rect
-                      x={0}
-                      y={0}
-                      width={colWidth - 12}
-                      height={boxH}
-                      rx={6}
-                      fill="rgba(24,24,27,0.8)"
-                      stroke="rgba(63,63,70,0.6)"
-                    />
-                    <rect
-                      x={0}
-                      y={0}
-                      width={colWidth - 12}
-                      height={boxH / 2}
-                      rx={6}
-                      fill={aWon ? 'rgba(250,204,21,0.18)' : 'transparent'}
-                    />
-                    <text
-                      x={10}
-                      y={boxH / 4 + 6}
-                      fontFamily="Inter, system-ui, sans-serif"
-                      fontSize={Math.max(11, Math.min(15, boxH / 4 + 2))}
-                      fontWeight={aWon ? 800 : 500}
-                      fill={aWon ? '#facc15' : '#a1a1aa'}
-                    >
-                      {(match.a?.titulo ?? '—').slice(0, 24)}
-                    </text>
-                    <line
-                      x1={0}
-                      y1={boxH / 2}
-                      x2={colWidth - 12}
-                      y2={boxH / 2}
-                      stroke="rgba(63,63,70,0.6)"
-                    />
-                    <rect
-                      x={0}
-                      y={boxH / 2}
-                      width={colWidth - 12}
-                      height={boxH / 2}
-                      rx={6}
-                      fill={bWon ? 'rgba(250,204,21,0.18)' : 'transparent'}
-                    />
-                    <text
-                      x={10}
-                      y={(boxH * 3) / 4 + 6}
-                      fontFamily="Inter, system-ui, sans-serif"
-                      fontSize={Math.max(11, Math.min(15, boxH / 4 + 2))}
-                      fontWeight={bWon ? 800 : 500}
-                      fill={bWon ? '#facc15' : '#a1a1aa'}
-                    >
-                      {(match.b?.titulo ?? '—').slice(0, 24)}
-                    </text>
-                  </g>
-                )
+                return <g key={mi}>{renderMatch(match, x, y, colW - 8, boxH)}</g>
               })}
             </g>
           )
         })}
 
-        {/* Champion column */}
+        {/* Champion center */}
         {champion && (
-          <g transform={`translate(${numRounds * colWidth}, 0)`}>
+          <g transform={`translate(${sideW}, 0)`}>
             <text
-              x={(colWidth - 12) / 2}
-              y={28}
+              x={champColW / 2}
+              y={24}
               textAnchor="middle"
-              fontFamily="Inter, system-ui, sans-serif"
-              fontSize={18}
+              fontFamily="Inter,sans-serif"
+              fontSize={16}
               fontWeight={800}
               fill="#facc15"
               letterSpacing="3"
             >
               CAMPEÓN
             </text>
-            <g transform={`translate(0, ${treeAreaH / 2 - 180})`}>
-              {champion.poster_path && (
-                <image
-                  href={`/api/tmdb-image?path=${encodeURIComponent(champion.poster_path)}&size=w500`}
-                  x={(colWidth - 12 - 200) / 2}
-                  y={0}
-                  width={200}
-                  height={300}
-                  preserveAspectRatio="xMidYMid slice"
-                />
-              )}
-              <rect
-                x={(colWidth - 12 - 200) / 2}
-                y={0}
-                width={200}
-                height={300}
-                fill="none"
-                stroke="#facc15"
-                strokeWidth={4}
-                rx={8}
+            {champion.poster_path && (
+              <image
+                href={`/api/tmdb-image?path=${encodeURIComponent(champion.poster_path)}&size=w342`}
+                x={(champColW - 160) / 2}
+                y={treeAreaH / 2 - 140}
+                width={160}
+                height={240}
+                preserveAspectRatio="xMidYMid slice"
               />
-              <text
-                x={(colWidth - 12) / 2}
-                y={340}
-                textAnchor="middle"
-                fontFamily="Inter, system-ui, sans-serif"
-                fontSize={22}
-                fontWeight={900}
-                fill="#fafaf9"
-              >
-                {champion.titulo.length > 22 ? champion.titulo.slice(0, 20) + '…' : champion.titulo}
-              </text>
-            </g>
+            )}
+            <rect
+              x={(champColW - 160) / 2}
+              y={treeAreaH / 2 - 140}
+              width={160}
+              height={240}
+              fill="none"
+              stroke="#facc15"
+              strokeWidth={3}
+              rx={8}
+            />
+            <text
+              x={champColW / 2}
+              y={treeAreaH / 2 + 120}
+              textAnchor="middle"
+              fontFamily="Inter,sans-serif"
+              fontSize={20}
+              fontWeight={900}
+              fill="#fafaf9"
+            >
+              {champion.titulo.length > 20 ? champion.titulo.slice(0, 18) + '…' : champion.titulo}
+            </text>
           </g>
         )}
+
+        {/* Right half — rounds go right (outer) to left (inner), mirrored */}
+        {rounds.map((round, ri) => {
+          const [, rightMatches] = splitRound(round)
+          if (!rightMatches || rightMatches.length === 0) return null
+          const matchH = treeAreaH / Math.max(rightMatches.length, 1)
+          const boxH = Math.min(72, matchH - 6)
+          // Position from the right: the outermost round (ri=0) sits at the far right.
+          const x = innerW - (ri + 1) * colW + 8
+          return (
+            <g key={`R${ri}`}>
+              {rightMatches.map((match, mi) => {
+                const y = mi * matchH + (matchH - boxH) / 2
+                return <g key={mi}>{renderMatch(match, x, y, colW - 8, boxH)}</g>
+              })}
+            </g>
+          )
+        })}
       </g>
 
       {/* Footer */}
-      <line
-        x1={PAD}
-        y1={H - FOOTER_H}
-        x2={W - PAD}
-        y2={H - FOOTER_H}
-        stroke="#facc15"
-        strokeWidth={2}
-        opacity={0.6}
-      />
-      <text
-        x={PAD}
-        y={H - FOOTER_H + 50}
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize={26}
-        fontWeight={700}
-        fill="#fafaf9"
-      >
+      <line x1={PAD} y1={H - FOOTER_H} x2={W - PAD} y2={H - FOOTER_H} stroke="#facc15" strokeWidth={2} opacity={0.6} />
+      <text x={PAD} y={H - FOOTER_H + 45} fontFamily="Inter,sans-serif" fontSize={24} fontWeight={700} fill="#fafaf9">
         {username ? `@${username}` : 'Tu batalla'}
       </text>
-      <text
-        x={W - PAD}
-        y={H - FOOTER_H + 50}
-        textAnchor="end"
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize={26}
-        fontWeight={700}
-        fill="#facc15"
-      >
+      <text x={W - PAD} y={H - FOOTER_H + 45} textAnchor="end" fontFamily="Inter,sans-serif" fontSize={24} fontWeight={700} fill="#facc15">
         cinebret.cl
       </text>
     </svg>

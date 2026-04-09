@@ -93,10 +93,22 @@ export default function MapaPage() {
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
   const [isMobile, setIsMobile] = useState(false)
 
-  // ── Dive-into-poster portal ──
+  // ── Immersive dive state ──
+  const [currentZoom, setCurrentZoom] = useState(1)
   const [diveNode, setDiveNode] = useState<GraphNode | null>(null)
   const [diveData, setDiveData] = useState<any>(null)
   const [diveLoading, setDiveLoading] = useState(false)
+  const [diveScreenPos, setDiveScreenPos] = useState<{ x: number; y: number } | null>(null)
+
+  // Auto-enter dive when zoom > 6 on a selected node
+  useEffect(() => {
+    if (currentZoom > 6 && selectedNode && !diveNode && !diveLoading) {
+      enterDive(selectedNode)
+    }
+    if (currentZoom <= 4 && diveNode) {
+      exitDive()
+    }
+  }, [currentZoom, selectedNode, diveNode, diveLoading])
 
   const enterDive = useCallback(async (node: GraphNode) => {
     setDiveNode(node)
@@ -563,133 +575,8 @@ export default function MapaPage() {
       ctx.clip()
       ctx.drawImage(img, node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
 
-      // ── IMMERSIVE DIVE: zoom into the poster ──
-      // Phase 1 (zoom 5-8):  darken + title + IMDb appear
-      // Phase 2 (zoom 8-15): director + genres + category
-      // Phase 3 (zoom 15+):  sinopsis + compositor — full ficha feeling
-      // Fonts scale with 1/globalScale so they stay readable on screen
-      const diveStart = 5
-      if (globalScale > diveStart && !dimmed) {
-        const phase1 = Math.min(1, Math.max(0, (globalScale - 5) / 3))   // 5→8
-        const phase2 = Math.min(1, Math.max(0, (globalScale - 8) / 7))   // 8→15
-        const phase3 = Math.min(1, Math.max(0, (globalScale - 15) / 10)) // 15→25
-
-        // Darken poster progressively
-        ctx.fillStyle = `rgba(0, 0, 0, ${phase1 * 0.8})`
-        ctx.fillRect(node.x - imgW / 2, node.y - imgH / 2, imgW, imgH)
-
-        // Font size in SCREEN pixels (constant on screen regardless of zoom)
-        // We divide by globalScale so the canvas-unit size shrinks as zoom grows,
-        // keeping the on-screen appearance constant.
-        const screenFs = 14 / globalScale  // ~14px on screen
-        const smallFs = 11 / globalScale
-        const tinyFs = 9 / globalScale
-        const pad = 8 / globalScale
-        const leftX = node.x - imgW / 2 + pad
-        const topY = node.y - imgH / 2 + pad
-
-        ctx.textAlign = 'left'
-        ctx.textBaseline = 'top'
-
-        // ── Phase 1: Title + IMDb ──
-        if (phase1 > 0) {
-          ctx.globalAlpha = phase1
-          let ty = node.y - imgH * 0.15 // slightly above center
-
-          // Title
-          ctx.font = `900 ${screenFs * 1.8}px Inter, sans-serif`
-          ctx.fillStyle = '#fafaf9'
-          ctx.fillText(node.title, leftX, ty)
-          ty += screenFs * 2.4
-
-          // Year + IMDb
-          ctx.font = `700 ${screenFs}px Inter, sans-serif`
-          ctx.fillStyle = '#facc15'
-          ctx.fillText(`${node.anio || ''} · IMDb ${node.imdb}`, leftX, ty)
-
-          ctx.globalAlpha = 1
-        }
-
-        // ── Phase 2: Director + Genres + Category ──
-        if (phase2 > 0) {
-          ctx.globalAlpha = phase2
-          let ty = node.y + imgH * 0.05
-
-          // Director
-          if (node.director) {
-            ctx.font = `500 ${smallFs}px Inter, sans-serif`
-            ctx.fillStyle = '#a1a1aa'
-            ctx.fillText(`Director: ${node.director}`, leftX, ty)
-            ty += smallFs * 1.6
-          }
-
-          // Compositor
-          if (node.compositor) {
-            ctx.font = `500 ${smallFs}px Inter, sans-serif`
-            ctx.fillStyle = '#a1a1aa'
-            ctx.fillText(`Compositor: ${node.compositor}`, leftX, ty)
-            ty += smallFs * 1.6
-          }
-
-          // Genre pills
-          if (node.genres?.length > 0) {
-            ctx.font = `600 ${tinyFs}px Inter, sans-serif`
-            let px = leftX
-            const pillH = tinyFs * 1.4
-            for (const g of node.genres.slice(0, 4)) {
-              const tw = ctx.measureText(g).width + tinyFs * 1
-              ctx.fillStyle = 'rgba(250,204,21,0.2)'
-              ctx.beginPath()
-              ctx.roundRect(px, ty, tw, pillH, pillH / 2)
-              ctx.fill()
-              ctx.fillStyle = '#facc15'
-              ctx.textBaseline = 'middle'
-              ctx.fillText(g, px + tinyFs * 0.5, ty + pillH / 2)
-              ctx.textBaseline = 'top'
-              px += tw + tinyFs * 0.4
-            }
-            ty += pillH + smallFs
-          }
-
-          // Category
-          if (node.categoria) {
-            ctx.font = `600 ${tinyFs}px Inter, sans-serif`
-            ctx.fillStyle = '#facc15'
-            ctx.globalAlpha = phase2 * 0.7
-            ctx.fillText(node.categoria, leftX, ty)
-          }
-
-          ctx.globalAlpha = 1
-        }
-
-        // ── Phase 3: Sinopsis ──
-        if (phase3 > 0 && node.sinopsis) {
-          ctx.globalAlpha = phase3
-          let ty = node.y + imgH * 0.25
-          ctx.font = `400 ${tinyFs}px Inter, sans-serif`
-          ctx.fillStyle = 'rgba(250,250,249,0.8)'
-
-          const words = node.sinopsis.split(' ')
-          let line = ''
-          const maxW = imgW - pad * 2
-          let linesDrawn = 0
-          for (const word of words) {
-            const test = line ? line + ' ' + word : word
-            if (ctx.measureText(test).width > maxW) {
-              ctx.fillText(line, leftX, ty)
-              ty += tinyFs * 1.4
-              line = word
-              linesDrawn++
-              if (linesDrawn >= 5) { ctx.fillText(line + '…', leftX, ty); break }
-            } else {
-              line = test
-            }
-          }
-          if (linesDrawn < 5 && line) ctx.fillText(line, leftX, ty)
-
-          ctx.globalAlpha = 1
-        }
-      }
+      // Canvas dive removed — the immersive dive is now an HTML overlay
+      // positioned over the poster that scales with zoom (see JSX below).
 
       ctx.restore()
 
@@ -1456,7 +1343,18 @@ export default function MapaPage() {
               }
             }}
             onBackgroundClick={() => deselectNode()}
-            onZoom={() => { requestAnimationFrame(() => { if (showInstructions) setShowInstructions(false) }) }}
+            onZoom={(transform: any) => {
+              requestAnimationFrame(() => {
+                if (showInstructions) setShowInstructions(false)
+                const z = transform?.k ?? 1
+                setCurrentZoom(z)
+                // Track selected node screen position for the dive overlay
+                if (selectedNode && fgRef.current) {
+                  const coords = fgRef.current.graph2ScreenCoords(selectedNode.x ?? 0, selectedNode.y ?? 0)
+                  setDiveScreenPos(coords)
+                }
+              })
+            }}
             onRenderFramePost={(ctx: CanvasRenderingContext2D, globalScale: number) => {
               if (!graphData) return
               const gnodes = graphData.nodes as GraphNode[]
@@ -1534,230 +1432,206 @@ export default function MapaPage() {
         )}
       </div>
 
-      {/* ── Dive-into-poster portal overlay ── */}
-      <AnimatePresence>
-        {diveNode && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-[70] bg-zinc-950/95 backdrop-blur-md overflow-y-auto"
-          >
-            {/* Close / back button */}
-            <div className="sticky top-0 z-10 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),8px)] pb-2 bg-zinc-950/80 backdrop-blur-xl">
-              <button
-                type="button"
-                onClick={exitDive}
-                className="inline-flex items-center gap-2 text-zinc-400 hover:text-yellow-400 text-sm font-semibold cursor-pointer transition-colors min-h-[44px]"
-              >
-                <Icon.ArrowLeft className="w-4 h-4" />
-                Volver al mapa
-              </button>
-              <Link
-                href={`${isSeries ? '/serie' : '/pelicula'}/${diveNode.id}`}
-                className="inline-flex items-center gap-1 text-yellow-400 text-xs font-semibold hover:text-yellow-300 transition-colors min-h-[44px]"
-              >
-                Ficha completa
-                <Icon.ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
+      {/* ── Immersive dive: HTML ficha that scales from inside the poster ── */}
+      {diveNode && diveScreenPos && currentZoom > 5 && (
+        (() => {
+          // The ficha starts as a tiny dot at the poster center and grows
+          // as you zoom in. At zoom ~25+ it fills the viewport.
+          const progress = Math.min(1, Math.max(0, (currentZoom - 6) / 20)) // 6→26
+          const opacity = progress
+          // The ficha width grows from ~10% to 100% of the viewport
+          const fichaScale = 0.1 + progress * 0.9 // 10% → 100%
+          const fichaW = dimensions.width * fichaScale
+          const fichaH = dimensions.height * fichaScale
+          // Position: starts at the poster center, eases to viewport center
+          const centerX = dimensions.width / 2
+          const centerY = dimensions.height / 2
+          const posX = diveScreenPos.x + (centerX - diveScreenPos.x) * progress - fichaW / 2
+          const posY = diveScreenPos.y + (centerY - diveScreenPos.y) * progress - fichaH / 2
 
-            {diveLoading ? (
-              <div className="flex items-center justify-center h-64">
-                <LoadingState text="Cargando..." size="md" />
-              </div>
-            ) : diveData ? (
-              <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.4 }}
-              >
-                {/* Backdrop hero */}
-                <div className="relative w-full aspect-video max-h-[35vh] overflow-hidden">
-                  {diveData.backdrop_path ? (
-                    <NextImage
-                      src={`https://image.tmdb.org/t/p/w1280${diveData.backdrop_path}`}
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                      priority
-                    />
-                  ) : diveData.poster_path ? (
-                    <NextImage
-                      src={`https://image.tmdb.org/t/p/w780${diveData.poster_path}`}
-                      alt=""
-                      fill
-                      className="object-cover object-top blur-xl scale-110 opacity-50"
-                      sizes="100vw"
-                    />
-                  ) : null}
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-                </div>
-
-                {/* Content */}
-                <div className="relative -mt-20 px-5 pb-10 max-w-2xl mx-auto">
-                  <div className="flex gap-4 items-end">
-                    {/* Poster */}
-                    {diveData.poster_path && (
-                      <div className="relative w-28 shrink-0 rounded-xl overflow-hidden shadow-2xl ring-2 ring-yellow-400/40" style={{ aspectRatio: '2/3' }}>
+          return (
+            <div
+              className="absolute z-[65] pointer-events-none"
+              style={{
+                left: posX,
+                top: posY,
+                width: fichaW,
+                height: fichaH,
+                opacity,
+                overflow: 'hidden',
+                borderRadius: `${(1 - progress) * 16 + 4}px`,
+                pointerEvents: progress > 0.7 ? 'auto' : 'none',
+              }}
+            >
+              <div className="w-full h-full bg-zinc-950 overflow-y-auto">
+                {diveLoading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <LoadingState text="Cargando..." size="sm" />
+                  </div>
+                ) : diveData ? (
+                  <>
+                    {/* Backdrop hero */}
+                    <div className="relative w-full aspect-video max-h-[35vh] overflow-hidden">
+                      {diveData.backdrop_path ? (
                         <NextImage
-                          src={`https://image.tmdb.org/t/p/w342${diveData.poster_path}`}
-                          alt={diveData.titulo}
+                          src={`https://image.tmdb.org/t/p/w1280${diveData.backdrop_path}`}
+                          alt=""
                           fill
                           className="object-cover"
-                          sizes="112px"
+                          sizes="100vw"
+                          priority
                         />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0 pb-1">
-                      <h1 className="text-2xl sm:text-3xl font-black text-white leading-tight">
-                        {diveData.titulo_ingles || diveData.titulo}
-                      </h1>
-                      {diveData.titulo_ingles && diveData.titulo !== diveData.titulo_ingles && (
-                        <p className="text-zinc-400 text-sm mt-0.5">{diveData.titulo}</p>
-                      )}
-                    </div>
-                  </div>
+                      ) : diveData.poster_path ? (
+                        <NextImage
+                          src={`https://image.tmdb.org/t/p/w780${diveData.poster_path}`}
+                          alt=""
+                          fill
+                          className="object-cover object-top blur-xl scale-110 opacity-50"
+                          sizes="100vw"
+                        />
+                      ) : null}
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
 
-                  {/* Metadata row */}
-                  <div className="flex items-center gap-3 mt-4 flex-wrap">
-                    {diveData.anio && <span className="text-zinc-400 text-sm tabular-nums">{diveData.anio}</span>}
-                    {diveData.runtime && <span className="text-zinc-500 text-sm">{Math.floor(diveData.runtime / 60)}h {diveData.runtime % 60}min</span>}
-                    {diveData.nota_imdb != null && <ScoreBadge source="imdb" value={diveData.nota_imdb} size="sm" />}
-                    {diveData.rt_score != null && <ScoreBadge source="rt" value={diveData.rt_score} size="sm" />}
-                    {diveData.metacritic_score != null && <ScoreBadge source="mc" value={diveData.metacritic_score} size="sm" />}
-                    {diveData.oscars && diveData.oscars !== 'N/A' && (
-                      <span className="flex items-center gap-1 text-yellow-400 text-xs">
-                        <img loading="lazy" src="/oscar.png" alt="Oscar" className="h-4 w-auto" />
-                        {diveData.oscars.match(/\d+/)?.[0]}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Category */}
-                  {diveData.categoria && (
-                    <div className="mt-3">
-                      <Pill variant="gold" size="sm">{diveData.categoria}</Pill>
-                    </div>
-                  )}
-
-                  {/* Genres */}
-                  {(() => {
-                    const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
-                    const generos = enr.generos ?? []
-                    return generos.length > 0 ? (
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        {generos.map((g: string) => (
-                          <Pill key={g} variant="default" size="sm">{g}</Pill>
-                        ))}
-                      </div>
-                    ) : null
-                  })()}
-
-                  {/* Sinopsis */}
-                  {(() => {
-                    const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
-                    return enr.sinopsis_chilensis ? (
-                      <div className="mt-5">
-                        <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold mb-2">Sinopsis</p>
-                        <p className="text-zinc-300 text-sm leading-relaxed italic">
-                          {enr.sinopsis_chilensis}
-                        </p>
-                      </div>
-                    ) : null
-                  })()}
-
-                  {/* Director / Cast / Compositor */}
-                  {(() => {
-                    const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
-                    return (
-                      <div className="grid grid-cols-2 gap-4 mt-5">
-                        {enr.director && (
-                          <div>
-                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Director</p>
-                            <Link href={`/director/${encodeURIComponent(enr.director)}`} className="text-sm text-white hover:text-yellow-400 transition-colors">
-                              {enr.director}
-                            </Link>
-                          </div>
-                        )}
-                        {enr.compositor && (
-                          <div>
-                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Compositor</p>
-                            <Link href={`/compositor/${encodeURIComponent(enr.compositor)}`} className="text-sm text-white hover:text-yellow-400 transition-colors">
-                              {enr.compositor}
-                            </Link>
-                          </div>
-                        )}
-                        {enr.actores && (
-                          <div className="col-span-2">
-                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Reparto</p>
-                            <p className="text-sm text-zinc-300 leading-relaxed">
-                              {(Array.isArray(enr.actores) ? enr.actores.join(', ') : enr.actores).slice(0, 200)}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })()}
-
-                  {/* Connected movies in the graph */}
-                  {connectedNodes.length > 0 && (
-                    <div className="mt-6">
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-3">
-                        Películas conectadas · {connectedNodes.length}
-                      </p>
-                      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-5 px-5">
-                        {connectedNodes.map(({ node: cn }) => (
+                      {/* Nav inside the ficha — only when large enough to interact */}
+                      {progress > 0.7 && (
+                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
                           <button
-                            key={cn.id}
                             type="button"
                             onClick={() => {
-                              exitDive()
-                              setTimeout(() => focusNode(cn), 100)
+                              if (fgRef.current) fgRef.current.zoom(3, 800)
                             }}
-                            className="shrink-0 w-20 text-left cursor-pointer group"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm text-zinc-300 text-xs font-semibold cursor-pointer hover:text-yellow-400 transition-colors min-h-[36px]"
                           >
-                            <div className="relative w-20 rounded-lg overflow-hidden ring-1 ring-zinc-800 group-hover:ring-yellow-400/50 transition-all" style={{ aspectRatio: '2/3' }}>
-                              {cn.poster && (
-                                <NextImage
-                                  src={`https://image.tmdb.org/t/p/w185${cn.poster}`}
-                                  alt={cn.title}
-                                  fill
-                                  className="object-cover"
-                                  sizes="80px"
-                                />
+                            <Icon.ArrowLeft className="w-3.5 h-3.5" />
+                            Mapa
+                          </button>
+                          <Link
+                            href={`${isSeries ? '/serie' : '/pelicula'}/${diveNode.id}`}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-yellow-400 text-zinc-950 text-xs font-bold hover:bg-yellow-300 transition-colors min-h-[36px]"
+                          >
+                            Ficha completa
+                            <Icon.ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative -mt-16 px-5 pb-8 max-w-2xl mx-auto">
+                      <div className="flex gap-3 items-end">
+                        {diveData.poster_path && (
+                          <div className="relative w-24 shrink-0 rounded-xl overflow-hidden shadow-2xl ring-2 ring-yellow-400/40" style={{ aspectRatio: '2/3' }}>
+                            <NextImage
+                              src={`https://image.tmdb.org/t/p/w342${diveData.poster_path}`}
+                              alt={diveData.titulo}
+                              fill
+                              className="object-cover"
+                              sizes="96px"
+                            />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0 pb-1">
+                          <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                            {diveData.titulo_ingles || diveData.titulo}
+                          </h1>
+                          {diveData.titulo_ingles && diveData.titulo !== diveData.titulo_ingles && (
+                            <p className="text-zinc-400 text-xs mt-0.5">{diveData.titulo}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-3 flex-wrap">
+                        {diveData.anio && <span className="text-zinc-400 text-xs tabular-nums">{diveData.anio}</span>}
+                        {diveData.nota_imdb != null && <ScoreBadge source="imdb" value={diveData.nota_imdb} size="sm" />}
+                        {diveData.rt_score != null && <ScoreBadge source="rt" value={diveData.rt_score} size="sm" />}
+                        {diveData.metacritic_score != null && <ScoreBadge source="mc" value={diveData.metacritic_score} size="sm" />}
+                      </div>
+
+                      {(() => {
+                        const enr = diveData.enriquecimiento || diveData.enriquecimiento_series || {}
+                        const generos = enr.generos ?? []
+                        return (
+                          <>
+                            {generos.length > 0 && (
+                              <div className="flex flex-wrap gap-1.5 mt-3">
+                                {generos.map((g: string) => (
+                                  <Pill key={g} variant="default" size="sm">{g}</Pill>
+                                ))}
+                              </div>
+                            )}
+                            {enr.sinopsis_chilensis && (
+                              <p className="text-zinc-300 text-sm leading-relaxed italic mt-4 border-l-2 border-yellow-400/30 pl-3">
+                                {enr.sinopsis_chilensis}
+                              </p>
+                            )}
+                            <div className="grid grid-cols-2 gap-3 mt-4">
+                              {enr.director && (
+                                <div>
+                                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">Director</p>
+                                  <p className="text-sm text-white">{enr.director}</p>
+                                </div>
+                              )}
+                              {enr.compositor && (
+                                <div>
+                                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">Compositor</p>
+                                  <p className="text-sm text-white">{enr.compositor}</p>
+                                </div>
                               )}
                             </div>
-                            <p className="text-[10px] text-zinc-300 font-semibold line-clamp-2 mt-1.5 leading-tight group-hover:text-yellow-400 transition-colors">
-                              {cn.title}
-                            </p>
-                            <span className="text-[9px] text-yellow-400 tabular-nums">{cn.imdb}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                            {enr.actores && (
+                              <div className="mt-3">
+                                <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">Reparto</p>
+                                <p className="text-xs text-zinc-300 leading-relaxed">
+                                  {(Array.isArray(enr.actores) ? enr.actores.join(', ') : enr.actores).slice(0, 150)}
+                                </p>
+                              </div>
+                            )}
+                          </>
+                        )
+                      })()}
 
-                  {/* Full ficha CTA */}
-                  <div className="mt-8">
-                    <Link href={`${isSeries ? '/serie' : '/pelicula'}/${diveNode.id}`}>
-                      <Button fullWidth size="lg" iconRight={<Icon.ArrowRight className="w-4 h-4" />}>
-                        Ver ficha completa
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <div className="flex items-center justify-center h-64">
-                <p className="text-zinc-500 text-sm">No se encontró información</p>
+                      {/* Connected movies carousel */}
+                      {connectedNodes.length > 0 && (
+                        <div className="mt-5">
+                          <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-2">
+                            Conexiones · {connectedNodes.length}
+                          </p>
+                          <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-2 -mx-5 px-5">
+                            {connectedNodes.map(({ node: cn }) => (
+                              <button
+                                key={cn.id}
+                                type="button"
+                                onClick={() => {
+                                  exitDive()
+                                  setTimeout(() => focusNode(cn), 150)
+                                }}
+                                className="shrink-0 w-16 text-left cursor-pointer group"
+                              >
+                                <div className="relative w-16 rounded-md overflow-hidden ring-1 ring-zinc-800 group-hover:ring-yellow-400/50 transition-all" style={{ aspectRatio: '2/3' }}>
+                                  {cn.poster && (
+                                    <NextImage
+                                      src={`https://image.tmdb.org/t/p/w185${cn.poster}`}
+                                      alt={cn.title}
+                                      fill
+                                      className="object-cover"
+                                      sizes="64px"
+                                    />
+                                  )}
+                                </div>
+                                <p className="text-[9px] text-zinc-300 font-semibold line-clamp-2 mt-1 leading-tight">{cn.title}</p>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : null}
               </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          )
+        })()
+      )}
     </PageShell>
   )
 }

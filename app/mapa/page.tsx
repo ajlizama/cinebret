@@ -1288,7 +1288,7 @@ export default function MapaPage() {
                   if (!c || c.count === 0) continue
                   const cx = c.x / c.count
                   const cy = c.y / c.count
-                  const fontSize = Math.max(16, 50 / globalScale)
+                  const fontSize = Math.max(10, 24 / globalScale)
                   ctx.font = `900 ${fontSize}px Inter, sans-serif`
                   ctx.textAlign = 'center'
                   ctx.textBaseline = 'middle'
@@ -1319,7 +1319,7 @@ export default function MapaPage() {
                   if (!c || c.count < 10) continue
                   const cx = c.x / c.count
                   const cy = c.y / c.count
-                  const fontSize = Math.max(8, 22 / globalScale)
+                  const fontSize = Math.max(6, 14 / globalScale)
                   ctx.font = `700 ${fontSize}px Inter, sans-serif`
                   ctx.textAlign = 'center'
                   ctx.textBaseline = 'middle'

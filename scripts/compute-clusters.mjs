@@ -216,10 +216,26 @@ function nameCluster(memberIds, usedNames = new Set()) {
 // COLOR PALETTES
 // ═══════════════════════════════════════════════════════════════════
 
-// Level 0: 7-8 very distinct premium hues
+// Level 0: 18 distinct premium muted hues
 const L0_COLORS = [
-  '#f5c842', '#e07850', '#6ba3d6', '#b88fd6',
-  '#5cb87a', '#d4726a', '#7ec4cf', '#c9a84c',
+  '#f5c842', // warm gold
+  '#e07850', // burnt orange
+  '#6ba3d6', // steel blue
+  '#b88fd6', // soft lavender
+  '#5cb87a', // sage green
+  '#d4726a', // dusty rose
+  '#7ec4cf', // teal mist
+  '#c9a84c', // antique gold
+  '#8b8fc7', // periwinkle
+  '#d19a66', // copper
+  '#6bc5a0', // mint
+  '#c77dba', // orchid
+  '#a3b86c', // olive
+  '#e8a87c', // peach
+  '#7ca8c4', // slate blue
+  '#d6c06e', // wheat
+  '#9fc2b4', // seafoam
+  '#c48f8f', // blush
 ]
 
 // Level 1: 4-5 shades WITHIN each parent hue (lighter/darker variations)
@@ -264,7 +280,7 @@ console.log('\n── Level 0: Full graph ──')
 const allIds = nodes.map(n => n.id)
 const fullAdj = buildAdj(allIds, edges)
 let l0community = louvain(allIds, fullAdj)
-l0community = mergeTiny(l0community, fullAdj, 150)
+l0community = mergeTiny(l0community, fullAdj, 60)
 
 const l0sorted = collectCommunities(l0community)
 const usedL0Names = new Set()
@@ -332,7 +348,7 @@ console.log('\n── Pre-computing positions with d3-force ──')
 
 // Arrange cluster targets in a circle
 const numL0 = l0clusters.length
-const layoutRadius = Math.sqrt(nodes.length) * 18
+const layoutRadius = Math.sqrt(nodes.length) * 22
 const clusterTargets = new Map()
 l0clusters.forEach((cl, i) => {
   const angle = (i / numL0) * Math.PI * 2 - Math.PI / 2

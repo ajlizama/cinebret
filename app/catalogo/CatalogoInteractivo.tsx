@@ -18,6 +18,8 @@ import SmartSearchBar from '@/components/SmartSearchBar'
 import { normalize } from '@/lib/normalize'
 import FeatureWidgets from '@/components/FeatureWidgets'
 import type { SmartFilters } from '@/lib/smart-search'
+import { Section, ScoreBadge, EmptyState, FilterChips } from '@/components/ui'
+import * as Icon from '@/components/ui/icons'
 
 type UserPelicula = { visto: boolean; rating: number | null; watchlist: boolean }
 
@@ -152,10 +154,10 @@ function PillSelect({ label, opciones, seleccionados, onChange, showSearch = fal
   return (
     <div className="relative">
       <button onClick={() => setAbierto(!abierto)}
-        className={`rounded-full px-4 py-2 text-sm flex items-center gap-2 transition-all duration-200 ${seleccionados.length > 0 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+        className={`rounded-full px-4 min-h-[44px] text-sm flex items-center gap-2 transition-all duration-200 ${seleccionados.length > 0 ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
         {label}
-        {seleccionados.length > 0 && <span className="bg-amber-500 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{seleccionados.length}</span>}
-        <svg className={`w-3 h-3 transition-transform duration-200 ${abierto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        {seleccionados.length > 0 && <span className="bg-yellow-400 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{seleccionados.length}</span>}
+        <Icon.ChevronDown className={`w-3 h-3 transition-transform duration-200 ${abierto ? 'rotate-180' : ''}`} />
       </button>
       {abierto && (
         <>
@@ -166,15 +168,15 @@ function PillSelect({ label, opciones, seleccionados, onChange, showSearch = fal
               {showSearch && (
                 <div className="p-3 border-b border-zinc-800/50 shrink-0">
                   <input type="text" placeholder="Buscar..." value={busqueda} onChange={e => setBusqueda(e.target.value)} onClick={e => e.stopPropagation()}
-                    className="w-full px-3 py-2 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
+                    className="w-full px-3 py-2 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 transition-colors" />
                 </div>
               )}
               {seleccionados.length > 0 && (
                 <div className="border-b border-zinc-800/50 px-3 py-2 shrink-0 flex items-center justify-between">
                   <div className="flex flex-wrap gap-1.5">
                     {seleccionados.map(s => (
-                      <span key={s} onClick={() => toggle(s)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                        {s} <span className="text-amber-400/60">x</span>
+                      <span key={s} onClick={() => toggle(s)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                        {s} <span className="text-yellow-400/60">x</span>
                       </span>
                     ))}
                   </div>
@@ -187,7 +189,7 @@ function PillSelect({ label, opciones, seleccionados, onChange, showSearch = fal
                     {opcionesFiltradas.map(op => (
                       <button key={op} onClick={() => toggle(op)}
                         className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${seleccionados.includes(op)
-                          ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                          ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30'
                           : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
                         }`}>
                         {op}
@@ -204,20 +206,20 @@ function PillSelect({ label, opciones, seleccionados, onChange, showSearch = fal
             <div className="absolute bottom-0 left-0 right-0 bg-zinc-900 rounded-t-3xl max-h-[70vh] flex flex-col animate-in slide-in-from-bottom duration-300" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-zinc-800/50">
                 <h3 className="text-white font-semibold text-base">{label}</h3>
-                <button onClick={handleClose} className="text-zinc-400 hover:text-white text-lg w-8 h-8 flex items-center justify-center rounded-full bg-zinc-800">x</button>
+                <button onClick={handleClose} aria-label="Cerrar" className="text-zinc-400 hover:text-white w-9 h-9 flex items-center justify-center rounded-full bg-zinc-800"><Icon.Close className="w-4 h-4" /></button>
               </div>
               {showSearch && (
                 <div className="px-4 pt-3 shrink-0">
                   <input type="text" placeholder="Buscar..." value={busqueda} onChange={e => setBusqueda(e.target.value)}
-                    className="w-full px-4 py-2.5 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
+                    className="w-full px-4 py-2.5 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 transition-colors" />
                 </div>
               )}
               {seleccionados.length > 0 && (
                 <div className="px-4 pt-3 shrink-0 flex items-center justify-between gap-2">
                   <div className="flex flex-wrap gap-1.5 flex-1">
                     {seleccionados.map(s => (
-                      <span key={s} onClick={() => toggle(s)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer">
-                        {s} <span className="text-amber-400/60">x</span>
+                      <span key={s} onClick={() => toggle(s)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer">
+                        {s} <span className="text-yellow-400/60">x</span>
                       </span>
                     ))}
                   </div>
@@ -229,7 +231,7 @@ function PillSelect({ label, opciones, seleccionados, onChange, showSearch = fal
                   opcionesFiltradas.map(op => (
                     <button key={op} onClick={() => toggle(op)}
                       className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${seleccionados.includes(op)
-                        ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30'
                         : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'
                       }`}>
                       {op}
@@ -238,7 +240,7 @@ function PillSelect({ label, opciones, seleccionados, onChange, showSearch = fal
                 )}
               </div>
               <div className="p-4 border-t border-zinc-800/50 shrink-0">
-                <button onClick={handleClose} className="w-full bg-amber-500 text-zinc-950 font-semibold rounded-xl py-3 text-sm transition-colors hover:bg-amber-400">
+                <button onClick={handleClose} className="w-full bg-yellow-400 text-zinc-950 font-semibold rounded-xl py-3 text-sm transition-colors hover:bg-yellow-300">
                   Aplicar {seleccionados.length > 0 ? `(${seleccionados.length})` : ''}
                 </button>
               </div>
@@ -263,13 +265,13 @@ function KeywordFilter({ selected, onChange }: { selected: string[]; onChange: (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <span className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Keywords</span>
-        {selected.length > 0 && <span className="bg-amber-500 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{selected.length}</span>}
+        {selected.length > 0 && <span className="bg-yellow-400 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{selected.length}</span>}
       </div>
       <div className="flex flex-wrap gap-1.5">
         {POPULAR_KEYWORDS.map(kw => (
           <button key={kw} onClick={() => toggle(kw)}
             className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${selected.includes(kw)
-              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+              ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30'
               : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
             }`}>
             {kw}
@@ -280,14 +282,14 @@ function KeywordFilter({ selected, onChange }: { selected: string[]; onChange: (
         <input type="text" placeholder="Agregar keyword..." value={custom}
           onChange={e => setCustom(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustom() } }}
-          className="flex-1 px-3 py-2 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 transition-colors" />
+          className="flex-1 px-3 py-2 text-sm bg-zinc-800/80 border border-zinc-700/50 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 transition-colors" />
         <button onClick={addCustom} className="bg-zinc-800 text-zinc-400 hover:text-white px-3 py-2 rounded-xl text-sm transition-colors">+</button>
       </div>
       {selected.filter(s => !POPULAR_KEYWORDS.includes(s)).length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {selected.filter(s => !POPULAR_KEYWORDS.includes(s)).map(kw => (
-            <span key={kw} onClick={() => toggle(kw)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-              {kw} <span className="text-amber-400/60">x</span>
+            <span key={kw} onClick={() => toggle(kw)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+              {kw} <span className="text-yellow-400/60">x</span>
             </span>
           ))}
         </div>
@@ -302,14 +304,14 @@ function CertFilter({ selected, onChange }: { selected: string[]; onChange: (s: 
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <span className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Clasificacion</span>
-        {selected.length > 0 && <span className="bg-amber-500 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{selected.length}</span>}
+        <span className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Clasificación</span>
+        {selected.length > 0 && <span className="bg-yellow-400 text-zinc-950 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{selected.length}</span>}
       </div>
       <div className="flex flex-wrap gap-1.5">
         {CERT_OPTIONS.map(c => (
           <button key={c} onClick={() => toggle(c)}
             className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${selected.includes(c)
-              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+              ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30'
               : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
             }`}>
             {c}
@@ -372,8 +374,10 @@ function PanelExpandido({
     <div id={`expand-${p.id}`} className="col-span-2 md:col-span-4 rounded-2xl overflow-hidden my-2 shadow-2xl scroll-mt-28" onClick={e => e.stopPropagation()}>
       <div className="bg-zinc-900 relative">
         {/* Close button */}
-        <button onClick={() => setExpandida(null)}
-          className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-11 h-11 flex items-center justify-center text-sm transition-colors">✕</button>
+        <button onClick={() => setExpandida(null)} aria-label="Cerrar"
+          className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-full w-11 h-11 flex items-center justify-center transition-colors">
+          <Icon.Close className="w-5 h-5" />
+        </button>
 
         {/* ══ MOBILE layout ══ */}
         <div className="md:hidden">
@@ -420,30 +424,9 @@ function PanelExpandido({
 
             {/* Ratings */}
             <div className="flex items-center gap-3 flex-wrap">
-              {p.nota_imdb != null && (
-                <div className="flex items-center gap-1">
-                  <div className="w-9 h-9 rounded-full border-2 border-yellow-400 flex items-center justify-center">
-                    <span className="text-yellow-400 font-bold text-xs">{p.nota_imdb}</span>
-                  </div>
-                  <span className="text-zinc-500 text-xs">IMDB</span>
-                </div>
-              )}
-              {p.rt_score != null && (
-                <div className="flex items-center gap-1">
-                  <div className="w-9 h-9 rounded-full border-2 border-red-400 flex items-center justify-center">
-                    <span className="text-red-400 font-bold text-xs">{p.rt_score}%</span>
-                  </div>
-                  <span className="text-zinc-500 text-xs">RT</span>
-                </div>
-              )}
-              {p.metacritic_score != null && (
-                <div className="flex items-center gap-1">
-                  <div className="w-9 h-9 rounded-full border-2 border-green-400 flex items-center justify-center">
-                    <span className="text-green-400 font-bold text-xs">{p.metacritic_score}</span>
-                  </div>
-                  <span className="text-zinc-500 text-xs">MC</span>
-                </div>
-              )}
+              {p.nota_imdb != null && <ScoreBadge source="imdb" value={p.nota_imdb} size="sm" />}
+              {p.rt_score != null && <ScoreBadge source="rt" value={p.rt_score} size="sm" />}
+              {p.metacritic_score != null && <ScoreBadge source="mc" value={p.metacritic_score} size="sm" />}
               {p.oscars && p.oscars !== 'N/A' && (
                 <div className="flex items-center gap-1">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -502,7 +485,7 @@ function PanelExpandido({
             {/* Synopsis */}
             {p.sinopsis && (
               <div>
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1 font-medium">Sinopsis IA</p>
+                <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-1">Sinopsis IA</p>
                 <p className="text-sm text-zinc-300 leading-relaxed">{p.sinopsis}</p>
               </div>
             )}
@@ -566,24 +549,9 @@ function PanelExpandido({
               </div>
 
               <div className="flex items-center gap-4 flex-wrap">
-                {p.nota_imdb != null && (
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full border-2 border-yellow-400 bg-black/40 backdrop-blur-sm flex items-center justify-center"><span className="text-yellow-400 font-bold text-sm">{p.nota_imdb}</span></div>
-                    <span className="text-zinc-400 text-xs drop-shadow">IMDB</span>
-                  </div>
-                )}
-                {p.rt_score != null && (
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full border-2 border-red-400 bg-black/40 backdrop-blur-sm flex items-center justify-center"><span className="text-red-400 font-bold text-sm">{p.rt_score}%</span></div>
-                    <span className="text-zinc-400 text-xs drop-shadow">RT</span>
-                  </div>
-                )}
-                {p.metacritic_score != null && (
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full border-2 border-green-400 bg-black/40 backdrop-blur-sm flex items-center justify-center"><span className="text-green-400 font-bold text-sm">{p.metacritic_score}</span></div>
-                    <span className="text-zinc-400 text-xs drop-shadow">MC</span>
-                  </div>
-                )}
+                {p.nota_imdb != null && <ScoreBadge source="imdb" value={p.nota_imdb} size="md" />}
+                {p.rt_score != null && <ScoreBadge source="rt" value={p.rt_score} size="md" />}
+                {p.metacritic_score != null && <ScoreBadge source="mc" value={p.metacritic_score} size="md" />}
                 {p.oscars && p.oscars !== 'N/A' && (
                   <div className="flex items-center gap-1.5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -639,7 +607,7 @@ function PanelExpandido({
 
               {p.sinopsis && (
                 <div>
-                  <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 font-medium drop-shadow">Sinopsis IA</p>
+                  <p className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-1 drop-shadow">Sinopsis IA</p>
                   <p className="text-sm text-zinc-200 leading-relaxed drop-shadow">{p.sinopsis}</p>
                 </div>
               )}
@@ -700,7 +668,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
 
   return (
     <div className="mb-4">
-      <h2 className="text-base md:text-xl font-bold text-white mb-2">Trending</h2>
+      <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500 mb-2">Trending</h2>
       <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-none -mx-3 px-3">
         {trendingMovies.map((p, i) => (
           <div key={p.id} className="shrink-0 w-32 cursor-pointer" onClick={() => onSelect(p)}>
@@ -719,7 +687,7 @@ function TrendingCarousel({ peliculas, trendingIds, plataformas, onSelect, categ
                     ))}
                   </div>
                 ) : p.tmdb_id && cinemaBadges[String(p.tmdb_id)] === 'en_cines' ? (
-                  <span className="bg-amber-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
+                  <span className="bg-yellow-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">En cines</span>
                 ) : p.tmdb_id && cinemaBadges[String(p.tmdb_id)] === 'estreno' ? (
                   <span className="bg-red-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Estreno</span>
                 ) : p.tmdb_id && cinemaBadges[String(p.tmdb_id)] === 'proximamente' ? (
@@ -942,7 +910,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
       {/* ── HERO ── */}
       <div className="relative overflow-hidden bg-zinc-950 pt-4 pb-2">
         <div className="relative flex flex-col items-center justify-center px-4">
-          {!hideHeroTitle && <h1 className="text-xl md:text-2xl font-bold text-white mb-2">Bienvenido a <span className="text-amber-400">CineBret</span></h1>}
+          {!hideHeroTitle && <h1 className="text-xl md:text-2xl font-bold text-white mb-2">Bienvenido a <span className="text-yellow-400">CineBret</span></h1>}
           <SmartSearchBar
             value={busqueda}
             onChange={v => { setBusqueda(v); setPagina(0) }}
@@ -1011,7 +979,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               return (
                 <button key={plat.id}
                   onClick={() => setPlataformasFiltro(prev => activa ? prev.filter(p => p !== plat.id) : [...prev, plat.id])}
-                  className={`shrink-0 h-8 w-14 md:h-10 md:w-16 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${activa ? 'bg-white border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.5)] scale-110 ring-2 ring-amber-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
+                  className={`shrink-0 h-8 w-14 md:h-10 md:w-16 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${activa ? 'bg-white border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.4)] scale-110 ring-2 ring-yellow-400/50' : 'border-zinc-600 bg-white/90 hover:border-zinc-400 opacity-60'}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img loading="lazy" src={plat.logo} alt={plat.nombre} className="h-3.5 md:h-4 w-auto object-contain" />
                 </button>
@@ -1026,23 +994,18 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
         {/* ── Más filtros + Genre pills in one row ── */}
         <div className="mb-3 flex items-center gap-2">
           <button onClick={() => setMostrarFiltrosAvanzados(!mostrarFiltrosAvanzados)}
-            className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
-            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" /></svg>
-            Mas filtros
-            {filtrosAvanzadosCount > 0 && <span className="bg-amber-500 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
+            className={`shrink-0 rounded-full px-4 min-h-[44px] text-xs font-medium flex items-center gap-1.5 transition-all duration-200 ${mostrarFiltrosAvanzados ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'}`}>
+            <Icon.Filter className={`w-3.5 h-3.5 transition-transform duration-200 ${mostrarFiltrosAvanzados ? 'rotate-180' : ''}`} />
+            Más filtros
+            {filtrosAvanzadosCount > 0 && <span className="bg-yellow-400 text-zinc-950 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{filtrosAvanzadosCount}</span>}
           </button>
-          <div className="flex-1 overflow-x-auto flex gap-1.5 scrollbar-none">
-            {generosDisponibles.map(g => (
-              <button key={g}
-                onClick={() => setGenerosFiltro(prev => prev.includes(g) ? prev.filter(x => x !== g) : [...prev, g])}
-                className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 ${generosFiltro.includes(g)
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700 hover:text-zinc-200'
-                }`}>
-                {g}
-              </button>
-            ))}
-          </div>
+          <FilterChips
+            chips={generosDisponibles.map(g => ({ key: g, label: g }))}
+            value={generosFiltro}
+            onChange={(v) => setGenerosFiltro(v as string[])}
+            multi
+            className="flex-1"
+          />
         </div>
 
         {/* ── Active non-genre filters ── */}
@@ -1052,57 +1015,57 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
               const plat = PLATAFORMAS.find(p => p.id === pl)
               return plat ? (
                 <span key={`pl-${pl}`} onClick={() => setPlataformasFiltro(prev => prev.filter(x => x !== pl))}
-                  className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                  {plat.nombre} <span className="text-amber-400/60">x</span>
+                  className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                  {plat.nombre} <span className="text-yellow-400/60">x</span>
                 </span>
               ) : null
             })}
             {categoriasFiltro.map(c => (
               <span key={`c-${c}`} onClick={() => setCategoriasFiltro(prev => prev.filter(x => x !== c))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {c} <span className="text-amber-400/60">x</span>
+                className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                {c} <span className="text-yellow-400/60">x</span>
               </span>
             ))}
             {directoresFiltro.map(d => (
               <span key={`d-${d}`} onClick={() => setDirectoresFiltro(prev => prev.filter(x => x !== d))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {d} <span className="text-amber-400/60">x</span>
+                className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                {d} <span className="text-yellow-400/60">x</span>
               </span>
             ))}
             {actoresFiltro.map(a => (
               <span key={`a-${a}`} onClick={() => setActoresFiltro(prev => prev.filter(x => x !== a))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {a} <span className="text-amber-400/60">x</span>
+                className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                {a} <span className="text-yellow-400/60">x</span>
               </span>
             ))}
             {oscarsFiltro.map(o => (
               <span key={`o-${o}`} onClick={() => setOscarsFiltro(prev => prev.filter(x => x !== o))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {o} <span className="text-amber-400/60">x</span>
+                className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                {o} <span className="text-yellow-400/60">x</span>
               </span>
             ))}
             {certFiltro.map(c => (
               <span key={`cert-${c}`} onClick={() => setCertFiltro(prev => prev.filter(x => x !== c))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {c} <span className="text-amber-400/60">x</span>
+                className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                {c} <span className="text-yellow-400/60">x</span>
               </span>
             ))}
             {keywordsFiltro.map(k => (
               <span key={`kw-${k}`} onClick={() => setKeywordsFiltro(prev => prev.filter(x => x !== k))}
-                className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">
-                {k} <span className="text-amber-400/60">x</span>
+                className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">
+                {k} <span className="text-yellow-400/60">x</span>
               </span>
             ))}
             {(soloReviews || soloSello || soloWatchlist || filtroVistas !== 'todas' || anioDesde || anioHasta) && (
               <>
-                {soloReviews && <span onClick={() => setSoloReviews(false)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">CB Reviews <span className="text-amber-400/60">x</span></span>}
+                {soloReviews && <span onClick={() => setSoloReviews(false)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">CB Reviews <span className="text-yellow-400/60">x</span></span>}
                 {soloSello && <span onClick={() => setSoloSello(false)} className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-emerald-500/30 transition-colors">Recomendadas <span className="text-emerald-400/60">x</span></span>}
-                {soloWatchlist && <span onClick={() => setSoloWatchlist(false)} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">Watchlist <span className="text-amber-400/60">x</span></span>}
-                {filtroVistas !== 'todas' && <span onClick={() => setFiltroVistas('todas')} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">{filtroVistas === 'vistas' ? 'Vistas' : 'No vistas'} <span className="text-amber-400/60">x</span></span>}
-                {(anioDesde || anioHasta) && <span onClick={() => { setAnioDesde(''); setAnioHasta('') }} className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-amber-500/30 transition-colors">{anioDesde || '...'}-{anioHasta || '...'} <span className="text-amber-400/60">x</span></span>}
+                {soloWatchlist && <span onClick={() => setSoloWatchlist(false)} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">Watchlist <span className="text-yellow-400/60">x</span></span>}
+                {filtroVistas !== 'todas' && <span onClick={() => setFiltroVistas('todas')} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">{filtroVistas === 'vistas' ? 'Vistas' : 'No vistas'} <span className="text-yellow-400/60">x</span></span>}
+                {(anioDesde || anioHasta) && <span onClick={() => { setAnioDesde(''); setAnioHasta('') }} className="inline-flex items-center gap-1 bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 rounded-full px-2.5 py-1 text-xs cursor-pointer hover:bg-yellow-400/25 transition-colors">{anioDesde || '...'}-{anioHasta || '...'} <span className="text-yellow-400/60">x</span></span>}
               </>
             )}
-            <button onClick={limpiarFiltros} className="rounded-full px-3 py-1 text-xs text-zinc-500 hover:text-white bg-zinc-800 hover:bg-zinc-700 transition-colors">Limpiar todo</button>
+            <button onClick={limpiarFiltros} className="rounded-full px-3 min-h-[44px] text-xs text-zinc-500 hover:text-white bg-zinc-800 hover:bg-zinc-700 transition-colors">Limpiar todo</button>
           </div>
         )}
 
@@ -1134,11 +1097,11 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
                 ))}
               </div>
               <button onClick={() => setSoloWatchlist(!soloWatchlist)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloWatchlist ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloWatchlist ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
                 Watchlist
               </button>
               <button onClick={() => setSoloReviews(!soloReviews)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloReviews ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${soloReviews ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30' : 'bg-zinc-800 text-zinc-400 border border-transparent hover:bg-zinc-700'}`}>
                 CB Reviews
               </button>
               <button onClick={() => setSoloSello(!soloSello)}
@@ -1146,12 +1109,12 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
                 Recomendadas
               </button>
               <div className="flex items-center gap-2 md:ml-auto">
-                <span className="text-zinc-500 text-xs">Ano</span>
+                <span className="text-zinc-500 text-xs">Año</span>
                 <input type="number" placeholder="Desde" value={anioDesde} onChange={e => setAnioDesde(e.target.value)} min={1900} max={2099}
-                  className={`bg-zinc-800/80 border rounded-xl px-2.5 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none transition-colors ${anioDesde ? 'border-amber-500/50' : 'border-zinc-700/50'}`} />
+                  className={`bg-zinc-800/80 border rounded-xl px-2.5 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none transition-colors ${anioDesde ? 'border-yellow-400/50' : 'border-zinc-700/50'}`} />
                 <span className="text-zinc-600 text-xs">-</span>
                 <input type="number" placeholder="Hasta" value={anioHasta} onChange={e => setAnioHasta(e.target.value)} min={1900} max={2099}
-                  className={`bg-zinc-800/80 border rounded-xl px-2.5 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none transition-colors ${anioHasta ? 'border-amber-500/50' : 'border-zinc-700/50'}`} />
+                  className={`bg-zinc-800/80 border rounded-xl px-2.5 py-1.5 text-xs w-20 text-white placeholder:text-zinc-600 focus:outline-none transition-colors ${anioHasta ? 'border-yellow-400/50' : 'border-zinc-700/50'}`} />
               </div>
             </div>
           </div>
@@ -1242,7 +1205,7 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
                 })()}
               </div>
               {/* CTA compacto */}
-              <div className="bg-gradient-to-r from-yellow-400/10 via-amber-400/5 to-transparent rounded-xl px-4 py-3 flex items-center gap-3 mt-1">
+              <div className="bg-gradient-to-r from-yellow-400/10 via-yellow-400/5 to-transparent rounded-xl px-4 py-3 flex items-center gap-3 mt-1">
                 <p className="text-zinc-300 text-xs flex-1">
                   Completa el cuestionario para recomendaciones personalizadas
                 </p>
@@ -1307,7 +1270,14 @@ export default function CatalogoInteractivo({ peliculas, series = [], trendingId
       {/* ── CONTENIDO: GRILLA o LISTA ── */}
       <div className="max-w-7xl mx-auto px-3 md:px-6 pb-6">
 
-        {vistaMode === 'grilla' ? (
+        {peliculasPagina.length === 0 && hayFiltros ? (
+          <EmptyState
+            icon={<Icon.Search className="w-16 h-16" />}
+            title="Sin resultados"
+            description="No se encontraron títulos con los filtros seleccionados."
+            action={<button onClick={limpiarFiltros} className="bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold rounded-xl px-5 py-2.5 text-sm transition-colors">Limpiar filtros</button>}
+          />
+        ) : vistaMode === 'grilla' ? (
           /* ── GRILLA con expansión full-width ── */
           <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 grid-flow-row-dense items-start">
             {peliculasPagina.map(pelicula => {

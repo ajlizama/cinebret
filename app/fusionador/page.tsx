@@ -2,7 +2,18 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import Link from 'next/link'
-import Nav from '@/components/Nav'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  Card,
+  Button,
+  IconButton,
+  LoadingState,
+  EmptyState,
+  Pill,
+  Icon,
+} from '@/components/ui'
 
 /* ── Types ────────────────────────────────────────── */
 
@@ -370,54 +381,55 @@ export default function FusionadorPage() {
 
   /* ── Render ─────────────────────────────────────── */
 
+  const atMax = selected.length >= MAX_MOVIES
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <Nav active="inicio" />
+    <PageShell maxWidth="2xl">
+      <PageHeader
+        title="Fusionador"
+        subtitle="Elige entre 2 y 5 películas y fusionaremos sus características para descubrir las más parecidas."
+        icon={<Icon.Sparkles className="w-8 h-8" />}
+      />
 
-      <main className="mx-auto max-w-2xl px-4 pb-24 pt-6">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="mb-2 text-3xl font-bold sm:text-4xl">
-            <span className="text-yellow-400">Fusionador</span> de Películas
-          </h1>
-          <p className="text-sm text-zinc-400">
-            Elige entre 2 y 5 películas y fusionamos sus características para encontrar las más
-            parecidas.
-          </p>
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
-          </div>
-        ) : (
-          <>
-            {/* Search */}
-            <div ref={searchRef} className="relative mb-4">
-              <label className="mb-1.5 block text-sm font-medium text-zinc-300">
-                ¿Qué películas quieres fusionar?
-              </label>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value)
-                  setDropdownOpen(true)
-                }}
-                onFocus={() => query.length >= 2 && setDropdownOpen(true)}
-                placeholder="Busca por nombre..."
-                disabled={selected.length >= MAX_MOVIES}
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-yellow-400 disabled:opacity-50"
-              />
+      {loading ? (
+        <LoadingState text="Cargando grafo de películas..." size="lg" />
+      ) : (
+        <>
+          {/* Search */}
+          <Section label="¿Qué películas quieres fusionar?">
+            <div ref={searchRef} className="relative">
+              <div className="relative">
+                <Icon.Search
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500"
+                />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value)
+                    setDropdownOpen(true)
+                  }}
+                  onFocus={() => query.length >= 2 && setDropdownOpen(true)}
+                  placeholder={
+                    atMax
+                      ? `Has alcanzado el máximo de ${MAX_MOVIES} películas`
+                      : 'Buscar por título...'
+                  }
+                  disabled={atMax}
+                  className="w-full min-h-[44px] rounded-xl border border-zinc-800 bg-zinc-900 pl-11 pr-4 py-3 text-[16px] text-white placeholder:text-zinc-500 outline-none transition-colors focus:border-yellow-400/50 disabled:opacity-50"
+                />
+              </div>
 
               {/* Dropdown */}
               {dropdownOpen && searchResults.length > 0 && (
-                <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-72 overflow-y-auto rounded-lg border border-zinc-700 bg-zinc-900 shadow-xl">
+                <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-72 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl">
                   {searchResults.map((node) => (
                     <button
                       key={node.id}
+                      type="button"
                       onClick={() => addMovie(node)}
-                      className="flex w-full items-center gap-3 px-3 py-2 text-left transition hover:bg-zinc-800"
+                      className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-zinc-800 min-h-[44px]"
                     >
                       {node.poster ? (
                         <img
@@ -427,7 +439,7 @@ export default function FusionadorPage() {
                         />
                       ) : (
                         <div className="flex h-12 w-8 flex-shrink-0 items-center justify-center rounded bg-zinc-800 text-[10px] text-zinc-500">
-                          N/A
+                          S/I
                         </div>
                       )}
                       <div className="min-w-0 flex-1">
@@ -438,95 +450,105 @@ export default function FusionadorPage() {
                           <p className="truncate text-xs text-zinc-500">{node.title}</p>
                         )}
                       </div>
-                      <span className="flex-shrink-0 text-xs text-yellow-400">
-                        {node.imdb > 0 ? `★ ${node.imdb}` : ''}
-                      </span>
+                      {node.imdb > 0 && (
+                        <span className="flex flex-shrink-0 items-center gap-1 text-xs font-semibold text-yellow-400">
+                          <Icon.Star filled className="w-3.5 h-3.5" />
+                          {node.imdb}
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
               )}
             </div>
+          </Section>
 
-            {/* Selected chips */}
-            {selected.length > 0 && (
-              <div className="mb-6 flex flex-wrap gap-2">
+          {/* Selected chips */}
+          {selected.length > 0 && (
+            <Section
+              label="Tu mezcla"
+              action={
+                <span className="text-xs font-bold tabular-nums text-zinc-500">
+                  {selected.length}/{MAX_MOVIES}
+                </span>
+              }
+            >
+              <div className="flex flex-wrap gap-2">
                 {selected.map((node) => (
                   <div
                     key={node.id}
-                    className="flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 py-1 pl-1 pr-3"
+                    className="flex items-center gap-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 py-1 pl-1 pr-1"
                   >
                     {node.poster ? (
                       <img
                         src={`${POSTER_BASE}${node.poster}`}
                         alt=""
-                        className="h-7 w-7 rounded-full object-cover"
+                        className="h-8 w-8 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-800 text-[9px] text-zinc-500">
-                        ?
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-[9px] text-zinc-500">
+                        S/I
                       </div>
                     )}
-                    <span className="max-w-[120px] truncate text-xs font-medium">
+                    <span className="max-w-[140px] truncate text-xs font-semibold text-yellow-400">
                       {node.titleEs || node.title}
                     </span>
                     <button
+                      type="button"
                       onClick={() => removeMovie(node.id)}
-                      className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-zinc-700 text-[10px] leading-none text-zinc-300 transition hover:bg-red-500 hover:text-white"
                       aria-label={`Quitar ${node.titleEs || node.title}`}
+                      className="flex h-7 w-7 items-center justify-center rounded-full text-yellow-400/70 transition-colors hover:bg-yellow-400/20 hover:text-yellow-400"
                     >
-                      ✕
+                      <Icon.Close className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
-                <span className="self-center text-xs text-zinc-500">
-                  {selected.length}/{MAX_MOVIES}
-                </span>
               </div>
-            )}
+            </Section>
+          )}
 
-            {/* Fusionar button */}
-            <button
-              onClick={fusionar}
-              disabled={selected.length < MIN_MOVIES || fusing}
-              className="w-full rounded-lg bg-yellow-400 px-6 py-3 text-sm font-bold text-zinc-950 transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              {fusing ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-950 border-t-transparent" />
-                  Fusionando...
-                </span>
-              ) : selected.length < MIN_MOVIES ? (
-                `Elige al menos ${MIN_MOVIES} películas`
-              ) : (
-                `Fusionar ${selected.length} películas`
-              )}
-            </button>
+          {/* Fusionar button */}
+          <Button
+            onClick={fusionar}
+            disabled={selected.length < MIN_MOVIES}
+            loading={fusing}
+            size="lg"
+            fullWidth
+            iconLeft={!fusing ? <Icon.Sparkles className="w-5 h-5" /> : undefined}
+          >
+            {fusing
+              ? 'Fusionando...'
+              : selected.length < MIN_MOVIES
+              ? `Elige al menos ${MIN_MOVIES} películas`
+              : `Fusionar ${selected.length} películas`}
+          </Button>
 
-            {/* Results */}
-            <div
-              ref={resultsRef}
-              className={`mt-10 transition-all duration-500 ${
-                showResults ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-              }`}
-            >
-              {showResults && results.length > 0 && (
-                <>
-                  {/* Mini-graph */}
-                  <div className="mb-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
-                    <p className="mb-3 text-center text-xs font-medium text-zinc-400">
-                      La fusión más compatible es...
-                    </p>
-                    <canvas
-                      ref={canvasRef}
-                      className="mx-auto h-[260px] w-full max-w-[400px] sm:h-[300px]"
-                    />
+          {/* Results */}
+          <div
+            ref={resultsRef}
+            className={`mt-12 transition-all duration-500 ${
+              showResults ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}
+          >
+            {showResults && results.length > 0 && (
+              <>
+                {/* Mini-graph */}
+                <Card padding="lg" className="mb-8 border border-zinc-800">
+                  <div className="mb-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+                    <Icon.Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                    La fusión más compatible
                   </div>
+                  <canvas
+                    ref={canvasRef}
+                    className="mx-auto h-[260px] w-full max-w-[400px] sm:h-[300px]"
+                  />
+                </Card>
 
-                  {/* Top results list */}
-                  <h2 className="mb-4 text-lg font-bold">
-                    Top {Math.min(TOP_RESULTS, results.length)} resultados
-                  </h2>
-
+                {/* Top results list */}
+                <Section
+                  label={`Top ${Math.min(TOP_RESULTS, results.length)} resultados`}
+                  count={results.length}
+                >
                   <div className="space-y-3">
                     {results.map((r, i) => {
                       const pct = Math.round((r.score / maxScore) * 100)
@@ -534,14 +556,14 @@ export default function FusionadorPage() {
                         <Link
                           key={r.node.id}
                           href={`/pelicula/${r.node.id}`}
-                          className="group flex items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-3 transition hover:border-zinc-600 hover:bg-zinc-900"
+                          className="group flex items-center gap-3 rounded-2xl bg-zinc-900 p-4 transition-colors hover:bg-zinc-900/80"
                           style={{
                             animationDelay: `${i * 60}ms`,
                             animation: 'fadeSlideUp 0.4s ease both',
                           }}
                         >
                           {/* Rank */}
-                          <span className="w-6 flex-shrink-0 text-center text-sm font-bold text-zinc-500">
+                          <span className="w-6 flex-shrink-0 text-center text-sm font-black tabular-nums text-zinc-600">
                             {i + 1}
                           </span>
 
@@ -550,11 +572,11 @@ export default function FusionadorPage() {
                             <img
                               src={`${POSTER_BASE}${r.node.poster}`}
                               alt=""
-                              className="h-16 w-11 flex-shrink-0 rounded object-cover"
+                              className="h-16 w-11 flex-shrink-0 rounded-lg object-cover"
                             />
                           ) : (
-                            <div className="flex h-16 w-11 flex-shrink-0 items-center justify-center rounded bg-zinc-800 text-[10px] text-zinc-500">
-                              N/A
+                            <div className="flex h-16 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-zinc-800 text-[10px] text-zinc-500">
+                              S/I
                             </div>
                           )}
 
@@ -566,13 +588,16 @@ export default function FusionadorPage() {
                             {r.node.titleEs && r.node.titleEs !== r.node.title && (
                               <p className="truncate text-xs text-zinc-500">{r.node.title}</p>
                             )}
-                            <div className="mt-1 flex items-center gap-2">
+                            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
                               {r.node.imdb > 0 && (
-                                <span className="text-xs text-yellow-400">★ {r.node.imdb}</span>
+                                <span className="inline-flex items-center gap-1 text-xs font-semibold text-yellow-400">
+                                  <Icon.Star filled className="w-3 h-3" />
+                                  {r.node.imdb}
+                                </span>
                               )}
                               {r.genreOverlap > 0 && (
                                 <span className="text-xs text-zinc-500">
-                                  {r.genreOverlap} géneros en común
+                                  {r.genreOverlap} {r.genreOverlap === 1 ? 'género' : 'géneros'} en común
                                 </span>
                               )}
                               {r.graphConnections > 0 && (
@@ -583,37 +608,38 @@ export default function FusionadorPage() {
                             </div>
 
                             {/* Compatibility bar */}
-                            <div className="mt-1.5 flex items-center gap-2">
+                            <div className="mt-2 flex items-center gap-2">
                               <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-800">
                                 <div
                                   className="h-full rounded-full bg-yellow-400 transition-all duration-700"
                                   style={{ width: `${pct}%` }}
                                 />
                               </div>
-                              <span className="w-10 flex-shrink-0 text-right text-xs font-bold text-yellow-400">
+                              <span className="w-10 flex-shrink-0 text-right text-xs font-bold tabular-nums text-yellow-400">
                                 {pct}%
                               </span>
                             </div>
                           </div>
+
+                          <Icon.ChevronRight className="w-4 h-4 flex-shrink-0 text-zinc-600 transition-colors group-hover:text-yellow-400" />
                         </Link>
                       )
                     })}
                   </div>
-                </>
-              )}
+                </Section>
+              </>
+            )}
 
-              {showResults && results.length === 0 && (
-                <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
-                  <p className="text-lg font-bold text-zinc-400">No encontramos conexiones</p>
-                  <p className="mt-1 text-sm text-zinc-500">
-                    Prueba con otras películas o combinaciones distintas.
-                  </p>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-      </main>
+            {showResults && results.length === 0 && (
+              <EmptyState
+                icon={<Icon.Sparkles className="w-16 h-16" />}
+                title="No encontramos conexiones"
+                description="Prueba con otras películas o con una combinación distinta."
+              />
+            )}
+          </div>
+        </>
+      )}
 
       {/* Animation keyframes */}
       <style jsx global>{`
@@ -628,6 +654,6 @@ export default function FusionadorPage() {
           }
         }
       `}</style>
-    </div>
+    </PageShell>
   )
 }

@@ -1,8 +1,17 @@
 'use client'
 
 import { useEffect, useState, useRef, useCallback } from 'react'
-import Nav from '@/components/Nav'
 import { supabase } from '@/lib/supabase'
+import {
+  PageShell,
+  PageHeader,
+  Section,
+  Card,
+  Button,
+  Pill,
+  LoadingState,
+  Icon,
+} from '@/components/ui'
 
 /* ─── types ─── */
 type Movie = {
@@ -628,95 +637,87 @@ export default function QuienSoyPage() {
   /* ─── render ─── */
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white">
-        <Nav active="inicio" />
-        <div className="flex flex-col items-center justify-center pt-32 gap-4">
-          <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
-          <p className="text-zinc-400 text-sm">Pensando en una película...</p>
-        </div>
-      </div>
+      <PageShell maxWidth="lg">
+        <LoadingState text="Pensando en una película..." size="lg" />
+      </PageShell>
     )
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pb-24">
-      <Nav active="inicio" />
+    <PageShell maxWidth="lg">
+      <PageHeader
+        title="¿Quién soy?"
+        subtitle="Estoy pensando en una película. Hazme preguntas de sí o no para descubrir cuál es."
+        icon={<Icon.Sparkles className="w-7 h-7" />}
+      />
 
-      <div className="max-w-lg mx-auto px-4 pt-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-yellow-400 mb-1">¿Quién soy?</h1>
-          <p className="text-zinc-400 text-sm">
-            Estoy pensando en una película... Hacé preguntas para adivinar cuál es.
-          </p>
+      {/* ─── WON ─── */}
+      {phase === 'won' && secret && (
+        <div className="text-center animate-in fade-in duration-500">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-400/15 border border-yellow-400/30 text-yellow-400 mb-4">
+            <Icon.Trophy className="w-8 h-8" />
+          </div>
+          <h2 className="text-3xl font-black text-yellow-400 mb-5 tracking-tight">¡Adivinaste!</h2>
+          <img
+            src={`https://image.tmdb.org/t/p/w342${secret.poster_path}`}
+            alt={secret.titulo}
+            className="w-48 mx-auto rounded-2xl shadow-2xl shadow-yellow-400/20 mb-5"
+          />
+          <p className="text-xl font-bold text-white">{secret.titulo}</p>
+          {secret.titulo_ingles && secret.titulo_ingles !== secret.titulo && (
+            <p className="text-zinc-400 text-sm mt-1">{secret.titulo_ingles}</p>
+          )}
+          <p className="text-zinc-500 text-sm mt-1">{secret.anio}</p>
+          <Card padding="md" className="mt-6 inline-block">
+            <p className="text-sm text-zinc-300">
+              Usaste <span className="text-yellow-400 font-bold tabular-nums">{asked.length}</span> de {MAX_QUESTIONS} preguntas
+            </p>
+            {asked.length <= 5 && <p className="text-yellow-400 text-xs mt-1.5 font-semibold">Crack absoluto del cine</p>}
+            {asked.length > 5 && asked.length <= 10 && <p className="text-yellow-400/80 text-xs mt-1.5 font-semibold">Bien jugado</p>}
+            {asked.length > 10 && asked.length <= 15 && <p className="text-zinc-300 text-xs mt-1.5 font-semibold">Nada mal</p>}
+            {asked.length > 15 && <p className="text-zinc-400 text-xs mt-1.5 font-semibold">Justo a tiempo</p>}
+          </Card>
+          <div className="mt-6 flex justify-center">
+            <Button onClick={restart} size="lg" iconLeft={<Icon.Refresh className="w-4 h-4" />}>
+              Jugar de nuevo
+            </Button>
+          </div>
         </div>
+      )}
 
-        {/* ─── WON ─── */}
-        {phase === 'won' && secret && (
-          <div className="text-center animate-in fade-in duration-500">
-            <div className="text-4xl mb-2">&#127881;</div>
-            <h2 className="text-2xl font-bold text-yellow-400 mb-4">¡Adivinaste!</h2>
-            <img
-              src={`https://image.tmdb.org/t/p/w342${secret.poster_path}`}
-              alt={secret.titulo}
-              className="w-48 mx-auto rounded-xl shadow-lg shadow-yellow-400/20 mb-4"
-            />
-            <p className="text-lg font-semibold">{secret.titulo}</p>
-            {secret.titulo_ingles && secret.titulo_ingles !== secret.titulo && (
-              <p className="text-zinc-400 text-sm">{secret.titulo_ingles}</p>
-            )}
-            <p className="text-zinc-500 text-sm mt-1">{secret.anio}</p>
-            <div className="mt-4 bg-zinc-900 rounded-xl p-4 inline-block">
-              <p className="text-sm text-zinc-300">
-                Usaste <span className="text-yellow-400 font-bold">{asked.length}</span> de {MAX_QUESTIONS} preguntas
-              </p>
-              {asked.length <= 5 && <p className="text-yellow-400 text-xs mt-1">Eres un crack del cine</p>}
-              {asked.length > 5 && asked.length <= 10 && <p className="text-green-400 text-xs mt-1">Bien jugado</p>}
-              {asked.length > 10 && asked.length <= 15 && <p className="text-blue-400 text-xs mt-1">Nada mal</p>}
-              {asked.length > 15 && <p className="text-zinc-400 text-xs mt-1">Justo a tiempo</p>}
-            </div>
-            <button
-              onClick={restart}
-              className="mt-6 block mx-auto bg-yellow-400 text-black font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition"
-            >
+      {/* ─── LOST ─── */}
+      {phase === 'lost' && secret && (
+        <div className="text-center animate-in fade-in duration-500">
+          <h2 className="text-2xl font-black text-white mb-5 tracking-tight">La película era...</h2>
+          <img
+            src={`https://image.tmdb.org/t/p/w342${secret.poster_path}`}
+            alt={secret.titulo}
+            className="w-48 mx-auto rounded-2xl shadow-2xl shadow-black/40 mb-5"
+          />
+          <p className="text-xl font-bold text-white">{secret.titulo}</p>
+          {secret.titulo_ingles && secret.titulo_ingles !== secret.titulo && (
+            <p className="text-zinc-400 text-sm mt-1">{secret.titulo_ingles}</p>
+          )}
+          <p className="text-zinc-500 text-sm mt-1">{secret.anio}</p>
+          {secret.sinopsis_chilensis && (
+            <p className="text-zinc-400 text-sm mt-4 max-w-sm mx-auto leading-relaxed">{secret.sinopsis_chilensis}</p>
+          )}
+          <div className="mt-6 flex justify-center">
+            <Button onClick={restart} size="lg" iconLeft={<Icon.Refresh className="w-4 h-4" />}>
               Jugar de nuevo
-            </button>
+            </Button>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* ─── LOST ─── */}
-        {phase === 'lost' && secret && (
-          <div className="text-center animate-in fade-in duration-500">
-            <h2 className="text-xl font-bold text-red-400 mb-4">La película era...</h2>
-            <img
-              src={`https://image.tmdb.org/t/p/w342${secret.poster_path}`}
-              alt={secret.titulo}
-              className="w-48 mx-auto rounded-xl shadow-lg shadow-red-400/20 mb-4"
-            />
-            <p className="text-lg font-semibold">{secret.titulo}</p>
-            {secret.titulo_ingles && secret.titulo_ingles !== secret.titulo && (
-              <p className="text-zinc-400 text-sm">{secret.titulo_ingles}</p>
-            )}
-            <p className="text-zinc-500 text-sm mt-1">{secret.anio}</p>
-            {secret.sinopsis_chilensis && (
-              <p className="text-zinc-400 text-sm mt-3 max-w-sm mx-auto">{secret.sinopsis_chilensis}</p>
-            )}
-            <button
-              onClick={restart}
-              className="mt-6 block mx-auto bg-yellow-400 text-black font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition"
-            >
-              Jugar de nuevo
-            </button>
-          </div>
-        )}
-
-        {/* ─── ACTIVE GAME ─── */}
-        {(phase === 'asking' || phase === 'guessing') && (
-          <>
-            {/* Questions remaining */}
-            <div className="flex items-center justify-between mb-4">
+      {/* ─── ACTIVE GAME ─── */}
+      {(phase === 'asking' || phase === 'guessing') && (
+        <>
+          {/* Questions remaining */}
+          <Card padding="md" className="mb-5">
+            <div className="flex items-center justify-between gap-3">
               <span className="text-sm text-zinc-400">
-                Te quedan <span className="text-yellow-400 font-bold">{remaining}</span> preguntas
+                Te quedan <span className="text-yellow-400 font-bold tabular-nums">{remaining}</span> preguntas
               </span>
               <div className="flex gap-1">
                 {Array.from({ length: MAX_QUESTIONS }).map((_, i) => (
@@ -729,66 +730,65 @@ export default function QuienSoyPage() {
                 ))}
               </div>
             </div>
+          </Card>
 
-            {/* Free text question */}
-            {phase === 'asking' && remaining > 0 && (
-              <div className="bg-zinc-900 rounded-xl p-4 mb-4">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2 block">
-                  Pregunta libre
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    ref={freeRef}
-                    value={freeQuestion}
-                    onChange={e => setFreeQuestion(e.target.value)}
-                    onKeyDown={e => { if (e.key === 'Enter') askFreeQuestion() }}
-                    placeholder="Escribe cualquier pregunta de sí/no..."
-                    className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-yellow-400 transition"
-                  />
-                  <button
-                    onClick={askFreeQuestion}
-                    disabled={freeQuestion.trim().length < 3 || remaining <= 0}
-                    className="bg-yellow-400 text-black font-bold px-4 py-2 rounded-lg text-sm hover:bg-yellow-300 transition disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    Preguntar
-                  </button>
-                </div>
-                <p className="text-xs text-zinc-600 mt-1">Busca coincidencias en título, sinopsis, keywords, género, director, actores y compositor.</p>
+          {/* Free text question */}
+          {phase === 'asking' && remaining > 0 && (
+            <Card padding="md" className="mb-5">
+              <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-3 block">
+                Pregunta libre
+              </label>
+              <div className="flex gap-2">
+                <input
+                  ref={freeRef}
+                  value={freeQuestion}
+                  onChange={e => setFreeQuestion(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') askFreeQuestion() }}
+                  placeholder="Escribe cualquier pregunta de sí o no..."
+                  className="flex-1 bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 transition-colors min-h-[44px]"
+                />
+                <Button
+                  onClick={askFreeQuestion}
+                  disabled={freeQuestion.trim().length < 3 || remaining <= 0}
+                >
+                  Preguntar
+                </Button>
               </div>
-            )}
+              <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
+                Busca coincidencias en título, sinopsis, keywords, género, director, actores y compositor.
+              </p>
+            </Card>
+          )}
 
-            {/* Question categories */}
-            {phase === 'asking' && remaining > 0 && (
-              <div className="space-y-2 mb-6">
+          {/* Question categories */}
+          {phase === 'asking' && remaining > 0 && (
+            <Section label="Categorías">
+              <div className="space-y-2">
                 {CATEGORIES.map(cat => {
                   const askedCount = cat.questions.filter(q => isAsked(q.text)).length
                   const allAsked = askedCount === cat.questions.length
                   if (allAsked) return null
                   const isOpen = openCategory === cat.label
                   return (
-                    <div key={cat.label} className="bg-zinc-900 rounded-xl overflow-hidden">
+                    <Card key={cat.label} padding="none" className="overflow-hidden">
                       <button
                         onClick={() => setOpenCategory(isOpen ? null : cat.label)}
-                        className="w-full flex items-center justify-between px-4 py-3 text-left"
+                        className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left cursor-pointer hover:bg-zinc-800/40 transition-colors min-h-[44px]"
                       >
-                        <span className="text-sm font-semibold text-zinc-200">
+                        <span className="text-sm font-bold text-white flex items-center gap-2">
                           {cat.label}
                           {askedCount > 0 && (
-                            <span className="ml-2 text-xs text-zinc-500">({askedCount}/{cat.questions.length})</span>
+                            <Pill variant="gold" size="sm">
+                              {askedCount}/{cat.questions.length}
+                            </Pill>
                           )}
                         </span>
-                        <svg
+                        <Icon.ChevronDown
                           className={`w-4 h-4 text-zinc-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        />
                       </button>
                       {isOpen && (
-                        <div className="px-4 pb-3 flex flex-wrap gap-2">
+                        <div className="px-5 pb-4 flex flex-wrap gap-2 border-t border-zinc-800/60 pt-3">
                           {cat.questions.map(q => {
                             const done = isAsked(q.text)
                             const entry = asked.find(a => a.text === q.text)
@@ -797,16 +797,22 @@ export default function QuienSoyPage() {
                                 key={q.text}
                                 disabled={done || remaining <= 0}
                                 onClick={() => { if (!done && remaining > 0) askQuestion(q.text, q.evaluate) }}
-                                className={`text-xs px-3 py-2 rounded-lg transition flex items-center gap-1.5 ${
+                                className={`text-xs px-3 py-2 min-h-[44px] rounded-xl transition-colors flex items-center gap-1.5 font-medium ${
                                   done
                                     ? entry?.answer
-                                      ? 'bg-green-900/40 text-green-400 border border-green-800/40 cursor-not-allowed'
-                                      : 'bg-red-900/40 text-red-400 border border-red-800/40 cursor-not-allowed'
-                                    : 'bg-zinc-800 text-white hover:bg-yellow-400 hover:text-black active:scale-95'
+                                      ? 'bg-yellow-400/15 text-yellow-400 border border-yellow-400/30 cursor-not-allowed'
+                                      : 'bg-zinc-800/60 text-zinc-500 border border-zinc-800 cursor-not-allowed line-through'
+                                    : 'bg-zinc-800 text-white hover:bg-yellow-400 hover:text-zinc-950 cursor-pointer'
                                 }`}
                               >
-                                {done && (
-                                  <span className="text-[10px]">{entry?.answer ? 'S' : 'N'}</span>
+                                {done && entry && (
+                                  <span className="inline-flex items-center">
+                                    {entry.answer ? (
+                                      <Icon.Check className="w-3 h-3" />
+                                    ) : (
+                                      <Icon.Close className="w-3 h-3" />
+                                    )}
+                                  </span>
                                 )}
                                 {q.text}
                               </button>
@@ -814,127 +820,146 @@ export default function QuienSoyPage() {
                           })}
                         </div>
                       )}
-                    </div>
+                    </Card>
                   )
                 })}
               </div>
-            )}
+            </Section>
+          )}
 
-            {/* Switch to guessing / give up */}
-            <div className="flex gap-3 mb-6">
-              {phase === 'asking' && (
-                <>
-                  <button
-                    onClick={() => { setPhase('guessing'); setTimeout(() => inputRef.current?.focus(), 100) }}
-                    className="flex-1 bg-yellow-400 text-black font-bold py-3 rounded-xl hover:bg-yellow-300 transition text-sm"
-                  >
-                    ¿Ya sabes cuál es?
-                  </button>
-                  <button
-                    onClick={giveUp}
-                    className="px-4 py-3 rounded-xl bg-zinc-800 text-zinc-400 hover:text-white transition text-sm"
-                  >
-                    Me rindo
-                  </button>
-                </>
-              )}
-              {phase === 'guessing' && (
-                <button
-                  onClick={() => { setPhase('asking'); setGuessInput(''); setSuggestions([]); setWrongGuess(false) }}
-                  className="text-sm text-zinc-400 hover:text-white transition"
+          {/* Switch to guessing / give up */}
+          <div className="flex gap-3 mb-6">
+            {phase === 'asking' && (
+              <>
+                <Button
+                  onClick={() => { setPhase('guessing'); setTimeout(() => inputRef.current?.focus(), 100) }}
+                  size="lg"
+                  fullWidth
+                  iconLeft={<Icon.Sparkles className="w-4 h-4" />}
                 >
-                  Volver a preguntas
-                </button>
-              )}
-            </div>
-
-            {/* Guess input */}
+                  ¿Ya sabes cuál es?
+                </Button>
+                <Button onClick={giveUp} variant="ghost" size="lg">
+                  Me rindo
+                </Button>
+              </>
+            )}
             {phase === 'guessing' && (
-              <div className="mb-6 relative">
-                <label className="text-sm text-zinc-400 mb-2 block">Escribe el nombre de la película:</label>
+              <Button
+                onClick={() => { setPhase('asking'); setGuessInput(''); setSuggestions([]); setWrongGuess(false) }}
+                variant="ghost"
+                iconLeft={<Icon.ChevronLeft className="w-4 h-4" />}
+              >
+                Volver a preguntas
+              </Button>
+            )}
+          </div>
+
+          {/* Guess input */}
+          {phase === 'guessing' && (
+            <Card padding="md" className="mb-6 relative overflow-visible">
+              <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-3 block">
+                Escribe el nombre de la película
+              </label>
+              <div className="relative">
+                <Icon.Search
+                  aria-hidden="true"
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 pointer-events-none"
+                />
                 <input
                   ref={inputRef}
                   value={guessInput}
                   onChange={e => handleGuessChange(e.target.value)}
-                  placeholder="Ej: El Padrino, Inception..."
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-yellow-400 transition"
+                  placeholder="Ej. El Padrino, Inception..."
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-[16px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400/50 transition-colors min-h-[44px]"
                 />
-                {wrongGuess && (
-                  <p className="text-red-400 text-xs mt-2">No es esa. Intenta de nuevo o sigue preguntando.</p>
-                )}
-                {suggestions.length > 0 && (
-                  <div className="absolute z-20 left-0 right-0 top-full mt-1 bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden shadow-xl max-h-64 overflow-y-auto">
-                    {suggestions.map(m => (
-                      <button
-                        key={m.id}
-                        onClick={() => { setGuessInput(m.titulo); setSuggestions([]); submitGuess(m.id) }}
-                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-zinc-800 text-left transition"
-                      >
-                        {m.poster_path && (
-                          <img
-                            src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
-                            alt=""
-                            className="w-8 h-12 rounded object-cover flex-shrink-0"
-                          />
-                        )}
-                        <div className="min-w-0">
-                          <p className="text-sm text-white truncate">{m.titulo}</p>
-                          {m.titulo_ingles && m.titulo_ingles !== m.titulo && (
-                            <p className="text-xs text-zinc-500 truncate">{m.titulo_ingles}</p>
-                          )}
-                          <p className="text-xs text-zinc-600">{m.anio}</p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
-            )}
+              {wrongGuess && (
+                <p className="text-yellow-400/80 text-xs mt-3 flex items-center gap-1.5">
+                  <Icon.Close className="w-3.5 h-3.5" />
+                  No es esa. Intenta de nuevo o sigue preguntando.
+                </p>
+              )}
+              {suggestions.length > 0 && (
+                <div className="absolute z-20 left-0 right-0 top-full mt-2 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl max-h-64 overflow-y-auto">
+                  {suggestions.map(m => (
+                    <button
+                      key={m.id}
+                      onClick={() => { setGuessInput(m.titulo); setSuggestions([]); submitGuess(m.id) }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-zinc-800 text-left transition-colors cursor-pointer min-h-[44px]"
+                    >
+                      {m.poster_path && (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w92${m.poster_path}`}
+                          alt=""
+                          className="w-8 h-12 rounded object-cover flex-shrink-0"
+                        />
+                      )}
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-white truncate">{m.titulo}</p>
+                        {m.titulo_ingles && m.titulo_ingles !== m.titulo && (
+                          <p className="text-xs text-zinc-500 truncate">{m.titulo_ingles}</p>
+                        )}
+                        <p className="text-xs text-zinc-600">{m.anio}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </Card>
+          )}
 
-            {/* Asked questions log */}
-            {asked.length > 0 && (
+          {/* Asked questions log */}
+          {asked.length > 0 && (
+            <Section label="Preguntas hechas" count={asked.length}>
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
-                  Preguntas hechas
-                </h3>
                 {[...asked].reverse().map((q, i) => (
                   <div
                     key={i}
-                    className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm ${
-                      q.answer ? 'bg-green-950/40 border border-green-800/30' : 'bg-red-950/40 border border-red-800/30'
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm border ${
+                      q.answer
+                        ? 'bg-yellow-400/10 border-yellow-400/30'
+                        : 'bg-zinc-900 border-zinc-800'
                     }`}
                   >
                     <span
-                      className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                        q.answer ? 'bg-green-500 text-black' : 'bg-red-500 text-white'
+                      className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
+                        q.answer ? 'bg-yellow-400 text-zinc-950' : 'bg-zinc-800 text-zinc-400'
                       }`}
                     >
-                      {q.answer ? 'S' : 'N'}
+                      {q.answer ? (
+                        <Icon.Check className="w-3.5 h-3.5" strokeWidth={3} />
+                      ) : (
+                        <Icon.Close className="w-3.5 h-3.5" strokeWidth={3} />
+                      )}
                     </span>
-                    <span className="text-zinc-200">{q.text}</span>
-                    <span className={`ml-auto text-xs font-semibold ${q.answer ? 'text-green-400' : 'text-red-400'}`}>
-                      {q.answer ? '¡Sí!' : '¡No!'}
+                    <span className="text-zinc-200 min-w-0 flex-1">{q.text}</span>
+                    <span className={`shrink-0 text-xs font-bold uppercase tracking-wider ${q.answer ? 'text-yellow-400' : 'text-zinc-500'}`}>
+                      {q.answer ? 'Sí' : 'No'}
                     </span>
                   </div>
                 ))}
               </div>
-            )}
+            </Section>
+          )}
 
-            {/* Out of questions */}
-            {remaining <= 0 && phase === 'asking' && (
-              <div className="text-center mt-6">
-                <p className="text-zinc-400 text-sm mb-3">Se acabaron las preguntas. Es tu última oportunidad.</p>
-                <button
-                  onClick={() => { setPhase('guessing'); setTimeout(() => inputRef.current?.focus(), 100) }}
-                  className="bg-yellow-400 text-black font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition"
-                >
-                  Adivinar ahora
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+          {/* Out of questions */}
+          {remaining <= 0 && phase === 'asking' && (
+            <Card padding="lg" className="text-center mt-6">
+              <p className="text-zinc-300 text-sm mb-4">
+                Se acabaron las preguntas. Es tu última oportunidad.
+              </p>
+              <Button
+                onClick={() => { setPhase('guessing'); setTimeout(() => inputRef.current?.focus(), 100) }}
+                size="lg"
+                iconLeft={<Icon.Sparkles className="w-4 h-4" />}
+              >
+                Adivinar ahora
+              </Button>
+            </Card>
+          )}
+        </>
+      )}
+    </PageShell>
   )
 }

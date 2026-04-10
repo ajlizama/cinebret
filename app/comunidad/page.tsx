@@ -411,7 +411,14 @@ export default function ComunidadPage() {
             video_clip_url: r.video_clip_url ?? null,
             sinopsis: r.sinopsis_chilensis ?? null,
           }))
-        setFeedCineBret(items)
+        // Pin featured reviews at the top
+        const PINNED_IDS = [
+          '2748589a-0ae9-4b14-b877-385cf3b6cd41', // No Other Choice
+          '98a598c1-7c8f-4d7d-b77b-483dc849060b', // Project Hail Mary
+        ]
+        const pinned = PINNED_IDS.map(id => items.find(i => i.pelicula_id === id)).filter(Boolean) as FeedItem[]
+        const rest = items.filter(i => !PINNED_IDS.includes(i.pelicula_id))
+        setFeedCineBret([...pinned, ...rest])
         setCargandoFeed(false)
       })
   }, [])

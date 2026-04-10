@@ -536,25 +536,29 @@ export default function EmbeddedTinder({ categorias = [], plataformas = [], tren
     const idField = isSeries ? 'serie_id' : 'pelicula_id'
     const conflict = isSeries ? 'user_id,serie_id' : 'user_id,pelicula_id'
 
+    // Remove the SPECIFIC swiped movie by ID (not slice(1) which removes
+    // the first item of the unfiltered list — that breaks when filters are active)
     if (dir === 'right') {
       markSessionDone(top.id)
-      setMovies(prev => prev.slice(1))
+      setMovies(prev => prev.filter(m => m.id !== top.id))
       setSlide(0)
       if (user) supabase.from(table).upsert({ user_id: user.id, [idField]: top.id, watchlist: true, visto: false }, { onConflict: conflict }).then(() => {})
     } else if (dir === 'left') {
       snoozeId(top.id)
-      setMovies(prev => prev.slice(1))
+      setMovies(prev => prev.filter(m => m.id !== top.id))
       setSlide(0)
     } else if (dir === 'up') {
       markSessionDone(top.id)
-      setMovies(prev => prev.slice(1))
+      setMovies(prev => prev.filter(m => m.id !== top.id))
       setSlide(0)
       if (user) supabase.from(table).upsert({ user_id: user.id, [idField]: top.id, visto: true, watchlist: false }, { onConflict: conflict }).then(() => {})
     } else if (dir === 'down') {
       setMovies(prev => {
-        const [first, ...rest] = prev
-        const pos = Math.min(5, rest.length)
-        const next = [...rest]; next.splice(pos, 0, first); return next
+        const idx = prev.findIndex(m => m.id === top.id)
+        if (idx === -1) return prev
+        const without = [...prev.slice(0, idx), ...prev.slice(idx + 1)]
+        const pos = Math.min(5, without.length)
+        const next = [...without]; next.splice(pos, 0, top); return next
       })
       setSlide(0)
     }

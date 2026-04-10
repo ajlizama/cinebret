@@ -194,6 +194,21 @@ export default function MapaPage() {
     return { nodes: updatedNodes, links: freshEdges }
   }, [rawGraph, nodeLimit])
 
+  // Zoom to fit immediately when graph loads (positions are pre-computed,
+  // no need to wait for the simulation to stabilize)
+  const hasZoomedRef = useRef(false)
+  useEffect(() => {
+    if (!graphData || !fgRef.current || hasZoomedRef.current) return
+    // Tiny delay so the canvas has rendered at least one frame
+    const t = setTimeout(() => {
+      if (fgRef.current && !selectedNode && pathNodes.length === 0) {
+        fgRef.current.zoomToFit(400, 40)
+        hasZoomedRef.current = true
+      }
+    }, 150)
+    return () => clearTimeout(t)
+  }, [graphData, selectedNode, pathNodes])
+
   // Cluster separation is handled by pre-computed positions in the JSON
   // (computed by scripts/compute-clusters.mjs with d3-force + cluster forces).
   // No runtime force injection needed.
@@ -1250,13 +1265,7 @@ export default function MapaPage() {
             d3VelocityDecay={0.3}
             warmupTicks={100}
             cooldownTicks={200}
-            onEngineStop={() => {
-              // After simulation stabilizes, zoom to fit the entire graph
-              // so ALL cluster labels are visible on first load
-              if (fgRef.current && !selectedNode && pathNodes.length === 0) {
-                fgRef.current.zoomToFit(800, 60)
-              }
-            }}
+            onEngineStop={() => { /* no delayed zoom — handled immediately below */ }}
             onNodeHover={(node: any) => setHoveredNode(node)}
             onNodeClick={(node: any) => {
               if (selectedNode?.id === node.id) {

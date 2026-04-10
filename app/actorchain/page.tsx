@@ -141,6 +141,7 @@ export default function ActorChainPage() {
   const [transitioning, setTransitioning] = useState(false)
   const [dailyResult, setDailyResult] = useState<DailyResult | null>(null)
   const [showShareCopied, setShowShareCopied] = useState(false)
+  const [catalogMeta, setCatalogMeta] = useState<Record<string, { difficulty?: string; category?: string | null }> | null>(null)
 
   const dayNum = useMemo(() => dayNumber(), [])
 
@@ -152,7 +153,10 @@ export default function ActorChainPage() {
         setLoadLabel('Cargando películas…')
         const curatedSet: Set<string> | null = await fetch('/curated-catalog.json')
           .then((r) => r.json())
-          .then((d: { ids: string[] }) => new Set(d.ids))
+          .then((d: { ids: string[]; meta?: Record<string, { difficulty?: string; category?: string | null }> }) => {
+            if (d.meta) setCatalogMeta(d.meta)
+            return new Set(d.ids)
+          })
           .catch(() => null)
 
         const allMovies: Movie[] = []
@@ -620,10 +624,15 @@ export default function ActorChainPage() {
               transition={{ duration: 0.6 }}
               className="w-full max-w-md text-center"
             >
-              <div className="flex justify-center">
+              <div className="flex justify-center gap-2">
                 <Pill variant="gold" size="sm">
                   Desafío diario #{dayNum}
                 </Pill>
+                {challenge && catalogMeta?.[challenge.startMovie.id]?.difficulty && (
+                  <Pill variant={catalogMeta[challenge.startMovie.id].difficulty === 'Fácil' ? 'success' : catalogMeta[challenge.startMovie.id].difficulty === 'Difícil' ? 'danger' : 'default'} size="sm">
+                    {catalogMeta[challenge.startMovie.id].difficulty}
+                  </Pill>
+                )}
               </div>
               <h1 className="mt-4 text-4xl font-black tracking-tight text-white">ActorChain</h1>
               <p className="mt-3 text-base text-zinc-400 leading-relaxed">

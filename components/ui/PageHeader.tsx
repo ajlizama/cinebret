@@ -15,7 +15,7 @@
 
 export type PageHeaderProps = {
   title: string
-  subtitle?: string
+  subtitle?: React.ReactNode
   /** Shown next to the title in muted color. */
   count?: number
   /** Small icon rendered before the title. */

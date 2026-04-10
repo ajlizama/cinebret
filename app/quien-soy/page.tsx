@@ -499,6 +499,7 @@ export default function QuienSoyPage() {
   const [openCategory, setOpenCategory] = useState<string | null>(null)
   const [freeQuestion, setFreeQuestion] = useState('')
   const [isDaily, setIsDaily] = useState(true)
+  const [catalogMeta, setCatalogMeta] = useState<Record<string, { difficulty?: string; category?: string | null }> | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const freeRef = useRef<HTMLInputElement>(null)
 
@@ -510,7 +511,8 @@ export default function QuienSoyPage() {
     async function load() {
       // Fetch curated catalog
       const catalogRes = await fetch('/curated-catalog.json')
-      const catalog: { ids: string[] } = await catalogRes.json()
+      const catalog: { ids: string[]; meta?: Record<string, { difficulty?: string; category?: string | null }> } = await catalogRes.json()
+      if (catalog.meta) setCatalogMeta(catalog.meta)
       const curatedSet = new Set(catalog.ids)
 
       // Fetch good movies with poster
@@ -721,7 +723,16 @@ export default function QuienSoyPage() {
     <PageShell maxWidth="lg">
       <PageHeader
         title="¿Quién soy?"
-        subtitle="Estoy pensando en una película. Hazme preguntas de sí o no para descubrir cuál es."
+        subtitle={
+          <span className="inline-flex items-center gap-2 flex-wrap">
+            Estoy pensando en una película. Hazme preguntas de sí o no para descubrir cuál es.
+            {isDaily && secret && catalogMeta?.[secret.id]?.difficulty && (
+              <Pill variant={catalogMeta[secret.id].difficulty === 'Fácil' ? 'success' : catalogMeta[secret.id].difficulty === 'Difícil' ? 'danger' : 'default'} size="sm">
+                {catalogMeta[secret.id].difficulty}
+              </Pill>
+            )}
+          </span>
+        }
         icon={<Icon.Sparkles className="w-7 h-7" />}
       />
 

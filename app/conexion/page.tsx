@@ -173,6 +173,7 @@ export default function ConexionPage() {
   const [prevDist, setPrevDist] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isDaily, setIsDaily] = useState(true)
+  const [catalogMeta, setCatalogMeta] = useState<Record<string, { difficulty?: string; category?: string | null }> | null>(null)
   const pathRef = useRef<HTMLDivElement>(null)
 
   // Movie chooser state
@@ -187,10 +188,11 @@ export default function ConexionPage() {
   useEffect(() => {
     Promise.all([
       fetch('/movie-graph.json').then(r => r.json()) as Promise<Graph>,
-      fetch('/curated-catalog.json').then(r => r.json()) as Promise<{ ids: string[] }>,
+      fetch('/curated-catalog.json').then(r => r.json()) as Promise<{ ids: string[]; meta?: Record<string, { difficulty?: string; category?: string | null }> }>,
     ])
       .then(([data, catalog]) => {
         const curatedSet = new Set(catalog.ids)
+        if (catalog.meta) setCatalogMeta(catalog.meta)
         setGraph(data)
         const a = buildAdjacency(data.edges)
         setAdj(a)
@@ -433,7 +435,16 @@ export default function ConexionPage() {
     <PageShell maxWidth="2xl" className="pb-44">
       <PageHeader
         title="Conexión Cinéfila"
-        subtitle="Encuentra el camino más corto entre dos películas saltando por sus conexiones."
+        subtitle={
+          <span className="inline-flex items-center gap-2 flex-wrap">
+            Encuentra el camino más corto entre dos películas saltando por sus conexiones.
+            {isDaily && startNode && catalogMeta?.[startNode.id]?.difficulty && (
+              <Pill variant={catalogMeta[startNode.id].difficulty === 'Fácil' ? 'success' : catalogMeta[startNode.id].difficulty === 'Difícil' ? 'danger' : 'default'} size="sm">
+                {catalogMeta[startNode.id].difficulty}
+              </Pill>
+            )}
+          </span>
+        }
         icon={<Icon.Map className="w-7 h-7" />}
       />
 

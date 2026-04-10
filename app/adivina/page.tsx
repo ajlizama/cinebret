@@ -244,6 +244,7 @@ export default function AdivinaPage() {
   const [isFreeMode, setIsFreeMode] = useState(false)
   const [allMovies, setAllMovies] = useState<Movie[]>([]) // all valid movies for free mode picks
   const [freeRoundsUsed, setFreeRoundsUsed] = useState(0)
+  const [catalogMeta, setCatalogMeta] = useState<Record<string, { difficulty?: string; category?: string | null }> | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
 
@@ -314,7 +315,10 @@ export default function AdivinaPage() {
           1000,
         ),
         fetch('/movie-graph.json').then((r) => r.json()).catch(() => null) as Promise<GraphData | null>,
-        fetch('/curated-catalog.json').then((r) => r.json()).then((d: { ids: string[] }) => new Set(d.ids)).catch(() => null as Set<string> | null),
+        fetch('/curated-catalog.json').then((r) => r.json()).then((d: { ids: string[]; meta?: Record<string, { difficulty?: string; category?: string | null }> }) => {
+          if (d.meta) setCatalogMeta(d.meta)
+          return new Set(d.ids)
+        }).catch(() => null as Set<string> | null),
       ])
 
       const adj = graphRes ? buildAdjacency(graphRes.edges) : null
@@ -619,6 +623,8 @@ export default function AdivinaPage() {
     const hints: Hint[] = []
     const attempts = guesses.length
 
+    const catalogCategory = catalogMeta?.[targetMovie.id]?.category ?? null
+
     if (attempts >= 1) {
       const decade = getDecade(targetMovie.anio)
       hints.push({
@@ -626,17 +632,20 @@ export default function AdivinaPage() {
         value: `${targetMovie.anio ?? '?'} (década del ${decade ?? '?'})`,
       })
     }
-    if (attempts >= 2 && enr?.generos) {
+    if (attempts >= 2 && catalogCategory) {
+      hints.push({ label: 'Categoría', value: catalogCategory })
+    }
+    if (attempts >= (catalogCategory ? 3 : 2) && enr?.generos) {
       hints.push({ label: 'Géneros', value: enr.generos.join(', ') })
     }
-    if (attempts >= 3 && enr?.director) {
+    if (attempts >= (catalogCategory ? 4 : 3) && enr?.director) {
       hints.push({ label: 'Director', value: `${enr.director.charAt(0)}...` })
     }
-    if (attempts >= 4 && enr?.actores) {
+    if (attempts >= (catalogCategory ? 5 : 4) && enr?.actores) {
       const first = enr.actores.split(',')[0]?.trim()
       if (first) hints.push({ label: 'Actor', value: first })
     }
-    if (attempts >= 5 && enr?.sinopsis_chilensis) {
+    if (attempts >= (catalogCategory ? 6 : 5) && enr?.sinopsis_chilensis) {
       const firstLine = enr.sinopsis_chilensis.split('.')[0]
       hints.push({ label: 'Sinopsis', value: `"${firstLine}..."` })
     }
@@ -667,6 +676,8 @@ export default function AdivinaPage() {
   const blurPx = gameOver ? 0 : getBlur(guesses.length)
   const hints = getHints()
   const maxDist = Math.max(...stats.guess_distribution, 1)
+  const dailyDifficulty = targetMovie && catalogMeta ? catalogMeta[targetMovie.id]?.difficulty ?? null : null
+  const difficultyVariant = dailyDifficulty === 'Fácil' ? 'success' as const : dailyDifficulty === 'Difícil' ? 'danger' as const : 'default' as const
 
   type CategoryKey = 'DEC' | 'GEN' | 'DIR' | 'CAST' | 'OSC' | 'COMP' | 'MOOD'
   const CATEGORY_LABELS: Record<CategoryKey, string> = {
@@ -749,9 +760,14 @@ export default function AdivinaPage() {
       <PageHeader
         title="Adivina la Película"
         subtitle={
-          isFreeMode
-            ? `Modo libre · ronda ${freeRoundsUsed}/${FREE_ROUNDS_PER_DAY} · ${guesses.length}/6 intentos`
-            : `Desafío diario #${dayNumber} · ${guesses.length}/6 intentos · ⏱ ${formatTime(Math.floor(elapsedSeconds))}`
+          <span className="inline-flex items-center gap-2 flex-wrap">
+            {isFreeMode
+              ? `Modo libre · ronda ${freeRoundsUsed}/${FREE_ROUNDS_PER_DAY} · ${guesses.length}/6 intentos`
+              : `Desafío diario #${dayNumber} · ${guesses.length}/6 intentos · ⏱ ${formatTime(Math.floor(elapsedSeconds))}`}
+            {dailyDifficulty && !isFreeMode && (
+              <Pill variant={difficultyVariant} size="sm">{dailyDifficulty}</Pill>
+            )}
+          </span>
         }
         icon={<Icon.Sparkles className="w-7 h-7" />}
         actions={

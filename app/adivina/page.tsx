@@ -298,7 +298,7 @@ export default function AdivinaPage() {
   // Fetch movies
   useEffect(() => {
     async function load() {
-      const [raw, graphRes] = await Promise.all([
+      const [raw, graphRes, curatedCatalog] = await Promise.all([
         fetchAllPages<any>(
           (from, to) =>
             supabase
@@ -314,6 +314,7 @@ export default function AdivinaPage() {
           1000,
         ),
         fetch('/movie-graph.json').then((r) => r.json()).catch(() => null) as Promise<GraphData | null>,
+        fetch('/curated-catalog.json').then((r) => r.json()).then((d: { ids: string[] }) => new Set(d.ids)).catch(() => null as Set<string> | null),
       ])
 
       const adj = graphRes ? buildAdjacency(graphRes.edges) : null
@@ -328,7 +329,7 @@ export default function AdivinaPage() {
         for (const e of graphRes.edges) { nodeIds.add(e.source); nodeIds.add(e.target) }
       }
 
-      const parsed: Movie[] = raw.map((p: any) => ({
+      const allParsed: Movie[] = raw.map((p: any) => ({
         id: p.id,
         titulo: p.titulo,
         titulo_ingles: p.titulo_ingles,
@@ -340,6 +341,11 @@ export default function AdivinaPage() {
         categoria: p.categoria ?? null,
         enriquecimiento: p.enriquecimiento ?? null,
       }))
+
+      // Filter to curated catalog only
+      const parsed = curatedCatalog
+        ? allParsed.filter((m) => curatedCatalog.has(m.id))
+        : allParsed
 
       // Filter: only movies that have connections in the graph (if graph loaded)
       const connected = nodeIds.size > 0

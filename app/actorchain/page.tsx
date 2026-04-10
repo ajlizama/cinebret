@@ -150,7 +150,12 @@ export default function ActorChainPage() {
     ;(async () => {
       try {
         setLoadLabel('Cargando películas…')
-        const movies: Movie[] = []
+        const curatedSet: Set<string> | null = await fetch('/curated-catalog.json')
+          .then((r) => r.json())
+          .then((d: { ids: string[] }) => new Set(d.ids))
+          .catch(() => null)
+
+        const allMovies: Movie[] = []
         {
           let from = 0
           while (true) {
@@ -163,13 +168,18 @@ export default function ActorChainPage() {
               .range(from, from + PAGE_SIZE - 1)
             if (error) throw error
             if (!data || data.length === 0) break
-            movies.push(...(data as Movie[]))
-            if (!cancelled) setLoadProgress(Math.min(40, Math.round((movies.length / 3000) * 40)))
+            allMovies.push(...(data as Movie[]))
+            if (!cancelled) setLoadProgress(Math.min(40, Math.round((allMovies.length / 3000) * 40)))
             if (data.length < PAGE_SIZE) break
             from += PAGE_SIZE
           }
         }
         if (cancelled) return
+
+        // Filter to curated catalog only
+        const movies = curatedSet
+          ? allMovies.filter((m) => curatedSet.has(String(m.id)))
+          : allMovies
 
         setLoadLabel('Cargando elencos…')
         const enrichRows: Array<{ pelicula_id: string; cast_json: CastMember[] }> = []

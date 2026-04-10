@@ -127,6 +127,22 @@ async function fetchMovies(): Promise<BlitzMovie[]> {
     from += pageSize
   }
 
+  // Filter to curated catalog
+  try {
+    const catalogRes = await fetch('/curated-catalog.json')
+    if (catalogRes.ok) {
+      const catalog: { ids: string[] } = await catalogRes.json()
+      const curatedSet = new Set(catalog.ids)
+      const filtered = allMovies.filter(m => curatedSet.has(m.id))
+      if (filtered.length > 0) {
+        allMovies.length = 0
+        allMovies.push(...filtered)
+      }
+    }
+  } catch {
+    // If catalog fetch fails, fall back to full pool
+  }
+
   // Shuffle
   for (let i = allMovies.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))

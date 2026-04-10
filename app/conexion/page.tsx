@@ -116,6 +116,45 @@ function pickTwoRandom(nodes: GraphNode[], adj: Map<string, Set<string>>): [Grap
 const TMDB_IMG = 'https://image.tmdb.org/t/p/w185'
 
 /* ------------------------------------------------------------------ */
+/*  Daily seed helpers                                                 */
+/* ------------------------------------------------------------------ */
+
+function getToday(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+function hashString(str: string): number {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i)
+    hash |= 0
+  }
+  return Math.abs(hash)
+}
+
+type ConexionDailyState = {
+  startId: string
+  endId: string
+  path: string[]
+  won: boolean
+  surrendered: boolean
+}
+
+function loadConexionDaily(today: string): ConexionDailyState | null {
+  try {
+    const raw = localStorage.getItem(`cinebret-conexion-${today}`)
+    if (!raw) return null
+    return JSON.parse(raw) as ConexionDailyState
+  } catch { return null }
+}
+
+function saveConexionDaily(today: string, state: ConexionDailyState): void {
+  try {
+    localStorage.setItem(`cinebret-conexion-${today}`, JSON.stringify(state))
+  } catch { /* quota exceeded, ignore */ }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -123,6 +162,7 @@ export default function ConexionPage() {
   const [graph, setGraph] = useState<Graph | null>(null)
   const [adj, setAdj] = useState<Map<string, Set<string>>>(new Map())
   const [nodeMap, setNodeMap] = useState<Map<string, GraphNode>>(new Map())
+  const [curatedNodes, setCuratedNodes] = useState<GraphNode[]>([])
   const [startNode, setStartNode] = useState<GraphNode | null>(null)
   const [endNode, setEndNode] = useState<GraphNode | null>(null)
   const [path, setPath] = useState<string[]>([])
@@ -132,6 +172,7 @@ export default function ConexionPage() {
   const [optimalPath, setOptimalPath] = useState<string[]>([])
   const [prevDist, setPrevDist] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isDaily, setIsDaily] = useState(true)
   const pathRef = useRef<HTMLDivElement>(null)
 
   // Movie chooser state
@@ -142,26 +183,33 @@ export default function ConexionPage() {
   const [chosenEnd, setChosenEnd] = useState<GraphNode | null>(null)
   const [chooserError, setChooserError] = useState('')
 
-  /* Load graph ---------------------------------------------------- */
+  /* Load graph + curated catalog ---------------------------------- */
   useEffect(() => {
-    fetch('/movie-graph.json')
-      .then((r) => r.json())
-      .then((data: Graph) => {
+    Promise.all([
+      fetch('/movie-graph.json').then(r => r.json()) as Promise<Graph>,
+      fetch('/curated-catalog.json').then(r => r.json()) as Promise<{ ids: string[] }>,
+    ])
+      .then(([data, catalog]) => {
+        const curatedSet = new Set(catalog.ids)
         setGraph(data)
         const a = buildAdjacency(data.edges)
         setAdj(a)
         const nm = new Map<string, GraphNode>()
         for (const n of data.nodes) nm.set(n.id, n)
         setNodeMap(nm)
+
+        // Filter graph nodes to curated IDs only
+        const curated = data.nodes.filter(n => curatedSet.has(n.id))
+        setCuratedNodes(curated)
       })
       .catch(() => setError('No se pudo cargar el grafo de películas.'))
   }, [])
 
-  /* Start new game ------------------------------------------------ */
+  /* Start new RANDOM game (non-daily) ----------------------------- */
   const startGame = useCallback(() => {
-    if (!graph) return
+    if (!graph || curatedNodes.length < 2) return
     const a = buildAdjacency(graph.edges)
-    const pair = pickTwoRandom(graph.nodes, a)
+    const pair = pickTwoRandom(curatedNodes, a)
     if (!pair) {
       setError('No se encontraron películas suficientes.')
       return
@@ -177,11 +225,70 @@ export default function ConexionPage() {
     setSurrendered(false)
     setPrevDist(optimal ? optimal.length - 1 : null)
     setError(null)
-  }, [graph])
+    setIsDaily(false)
+  }, [graph, curatedNodes])
 
+  /* Start daily game on load -------------------------------------- */
   useEffect(() => {
-    if (graph) startGame()
-  }, [graph, startGame])
+    if (!graph || curatedNodes.length < 2) return
+    const a = buildAdjacency(graph.edges)
+    const today = getToday()
+    const seed = hashString('cinebret-conexion-' + today)
+
+    // Pick two curated movies deterministically
+    const wellConnected = curatedNodes.filter(n => n.connections >= 8)
+    const pool = wellConnected.length >= 2 ? wellConnected : curatedNodes
+    const startIdx = seed % pool.length
+    let endIdx = (seed * 7 + 13) % pool.length
+    if (endIdx === startIdx) endIdx = (endIdx + 1) % pool.length
+
+    const s = pool[startIdx]
+    const e = pool[endIdx]
+    const optimal = bfs(a, s.id, e.id)
+
+    // If no path exists between daily picks, fall back to random
+    if (!optimal) {
+      startGame()
+      return
+    }
+
+    // Check localStorage for existing daily game state
+    const saved = loadConexionDaily(today)
+
+    setStartNode(s)
+    setEndNode(e)
+    setOptimalLen(optimal.length)
+    setOptimalPath(optimal)
+    setError(null)
+    setIsDaily(true)
+
+    if (saved && saved.startId === s.id && saved.endId === e.id) {
+      // Restore saved daily game
+      setPath(saved.path)
+      setWon(saved.won)
+      setSurrendered(saved.surrendered)
+      setPrevDist(optimal.length - 1)
+    } else {
+      // Fresh daily game
+      setPath([s.id])
+      setWon(false)
+      setSurrendered(false)
+      setPrevDist(optimal.length - 1)
+    }
+  }, [graph, curatedNodes, startGame])
+
+  /* Persist daily state ------------------------------------------- */
+  useEffect(() => {
+    if (!isDaily || !startNode || !endNode) return
+    const today = getToday()
+    saveConexionDaily(today, {
+      startId: startNode.id,
+      endId: endNode.id,
+      path,
+      won,
+      surrendered,
+    })
+  }, [path, won, surrendered, startNode, endNode, isDaily])
 
   // Search results for movie chooser
   const startResults = graph && searchStart.length >= 2
@@ -206,6 +313,7 @@ export default function ConexionPage() {
     setSurrendered(false)
     setPrevDist(p.length - 1)
     setError(null)
+    setIsDaily(false)
     setChooserOpen(false)
     setChooserError('')
     setSearchStart('')

@@ -451,6 +451,40 @@ const CATEGORIES: Category[] = [
 
 const MAX_QUESTIONS = 20
 
+/* ─── daily seed helpers ─── */
+function getToday(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+function hashString(str: string): number {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i)
+    hash |= 0
+  }
+  return Math.abs(hash)
+}
+
+type DailyState = {
+  asked: QuestionEntry[]
+  phase: 'asking' | 'guessing' | 'won' | 'lost'
+  secretId: string
+}
+
+function loadDailyState(today: string): DailyState | null {
+  try {
+    const raw = localStorage.getItem(`cinebret-quiensoy-${today}`)
+    if (!raw) return null
+    return JSON.parse(raw) as DailyState
+  } catch { return null }
+}
+
+function saveDailyState(today: string, state: DailyState): void {
+  try {
+    localStorage.setItem(`cinebret-quiensoy-${today}`, JSON.stringify(state))
+  } catch { /* quota exceeded, ignore */ }
+}
+
 /* ─── component ─── */
 export default function QuienSoyPage() {
   const [loading, setLoading] = useState(true)
@@ -464,6 +498,7 @@ export default function QuienSoyPage() {
   const [wrongGuess, setWrongGuess] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
   const [freeQuestion, setFreeQuestion] = useState('')
+  const [isDaily, setIsDaily] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const freeRef = useRef<HTMLInputElement>(null)
 
@@ -473,6 +508,11 @@ export default function QuienSoyPage() {
   useEffect(() => {
     let cancelled = false
     async function load() {
+      // Fetch curated catalog
+      const catalogRes = await fetch('/curated-catalog.json')
+      const catalog: { ids: string[] } = await catalogRes.json()
+      const curatedSet = new Set(catalog.ids)
+
       // Fetch good movies with poster
       const peliculas = await fetchAllPages<any>((from, to) =>
         supabase
@@ -518,10 +558,36 @@ export default function QuienSoyPage() {
 
       if (cancelled) return
 
-      // Pick random secret
-      const picked = movies[Math.floor(Math.random() * movies.length)]
+      // Filter to curated movies only
+      const curatedMovies = movies.filter(m => curatedSet.has(m.id))
+      const pool = curatedMovies.length >= 10 ? curatedMovies : movies
+
+      // Daily seed: deterministic movie of the day
+      const today = getToday()
+      const dailyIdx = hashString('cinebret-quiensoy-' + today) % pool.length
+      const dailyMovie = pool[dailyIdx]
+
+      // Check localStorage for existing daily game state
+      const saved = loadDailyState(today)
+
+      let picked: Movie
+      if (saved && saved.secretId === dailyMovie.id) {
+        // Restore the daily game
+        picked = dailyMovie
+      } else {
+        // Fresh daily game
+        picked = dailyMovie
+      }
+
       setAllMovies(movies)
       setSecret(picked)
+      setIsDaily(true)
+
+      // Restore saved state if available
+      if (saved && saved.secretId === dailyMovie.id) {
+        setAsked(saved.asked)
+        setPhase(saved.phase)
+      }
 
       // Fetch watch providers for the secret movie
       const { data: wpData } = await supabase
@@ -539,6 +605,13 @@ export default function QuienSoyPage() {
     load()
     return () => { cancelled = true }
   }, [])
+
+  /* ─── persist daily state ─── */
+  useEffect(() => {
+    if (!isDaily || !secret) return
+    const today = getToday()
+    saveDailyState(today, { asked, phase, secretId: secret.id })
+  }, [asked, phase, secret, isDaily])
 
   /* ─── ask a question ─── */
   const askQuestion = useCallback(
@@ -605,7 +678,7 @@ export default function QuienSoyPage() {
 
   const giveUp = () => setPhase('lost')
 
-  /* ─── restart ─── */
+  /* ─── restart (random from curated pool, non-daily) ─── */
   const restart = () => {
     setLoading(true)
     setAsked([])
@@ -615,6 +688,7 @@ export default function QuienSoyPage() {
     setWrongGuess(false)
     setOpenCategory(null)
     setFreeQuestion('')
+    setIsDaily(false)
 
     const picked = allMovies[Math.floor(Math.random() * allMovies.length)]
     setSecret(picked)

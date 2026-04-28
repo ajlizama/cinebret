@@ -1,0 +1,115 @@
+name: CineBret Agent — content opportunity monitor
+
+on:
+  schedule:
+    # 8:00 AM Chile (UTC-3 from Apr-Sep, UTC-4 Oct-Mar — using UTC-3 reference)
+    # 11:00 UTC = 8:00 AM Chile (winter) / 7:00 AM Chile (summer DST)
+    - cron: '0 11 * * *'
+    # 5:00 PM Chile (17:00) = 20:00 UTC
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+    # Manual trigger from GitHub UI
+    inputs:
+      cycle:
+        description: 'Cycle (am or pm)'
+        required: false
+        default: 'am'
+        type: choice
+        options:
+          - am
+          - pm
+
+jobs:
+  detect-and-alert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Determine cycle
+        id: cycle
+        run: |
+          # Detect AM vs PM based on UTC hour at trigger time
+          HOUR=$(date -u +%H)
+          if [ "$HOUR" -lt "16" ]; then
+            echo "cycle=am" >> $GITHUB_OUTPUT
+          else
+            echo "cycle=pm" >> $GITHUB_OUTPUT
+          fi
+          # Manual override
+          if [ -n "${{ inputs.cycle }}" ]; then
+            echo "cycle=${{ inputs.cycle }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync news (RSS) — both cycles
+        run: node scripts/cinebret-news-sync.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+
+      - name: Sync trailers (YouTube) — both cycles (PM is more reactive)
+        if: ${{ env.YOUTUBE_API_KEY != '' }}
+        run: node scripts/cinebret-trailers-watch.mjs
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+      - name: Sync Reddit pulse — AM only (PM doesn't need it)
+        if: ${{ steps.cycle.outputs.cycle == 'am' }}
+        run: node scripts/cinebret-reddit-pulse.mjs
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+
+      - name: Sync NewsAPI — AM only
+        if: ${{ steps.cycle.outputs.cycle == 'am' && secrets.NEWSAPI_KEY != '' }}
+        run: node scripts/cinebret-newsapi-sync.mjs
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+
+      - name: Run strategist detection — AM only (PM uses cached)
+        if: ${{ steps.cycle.outputs.cycle == 'am' }}
+        run: node scripts/cinebret-detect.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+
+      - name: Generate proposals (filter signals via taste)
+        run: node scripts/cinebret-propose.mjs --cycle=${{ steps.cycle.outputs.cycle }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+
+      - name: Send alert email (only if quality gate passes)
+        run: node scripts/cinebret-alert-email.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
+          CINEBRET_ALERT_EMAIL: ${{ secrets.CINEBRET_ALERT_EMAIL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+
+      - name: Commit detection artifacts
+        run: |
+          git config user.name "cinebret-agent"
+          git config user.email "agent@cinebret.cl"
+          git add .wiki/sources/*.json
+          git diff --cached --quiet || git commit -m "chore(agent): ${{ steps.cycle.outputs.cycle }} detection $(date -u +%Y-%m-%dT%H:%M)"
+          git push
+        continue-on-error: true

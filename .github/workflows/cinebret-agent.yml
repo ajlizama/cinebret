@@ -19,6 +19,9 @@ on:
           - am
           - pm
 
+permissions:
+  contents: write
+
 jobs:
   detect-and-alert:
     runs-on: ubuntu-latest

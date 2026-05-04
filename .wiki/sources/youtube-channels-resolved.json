@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Universal Pictures",
+    "handle": "@UniversalPictures",
+    "tier": 1,
+    "channelId": "UCq0OueAsdxH6b8nyAspwViw",
+    "channelTitle": "Universal Pictures"
+  },
+  {
+    "name": "Warner Bros. Pictures",
+    "handle": "@WarnerBrosPictures",
+    "tier": 1,
+    "channelId": "UCjmJDM5pRKbUlVIzDYYWb6g",
+    "channelTitle": "Warner Bros.",
+    "fallback": true
+  },
+  {
+    "name": "A24",
+    "handle": "@A24",
+    "tier": 1,
+    "channelId": "UCuPivVjnfNo4mb3Oog_frZg",
+    "channelTitle": "A24"
+  },
+  {
+    "name": "Walt Disney Studios",
+    "handle": "@DisneyStudios",
+    "tier": 1,
+    "channelId": "UCyQWPkU7yKh79EAsp9cLJAA",
+    "channelTitle": "Disney Studios Fans"
+  },
+  {
+    "name": "Sony Pictures",
+    "handle": "@SonyPictures",
+    "tier": 1,
+    "channelId": "UCz97F7dMxBNOfGYu3rx8aCw",
+    "channelTitle": "Sony Pictures Entertainment"
+  },
+  {
+    "name": "Paramount Pictures",
+    "handle": "@ParamountPictures",
+    "tier": 1,
+    "channelId": "UCF9imwPMSGz4Vq1NiTWCC7g",
+    "channelTitle": "Paramount Pictures"
+  },
+  {
+    "name": "Netflix",
+    "handle": "@Netflix",
+    "tier": 1,
+    "channelId": "UCWOA1ZGywLbqmigxE4Qlvuw",
+    "channelTitle": "Netflix"
+  },
+  {
+    "name": "Apple TV",
+    "handle": "@AppleTV",
+    "tier": 1,
+    "channelId": "UC1Myj674wRVXB9I4c6Hm5zA",
+    "channelTitle": "Apple TV"
+  },
+  {
+    "name": "HBO Max",
+    "handle": "@HBO",
+    "tier": 1,
+    "channelId": "UCVTQuK2CaWaTgSsoNkn5AiQ",
+    "channelTitle": "HBO"
+  },
+  {
+    "name": "Prime Video",
+    "handle": "@PrimeVideo",
+    "tier": 1,
+    "channelId": "UCQJWtTnAHhEG5w4uN0udnUQ",
+    "channelTitle": "Prime Video"
+  },
+  {
+    "name": "Searchlight Pictures",
+    "handle": "@searchlightpictures",
+    "tier": 2,
+    "channelId": "UCor9rW6PgxSQ9vUPWQdnaYQ",
+    "channelTitle": "SearchlightPictures"
+  },
+  {
+    "name": "Focus Features",
+    "handle": "@FocusFeatures",
+    "tier": 2,
+    "channelId": "UCU4SM3j_9TNWaSu8KdGV50g",
+    "channelTitle": "Focus Features"
+  },
+  {
+    "name": "Mubi",
+    "handle": "@MUBI",
+    "tier": 2,
+    "channelId": "UCb6-VM5UQ4Czj_d3m9EPGfg",
+    "channelTitle": "MUBI"
+  },
+  {
+    "name": "Neon",
+    "handle": "@neon",
+    "tier": 2,
+    "channelId": "UCQLoE622e815Kj8IzOOoLjQ",
+    "channelTitle": "NEON ☠"
+  },
+  {
+    "name": "Lionsgate",
+    "handle": "@LionsgateMovies",
+    "tier": 2,
+    "channelId": "UCJ6nMHaJPZvsJ-HmUmj1SeA",
+    "channelTitle": "Lionsgate Movies"
+  },
+  {
+    "name": "Rotten Tomatoes",
+    "handle": "@RottenTomatoes",
+    "tier": 1,
+    "channelId": "UCE0Wkd9Jcn2-TNo5G8bLQrA",
+    "channelTitle": "Rotten Tomatoes"
+  },
+  {
+    "name": "IGN",
+    "handle": "@IGN",
+    "tier": 2,
+    "channelId": "UCKy1dAqELo0zrOtPkf0eTMw",
+    "channelTitle": "IGN"
+  }
+]

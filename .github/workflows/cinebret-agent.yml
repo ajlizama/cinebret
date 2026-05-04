@@ -48,6 +48,11 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Sync Instagram posts — both cycles (MUST be first so detect knows what's already published)
+        run: node scripts/sync-instagram.mjs
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+
       - name: Sync news (RSS) — both cycles
         run: node scripts/cinebret-news-sync.mjs
         env:

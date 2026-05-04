@@ -55,7 +55,6 @@ jobs:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
 
       - name: Sync trailers (YouTube) — both cycles (PM is more reactive)
-        if: ${{ env.YOUTUBE_API_KEY != '' }}
         run: node scripts/cinebret-trailers-watch.mjs
         continue-on-error: true
         env:
@@ -74,7 +73,7 @@ jobs:
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
 
       - name: Sync NewsAPI — AM only
-        if: ${{ steps.cycle.outputs.cycle == 'am' && secrets.NEWSAPI_KEY != '' }}
+        if: ${{ steps.cycle.outputs.cycle == 'am' }}
         run: node scripts/cinebret-newsapi-sync.mjs
         continue-on-error: true
         env:

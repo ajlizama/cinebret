@@ -76,17 +76,33 @@ for (const c of catalogos) {
 
 console.log(`  ${peliculas.length} peliculas, ${enriquecimiento.length} enriquecidas, ${catalogos.length} catalogos activos, ${userPelis.length} ratings, ${ig.posts.length} posts IG\n`)
 
+// Build set of "Title|Year" already reviewed on Instagram (regardless of DB state).
+// Caption convention: first line "Title (YYYY)", followed by lines with "🎬 Director:".
+const igReviewedTitles = new Set()
+for (const post of ig.posts) {
+  const cap = post.caption || ''
+  const m = cap.match(/^\s*([^\n(]+?)\s*\((\d{4})\)/m)
+  if (m && cap.includes('🎬 Director')) {
+    igReviewedTitles.add(`${m[1].trim().toLowerCase()}|${m[2]}`)
+  }
+}
+
 // ─────────────────────────────────────────────────────────
 // 2. DETECTOR: PENDING REVIEWS (high priority)
 // ─────────────────────────────────────────────────────────
 
 console.log('🔍 Detector: pending high-priority reviews...')
-// Movies with sello_bret OR rating >= 9, no review yet, available on at least 1 platform
+console.log(`  ${igReviewedTitles.size} movies already reviewed on Instagram (will be excluded)`)
+// Movies with sello_bret OR rating >= 9, no review yet (DB OR IG), available on at least 1 platform
 const pendingReviews = []
 for (const p of peliculas) {
   const e = enrMap[p.id]
   const u = userMap[p.id]
-  if (!e || e.review_autor) continue // already reviewed
+  if (!e || e.review_autor) continue // already reviewed in DB
+
+  const titulo = p.titulo_ingles || p.titulo
+  const titleKey = `${(titulo || '').trim().toLowerCase()}|${p.anio}`
+  if (igReviewedTitles.has(titleKey)) continue // already reviewed on IG
 
   const sello = e.sello_bret
   const rating = u?.rating
@@ -253,11 +269,11 @@ const igPosts = ig.posts
 const classifyPost = (caption) => {
   const c = caption || ''
   if (c.match(/^\W*[^(]+\(\d{4}\)/m) && c.includes('🎬 Director')) return 'review'
-  if (c.includes('TOP de 15') || c.includes('TOP 15')) return 'top_plataforma'
+  if (c.match(/TOP\s*\d+/i) || c.match(/TOP de \d+/i) || c.match(/^\W*Ranking/im)) return 'top_plataforma'
   if (c.includes('15 otras pel') || c.includes('A qué se parecen')) return 'conexiones'
   if (c.includes('oscar') || c.includes('Oscar')) return 'oscars'
   if (c.includes('cinebret.cl') || c.includes('No sabes')) return 'promo_app'
-  if (c.match(/\d+ pel.+ula.+ para/i)) return 'lista_tematica'
+  if (c.match(/\d+ pel.+ula.+ para/i) || c.match(/^\d+ directores/im)) return 'lista_tematica'
   return 'otro'
 }
 

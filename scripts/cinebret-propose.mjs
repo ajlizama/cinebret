@@ -57,6 +57,36 @@ const sources = {
 
 console.log(`💡 CineBret Propose [${CYCLE.toUpperCase()}]\n`)
 
+// ─── Helper: normalize text for fuzzy matching against IG posts ───
+function normalize(s) {
+  return (s || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '') // strip accents
+    .replace(/^\s*review\s*[:\-—]\s*/i, '')           // strip "Review:" prefix
+    .replace(/[^\w\s]/g, ' ')                         // strip punctuation/emojis
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+// ─── Build set of recently-published IG titles (last 45 days) ───
+const RECENT_IG_DAYS = 45
+const cutoffMs = Date.now() - RECENT_IG_DAYS * 86400 * 1000
+const recentIgTitles = []
+for (const post of (sources.ig?.posts || [])) {
+  const ts = new Date(post.timestamp).getTime()
+  if (ts < cutoffMs) continue
+  const firstLine = (post.caption || '').split('\n')[0].trim()
+  if (firstLine) recentIgTitles.push(normalize(firstLine))
+}
+console.log(`  Recent IG posts (last ${RECENT_IG_DAYS} days): ${recentIgTitles.length}`)
+
+// True if a candidate title matches a recently-published IG post (substring either way)
+function alreadyPostedRecently(candidateTitle) {
+  const norm = normalize(candidateTitle)
+  if (!norm) return false
+  return recentIgTitles.some(ig => ig === norm || ig.includes(norm) || norm.includes(ig))
+}
+
 // ─── Helper: passes Alberto's taste filter ───
 function passesTasteFilter({ director, generos, anio, sello_bret, rating_alberto, nota_imdb, title }) {
   // Director match
@@ -177,7 +207,19 @@ if (sources.proposal?.editorial_gaps) {
     { name: 'TOP 10 películas de mafia ranqueadas', skill_args: { topic_type: 'genre', topic: 'mafia' }, day: 5 }, // Fri
     { name: 'TOP 10 películas francesas', skill_args: { topic_type: 'country', topic: 'francia' }, day: 6 }, // Sat
   ]
-  const todayTopic = TOPIC_ROTATION.find(t => t.day === dayOfWeek)
+  // Rotate through topics starting at today's day-of-week, skipping any topic
+  // that already appears in a recent IG post.
+  let todayTopic = null
+  for (let offset = 0; offset < 7; offset++) {
+    const candidate = TOPIC_ROTATION.find(t => t.day === (dayOfWeek + offset) % 7)
+    if (!candidate) continue
+    if (alreadyPostedRecently(candidate.name)) {
+      console.log(`  Skipping topic "${candidate.name}" — already posted recently on IG`)
+      continue
+    }
+    todayTopic = candidate
+    break
+  }
 
   if (topGap > 7 && todayTopic) {
     proposals.push({
@@ -277,13 +319,26 @@ if (sources.proposal?.upcoming_awards) {
 }
 
 // ─── DEDUP & DIVERSIFY ───
+// Final dedup pass:
+//   1. Drop internal duplicates (same action+title)
+//   2. Drop anything whose title matches a recent IG post (defense in depth —
+//      individual generators already check, but this guards new sources too).
 const seen = new Set()
+const droppedByIg = []
 const unique = proposals.filter(p => {
+  if (alreadyPostedRecently(p.title)) {
+    droppedByIg.push(p.title)
+    return false
+  }
   const key = `${p.action}:${p.title}`
   if (seen.has(key)) return false
   seen.add(key)
   return true
 })
+if (droppedByIg.length) {
+  console.log(`  Dropped ${droppedByIg.length} proposals matching recent IG posts:`)
+  for (const t of droppedByIg) console.log(`    - ${t}`)
+}
 
 unique.sort((a, b) => b.score - a.score)
 

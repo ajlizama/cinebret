@@ -25,9 +25,10 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
       "id": "c85dd7a4b3652474",
@@ -50,9 +51,10 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
       "id": "dbc30e07255e374c",
@@ -75,9 +77,10 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
       "id": "e497ef53421922b3",
@@ -104,9 +107,10 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
       "id": "fde1de630dbe82a7",
@@ -126,10 +130,140 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+    },
+    {
+      "id": "187fb6524acc92b1",
+      "action": "react_to_news",
+      "title": "Tributo: Brooklyn",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 117,
+      "reasoning": "Variety (2h): \"Audrey Beth Davis, Longtime Entertainment Publicist, Dies at 82\". Peli en tu catálogo: Brooklyn.",
+      "suggested_caption": null,
+      "source_name": "Variety",
+      "source_url": "https://variety.com/2026/tv/news/audrey-beth-davis-dead-entertainment-publicist-1236738401/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://variety.com/2026/tv/news/audrey-beth-davis-dead-entertainment-publicist-1236738401/",
+        "angle": "obituary",
+        "headline": "Audrey Beth Davis, Longtime Entertainment Publicist, Dies at 82",
+        "cinebret_match": {
+          "pelicula_id": "667a524e-c16a-4daf-9cbb-c68818d4d7fd",
+          "titulo": "Brooklyn",
+          "anio": 2015
+        }
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "6c19f56da2918b13",
+      "action": "react_to_news",
+      "title": "Festival: Brooklyn",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 92.5,
+      "reasoning": "Variety (1h): \"Brooklyn Film Festival Unveils 2026 Lineup Featuring 134 Films (EXCLUSIVE)\". Peli en tu catálogo: Brooklyn.",
+      "suggested_caption": null,
+      "source_name": "Variety",
+      "source_url": "https://variety.com/2026/film/news/brooklyn-film-festival-unveils-2026-lineup-1236738375/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://variety.com/2026/film/news/brooklyn-film-festival-unveils-2026-lineup-1236738375/",
+        "angle": "festival",
+        "headline": "Brooklyn Film Festival Unveils 2026 Lineup Featuring 134 Films (EXCLUSIVE)",
+        "cinebret_match": {
+          "pelicula_id": "667a524e-c16a-4daf-9cbb-c68818d4d7fd",
+          "titulo": "Brooklyn",
+          "anio": 2015
+        }
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "d8158db1ef519dd7",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: The Boroughs",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 89.5,
+      "reasoning": "Netflix subió trailer hace 7h.",
+      "suggested_caption": null,
+      "source_name": "Netflix",
+      "source_url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
+        "angle": "hype",
+        "cinebret_match": null
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "f5ddb5a509a5e9c3",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: Kyle Larson vs. The Double",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 89.5,
+      "reasoning": "Prime Video subió trailer hace 7h.",
+      "suggested_caption": null,
+      "source_name": "Prime Video",
+      "source_url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
+        "angle": "hype",
+        "cinebret_match": null
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "787cebed76170ab8",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas británicas",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "Tema con tracción: 80 pts (news + estacional + sin posts recientes).",
+      "suggested_caption": null,
+      "source_name": "topic_pool",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "reino unido"
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-05T18:43:13.868Z"
+  "last_saved": "2026-05-05T21:01:51.665Z"
 }

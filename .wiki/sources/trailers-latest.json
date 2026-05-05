@@ -1,16 +1,126 @@
 {
-  "generated_at": "2026-05-05T18:43:10.073Z",
-  "total_videos": 59,
-  "trailers_count": 15,
-  "matched_to_cinebret": 12,
+  "generated_at": "2026-05-05T21:01:49.581Z",
+  "total_videos": 60,
+  "trailers_count": 13,
+  "matched_to_cinebret": 11,
   "videos": [
     {
-      "video_id": "f_010i692o8",
-      "title": "You gotta listen to Johnny and Kano on this one. #MortalKombatMovie #FilmedForIMAX",
-      "url": "https://www.youtube.com/watch?v=f_010i692o8",
-      "published": "2026-05-05T18:05:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/f_010i692o8/hqdefault.jpg",
+      "video_id": "KvmP17991hk",
+      "title": "Off Campus Hallelujah 😌 | Prime Video",
+      "url": "https://www.youtube.com/watch?v=KvmP17991hk",
+      "published": "2026-05-05T21:00:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/KvmP17991hk/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "hStSWLBUV8U",
+      "title": "THE MENU | Taco Tuesday",
+      "url": "https://www.youtube.com/watch?v=hStSWLBUV8U",
+      "published": "2026-05-05T20:59:45Z",
+      "thumbnail": "https://i.ytimg.com/vi/hStSWLBUV8U/hqdefault.jpg",
+      "channel": "Searchlight Pictures",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "elFjvTbN_7Q",
+      "title": "Get forked. #EvilDeadBurn only in theaters July 10.",
+      "url": "https://www.youtube.com/watch?v=elFjvTbN_7Q",
+      "published": "2026-05-05T20:20:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/elFjvTbN_7Q/hqdefault.jpg",
       "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "62INRo8U5pU",
+      "title": "Let’s get to work. #EvilDeadBurn only in theaters July 10.",
+      "url": "https://www.youtube.com/watch?v=62INRo8U5pU",
+      "published": "2026-05-05T20:15:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/62INRo8U5pU/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "VOkqdSx0-9Q",
+      "title": "You dropped some things. #EvilDeadBurn only in theaters July 10.",
+      "url": "https://www.youtube.com/watch?v=VOkqdSx0-9Q",
+      "published": "2026-05-05T20:10:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/VOkqdSx0-9Q/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "VOLah2iRrCU",
+      "title": "Bottoms up. #EvilDeadBurn only in theaters July 10.",
+      "url": "https://www.youtube.com/watch?v=VOLah2iRrCU",
+      "published": "2026-05-05T20:05:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/VOLah2iRrCU/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "h-EIL9gNEn8",
+      "title": "New fear unlocked. You’re welcome. #EvilDeadBurn only in theaters July 10.",
+      "url": "https://www.youtube.com/watch?v=h-EIL9gNEn8",
+      "published": "2026-05-05T20:00:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/h-EIL9gNEn8/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "PkpVE2EC3Gc",
+      "title": "Star Wars: Maul - Shadow Lord - Official ‘We Will See To Your Demise' Clip (2026) Sam Witwer",
+      "url": "https://www.youtube.com/watch?v=PkpVE2EC3Gc",
+      "published": "2026-05-05T20:00:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/PkpVE2EC3Gc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HMcYUNE2jfY",
+      "title": "Dig In - Official Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=HMcYUNE2jfY",
+      "published": "2026-05-05T19:11:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/HMcYUNE2jfY/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "wLyh5pve3DU",
+      "title": "The Crew Motorfest - Official RC Frenzy Launch Trailer",
+      "url": "https://www.youtube.com/watch?v=wLyh5pve3DU",
+      "published": "2026-05-05T19:01:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/wLyh5pve3DU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "8JCkYneEM8Q",
+      "title": "Trace the turbulent career of fashion designer John Galliano in HIGH & LOW: JOHN GALLIANO | MUBI",
+      "url": "https://www.youtube.com/watch?v=8JCkYneEM8Q",
+      "published": "2026-05-05T19:00:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/8JCkYneEM8Q/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Eq2HN7jMIQ4",
+      "title": "The worst kind of call to take. #YourFriendsAndNeighbors",
+      "url": "https://www.youtube.com/watch?v=Eq2HN7jMIQ4",
+      "published": "2026-05-05T18:59:57Z",
+      "thumbnail": "https://i.ytimg.com/vi/Eq2HN7jMIQ4/hqdefault.jpg",
+      "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -75,16 +185,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "ZomNjp3K0JM",
-      "title": "Neon Odyssey - Official Announcement Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=ZomNjp3K0JM",
-      "published": "2026-05-05T17:00:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/ZomNjp3K0JM/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "WnG0jr_TOsE",
       "title": "One-Night Stand in the Jungle Goes Horribly Wrong | Balls Up | Clip | Prime Video",
       "url": "https://www.youtube.com/watch?v=WnG0jr_TOsE",
@@ -115,26 +215,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "iojoxmLDky0",
-      "title": "Evil Dead Burn - Official Trailer (2026) Souheila Yacoub, Tandi Wright, Hunter Doohan",
-      "url": "https://www.youtube.com/watch?v=iojoxmLDky0",
-      "published": "2026-05-05T16:38:03Z",
-      "thumbnail": "https://i.ytimg.com/vi/iojoxmLDky0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "QVZQlijhJA4",
-      "title": "Heroes of Might and Magic: Olden Era - Official Early Access Overview Trailer",
-      "url": "https://www.youtube.com/watch?v=QVZQlijhJA4",
-      "published": "2026-05-05T16:17:05Z",
-      "thumbnail": "https://i.ytimg.com/vi/QVZQlijhJA4/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "PbgTrT7Cf4U",
       "title": "dopamine 😍",
       "url": "https://www.youtube.com/watch?v=PbgTrT7Cf4U",
@@ -143,26 +223,6 @@
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "aWfrDDmx9Kc",
-      "title": "Evil Dead Burn only in theaters July 10",
-      "url": "https://www.youtube.com/watch?v=aWfrDDmx9Kc",
-      "published": "2026-05-05T16:06:14Z",
-      "thumbnail": "https://i.ytimg.com/vi/aWfrDDmx9Kc/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "nMzhf6qYJ4I",
-      "title": "Evil Dead Burn | Official Trailer",
-      "url": "https://www.youtube.com/watch?v=nMzhf6qYJ4I",
-      "published": "2026-05-05T16:00:14Z",
-      "thumbnail": "https://i.ytimg.com/vi/nMzhf6qYJ4I/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "jWddzd1YM34",
@@ -370,16 +430,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "x0dQpATxU9g",
-      "title": "Top 5 DIABOLICAL Conquest Moments [SPOILERS] | Invincible | Prime Video",
-      "url": "https://www.youtube.com/watch?v=x0dQpATxU9g",
-      "published": "2026-05-04T19:00:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/x0dQpATxU9g/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "UWVznyWUS-E",
       "title": "OBSESSION - \"Nice Date\" Official Clip",
       "url": "https://www.youtube.com/watch?v=UWVznyWUS-E",
@@ -455,31 +505,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "OSrCcBpW1a4",
-      "title": "This is a royal order. 🪭",
-      "url": "https://www.youtube.com/watch?v=OSrCcBpW1a4",
-      "published": "2026-05-03T17:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/OSrCcBpW1a4/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "_5EZDXjYMVU",
-      "title": "Pluribus — Behind The Scenes: Air Force One | Apple TV",
-      "url": "https://www.youtube.com/watch?v=_5EZDXjYMVU",
-      "published": "2026-05-03T16:59:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/_5EZDXjYMVU/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2ff44c66-9492-4425-980f-ea482af9a71c",
-        "titulo": "Air Force One (El avión del presidente)",
-        "anio": 1997
-      }
-    },
-    {
       "video_id": "KwoJyYiCfws",
       "title": "Which fictional character would you be neighbors with? Here’s what our audiences had to say | MUBI",
       "url": "https://www.youtube.com/watch?v=KwoJyYiCfws",
@@ -501,16 +526,6 @@
       "published": "2026-05-02T21:01:01Z",
       "thumbnail": "https://i.ytimg.com/vi/u1p33DE8egA/hqdefault.jpg",
       "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "DLaJ62iR5_M",
-      "title": "Live and in living color, Mitski takes the stage for her first concert film MITSKI: THE LAND | MUBI",
-      "url": "https://www.youtube.com/watch?v=DLaJ62iR5_M",
-      "published": "2026-05-02T19:00:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/DLaJ62iR5_M/hqdefault.jpg",
-      "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -542,16 +557,6 @@
       "thumbnail": "https://i.ytimg.com/vi/n6Q0-oUHayQ/hqdefault.jpg",
       "channel": "Lionsgate",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "RFvkFFFzbuA",
-      "title": "Stack your roster. You’ll need ‘em. #MortalKombatMovie#FilmedForIMAX",
-      "url": "https://www.youtube.com/watch?v=RFvkFFFzbuA",
-      "published": "2026-05-01T22:00:26Z",
-      "thumbnail": "https://i.ytimg.com/vi/RFvkFFFzbuA/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {

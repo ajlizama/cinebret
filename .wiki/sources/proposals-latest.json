@@ -1,38 +1,88 @@
 {
-  "generated_at": "2026-05-05T11:57:08.437Z",
-  "cycle": "am",
-  "total": 3,
+  "generated_at": "2026-05-05T18:43:10.136Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
+  "top_count": 5,
+  "backlog_count": 0,
+  "news_count": 10,
   "top": [
     {
-      "type": "FEED",
-      "priority": "media",
-      "action": "generate_carousel_mood",
-      "title": "10 películas para el frío del invierno",
-      "reasoning": "72 días sin lista temática/mood. \"Pa'l domingo de bajón\" alineado con época del año.",
-      "suggested_caption": null,
-      "source_name": "mood_gap",
-      "score": 96,
-      "skill_to_invoke": "cinebret-carousel-mood",
+      "type": "STORY",
+      "priority": "alta",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: Third Star",
+      "reasoning": "Netflix subió trailer hace 4h. La peli ya está en tu catálogo.",
+      "suggested_caption": "Trailer de \"Third Star\" 🎬\n[tu reacción aquí]",
+      "source_name": "Netflix",
+      "source_url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
+      "score": 104,
+      "skill_to_invoke": "cinebret-share-story",
       "skill_args": {
-        "mood": "Pa'l domingo de bajón",
-        "count": 10
+        "url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
+        "angle": "hype",
+        "cinebret_match": {
+          "pelicula_id": "9d3c8ca7-690a-47ac-ad09-047de935a822",
+          "titulo": "Third Star",
+          "anio": 2010
+        }
+      }
+    },
+    {
+      "type": "STORY",
+      "priority": "alta",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: Christopher Nolan",
+      "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
+      "suggested_caption": null,
+      "source_name": "IndieWire",
+      "source_url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
+      "score": 104,
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
+        "angle": "trailer-drop",
+        "headline": "New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some New Armor)",
+        "cinebret_match": null
       }
     },
     {
       "type": "FEED",
       "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: How to Train Your Dragon (2025)",
-      "reasoning": "Tu rating 10 (favorita) sin review, en netflix, amazon prime, hbo max. Dirigida por Dean DeBlois. Es la review pendiente que más impacto te traería.",
+      "action": "react_to_news",
+      "title": "Tributo: Newport Beach TV Fest",
+      "reasoning": "Hollywood Reporter (2h): \"Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Aw\".",
       "suggested_caption": null,
-      "source_name": "pending_review",
-      "score": 85,
-      "skill_to_invoke": "cinebret-review",
+      "source_name": "Hollywood Reporter",
+      "source_url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
+      "score": 102,
+      "skill_to_invoke": "cinebret-list-from-news",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
+        "angle": "obituary",
+        "headline": "Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Awards Chatter&#8217; Pod",
+        "cinebret_match": null
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "alta",
+      "action": "react_to_news",
+      "title": "Secuela: El hundimiento",
+      "reasoning": "Deadline (1h): \"Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait \". Peli en tu catálogo: El hundimiento.",
+      "suggested_caption": null,
+      "source_name": "Deadline",
+      "source_url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
+      "score": 92.5,
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
+        "angle": "sequel-news",
+        "headline": "Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait Told From The Inside&#8221;",
+        "cinebret_match": {
+          "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
+          "titulo": "El hundimiento",
+          "anio": 2004
+        }
       }
     },
     {
@@ -50,11 +100,260 @@
       }
     }
   ],
-  "rest": [],
+  "backlog": [],
+  "news": [
+    {
+      "source": "r/movies",
+      "title": "Oppenheimer 2023, Trinity Test Scene, Director: Christopher Nolan",
+      "link": "https://www.reddit.com/r/movies/comments/1t3qwyt/oppenheimer_2023_trinity_test_scene_director/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t3qwyt/oppenheimer_2023_trinity_test_scene_director/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/Y3c5bmp3cjEzNnpnMfWNxMgYwpHxuinx048xhDqtpcDeeO3pxE5NoZA_vX9j.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=551ad43bcd4e40a11c8bbc23bb48d5d2768d9cad&quot; alt=&quot;Oppenheimer 2023, Trinity Test Scene, Director: Christopher Nolan&quot; title=&quot;Oppenheimer 2023, Trinity Test Scene, Director: Christopher Nolan&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitte",
+      "published": "2026-05-04T18:52:09+00:00",
+      "published_iso": "2026-05-04T18:52:09.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "6ff735a5-f3d7-4478-b81d-1176dc29a5b4",
+          "titulo": "Oppenheimer",
+          "anio": 2023
+        }
+      ],
+      "_src": "r/movies",
+      "_score": 45.459458777777776,
+      "_catalog": {
+        "pelicula_id": "6ff735a5-f3d7-4478-b81d-1176dc29a5b4",
+        "titulo": "Oppenheimer",
+        "anio": 2023
+      },
+      "_director": "Christopher Nolan"
+    },
+    {
+      "source": "Deadline",
+      "title": "Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait Told From The Inside&#8221;",
+      "link": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
+      "description": "EXCLUSIVE: With the latest conflict between America and Iran jacking up fuel prices and airfares around the globe, Netflix and Imagine Documentaries have a flight plan for Rory Kennedy&#8217;s follow-up to Downfall: The Case Against Boeing. First exclusively reported by Deadline back in July 2024, Freefall: A Reckoning for Boeing will debut August 19 all [&#8230;]",
+      "published": "Tue, 05 May 2026 18:08:12 +0000",
+      "published_iso": "2026-05-05T18:08:12.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
+          "titulo": "El hundimiento",
+          "anio": 2004
+        }
+      ],
+      "_src": "Deadline",
+      "_score": 39.76645888888889,
+      "_catalog": {
+        "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
+        "titulo": "El hundimiento",
+        "anio": 2004
+      }
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "BJ Novak Realizes He&#8217;s the Worst Dressed in &#8216;The Devil Wears Prada 2&#8217;",
+      "link": "https://www.hollywoodreporter.com/movies/movie-features/bj-novak-devil-wears-prada-2-interview-1236586557/",
+      "description": "The writer, filmmaker and actor talks about disrespecting Meryl Streep — in athleisure, no less — on camera, what's keeping him from returning to stand-up and embracing Mel Robbins' \"Let them\" theory.",
+      "published": "Tue, 05 May 2026 17:51:35 +0000",
+      "published_iso": "2026-05-05T17:51:35.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
+          "titulo": "El diablo viste de Prada 2",
+          "anio": 2026
+        },
+        {
+          "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
+          "titulo": "El diablo viste de Prada",
+          "anio": 2006
+        }
+      ],
+      "_src": "Hollywood Reporter",
+      "_score": 39.655681111111114,
+      "_catalog": {
+        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
+        "titulo": "El diablo viste de Prada 2",
+        "anio": 2026
+      }
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Netflix and Director Brian Knappenberger to Tackle &#8216;The American Experiment&#8217;",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/netflix-documentary-the-american-experiment-premiere-june-1236586674/",
+      "description": "Kamala Harris, Mike Pence, Hillary Clinton and Al Gore all sat for the five-part documentary, which will bow on the streamer on June 24.",
+      "published": "Tue, 05 May 2026 17:45:46 +0000",
+      "published_iso": "2026-05-05T17:45:46.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
+          "titulo": "Joika",
+          "anio": 2023
+        }
+      ],
+      "_src": "Hollywood Reporter",
+      "_score": 39.61690333333333,
+      "_catalog": {
+        "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
+        "titulo": "Joika",
+        "anio": 2023
+      }
+    },
+    {
+      "source": "Variety",
+      "title": "‘Fightland’ First Look: 50 Cent-Produced Boxing Crime Drama Sets July Release Date on Starz",
+      "link": "https://variety.com/2026/tv/news/fightland-first-look-1236737240/",
+      "description": "Starz has set a July 31 premiere date for its new original drama “Fightland,” unveiling first-look images from the British-set boxing crime series executive produced by Curtis &#8220;50 Cent&#8221; Jackson. Described as a gritty, high-stakes drama set in the world of British boxing, the series marks Starz’s first wholly owned original following Lionsgate and Starz [&#8230;]",
+      "published": "Tue, 05 May 2026 17:30:00 +0000",
+      "published_iso": "2026-05-05T17:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
+          "titulo": "Following",
+          "anio": 1999
+        }
+      ],
+      "_src": "Variety",
+      "_score": 39.51179222222222,
+      "_catalog": {
+        "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
+        "titulo": "Following",
+        "anio": 1999
+      }
+    },
+    {
+      "source": "Deadline",
+      "title": "Whitney Leavitt Reflects On Her Decision To Leave &#8216;The Secret Lives Of Mormon Wives&#8217;; Confirms Season 5 Will Be Her Last",
+      "link": "https://deadline.com/2026/05/whitney-leavitt-secret-lives-of-mormon-wives-exit-season-5-1236881630/",
+      "description": "Whitney Leavitt is revealing more details about her decision to exit The Secret Lives of Mormon Wives. As we previously reported, Leavitt announced she would be leaving the Hulu reality series Sunday during her final performance in Broadway&#8217;s Chicago. In a May 5 video on her Instagram, Leavitt shared her thoughts about leaving the series, [&#8230;]",
+      "published": "Tue, 05 May 2026 17:29:32 +0000",
+      "published_iso": "2026-05-05T17:29:32.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "bfec3923-29e6-4c20-a2de-95445781a091",
+          "titulo": "Decision to Leave",
+          "anio": 2022
+        }
+      ],
+      "_src": "Deadline",
+      "_score": 39.50868111111111,
+      "_catalog": {
+        "pelicula_id": "bfec3923-29e6-4c20-a2de-95445781a091",
+        "titulo": "Decision to Leave",
+        "anio": 2022
+      }
+    },
+    {
+      "source": "Deadline",
+      "title": "Public TV&#8217;s &#8220;The Open Mind&#8221; To Debut &#8220;Mayors Of The World&#8221; Series Spotlighting Public Policy And Innovation Of City Leaders",
+      "link": "https://deadline.com/2026/05/the-open-mind-pbs-mayors-alexander-heffner-1236881292/",
+      "description": "Alexander Heffner, the host of The Open Mind on PBS stations, is debuting a new series, Mayors of the World, that will spotlight the public policy and innovation of civic leaders. The series will debut this weekend on more than 200 stations, and will feature Heffner sitting down with mayors of Athens, Santiago, Lisbon, Toronto [&#8230;]",
+      "published": "Tue, 05 May 2026 16:36:28 +0000",
+      "published_iso": "2026-05-05T16:36:28.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "2eea9b07-b88e-41ea-beb1-a591bc1fecc3",
+          "titulo": "Spotlight",
+          "anio": 2015
+        }
+      ],
+      "_src": "Deadline",
+      "_score": 39.15490333333334,
+      "_catalog": {
+        "pelicula_id": "2eea9b07-b88e-41ea-beb1-a591bc1fecc3",
+        "titulo": "Spotlight",
+        "anio": 2015
+      }
+    },
+    {
+      "source": "The Wrap",
+      "title": "The New Math: Women Over 50 Are the Franchise &#124; Guest Column",
+      "link": "https://www.thewrap.com/creative-content/movies/devil-wears-prada-2-meryl-streep-women-over-50-box-office/",
+      "description": "What \"The Devil Wears Prada 2\" and a wave of recent hits reveal about audience demand, star power and where the next growth stories are hiding in plain sight The post The New Math: Women Over 50 Are the Franchise | Guest Column appeared first on TheWrap .",
+      "published": "Tue, 05 May 2026 15:45:00 +0000",
+      "published_iso": "2026-05-05T15:45:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
+          "titulo": "El diablo viste de Prada 2",
+          "anio": 2026
+        },
+        {
+          "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
+          "titulo": "El diablo viste de Prada",
+          "anio": 2006
+        }
+      ],
+      "_src": "The Wrap",
+      "_score": 38.81179222222222,
+      "_catalog": {
+        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
+        "titulo": "El diablo viste de Prada 2",
+        "anio": 2026
+      }
+    },
+    {
+      "source": "IndieWire",
+      "title": "Sean Baker Talks Marilyn Monroe (and Norma Jeane) in Excerpt from New Book Celebrating Her Centennial",
+      "link": "https://www.indiewire.com/features/general/sean-baker-joshua-john-miller-marilyn-monroe-read-excerpt-1235192417/",
+      "description": "Exclusive: Read an excerpt from \"The Marilyn Monroe Century: From Norma Jeane to Icon―A Story in Photographs,\" out May 19.",
+      "published": "Tue, 05 May 2026 18:15:00 +0000",
+      "published_iso": "2026-05-05T18:15:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur",
+      "_src": "IndieWire",
+      "_score": 34.81179233333334,
+      "_catalog": null,
+      "_director": "Sean Baker"
+    },
+    {
+      "source": "IndieWire",
+      "title": "New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some New Armor)",
+      "link": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
+      "description": "Christopher Nolan's star-studded take on Homer's epic poem hits theaters this July.",
+      "published": "Tue, 05 May 2026 16:59:53 +0000",
+      "published_iso": "2026-05-05T16:59:53.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur",
+      "_src": "IndieWire",
+      "_score": 34.311014444444446,
+      "_catalog": null,
+      "_director": "Christopher Nolan"
+    }
+  ],
   "raw_signal_counts": {
-    "news_items": 114,
+    "news_items": 116,
+    "newsapi_items": 90,
     "reddit_posts": 0,
-    "trailers": 46,
+    "trailers": 59,
     "pending_reviews": 30
+  },
+  "reconciliation_stats": {
+    "accepted": 0,
+    "becameBacklog": 0,
+    "expired": 0
   }
 }

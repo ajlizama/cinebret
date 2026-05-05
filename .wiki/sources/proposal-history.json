@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "proposals": [
+    {
+      "id": "0a3f68a79039f11e",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: Third Star",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 104,
+      "reasoning": "Netflix subió trailer hace 4h. La peli ya está en tu catálogo.",
+      "suggested_caption": "Trailer de \"Third Star\" 🎬\n[tu reacción aquí]",
+      "source_name": "Netflix",
+      "source_url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
+        "angle": "hype",
+        "cinebret_match": {
+          "pelicula_id": "9d3c8ca7-690a-47ac-ad09-047de935a822",
+          "titulo": "Third Star",
+          "anio": 2010
+        }
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "c85dd7a4b3652474",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: Christopher Nolan",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 104,
+      "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
+      "suggested_caption": null,
+      "source_name": "IndieWire",
+      "source_url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
+        "angle": "trailer-drop",
+        "headline": "New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some New Armor)",
+        "cinebret_match": null
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "dbc30e07255e374c",
+      "action": "react_to_news",
+      "title": "Tributo: Newport Beach TV Fest",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 102,
+      "reasoning": "Hollywood Reporter (2h): \"Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Aw\".",
+      "suggested_caption": null,
+      "source_name": "Hollywood Reporter",
+      "source_url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
+        "angle": "obituary",
+        "headline": "Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Awards Chatter&#8217; Pod",
+        "cinebret_match": null
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "e497ef53421922b3",
+      "action": "react_to_news",
+      "title": "Secuela: El hundimiento",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 92.5,
+      "reasoning": "Deadline (1h): \"Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait \". Peli en tu catálogo: El hundimiento.",
+      "suggested_caption": null,
+      "source_name": "Deadline",
+      "source_url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
+        "angle": "sequel-news",
+        "headline": "Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait Told From The Inside&#8221;",
+        "cinebret_match": {
+          "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
+          "titulo": "El hundimiento",
+          "anio": 2004
+        }
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "fde1de630dbe82a7",
+      "action": "generate_carousel_awards",
+      "title": "Preview Festival de Cannes",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 86,
+      "reasoning": "Festival de Cannes en 8 días. Carrusel preview con películas relevantes.",
+      "suggested_caption": null,
+      "source_name": "awards_calendar",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "trigger": "Festival de Cannes"
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    }
+  ],
+  "last_saved": "2026-05-05T18:43:13.868Z"
+}

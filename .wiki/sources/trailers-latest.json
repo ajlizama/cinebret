@@ -1,18 +1,328 @@
 {
-  "generated_at": "2026-05-05T11:56:31.993Z",
-  "total_videos": 46,
-  "trailers_count": 8,
-  "matched_to_cinebret": 13,
+  "generated_at": "2026-05-05T18:43:10.073Z",
+  "total_videos": 59,
+  "trailers_count": 15,
+  "matched_to_cinebret": 12,
   "videos": [
     {
-      "video_id": "xHH0lSDRF5g",
-      "title": "We Don't Play The Same | Sports on Netflix",
-      "url": "https://www.youtube.com/watch?v=xHH0lSDRF5g",
-      "published": "2026-05-05T11:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/xHH0lSDRF5g/hqdefault.jpg",
-      "channel": "Netflix",
+      "video_id": "f_010i692o8",
+      "title": "You gotta listen to Johnny and Kano on this one. #MortalKombatMovie #FilmedForIMAX",
+      "url": "https://www.youtube.com/watch?v=f_010i692o8",
+      "published": "2026-05-05T18:05:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/f_010i692o8/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
       "is_trailer": false
+    },
+    {
+      "video_id": "npMNanth4PE",
+      "title": "Star Wars: The Mandalorian and Grogu - Official 'Hang On' Clip (2026) Pedro Pascal",
+      "url": "https://www.youtube.com/watch?v=npMNanth4PE",
+      "published": "2026-05-05T18:00:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/npMNanth4PE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "7dc2aed7-e432-4cb2-83f1-c697947636a4",
+        "titulo": "Star Wars: The Mandalorian and Grogu",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "Q-SLPVSsS4U",
+      "title": "Still thinking about Bieberchella? Real ones are still thinking about his scene in Zoolander 2.",
+      "url": "https://www.youtube.com/watch?v=Q-SLPVSsS4U",
+      "published": "2026-05-05T18:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/Q-SLPVSsS4U/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "iKS6vWbjaig",
+      "title": "Daredevil: Born Again Season 2 Finale Exclusive Clip (2026) Charlie Cox, Vincent D'Onofrio",
+      "url": "https://www.youtube.com/watch?v=iKS6vWbjaig",
+      "published": "2026-05-05T17:07:56Z",
+      "thumbnail": "https://i.ytimg.com/vi/iKS6vWbjaig/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "hLGD0VE1PvA",
+      "title": "♾️ aura points | 🎬 The Fast and the Furious: Tokyo Drift (2006)",
+      "url": "https://www.youtube.com/watch?v=hLGD0VE1PvA",
+      "published": "2026-05-05T17:01:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/hLGD0VE1PvA/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "75d9be1e-a88a-4126-bb52-813142d9b50e",
+        "titulo": "A todo gas: Tokyo Race",
+        "anio": 2006
+      }
+    },
+    {
+      "video_id": "7VAiSQM_Lfg",
+      "title": "Ira Sachs’ acclaimed PETER HUJAR'S DAY, starring Ben Whishaw and Rebecca Hall | MUBI",
+      "url": "https://www.youtube.com/watch?v=7VAiSQM_Lfg",
+      "published": "2026-05-05T17:01:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/7VAiSQM_Lfg/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ZomNjp3K0JM",
+      "title": "Neon Odyssey - Official Announcement Teaser Trailer",
+      "url": "https://www.youtube.com/watch?v=ZomNjp3K0JM",
+      "published": "2026-05-05T17:00:54Z",
+      "thumbnail": "https://i.ytimg.com/vi/ZomNjp3K0JM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "WnG0jr_TOsE",
+      "title": "One-Night Stand in the Jungle Goes Horribly Wrong | Balls Up | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=WnG0jr_TOsE",
+      "published": "2026-05-05T17:00:42Z",
+      "thumbnail": "https://i.ytimg.com/vi/WnG0jr_TOsE/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "NWTOcb3ID5A",
+      "title": "Johnny Cage vs. Homelander",
+      "url": "https://www.youtube.com/watch?v=NWTOcb3ID5A",
+      "published": "2026-05-05T17:00:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/NWTOcb3ID5A/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HaZsOipO-xE",
+      "title": "OBSESSION - \"Freaky Nikki\" Official Clip",
+      "url": "https://www.youtube.com/watch?v=HaZsOipO-xE",
+      "published": "2026-05-05T17:00:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/HaZsOipO-xE/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "iojoxmLDky0",
+      "title": "Evil Dead Burn - Official Trailer (2026) Souheila Yacoub, Tandi Wright, Hunter Doohan",
+      "url": "https://www.youtube.com/watch?v=iojoxmLDky0",
+      "published": "2026-05-05T16:38:03Z",
+      "thumbnail": "https://i.ytimg.com/vi/iojoxmLDky0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "QVZQlijhJA4",
+      "title": "Heroes of Might and Magic: Olden Era - Official Early Access Overview Trailer",
+      "url": "https://www.youtube.com/watch?v=QVZQlijhJA4",
+      "published": "2026-05-05T16:17:05Z",
+      "thumbnail": "https://i.ytimg.com/vi/QVZQlijhJA4/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "PbgTrT7Cf4U",
+      "title": "dopamine 😍",
+      "url": "https://www.youtube.com/watch?v=PbgTrT7Cf4U",
+      "published": "2026-05-05T16:08:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/PbgTrT7Cf4U/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "aWfrDDmx9Kc",
+      "title": "Evil Dead Burn only in theaters July 10",
+      "url": "https://www.youtube.com/watch?v=aWfrDDmx9Kc",
+      "published": "2026-05-05T16:06:14Z",
+      "thumbnail": "https://i.ytimg.com/vi/aWfrDDmx9Kc/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "nMzhf6qYJ4I",
+      "title": "Evil Dead Burn | Official Trailer",
+      "url": "https://www.youtube.com/watch?v=nMzhf6qYJ4I",
+      "published": "2026-05-05T16:00:14Z",
+      "thumbnail": "https://i.ytimg.com/vi/nMzhf6qYJ4I/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "jWddzd1YM34",
+      "title": "In one month, one song changes it all. #PowerBallad",
+      "url": "https://www.youtube.com/watch?v=jWddzd1YM34",
+      "published": "2026-05-05T16:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/jWddzd1YM34/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "X-IedTnw_48",
+      "title": "The Set of Passenger was Haunted | (2026 Movie) – André Øvredal, Jacob Scipio, Lou Llobell",
+      "url": "https://www.youtube.com/watch?v=X-IedTnw_48",
+      "published": "2026-05-05T15:05:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/X-IedTnw_48/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "A9UuaFCF78A",
+      "title": "We were not alone on the set of #PassengerMovie. 𖨆 Get tickets now, only in theatres May 22.",
+      "url": "https://www.youtube.com/watch?v=A9UuaFCF78A",
+      "published": "2026-05-05T15:05:05Z",
+      "thumbnail": "https://i.ytimg.com/vi/A9UuaFCF78A/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "BK8hjX2Ceb8",
+      "title": "Temptation... at a cost. | The House of the Spirits | Prime Video",
+      "url": "https://www.youtube.com/watch?v=BK8hjX2Ceb8",
+      "published": "2026-05-05T15:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/BK8hjX2Ceb8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "EzOpCMbRP-s",
+      "title": "Brazil ‘70: The Third Star | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
+      "published": "2026-05-05T14:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/EzOpCMbRP-s/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "9d3c8ca7-690a-47ac-ad09-047de935a822",
+        "titulo": "Third Star",
+        "anio": 2010
+      }
+    },
+    {
+      "video_id": "GZtdUgkuKeU",
+      "title": "What are Glenn Close's Favorite Movies?",
+      "url": "https://www.youtube.com/watch?v=GZtdUgkuKeU",
+      "published": "2026-05-05T14:18:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/GZtdUgkuKeU/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "W67IUHNx8M0",
+      "title": "Top Gun and Top Gun: Maverick. May 13th. One week only. Get #TopGun tickets now!",
+      "url": "https://www.youtube.com/watch?v=W67IUHNx8M0",
+      "published": "2026-05-05T14:00:41Z",
+      "thumbnail": "https://i.ytimg.com/vi/W67IUHNx8M0/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "77aed65a-d6ec-45d8-bf1e-a1935f9a92cb",
+        "titulo": "Top Gun: Maverick",
+        "anio": 2022
+      }
+    },
+    {
+      "video_id": "nqsIbXqd2jw",
+      "title": "Top Gun 40th Anniversary - The Story Continues",
+      "url": "https://www.youtube.com/watch?v=nqsIbXqd2jw",
+      "published": "2026-05-05T14:00:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/nqsIbXqd2jw/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "PsvUvqXoTpE",
+      "title": "The Boroughs | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
+      "published": "2026-05-05T14:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/PsvUvqXoTpE/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "9RNaJgZSvCk",
+      "title": "Kyle Larson vs. The Double - Official Trailer | Prime Video",
+      "url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
+      "published": "2026-05-05T13:59:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/9RNaJgZSvCk/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "cLpnircVSsk",
+      "title": "Countdown: Rousey vs. Carano | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=cLpnircVSsk",
+      "published": "2026-05-05T13:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/cLpnircVSsk/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "k1MVnzd2aVc",
+      "title": "Tony | Official Trailer HD | A24",
+      "url": "https://www.youtube.com/watch?v=k1MVnzd2aVc",
+      "published": "2026-05-05T13:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/k1MVnzd2aVc/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "k-358jALXlA",
+      "title": "Kylie | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=k-358jALXlA",
+      "published": "2026-05-05T13:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/k-358jALXlA/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "OQAB1CXnWzg",
+      "title": "A Good Girl's Guide to Murder: Season 2 | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=OQAB1CXnWzg",
+      "published": "2026-05-05T12:30:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/OQAB1CXnWzg/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "f_bKjZeJBBI",
+      "title": "The Odyssey | Official New Trailer",
+      "url": "https://www.youtube.com/watch?v=f_bKjZeJBBI",
+      "published": "2026-05-05T04:10:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/f_bKjZeJBBI/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": true
     },
     {
       "video_id": "4kLOUQGRo2I",
@@ -25,56 +335,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "Y_gDT0AX3sc",
-      "title": "Gamestop is trying to buy eBay",
-      "url": "https://www.youtube.com/watch?v=Y_gDT0AX3sc",
-      "published": "2026-05-05T01:09:26Z",
-      "thumbnail": "https://i.ytimg.com/vi/Y_gDT0AX3sc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "bChKY5bFSSQ",
-      "title": "Resident Evil movie director loves RE4",
-      "url": "https://www.youtube.com/watch?v=bChKY5bFSSQ",
-      "published": "2026-05-05T01:07:10Z",
-      "thumbnail": "https://i.ytimg.com/vi/bChKY5bFSSQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
-        "titulo": "Resident evil - El huésped maldito",
-        "anio": 2002
-      }
-    },
-    {
-      "video_id": "qskGTX12YiU",
-      "title": "New Assassin's Creed: Black Flag Resynced details revealed",
-      "url": "https://www.youtube.com/watch?v=qskGTX12YiU",
-      "published": "2026-05-05T01:06:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/qskGTX12YiU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "jCovupjaQoU",
-      "title": "The Resident Evil director is capturing gameplay elements in the movie",
-      "url": "https://www.youtube.com/watch?v=jCovupjaQoU",
-      "published": "2026-05-05T01:05:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/jCovupjaQoU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
-        "titulo": "Resident evil - El huésped maldito",
-        "anio": 2002
-      }
-    },
-    {
       "video_id": "c0RvNEBDXJM",
       "title": "Mark Hamill's intro as Art Rosenbaum | Invincible | Prime Video",
       "url": "https://www.youtube.com/watch?v=c0RvNEBDXJM",
@@ -85,24 +345,19 @@
       "is_trailer": false
     },
     {
-      "video_id": "QrLB3tM37sk",
-      "title": "Sudden Strike 5 - Official Accolades Trailer",
-      "url": "https://www.youtube.com/watch?v=QrLB3tM37sk",
-      "published": "2026-05-04T22:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/QrLB3tM37sk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "hb2IzBx8Yss",
-      "title": "Audrey Hepburn as Eliza Dolittle in My Fair Lady (1964) showing us all how to wear costume art.",
-      "url": "https://www.youtube.com/watch?v=hb2IzBx8Yss",
-      "published": "2026-05-04T19:57:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/hb2IzBx8Yss/hqdefault.jpg",
-      "channel": "Paramount Pictures",
+      "video_id": "SmUe1IaoMQ4",
+      "title": "Let's just say he has an uncompromising vision | 🎬 Phantom Thread (2017)",
+      "url": "https://www.youtube.com/watch?v=SmUe1IaoMQ4",
+      "published": "2026-05-04T21:00:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/SmUe1IaoMQ4/hqdefault.jpg",
+      "channel": "Universal Pictures",
       "channel_tier": 1,
-      "is_trailer": false
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "1ef8622b-54c6-48e9-a592-cfc366b98603",
+        "titulo": "El hilo invisible",
+        "anio": 2017
+      }
     },
     {
       "video_id": "REW8MjNqSjg",
@@ -125,16 +380,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "W1orYNaZ1_Q",
-      "title": "The House of the Spirits - Behind the Scenes with Nicole Wallace | Prime Video",
-      "url": "https://www.youtube.com/watch?v=W1orYNaZ1_Q",
-      "published": "2026-05-04T18:00:36Z",
-      "thumbnail": "https://i.ytimg.com/vi/W1orYNaZ1_Q/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "UWVznyWUS-E",
       "title": "OBSESSION - \"Nice Date\" Official Clip",
       "url": "https://www.youtube.com/watch?v=UWVznyWUS-E",
@@ -145,12 +390,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "1fvEvR2ZlhU",
-      "title": "Vox Machina Rolling a Nat 20 for 10 Minutes | The Legend of Vox Machina S1-3 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=1fvEvR2ZlhU",
-      "published": "2026-05-04T17:00:06Z",
-      "thumbnail": "https://i.ytimg.com/vi/1fvEvR2ZlhU/hqdefault.jpg",
-      "channel": "Prime Video",
+      "video_id": "Cb5BkX4hJ1o",
+      "title": "Ted has a point | 🎬 Ted 2 (2015)",
+      "url": "https://www.youtube.com/watch?v=Cb5BkX4hJ1o",
+      "published": "2026-05-04T17:00:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/Cb5BkX4hJ1o/hqdefault.jpg",
+      "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -168,41 +413,6 @@
         "titulo": "Monsters: El infierno del dragón",
         "anio": 2024
       }
-    },
-    {
-      "video_id": "ap_O8Z6pwAE",
-      "title": "Anne & Emily invented enemies-to-friends | The Devil Wears Prada | Prime Video",
-      "url": "https://www.youtube.com/watch?v=ap_O8Z6pwAE",
-      "published": "2026-05-04T15:00:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/ap_O8Z6pwAE/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
-        "titulo": "El diablo viste de Prada",
-        "anio": 2006
-      }
-    },
-    {
-      "video_id": "bgpDgJkQka0",
-      "title": "The Four Seasons | Season 2 Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=bgpDgJkQka0",
-      "published": "2026-05-04T15:00:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/bgpDgJkQka0/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "PC3u76Wzc74",
-      "title": "Wanda Sykes: Legacy | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=PC3u76Wzc74",
-      "published": "2026-05-04T14:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/PC3u76Wzc74/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "Baats3smXzg",
@@ -241,6 +451,16 @@
       "published": "2026-05-03T17:59:45Z",
       "thumbnail": "https://i.ytimg.com/vi/w9vhMSirA6o/hqdefault.jpg",
       "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "OSrCcBpW1a4",
+      "title": "This is a royal order. 🪭",
+      "url": "https://www.youtube.com/watch?v=OSrCcBpW1a4",
+      "published": "2026-05-03T17:00:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/OSrCcBpW1a4/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -295,21 +515,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "4TjBIR9xwxY",
-      "title": "Cord Jefferson's hilarious debut AMERICAN FICTION | MUBI",
-      "url": "https://www.youtube.com/watch?v=4TjBIR9xwxY",
-      "published": "2026-05-02T15:01:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/4TjBIR9xwxY/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "583cb2c5-ec72-4b68-890f-f834d40c49ef",
-        "titulo": "Ficción estadounidense",
-        "anio": 2023
-      }
-    },
-    {
       "video_id": "Orv0YKUi3XU",
       "title": "Mother Mary | Making Of A Popstar with Anne Hathaway | A24",
       "url": "https://www.youtube.com/watch?v=Orv0YKUi3XU",
@@ -318,16 +523,6 @@
       "channel": "A24",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "LsGrKuPe1tQ",
-      "title": "My 2 Cents | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=LsGrKuPe1tQ",
-      "published": "2026-05-02T14:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/LsGrKuPe1tQ/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "d79L3vUtthA",
@@ -350,6 +545,16 @@
       "is_trailer": false
     },
     {
+      "video_id": "RFvkFFFzbuA",
+      "title": "Stack your roster. You’ll need ‘em. #MortalKombatMovie#FilmedForIMAX",
+      "url": "https://www.youtube.com/watch?v=RFvkFFFzbuA",
+      "published": "2026-05-01T22:00:26Z",
+      "thumbnail": "https://i.ytimg.com/vi/RFvkFFFzbuA/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
       "video_id": "AvUWWhEWzz0",
       "title": "Black Bag | The NCSC Agents All Take a Lie Detector Test",
       "url": "https://www.youtube.com/watch?v=AvUWWhEWzz0",
@@ -363,16 +568,6 @@
         "titulo": "Confidencial (Black Bag)",
         "anio": 2025
       }
-    },
-    {
-      "video_id": "UqSgqF4SegI",
-      "title": "Andie was playing chess while Ben was playing checkers. #HowToLoseAGuyin10Days",
-      "url": "https://www.youtube.com/watch?v=UqSgqF4SegI",
-      "published": "2026-05-01T17:00:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/UqSgqF4SegI/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "26jtj7UPNKM",
@@ -395,16 +590,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "6EAihm5lEhE",
-      "title": "Alien Extinction (2018) | Full Movie | Edward Gusts, Whitney Nielsen, Linda S. Wong, Ethan McDowell",
-      "url": "https://www.youtube.com/watch?v=6EAihm5lEhE",
-      "published": "2026-05-01T17:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/6EAihm5lEhE/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "UldYn6fFr2U",
       "title": "Looking for your next superhero movie? 🦸🎥",
       "url": "https://www.youtube.com/watch?v=UldYn6fFr2U",
@@ -413,31 +598,6 @@
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "QBvYXE6oZ64",
-      "title": "Marty, Life Is Short | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=QBvYXE6oZ64",
-      "published": "2026-05-01T13:00:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/QBvYXE6oZ64/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "48qIf7tGQXo",
-      "title": "Black Bag | George Spies on Kathryn With a Satellite",
-      "url": "https://www.youtube.com/watch?v=48qIf7tGQXo",
-      "published": "2026-04-30T21:00:03Z",
-      "thumbnail": "https://i.ytimg.com/vi/48qIf7tGQXo/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "16fe83e7-9857-47cf-bfcf-0060d9a34763",
-        "titulo": "Confidencial (Black Bag)",
-        "anio": 2025
-      }
     },
     {
       "video_id": "GuE-WgKKTKw",
@@ -453,31 +613,6 @@
         "titulo": "The Breadwinner (El pan de la guerra)",
         "anio": 2017
       }
-    },
-    {
-      "video_id": "o5iB8X07mOI",
-      "title": "Putting their all into it. Get tix to see TOP GUN and TOP GUN: MAVERICK in theatres May 13! #topgun",
-      "url": "https://www.youtube.com/watch?v=o5iB8X07mOI",
-      "published": "2026-04-30T20:19:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/o5iB8X07mOI/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "77aed65a-d6ec-45d8-bf1e-a1935f9a92cb",
-        "titulo": "Top Gun: Maverick",
-        "anio": 2022
-      }
-    },
-    {
-      "video_id": "7PY4ZeH7JG0",
-      "title": "Don't make us fight you. #StreetFighterMovie hits theaters everywhere October 16.",
-      "url": "https://www.youtube.com/watch?v=7PY4ZeH7JG0",
-      "published": "2026-04-30T18:58:06Z",
-      "thumbnail": "https://i.ytimg.com/vi/7PY4ZeH7JG0/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "oBWrb8HTU44",
@@ -518,16 +653,6 @@
       "channel": "HBO Max",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "dAyuWqeLi_s",
-      "title": "For more of #TheComeback official podcast, head to the link in bio to find more episodes.",
-      "url": "https://www.youtube.com/watch?v=dAyuWqeLi_s",
-      "published": "2026-04-28T13:30:41Z",
-      "thumbnail": "https://i.ytimg.com/vi/dAyuWqeLi_s/hqdefault.jpg",
-      "channel": "HBO Max",
-      "channel_tier": 1,
-      "is_trailer": false
     }
   ]
 }

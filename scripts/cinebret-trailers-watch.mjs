@@ -23,6 +23,8 @@ const YT_KEY = process.env.YOUTUBE_API_KEY || null
 
 // Major studio + streaming trailer channels (resolved via find-youtube-channels.mjs)
 const CHANNELS = [
+  { id: 'UCq0OueAsdxH6b8nyAspwViw', name: 'Universal Pictures', tier: 1 },
+  { id: 'UCjmJDM5pRKbUlVIzDYYWb6g', name: 'Warner Bros. Pictures', tier: 1 },
   { id: 'UCuPivVjnfNo4mb3Oog_frZg', name: 'A24', tier: 1 },
   { id: 'UCyQWPkU7yKh79EAsp9cLJAA', name: 'Walt Disney Studios', tier: 1 },
   { id: 'UCz97F7dMxBNOfGYu3rx8aCw', name: 'Sony Pictures', tier: 1 },

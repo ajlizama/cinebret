@@ -1,0 +1,533 @@
+{
+  "generated_at": "2026-05-05T11:56:31.993Z",
+  "total_videos": 46,
+  "trailers_count": 8,
+  "matched_to_cinebret": 13,
+  "videos": [
+    {
+      "video_id": "xHH0lSDRF5g",
+      "title": "We Don't Play The Same | Sports on Netflix",
+      "url": "https://www.youtube.com/watch?v=xHH0lSDRF5g",
+      "published": "2026-05-05T11:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/xHH0lSDRF5g/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "4kLOUQGRo2I",
+      "title": "The POV with Christina Roki and Calum Nicholas — Miami Race Recap | F1 on Apple TV",
+      "url": "https://www.youtube.com/watch?v=4kLOUQGRo2I",
+      "published": "2026-05-05T01:14:45Z",
+      "thumbnail": "https://i.ytimg.com/vi/4kLOUQGRo2I/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Y_gDT0AX3sc",
+      "title": "Gamestop is trying to buy eBay",
+      "url": "https://www.youtube.com/watch?v=Y_gDT0AX3sc",
+      "published": "2026-05-05T01:09:26Z",
+      "thumbnail": "https://i.ytimg.com/vi/Y_gDT0AX3sc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "bChKY5bFSSQ",
+      "title": "Resident Evil movie director loves RE4",
+      "url": "https://www.youtube.com/watch?v=bChKY5bFSSQ",
+      "published": "2026-05-05T01:07:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/bChKY5bFSSQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+        "titulo": "Resident evil - El huésped maldito",
+        "anio": 2002
+      }
+    },
+    {
+      "video_id": "qskGTX12YiU",
+      "title": "New Assassin's Creed: Black Flag Resynced details revealed",
+      "url": "https://www.youtube.com/watch?v=qskGTX12YiU",
+      "published": "2026-05-05T01:06:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/qskGTX12YiU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "jCovupjaQoU",
+      "title": "The Resident Evil director is capturing gameplay elements in the movie",
+      "url": "https://www.youtube.com/watch?v=jCovupjaQoU",
+      "published": "2026-05-05T01:05:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/jCovupjaQoU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+        "titulo": "Resident evil - El huésped maldito",
+        "anio": 2002
+      }
+    },
+    {
+      "video_id": "c0RvNEBDXJM",
+      "title": "Mark Hamill's intro as Art Rosenbaum | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=c0RvNEBDXJM",
+      "published": "2026-05-05T01:00:42Z",
+      "thumbnail": "https://i.ytimg.com/vi/c0RvNEBDXJM/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "QrLB3tM37sk",
+      "title": "Sudden Strike 5 - Official Accolades Trailer",
+      "url": "https://www.youtube.com/watch?v=QrLB3tM37sk",
+      "published": "2026-05-04T22:00:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/QrLB3tM37sk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "hb2IzBx8Yss",
+      "title": "Audrey Hepburn as Eliza Dolittle in My Fair Lady (1964) showing us all how to wear costume art.",
+      "url": "https://www.youtube.com/watch?v=hb2IzBx8Yss",
+      "published": "2026-05-04T19:57:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/hb2IzBx8Yss/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "REW8MjNqSjg",
+      "title": "Yearning 101 with #MerylStreep in ADAPTATION | MUBI",
+      "url": "https://www.youtube.com/watch?v=REW8MjNqSjg",
+      "published": "2026-05-04T19:01:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/REW8MjNqSjg/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "x0dQpATxU9g",
+      "title": "Top 5 DIABOLICAL Conquest Moments [SPOILERS] | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=x0dQpATxU9g",
+      "published": "2026-05-04T19:00:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/x0dQpATxU9g/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "W1orYNaZ1_Q",
+      "title": "The House of the Spirits - Behind the Scenes with Nicole Wallace | Prime Video",
+      "url": "https://www.youtube.com/watch?v=W1orYNaZ1_Q",
+      "published": "2026-05-04T18:00:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/W1orYNaZ1_Q/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "UWVznyWUS-E",
+      "title": "OBSESSION - \"Nice Date\" Official Clip",
+      "url": "https://www.youtube.com/watch?v=UWVznyWUS-E",
+      "published": "2026-05-04T17:00:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/UWVznyWUS-E/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "1fvEvR2ZlhU",
+      "title": "Vox Machina Rolling a Nat 20 for 10 Minutes | The Legend of Vox Machina S1-3 | Prime Video",
+      "url": "https://www.youtube.com/watch?v=1fvEvR2ZlhU",
+      "published": "2026-05-04T17:00:06Z",
+      "thumbnail": "https://i.ytimg.com/vi/1fvEvR2ZlhU/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "E8fGVAeaCUw",
+      "title": "Reunited. #Monarch: Legacy of Monsters — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=E8fGVAeaCUw",
+      "published": "2026-05-04T16:59:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/E8fGVAeaCUw/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
+        "titulo": "Monsters: El infierno del dragón",
+        "anio": 2024
+      }
+    },
+    {
+      "video_id": "ap_O8Z6pwAE",
+      "title": "Anne & Emily invented enemies-to-friends | The Devil Wears Prada | Prime Video",
+      "url": "https://www.youtube.com/watch?v=ap_O8Z6pwAE",
+      "published": "2026-05-04T15:00:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/ap_O8Z6pwAE/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
+        "titulo": "El diablo viste de Prada",
+        "anio": 2006
+      }
+    },
+    {
+      "video_id": "bgpDgJkQka0",
+      "title": "The Four Seasons | Season 2 Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=bgpDgJkQka0",
+      "published": "2026-05-04T15:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/bgpDgJkQka0/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "PC3u76Wzc74",
+      "title": "Wanda Sykes: Legacy | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=PC3u76Wzc74",
+      "published": "2026-05-04T14:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/PC3u76Wzc74/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "Baats3smXzg",
+      "title": "May the Field be with you. #Shrinking — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=Baats3smXzg",
+      "published": "2026-05-04T13:59:56Z",
+      "thumbnail": "https://i.ytimg.com/vi/Baats3smXzg/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "tN-oiFCRGuc",
+      "title": "A Thousand and One | Inez's New Landlord Wants to do Renovations",
+      "url": "https://www.youtube.com/watch?v=tN-oiFCRGuc",
+      "published": "2026-05-03T21:00:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/tN-oiFCRGuc/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "_cws6GjQPJ4",
+      "title": "It’s a Versayce! SHOWGIRLS, directed by Paul Verhoeven | MUBI",
+      "url": "https://www.youtube.com/watch?v=_cws6GjQPJ4",
+      "published": "2026-05-03T19:00:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/_cws6GjQPJ4/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "w9vhMSirA6o",
+      "title": "A duet to remember. #MargosGotMoneyTroubles — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=w9vhMSirA6o",
+      "published": "2026-05-03T17:59:45Z",
+      "thumbnail": "https://i.ytimg.com/vi/w9vhMSirA6o/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "_5EZDXjYMVU",
+      "title": "Pluribus — Behind The Scenes: Air Force One | Apple TV",
+      "url": "https://www.youtube.com/watch?v=_5EZDXjYMVU",
+      "published": "2026-05-03T16:59:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/_5EZDXjYMVU/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2ff44c66-9492-4425-980f-ea482af9a71c",
+        "titulo": "Air Force One (El avión del presidente)",
+        "anio": 1997
+      }
+    },
+    {
+      "video_id": "KwoJyYiCfws",
+      "title": "Which fictional character would you be neighbors with? Here’s what our audiences had to say | MUBI",
+      "url": "https://www.youtube.com/watch?v=KwoJyYiCfws",
+      "published": "2026-05-03T15:00:25Z",
+      "thumbnail": "https://i.ytimg.com/vi/KwoJyYiCfws/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
+        "titulo": "Malditos vecinos",
+        "anio": 2014
+      }
+    },
+    {
+      "video_id": "u1p33DE8egA",
+      "title": "A Thousand and One | Terry and Lucky Begin to Bond",
+      "url": "https://www.youtube.com/watch?v=u1p33DE8egA",
+      "published": "2026-05-02T21:01:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/u1p33DE8egA/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "DLaJ62iR5_M",
+      "title": "Live and in living color, Mitski takes the stage for her first concert film MITSKI: THE LAND | MUBI",
+      "url": "https://www.youtube.com/watch?v=DLaJ62iR5_M",
+      "published": "2026-05-02T19:00:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/DLaJ62iR5_M/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "4TjBIR9xwxY",
+      "title": "Cord Jefferson's hilarious debut AMERICAN FICTION | MUBI",
+      "url": "https://www.youtube.com/watch?v=4TjBIR9xwxY",
+      "published": "2026-05-02T15:01:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/4TjBIR9xwxY/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "583cb2c5-ec72-4b68-890f-f834d40c49ef",
+        "titulo": "Ficción estadounidense",
+        "anio": 2023
+      }
+    },
+    {
+      "video_id": "Orv0YKUi3XU",
+      "title": "Mother Mary | Making Of A Popstar with Anne Hathaway | A24",
+      "url": "https://www.youtube.com/watch?v=Orv0YKUi3XU",
+      "published": "2026-05-02T15:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/Orv0YKUi3XU/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "LsGrKuPe1tQ",
+      "title": "My 2 Cents | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=LsGrKuPe1tQ",
+      "published": "2026-05-02T14:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/LsGrKuPe1tQ/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "d79L3vUtthA",
+      "title": "Thriller comes to life. #MichaelMovie – NOW PLAYING in theaters & IMAX https://tickets.michael.movie",
+      "url": "https://www.youtube.com/watch?v=d79L3vUtthA",
+      "published": "2026-05-01T23:02:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/d79L3vUtthA/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "n6Q0-oUHayQ",
+      "title": "That's what a good song does. #PowerBallad - in select theaters May 29, everywhere June 5.",
+      "url": "https://www.youtube.com/watch?v=n6Q0-oUHayQ",
+      "published": "2026-05-01T22:45:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/n6Q0-oUHayQ/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "AvUWWhEWzz0",
+      "title": "Black Bag | The NCSC Agents All Take a Lie Detector Test",
+      "url": "https://www.youtube.com/watch?v=AvUWWhEWzz0",
+      "published": "2026-05-01T21:00:25Z",
+      "thumbnail": "https://i.ytimg.com/vi/AvUWWhEWzz0/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "16fe83e7-9857-47cf-bfcf-0060d9a34763",
+        "titulo": "Confidencial (Black Bag)",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "UqSgqF4SegI",
+      "title": "Andie was playing chess while Ben was playing checkers. #HowToLoseAGuyin10Days",
+      "url": "https://www.youtube.com/watch?v=UqSgqF4SegI",
+      "published": "2026-05-01T17:00:42Z",
+      "thumbnail": "https://i.ytimg.com/vi/UqSgqF4SegI/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "26jtj7UPNKM",
+      "title": "The Last Legion (2007) | Full Movie | Colin Firth, Ben Kingsley",
+      "url": "https://www.youtube.com/watch?v=26jtj7UPNKM",
+      "published": "2026-05-01T17:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/26jtj7UPNKM/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "2L429V7N4dY",
+      "title": "Pandorum (2009) | Full Movie | Dennis Quaid, Ben Foster, Cam Gigandet, Norman Reedus",
+      "url": "https://www.youtube.com/watch?v=2L429V7N4dY",
+      "published": "2026-05-01T17:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/2L429V7N4dY/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "6EAihm5lEhE",
+      "title": "Alien Extinction (2018) | Full Movie | Edward Gusts, Whitney Nielsen, Linda S. Wong, Ethan McDowell",
+      "url": "https://www.youtube.com/watch?v=6EAihm5lEhE",
+      "published": "2026-05-01T17:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/6EAihm5lEhE/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "UldYn6fFr2U",
+      "title": "Looking for your next superhero movie? 🦸🎥",
+      "url": "https://www.youtube.com/watch?v=UldYn6fFr2U",
+      "published": "2026-05-01T13:00:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/UldYn6fFr2U/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "QBvYXE6oZ64",
+      "title": "Marty, Life Is Short | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=QBvYXE6oZ64",
+      "published": "2026-05-01T13:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/QBvYXE6oZ64/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "48qIf7tGQXo",
+      "title": "Black Bag | George Spies on Kathryn With a Satellite",
+      "url": "https://www.youtube.com/watch?v=48qIf7tGQXo",
+      "published": "2026-04-30T21:00:03Z",
+      "thumbnail": "https://i.ytimg.com/vi/48qIf7tGQXo/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "16fe83e7-9857-47cf-bfcf-0060d9a34763",
+        "titulo": "Confidencial (Black Bag)",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "GuE-WgKKTKw",
+      "title": "THE BREADWINNER - The Roast of Nate Bargatze",
+      "url": "https://www.youtube.com/watch?v=GuE-WgKKTKw",
+      "published": "2026-04-30T20:20:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/GuE-WgKKTKw/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "92644993-f7c5-4f5c-9390-24b52b7ed0f2",
+        "titulo": "The Breadwinner (El pan de la guerra)",
+        "anio": 2017
+      }
+    },
+    {
+      "video_id": "o5iB8X07mOI",
+      "title": "Putting their all into it. Get tix to see TOP GUN and TOP GUN: MAVERICK in theatres May 13! #topgun",
+      "url": "https://www.youtube.com/watch?v=o5iB8X07mOI",
+      "published": "2026-04-30T20:19:58Z",
+      "thumbnail": "https://i.ytimg.com/vi/o5iB8X07mOI/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "77aed65a-d6ec-45d8-bf1e-a1935f9a92cb",
+        "titulo": "Top Gun: Maverick",
+        "anio": 2022
+      }
+    },
+    {
+      "video_id": "7PY4ZeH7JG0",
+      "title": "Don't make us fight you. #StreetFighterMovie hits theaters everywhere October 16.",
+      "url": "https://www.youtube.com/watch?v=7PY4ZeH7JG0",
+      "published": "2026-04-30T18:58:06Z",
+      "thumbnail": "https://i.ytimg.com/vi/7PY4ZeH7JG0/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "oBWrb8HTU44",
+      "title": "Resident Evil – Official Teaser Trailer. From Zach Cregger, director of Weapons and Barbarian.",
+      "url": "https://www.youtube.com/watch?v=oBWrb8HTU44",
+      "published": "2026-04-30T13:01:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/oBWrb8HTU44/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "66f3844e-9819-403e-b7df-27b7bc430cf0",
+        "titulo": "Barbarian",
+        "anio": 2022
+      }
+    },
+    {
+      "video_id": "SJPu1spHqfk",
+      "title": "RESIDENT EVIL – Official Teaser Trailer (4K)",
+      "url": "https://www.youtube.com/watch?v=SJPu1spHqfk",
+      "published": "2026-04-30T12:59:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/SJPu1spHqfk/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+        "titulo": "Resident evil - El huésped maldito",
+        "anio": 2002
+      }
+    },
+    {
+      "video_id": "N6Zsu7F5gFM",
+      "title": "The A List | Official Trailer | HBO",
+      "url": "https://www.youtube.com/watch?v=N6Zsu7F5gFM",
+      "published": "2026-04-29T17:00:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/N6Zsu7F5gFM/hqdefault.jpg",
+      "channel": "HBO Max",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "dAyuWqeLi_s",
+      "title": "For more of #TheComeback official podcast, head to the link in bio to find more episodes.",
+      "url": "https://www.youtube.com/watch?v=dAyuWqeLi_s",
+      "published": "2026-04-28T13:30:41Z",
+      "thumbnail": "https://i.ytimg.com/vi/dAyuWqeLi_s/hqdefault.jpg",
+      "channel": "HBO Max",
+      "channel_tier": 1,
+      "is_trailer": false
+    }
+  ]
+}

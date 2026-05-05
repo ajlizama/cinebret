@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-05-05T11:57:08.437Z",
+  "cycle": "am",
+  "total": 3,
+  "passes_quality_gate": true,
+  "top": [
+    {
+      "type": "FEED",
+      "priority": "media",
+      "action": "generate_carousel_mood",
+      "title": "10 películas para el frío del invierno",
+      "reasoning": "72 días sin lista temática/mood. \"Pa'l domingo de bajón\" alineado con época del año.",
+      "suggested_caption": null,
+      "source_name": "mood_gap",
+      "score": 96,
+      "skill_to_invoke": "cinebret-carousel-mood",
+      "skill_args": {
+        "mood": "Pa'l domingo de bajón",
+        "count": 10
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: How to Train Your Dragon (2025)",
+      "reasoning": "Tu rating 10 (favorita) sin review, en netflix, amazon prime, hbo max. Dirigida por Dean DeBlois. Es la review pendiente que más impacto te traería.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "score": 85,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_carousel_awards",
+      "title": "Preview Festival de Cannes",
+      "reasoning": "Festival de Cannes en 8 días. Carrusel preview con películas relevantes.",
+      "suggested_caption": null,
+      "source_name": "awards_calendar",
+      "score": 86,
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "trigger": "Festival de Cannes"
+      }
+    }
+  ],
+  "rest": [],
+  "raw_signal_counts": {
+    "news_items": 114,
+    "reddit_posts": 0,
+    "trailers": 46,
+    "pending_reviews": 30
+  }
+}

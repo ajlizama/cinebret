@@ -289,9 +289,10 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
     {
       "id": "642db2ce3ffde83d",
@@ -313,9 +314,10 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
     {
       "id": "f39545c3a701989b",
@@ -337,9 +339,10 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
     {
       "id": "fecc4d46aebb463c",
@@ -360,9 +363,10 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
     {
       "id": "c98f2cae36b16b75",
@@ -384,10 +388,35 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+    },
+    {
+      "id": "3be713053fb84c1a",
+      "action": "react_to_news",
+      "title": "Noticia: Iron Man",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 89.65623383333333,
+      "reasoning": "Hollywood Reporter (1h): \"Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden\". Match catálogo: Iron Man (rating 9).",
+      "suggested_caption": null,
+      "source_name": "Hollywood Reporter",
+      "source_url": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
+        "angle": "mention",
+        "headline": "Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden"
+      },
+      "first_proposed": "2026-05-06T21:09:49.676Z",
+      "last_proposed": "2026-05-06T21:09:49.676Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-06T12:26:06.347Z"
+  "last_saved": "2026-05-06T21:10:15.250Z"
 }

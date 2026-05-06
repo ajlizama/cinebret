@@ -1,16 +1,216 @@
 {
-  "generated_at": "2026-05-06T12:25:20.636Z",
+  "generated_at": "2026-05-06T21:09:49.620Z",
   "total_videos": 61,
-  "trailers_count": 11,
-  "matched_to_cinebret": 10,
+  "trailers_count": 15,
+  "matched_to_cinebret": 12,
   "videos": [
     {
-      "video_id": "--vaVLITgc0",
-      "title": "Assassin's Creed Black Flag Resynced Gameplay - A New Look at Parkour, Stealth and Takedowns",
-      "url": "https://www.youtube.com/watch?v=--vaVLITgc0",
-      "published": "2026-05-06T11:39:57Z",
-      "thumbnail": "https://i.ytimg.com/vi/--vaVLITgc0/hqdefault.jpg",
+      "video_id": "HwZUuTuGm8k",
+      "title": "Ain't no way Nolan's sleeping through THAT | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=HwZUuTuGm8k",
+      "published": "2026-05-06T21:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/HwZUuTuGm8k/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "OwltW9kxSRg",
+      "title": "The hits keep coming. See @JasonStatham in #MutinyMovie. Only in theaters August 21.",
+      "url": "https://www.youtube.com/watch?v=OwltW9kxSRg",
+      "published": "2026-05-06T21:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/OwltW9kxSRg/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "vrT8-h1eK5A",
+      "title": "Even on their worst day, they roll again. #CriminalRecord — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=vrT8-h1eK5A",
+      "published": "2026-05-06T19:29:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/vrT8-h1eK5A/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "BUdW_DzPDKc",
+      "title": "Ballerinas vs. Hungarian Mob | Pretty Lethal | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=BUdW_DzPDKc",
+      "published": "2026-05-06T19:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/BUdW_DzPDKc/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "f4c93144-a613-4ba9-9ca9-a027ae5cc0fe",
+        "titulo": "Pretty Lethal",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "Tcqqykqzz3I",
+      "title": "How to Lose a Guy in 10 Minutes #HowtoLoseaGuyin10Days",
+      "url": "https://www.youtube.com/watch?v=Tcqqykqzz3I",
+      "published": "2026-05-06T18:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/Tcqqykqzz3I/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "WW2T2m2d4Vo",
+      "title": "Stanley Tucci Escapes Heavily Guarded Compound in Citadel Season 2 | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=WW2T2m2d4Vo",
+      "published": "2026-05-06T17:00:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/WW2T2m2d4Vo/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "SaVwpimJyTQ",
+      "title": "The Academy of Country Music Awards - Performers | Prime Video",
+      "url": "https://www.youtube.com/watch?v=SaVwpimJyTQ",
+      "published": "2026-05-06T16:59:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/SaVwpimJyTQ/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "n3am_zKuowc",
+      "title": "Skull and Bones - Official Year 3 Teaser Trailer",
+      "url": "https://www.youtube.com/watch?v=n3am_zKuowc",
+      "published": "2026-05-06T16:35:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/n3am_zKuowc/hqdefault.jpg",
       "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "WCrnJb8LQ38",
+      "title": "Mortal Kombat II Review",
+      "url": "https://www.youtube.com/watch?v=WCrnJb8LQ38",
+      "published": "2026-05-06T16:00:54Z",
+      "thumbnail": "https://i.ytimg.com/vi/WCrnJb8LQ38/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "8f7c8792-20ce-436e-b56d-65de5297aefc",
+        "titulo": "Mortal Kombat II",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "M5Hy3BF3d4Y",
+      "title": "Elle - Official Teaser | Prime Video",
+      "url": "https://www.youtube.com/watch?v=M5Hy3BF3d4Y",
+      "published": "2026-05-06T15:59:56Z",
+      "thumbnail": "https://i.ytimg.com/vi/M5Hy3BF3d4Y/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "-A0H-_SLY3c",
+      "title": "Hunt: Showdown 1896 - Official Legacy Chronicle Trailer",
+      "url": "https://www.youtube.com/watch?v=-A0H-_SLY3c",
+      "published": "2026-05-06T15:58:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/-A0H-_SLY3c/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "e8f7387f-0b8b-4c77-bebf-5a982e4ce816",
+        "titulo": "Poder sin límites",
+        "anio": 2012
+      }
+    },
+    {
+      "video_id": "y4VcEb6k7As",
+      "title": "The Jackbox Party Pack 12 - Official Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=y4VcEb6k7As",
+      "published": "2026-05-06T15:01:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/y4VcEb6k7As/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "fO6-IPlHoV0",
+      "title": "A modern western with a magical twist. THE MYSTERIOUS GAZE OF THE FLAMINGO - streaming May 15 | MUBI",
+      "url": "https://www.youtube.com/watch?v=fO6-IPlHoV0",
+      "published": "2026-05-06T15:00:23Z",
+      "thumbnail": "https://i.ytimg.com/vi/fO6-IPlHoV0/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "EkOADMbfCKw",
+      "title": "WHISPER OF THE HEART — Hayao Miyazaki takes “Country Roads” | MUBI Podcast",
+      "url": "https://www.youtube.com/watch?v=EkOADMbfCKw",
+      "published": "2026-05-06T14:28:14Z",
+      "thumbnail": "https://i.ytimg.com/vi/EkOADMbfCKw/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ntiYLcSDHN4",
+      "title": "WheelMates - Official Demo Launch Trailer",
+      "url": "https://www.youtube.com/watch?v=ntiYLcSDHN4",
+      "published": "2026-05-06T14:01:24Z",
+      "thumbnail": "https://i.ytimg.com/vi/ntiYLcSDHN4/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "IcyJvPOwbrY",
+      "title": "Ed Boon Picks His Mortal Kombat Defender",
+      "url": "https://www.youtube.com/watch?v=IcyJvPOwbrY",
+      "published": "2026-05-06T14:00:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/IcyJvPOwbrY/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
+        "titulo": "Mortal Kombat",
+        "anio": 1995
+      }
+    },
+    {
+      "video_id": "Ltrc8z4AXKo",
+      "title": "Berlin and the Lady with an Ermine | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=Ltrc8z4AXKo",
+      "published": "2026-05-06T14:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/Ltrc8z4AXKo/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "Nd9fv9rPCMg",
+      "title": "Propeller One-Way Night Coach — Official Trailer | Apple TV",
+      "url": "https://www.youtube.com/watch?v=Nd9fv9rPCMg",
+      "published": "2026-05-06T13:29:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/Nd9fv9rPCMg/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "pkEFfWBCI_8",
+      "title": "ORPHAN, from SON OF SAUL director László Nemes is in cinemas May 15. A MUBI Release | MUBI",
+      "url": "https://www.youtube.com/watch?v=pkEFfWBCI_8",
+      "published": "2026-05-06T13:01:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/pkEFfWBCI_8/hqdefault.jpg",
+      "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -25,62 +225,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "19T_iaQpnts",
-      "title": "The many ways that LEGO Batman reminds us of the Arkham games",
-      "url": "https://www.youtube.com/watch?v=19T_iaQpnts",
-      "published": "2026-05-06T02:04:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/19T_iaQpnts/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "3WnSt4uZ7gM",
-      "title": "Dead as Disco is like Sifu meets Hi-Fi Rush",
-      "url": "https://www.youtube.com/watch?v=3WnSt4uZ7gM",
-      "published": "2026-05-06T02:03:40Z",
-      "thumbnail": "https://i.ytimg.com/vi/3WnSt4uZ7gM/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "wR5g2uAgTK0",
-      "title": "Anthony Bourdain biopic focuses on his origins",
-      "url": "https://www.youtube.com/watch?v=wR5g2uAgTK0",
-      "published": "2026-05-06T02:03:11Z",
-      "thumbnail": "https://i.ytimg.com/vi/wR5g2uAgTK0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "jCLQAQSkEnw",
-      "title": "What would you do if your date was obsessed?",
-      "url": "https://www.youtube.com/watch?v=jCLQAQSkEnw",
-      "published": "2026-05-06T02:01:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/jCLQAQSkEnw/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "m68744M8ZSY",
       "title": "HungryGhost has landed. A new episode of #MargosGotMoneyTroubles is now streaming.",
       "url": "https://www.youtube.com/watch?v=m68744M8ZSY",
       "published": "2026-05-06T01:29:49Z",
       "thumbnail": "https://i.ytimg.com/vi/m68744M8ZSY/hqdefault.jpg",
       "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "KvmP17991hk",
-      "title": "Off Campus Hallelujah 😌 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=KvmP17991hk",
-      "published": "2026-05-05T21:00:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/KvmP17991hk/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -200,16 +350,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "WnG0jr_TOsE",
-      "title": "One-Night Stand in the Jungle Goes Horribly Wrong | Balls Up | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=WnG0jr_TOsE",
-      "published": "2026-05-05T17:00:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/WnG0jr_TOsE/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "NWTOcb3ID5A",
       "title": "Johnny Cage vs. Homelander",
       "url": "https://www.youtube.com/watch?v=NWTOcb3ID5A",
@@ -270,16 +410,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "BK8hjX2Ceb8",
-      "title": "Temptation... at a cost. | The House of the Spirits | Prime Video",
-      "url": "https://www.youtube.com/watch?v=BK8hjX2Ceb8",
-      "published": "2026-05-05T15:00:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/BK8hjX2Ceb8/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "EzOpCMbRP-s",
       "title": "Brazil ‘70: The Third Star | Official Trailer | Netflix",
       "url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
@@ -320,32 +450,12 @@
       }
     },
     {
-      "video_id": "nqsIbXqd2jw",
-      "title": "Top Gun 40th Anniversary - The Story Continues",
-      "url": "https://www.youtube.com/watch?v=nqsIbXqd2jw",
-      "published": "2026-05-05T14:00:36Z",
-      "thumbnail": "https://i.ytimg.com/vi/nqsIbXqd2jw/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "PsvUvqXoTpE",
       "title": "The Boroughs | Official Trailer | Netflix",
       "url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
       "published": "2026-05-05T14:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/PsvUvqXoTpE/hqdefault.jpg",
       "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "9RNaJgZSvCk",
-      "title": "Kyle Larson vs. The Double - Official Trailer | Prime Video",
-      "url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
-      "published": "2026-05-05T13:59:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/9RNaJgZSvCk/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": true
     },
@@ -375,16 +485,6 @@
       "url": "https://www.youtube.com/watch?v=k-358jALXlA",
       "published": "2026-05-05T13:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/k-358jALXlA/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "OQAB1CXnWzg",
-      "title": "A Good Girl's Guide to Murder: Season 2 | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=OQAB1CXnWzg",
-      "published": "2026-05-05T12:30:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/OQAB1CXnWzg/hqdefault.jpg",
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": true
@@ -425,16 +525,6 @@
       }
     },
     {
-      "video_id": "REW8MjNqSjg",
-      "title": "Yearning 101 with #MerylStreep in ADAPTATION | MUBI",
-      "url": "https://www.youtube.com/watch?v=REW8MjNqSjg",
-      "published": "2026-05-04T19:01:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/REW8MjNqSjg/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "UWVznyWUS-E",
       "title": "OBSESSION - \"Nice Date\" Official Clip",
       "url": "https://www.youtube.com/watch?v=UWVznyWUS-E",
@@ -455,31 +545,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "E8fGVAeaCUw",
-      "title": "Reunited. #Monarch: Legacy of Monsters — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=E8fGVAeaCUw",
-      "published": "2026-05-04T16:59:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/E8fGVAeaCUw/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
-        "titulo": "Monsters: El infierno del dragón",
-        "anio": 2024
-      }
-    },
-    {
-      "video_id": "Baats3smXzg",
-      "title": "May the Field be with you. #Shrinking — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=Baats3smXzg",
-      "published": "2026-05-04T13:59:56Z",
-      "thumbnail": "https://i.ytimg.com/vi/Baats3smXzg/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "tN-oiFCRGuc",
       "title": "A Thousand and One | Inez's New Landlord Wants to do Renovations",
       "url": "https://www.youtube.com/watch?v=tN-oiFCRGuc",
@@ -488,31 +553,6 @@
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "_cws6GjQPJ4",
-      "title": "It’s a Versayce! SHOWGIRLS, directed by Paul Verhoeven | MUBI",
-      "url": "https://www.youtube.com/watch?v=_cws6GjQPJ4",
-      "published": "2026-05-03T19:00:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/_cws6GjQPJ4/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "KwoJyYiCfws",
-      "title": "Which fictional character would you be neighbors with? Here’s what our audiences had to say | MUBI",
-      "url": "https://www.youtube.com/watch?v=KwoJyYiCfws",
-      "published": "2026-05-03T15:00:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/KwoJyYiCfws/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
-        "titulo": "Malditos vecinos",
-        "anio": 2014
-      }
     },
     {
       "video_id": "u1p33DE8egA",
@@ -570,31 +610,11 @@
       }
     },
     {
-      "video_id": "LwvIjHh-I_w",
-      "title": "Are you sure?",
-      "url": "https://www.youtube.com/watch?v=LwvIjHh-I_w",
-      "published": "2026-05-01T17:49:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/LwvIjHh-I_w/hqdefault_live.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "26jtj7UPNKM",
       "title": "The Last Legion (2007) | Full Movie | Colin Firth, Ben Kingsley",
       "url": "https://www.youtube.com/watch?v=26jtj7UPNKM",
       "published": "2026-05-01T17:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/26jtj7UPNKM/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "2L429V7N4dY",
-      "title": "Pandorum (2009) | Full Movie | Dennis Quaid, Ben Foster, Cam Gigandet, Norman Reedus",
-      "url": "https://www.youtube.com/watch?v=2L429V7N4dY",
-      "published": "2026-05-01T17:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/2L429V7N4dY/hqdefault.jpg",
       "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
@@ -653,16 +673,6 @@
         "titulo": "Resident evil - El huésped maldito",
         "anio": 2002
       }
-    },
-    {
-      "video_id": "N6Zsu7F5gFM",
-      "title": "The A List | Official Trailer | HBO",
-      "url": "https://www.youtube.com/watch?v=N6Zsu7F5gFM",
-      "published": "2026-04-29T17:00:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/N6Zsu7F5gFM/hqdefault.jpg",
-      "channel": "HBO Max",
-      "channel_tier": 1,
-      "is_trailer": true
     }
   ]
 }

@@ -1,93 +1,80 @@
 {
-  "generated_at": "2026-05-06T12:25:45.639Z",
-  "cycle": "am",
+  "generated_at": "2026-05-06T21:09:49.676Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
-  "top_count": 5,
+  "top_count": 1,
   "backlog_count": 8,
-  "news_count": 4,
+  "news_count": 6,
   "top": [
     {
       "type": "FEED",
       "priority": "alta",
+      "action": "react_to_news",
+      "title": "Noticia: Iron Man",
+      "reasoning": "Hollywood Reporter (1h): \"Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden\". Match catálogo: Iron Man (rating 9).",
+      "suggested_caption": null,
+      "source_name": "Hollywood Reporter",
+      "source_url": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
+      "score": 89.65623383333333,
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
+        "angle": "mention",
+        "headline": "Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden"
+      }
+    }
+  ],
+  "backlog": [
+    {
+      "id": "86cd64c42c4ddc8b",
       "action": "generate_review",
       "title": "Review: Fight Club (1999)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 130,
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
       "suggested_caption": null,
       "source_name": "pending_review",
-      "score": 130,
+      "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
         "titulo": "Fight Club",
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
-      }
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
     {
-      "type": "FEED",
-      "priority": "alta",
+      "id": "642db2ce3ffde83d",
       "action": "generate_review",
       "title": "Review: 올드보이 (2003)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 129,
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
       "suggested_caption": null,
       "source_name": "pending_review",
-      "score": 129,
+      "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
         "titulo": "올드보이",
         "anio": 2003,
         "pelicula_id": "33b36b2f-7cab-40be-a753-7c6fbdfcd957"
-      }
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
-    {
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: 기생충 (2019)",
-      "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "suggested_caption": null,
-      "source_name": "pending_review",
-      "score": 117,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "기생충",
-        "anio": 2019,
-        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
-      }
-    },
-    {
-      "type": "FEED",
-      "priority": "media",
-      "action": "generate_carousel_topic",
-      "title": "TOP 10 películas francesas",
-      "reasoning": "Tema con tracción (66 pts: news + estacional + sin posts recientes).",
-      "suggested_caption": null,
-      "source_name": "topic_pool",
-      "score": 82,
-      "skill_to_invoke": "cinebret-carousel-topic",
-      "skill_args": {
-        "topic_type": "country",
-        "topic": "francia"
-      }
-    },
-    {
-      "type": "FEED",
-      "priority": "alta",
-      "action": "react_to_news",
-      "title": "Noticia: Terminator",
-      "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
-      "suggested_caption": null,
-      "source_name": "r/movies",
-      "source_url": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
-      "score": 86.23047458333333,
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
-        "angle": "mention",
-        "headline": "Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron"
-      }
-    }
-  ],
-  "backlog": [
     {
       "id": "187fb6524acc92b1",
       "action": "react_to_news",
@@ -117,6 +104,31 @@
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-06T12:25:45.639Z"
+    },
+    {
+      "id": "f39545c3a701989b",
+      "action": "generate_review",
+      "title": "Review: 기생충 (2019)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 117,
+      "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "기생충",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T21:09:49.676Z"
     },
     {
       "id": "0a3f68a79039f11e",
@@ -228,86 +240,6 @@
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-05T21:01:49.643Z"
-    },
-    {
-      "id": "6c19f56da2918b13",
-      "action": "react_to_news",
-      "title": "Festival: Brooklyn",
-      "type": "FEED",
-      "priority": "alta",
-      "score": 92.5,
-      "reasoning": "Variety (1h): \"Brooklyn Film Festival Unveils 2026 Lineup Featuring 134 Films (EXCLUSIVE)\". Peli en tu catálogo: Brooklyn.",
-      "suggested_caption": null,
-      "source_name": "Variety",
-      "source_url": "https://variety.com/2026/film/news/brooklyn-film-festival-unveils-2026-lineup-1236738375/",
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://variety.com/2026/film/news/brooklyn-film-festival-unveils-2026-lineup-1236738375/",
-        "angle": "festival",
-        "headline": "Brooklyn Film Festival Unveils 2026 Lineup Featuring 134 Films (EXCLUSIVE)",
-        "cinebret_match": {
-          "pelicula_id": "667a524e-c16a-4daf-9cbb-c68818d4d7fd",
-          "titulo": "Brooklyn",
-          "anio": 2015
-        }
-      },
-      "first_proposed": "2026-05-05T21:01:49.643Z",
-      "last_proposed": "2026-05-05T21:01:49.643Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
-    },
-    {
-      "id": "d8158db1ef519dd7",
-      "action": "share_trailer_in_story",
-      "title": "Trailer: The Boroughs",
-      "type": "STORY",
-      "priority": "alta",
-      "score": 89.5,
-      "reasoning": "Netflix subió trailer hace 7h.",
-      "suggested_caption": null,
-      "source_name": "Netflix",
-      "source_url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
-      "skill_to_invoke": "cinebret-share-story",
-      "skill_args": {
-        "url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
-        "angle": "hype",
-        "cinebret_match": null
-      },
-      "first_proposed": "2026-05-05T21:01:49.643Z",
-      "last_proposed": "2026-05-05T21:01:49.643Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
-    },
-    {
-      "id": "f5ddb5a509a5e9c3",
-      "action": "share_trailer_in_story",
-      "title": "Trailer: Kyle Larson vs. The Double",
-      "type": "STORY",
-      "priority": "alta",
-      "score": 89.5,
-      "reasoning": "Prime Video subió trailer hace 7h.",
-      "suggested_caption": null,
-      "source_name": "Prime Video",
-      "source_url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
-      "skill_to_invoke": "cinebret-share-story",
-      "skill_args": {
-        "url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
-        "angle": "hype",
-        "cinebret_match": null
-      },
-      "first_proposed": "2026-05-05T21:01:49.643Z",
-      "last_proposed": "2026-05-05T21:01:49.643Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
     }
   ],
   "news": [
@@ -333,7 +265,7 @@
           "anio": 1984
         }
       ],
-      "_score": 64.97395744444444,
+      "_score": 61.47963288888889,
       "_catalog": {
         "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
         "titulo": "Terminator",
@@ -348,77 +280,133 @@
       "_director": "James Cameron"
     },
     {
-      "source": "IndieWire",
-      "title": "New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some New Armor)",
-      "link": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
-      "description": "Christopher Nolan's star-studded take on Homer's epic poem hits theaters this July.",
-      "published": "Tue, 05 May 2026 16:59:53 +0000",
-      "published_iso": "2026-05-05T16:59:53.000Z",
-      "source_weight": 4,
+      "source": "Hollywood Reporter",
+      "title": "Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
+      "description": "The series comes from 'Iron Man' writers Art Marcum and Matt Holloway.",
+      "published": "Wed, 06 May 2026 20:01:30 +0000",
+      "published_iso": "2026-05-06T20:01:30.000Z",
+      "source_weight": 5,
       "source_lang": "en",
-      "source_category": "auteur",
-      "_score": 52.22517788888889,
+      "source_category": "industry",
+      "_score": 54.54163755555555,
       "_catalog": {
-        "pelicula_id": "39874d5a-cf48-4f55-9e1e-ee30b95964ad",
-        "titulo": "La Odisea",
-        "titulo_ingles": "The Odyssey",
-        "anio": 2026,
-        "nota_imdb": 7,
-        "director": "Christopher Nolan",
-        "rating": 0,
-        "sello": false,
-        "tier": 3
-      },
-      "_director": "Christopher Nolan"
-    },
-    {
-      "source": "r/movies",
-      "title": "Ray Mendoza, co-director of A24's 'Warfare', to direct Western-drama ‘Blood On The Promontory’ - Five convicts are shackled together by foot as they try to escape through the mountains following a violent train robbery.",
-      "link": "https://www.reddit.com/r/movies/comments/1t4r5h1/ray_mendoza_codirector_of_a24s_warfare_to_direct/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t4r5h1/ray_mendoza_codirector_of_a24s_warfare_to_direct/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/ujWanUGyulB0MSnMUieEx5h9DmvjOKeQYKz91Nmt-9Q.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=7322acd26ca9e7532e5f8921118e992daf330ff8&quot; alt=&quot;Ray Mendoza, co-director of A24's 'Warfare', to direct Western-drama ‘Blood On The Promontory’ - Five convicts are shackled together by foot as they try to escape through the mountains following a violent train robbery.&quot; ",
-      "published": "2026-05-05T20:18:14+00:00",
-      "published_iso": "2026-05-05T20:18:14.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-          "titulo": "Together: Juntos hasta la muerte",
-          "anio": 2025
-        },
-        {
-          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-          "titulo": "Following",
-          "anio": 1999
-        }
-      ],
-      "_score": 43.547512,
-      "_catalog": {
-        "pelicula_id": "2eece27c-8de6-42cc-9242-cb15fa4231d4",
-        "titulo": "Warfare: Tiempo de guerra",
-        "titulo_ingles": "Warfare",
-        "anio": 2025,
-        "nota_imdb": 7.1,
-        "director": "Ray Mendoza",
+        "pelicula_id": "c55d8baf-0c78-4288-b01a-5eab6a9053c4",
+        "titulo": "Iron Man",
+        "titulo_ingles": "Iron Man",
+        "anio": 2008,
+        "nota_imdb": 7.9,
+        "director": "Jon Favreau",
         "rating": 9,
         "sello": true,
         "tier": 0
       }
     },
     {
-      "source": "Deadline",
-      "title": "European Film Academy Appoints First Ever Chapter Principals Including &#8216;Fatherland’ Casting Director &#038; Christopher Nolan Cinematographer",
-      "link": "https://deadline.com/2026/05/european-film-academy-first-chapter-principals-1236882568/",
-      "description": "The European Film Academy has appointed its first-ever cohort of chapter principals across eight filmmaking disciplines as it expands its commitment to supporting the arts and crafts professions of European filmmaking. The move follows the introduction in 2025 of chapters dedicated to casting directors, cinematographers, composers, costume designers, editors, make-up and hair artists, production designers, [&#8230;]",
-      "published": "Wed, 06 May 2026 09:00:00 +0000",
-      "published_iso": "2026-05-06T09:00:00.000Z",
+      "source": "Variety",
+      "title": "James Marsden to Lead Apple TV Thriller Series &#8216;Disavowed&#8217; From &#8216;Iron Man&#8217; Writers",
+      "link": "https://variety.com/2026/tv/news/james-marsden-apple-tv-series-disavowed-disavowed-1236739752/",
+      "description": "James Marsden is set to star in the thriller series &#8220;Disavowed&#8221; at Apple TV, Variety has learned. The logline for the show states that it follows &#8220;legendary CIA Case Officer Brad Griffin (Marsden), who is abruptly fired in the middle of a global hunt for an elusive assassin responsible for killing his colleague. Disgraced and [&#8230;]",
+      "published": "Wed, 06 May 2026 20:00:00 +0000",
+      "published_iso": "2026-05-06T20:00:00.000Z",
       "source_weight": 5,
       "source_lang": "en",
       "source_category": "industry",
-      "_score": 38.625959333333334,
-      "_catalog": null,
-      "_director": "Christopher Nolan"
+      "_score": 54.531637333333336,
+      "_catalog": {
+        "pelicula_id": "c55d8baf-0c78-4288-b01a-5eab6a9053c4",
+        "titulo": "Iron Man",
+        "titulo_ingles": "Iron Man",
+        "anio": 2008,
+        "nota_imdb": 7.9,
+        "director": "Jon Favreau",
+        "rating": 9,
+        "sello": true,
+        "tier": 0
+      }
+    },
+    {
+      "source": "The Wrap",
+      "title": "James Marsden to Star in New Apple Thriller &#8216;Disavowed&#8217;",
+      "link": "https://www.thewrap.com/creative-content/tv-shows/james-marsden-apple-tv-thriller-disavowed/",
+      "description": "The new series is written by the duo behind \"Iron Man\" The post James Marsden to Star in New Apple Thriller &#8216;Disavowed&#8217; appeared first on TheWrap .",
+      "published": "Wed, 06 May 2026 20:00:00 +0000",
+      "published_iso": "2026-05-06T20:00:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry",
+      "_score": 54.53163722222222,
+      "_catalog": {
+        "pelicula_id": "c55d8baf-0c78-4288-b01a-5eab6a9053c4",
+        "titulo": "Iron Man",
+        "titulo_ingles": "Iron Man",
+        "anio": 2008,
+        "nota_imdb": 7.9,
+        "director": "Jon Favreau",
+        "rating": 9,
+        "sello": true,
+        "tier": 0
+      }
+    },
+    {
+      "source": "r/movies",
+      "title": "'A Quiet Place: Part III' Begins Filming Next Week",
+      "link": "https://www.reddit.com/r/movies/comments/1t5g2n0/a_quiet_place_part_iii_begins_filming_next_week/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t5g2n0/a_quiet_place_part_iii_begins_filming_next_week/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/azYBT_eruMOWiR69UVH42N310RL4QlCHCxLbNjf0YvE.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=aef4b5dabfa6e43263870d25e805a4c757e51f18&quot; alt=&quot;'A Quiet Place: Part III' Begins Filming Next Week&quot; title=&quot;'A Quiet Place: Part III' Begins Filming Next Week&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www",
+      "published": "2026-05-06T15:22:45+00:00",
+      "published_iso": "2026-05-06T15:22:45.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "d5a05f53-2786-4b48-82db-204a86775f4a",
+          "titulo": "Un lugar tranquilo",
+          "anio": 2018
+        }
+      ],
+      "_score": 37.683301444444446,
+      "_catalog": {
+        "pelicula_id": "d5a05f53-2786-4b48-82db-204a86775f4a",
+        "titulo": "Un lugar tranquilo",
+        "titulo_ingles": "A Quiet Place",
+        "anio": 2018,
+        "nota_imdb": 7.5,
+        "director": "John Krasinski",
+        "rating": 8,
+        "sello": true,
+        "tier": 0
+      }
+    },
+    {
+      "source": "r/movies",
+      "title": "‘Superman’ Sequel ‘Man Of Tomorrow’ Adds Matthew Lillard to Cast",
+      "link": "https://www.reddit.com/r/movies/comments/1t5jrdc/superman_sequel_man_of_tomorrow_adds_matthew/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t5jrdc/superman_sequel_man_of_tomorrow_adds_matthew/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/aZ45nTCL8XR07bPGn64bC9o9-VxMZrb20CtJPoLhABo.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=a6467050fc0f2fc91fc318929b2594f032b78d21&quot; alt=&quot;‘Superman’ Sequel ‘Man Of Tomorrow’ Adds Matthew Lillard to Cast&quot; title=&quot;‘Superman’ Sequel ‘Man Of Tomorrow’ Adds Matthew Lillard to Cast&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt",
+      "published": "2026-05-06T17:30:42+00:00",
+      "published_iso": "2026-05-06T17:30:42.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "c43acbfe-52f8-41fc-bcc8-cfb413a34a28",
+          "titulo": "Superman",
+          "anio": 2025
+        }
+      ],
+      "_score": 28.536302444444445,
+      "_catalog": {
+        "pelicula_id": "c43acbfe-52f8-41fc-bcc8-cfb413a34a28",
+        "titulo": "Superman",
+        "titulo_ingles": "Superman",
+        "anio": 2025,
+        "nota_imdb": 7,
+        "director": "James Gunn",
+        "rating": 8,
+        "sello": false,
+        "tier": 0
+      }
     }
   ],
   "raw_signal_counts": {

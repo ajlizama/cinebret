@@ -1,21 +1,134 @@
 {
-  "generated_at": "2026-05-05T18:43:10.136Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-06T12:25:45.639Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
-  "backlog_count": 0,
-  "news_count": 10,
+  "backlog_count": 8,
+  "news_count": 4,
   "top": [
     {
-      "type": "STORY",
+      "type": "FEED",
       "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: Fight Club (1999)",
+      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "score": 130,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: 올드보이 (2003)",
+      "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "score": 129,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "올드보이",
+        "anio": 2003,
+        "pelicula_id": "33b36b2f-7cab-40be-a753-7c6fbdfcd957"
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: 기생충 (2019)",
+      "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "score": 117,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "기생충",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "media",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas francesas",
+      "reasoning": "Tema con tracción (66 pts: news + estacional + sin posts recientes).",
+      "suggested_caption": null,
+      "source_name": "topic_pool",
+      "score": 82,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "francia"
+      }
+    },
+    {
+      "type": "FEED",
+      "priority": "alta",
+      "action": "react_to_news",
+      "title": "Noticia: Terminator",
+      "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
+      "suggested_caption": null,
+      "source_name": "r/movies",
+      "source_url": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
+      "score": 86.23047458333333,
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
+        "angle": "mention",
+        "headline": "Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron"
+      }
+    }
+  ],
+  "backlog": [
+    {
+      "id": "187fb6524acc92b1",
+      "action": "react_to_news",
+      "title": "Tributo: Brooklyn",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 117,
+      "reasoning": "Variety (2h): \"Audrey Beth Davis, Longtime Entertainment Publicist, Dies at 82\". Peli en tu catálogo: Brooklyn.",
+      "suggested_caption": null,
+      "source_name": "Variety",
+      "source_url": "https://variety.com/2026/tv/news/audrey-beth-davis-dead-entertainment-publicist-1236738401/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://variety.com/2026/tv/news/audrey-beth-davis-dead-entertainment-publicist-1236738401/",
+        "angle": "obituary",
+        "headline": "Audrey Beth Davis, Longtime Entertainment Publicist, Dies at 82",
+        "cinebret_match": {
+          "pelicula_id": "667a524e-c16a-4daf-9cbb-c68818d4d7fd",
+          "titulo": "Brooklyn",
+          "anio": 2015
+        }
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+    },
+    {
+      "id": "0a3f68a79039f11e",
       "action": "share_trailer_in_story",
       "title": "Trailer: Third Star",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 104,
       "reasoning": "Netflix subió trailer hace 4h. La peli ya está en tu catálogo.",
       "suggested_caption": "Trailer de \"Third Star\" 🎬\n[tu reacción aquí]",
       "source_name": "Netflix",
       "source_url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
-      "score": 104,
       "skill_to_invoke": "cinebret-share-story",
       "skill_args": {
         "url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
@@ -25,54 +138,78 @@
           "titulo": "Third Star",
           "anio": 2010
         }
-      }
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
-      "type": "STORY",
-      "priority": "alta",
+      "id": "c85dd7a4b3652474",
       "action": "share_trailer_in_story",
       "title": "Trailer: Christopher Nolan",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 104,
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
       "suggested_caption": null,
       "source_name": "IndieWire",
       "source_url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
-      "score": 104,
       "skill_to_invoke": "cinebret-share-story",
       "skill_args": {
         "url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
         "angle": "trailer-drop",
         "headline": "New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some New Armor)",
         "cinebret_match": null
-      }
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
-      "type": "FEED",
-      "priority": "alta",
+      "id": "dbc30e07255e374c",
       "action": "react_to_news",
       "title": "Tributo: Newport Beach TV Fest",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 102,
       "reasoning": "Hollywood Reporter (2h): \"Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Aw\".",
       "suggested_caption": null,
       "source_name": "Hollywood Reporter",
       "source_url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
-      "score": 102,
       "skill_to_invoke": "cinebret-list-from-news",
       "skill_args": {
         "url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
         "angle": "obituary",
         "headline": "Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Awards Chatter&#8217; Pod",
         "cinebret_match": null
-      }
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
-      "type": "FEED",
-      "priority": "alta",
+      "id": "e497ef53421922b3",
       "action": "react_to_news",
       "title": "Secuela: El hundimiento",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 92.5,
       "reasoning": "Deadline (1h): \"Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait \". Peli en tu catálogo: El hundimiento.",
       "suggested_caption": null,
       "source_name": "Deadline",
       "source_url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
-      "score": 92.5,
       "skill_to_invoke": "cinebret-list-from-news",
       "skill_args": {
         "url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
@@ -83,250 +220,132 @@
           "titulo": "El hundimiento",
           "anio": 2004
         }
-      }
+      },
+      "first_proposed": "2026-05-05T18:43:10.136Z",
+      "last_proposed": "2026-05-05T18:43:10.136Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-05T21:01:49.643Z"
     },
     {
+      "id": "6c19f56da2918b13",
+      "action": "react_to_news",
+      "title": "Festival: Brooklyn",
       "type": "FEED",
       "priority": "alta",
-      "action": "generate_carousel_awards",
-      "title": "Preview Festival de Cannes",
-      "reasoning": "Festival de Cannes en 8 días. Carrusel preview con películas relevantes.",
+      "score": 92.5,
+      "reasoning": "Variety (1h): \"Brooklyn Film Festival Unveils 2026 Lineup Featuring 134 Films (EXCLUSIVE)\". Peli en tu catálogo: Brooklyn.",
       "suggested_caption": null,
-      "source_name": "awards_calendar",
-      "score": 86,
+      "source_name": "Variety",
+      "source_url": "https://variety.com/2026/film/news/brooklyn-film-festival-unveils-2026-lineup-1236738375/",
       "skill_to_invoke": "cinebret-list-from-news",
       "skill_args": {
-        "trigger": "Festival de Cannes"
-      }
+        "url": "https://variety.com/2026/film/news/brooklyn-film-festival-unveils-2026-lineup-1236738375/",
+        "angle": "festival",
+        "headline": "Brooklyn Film Festival Unveils 2026 Lineup Featuring 134 Films (EXCLUSIVE)",
+        "cinebret_match": {
+          "pelicula_id": "667a524e-c16a-4daf-9cbb-c68818d4d7fd",
+          "titulo": "Brooklyn",
+          "anio": 2015
+        }
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+    },
+    {
+      "id": "d8158db1ef519dd7",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: The Boroughs",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 89.5,
+      "reasoning": "Netflix subió trailer hace 7h.",
+      "suggested_caption": null,
+      "source_name": "Netflix",
+      "source_url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.youtube.com/watch?v=PsvUvqXoTpE",
+        "angle": "hype",
+        "cinebret_match": null
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+    },
+    {
+      "id": "f5ddb5a509a5e9c3",
+      "action": "share_trailer_in_story",
+      "title": "Trailer: Kyle Larson vs. The Double",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 89.5,
+      "reasoning": "Prime Video subió trailer hace 7h.",
+      "suggested_caption": null,
+      "source_name": "Prime Video",
+      "source_url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://www.youtube.com/watch?v=9RNaJgZSvCk",
+        "angle": "hype",
+        "cinebret_match": null
+      },
+      "first_proposed": "2026-05-05T21:01:49.643Z",
+      "last_proposed": "2026-05-05T21:01:49.643Z",
+      "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
     }
   ],
-  "backlog": [],
   "news": [
     {
       "source": "r/movies",
-      "title": "Oppenheimer 2023, Trinity Test Scene, Director: Christopher Nolan",
-      "link": "https://www.reddit.com/r/movies/comments/1t3qwyt/oppenheimer_2023_trinity_test_scene_director/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t3qwyt/oppenheimer_2023_trinity_test_scene_director/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/Y3c5bmp3cjEzNnpnMfWNxMgYwpHxuinx048xhDqtpcDeeO3pxE5NoZA_vX9j.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=551ad43bcd4e40a11c8bbc23bb48d5d2768d9cad&quot; alt=&quot;Oppenheimer 2023, Trinity Test Scene, Director: Christopher Nolan&quot; title=&quot;Oppenheimer 2023, Trinity Test Scene, Director: Christopher Nolan&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitte",
-      "published": "2026-05-04T18:52:09+00:00",
-      "published_iso": "2026-05-04T18:52:09.000Z",
+      "title": "Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron",
+      "link": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/djJ6bmx5MGVwZXpnMRzX93pHGDJCYoFuiTCpeVl1GyhVGZYkgTw-PR4CEmYa.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=446573af859c9b46ce8c10731c85f6a997758fa8&quot; alt=&quot;Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron&quot; title=&quot;Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &a",
+      "published": "2026-05-05T23:52:12+00:00",
+      "published_iso": "2026-05-05T23:52:12.000Z",
       "source_weight": 3,
       "source_lang": "en",
       "source_category": "pulse",
       "cinebret_matches": [
         {
-          "pelicula_id": "6ff735a5-f3d7-4478-b81d-1176dc29a5b4",
-          "titulo": "Oppenheimer",
-          "anio": 2023
+          "pelicula_id": "91980951-d45a-4081-816f-6dd43a1046db",
+          "titulo": "Terminator 2: El juicio final",
+          "anio": 1991
+        },
+        {
+          "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
+          "titulo": "Terminator",
+          "anio": 1984
         }
       ],
-      "_src": "r/movies",
-      "_score": 45.459458777777776,
+      "_score": 64.97395744444444,
       "_catalog": {
-        "pelicula_id": "6ff735a5-f3d7-4478-b81d-1176dc29a5b4",
-        "titulo": "Oppenheimer",
-        "anio": 2023
+        "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
+        "titulo": "Terminator",
+        "titulo_ingles": "The Terminator",
+        "anio": 1984,
+        "nota_imdb": 8.1,
+        "director": "James Cameron",
+        "rating": 9,
+        "sello": true,
+        "tier": 2
       },
-      "_director": "Christopher Nolan"
-    },
-    {
-      "source": "Deadline",
-      "title": "Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait Told From The Inside&#8221;",
-      "link": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
-      "description": "EXCLUSIVE: With the latest conflict between America and Iran jacking up fuel prices and airfares around the globe, Netflix and Imagine Documentaries have a flight plan for Rory Kennedy&#8217;s follow-up to Downfall: The Case Against Boeing. First exclusively reported by Deadline back in July 2024, Freefall: A Reckoning for Boeing will debut August 19 all [&#8230;]",
-      "published": "Tue, 05 May 2026 18:08:12 +0000",
-      "published_iso": "2026-05-05T18:08:12.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
-          "titulo": "El hundimiento",
-          "anio": 2004
-        }
-      ],
-      "_src": "Deadline",
-      "_score": 39.76645888888889,
-      "_catalog": {
-        "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
-        "titulo": "El hundimiento",
-        "anio": 2004
-      }
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "BJ Novak Realizes He&#8217;s the Worst Dressed in &#8216;The Devil Wears Prada 2&#8217;",
-      "link": "https://www.hollywoodreporter.com/movies/movie-features/bj-novak-devil-wears-prada-2-interview-1236586557/",
-      "description": "The writer, filmmaker and actor talks about disrespecting Meryl Streep — in athleisure, no less — on camera, what's keeping him from returning to stand-up and embracing Mel Robbins' \"Let them\" theory.",
-      "published": "Tue, 05 May 2026 17:51:35 +0000",
-      "published_iso": "2026-05-05T17:51:35.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
-          "titulo": "El diablo viste de Prada 2",
-          "anio": 2026
-        },
-        {
-          "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
-          "titulo": "El diablo viste de Prada",
-          "anio": 2006
-        }
-      ],
-      "_src": "Hollywood Reporter",
-      "_score": 39.655681111111114,
-      "_catalog": {
-        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
-        "titulo": "El diablo viste de Prada 2",
-        "anio": 2026
-      }
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Netflix and Director Brian Knappenberger to Tackle &#8216;The American Experiment&#8217;",
-      "link": "https://www.hollywoodreporter.com/tv/tv-news/netflix-documentary-the-american-experiment-premiere-june-1236586674/",
-      "description": "Kamala Harris, Mike Pence, Hillary Clinton and Al Gore all sat for the five-part documentary, which will bow on the streamer on June 24.",
-      "published": "Tue, 05 May 2026 17:45:46 +0000",
-      "published_iso": "2026-05-05T17:45:46.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
-          "titulo": "Joika",
-          "anio": 2023
-        }
-      ],
-      "_src": "Hollywood Reporter",
-      "_score": 39.61690333333333,
-      "_catalog": {
-        "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
-        "titulo": "Joika",
-        "anio": 2023
-      }
-    },
-    {
-      "source": "Variety",
-      "title": "‘Fightland’ First Look: 50 Cent-Produced Boxing Crime Drama Sets July Release Date on Starz",
-      "link": "https://variety.com/2026/tv/news/fightland-first-look-1236737240/",
-      "description": "Starz has set a July 31 premiere date for its new original drama “Fightland,” unveiling first-look images from the British-set boxing crime series executive produced by Curtis &#8220;50 Cent&#8221; Jackson. Described as a gritty, high-stakes drama set in the world of British boxing, the series marks Starz’s first wholly owned original following Lionsgate and Starz [&#8230;]",
-      "published": "Tue, 05 May 2026 17:30:00 +0000",
-      "published_iso": "2026-05-05T17:30:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-          "titulo": "Following",
-          "anio": 1999
-        }
-      ],
-      "_src": "Variety",
-      "_score": 39.51179222222222,
-      "_catalog": {
-        "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-        "titulo": "Following",
-        "anio": 1999
-      }
-    },
-    {
-      "source": "Deadline",
-      "title": "Whitney Leavitt Reflects On Her Decision To Leave &#8216;The Secret Lives Of Mormon Wives&#8217;; Confirms Season 5 Will Be Her Last",
-      "link": "https://deadline.com/2026/05/whitney-leavitt-secret-lives-of-mormon-wives-exit-season-5-1236881630/",
-      "description": "Whitney Leavitt is revealing more details about her decision to exit The Secret Lives of Mormon Wives. As we previously reported, Leavitt announced she would be leaving the Hulu reality series Sunday during her final performance in Broadway&#8217;s Chicago. In a May 5 video on her Instagram, Leavitt shared her thoughts about leaving the series, [&#8230;]",
-      "published": "Tue, 05 May 2026 17:29:32 +0000",
-      "published_iso": "2026-05-05T17:29:32.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "bfec3923-29e6-4c20-a2de-95445781a091",
-          "titulo": "Decision to Leave",
-          "anio": 2022
-        }
-      ],
-      "_src": "Deadline",
-      "_score": 39.50868111111111,
-      "_catalog": {
-        "pelicula_id": "bfec3923-29e6-4c20-a2de-95445781a091",
-        "titulo": "Decision to Leave",
-        "anio": 2022
-      }
-    },
-    {
-      "source": "Deadline",
-      "title": "Public TV&#8217;s &#8220;The Open Mind&#8221; To Debut &#8220;Mayors Of The World&#8221; Series Spotlighting Public Policy And Innovation Of City Leaders",
-      "link": "https://deadline.com/2026/05/the-open-mind-pbs-mayors-alexander-heffner-1236881292/",
-      "description": "Alexander Heffner, the host of The Open Mind on PBS stations, is debuting a new series, Mayors of the World, that will spotlight the public policy and innovation of civic leaders. The series will debut this weekend on more than 200 stations, and will feature Heffner sitting down with mayors of Athens, Santiago, Lisbon, Toronto [&#8230;]",
-      "published": "Tue, 05 May 2026 16:36:28 +0000",
-      "published_iso": "2026-05-05T16:36:28.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "2eea9b07-b88e-41ea-beb1-a591bc1fecc3",
-          "titulo": "Spotlight",
-          "anio": 2015
-        }
-      ],
-      "_src": "Deadline",
-      "_score": 39.15490333333334,
-      "_catalog": {
-        "pelicula_id": "2eea9b07-b88e-41ea-beb1-a591bc1fecc3",
-        "titulo": "Spotlight",
-        "anio": 2015
-      }
-    },
-    {
-      "source": "The Wrap",
-      "title": "The New Math: Women Over 50 Are the Franchise &#124; Guest Column",
-      "link": "https://www.thewrap.com/creative-content/movies/devil-wears-prada-2-meryl-streep-women-over-50-box-office/",
-      "description": "What \"The Devil Wears Prada 2\" and a wave of recent hits reveal about audience demand, star power and where the next growth stories are hiding in plain sight The post The New Math: Women Over 50 Are the Franchise | Guest Column appeared first on TheWrap .",
-      "published": "Tue, 05 May 2026 15:45:00 +0000",
-      "published_iso": "2026-05-05T15:45:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
-          "titulo": "El diablo viste de Prada 2",
-          "anio": 2026
-        },
-        {
-          "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
-          "titulo": "El diablo viste de Prada",
-          "anio": 2006
-        }
-      ],
-      "_src": "The Wrap",
-      "_score": 38.81179222222222,
-      "_catalog": {
-        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
-        "titulo": "El diablo viste de Prada 2",
-        "anio": 2026
-      }
-    },
-    {
-      "source": "IndieWire",
-      "title": "Sean Baker Talks Marilyn Monroe (and Norma Jeane) in Excerpt from New Book Celebrating Her Centennial",
-      "link": "https://www.indiewire.com/features/general/sean-baker-joshua-john-miller-marilyn-monroe-read-excerpt-1235192417/",
-      "description": "Exclusive: Read an excerpt from \"The Marilyn Monroe Century: From Norma Jeane to Icon―A Story in Photographs,\" out May 19.",
-      "published": "Tue, 05 May 2026 18:15:00 +0000",
-      "published_iso": "2026-05-05T18:15:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur",
-      "_src": "IndieWire",
-      "_score": 34.81179233333334,
-      "_catalog": null,
-      "_director": "Sean Baker"
+      "_director": "James Cameron"
     },
     {
       "source": "IndieWire",
@@ -338,22 +357,79 @@
       "source_weight": 4,
       "source_lang": "en",
       "source_category": "auteur",
-      "_src": "IndieWire",
-      "_score": 34.311014444444446,
+      "_score": 52.22517788888889,
+      "_catalog": {
+        "pelicula_id": "39874d5a-cf48-4f55-9e1e-ee30b95964ad",
+        "titulo": "La Odisea",
+        "titulo_ingles": "The Odyssey",
+        "anio": 2026,
+        "nota_imdb": 7,
+        "director": "Christopher Nolan",
+        "rating": 0,
+        "sello": false,
+        "tier": 3
+      },
+      "_director": "Christopher Nolan"
+    },
+    {
+      "source": "r/movies",
+      "title": "Ray Mendoza, co-director of A24's 'Warfare', to direct Western-drama ‘Blood On The Promontory’ - Five convicts are shackled together by foot as they try to escape through the mountains following a violent train robbery.",
+      "link": "https://www.reddit.com/r/movies/comments/1t4r5h1/ray_mendoza_codirector_of_a24s_warfare_to_direct/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t4r5h1/ray_mendoza_codirector_of_a24s_warfare_to_direct/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/ujWanUGyulB0MSnMUieEx5h9DmvjOKeQYKz91Nmt-9Q.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=7322acd26ca9e7532e5f8921118e992daf330ff8&quot; alt=&quot;Ray Mendoza, co-director of A24's 'Warfare', to direct Western-drama ‘Blood On The Promontory’ - Five convicts are shackled together by foot as they try to escape through the mountains following a violent train robbery.&quot; ",
+      "published": "2026-05-05T20:18:14+00:00",
+      "published_iso": "2026-05-05T20:18:14.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
+          "titulo": "Together: Juntos hasta la muerte",
+          "anio": 2025
+        },
+        {
+          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
+          "titulo": "Following",
+          "anio": 1999
+        }
+      ],
+      "_score": 43.547512,
+      "_catalog": {
+        "pelicula_id": "2eece27c-8de6-42cc-9242-cb15fa4231d4",
+        "titulo": "Warfare: Tiempo de guerra",
+        "titulo_ingles": "Warfare",
+        "anio": 2025,
+        "nota_imdb": 7.1,
+        "director": "Ray Mendoza",
+        "rating": 9,
+        "sello": true,
+        "tier": 0
+      }
+    },
+    {
+      "source": "Deadline",
+      "title": "European Film Academy Appoints First Ever Chapter Principals Including &#8216;Fatherland’ Casting Director &#038; Christopher Nolan Cinematographer",
+      "link": "https://deadline.com/2026/05/european-film-academy-first-chapter-principals-1236882568/",
+      "description": "The European Film Academy has appointed its first-ever cohort of chapter principals across eight filmmaking disciplines as it expands its commitment to supporting the arts and crafts professions of European filmmaking. The move follows the introduction in 2025 of chapters dedicated to casting directors, cinematographers, composers, costume designers, editors, make-up and hair artists, production designers, [&#8230;]",
+      "published": "Wed, 06 May 2026 09:00:00 +0000",
+      "published_iso": "2026-05-06T09:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "_score": 38.625959333333334,
       "_catalog": null,
       "_director": "Christopher Nolan"
     }
   ],
   "raw_signal_counts": {
-    "news_items": 116,
-    "newsapi_items": 90,
+    "news_items": 117,
+    "newsapi_items": 88,
     "reddit_posts": 0,
-    "trailers": 59,
-    "pending_reviews": 30
+    "trailers": 61
   },
   "reconciliation_stats": {
     "accepted": 0,
-    "becameBacklog": 0,
+    "becameBacklog": 5,
     "expired": 0
   }
 }

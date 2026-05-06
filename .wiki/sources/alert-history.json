@@ -2,7 +2,8 @@
   "sent_keys": [
     "digest:2026-05-05:generate_carousel_mood,generate_review,generate_carousel_awards",
     "digest:2026-05-05:pm:share_trailer_in_story:Trailer: Third Star|share_trailer_in_story:Trailer: Christopher Nolan|react_to_news:Tributo: Newport Beach TV Fest|react_to_news:Secuela: El hundimiento|generate_carousel_awards:Preview Festival de Cannes",
-    "digest:2026-05-05:pm:react_to_news:Tributo: Brooklyn|react_to_news:Festival: Brooklyn|share_trailer_in_story:Trailer: The Boroughs|share_trailer_in_story:Trailer: Kyle Larson vs. The D|generate_carousel_topic:TOP 10 películas británicas"
+    "digest:2026-05-05:pm:react_to_news:Tributo: Brooklyn|react_to_news:Festival: Brooklyn|share_trailer_in_story:Trailer: The Boroughs|share_trailer_in_story:Trailer: Kyle Larson vs. The D|generate_carousel_topic:TOP 10 películas británicas",
+    "2026-05-06:am:generate_review:Review: Fight Club (1999)|generate_review:Review: 올드보이 (2003)|generate_review:Review: 기생충 (2019)|generate_carousel_topic:TOP 10 películas francesas|react_to_news:Noticia: Terminator"
   ],
-  "last_sent": "2026-05-05T21:01:52.789Z"
+  "last_sent": "2026-05-06T12:26:06.937Z"
 }

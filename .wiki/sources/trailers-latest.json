@@ -1,9 +1,79 @@
 {
-  "generated_at": "2026-05-05T21:01:49.581Z",
-  "total_videos": 60,
-  "trailers_count": 13,
-  "matched_to_cinebret": 11,
+  "generated_at": "2026-05-06T12:25:20.636Z",
+  "total_videos": 61,
+  "trailers_count": 11,
+  "matched_to_cinebret": 10,
   "videos": [
+    {
+      "video_id": "--vaVLITgc0",
+      "title": "Assassin's Creed Black Flag Resynced Gameplay - A New Look at Parkour, Stealth and Takedowns",
+      "url": "https://www.youtube.com/watch?v=--vaVLITgc0",
+      "published": "2026-05-06T11:39:57Z",
+      "thumbnail": "https://i.ytimg.com/vi/--vaVLITgc0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "UCK6KI7yQ10",
+      "title": "Kane Parsons & James Wan | The A24 Podcast",
+      "url": "https://www.youtube.com/watch?v=UCK6KI7yQ10",
+      "published": "2026-05-06T11:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/UCK6KI7yQ10/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "19T_iaQpnts",
+      "title": "The many ways that LEGO Batman reminds us of the Arkham games",
+      "url": "https://www.youtube.com/watch?v=19T_iaQpnts",
+      "published": "2026-05-06T02:04:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/19T_iaQpnts/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "3WnSt4uZ7gM",
+      "title": "Dead as Disco is like Sifu meets Hi-Fi Rush",
+      "url": "https://www.youtube.com/watch?v=3WnSt4uZ7gM",
+      "published": "2026-05-06T02:03:40Z",
+      "thumbnail": "https://i.ytimg.com/vi/3WnSt4uZ7gM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "wR5g2uAgTK0",
+      "title": "Anthony Bourdain biopic focuses on his origins",
+      "url": "https://www.youtube.com/watch?v=wR5g2uAgTK0",
+      "published": "2026-05-06T02:03:11Z",
+      "thumbnail": "https://i.ytimg.com/vi/wR5g2uAgTK0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "jCLQAQSkEnw",
+      "title": "What would you do if your date was obsessed?",
+      "url": "https://www.youtube.com/watch?v=jCLQAQSkEnw",
+      "published": "2026-05-06T02:01:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/jCLQAQSkEnw/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "m68744M8ZSY",
+      "title": "HungryGhost has landed. A new episode of #MargosGotMoneyTroubles is now streaming.",
+      "url": "https://www.youtube.com/watch?v=m68744M8ZSY",
+      "published": "2026-05-06T01:29:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/m68744M8ZSY/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "KvmP17991hk",
       "title": "Off Campus Hallelujah 😌 | Prime Video",
@@ -75,36 +145,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "PkpVE2EC3Gc",
-      "title": "Star Wars: Maul - Shadow Lord - Official ‘We Will See To Your Demise' Clip (2026) Sam Witwer",
-      "url": "https://www.youtube.com/watch?v=PkpVE2EC3Gc",
-      "published": "2026-05-05T20:00:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/PkpVE2EC3Gc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "HMcYUNE2jfY",
-      "title": "Dig In - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=HMcYUNE2jfY",
-      "published": "2026-05-05T19:11:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/HMcYUNE2jfY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "wLyh5pve3DU",
-      "title": "The Crew Motorfest - Official RC Frenzy Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=wLyh5pve3DU",
-      "published": "2026-05-05T19:01:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/wLyh5pve3DU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "8JCkYneEM8Q",
       "title": "Trace the turbulent career of fashion designer John Galliano in HIGH & LOW: JOHN GALLIANO | MUBI",
       "url": "https://www.youtube.com/watch?v=8JCkYneEM8Q",
@@ -125,21 +165,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "npMNanth4PE",
-      "title": "Star Wars: The Mandalorian and Grogu - Official 'Hang On' Clip (2026) Pedro Pascal",
-      "url": "https://www.youtube.com/watch?v=npMNanth4PE",
-      "published": "2026-05-05T18:00:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/npMNanth4PE/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "7dc2aed7-e432-4cb2-83f1-c697947636a4",
-        "titulo": "Star Wars: The Mandalorian and Grogu",
-        "anio": 2026
-      }
-    },
-    {
       "video_id": "Q-SLPVSsS4U",
       "title": "Still thinking about Bieberchella? Real ones are still thinking about his scene in Zoolander 2.",
       "url": "https://www.youtube.com/watch?v=Q-SLPVSsS4U",
@@ -147,16 +172,6 @@
       "thumbnail": "https://i.ytimg.com/vi/Q-SLPVSsS4U/hqdefault.jpg",
       "channel": "Paramount Pictures",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "iKS6vWbjaig",
-      "title": "Daredevil: Born Again Season 2 Finale Exclusive Clip (2026) Charlie Cox, Vincent D'Onofrio",
-      "url": "https://www.youtube.com/watch?v=iKS6vWbjaig",
-      "published": "2026-05-05T17:07:56Z",
-      "thumbnail": "https://i.ytimg.com/vi/iKS6vWbjaig/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -395,16 +410,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "c0RvNEBDXJM",
-      "title": "Mark Hamill's intro as Art Rosenbaum | Invincible | Prime Video",
-      "url": "https://www.youtube.com/watch?v=c0RvNEBDXJM",
-      "published": "2026-05-05T01:00:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/c0RvNEBDXJM/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "SmUe1IaoMQ4",
       "title": "Let's just say he has an uncompromising vision | 🎬 Phantom Thread (2017)",
       "url": "https://www.youtube.com/watch?v=SmUe1IaoMQ4",
@@ -495,16 +500,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "w9vhMSirA6o",
-      "title": "A duet to remember. #MargosGotMoneyTroubles — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=w9vhMSirA6o",
-      "published": "2026-05-03T17:59:45Z",
-      "thumbnail": "https://i.ytimg.com/vi/w9vhMSirA6o/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "KwoJyYiCfws",
       "title": "Which fictional character would you be neighbors with? Here’s what our audiences had to say | MUBI",
       "url": "https://www.youtube.com/watch?v=KwoJyYiCfws",
@@ -573,6 +568,16 @@
         "titulo": "Confidencial (Black Bag)",
         "anio": 2025
       }
+    },
+    {
+      "video_id": "LwvIjHh-I_w",
+      "title": "Are you sure?",
+      "url": "https://www.youtube.com/watch?v=LwvIjHh-I_w",
+      "published": "2026-05-01T17:49:25Z",
+      "thumbnail": "https://i.ytimg.com/vi/LwvIjHh-I_w/hqdefault_live.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
     },
     {
       "video_id": "26jtj7UPNKM",

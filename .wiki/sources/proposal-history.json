@@ -160,9 +160,10 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
     },
     {
       "id": "6c19f56da2918b13",
@@ -189,9 +190,10 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
     },
     {
       "id": "d8158db1ef519dd7",
@@ -213,9 +215,10 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
     },
     {
       "id": "f5ddb5a509a5e9c3",
@@ -237,9 +240,10 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
     },
     {
       "id": "787cebed76170ab8",
@@ -260,10 +264,130 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+    },
+    {
+      "id": "86cd64c42c4ddc8b",
+      "action": "generate_review",
+      "title": "Review: Fight Club (1999)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 130,
+      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "642db2ce3ffde83d",
+      "action": "generate_review",
+      "title": "Review: 올드보이 (2003)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 129,
+      "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "올드보이",
+        "anio": 2003,
+        "pelicula_id": "33b36b2f-7cab-40be-a753-7c6fbdfcd957"
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "f39545c3a701989b",
+      "action": "generate_review",
+      "title": "Review: 기생충 (2019)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 117,
+      "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
+      "suggested_caption": null,
+      "source_name": "pending_review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "기생충",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "fecc4d46aebb463c",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas francesas",
+      "type": "FEED",
+      "priority": "media",
+      "score": 82,
+      "reasoning": "Tema con tracción (66 pts: news + estacional + sin posts recientes).",
+      "suggested_caption": null,
+      "source_name": "topic_pool",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "francia"
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "c98f2cae36b16b75",
+      "action": "react_to_news",
+      "title": "Noticia: Terminator",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 86.23047458333333,
+      "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
+      "suggested_caption": null,
+      "source_name": "r/movies",
+      "source_url": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
+        "angle": "mention",
+        "headline": "Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron"
+      },
+      "first_proposed": "2026-05-06T12:25:45.639Z",
+      "last_proposed": "2026-05-06T12:25:45.639Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-05T21:01:51.665Z"
+  "last_saved": "2026-05-06T12:26:06.347Z"
 }

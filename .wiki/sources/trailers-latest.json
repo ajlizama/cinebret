@@ -1,9 +1,109 @@
 {
-  "generated_at": "2026-05-06T21:09:49.620Z",
+  "generated_at": "2026-05-07T12:26:51.232Z",
   "total_videos": 61,
-  "trailers_count": 15,
-  "matched_to_cinebret": 12,
+  "trailers_count": 10,
+  "matched_to_cinebret": 10,
   "videos": [
+    {
+      "video_id": "3GP78CccRp0",
+      "title": "Star Fox Graphics Comparison: Remake vs N64 Original",
+      "url": "https://www.youtube.com/watch?v=3GP78CccRp0",
+      "published": "2026-05-07T12:01:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/3GP78CccRp0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "dGvpdOPMom8",
+      "title": "18 Pokemon You Probably Forgot Exist",
+      "url": "https://www.youtube.com/watch?v=dGvpdOPMom8",
+      "published": "2026-05-07T11:30:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/dGvpdOPMom8/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "q7taU9-vOAo",
+      "title": "Untold UK: Jamie Vardy | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=q7taU9-vOAo",
+      "published": "2026-05-07T09:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/q7taU9-vOAo/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "H3MrRV_EuxE",
+      "title": "STRANGER THAN HEAVEN has a crazy cast",
+      "url": "https://www.youtube.com/watch?v=H3MrRV_EuxE",
+      "published": "2026-05-07T03:07:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/H3MrRV_EuxE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "hWDn84mzM0A",
+      "title": "GTA 6 is costing a LOT of money",
+      "url": "https://www.youtube.com/watch?v=hWDn84mzM0A",
+      "published": "2026-05-07T03:07:11Z",
+      "thumbnail": "https://i.ytimg.com/vi/hWDn84mzM0A/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "jn6iVrwwg1Q",
+      "title": "Peter is innocent in the MCU",
+      "url": "https://www.youtube.com/watch?v=jn6iVrwwg1Q",
+      "published": "2026-05-07T03:06:37Z",
+      "thumbnail": "https://i.ytimg.com/vi/jn6iVrwwg1Q/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "wbkXRNivbKU",
+      "title": "Relationship advice from mum. No notes. #TedLasso returns August 5.",
+      "url": "https://www.youtube.com/watch?v=wbkXRNivbKU",
+      "published": "2026-05-07T00:59:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/wbkXRNivbKU/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "_zWkq8VKOgU",
+      "title": "She's out of this world. #MargosGotMoneyTroubles — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=_zWkq8VKOgU",
+      "published": "2026-05-06T23:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/_zWkq8VKOgU/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "wubYLUQq7U4",
+      "title": "PJ's Snack Attack Part 2 | Jury Duty Presents: Company Retreat | Prime Video",
+      "url": "https://www.youtube.com/watch?v=wubYLUQq7U4",
+      "published": "2026-05-06T23:01:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/wubYLUQq7U4/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ae8_jwDPtjU",
+      "title": "Widow's Bay — The History of the Island | Apple TV",
+      "url": "https://www.youtube.com/watch?v=ae8_jwDPtjU",
+      "published": "2026-05-06T22:59:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/ae8_jwDPtjU/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "HwZUuTuGm8k",
       "title": "Ain't no way Nolan's sleeping through THAT | Invincible | Prime Video",
@@ -80,66 +180,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "n3am_zKuowc",
-      "title": "Skull and Bones - Official Year 3 Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=n3am_zKuowc",
-      "published": "2026-05-06T16:35:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/n3am_zKuowc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "WCrnJb8LQ38",
-      "title": "Mortal Kombat II Review",
-      "url": "https://www.youtube.com/watch?v=WCrnJb8LQ38",
-      "published": "2026-05-06T16:00:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/WCrnJb8LQ38/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "8f7c8792-20ce-436e-b56d-65de5297aefc",
-        "titulo": "Mortal Kombat II",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "M5Hy3BF3d4Y",
-      "title": "Elle - Official Teaser | Prime Video",
-      "url": "https://www.youtube.com/watch?v=M5Hy3BF3d4Y",
-      "published": "2026-05-06T15:59:56Z",
-      "thumbnail": "https://i.ytimg.com/vi/M5Hy3BF3d4Y/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "-A0H-_SLY3c",
-      "title": "Hunt: Showdown 1896 - Official Legacy Chronicle Trailer",
-      "url": "https://www.youtube.com/watch?v=-A0H-_SLY3c",
-      "published": "2026-05-06T15:58:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/-A0H-_SLY3c/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "e8f7387f-0b8b-4c77-bebf-5a982e4ce816",
-        "titulo": "Poder sin límites",
-        "anio": 2012
-      }
-    },
-    {
-      "video_id": "y4VcEb6k7As",
-      "title": "The Jackbox Party Pack 12 - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=y4VcEb6k7As",
-      "published": "2026-05-06T15:01:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/y4VcEb6k7As/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "fO6-IPlHoV0",
       "title": "A modern western with a magical twist. THE MYSTERIOUS GAZE OF THE FLAMINGO - streaming May 15 | MUBI",
       "url": "https://www.youtube.com/watch?v=fO6-IPlHoV0",
@@ -158,16 +198,6 @@
       "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "ntiYLcSDHN4",
-      "title": "WheelMates - Official Demo Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=ntiYLcSDHN4",
-      "published": "2026-05-06T14:01:24Z",
-      "thumbnail": "https://i.ytimg.com/vi/ntiYLcSDHN4/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "IcyJvPOwbrY",
@@ -221,16 +251,6 @@
       "published": "2026-05-06T11:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/UCK6KI7yQ10/hqdefault.jpg",
       "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "m68744M8ZSY",
-      "title": "HungryGhost has landed. A new episode of #MargosGotMoneyTroubles is now streaming.",
-      "url": "https://www.youtube.com/watch?v=m68744M8ZSY",
-      "published": "2026-05-06T01:29:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/m68744M8ZSY/hqdefault.jpg",
-      "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -302,16 +322,6 @@
       "thumbnail": "https://i.ytimg.com/vi/8JCkYneEM8Q/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "Eq2HN7jMIQ4",
-      "title": "The worst kind of call to take. #YourFriendsAndNeighbors",
-      "url": "https://www.youtube.com/watch?v=Eq2HN7jMIQ4",
-      "published": "2026-05-05T18:59:57Z",
-      "thumbnail": "https://i.ytimg.com/vi/Eq2HN7jMIQ4/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -480,16 +490,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "k-358jALXlA",
-      "title": "Kylie | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=k-358jALXlA",
-      "published": "2026-05-05T13:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/k-358jALXlA/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "f_bKjZeJBBI",
       "title": "The Odyssey | Official New Trailer",
       "url": "https://www.youtube.com/watch?v=f_bKjZeJBBI",
@@ -498,16 +498,6 @@
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "4kLOUQGRo2I",
-      "title": "The POV with Christina Roki and Calum Nicholas — Miami Race Recap | F1 on Apple TV",
-      "url": "https://www.youtube.com/watch?v=4kLOUQGRo2I",
-      "published": "2026-05-05T01:14:45Z",
-      "thumbnail": "https://i.ytimg.com/vi/4kLOUQGRo2I/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "SmUe1IaoMQ4",

@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-05-06T21:09:49.676Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-07T12:27:29.673Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 1,
   "backlog_count": 8,
-  "news_count": 6,
+  "news_count": 4,
   "top": [
     {
       "type": "FEED",
       "priority": "alta",
       "action": "react_to_news",
-      "title": "Noticia: Iron Man",
-      "reasoning": "Hollywood Reporter (1h): \"Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden\". Match catálogo: Iron Man (rating 9).",
+      "title": "Noticia: Avatar",
+      "reasoning": "The Wrap (10h): \"James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character De\". Match catálogo: Avatar (rating 8).",
       "suggested_caption": null,
-      "source_name": "Hollywood Reporter",
-      "source_url": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
-      "score": 89.65623383333333,
+      "source_name": "The Wrap",
+      "source_url": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
+      "score": 86.8968795,
       "skill_to_invoke": "cinebret-list-from-news",
       "skill_args": {
-        "url": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
+        "url": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
         "angle": "mention",
-        "headline": "Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden"
+        "headline": "James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design"
       }
     }
   ],
@@ -244,105 +244,70 @@
   ],
   "news": [
     {
-      "source": "r/movies",
-      "title": "Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron",
-      "link": "https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t4wkkg/terminator_2_judgment_day_1991_hospital_escape/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/djJ6bmx5MGVwZXpnMRzX93pHGDJCYoFuiTCpeVl1GyhVGZYkgTw-PR4CEmYa.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=446573af859c9b46ce8c10731c85f6a997758fa8&quot; alt=&quot;Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron&quot; title=&quot;Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &a",
-      "published": "2026-05-05T23:52:12+00:00",
-      "published_iso": "2026-05-05T23:52:12.000Z",
-      "source_weight": 3,
+      "source": "The Wrap",
+      "title": "James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design",
+      "link": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
+      "description": "Q’orianka Kilcher says the director used a photograph of her as the basis for the Na’vi character Neytiri The post James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design appeared first on TheWrap .",
+      "published": "Thu, 07 May 2026 02:07:30 +0000",
+      "published_iso": "2026-05-07T02:07:30.000Z",
+      "source_weight": 4,
       "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "91980951-d45a-4081-816f-6dd43a1046db",
-          "titulo": "Terminator 2: El juicio final",
-          "anio": 1991
-        },
-        {
-          "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
-          "titulo": "Terminator",
-          "anio": 1984
-        }
-      ],
-      "_score": 61.47963288888889,
+      "source_category": "industry",
+      "_score": 60.86249822222222,
       "_catalog": {
-        "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
-        "titulo": "Terminator",
-        "titulo_ingles": "The Terminator",
-        "anio": 1984,
-        "nota_imdb": 8.1,
+        "pelicula_id": "53ab49ee-6397-4641-ba50-e60139523cec",
+        "titulo": "Avatar",
+        "titulo_ingles": "Avatar",
+        "anio": 2009,
+        "nota_imdb": 7.9,
         "director": "James Cameron",
-        "rating": 9,
+        "rating": 8,
         "sello": true,
         "tier": 2
       },
       "_director": "James Cameron"
     },
     {
-      "source": "Hollywood Reporter",
-      "title": "Apple TV Greenlights Spy Thriller &#8216;Disavowed&#8217; Starring James Marsden",
-      "link": "https://www.hollywoodreporter.com/tv/tv-news/james-marsden-apple-tv-disavowed-1236588287/",
-      "description": "The series comes from 'Iron Man' writers Art Marcum and Matt Holloway.",
-      "published": "Wed, 06 May 2026 20:01:30 +0000",
-      "published_iso": "2026-05-06T20:01:30.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "_score": 54.54163755555555,
-      "_catalog": {
-        "pelicula_id": "c55d8baf-0c78-4288-b01a-5eab6a9053c4",
-        "titulo": "Iron Man",
-        "titulo_ingles": "Iron Man",
-        "anio": 2008,
-        "nota_imdb": 7.9,
-        "director": "Jon Favreau",
-        "rating": 9,
-        "sello": true,
-        "tier": 0
-      }
-    },
-    {
-      "source": "Variety",
-      "title": "James Marsden to Lead Apple TV Thriller Series &#8216;Disavowed&#8217; From &#8216;Iron Man&#8217; Writers",
-      "link": "https://variety.com/2026/tv/news/james-marsden-apple-tv-series-disavowed-disavowed-1236739752/",
-      "description": "James Marsden is set to star in the thriller series &#8220;Disavowed&#8221; at Apple TV, Variety has learned. The logline for the show states that it follows &#8220;legendary CIA Case Officer Brad Griffin (Marsden), who is abruptly fired in the middle of a global hunt for an elusive assassin responsible for killing his colleague. Disgraced and [&#8230;]",
-      "published": "Wed, 06 May 2026 20:00:00 +0000",
-      "published_iso": "2026-05-06T20:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "_score": 54.531637333333336,
-      "_catalog": {
-        "pelicula_id": "c55d8baf-0c78-4288-b01a-5eab6a9053c4",
-        "titulo": "Iron Man",
-        "titulo_ingles": "Iron Man",
-        "anio": 2008,
-        "nota_imdb": 7.9,
-        "director": "Jon Favreau",
-        "rating": 9,
-        "sello": true,
-        "tier": 0
-      }
-    },
-    {
       "source": "The Wrap",
-      "title": "James Marsden to Star in New Apple Thriller &#8216;Disavowed&#8217;",
-      "link": "https://www.thewrap.com/creative-content/tv-shows/james-marsden-apple-tv-thriller-disavowed/",
-      "description": "The new series is written by the duo behind \"Iron Man\" The post James Marsden to Star in New Apple Thriller &#8216;Disavowed&#8217; appeared first on TheWrap .",
-      "published": "Wed, 06 May 2026 20:00:00 +0000",
-      "published_iso": "2026-05-06T20:00:00.000Z",
+      "title": "AI-Generated Spencer Pratt Ad Sees Gavin Newsom Eat Cake and Competitor Karen Bass as The Joker &#124; Video",
+      "link": "https://www.thewrap.com/media-platforms/politics/ai-generated-spencer-pratt-ad-video/",
+      "description": "The Pratt campaign maintains they did not commission the Batman-inspired ad, but \"The Hills\" star and mayoral candidate retweeted it The post AI-Generated Spencer Pratt Ad Sees Gavin Newsom Eat Cake and Competitor Karen Bass as The Joker | Video appeared first on TheWrap .",
+      "published": "Wed, 06 May 2026 23:50:38 +0000",
+      "published_iso": "2026-05-06T23:50:38.000Z",
       "source_weight": 4,
       "source_lang": "en",
       "source_category": "industry",
-      "_score": 54.53163722222222,
+      "_score": 49.95005311111111,
       "_catalog": {
-        "pelicula_id": "c55d8baf-0c78-4288-b01a-5eab6a9053c4",
-        "titulo": "Iron Man",
-        "titulo_ingles": "Iron Man",
-        "anio": 2008,
-        "nota_imdb": 7.9,
-        "director": "Jon Favreau",
+        "pelicula_id": "a92a5785-0f7e-4353-a0a8-eb15aff0f745",
+        "titulo": "The Batman",
+        "titulo_ingles": "The Batman",
+        "anio": 2022,
+        "nota_imdb": 7.8,
+        "director": "Matt Reeves",
+        "rating": 9,
+        "sello": true,
+        "tier": 0
+      }
+    },
+    {
+      "source": "r/movies",
+      "title": "Ten years later, the cult of ‘The Nice Guys’ keeps growing",
+      "link": "https://www.reddit.com/r/movies/comments/1t5rj1f/ten_years_later_the_cult_of_the_nice_guys_keeps/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t5rj1f/ten_years_later_the_cult_of_the_nice_guys_keeps/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/SKuPNzQq-AKX5bCxjbAd1S1GpxkKC4tHFQvQz_gg9s8.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c4a261031d3d7833a6952282592d187616b637b0&quot; alt=&quot;Ten years later, the cult of ‘The Nice Guys’ keeps growing&quot; title=&quot;Ten years later, the cult of ‘The Nice Guys’ keeps growing&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&",
+      "published": "2026-05-06T22:06:45+00:00",
+      "published_iso": "2026-05-06T22:06:45.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "_score": 44.257497,
+      "_catalog": {
+        "pelicula_id": "ad96fd5f-d3a8-4e9f-8134-c492c179c10b",
+        "titulo": "Dos buenos tipos",
+        "titulo_ingles": "The Nice Guys",
+        "anio": 2016,
+        "nota_imdb": 7.4,
+        "director": "Shane Black",
         "rating": 9,
         "sello": true,
         "tier": 0
@@ -365,7 +330,7 @@
           "anio": 2018
         }
       ],
-      "_score": 37.683301444444446,
+      "_score": 31.56416133333333,
       "_catalog": {
         "pelicula_id": "d5a05f53-2786-4b48-82db-204a86775f4a",
         "titulo": "Un lugar tranquilo",
@@ -377,47 +342,17 @@
         "sello": true,
         "tier": 0
       }
-    },
-    {
-      "source": "r/movies",
-      "title": "‘Superman’ Sequel ‘Man Of Tomorrow’ Adds Matthew Lillard to Cast",
-      "link": "https://www.reddit.com/r/movies/comments/1t5jrdc/superman_sequel_man_of_tomorrow_adds_matthew/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t5jrdc/superman_sequel_man_of_tomorrow_adds_matthew/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/aZ45nTCL8XR07bPGn64bC9o9-VxMZrb20CtJPoLhABo.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=a6467050fc0f2fc91fc318929b2594f032b78d21&quot; alt=&quot;‘Superman’ Sequel ‘Man Of Tomorrow’ Adds Matthew Lillard to Cast&quot; title=&quot;‘Superman’ Sequel ‘Man Of Tomorrow’ Adds Matthew Lillard to Cast&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt",
-      "published": "2026-05-06T17:30:42+00:00",
-      "published_iso": "2026-05-06T17:30:42.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "c43acbfe-52f8-41fc-bcc8-cfb413a34a28",
-          "titulo": "Superman",
-          "anio": 2025
-        }
-      ],
-      "_score": 28.536302444444445,
-      "_catalog": {
-        "pelicula_id": "c43acbfe-52f8-41fc-bcc8-cfb413a34a28",
-        "titulo": "Superman",
-        "titulo_ingles": "Superman",
-        "anio": 2025,
-        "nota_imdb": 7,
-        "director": "James Gunn",
-        "rating": 8,
-        "sello": false,
-        "tier": 0
-      }
     }
   ],
   "raw_signal_counts": {
-    "news_items": 117,
-    "newsapi_items": 88,
+    "news_items": 118,
+    "newsapi_items": 93,
     "reddit_posts": 0,
     "trailers": 61
   },
   "reconciliation_stats": {
     "accepted": 0,
-    "becameBacklog": 5,
+    "becameBacklog": 1,
     "expired": 0
   }
 }

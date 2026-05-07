@@ -413,10 +413,35 @@
       "first_proposed": "2026-05-06T21:09:49.676Z",
       "last_proposed": "2026-05-06T21:09:49.676Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-07T12:27:29.673Z"
+    },
+    {
+      "id": "2fb4936011e45cd5",
+      "action": "react_to_news",
+      "title": "Noticia: Avatar",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 86.8968795,
+      "reasoning": "The Wrap (10h): \"James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character De\". Match catálogo: Avatar (rating 8).",
+      "suggested_caption": null,
+      "source_name": "The Wrap",
+      "source_url": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
+        "angle": "mention",
+        "headline": "James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design"
+      },
+      "first_proposed": "2026-05-07T12:27:29.673Z",
+      "last_proposed": "2026-05-07T12:27:29.673Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-06T21:10:15.250Z"
+  "last_saved": "2026-05-07T12:28:07.493Z"
 }

@@ -131,8 +131,21 @@ export async function evaluateItems(items, ctx = {}) {
 CONTEXTO RUNTIME:
 - ciclo: ${ctx.cycle || 'am'}
 - déficit del patrón 3-1-2: ${JSON.stringify(ctx.deficits || {})}
+- KINDS de tops/listas en últimos 14d IG (EVITAR repetir): ${JSON.stringify(ctx.recent_top_kinds || [])}
 - últimos posts IG (más reciente primero):
 ${JSON.stringify(ctx.last_ig_posts || [], null, 2)}
+
+INSTRUCCIÓN ESPECIAL PARA CANDIDATOS DE TIPO 'top' (category=top o action=generate_carousel_*):
+- Si el candidato tiene topic_kind que coincide con un kind en recent_top_kinds, BAJA su score (-10) o márcalo discard si hay alternativas mejores en el pool.
+- PRIORIZA candidatos cuyo kind NO está en recent_top_kinds — eso fuerza diversidad editorial.
+- Si el título te parece genérico/repetitivo Y tienes una idea CREATIVA mejor (un ángulo fresco, alguna tema actual, un tipo de lista que Alberto nunca ha hecho), override rewrite_title_es con el nuevo título y explica en reason. La idea creativa puede ser:
+  • un ángulo narrativo no obvio (ej: "10 películas con el mejor cliffhanger de los 90s")
+  • una conexión con la cultura actual o cinéfila reciente
+  • una agrupación de mood/momento específica que Alberto pueda ejecutar
+  • una sub-categoría poco explorada (ej: "10 películas filmadas en una sola toma")
+  Mantén el tono editorial cinebret (no genérico tipo BuzzFeed).
+
+CANDIDATO ESPECIAL: el item con title="__CREATIVE_TOPIC__" es un slot abierto. Si tienes una idea de top/lista NUEVA y de alta calidad (fuera del pool, evitando recent_top_kinds), úsalo: rewrite_title_es=tu_idea, decision=propose, score alto, category=top, angle=null. Si no, discard.
 
 CANDIDATOS:
 ${JSON.stringify(items, null, 2)}

@@ -227,15 +227,17 @@ const candidates = []
   }
 }
 
-// ── TOP / Lista candidates: from a topic pool, scored by news pulse + recency
+// ── TOP / Lista candidates: from a topic pool + creative slot for the critic to invent
 {
   const month = NOW.getMonth()
   const TOPICS = [
+    // Country
     { kind: 'country', name: 'TOP 10 películas coreanas', triggers: ['korea','coreana','park chan','bong joon'], skill_args: { topic_type: 'country', topic: 'corea' } },
     { kind: 'country', name: 'TOP 10 películas japonesas', triggers: ['japan','japón','miyazaki','ghibli'], skill_args: { topic_type: 'country', topic: 'japón' } },
     { kind: 'country', name: 'TOP 10 películas francesas', triggers: ['france','francia','french','cannes'], skill_args: { topic_type: 'country', topic: 'francia' } },
     { kind: 'country', name: 'TOP 10 películas españolas', triggers: ['spain','españa','almodovar','goya'], skill_args: { topic_type: 'country', topic: 'españa' } },
     { kind: 'country', name: 'TOP 10 películas británicas', triggers: ['british','bafta'], skill_args: { topic_type: 'country', topic: 'reino unido' } },
+    // Genre
     { kind: 'genre', name: 'TOP 10 thrillers psicológicos', triggers: ['thriller','psychological'], skill_args: { topic_type: 'genre', topic: 'thriller psicológico' } },
     { kind: 'genre', name: 'TOP 10 películas con plot twist', triggers: ['plot twist','giro'], skill_args: { topic_type: 'theme', topic: 'plot twist' } },
     { kind: 'genre', name: 'TOP 10 películas de mafia', triggers: ['mafia','gangster'], skill_args: { topic_type: 'genre', topic: 'mafia' } },
@@ -243,22 +245,71 @@ const candidates = []
     { kind: 'genre', name: 'TOP 10 películas de animación', triggers: ['animation','animated','pixar','ghibli','dreamworks'], skill_args: { topic_type: 'genre', topic: 'animación' } },
     { kind: 'genre', name: 'TOP 10 dramas que te dejan pensando', triggers: ['drama'], skill_args: { topic_type: 'genre', topic: 'drama' } },
     { kind: 'genre', name: 'TOP 10 películas de guerra', triggers: ['war film','spielberg','schindler'], skill_args: { topic_type: 'genre', topic: 'guerra' } },
+    { kind: 'genre', name: 'TOP 10 thrillers que no son lo que parecen', triggers: [], skill_args: { topic_type: 'theme', topic: 'thriller engañoso' } },
+    // Director
     { kind: 'director', name: 'Ranking películas de Christopher Nolan', triggers: ['nolan'], skill_args: { topic_type: 'director', topic: 'Christopher Nolan' } },
     { kind: 'director', name: 'Ranking películas de Martin Scorsese', triggers: ['scorsese'], skill_args: { topic_type: 'director', topic: 'Martin Scorsese' } },
     { kind: 'director', name: 'Ranking películas de Denis Villeneuve', triggers: ['villeneuve','dune'], skill_args: { topic_type: 'director', topic: 'Denis Villeneuve' } },
     { kind: 'director', name: 'Ranking películas de Quentin Tarantino', triggers: ['tarantino'], skill_args: { topic_type: 'director', topic: 'Quentin Tarantino' } },
     { kind: 'director', name: 'Ranking películas de David Fincher', triggers: ['fincher'], skill_args: { topic_type: 'director', topic: 'David Fincher' } },
     { kind: 'director', name: 'Ranking películas de Spielberg', triggers: ['spielberg'], skill_args: { topic_type: 'director', topic: 'Steven Spielberg' } },
+    { kind: 'director', name: 'Las películas más infravaloradas de Tarantino', triggers: [], skill_args: { topic_type: 'director', topic: 'Tarantino infravaloradas' } },
+    // Studio
     { kind: 'studio', name: 'TOP 10 películas A24', triggers: ['a24'], skill_args: { topic_type: 'studio', topic: 'A24' } },
     { kind: 'studio', name: 'TOP 10 películas Pixar', triggers: ['pixar'], skill_args: { topic_type: 'studio', topic: 'Pixar' } },
-    { kind: 'theme', name: '10 películas con plot twist legendario', triggers: ['plot twist'], skill_args: { topic_type: 'theme', topic: 'plot twist' } },
+    { kind: 'studio', name: 'Las mejores películas de Studio Ghibli ranqueadas', triggers: ['ghibli','miyazaki'], skill_args: { topic_type: 'studio', topic: 'Studio Ghibli' } },
+    // Theme — narrative angles
+    { kind: 'theme', name: '10 películas con final ambiguo que aún se discute', triggers: [], skill_args: { topic_type: 'theme', topic: 'final ambiguo' } },
+    { kind: 'theme', name: '10 películas con escena inicial inolvidable', triggers: [], skill_args: { topic_type: 'theme', topic: 'escena inicial' } },
+    { kind: 'theme', name: '10 películas con la mejor escena final', triggers: [], skill_args: { topic_type: 'theme', topic: 'escena final' } },
+    { kind: 'theme', name: '10 películas con un solo escenario', triggers: [], skill_args: { topic_type: 'theme', topic: 'one location' } },
+    { kind: 'theme', name: '10 películas que parecen una cosa y son otra', triggers: [], skill_args: { topic_type: 'theme', topic: 'twist genre' } },
+    { kind: 'theme', name: '10 películas con villano carismático', triggers: [], skill_args: { topic_type: 'theme', topic: 'villain' } },
+    { kind: 'theme', name: '10 películas sobre amistad masculina', triggers: [], skill_args: { topic_type: 'theme', topic: 'amistad masculina' } },
+    { kind: 'theme', name: '10 películas sobre periodismo y verdad', triggers: [], skill_args: { topic_type: 'theme', topic: 'periodismo' } },
+    { kind: 'theme', name: '10 películas con la ciudad como protagonista', triggers: [], skill_args: { topic_type: 'theme', topic: 'ciudad' } },
     { kind: 'theme', name: '10 películas que ganaron Oscar Mejor Película', triggers: ['oscar','best picture'], skill_args: { topic_type: 'theme', topic: 'oscar mejor pelicula' } },
+    { kind: 'theme', name: '10 películas snubbed por la Academia', triggers: ['oscar','snub'], skill_args: { topic_type: 'theme', topic: 'oscar snubs' } },
+    { kind: 'theme', name: '10 películas con banda sonora icónica', triggers: [], skill_args: { topic_type: 'theme', topic: 'banda sonora' } },
+    // Format / craft
+    { kind: 'format', name: '10 películas de menos de 90 minutos imperdibles', triggers: [], skill_args: { topic_type: 'theme', topic: 'menos 90 min' } },
+    { kind: 'format', name: '10 películas largas que valen las 3 horas', triggers: [], skill_args: { topic_type: 'theme', topic: 'épicas largas' } },
+    { kind: 'format', name: '10 películas en plano secuencia o que parecen filmadas en una toma', triggers: [], skill_args: { topic_type: 'theme', topic: 'plano secuencia' } },
+    { kind: 'format', name: '10 películas en blanco y negro modernas', triggers: [], skill_args: { topic_type: 'theme', topic: 'b&n moderno' } },
+    // Era
     { kind: 'era', name: '10 mejores películas de los 90s', triggers: [], skill_args: { topic_type: 'era', topic: 'años 90' } },
     { kind: 'era', name: '10 mejores películas del siglo XXI', triggers: [], skill_args: { topic_type: 'era', topic: 'siglo xxi' } },
+    { kind: 'era', name: '10 mejores películas de los 2010s', triggers: [], skill_args: { topic_type: 'era', topic: 'años 2010' } },
+    { kind: 'era', name: '10 mejores películas de los 80s', triggers: [], skill_args: { topic_type: 'era', topic: 'años 80' } },
+    // Actor angles
+    { kind: 'actor', name: 'Las mejores actuaciones de Daniel Day-Lewis', triggers: [], skill_args: { topic_type: 'actor', topic: 'Daniel Day-Lewis' } },
+    { kind: 'actor', name: 'Las mejores películas de Robert De Niro', triggers: [], skill_args: { topic_type: 'actor', topic: 'Robert De Niro' } },
+    { kind: 'actor', name: 'Las mejores actuaciones femeninas del siglo XXI', triggers: [], skill_args: { topic_type: 'actor', topic: 'actuaciones femeninas' } },
+    // Mood (seasonal)
     { kind: 'mood', name: '10 películas para el frío del invierno', triggers: [], season: [4,5,6,7], skill_args: { mood: "Pa'l domingo de bajón", count: 10 } },
     { kind: 'mood', name: '10 películas perturbadoras para Halloween', triggers: ['halloween'], season: [9], skill_args: { mood: "Pa' quedar con el cerebro como licuadora", count: 10 } },
     { kind: 'mood', name: '10 películas para terminar el año', triggers: [], season: [11], skill_args: { mood: "Pa' fin de año", count: 10 } },
+    { kind: 'mood', name: '10 películas para ver con tu papá', triggers: [], skill_args: { mood: 'con tu papá', count: 10 } },
+    { kind: 'mood', name: '10 películas para ver borracho a las 3am', triggers: [], skill_args: { mood: 'borracho 3am', count: 10 } },
+    { kind: 'mood', name: '10 películas para una primera cita', triggers: [], skill_args: { mood: 'primera cita', count: 10 } },
   ]
+
+  // Detect kinds of recent tops in IG (last 14 days)
+  const recentTopKinds = new Set()
+  for (const post of allPosts.slice(0, 14)) {
+    const cap = (post.caption || '').toLowerCase()
+    if (cap.match(/\b(coreana|japonesa|francesa|española|británica|country|país)\b/)) recentTopKinds.add('country')
+    if (cap.match(/\b(thriller|drama|comedia|terror|sci-?fi|animaci|guerra|gangster|mafia)\b/)) recentTopKinds.add('genre')
+    if (cap.match(/\b(nolan|scorsese|tarantino|villeneuve|fincher|spielberg|director)\b/)) recentTopKinds.add('director')
+    if (cap.match(/\b(a24|pixar|ghibli|studio)\b/)) recentTopKinds.add('studio')
+    if (cap.match(/\b(plot twist|giro|final|escena|amistad|ciudad|villano|periodismo)\b/)) recentTopKinds.add('theme')
+    if (cap.match(/\b(90s|80s|2010s|siglo|años \d+|década)\b/)) recentTopKinds.add('era')
+    if (cap.match(/\b(domingo|halloween|invierno|verano|fin de año|cita)\b/)) recentTopKinds.add('mood')
+    if (cap.match(/\bplano secuencia|menos de 90|blanco y negro\b/)) recentTopKinds.add('format')
+  }
+  // Persist for the critic context
+  globalThis.__recentTopKinds = [...recentTopKinds]
+  console.log(`  Topic kinds in last 14d IG: [${[...recentTopKinds].join(', ') || '—'}]`)
 
   const newsBlob = [
     ...(sources.news?.items || []).map(i => i.title + ' ' + (i.description || '')),
@@ -268,25 +319,44 @@ const candidates = []
   const scored = TOPICS.map(t => {
     let s = 50
     if (alreadyPostedRecently(t.name)) s -= 60
+    // PENALIZE if same kind as a recent top — pushes diversity across kinds
+    if (recentTopKinds.has(t.kind)) s -= 25
     for (const trig of t.triggers) if (newsBlob.includes(trig.toLowerCase())) s += 10
     if (t.season && t.season.includes(month)) s += 12
     if (t.season && !t.season.includes(month)) s -= 30
     return { topic: t, s }
   }).filter(x => x.s > 0).sort((a, b) => b.s - a.s)
 
-  // Top-K (3) so the critic can pick from variety
-  for (const { topic } of scored.slice(0, 3)) {
+  // Take top 5 from pool (variety for the critic to choose from across kinds)
+  for (const { topic } of scored.slice(0, 5)) {
     candidates.push({
       id: proposalId(topic.kind === 'mood' ? 'generate_carousel_mood' : 'generate_carousel_topic', topic.name),
       type: 'proposal',
       action: topic.kind === 'mood' ? 'generate_carousel_mood' : 'generate_carousel_topic',
       title: topic.name,
-      reasoning: `Tema rotativo del pool. Datos disponibles en catálogo.`,
+      reasoning: `Tema del pool, kind=${topic.kind}. Datos disponibles en catálogo.`,
       proposed_category: 'top',
+      topic_kind: topic.kind,
       skill_to_invoke: topic.kind === 'mood' ? 'cinebret-carousel-mood' : 'cinebret-carousel-topic',
       skill_args: topic.skill_args,
     })
   }
+
+  // CREATIVE SLOT: open invitation for the critic to invent a fresh top.
+  // The critic should override rewrite_title_es with a NEW idea outside the pool,
+  // avoiding kinds in recentTopKinds. If the critic doesn't have a better idea,
+  // it can decision='discard' this one and pick from the pool entries.
+  candidates.push({
+    id: proposalId('creative_topic', `creative-${NOW_ISO}`),
+    type: 'proposal',
+    action: 'generate_carousel_topic',
+    title: '__CREATIVE_TOPIC__',
+    reasoning: `Slot creativo: invención libre del crítico. Kinds recientes a EVITAR: [${[...recentTopKinds].join(', ') || 'ninguno'}]. Si tienes una idea fresca de top/lista que NO está en el pool y NO repite estos kinds, override rewrite_title_es con el nuevo título. Si no, marca discard.`,
+    proposed_category: 'top',
+    topic_kind: 'creative',
+    skill_to_invoke: 'cinebret-carousel-topic',
+    skill_args: { topic_type: 'custom', topic: '__TBD_BY_CRITIC__' },
+  })
 }
 
 // ── NEWS / TRAILER candidates (raw — critic filters)
@@ -367,6 +437,7 @@ const verdicts = await evaluateItems(candidates, {
   cycle: CYCLE,
   deficits,
   last_ig_posts: last6,
+  recent_top_kinds: globalThis.__recentTopKinds || [],
 })
 const critTime = Math.round((Date.now() - critStart) / 1000)
 const usage = verdicts._usage || {}

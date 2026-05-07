@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-07T12:27:29.607Z",
+  "generated_at": "2026-05-07T21:56:26.627Z",
   "date": "2026-05-07",
   "summary": {
     "days_since_last_ig_post": 2,
     "last_post_date": "2026-05-06",
-    "pending_reviews_count": 239,
+    "pending_reviews_count": 240,
     "newly_added_to_platforms": 0,
     "upcoming_awards": 1,
     "trending_in_cinebret": 14
@@ -150,6 +150,9 @@
         "hbo_max",
         "netflix",
         "amazon_prime",
+        "hbo_max",
+        "netflix",
+        "amazon_prime",
         "hbo_max"
       ],
       "priority": 185
@@ -168,6 +171,7 @@
       "rating_alberto": 10,
       "sello_bret": true,
       "platforms": [
+        "hbo_max",
         "hbo_max",
         "hbo_max",
         "hbo_max",
@@ -271,6 +275,7 @@
         "netflix",
         "netflix",
         "netflix",
+        "netflix",
         "netflix"
       ],
       "priority": 160
@@ -287,6 +292,7 @@
       "rating_alberto": 10,
       "sello_bret": true,
       "platforms": [
+        "hbo_max",
         "hbo_max",
         "hbo_max",
         "hbo_max",
@@ -427,6 +433,8 @@
         "netflix",
         "disney_plus",
         "netflix",
+        "disney_plus",
+        "netflix",
         "disney_plus"
       ],
       "priority": 160
@@ -443,6 +451,7 @@
       "rating_alberto": 10,
       "sello_bret": true,
       "platforms": [
+        "hbo_max",
         "hbo_max",
         "hbo_max",
         "hbo_max",
@@ -649,6 +658,8 @@
         "netflix",
         "amazon_prime",
         "netflix",
+        "amazon_prime",
+        "netflix",
         "amazon_prime"
       ],
       "priority": 160
@@ -750,6 +761,8 @@
         "hbo_max",
         "amazon_prime",
         "hbo_max",
+        "hbo_max",
+        "amazon_prime",
         "hbo_max",
         "amazon_prime",
         "hbo_max",
@@ -862,6 +875,8 @@
         "amazon_prime",
         "hbo_max",
         "amazon_prime",
+        "hbo_max",
+        "amazon_prime",
         "hbo_max"
       ],
       "priority": 160
@@ -967,6 +982,8 @@
         "amazon_prime",
         "hbo_max",
         "amazon_prime",
+        "hbo_max",
+        "amazon_prime",
         "hbo_max"
       ],
       "priority": 160
@@ -1019,6 +1036,7 @@
         "mubi",
         "mubi",
         "mubi",
+        "mubi",
         "mubi"
       ],
       "priority": 160
@@ -1037,6 +1055,7 @@
       "rating_alberto": 10,
       "sello_bret": true,
       "platforms": [
+        "hbo_max",
         "hbo_max",
         "hbo_max",
         "hbo_max",
@@ -1141,6 +1160,7 @@
         "disney_plus",
         "disney_plus",
         "disney_plus",
+        "disney_plus",
         "disney_plus"
       ],
       "priority": 160
@@ -1159,6 +1179,7 @@
       "rating_alberto": 10,
       "sello_bret": true,
       "platforms": [
+        "amazon_prime",
         "amazon_prime",
         "amazon_prime",
         "amazon_prime",
@@ -1262,6 +1283,7 @@
         "amazon_prime",
         "amazon_prime",
         "amazon_prime",
+        "amazon_prime",
         "amazon_prime"
       ],
       "priority": 155
@@ -1278,6 +1300,7 @@
       "rating_alberto": 9,
       "sello_bret": true,
       "platforms": [
+        "hbo_max",
         "hbo_max",
         "hbo_max",
         "hbo_max",
@@ -1377,6 +1400,7 @@
         "netflix",
         "netflix",
         "netflix",
+        "netflix",
         "netflix"
       ],
       "priority": 140
@@ -1395,6 +1419,7 @@
       "rating_alberto": 9,
       "sello_bret": true,
       "platforms": [
+        "netflix",
         "netflix",
         "netflix",
         "netflix",
@@ -1498,6 +1523,7 @@
         "disney_plus",
         "disney_plus",
         "disney_plus",
+        "disney_plus",
         "disney_plus"
       ],
       "priority": 140
@@ -1559,6 +1585,7 @@
         "netflix",
         "netflix",
         "netflix",
+        "netflix",
         "netflix"
       ],
       "priority": 140
@@ -1577,6 +1604,7 @@
       "rating_alberto": 9,
       "sello_bret": true,
       "platforms": [
+        "netflix",
         "netflix",
         "netflix",
         "netflix",
@@ -1760,6 +1788,8 @@
         "amazon_prime",
         "hbo_max",
         "amazon_prime",
+        "hbo_max",
+        "amazon_prime",
         "hbo_max"
       ],
       "priority": 140
@@ -1860,6 +1890,8 @@
         "hbo_max",
         "amazon_prime",
         "hbo_max",
+        "hbo_max",
+        "amazon_prime",
         "hbo_max",
         "amazon_prime",
         "hbo_max",
@@ -1986,6 +2018,9 @@
         "mubi",
         "amazon_prime",
         "paramount_plus",
+        "mubi",
+        "amazon_prime",
+        "paramount_plus",
         "mubi"
       ],
       "priority": 140
@@ -2003,6 +2038,7 @@
       "rating_alberto": 9,
       "sello_bret": true,
       "platforms": [
+        "netflix",
         "netflix",
         "netflix",
         "netflix",
@@ -2109,6 +2145,7 @@
         "hbo_max",
         "hbo_max",
         "hbo_max",
+        "hbo_max",
         "hbo_max"
       ],
       "priority": 140
@@ -2125,6 +2162,7 @@
       "rating_alberto": 9,
       "sello_bret": true,
       "platforms": [
+        "paramount_plus",
         "paramount_plus",
         "paramount_plus",
         "paramount_plus",
@@ -2229,6 +2267,7 @@
         "disney_plus",
         "disney_plus",
         "disney_plus",
+        "disney_plus",
         "disney_plus"
       ],
       "priority": 140
@@ -2290,6 +2329,7 @@
         "amazon_prime",
         "amazon_prime",
         "amazon_prime",
+        "amazon_prime",
         "amazon_prime"
       ],
       "priority": 140
@@ -2298,24 +2338,13 @@
   "trending": {
     "weekly": [
       {
-        "tmdb_id": 1007757,
-        "title": "Intercambiados",
-        "original_title": "Swapped",
-        "release_date": "2026-05-01",
-        "vote_average": 7.958,
+        "tmdb_id": 936075,
+        "title": "Michael",
+        "original_title": "Michael",
+        "release_date": "2026-04-22",
+        "vote_average": 7.557,
         "in_cinebret": true,
-        "pelicula_id": "8407c7f0-0922-4c51-b5ee-ad5c69f073da",
-        "has_review": false,
-        "platforms": []
-      },
-      {
-        "tmdb_id": 1226863,
-        "title": "Super Mario Galaxy la película",
-        "original_title": "The Super Mario Galaxy Movie",
-        "release_date": "2026-04-01",
-        "vote_average": 6.7,
-        "in_cinebret": true,
-        "pelicula_id": "a7160265-e697-4a16-a153-9f329ebe31e4",
+        "pelicula_id": "a41e47ec-5632-4750-8a90-babebc8eb895",
         "has_review": false,
         "platforms": []
       },
@@ -2331,13 +2360,24 @@
         "platforms": []
       },
       {
-        "tmdb_id": 936075,
-        "title": "Michael",
-        "original_title": "Michael",
-        "release_date": "2026-04-22",
-        "vote_average": 7.536,
+        "tmdb_id": 1007757,
+        "title": "Intercambiados",
+        "original_title": "Swapped",
+        "release_date": "2026-05-01",
+        "vote_average": 7.972,
         "in_cinebret": true,
-        "pelicula_id": "a41e47ec-5632-4750-8a90-babebc8eb895",
+        "pelicula_id": "8407c7f0-0922-4c51-b5ee-ad5c69f073da",
+        "has_review": false,
+        "platforms": []
+      },
+      {
+        "tmdb_id": 1226863,
+        "title": "Super Mario Galaxy la película",
+        "original_title": "The Super Mario Galaxy Movie",
+        "release_date": "2026-04-01",
+        "vote_average": 6.729,
+        "in_cinebret": true,
+        "pelicula_id": "a7160265-e697-4a16-a153-9f329ebe31e4",
         "has_review": false,
         "platforms": []
       },
@@ -2346,7 +2386,7 @@
         "title": "Hoppers",
         "original_title": "Hoppers",
         "release_date": "2026-03-04",
-        "vote_average": 7.7,
+        "vote_average": 7.743,
         "in_cinebret": true,
         "pelicula_id": "4e8daba3-9b60-46d4-8718-83be08376132",
         "has_review": false,
@@ -2357,31 +2397,9 @@
         "title": "Mortal Kombat II",
         "original_title": "Mortal Kombat II",
         "release_date": "2026-05-06",
-        "vote_average": 7.7,
+        "vote_average": 7.315,
         "in_cinebret": true,
         "pelicula_id": "8f7c8792-20ce-436e-b56d-65de5297aefc",
-        "has_review": false,
-        "platforms": []
-      },
-      {
-        "tmdb_id": 1325734,
-        "title": "El drama",
-        "original_title": "The Drama",
-        "release_date": "2026-03-26",
-        "vote_average": 7.017,
-        "in_cinebret": true,
-        "pelicula_id": "193027f8-68da-4987-87df-cdf5676258d1",
-        "has_review": false,
-        "platforms": []
-      },
-      {
-        "tmdb_id": 1318447,
-        "title": "Depredador dominante",
-        "original_title": "Apex",
-        "release_date": "2026-04-24",
-        "vote_average": 6.428,
-        "in_cinebret": true,
-        "pelicula_id": "2a1bbc91-0f2a-44c0-bde0-7592472ad64d",
         "has_review": false,
         "platforms": []
       },
@@ -2390,7 +2408,7 @@
         "title": "Noche de bodas 2",
         "original_title": "Ready or Not 2: Here I Come",
         "release_date": "2026-03-19",
-        "vote_average": 7.1,
+        "vote_average": 7.075,
         "in_cinebret": true,
         "pelicula_id": "b16a7126-0b38-42af-a80a-f0e278a4bd5d",
         "has_review": false,
@@ -2428,18 +2446,41 @@
           "disney_plus",
           "disney_plus",
           "disney_plus",
+          "disney_plus",
           "disney_plus"
         ]
+      },
+      {
+        "tmdb_id": 1325734,
+        "title": "El drama",
+        "original_title": "The Drama",
+        "release_date": "2026-03-26",
+        "vote_average": 7.004,
+        "in_cinebret": true,
+        "pelicula_id": "193027f8-68da-4987-87df-cdf5676258d1",
+        "has_review": false,
+        "platforms": []
       },
       {
         "tmdb_id": 687163,
         "title": "Proyecto Salvación",
         "original_title": "Project Hail Mary",
         "release_date": "2026-03-15",
-        "vote_average": 8.208,
+        "vote_average": 8.2,
         "in_cinebret": true,
         "pelicula_id": "98a598c1-7c8f-4d7d-b77b-483dc849060b",
         "has_review": true,
+        "platforms": []
+      },
+      {
+        "tmdb_id": 1318447,
+        "title": "Depredador dominante",
+        "original_title": "Apex",
+        "release_date": "2026-04-24",
+        "vote_average": 6.414,
+        "in_cinebret": true,
+        "pelicula_id": "2a1bbc91-0f2a-44c0-bde0-7592472ad64d",
+        "has_review": false,
         "platforms": []
       },
       {
@@ -2447,9 +2488,20 @@
         "title": "Te van a matar",
         "original_title": "They Will Kill You",
         "release_date": "2026-03-25",
-        "vote_average": 6.687,
+        "vote_average": 6.695,
         "in_cinebret": true,
         "pelicula_id": "a0d5c7f1-1a5e-4744-b8a1-f8022a4b2263",
+        "has_review": false,
+        "platforms": []
+      },
+      {
+        "tmdb_id": 1630423,
+        "title": "Sangre asesina",
+        "original_title": "เลือดรักนักฆ่า",
+        "release_date": "2026-05-06",
+        "vote_average": 7,
+        "in_cinebret": true,
+        "pelicula_id": "410c9add-bced-41d8-92f4-5761492d793a",
         "has_review": false,
         "platforms": []
       },
@@ -2458,29 +2510,22 @@
         "title": "SEND HELP (Enviad ayuda)",
         "original_title": "Send Help",
         "release_date": "2026-01-22",
-        "vote_average": 7,
+        "vote_average": 6.988,
         "in_cinebret": true,
         "pelicula_id": "a4218265-9b49-4e0f-9a4e-426ca93e4d03",
         "has_review": false,
         "platforms": []
       },
       {
-        "tmdb_id": 83533,
-        "title": "Avatar: Fuego y ceniza",
-        "original_title": "Avatar: Fire and Ash",
-        "release_date": "2025-12-17",
-        "vote_average": 7.4,
+        "tmdb_id": 1301421,
+        "title": "Las ovejas detectives",
+        "original_title": "The Sheep Detectives",
+        "release_date": "2026-04-30",
+        "vote_average": 7.9,
         "in_cinebret": true,
-        "pelicula_id": "c8b779ba-3f8f-4af5-bf65-b01f1e28aafe",
+        "pelicula_id": "c50ac8b2-6a1e-4cfc-8381-906163428c8d",
         "has_review": false,
-        "platforms": [
-          "netflix",
-          "amazon_prime",
-          "disney_plus",
-          "netflix",
-          "amazon_prime",
-          "disney_plus"
-        ]
+        "platforms": []
       },
       {
         "tmdb_id": 1368337,
@@ -2492,39 +2537,17 @@
         "pelicula_id": "39874d5a-cf48-4f55-9e1e-ee30b95964ad",
         "has_review": false,
         "platforms": []
-      },
-      {
-        "tmdb_id": 1110034,
-        "title": "Kraken",
-        "original_title": "Kraken",
-        "release_date": "2026-02-06",
-        "vote_average": 6.1,
-        "in_cinebret": true,
-        "pelicula_id": "5dd92f67-dffa-487e-bbaa-b34ae0fa9995",
-        "has_review": false,
-        "platforms": []
       }
     ],
     "daily": [
       {
-        "tmdb_id": 1226863,
-        "title": "Super Mario Galaxy la película",
-        "original_title": "The Super Mario Galaxy Movie",
-        "release_date": "2026-04-01",
-        "vote_average": 6.7,
+        "tmdb_id": 1630423,
+        "title": "Sangre asesina",
+        "original_title": "เลือดรักนักฆ่า",
+        "release_date": "2026-05-06",
+        "vote_average": 7,
         "in_cinebret": true,
-        "pelicula_id": "a7160265-e697-4a16-a153-9f329ebe31e4",
-        "has_review": false,
-        "platforms": []
-      },
-      {
-        "tmdb_id": 1007757,
-        "title": "Intercambiados",
-        "original_title": "Swapped",
-        "release_date": "2026-05-01",
-        "vote_average": 7.958,
-        "in_cinebret": true,
-        "pelicula_id": "8407c7f0-0922-4c51-b5ee-ad5c69f073da",
+        "pelicula_id": "410c9add-bced-41d8-92f4-5761492d793a",
         "has_review": false,
         "platforms": []
       },
@@ -2533,20 +2556,9 @@
         "title": "Mortal Kombat II",
         "original_title": "Mortal Kombat II",
         "release_date": "2026-05-06",
-        "vote_average": 7.7,
+        "vote_average": 7.315,
         "in_cinebret": true,
         "pelicula_id": "8f7c8792-20ce-436e-b56d-65de5297aefc",
-        "has_review": false,
-        "platforms": []
-      },
-      {
-        "tmdb_id": 1314481,
-        "title": "El diablo viste de Prada 2",
-        "original_title": "The Devil Wears Prada 2",
-        "release_date": "2026-04-29",
-        "vote_average": 6.76,
-        "in_cinebret": true,
-        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
         "has_review": false,
         "platforms": []
       },
@@ -2555,9 +2567,20 @@
         "title": "El drama",
         "original_title": "The Drama",
         "release_date": "2026-03-26",
-        "vote_average": 7.017,
+        "vote_average": 7.004,
         "in_cinebret": true,
         "pelicula_id": "193027f8-68da-4987-87df-cdf5676258d1",
+        "has_review": false,
+        "platforms": []
+      },
+      {
+        "tmdb_id": 1226863,
+        "title": "Super Mario Galaxy la película",
+        "original_title": "The Super Mario Galaxy Movie",
+        "release_date": "2026-04-01",
+        "vote_average": 6.729,
+        "in_cinebret": true,
+        "pelicula_id": "a7160265-e697-4a16-a153-9f329ebe31e4",
         "has_review": false,
         "platforms": []
       },
@@ -2566,11 +2589,12 @@
         "title": "Noche de bodas 2",
         "original_title": "Ready or Not 2: Here I Come",
         "release_date": "2026-03-19",
-        "vote_average": 7.1,
+        "vote_average": 7.075,
         "in_cinebret": true,
         "pelicula_id": "b16a7126-0b38-42af-a80a-f0e278a4bd5d",
         "has_review": false,
         "platforms": [
+          "disney_plus",
           "disney_plus",
           "disney_plus",
           "disney_plus",
@@ -2612,7 +2636,7 @@
         "title": "Hoppers",
         "original_title": "Hoppers",
         "release_date": "2026-03-04",
-        "vote_average": 7.7,
+        "vote_average": 7.743,
         "in_cinebret": true,
         "pelicula_id": "4e8daba3-9b60-46d4-8718-83be08376132",
         "has_review": false,
@@ -2623,20 +2647,31 @@
         "title": "Michael",
         "original_title": "Michael",
         "release_date": "2026-04-22",
-        "vote_average": 7.536,
+        "vote_average": 7.557,
         "in_cinebret": true,
         "pelicula_id": "a41e47ec-5632-4750-8a90-babebc8eb895",
         "has_review": false,
         "platforms": []
       },
       {
-        "tmdb_id": 1688652,
-        "title": "Gary",
-        "original_title": "Gary",
-        "release_date": "2026-05-05",
-        "vote_average": 8.3,
-        "in_cinebret": false,
-        "pelicula_id": null,
+        "tmdb_id": 1314481,
+        "title": "El diablo viste de Prada 2",
+        "original_title": "The Devil Wears Prada 2",
+        "release_date": "2026-04-29",
+        "vote_average": 6.76,
+        "in_cinebret": true,
+        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
+        "has_review": false,
+        "platforms": []
+      },
+      {
+        "tmdb_id": 1007757,
+        "title": "Intercambiados",
+        "original_title": "Swapped",
+        "release_date": "2026-05-01",
+        "vote_average": 7.972,
+        "in_cinebret": true,
+        "pelicula_id": "8407c7f0-0922-4c51-b5ee-ad5c69f073da",
         "has_review": false,
         "platforms": []
       },
@@ -2645,7 +2680,7 @@
         "title": "Proyecto Salvación",
         "original_title": "Project Hail Mary",
         "release_date": "2026-03-15",
-        "vote_average": 8.208,
+        "vote_average": 8.2,
         "in_cinebret": true,
         "pelicula_id": "98a598c1-7c8f-4d7d-b77b-483dc849060b",
         "has_review": true,
@@ -2658,20 +2693,9 @@
         "title": "Super Mario Galaxy la película",
         "original_title": "The Super Mario Galaxy Movie",
         "release_date": "2026-04-01",
-        "vote_average": 6.738,
+        "vote_average": 6.73,
         "in_cinebret": true,
         "pelicula_id": "a7160265-e697-4a16-a153-9f329ebe31e4",
-        "has_review": false,
-        "platforms": []
-      },
-      {
-        "tmdb_id": 1314481,
-        "title": "El diablo viste de Prada 2",
-        "original_title": "The Devil Wears Prada 2",
-        "release_date": "2026-04-30",
-        "vote_average": 6.762,
-        "in_cinebret": true,
-        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
         "has_review": false,
         "platforms": []
       },
@@ -2680,9 +2704,20 @@
         "title": "Michael",
         "original_title": "Michael",
         "release_date": "2026-04-22",
-        "vote_average": 7.5,
+        "vote_average": 7.546,
         "in_cinebret": true,
         "pelicula_id": "a41e47ec-5632-4750-8a90-babebc8eb895",
+        "has_review": false,
+        "platforms": []
+      },
+      {
+        "tmdb_id": 1314481,
+        "title": "El diablo viste de Prada 2",
+        "original_title": "The Devil Wears Prada 2",
+        "release_date": "2026-04-30",
+        "vote_average": 6.767,
+        "in_cinebret": true,
+        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
         "has_review": false,
         "platforms": []
       },
@@ -2691,7 +2726,7 @@
         "title": "El drama",
         "original_title": "The Drama",
         "release_date": "2026-04-16",
-        "vote_average": 7,
+        "vote_average": 7.004,
         "in_cinebret": true,
         "pelicula_id": "193027f8-68da-4987-87df-cdf5676258d1",
         "has_review": false,
@@ -2702,7 +2737,7 @@
         "title": "La momia de Lee Cronin",
         "original_title": "Lee Cronin's The Mummy",
         "release_date": "2026-04-16",
-        "vote_average": 6.753,
+        "vote_average": 6.8,
         "in_cinebret": true,
         "pelicula_id": "6c5c94b7-78b0-42fc-86d4-f22e5db097cd",
         "has_review": false,
@@ -3369,6 +3404,12 @@
         "nota_imdb": 8.2
       },
       {
+        "pelicula_id": "d9faded1-de1e-4971-8a33-396471941a2f",
+        "titulo": "A Beautiful Mind",
+        "anio": 2001,
+        "nota_imdb": 8.2
+      },
+      {
         "pelicula_id": "bc68e184-8f74-47f5-b622-4de1f8336af4",
         "titulo": "Catch Me If You Can",
         "anio": 2002,
@@ -3393,6 +3434,12 @@
         "nota_imdb": 8.1
       },
       {
+        "pelicula_id": "33922c44-9095-47ed-b128-e8871d3f5260",
+        "titulo": "True Grit",
+        "anio": 2010,
+        "nota_imdb": 8
+      },
+      {
         "pelicula_id": "b47650bd-76b1-4346-ac6d-31147151ff97",
         "titulo": "The Untouchables",
         "anio": 1987,
@@ -3408,18 +3455,6 @@
         "pelicula_id": "39935109-21f3-475e-aab3-87ed36ab843a",
         "titulo": "Operaciones Especiales: Lioness",
         "anio": null,
-        "nota_imdb": 7.8
-      },
-      {
-        "pelicula_id": "fd4399a8-2854-4308-afe1-46f2a0e5666d",
-        "titulo": "Thirteen Lives",
-        "anio": 2022,
-        "nota_imdb": 7.8
-      },
-      {
-        "pelicula_id": "146491b3-50f6-48dc-b6cf-243a3f9589a6",
-        "titulo": "Cast Away",
-        "anio": 2000,
         "nota_imdb": 7.8
       }
     ]

@@ -1,120 +1,39 @@
 {
-  "generated_at": "2026-05-07T12:27:29.673Z",
+  "generated_at": "2026-05-07T21:56:26.719Z",
   "cycle": "am",
   "passes_quality_gate": true,
-  "top_count": 1,
-  "backlog_count": 8,
-  "news_count": 4,
+  "top_count": 5,
+  "backlog_count": 7,
+  "news_count": 1,
+  "ig_mix": {
+    "last6_counts": {
+      "review": 3,
+      "contenido": 1,
+      "top": 2
+    },
+    "target": {
+      "review": 3,
+      "contenido": 1,
+      "top": 2
+    },
+    "deficits": {
+      "review": 0,
+      "contenido": 0,
+      "top": 0
+    }
+  },
   "top": [
     {
-      "type": "FEED",
-      "priority": "alta",
-      "action": "react_to_news",
-      "title": "Noticia: Avatar",
-      "reasoning": "The Wrap (10h): \"James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character De\". Match catálogo: Avatar (rating 8).",
-      "suggested_caption": null,
-      "source_name": "The Wrap",
-      "source_url": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
-      "score": 86.8968795,
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
-        "angle": "mention",
-        "headline": "James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design"
-      }
-    }
-  ],
-  "backlog": [
-    {
-      "id": "86cd64c42c4ddc8b",
-      "action": "generate_review",
-      "title": "Review: Fight Club (1999)",
-      "type": "FEED",
-      "priority": "alta",
-      "score": 130,
-      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "suggested_caption": null,
-      "source_name": "pending_review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
-      },
-      "first_proposed": "2026-05-06T12:25:45.639Z",
-      "last_proposed": "2026-05-06T12:25:45.639Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
-    },
-    {
-      "id": "642db2ce3ffde83d",
-      "action": "generate_review",
-      "title": "Review: 올드보이 (2003)",
-      "type": "FEED",
-      "priority": "alta",
-      "score": 129,
-      "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "suggested_caption": null,
-      "source_name": "pending_review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "올드보이",
-        "anio": 2003,
-        "pelicula_id": "33b36b2f-7cab-40be-a753-7c6fbdfcd957"
-      },
-      "first_proposed": "2026-05-06T12:25:45.639Z",
-      "last_proposed": "2026-05-06T12:25:45.639Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
-    },
-    {
-      "id": "187fb6524acc92b1",
-      "action": "react_to_news",
-      "title": "Tributo: Brooklyn",
-      "type": "FEED",
-      "priority": "alta",
-      "score": 117,
-      "reasoning": "Variety (2h): \"Audrey Beth Davis, Longtime Entertainment Publicist, Dies at 82\". Peli en tu catálogo: Brooklyn.",
-      "suggested_caption": null,
-      "source_name": "Variety",
-      "source_url": "https://variety.com/2026/tv/news/audrey-beth-davis-dead-entertainment-publicist-1236738401/",
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://variety.com/2026/tv/news/audrey-beth-davis-dead-entertainment-publicist-1236738401/",
-        "angle": "obituary",
-        "headline": "Audrey Beth Davis, Longtime Entertainment Publicist, Dies at 82",
-        "cinebret_match": {
-          "pelicula_id": "667a524e-c16a-4daf-9cbb-c68818d4d7fd",
-          "titulo": "Brooklyn",
-          "anio": 2015
-        }
-      },
-      "first_proposed": "2026-05-05T21:01:49.643Z",
-      "last_proposed": "2026-05-05T21:01:49.643Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
-    },
-    {
       "id": "f39545c3a701989b",
-      "action": "generate_review",
-      "title": "Review: 기생충 (2019)",
       "type": "FEED",
       "priority": "alta",
-      "score": 117,
-      "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "suggested_caption": null,
-      "source_name": "pending_review",
+      "action": "generate_review",
+      "title": "Review: Parásitos (2019) — Bong Joon-ho",
+      "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
+      "score": 97,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
@@ -122,237 +41,178 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-06T12:25:45.639Z",
-      "last_proposed": "2026-05-06T12:25:45.639Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+      "critic_reason": "§4.5 backlog reevaluado: Parásitos sigue válido — rating 10, sello bret, Bong Joon-ho, IMDb 8.5, Netflix activo; continuidad temática con TOP coreanas."
     },
     {
-      "id": "0a3f68a79039f11e",
-      "action": "share_trailer_in_story",
-      "title": "Trailer: Third Star",
-      "type": "STORY",
+      "id": "119c0775fc431172",
+      "type": "FEED",
       "priority": "alta",
-      "score": 104,
-      "reasoning": "Netflix subió trailer hace 4h. La peli ya está en tu catálogo.",
-      "suggested_caption": "Trailer de \"Third Star\" 🎬\n[tu reacción aquí]",
-      "source_name": "Netflix",
-      "source_url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
-      "skill_to_invoke": "cinebret-share-story",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "url": "https://www.youtube.com/watch?v=EzOpCMbRP-s",
-        "angle": "hype",
-        "cinebret_match": {
-          "pelicula_id": "9d3c8ca7-690a-47ac-ad09-047de935a822",
-          "titulo": "Third Star",
-          "anio": 2010
-        }
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "first_proposed": "2026-05-05T18:43:10.136Z",
-      "last_proposed": "2026-05-05T18:43:10.136Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "critic_reason": "§4.5 review válida: El Retorno del Rey, rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; sin review previo en historial."
+    },
+    {
+      "id": "057ed8a4300465a7",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: Inglourious Basterds (2009) — Tarantino",
+      "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
+      "score": 95,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
+      },
+      "critic_reason": "§4.5 review válida: Inglourious Basterds, rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; sin review previo en historial."
+    },
+    {
+      "id": "15fd5d7f3894a573",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 ciencia ficción cerebral",
+      "reasoning": "Sci-fi cerebral es el género con rating promedio más alto en tu catálogo; tema sin post reciente.",
+      "score": 85,
+      "category": "top",
+      "angle": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "genre",
+        "topic": "sci-fi cerebral"
+      },
+      "critic_reason": "§3 mix editorial: déficits en 0, siguiente slot en patrón es TOP; sci-fi cerebral es Tier 1 del perfil de Alberto y no hay post reciente de ese tema."
+    },
+    {
+      "id": "fe5875c8c649d23e",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas japonesas",
+      "reasoning": "Miyazaki tiene 4 sello bret y Japón complementa el TOP coreanas del 30 de abril.",
+      "score": 80,
+      "category": "top",
+      "angle": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "japón"
+      },
+      "critic_reason": "§3 mix: propuesta TOP válida; japonesas complementa el TOP coreanas reciente y Miyazaki tiene 4 sello bret."
+    }
+  ],
+  "backlog": [
+    {
+      "id": "86cd64c42c4ddc8b",
+      "type": "FEED",
+      "title": "Review: Fight Club (1999)",
+      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "642db2ce3ffde83d",
+      "type": "FEED",
+      "title": "Review: 올드보이 (2003)",
+      "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "f39545c3a701989b",
+      "type": "FEED",
+      "title": "Review: 기생충 (2019)",
+      "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
     },
     {
       "id": "c85dd7a4b3652474",
-      "action": "share_trailer_in_story",
-      "title": "Trailer: Christopher Nolan",
       "type": "STORY",
-      "priority": "alta",
-      "score": 104,
+      "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "suggested_caption": null,
-      "source_name": "IndieWire",
-      "source_url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
-      "skill_to_invoke": "cinebret-share-story",
-      "skill_args": {
-        "url": "https://www.indiewire.com/news/trailers/the-odyssey-second-trailer-1235192386/",
-        "angle": "trailer-drop",
-        "headline": "New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some New Armor)",
-        "cinebret_match": null
-      },
-      "first_proposed": "2026-05-05T18:43:10.136Z",
-      "last_proposed": "2026-05-05T18:43:10.136Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "days_ago": 2,
+      "skill_to_invoke": "cinebret-share-story"
     },
     {
-      "id": "dbc30e07255e374c",
-      "action": "react_to_news",
-      "title": "Tributo: Newport Beach TV Fest",
+      "id": "c98f2cae36b16b75",
       "type": "FEED",
-      "priority": "alta",
-      "score": 102,
-      "reasoning": "Hollywood Reporter (2h): \"Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Aw\".",
-      "suggested_caption": null,
-      "source_name": "Hollywood Reporter",
-      "source_url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://www.hollywoodreporter.com/tv/tv-news/seth-macfarlane-award-live-podcast-newport-beach-tv-fest-1236586093/",
-        "angle": "obituary",
-        "headline": "Newport Beach TV Fest: Seth MacFarlane Set for Maverick Award, Live Episode of THR&#8217;s &#8216;Awards Chatter&#8217; Pod",
-        "cinebret_match": null
-      },
-      "first_proposed": "2026-05-05T18:43:10.136Z",
-      "last_proposed": "2026-05-05T18:43:10.136Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "title": "Noticia: Terminator",
+      "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-list-from-news"
     },
     {
-      "id": "e497ef53421922b3",
-      "action": "react_to_news",
-      "title": "Secuela: El hundimiento",
+      "id": "fecc4d46aebb463c",
       "type": "FEED",
-      "priority": "alta",
-      "score": 92.5,
-      "reasoning": "Deadline (1h): \"Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait \". Peli en tu catálogo: El hundimiento.",
-      "suggested_caption": null,
-      "source_name": "Deadline",
-      "source_url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://deadline.com/2026/05/rory-kennedy-boeing-doc-sequel-premiere-date-1236881827/",
-        "angle": "sequel-news",
-        "headline": "Rory Kennedy&#8217;s Boeing Doc Sequel Gets Netflix Takeoff Date: &#8220;Deeply Concerning Portrait Told From The Inside&#8221;",
-        "cinebret_match": {
-          "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
-          "titulo": "El hundimiento",
-          "anio": 2004
-        }
-      },
-      "first_proposed": "2026-05-05T18:43:10.136Z",
-      "last_proposed": "2026-05-05T18:43:10.136Z",
-      "cycles_proposed": 1,
-      "status": "backlog",
-      "accepted_at": null,
-      "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "title": "TOP 10 películas francesas",
+      "reasoning": "Tema con tracción (66 pts: news + estacional + sin posts recientes).",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-carousel-topic"
+    },
+    {
+      "id": "787cebed76170ab8",
+      "type": "FEED",
+      "title": "TOP 10 películas británicas",
+      "reasoning": "Tema con tracción: 80 pts (news + estacional + sin posts recientes).",
+      "days_ago": 2,
+      "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "source": "The Wrap",
-      "title": "James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design",
-      "link": "https://www.thewrap.com/industry-news/public-policy-legal/james-cameron-disney-sued-use-actress-likeness-avatar-character-design/",
-      "description": "Q’orianka Kilcher says the director used a photograph of her as the basis for the Na’vi character Neytiri The post James Cameron, Disney Sued Over Alleged Use of Indigenous Actress’ Likeness in ‘Avatar’ Character Design appeared first on TheWrap .",
-      "published": "Thu, 07 May 2026 02:07:30 +0000",
-      "published_iso": "2026-05-07T02:07:30.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry",
-      "_score": 60.86249822222222,
-      "_catalog": {
-        "pelicula_id": "53ab49ee-6397-4641-ba50-e60139523cec",
-        "titulo": "Avatar",
-        "titulo_ingles": "Avatar",
-        "anio": 2009,
-        "nota_imdb": 7.9,
-        "director": "James Cameron",
-        "rating": 8,
-        "sello": true,
-        "tier": 2
+      "title_es": "Todos los hombres del presidente cumple 50 años",
+      "summary_es": "El thriller político de Redford y Hoffman cumple medio siglo; hay debate sobre remake actualizado.",
+      "source": "r/movies",
+      "age_hours": 1,
+      "url": "https://www.reddit.com/r/movies/comments/1t6niol/all_the_presidents_men_turns_50_years_old_half_a/",
+      "angle": "anniversary",
+      "catalog_match": {
+        "pelicula_id": "2b5b3e1a-b044-4845-a8c3-4ac1854c3cf8",
+        "titulo": "Todos los hombres del presidente",
+        "anio": 1976
       },
-      "_director": "James Cameron"
-    },
-    {
-      "source": "The Wrap",
-      "title": "AI-Generated Spencer Pratt Ad Sees Gavin Newsom Eat Cake and Competitor Karen Bass as The Joker &#124; Video",
-      "link": "https://www.thewrap.com/media-platforms/politics/ai-generated-spencer-pratt-ad-video/",
-      "description": "The Pratt campaign maintains they did not commission the Batman-inspired ad, but \"The Hills\" star and mayoral candidate retweeted it The post AI-Generated Spencer Pratt Ad Sees Gavin Newsom Eat Cake and Competitor Karen Bass as The Joker | Video appeared first on TheWrap .",
-      "published": "Wed, 06 May 2026 23:50:38 +0000",
-      "published_iso": "2026-05-06T23:50:38.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry",
-      "_score": 49.95005311111111,
-      "_catalog": {
-        "pelicula_id": "a92a5785-0f7e-4353-a0a8-eb15aff0f745",
-        "titulo": "The Batman",
-        "titulo_ingles": "The Batman",
-        "anio": 2022,
-        "nota_imdb": 7.8,
-        "director": "Matt Reeves",
-        "rating": 9,
-        "sello": true,
-        "tier": 0
-      }
-    },
-    {
-      "source": "r/movies",
-      "title": "Ten years later, the cult of ‘The Nice Guys’ keeps growing",
-      "link": "https://www.reddit.com/r/movies/comments/1t5rj1f/ten_years_later_the_cult_of_the_nice_guys_keeps/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t5rj1f/ten_years_later_the_cult_of_the_nice_guys_keeps/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/SKuPNzQq-AKX5bCxjbAd1S1GpxkKC4tHFQvQz_gg9s8.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c4a261031d3d7833a6952282592d187616b637b0&quot; alt=&quot;Ten years later, the cult of ‘The Nice Guys’ keeps growing&quot; title=&quot;Ten years later, the cult of ‘The Nice Guys’ keeps growing&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&",
-      "published": "2026-05-06T22:06:45+00:00",
-      "published_iso": "2026-05-06T22:06:45.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "_score": 44.257497,
-      "_catalog": {
-        "pelicula_id": "ad96fd5f-d3a8-4e9f-8134-c492c179c10b",
-        "titulo": "Dos buenos tipos",
-        "titulo_ingles": "The Nice Guys",
-        "anio": 2016,
-        "nota_imdb": 7.4,
-        "director": "Shane Black",
-        "rating": 9,
-        "sello": true,
-        "tier": 0
-      }
-    },
-    {
-      "source": "r/movies",
-      "title": "'A Quiet Place: Part III' Begins Filming Next Week",
-      "link": "https://www.reddit.com/r/movies/comments/1t5g2n0/a_quiet_place_part_iii_begins_filming_next_week/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1t5g2n0/a_quiet_place_part_iii_begins_filming_next_week/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/azYBT_eruMOWiR69UVH42N310RL4QlCHCxLbNjf0YvE.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=aef4b5dabfa6e43263870d25e805a4c757e51f18&quot; alt=&quot;'A Quiet Place: Part III' Begins Filming Next Week&quot; title=&quot;'A Quiet Place: Part III' Begins Filming Next Week&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www",
-      "published": "2026-05-06T15:22:45+00:00",
-      "published_iso": "2026-05-06T15:22:45.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "d5a05f53-2786-4b48-82db-204a86775f4a",
-          "titulo": "Un lugar tranquilo",
-          "anio": 2018
-        }
-      ],
-      "_score": 31.56416133333333,
-      "_catalog": {
-        "pelicula_id": "d5a05f53-2786-4b48-82db-204a86775f4a",
-        "titulo": "Un lugar tranquilo",
-        "titulo_ingles": "A Quiet Place",
-        "anio": 2018,
-        "nota_imdb": 7.5,
-        "director": "John Krasinski",
-        "rating": 8,
-        "sello": true,
-        "tier": 0
-      }
+      "score": 62,
+      "reason": "§4.4 regla 3: 'Todos los hombres del presidente' cumple aniversario 50 y está en catálogo, pero rating < 7 no confirmado y ángulo es informativo/cultural sin match de calidad sólido; va a bloque noticias."
     }
   ],
   "raw_signal_counts": {
     "news_items": 118,
-    "newsapi_items": 93,
+    "newsapi_items": 89,
     "reddit_posts": 0,
-    "trailers": 61
+    "trailers": 62
   },
   "reconciliation_stats": {
-    "accepted": 0,
-    "becameBacklog": 1,
-    "expired": 0
+    "acceptedCount": 0,
+    "agedCount": 1,
+    "expiredByTime": 0,
+    "expiredByCritic": 10
+  },
+  "critic_usage": {
+    "cache_read": 0,
+    "cache_write": 8922,
+    "input": 15321,
+    "output": 10872
   }
 }

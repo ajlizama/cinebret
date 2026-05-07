@@ -25,10 +25,12 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "became_backlog_at": "2026-05-05T21:01:49.643Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§5.2 garbage collection: 'Third Star' no tiene suficiente información para confirmar match al catálogo; sin descripción del director ni calidad verificable."
     },
     {
       "id": "c85dd7a4b3652474",
@@ -77,10 +79,12 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "became_backlog_at": "2026-05-05T21:01:49.643Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.1 hard discard: 'tv fest' / 'maverick award'; Newport Beach TV Fest y Seth MacFarlane son premios TV explícitamente en la tabla de hard discards."
     },
     {
       "id": "e497ef53421922b3",
@@ -107,10 +111,12 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "became_backlog_at": "2026-05-05T21:01:49.643Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.1 hard discard: 'boeing' / documental sobre Boeing; el match a 'El hundimiento' es falso positivo por nombre."
     },
     {
       "id": "fde1de630dbe82a7",
@@ -130,10 +136,12 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "became_backlog_at": "2026-05-05T21:01:49.643Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§8 anti-pattern 1: preview de festival sin estar en curso (Cannes a más de 7 días en el momento de la propuesta original; age_days=2 y el festival aún no ha comenzado)."
     },
     {
       "id": "187fb6524acc92b1",
@@ -160,10 +168,12 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+      "became_backlog_at": "2026-05-06T12:25:45.639Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.2 falso positivo: 'Brooklyn' como ciudad en contexto de necrológica de una publicista; §8 anti-pattern 3 (nombre de catálogo coincide con palabra común)."
     },
     {
       "id": "6c19f56da2918b13",
@@ -190,10 +200,12 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+      "became_backlog_at": "2026-05-06T12:25:45.639Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.2 falso positivo: 'Brooklyn Film Festival' usa 'Brooklyn' como nombre de ciudad/festival, no como referencia a la película del catálogo; §8 anti-pattern 3."
     },
     {
       "id": "d8158db1ef519dd7",
@@ -215,10 +227,12 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+      "became_backlog_at": "2026-05-06T12:25:45.639Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.4 regla 1: 'The Boroughs' no tiene match al catálogo ni director match verificable; sin descripción que permita evaluar calidad."
     },
     {
       "id": "f5ddb5a509a5e9c3",
@@ -240,10 +254,12 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+      "became_backlog_at": "2026-05-06T12:25:45.639Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.4 regla 1: 'Kyle Larson vs. The Double' parece documental deportivo de automovilismo sin match al catálogo de calidad ni director match."
     },
     {
       "id": "787cebed76170ab8",
@@ -413,10 +429,12 @@
       "first_proposed": "2026-05-06T21:09:49.676Z",
       "last_proposed": "2026-05-06T21:09:49.676Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-07T12:27:29.673Z"
+      "became_backlog_at": "2026-05-07T12:27:29.673Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.2 falso positivo: el match a 'Iron Man' es completamente incidental; la noticia es sobre un thriller de espías de Apple TV llamado 'Disavowed' sin ninguna conexión real con Iron Man."
     },
     {
       "id": "2fb4936011e45cd5",
@@ -438,10 +456,131 @@
       "first_proposed": "2026-05-07T12:27:29.673Z",
       "last_proposed": "2026-05-07T12:27:29.673Z",
       "cycles_proposed": 1,
+      "status": "expired",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-07T21:56:26.719Z",
+      "expired_at": "2026-05-07T21:56:26.719Z",
+      "expired_reason": "§4.1 hard discard: 'lawsuit' / 'sued'; demanda legal explícita contra Cameron y Disney sobre Avatar; patrón en tabla de hard discards."
+    },
+    {
+      "id": "43d3869a8b1ce657",
+      "action": "generate_review",
+      "title": "Review: Parásitos (2019) — Bong Joon-ho",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "기생충",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-07T21:56:26.719Z",
+      "last_proposed": "2026-05-07T21:56:26.719Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "ee7db1141ee271a2",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 96,
+      "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "first_proposed": "2026-05-07T21:56:26.719Z",
+      "last_proposed": "2026-05-07T21:56:26.719Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "be95948db0c5563b",
+      "action": "generate_review",
+      "title": "Review: Inglourious Basterds (2009) — Tarantino",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 95,
+      "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
+      },
+      "first_proposed": "2026-05-07T21:56:26.719Z",
+      "last_proposed": "2026-05-07T21:56:26.719Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "78c8d7cf66585306",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 ciencia ficción cerebral",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Sci-fi cerebral es el género con rating promedio más alto en tu catálogo; tema sin post reciente.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "genre",
+        "topic": "sci-fi cerebral"
+      },
+      "first_proposed": "2026-05-07T21:56:26.719Z",
+      "last_proposed": "2026-05-07T21:56:26.719Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "fe5875c8c649d23e",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas japonesas",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "Miyazaki tiene 4 sello bret y Japón complementa el TOP coreanas del 30 de abril.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "japón"
+      },
+      "first_proposed": "2026-05-07T21:56:26.719Z",
+      "last_proposed": "2026-05-07T21:56:26.719Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-07T12:28:07.493Z"
+  "last_saved": "2026-05-07T21:59:57.645Z"
 }

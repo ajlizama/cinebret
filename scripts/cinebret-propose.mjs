@@ -1,19 +1,14 @@
-// CineBret Propose — generates the daily content proposals.
+// CineBret Propose — orchestrator. Generates candidates, asks the critic
+// (cinebret-critic.mjs) for verdicts, then assembles top + backlog + news per
+// AGENT-RULES.md §3 (3-1-2 cycle).
 //
-// SOURCE OF TRUTH: .wiki/reviews/AGENT-STRATEGY.md (mix, filters, discard rules)
-// Don't change this without re-reading that document.
-//
-// Mix per cycle (reflects Alberto's real publishing distribution):
-//   3 × REVIEW       — rating-10 movies with platform, no review yet
-//   1 × LISTA/TOP    — topic from weighted pool
-//   1 × REACTIVA     — only if there's a strong signal
-//                      (trailer/news for olimpo director or rating-9+ catalog film)
-//
-// What we never propose:
-//   - News about TV series, reality TV, TV festivals, Boeing docs
-//   - Catalog matches against rating-<8 movies or movies without sello_bret
-//   - Trailers from non-tier-1 channels
-//   - Festival previews unless the festival itself is happening
+// Single source of decision: cinebret-critic.mjs. This file does NOT filter on
+// its own (no regex hardcoded rules). It only:
+//   1. gathers raw candidates from sources
+//   2. computes the deficit (3 reviews / 1 contenido / 2 TOPs over last 6 IG posts)
+//   3. batches them to the critic
+//   4. assembles 5 propuestas + news block + backlog using the verdicts
+//   5. runs retroactive GC on history (re-evaluates backlog with current rules)
 //
 // Output: .wiki/sources/proposals-latest.json
 // Usage: node scripts/cinebret-propose.mjs [--cycle=am|pm]
@@ -22,9 +17,10 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import {
-  loadHistory, saveHistory, reconcileHistory, shouldSuppress,
-  recordProposal, getBacklog, gcHistory, normalizeForMatch,
+  loadHistory, saveHistory, recordProposal,
+  gcHistory, normalizeForMatch, proposalId,
 } from './cinebret-history.mjs'
+import { evaluateItems, indexVerdicts } from './cinebret-critic.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -46,39 +42,6 @@ const SUPA_KEY = process.env.SUPABASE_SECRET_KEY
 const ADMIN_USER_ID = 'b5eafe05-9ec8-4b23-b0b4-137148ecbac2'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Taste profile (from .wiki/reviews/taste-profile.md)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Olimpo: directors with multiple sello bret + reviews + rating-10s. Highest weight.
-const OLIMPO = [
-  'Christopher Nolan', 'Martin Scorsese', 'Denis Villeneuve', 'Quentin Tarantino',
-  'Steven Spielberg', 'David Fincher',
-]
-// Highly respected: multiple sello bret. High weight.
-const HIGHLY_RESPECTED = [
-  'Ridley Scott', 'Peter Jackson', 'James Cameron', 'Clint Eastwood', 'Danny Boyle',
-  'Guy Ritchie',
-]
-// Auteurs admired (multiple rating-10s in their filmography or single review)
-const ADMIRED_AUTEURS = [
-  'Bong Joon-ho', 'Park Chan-wook', 'Hayao Miyazaki', 'Damien Chazelle',
-  'Martin McDonagh', 'Darren Aronofsky', 'Edgar Wright', 'Wes Anderson',
-  'Ben Affleck', 'Mel Gibson', 'Sam Mendes', 'Greta Gerwig', 'Ari Aster',
-  'Robert Eggers', 'Yorgos Lanthimos', 'Josh Safdie', 'Edward Berger', 'Sean Baker',
-]
-
-const ALL_FAVORITE_DIRECTORS = [...OLIMPO, ...HIGHLY_RESPECTED, ...ADMIRED_AUTEURS]
-
-function directorTier(name) {
-  if (!name) return 0
-  const lc = name.toLowerCase()
-  if (OLIMPO.some(d => lc.includes(d.toLowerCase()))) return 3
-  if (HIGHLY_RESPECTED.some(d => lc.includes(d.toLowerCase()))) return 2
-  if (ADMIRED_AUTEURS.some(d => lc.includes(d.toLowerCase()))) return 1
-  return 0
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Source loading
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -87,7 +50,6 @@ function read(path) {
 }
 
 const sources = {
-  proposal: read(join(ROOT, '.wiki/sources/strategist-proposal-latest.json')),
   news:     read(join(ROOT, '.wiki/sources/news-feed-latest.json')),
   reddit:   read(join(ROOT, '.wiki/sources/reddit-pulse-latest.json')),
   newsapi:  read(join(ROOT, '.wiki/sources/newsapi-latest.json')),
@@ -98,62 +60,87 @@ const sources = {
 console.log(`💡 CineBret Propose [${CYCLE.toUpperCase()}] — ${NOW_ISO}\n`)
 
 // ─────────────────────────────────────────────────────────────────────────────
-// History reconciliation
+// IG context — last posts + classify into review|contenido|top|otro
+// (per AGENT-RULES.md §3 — used to compute the 3-1-2 deficit)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function classifyPost(caption) {
+  const c = (caption || '')
+  if (c.match(/^\W*[^(]+\(\d{4}\)/m) && c.includes('🎬 Director')) return 'review'
+  if (c.match(/TOP\s*\d+/i) || c.match(/TOP de \d+/i) || c.match(/^\W*Ranking/im)) return 'top'
+  if (c.match(/\d+ pel.+ula.+ para/i) || c.match(/^\d+ películas? para/im)) return 'top'
+  // Anything else that looks like editorial / news / promo / oscars / connections / anniversaries
+  return 'contenido'
+}
+
+const allPosts = (sources.ig?.posts || []).slice().sort((a, b) =>
+  new Date(b.timestamp) - new Date(a.timestamp))
+const last6 = allPosts.slice(0, 6).map(p => ({
+  date: p.timestamp.slice(0, 10),
+  type: classifyPost(p.caption),
+  title: (p.caption || '').split('\n')[0].slice(0, 80),
+}))
+const counts = { review: 0, contenido: 0, top: 0 }
+for (const p of last6) counts[p.type] = (counts[p.type] || 0) + 1
+const target = { review: 3, contenido: 1, top: 2 }
+const deficits = {
+  review: Math.max(0, target.review - counts.review),
+  contenido: Math.max(0, target.contenido - counts.contenido),
+  top: Math.max(0, target.top - counts.top),
+}
+
+console.log(`📊 Mix de los últimos 6 posts:`)
+console.log(`   review=${counts.review}/3   contenido=${counts.contenido}/1   top=${counts.top}/2`)
+console.log(`   déficit: review=${deficits.review}, contenido=${deficits.contenido}, top=${deficits.top}\n`)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// History reconciliation: detect IG-accepted, age fresh→backlog, expire >14d
 // ─────────────────────────────────────────────────────────────────────────────
 
 const history = loadHistory(HISTORY_PATH)
 const RECENT_IG_DAYS = 45
-const recentIgPosts = (sources.ig?.posts || []).filter(p => {
-  return new Date(p.timestamp).getTime() >= Date.now() - RECENT_IG_DAYS * 86400 * 1000
-})
+const recentPosts = allPosts.filter(p =>
+  new Date(p.timestamp).getTime() >= Date.now() - RECENT_IG_DAYS * 86400 * 1000)
 
-const reconStats = reconcileHistory(history, recentIgPosts, NOW_ISO)
-gcHistory(history, NOW_ISO)
-console.log(`📋 History: ${history.proposals.length} entries · ${reconStats.accepted} accepted, ${reconStats.becameBacklog} → backlog, ${reconStats.expired} expired\n`)
-
-// Used for IG-recency dedup at proposal generation
-const recentIgNorm = recentIgPosts.map(p => normalizeForMatch((p.caption || '').split('\n')[0]))
+const recentTitlesNorm = recentPosts.map(p =>
+  normalizeForMatch((p.caption || '').split('\n')[0]))
 function alreadyPostedRecently(title) {
   const norm = normalizeForMatch(title)
   if (!norm) return false
-  return recentIgNorm.some(ig => ig === norm || ig.includes(norm) || norm.includes(ig))
+  return recentTitlesNorm.some(rt => rt === norm || rt.includes(norm) || norm.includes(rt))
 }
 
-// Build a list of dominant themes from recent IG (last 14 days only).
-// Used to boost reviews that thematically continue the latest editorial line.
-const recentThemes = (() => {
-  const last14 = (sources.ig?.posts || []).filter(p => {
-    return new Date(p.timestamp).getTime() >= Date.now() - 14 * 86400 * 1000
-  })
-  const blob = last14.map(p => (p.caption || '').toLowerCase()).join(' ')
-  return {
-    blob,
-    has(...keywords) { return keywords.some(k => blob.includes(k.toLowerCase())) },
-    countDirectors() {
-      return ALL_FAVORITE_DIRECTORS.filter(d => blob.includes(d.toLowerCase()))
+let acceptedCount = 0, agedCount = 0, expiredByTime = 0
+for (const p of history.proposals) {
+  if (p.status === 'accepted' || p.status === 'expired') continue
+  if (alreadyPostedRecently(p.title)) {
+    p.status = 'accepted'
+    p.accepted_at = NOW_ISO
+    acceptedCount++
+    continue
+  }
+  if (p.status === 'fresh' && p.last_proposed && p.last_proposed !== NOW_ISO) {
+    p.status = 'backlog'
+    p.became_backlog_at = NOW_ISO
+    agedCount++
+  }
+  if (p.status === 'backlog') {
+    const days = (Date.now() - new Date(p.first_proposed).getTime()) / 86400000
+    if (days > 14) {
+      p.status = 'expired'
+      p.expired_at = NOW_ISO
+      expiredByTime++
     }
   }
-})()
-const recentDirectors = recentThemes.countDirectors()
-console.log(`📅 Last 14d IG: directors mentioned = [${recentDirectors.join(', ') || '—'}]\n`)
-
-// IG-reviewed titles (for review-candidate filtering — same logic as detect.mjs)
-const igReviewedTitles = new Set()
-for (const post of (sources.ig?.posts || [])) {
-  const cap = post.caption || ''
-  const m = cap.match(/^\s*([^\n(]+?)\s*\((\d{4})\)/m)
-  if (m && cap.includes('🎬 Director')) {
-    igReviewedTitles.add(`${m[1].trim().toLowerCase()}|${m[2]}`)
-  }
 }
+gcHistory(history, NOW_ISO)
+console.log(`📋 History: ${history.proposals.length} entries (accepted=${acceptedCount}, aged=${agedCount}, expired_by_time=${expiredByTime})\n`)
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Catalog: load and build a HIGH-QUALITY index for cross-reference
-// (only rating ≥ 7 OR sello_bret — these are the films we'd actually post about)
+// Catalog (used for proposal generation, not for filtering)
 // ─────────────────────────────────────────────────────────────────────────────
 
 console.log('Loading catalog...')
-
 async function supaFetchAll(table, query) {
   const out = []
   let offset = 0
@@ -173,11 +160,10 @@ async function supaFetchAll(table, query) {
 
 const [allMovies, enriqs, catalogos, userPelis] = await Promise.all([
   supaFetchAll('peliculas', '?select=id,titulo,titulo_ingles,anio,nota_imdb'),
-  supaFetchAll('enriquecimiento', '?select=pelicula_id,review_autor,sello_bret,director,generos,actores'),
+  supaFetchAll('enriquecimiento', '?select=pelicula_id,review_autor,sello_bret,director,generos'),
   supaFetchAll('catalogos', '?select=pelicula_id,plataforma&activo=eq.true'),
   supaFetchAll('user_peliculas', `?select=pelicula_id,rating&user_id=eq.${ADMIN_USER_ID}`),
 ])
-
 const enrMap = Object.fromEntries(enriqs.map(e => [e.pelicula_id, e]))
 const userMap = Object.fromEntries(userPelis.map(u => [u.pelicula_id, u]))
 const catMap = {}
@@ -185,107 +171,27 @@ for (const c of catalogos) {
   if (!catMap[c.pelicula_id]) catMap[c.pelicula_id] = []
   catMap[c.pelicula_id].push(c.plataforma)
 }
+console.log(`  ${allMovies.length} movies\n`)
 
-// Index of HIGH-QUALITY films only (used for cross-reference in news/trailers).
-// Heuristic: rating ≥ 7 OR sello_bret OR director_olimpo. Anything else
-// could match a news item but the resulting proposal wouldn't pass our taste.
-const qualityIndex = {} // normTitle → {peli, rating, sello, director}
-for (const p of allMovies) {
-  const e = enrMap[p.id]
-  const u = userMap[p.id]
-  const rating = u?.rating || 0
-  const sello = !!e?.sello_bret
-  const tier = directorTier(e?.director || '')
-  const isQuality = rating >= 7 || sello || tier >= 2
-  if (!isQuality) continue
-  for (const t of [p.titulo_ingles, p.titulo]) {
-    if (!t) continue
-    const key = t.toLowerCase().replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim()
-    if (key.length < 6) continue
-    if (!qualityIndex[key]) {
-      qualityIndex[key] = {
-        pelicula_id: p.id,
-        titulo: p.titulo,
-        titulo_ingles: p.titulo_ingles,
-        anio: p.anio,
-        nota_imdb: p.nota_imdb,
-        director: e?.director,
-        rating, sello, tier,
-      }
-    }
+// IG-already-reviewed (skip these in review candidate pool)
+const igReviewed = new Set()
+for (const p of allPosts) {
+  const cap = p.caption || ''
+  const m = cap.match(/^\s*([^\n(]+?)\s*\((\d{4})\)/m)
+  if (m && cap.includes('🎬 Director')) {
+    igReviewed.add(`${m[1].trim().toLowerCase()}|${m[2]}`)
   }
 }
-console.log(`  catalog: ${allMovies.length} movies, ${Object.keys(qualityIndex).length} quality-indexed (≥7 OR sello OR olimpo dir)\n`)
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Catalog match — strict: requires word boundaries + year/director context for
-// short or generic titles, to avoid false positives like
-// "her decision to leave..." matching the movie "Decision to Leave".
-// ─────────────────────────────────────────────────────────────────────────────
-
-const COMMON_TITLE_WORDS = new Set([
-  'decision', 'spotlight', 'following', 'her', 'soul', 'up', 'inside',
-  'doc', 'the', 'ride', 'down', 'bound', 'stalker', 'witness',
-])
-
-function isCommonShortTitle(titleKey) {
-  const words = titleKey.split(/\s+/).filter(Boolean)
-  if (words.length === 1) return true
-  if (words.length <= 2 && words.every(w => COMMON_TITLE_WORDS.has(w))) return true
-  return false
-}
-
-function findCatalogMatch(text) {
-  const haystackRaw = (text || '').toLowerCase()
-  const haystack = ' ' + haystackRaw.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ') + ' '
-  let best = null
-  for (const [key, peli] of Object.entries(qualityIndex)) {
-    if (!haystack.includes(' ' + key + ' ')) continue
-    // For ambiguous short titles, require year mention OR director mention
-    if (isCommonShortTitle(key)) {
-      const yearOk = peli.anio && new RegExp(`\\b${peli.anio}\\b`).test(haystackRaw)
-      const directorOk = peli.director && haystackRaw.includes(peli.director.toLowerCase())
-      // Also allow if title appears in original quotes (smart-quote style)
-      const quoted = new RegExp(`['"‘“]\\s*${escapeRegex(key)}\\s*['"’”]`, 'i')
-      const inQuotes = quoted.test(text || '')
-      if (!yearOk && !directorOk && !inQuotes) continue
-    }
-    if (!best || (peli.rating > (best.rating || 0))) best = peli
-  }
-  return best
-}
-
-function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// News pre-filter: drop noise we'd never use
-// ─────────────────────────────────────────────────────────────────────────────
-
-function isMovieRelevantNews(item) {
-  const text = ((item.title || '') + ' ' + (item.description || '')).toLowerCase()
-  // TV-only: drop unless cinema event
-  if (/\b(season \d+|episode \d+|s\d+ premiere|tv series|tv fest|television fest|streaming series)\b/.test(text)) return false
-  if (/\b(reality (show|tv)|game show|talk show|podcast)\b/.test(text)) return false
-  if (/\b(mormon wives|kardashians|love island|big brother)\b/.test(text)) return false
-  // Doc-only: drop unless it's about cinema/director-olimpo
-  if (/\b(boeing|stock market|crypto|nft|inflation)\b/.test(text)) return false
-  // Industry inside-baseball without movie context
-  if (/\b(maverick award|honorary award.*tv|exec.*joins)\b/.test(text)) return false
-  // Generic announcements that aren't film events
-  if (/\b(spring season|broadway season|public tv|public policy)\b/.test(text)) return false
-  return true
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// CANDIDATE GENERATORS — REVIEWS FIRST
+// Generate raw candidates (UNFILTERED — the critic decides)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const candidates = []
 
-// ── 1. REVIEW candidates (the backbone, 60% of feed)
-console.log('Generator: review candidates (rating 10, on platform, no review yet)...')
+// ── REVIEW candidates: rating-10, on platform, not in DB review_autor, not in IG
 {
-  const reviewCandidates = []
+  const cands = []
   for (const p of allMovies) {
     const e = enrMap[p.id]
     const u = userMap[p.id]
@@ -293,115 +199,62 @@ console.log('Generator: review candidates (rating 10, on platform, no review yet
     if (e?.review_autor) continue
     const titulo = p.titulo_ingles || p.titulo
     const titleKey = `${(titulo || '').trim().toLowerCase()}|${p.anio}`
-    if (igReviewedTitles.has(titleKey)) continue
+    if (igReviewed.has(titleKey)) continue
     const platforms = catMap[p.id] || []
     if (platforms.length === 0) continue
-    const tier = directorTier(e?.director || '')
-
-    // Score
-    let score = 90
-    if (tier === 3) score += 15      // Olimpo
-    else if (tier === 2) score += 10 // Highly respected
-    else if (tier === 1) score += 7  // Admired
-    if (e?.sello_bret) score += 5
-    if ((p.nota_imdb || 0) >= 8.5) score += 5
-    if ((p.anio || 0) >= 2024) score += 5
-
-    // Thematic continuity boost: if this film's director/genre matches recent IG themes
-    if (e?.director && recentDirectors.some(d => e.director.toLowerCase().includes(d.toLowerCase()))) {
-      score += 10 // we just talked about this director
-    }
-    // Korean continuity: if recent IG posted "coreanas" carousel, boost Park/Bong
-    if (recentThemes.has('coreana', 'corean', 'corea')) {
-      if (/park chan|bong joon/i.test(e?.director || '')) score += 12
-    }
-    // Plot twist continuity
-    if (recentThemes.has('plot twist', 'giro')) {
-      if (/Misterio|Mystery|Thriller/i.test((e?.generos || []).join(' '))) score += 5
-    }
-
-    reviewCandidates.push({
-      pelicula_id: p.id,
-      titulo, anio: p.anio, director: e?.director, generos: e?.generos,
-      sello_bret: !!e?.sello_bret, tier, platforms, nota_imdb: p.nota_imdb, score,
+    cands.push({
+      pelicula_id: p.id, titulo, anio: p.anio,
+      director: e?.director, generos: e?.generos,
+      sello_bret: !!e?.sello_bret, nota_imdb: p.nota_imdb,
+      platforms,
     })
   }
-  reviewCandidates.sort((a, b) => b.score - a.score)
-
-  // Diversity: max 1 per director, mix of decades
-  const seenDirectors = new Set()
-  const decades = new Set()
-  let picked = 0
-  for (const r of reviewCandidates) {
-    if (picked >= 3) break
-    const dirKey = (r.director || '').toLowerCase().split(',')[0].trim()
-    if (dirKey && seenDirectors.has(dirKey)) continue
-    const decade = r.anio ? Math.floor(r.anio / 10) * 10 : 0
-    if (decades.has(decade) && decades.size >= 1 && picked >= 2) continue // 3rd pick must be new decade
-    seenDirectors.add(dirKey)
-    decades.add(decade)
-    const platformStr = [...new Set(r.platforms.map(p => p.replace('_', ' ')))].slice(0, 3).join(', ')
-    const tierLabel = r.tier === 3 ? 'Olimpo' : r.tier === 2 ? 'directores muy respetados' : r.tier === 1 ? 'autor admirado' : null
-    const reasoning = [
-      `Tu rating 10`,
-      r.sello_bret ? '+ sello bret' : '',
-      `en ${platformStr}.`,
-      r.director ? `Dirigida por ${r.director.split(',')[0].trim()}${tierLabel ? ` (${tierLabel})` : ''}.` : '',
-      r.score >= 105 ? 'Continuidad temática con tu última semana.' : '',
-    ].filter(Boolean).join(' ')
+  // Sort: rating-10 + recent first, then by IMDb
+  cands.sort((a, b) => (b.anio || 0) - (a.anio || 0) || (b.nota_imdb || 0) - (a.nota_imdb || 0))
+  // Top-K (10) so the critic has options after suppression
+  for (const r of cands.slice(0, 10)) {
     candidates.push({
-      type: 'FEED',
-      priority: 'alta',
+      id: proposalId('generate_review', `Review: ${r.titulo} (${r.anio})`),
+      type: 'proposal',
       action: 'generate_review',
       title: `Review: ${r.titulo} (${r.anio})`,
-      reasoning,
-      suggested_caption: null,
-      source_name: 'pending_review',
-      score: r.score,
+      reasoning: `Rating 10 + ${r.sello_bret ? 'sello bret + ' : ''}plataforma activa (${r.platforms.slice(0, 3).join(', ')}). Director: ${r.director || '?'}.`,
+      proposed_category: 'review',
       skill_to_invoke: 'cinebret-review',
       skill_args: { titulo: r.titulo, anio: r.anio, pelicula_id: r.pelicula_id },
+      _meta: { director: r.director, generos: r.generos, sello: r.sello_bret, anio: r.anio, imdb: r.nota_imdb },
     })
-    picked++
   }
-  console.log(`  ${reviewCandidates.length} review candidates → picked ${picked} (max 1 per director, decade-diverse)`)
 }
 
-// ── 2. LISTA / TOP TEMÁTICO (1 pick, from weighted topic pool)
-console.log('Generator: lista temática from topic pool...')
+// ── TOP / Lista candidates: from a topic pool, scored by news pulse + recency
 {
   const month = NOW.getMonth()
-  const TOPIC_POOL = [
-    // Country
+  const TOPICS = [
     { kind: 'country', name: 'TOP 10 películas coreanas', triggers: ['korea','coreana','park chan','bong joon'], skill_args: { topic_type: 'country', topic: 'corea' } },
     { kind: 'country', name: 'TOP 10 películas japonesas', triggers: ['japan','japón','miyazaki','ghibli'], skill_args: { topic_type: 'country', topic: 'japón' } },
     { kind: 'country', name: 'TOP 10 películas francesas', triggers: ['france','francia','french','cannes'], skill_args: { topic_type: 'country', topic: 'francia' } },
     { kind: 'country', name: 'TOP 10 películas españolas', triggers: ['spain','españa','almodovar','goya'], skill_args: { topic_type: 'country', topic: 'españa' } },
     { kind: 'country', name: 'TOP 10 películas británicas', triggers: ['british','bafta'], skill_args: { topic_type: 'country', topic: 'reino unido' } },
-    // Genre
     { kind: 'genre', name: 'TOP 10 thrillers psicológicos', triggers: ['thriller','psychological'], skill_args: { topic_type: 'genre', topic: 'thriller psicológico' } },
     { kind: 'genre', name: 'TOP 10 películas con plot twist', triggers: ['plot twist','giro'], skill_args: { topic_type: 'theme', topic: 'plot twist' } },
     { kind: 'genre', name: 'TOP 10 películas de mafia', triggers: ['mafia','gangster'], skill_args: { topic_type: 'genre', topic: 'mafia' } },
-    { kind: 'genre', name: 'TOP 10 sci-fi cerebral', triggers: ['sci-fi','science fiction','dune','villeneuve'], skill_args: { topic_type: 'genre', topic: 'sci-fi cerebral' } },
+    { kind: 'genre', name: 'TOP 10 sci-fi cerebral', triggers: ['sci-fi','dune','villeneuve'], skill_args: { topic_type: 'genre', topic: 'sci-fi cerebral' } },
     { kind: 'genre', name: 'TOP 10 películas de animación', triggers: ['animation','animated','pixar','ghibli','dreamworks'], skill_args: { topic_type: 'genre', topic: 'animación' } },
     { kind: 'genre', name: 'TOP 10 dramas que te dejan pensando', triggers: ['drama'], skill_args: { topic_type: 'genre', topic: 'drama' } },
     { kind: 'genre', name: 'TOP 10 películas de guerra', triggers: ['war film','spielberg','schindler'], skill_args: { topic_type: 'genre', topic: 'guerra' } },
-    // Director
     { kind: 'director', name: 'Ranking películas de Christopher Nolan', triggers: ['nolan'], skill_args: { topic_type: 'director', topic: 'Christopher Nolan' } },
     { kind: 'director', name: 'Ranking películas de Martin Scorsese', triggers: ['scorsese'], skill_args: { topic_type: 'director', topic: 'Martin Scorsese' } },
     { kind: 'director', name: 'Ranking películas de Denis Villeneuve', triggers: ['villeneuve','dune'], skill_args: { topic_type: 'director', topic: 'Denis Villeneuve' } },
     { kind: 'director', name: 'Ranking películas de Quentin Tarantino', triggers: ['tarantino'], skill_args: { topic_type: 'director', topic: 'Quentin Tarantino' } },
     { kind: 'director', name: 'Ranking películas de David Fincher', triggers: ['fincher'], skill_args: { topic_type: 'director', topic: 'David Fincher' } },
     { kind: 'director', name: 'Ranking películas de Spielberg', triggers: ['spielberg'], skill_args: { topic_type: 'director', topic: 'Steven Spielberg' } },
-    // Studio
     { kind: 'studio', name: 'TOP 10 películas A24', triggers: ['a24'], skill_args: { topic_type: 'studio', topic: 'A24' } },
     { kind: 'studio', name: 'TOP 10 películas Pixar', triggers: ['pixar'], skill_args: { topic_type: 'studio', topic: 'Pixar' } },
-    // Theme
     { kind: 'theme', name: '10 películas con plot twist legendario', triggers: ['plot twist'], skill_args: { topic_type: 'theme', topic: 'plot twist' } },
     { kind: 'theme', name: '10 películas que ganaron Oscar Mejor Película', triggers: ['oscar','best picture'], skill_args: { topic_type: 'theme', topic: 'oscar mejor pelicula' } },
-    // Era
     { kind: 'era', name: '10 mejores películas de los 90s', triggers: [], skill_args: { topic_type: 'era', topic: 'años 90' } },
     { kind: 'era', name: '10 mejores películas del siglo XXI', triggers: [], skill_args: { topic_type: 'era', topic: 'siglo xxi' } },
-    // Mood (seasonal)
     { kind: 'mood', name: '10 películas para el frío del invierno', triggers: [], season: [4,5,6,7], skill_args: { mood: "Pa'l domingo de bajón", count: 10 } },
     { kind: 'mood', name: '10 películas perturbadoras para Halloween', triggers: ['halloween'], season: [9], skill_args: { mood: "Pa' quedar con el cerebro como licuadora", count: 10 } },
     { kind: 'mood', name: '10 películas para terminar el año', triggers: [], season: [11], skill_args: { mood: "Pa' fin de año", count: 10 } },
@@ -412,243 +265,269 @@ console.log('Generator: lista temática from topic pool...')
     ...(sources.newsapi?.items || []).map(i => i.title + ' ' + (i.description || '')),
   ].join(' ').toLowerCase()
 
-  const scored = TOPIC_POOL.map(t => {
-    let score = 50
-    if (alreadyPostedRecently(t.name)) score -= 60 // hard suppress 45d
-    for (const trig of t.triggers) {
-      if (newsBlob.includes(trig.toLowerCase())) score += 8
-    }
-    if (recentThemes.has(...t.triggers)) score -= 20 // already in recent IG topic
-    if (t.season && t.season.includes(month)) score += 12
-    if (t.season && !t.season.includes(month)) score -= 25
-    return { topic: t, score }
-  }).filter(s => s.score > 0).sort((a, b) => b.score - a.score)
+  const scored = TOPICS.map(t => {
+    let s = 50
+    if (alreadyPostedRecently(t.name)) s -= 60
+    for (const trig of t.triggers) if (newsBlob.includes(trig.toLowerCase())) s += 10
+    if (t.season && t.season.includes(month)) s += 12
+    if (t.season && !t.season.includes(month)) s -= 30
+    return { topic: t, s }
+  }).filter(x => x.s > 0).sort((a, b) => b.s - a.s)
 
-  const topTopic = scored[0]
-  if (topTopic) {
+  // Top-K (3) so the critic can pick from variety
+  for (const { topic } of scored.slice(0, 3)) {
     candidates.push({
-      type: 'FEED',
-      priority: topTopic.score >= 70 ? 'alta' : 'media',
-      action: topTopic.topic.kind === 'mood' ? 'generate_carousel_mood' : 'generate_carousel_topic',
-      title: topTopic.topic.name,
-      reasoning: topTopic.score >= 65
-        ? `Tema con tracción (${topTopic.score} pts: news + estacional + sin posts recientes).`
-        : `Tema rotativo del pool. Datos disponibles en catálogo.`,
-      suggested_caption: null,
-      source_name: 'topic_pool',
-      score: 70 + Math.min(topTopic.score / 4, 12),
-      skill_to_invoke: topTopic.topic.kind === 'mood' ? 'cinebret-carousel-mood' : 'cinebret-carousel-topic',
-      skill_args: topTopic.topic.skill_args,
+      id: proposalId(topic.kind === 'mood' ? 'generate_carousel_mood' : 'generate_carousel_topic', topic.name),
+      type: 'proposal',
+      action: topic.kind === 'mood' ? 'generate_carousel_mood' : 'generate_carousel_topic',
+      title: topic.name,
+      reasoning: `Tema rotativo del pool. Datos disponibles en catálogo.`,
+      proposed_category: 'top',
+      skill_to_invoke: topic.kind === 'mood' ? 'cinebret-carousel-mood' : 'cinebret-carousel-topic',
+      skill_args: topic.skill_args,
     })
-    console.log(`  topic pool top: "${topTopic.topic.name}" (raw=${topTopic.score})`)
   }
 }
 
-// ── 3. REACTIVA — only if STRONG signal (1 pick max)
-console.log('Generator: reactiva (strict — olimpo trailer or rating-9+ catalog match)...')
+// ── NEWS / TRAILER candidates (raw — critic filters)
 {
-  const reactives = []
-
-  // Trailer drops — tier-1 channels, last 24h, must match olimpo director OR rating-9+ catalog
-  for (const t of (sources.trailers?.videos || [])) {
-    if (!t.is_trailer || t.channel_tier !== 1) continue
-    const ageH = (Date.now() - new Date(t.published).getTime()) / 36e5
-    if (ageH > 24) continue
-    if (!isMovieRelevantNews({ title: t.title, description: '' })) continue
-    const text = (t.title || '').toLowerCase()
-    // Catalog match — only count high-quality ones
-    const match = findCatalogMatch(t.title)
-    const matchRatingHigh = match && (userMap[match.pelicula_id]?.rating || 0) >= 9
-    const matchSello = match && match.sello
-    // Director hit — only olimpo
-    const olimpoHit = OLIMPO.find(d => text.includes(d.toLowerCase()))
-    if (!matchRatingHigh && !matchSello && !olimpoHit) continue
-    reactives.push({
-      type: 'STORY',
-      priority: 'alta',
-      action: 'share_trailer_in_story',
-      title: `Trailer: ${match?.titulo || olimpoHit || (t.title.split(/[|\-—]/)[0].trim())}`,
-      reasoning: `${t.channel} subió trailer hace ${Math.round(ageH)}h. ${match ? `Match con catálogo (rating ${userMap[match.pelicula_id]?.rating || '?'}, ${match.titulo}).` : olimpoHit ? `Director olimpo: ${olimpoHit}.` : ''}`.trim(),
-      suggested_caption: null,
-      source_name: t.channel,
-      source_url: t.url,
-      score: 100 - ageH,
-      skill_to_invoke: 'cinebret-share-story',
-      skill_args: { url: t.url, angle: 'hype' },
-    })
-  }
-
-  // News events — same strict bar
-  const newsItems = [
-    ...(sources.news?.items || []),
-    ...(sources.newsapi?.items || []),
-  ]
   const cutoffH = CYCLE === 'pm' ? 24 : 36
-  for (const item of newsItems) {
-    if (!item.published_iso) continue
-    const ageH = (Date.now() - new Date(item.published_iso).getTime()) / 36e5
-    if (ageH > cutoffH) continue
-    if (!isMovieRelevantNews(item)) continue
-    const text = (item.title + ' ' + (item.description || '')).toLowerCase()
-    const match = findCatalogMatch(item.title + ' ' + (item.description || ''))
-    const matchHighSignal = match && ((userMap[match.pelicula_id]?.rating || 0) >= 9 || match.sello)
-    const olimpoHit = OLIMPO.find(d => text.includes(d.toLowerCase()))
-    if (!matchHighSignal && !olimpoHit) continue
-
-    // Angle detection
-    let angle = 'mention', titlePrefix = 'Noticia'
-    if (/trailer|teaser/i.test(item.title)) { angle = 'trailer-drop'; titlePrefix = 'Trailer' }
-    else if (/(dies|dead at|passed away|murió|fallecio)/i.test(text)) { angle = 'obituary'; titlePrefix = 'Tributo' }
-    else if (/(oscar|academy award)/i.test(text) && match) { angle = 'oscar'; titlePrefix = 'Oscar' }
-    else if (/(sequel|follow-?up|next chapter|prequel)/i.test(text) && match) { angle = 'sequel'; titlePrefix = 'Secuela' }
-
-    const subject = match?.titulo || olimpoHit || (item.title.split(/[:\-—|]/)[0].trim())
-    reactives.push({
-      type: angle === 'trailer-drop' ? 'STORY' : 'FEED',
-      priority: 'alta',
-      action: angle === 'trailer-drop' ? 'share_trailer_in_story' : 'react_to_news',
-      title: `${titlePrefix}: ${subject}`.slice(0, 90),
-      reasoning: `${item.source} (${Math.round(ageH)}h): "${item.title.slice(0, 100)}". ${match ? `Match catálogo: ${match.titulo} (rating ${userMap[match.pelicula_id]?.rating || '?'}).` : olimpoHit ? `Director olimpo: ${olimpoHit}.` : ''}`.trim(),
-      suggested_caption: null,
-      source_name: item.source,
-      source_url: item.link,
-      score: 80 + (matchHighSignal ? 10 : 0) + (olimpoHit ? 5 : 0) - ageH * 0.3,
-      skill_to_invoke: angle === 'trailer-drop' ? 'cinebret-share-story' : 'cinebret-list-from-news',
-      skill_args: { url: item.link, angle, headline: item.title },
+  const allNews = [
+    ...(sources.news?.items || []).map(i => ({ ...i, _src: 'news' })),
+    ...(sources.newsapi?.items || []).map(i => ({ ...i, _src: 'newsapi' })),
+  ]
+  const fresh = allNews.filter(i => {
+    if (!i.published_iso) return false
+    const ageH = (Date.now() - new Date(i.published_iso).getTime()) / 36e5
+    return ageH <= cutoffH
+  })
+  for (const item of fresh.slice(0, 30)) {
+    const ageH = Math.round((Date.now() - new Date(item.published_iso).getTime()) / 36e5)
+    candidates.push({
+      id: proposalId('news', `${item.source}|${(item.title || '').slice(0, 60)}`),
+      type: 'news',
+      title: item.title,
+      description: item.description,
+      source: item.source,
+      published_iso: item.published_iso,
+      age_hours: ageH,
+      catalog_match: item.cinebret_matches?.[0] || null,
+      url: item.link,
     })
   }
 
-  // Awards window (only currently happening, last 7 days only)
-  for (const a of (sources.proposal?.upcoming_awards || [])) {
-    if (a.days_until <= 7 && a.days_until >= 0) {
-      reactives.push({
-        type: 'FEED',
-        priority: 'alta',
-        action: 'generate_carousel_awards',
-        title: `Cobertura ${a.name}`,
-        reasoning: `${a.name} se está realizando (${a.days_until <= 0 ? 'en curso' : 'en ' + a.days_until + ' días'}).`,
-        suggested_caption: null,
-        source_name: 'awards_calendar',
-        score: 85,
-        skill_to_invoke: 'cinebret-list-from-news',
-        skill_args: { trigger: a.name },
-      })
+  // Trailers: tier-1 channels, last 36h (we let the critic decide if it's olimpo)
+  const fresh_t = (sources.trailers?.videos || [])
+    .filter(t => t.is_trailer && t.channel_tier === 1)
+    .filter(t => (Date.now() - new Date(t.published).getTime()) / 36e5 <= 36)
+    .slice(0, 15)
+  for (const t of fresh_t) {
+    const ageH = Math.round((Date.now() - new Date(t.published).getTime()) / 36e5)
+    candidates.push({
+      id: proposalId('trailer', `${t.channel}|${(t.title || '').slice(0, 60)}`),
+      type: 'trailer',
+      title: t.title,
+      source: t.channel,
+      tier: t.channel_tier,
+      age_hours: ageH,
+      catalog_match: t.cinebret_match || null,
+      url: t.url,
+    })
+  }
+}
+
+// ── BACKLOG: re-evaluate active backlog entries (retroactive GC)
+const backlogToReeval = history.proposals.filter(p => p.status === 'fresh' || p.status === 'backlog')
+for (const b of backlogToReeval) {
+  candidates.push({
+    id: b.id,
+    type: 'backlog',
+    title: b.title,
+    description: b.reasoning,
+    proposed_category: b.category || (b.action === 'generate_review' ? 'review' : (b.action?.includes('carousel') ? 'top' : 'contenido')),
+    age_days: Math.round((Date.now() - new Date(b.first_proposed).getTime()) / 86400000),
+    action: b.action,
+  })
+}
+
+console.log(`Generated ${candidates.length} raw candidates:`)
+console.log(`  reviews=${candidates.filter(c => c.type === 'proposal' && c.proposed_category === 'review').length}`)
+console.log(`  tops=${candidates.filter(c => c.type === 'proposal' && c.proposed_category === 'top').length}`)
+console.log(`  news=${candidates.filter(c => c.type === 'news').length}`)
+console.log(`  trailers=${candidates.filter(c => c.type === 'trailer').length}`)
+console.log(`  backlog=${candidates.filter(c => c.type === 'backlog').length}\n`)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Send everything to the critic
+// ─────────────────────────────────────────────────────────────────────────────
+
+console.log(`Calling critic (Sonnet 4.6)...`)
+const critStart = Date.now()
+const verdicts = await evaluateItems(candidates, {
+  cycle: CYCLE,
+  deficits,
+  last_ig_posts: last6,
+})
+const critTime = Math.round((Date.now() - critStart) / 1000)
+const usage = verdicts._usage || {}
+console.log(`  done in ${critTime}s · cache_read=${usage.cache_read} write=${usage.cache_write} input=${usage.input} output=${usage.output}\n`)
+const verdictById = indexVerdicts(verdicts.filter(v => v.id))
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Apply verdicts to backlog: discards become expired
+// ─────────────────────────────────────────────────────────────────────────────
+
+let expiredByCritic = 0
+for (const b of backlogToReeval) {
+  const v = verdictById.get(b.id)
+  if (v && v.decision === 'discard') {
+    b.status = 'expired'
+    b.expired_at = NOW_ISO
+    b.expired_reason = v.reason
+    expiredByCritic++
+  }
+}
+if (expiredByCritic) console.log(`📋 GC: ${expiredByCritic} backlog entries expired by critic\n`)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pick TOP 5 from "propose" verdicts, biased by deficit
+// ─────────────────────────────────────────────────────────────────────────────
+
+const proposed = candidates
+  .filter(c => c.type === 'proposal' || c.type === 'news' || c.type === 'trailer')
+  .map(c => ({ candidate: c, verdict: verdictById.get(c.id) }))
+  .filter(({ verdict }) => verdict && verdict.decision === 'propose')
+
+// Group by category (using critic's verdict, fallback to candidate's proposed_category)
+const grouped = { review: [], contenido: [], top: [] }
+for (const item of proposed) {
+  const cat = item.verdict.category || item.candidate.proposed_category || 'contenido'
+  if (grouped[cat]) grouped[cat].push(item)
+}
+for (const cat of Object.keys(grouped)) {
+  grouped[cat].sort((a, b) => (b.verdict.score || 0) - (a.verdict.score || 0))
+}
+
+// Diversity check: avoid two reviews with the same director
+function reviewDirector(item) {
+  const dir = item.candidate?._meta?.director || ''
+  return dir.split(',')[0].trim().toLowerCase()
+}
+
+// Pop first item from grouped[cat] that doesn't violate director diversity
+function popDiverse(cat, takenDirectors) {
+  while (grouped[cat].length) {
+    const next = grouped[cat].shift()
+    if (cat !== 'review') return next
+    const dir = reviewDirector(next)
+    if (!dir || !takenDirectors.has(dir)) {
+      if (dir) takenDirectors.add(dir)
+      return next
+    }
+    // Same director already in TOP — skip but keep in pool for fallback if nothing else
+  }
+  return null
+}
+
+// Order: deficit-driven, diversity-aware (max 1 review per director)
+function pickTop5() {
+  const top = []
+  const takenDirectors = new Set()
+  const order = ['review', 'contenido', 'top']
+  const want = { review: target.review, contenido: target.contenido, top: target.top }
+  function picked(cat) { return top.filter(t => (t.verdict.category || t.candidate.proposed_category) === cat).length }
+  // First pass: deficit-priority sweep
+  const sweepOrder = order.slice().sort((a, b) => deficits[b] - deficits[a])
+  for (const cat of sweepOrder) {
+    const need = Math.min(deficits[cat], want[cat])
+    while (grouped[cat].length && top.length < 5 && picked(cat) < need) {
+      const item = popDiverse(cat, takenDirectors)
+      if (!item) break
+      top.push(item)
     }
   }
-
-  // Pick top 1
-  reactives.sort((a, b) => b.score - a.score)
-  if (reactives[0]) {
-    candidates.push(reactives[0])
-    console.log(`  reactiva top: "${reactives[0].title}" (score=${Math.round(reactives[0].score)})`)
-    console.log(`  ${reactives.length - 1} other reactives discarded (only 1 per cycle)`)
-  } else {
-    console.log(`  no strong reactive signal this cycle`)
+  // Second pass: fill up to 5, respecting category caps + director diversity
+  for (const cat of order) {
+    while (grouped[cat].length && top.length < 5 && picked(cat) < want[cat]) {
+      const item = popDiverse(cat, takenDirectors)
+      if (!item) break
+      top.push(item)
+    }
   }
+  // Third pass: still <5, relax director diversity (allow same director if no other choice)
+  for (const cat of order) {
+    while (grouped[cat].length && top.length < 5) {
+      top.push(grouped[cat].shift())
+    }
+  }
+  return top
 }
+const topPicks = pickTop5()
 
-console.log(`\n  total candidates: ${candidates.length}`)
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Filter against IG + history, then pick final 5
-// ─────────────────────────────────────────────────────────────────────────────
-
-const filtered = []
-for (const c of candidates) {
-  if (alreadyPostedRecently(c.title)) continue
-  const sup = shouldSuppress(history, c, NOW_ISO)
-  if (sup.suppress) continue
-  filtered.push(c)
-}
-
-// Final ordering: reviews together (top), then lista, then reactiva
-const reviews = filtered.filter(c => c.action === 'generate_review').sort((a, b) => b.score - a.score)
-const listas = filtered.filter(c => c.action === 'generate_carousel_topic' || c.action === 'generate_carousel_mood')
-const reactivas = filtered.filter(c => c.action === 'share_trailer_in_story' || c.action === 'react_to_news' || c.action === 'generate_carousel_awards')
-
-const top = []
-top.push(...reviews.slice(0, 3))
-if (listas[0]) top.push(listas[0])
-if (reactivas[0]) top.push(reactivas[0])
-
-console.log(`\n📊 TOP ${top.length}: ${reviews.slice(0,3).length} reviews + ${listas[0]?1:0} lista + ${reactivas[0]?1:0} reactiva\n`)
+// Convert to proposal objects (the email format)
+const top = topPicks.map(({ candidate, verdict }) => {
+  const cat = verdict.category || candidate.proposed_category || 'contenido'
+  return {
+    id: candidate.id,
+    type: cat === 'top' || candidate.action?.includes('carousel') ? 'FEED' : (candidate.type === 'trailer' || verdict.angle === 'trailer-drop' ? 'STORY' : 'FEED'),
+    priority: verdict.score >= 80 ? 'alta' : (verdict.score >= 65 ? 'media' : 'baja'),
+    action: candidate.action || (verdict.angle === 'trailer-drop' ? 'share_trailer_in_story' : 'react_to_news'),
+    title: verdict.rewrite_title_es || candidate.title,
+    reasoning: verdict.rewrite_summary_es || verdict.reason,
+    score: verdict.score,
+    category: cat,
+    angle: verdict.angle,
+    source_name: candidate.source || candidate.skill_to_invoke,
+    source_url: candidate.url || null,
+    skill_to_invoke: candidate.skill_to_invoke || (verdict.angle === 'trailer-drop' ? 'cinebret-share-story' : 'cinebret-list-from-news'),
+    skill_args: candidate.skill_args || { url: candidate.url, angle: verdict.angle },
+    critic_reason: verdict.reason,
+  }
+})
 
 // Record fresh proposals in history
 for (const t of top) recordProposal(history, t, NOW_ISO)
 saveHistory(HISTORY_PATH, history)
 
 // ─────────────────────────────────────────────────────────────────────────────
-// News block (informational) — strict catalog/director quality bar
+// News block: items with decision == "news_only"
 // ─────────────────────────────────────────────────────────────────────────────
 
-console.log('Building news block (strict filter)...')
-const newsBlock = []
-{
-  const allNews = [
-    ...(sources.news?.items || []),
-    ...(sources.newsapi?.items || []),
-  ]
-  const fresh = allNews.filter(i => {
-    if (!i.published_iso) return false
-    const ageH = (Date.now() - new Date(i.published_iso).getTime()) / 36e5
-    if (ageH > 30) return false
-    return isMovieRelevantNews(i)
-  })
-
-  for (const item of fresh) {
-    const text = (item.title + ' ' + (item.description || '')).toLowerCase()
-    const match = findCatalogMatch(item.title + ' ' + (item.description || ''))
-    const olimpoHit = OLIMPO.find(d => text.includes(d.toLowerCase()))
-    const respectedHit = HIGHLY_RESPECTED.find(d => text.includes(d.toLowerCase()))
-    const auteurHit = ADMIRED_AUTEURS.find(d => text.includes(d.toLowerCase()))
-    const directorHit = olimpoHit || respectedHit || auteurHit
-    const isTrade = ['Variety', 'Deadline', 'Hollywood Reporter', 'IndieWire', 'The Wrap'].includes(item.source)
-
-    // STRICT bar: must have catalog match (high quality by design of qualityIndex) OR director match
-    if (!match && !directorHit) continue
-
-    let score = 0
-    if (match) {
-      const r = userMap[match.pelicula_id]?.rating || 0
-      if (r >= 10) score += 50
-      else if (r >= 9) score += 40
-      else if (r >= 8) score += 30
-      else score += 20
-      if (match.sello) score += 10
-    }
-    if (olimpoHit) score += 35
-    else if (respectedHit) score += 20
-    else if (auteurHit) score += 15
-    if (isTrade) score += 5
-    const ageH = (Date.now() - new Date(item.published_iso).getTime()) / 36e5
-    score -= ageH * 0.4
-
-    if (score < 25) continue
-    newsBlock.push({ ...item, _score: score, _catalog: match, _director: directorHit })
-  }
-  newsBlock.sort((a, b) => b._score - a._score)
-
-  // Dedup by approximate subject (lowercase first 6 words of title)
-  const seenSubjects = new Set()
-  const deduped = []
-  for (const n of newsBlock) {
-    const subj = (n.title || '').toLowerCase().split(/\s+/).slice(0, 6).join(' ')
-    if (seenSubjects.has(subj)) continue
-    seenSubjects.add(subj)
-    deduped.push(n)
-    if (deduped.length >= 8) break
-  }
-  newsBlock.length = 0
-  newsBlock.push(...deduped)
-  console.log(`  ${newsBlock.length} news items kept (strict filter)`)
-}
+const newsBlock = candidates
+  .filter(c => c.type === 'news' || c.type === 'trailer')
+  .map(c => ({ candidate: c, verdict: verdictById.get(c.id) }))
+  .filter(({ verdict }) => verdict && verdict.decision === 'news_only')
+  .sort((a, b) => (b.verdict.score || 0) - (a.verdict.score || 0))
+  .slice(0, 8)
+  .map(({ candidate, verdict }) => ({
+    title_es: verdict.rewrite_title_es || candidate.title,
+    summary_es: verdict.rewrite_summary_es || '',
+    source: candidate.source,
+    age_hours: candidate.age_hours,
+    url: candidate.url,
+    angle: verdict.angle,
+    catalog_match: candidate.catalog_match,
+    score: verdict.score,
+    reason: verdict.reason,
+  }))
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Backlog
+// Backlog (from history.status==='backlog')
 // ─────────────────────────────────────────────────────────────────────────────
 
-const backlog = getBacklog(history, 8)
-console.log(`📋 Backlog: ${backlog.length} pending\n`)
+const backlog = history.proposals
+  .filter(p => p.status === 'backlog')
+  .sort((a, b) => (b.score || 0) - (a.score || 0))
+  .slice(0, 8)
+  .map(b => ({
+    id: b.id,
+    type: b.type,
+    title: b.title,
+    reasoning: b.reasoning,
+    days_ago: Math.round((Date.now() - new Date(b.first_proposed).getTime()) / 86400000),
+    skill_to_invoke: b.skill_to_invoke,
+    category: b.category,
+  }))
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Output
@@ -663,36 +542,41 @@ const out = {
   top_count: top.length,
   backlog_count: backlog.length,
   news_count: newsBlock.length,
+  ig_mix: { last6_counts: counts, target, deficits },
   top, backlog, news: newsBlock,
   raw_signal_counts: {
-    news_items:     sources.news?.items?.length || 0,
-    newsapi_items:  sources.newsapi?.items?.length || 0,
-    reddit_posts:   sources.reddit?.posts?.length || 0,
-    trailers:       sources.trailers?.videos?.length || 0,
+    news_items:    sources.news?.items?.length || 0,
+    newsapi_items: sources.newsapi?.items?.length || 0,
+    reddit_posts:  sources.reddit?.posts?.length || 0,
+    trailers:      sources.trailers?.videos?.length || 0,
   },
-  reconciliation_stats: reconStats,
+  reconciliation_stats: { acceptedCount, agedCount, expiredByTime, expiredByCritic },
+  critic_usage: usage,
 }
 
 const outDir = join(ROOT, '.wiki/sources')
 if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true })
 writeFileSync(join(outDir, 'proposals-latest.json'), JSON.stringify(out, null, 2))
-console.log(`✅ Saved → proposals-latest.json (gate=${passesQualityGate ? 'PASS' : 'FAIL'})\n`)
+console.log(`✅ Saved → proposals-latest.json (gate=${passesQualityGate ? 'PASS' : 'FAIL'})`)
+console.log(`   top=${top.length} (review=${top.filter(t => t.category === 'review').length}, contenido=${top.filter(t => t.category === 'contenido').length}, top=${top.filter(t => t.category === 'top').length})`)
+console.log(`   backlog=${backlog.length}, news=${newsBlock.length}\n`)
 
 if (top.length) {
   console.log('🎯 TOP:')
   top.forEach((p, i) => {
-    console.log(`  ${i + 1}. [${p.type}] ${p.title}  (score=${Math.round(p.score)})`)
+    console.log(`  ${i + 1}. [${p.category}/${p.type}] ${p.title}  (score=${p.score})`)
     console.log(`     ${p.reasoning}`)
+    console.log(`     critic: ${p.critic_reason}`)
   })
 }
 if (backlog.length) {
   console.log('\n📋 BACKLOG:')
-  backlog.forEach(b => console.log(`  - [${b.type}] ${b.title}`))
+  backlog.forEach(b => console.log(`  - [${b.category}] ${b.title} (${b.days_ago}d)`))
 }
 if (newsBlock.length) {
   console.log('\n📰 NEWS:')
   newsBlock.forEach(n => {
-    const tag = n._catalog ? `[${n._catalog.titulo}]` : `[${n._director}]`
-    console.log(`  - ${n.source}: ${n.title.slice(0, 80)} ${tag}`)
+    console.log(`  - ${n.source} (${n.age_hours}h): ${n.title_es}`)
+    console.log(`    → ${n.summary_es}`)
   })
 }

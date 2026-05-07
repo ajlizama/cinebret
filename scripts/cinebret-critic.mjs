@@ -20,20 +20,23 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 
+function tryRead(path) {
+  try { return readFileSync(path, 'utf-8') } catch { return null }
+}
+
 let _cachedSystem = null
 function loadSystemPrompt() {
   if (_cachedSystem) return _cachedSystem
-  const rules = readFileSync(join(ROOT, '.wiki/reviews/AGENT-RULES.md'), 'utf-8')
-  // Pull just the essentials from taste-profile to keep the prompt deterministic
-  // (the file changes rarely; including everything would inflate the cache write
-  // for marginal benefit).
-  const taste = readFileSync(join(ROOT, '.wiki/reviews/taste-profile.md'), 'utf-8')
-  // Extract just the directors + top-38 + valued/disliked sections (heuristic slice)
+  const rules = tryRead(join(ROOT, '.wiki/reviews/AGENT-RULES.md'))
+  if (!rules) {
+    throw new Error('AGENT-RULES.md not found in .wiki/reviews/ — cannot run critic without rules')
+  }
+  // taste-profile is supplementary context. If missing, just skip it (the rules
+  // already encode the tier lists explicitly so the critic still works).
+  const taste = tryRead(join(ROOT, '.wiki/reviews/taste-profile.md'))
   const tasteShort = taste
-    .split('\n')
-    .filter(line => !/^source:|^updated:|^---/.test(line))
-    .join('\n')
-    .trim()
+    ? taste.split('\n').filter(line => !/^source:|^updated:|^---/.test(line)).join('\n').trim()
+    : '(taste-profile.md not present — usar las listas de directores en AGENT-RULES §4.3)'
   _cachedSystem = `Eres el crítico de contenido de @cinebret. Tu trabajo es decidir, por cada candidato (noticia, trailer, propuesta), si vale como propuesta accionable, como noticia informativa, o si se descarta. Aplicas AGENT-RULES.md sin excepción.
 
 ══════════════════════════════════════════════════════════════

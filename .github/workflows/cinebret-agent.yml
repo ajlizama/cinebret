@@ -50,6 +50,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci --omit=dev --no-audit --no-fund --prefer-offline
 
       - name: Sync Instagram posts — both cycles (MUST be first so detect knows what's already published)
         run: node scripts/sync-instagram.mjs

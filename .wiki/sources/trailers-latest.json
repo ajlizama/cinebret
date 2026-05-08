@@ -1,76 +1,236 @@
 {
-  "generated_at": "2026-05-08T12:06:58.275Z",
-  "total_videos": 62,
-  "trailers_count": 11,
-  "matched_to_cinebret": 9,
+  "generated_at": "2026-05-08T20:58:56.601Z",
+  "total_videos": 63,
+  "trailers_count": 12,
+  "matched_to_cinebret": 11,
   "videos": [
     {
-      "video_id": "IZKjOyHac0M",
-      "title": "STAR WARS: Galactic Racer™ launches worldwide on October 6. Pre-order now #sponsored",
-      "url": "https://www.youtube.com/watch?v=IZKjOyHac0M",
-      "published": "2026-05-08T11:26:11Z",
-      "thumbnail": "https://i.ytimg.com/vi/IZKjOyHac0M/hqdefault.jpg",
+      "video_id": "u-6n7pkRnU4",
+      "title": "Star Wars: Legion - Official Mandalorian Army Trailer",
+      "url": "https://www.youtube.com/watch?v=u-6n7pkRnU4",
+      "published": "2026-05-08T20:05:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/u-6n7pkRnU4/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "QxgPLkDwcGM",
+      "title": "The belle of the ball! Audrey Hepburn in Billy Wilder’s SABRINA | MUBI",
+      "url": "https://www.youtube.com/watch?v=QxgPLkDwcGM",
+      "published": "2026-05-08T20:00:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/QxgPLkDwcGM/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "oGSifJMwXrY",
+      "title": "A monster menagerie. #Monarch: Legacy of Monsters — Season 2 Now Streaming",
+      "url": "https://www.youtube.com/watch?v=oGSifJMwXrY",
+      "published": "2026-05-08T19:59:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/oGSifJMwXrY/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
+        "titulo": "Monsters: El infierno del dragón",
+        "anio": 2024
+      }
+    },
+    {
+      "video_id": "XFHKGMZu8vM",
+      "title": "\"I am a forest fire.\" Presenting our new trailer for MITSKI: THE LAND | MUBI",
+      "url": "https://www.youtube.com/watch?v=XFHKGMZu8vM",
+      "published": "2026-05-08T19:01:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/XFHKGMZu8vM/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "Nl6R5JgjfB8",
+      "title": "Stanley Tucci Confronts Richard Madden in Citadel Season 2 | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=Nl6R5JgjfB8",
+      "published": "2026-05-08T19:00:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/Nl6R5JgjfB8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HuSE_Uv6rUg",
+      "title": "Escape from Tarkov - Official Icebreaker Teaser Trailer",
+      "url": "https://www.youtube.com/watch?v=HuSE_Uv6rUg",
+      "published": "2026-05-08T19:00:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/HuSE_Uv6rUg/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "tNZF4Z7vn7M",
+      "title": "A hit that goes hard and plays soft. Billie Eilish: #TheWorldsALittleBlurry — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=tNZF4Z7vn7M",
+      "published": "2026-05-08T18:59:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/tNZF4Z7vn7M/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "1h57u2ask6A",
+      "title": "ACM Awards - The country collabs of our dreams. | Prime Video",
+      "url": "https://www.youtube.com/watch?v=1h57u2ask6A",
+      "published": "2026-05-08T18:01:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/1h57u2ask6A/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "y-e6wweSvgw",
+      "title": "Michael - Official 'Visiting the Set' Featurette (2026) Jaafar Jackson, Nia Long, Colman Domingo",
+      "url": "https://www.youtube.com/watch?v=y-e6wweSvgw",
+      "published": "2026-05-08T18:00:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/y-e6wweSvgw/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },
     {
-      "video_id": "mqQs5t0kZKg",
-      "title": "Resident Evil Requiem: Leon Must Die Forever Gameplay",
-      "url": "https://www.youtube.com/watch?v=mqQs5t0kZKg",
-      "published": "2026-05-08T11:20:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/mqQs5t0kZKg/hqdefault.jpg",
+      "video_id": "8Xo1HJ8pU34",
+      "title": "A&E Doctors React to Mortal Kombat’s Most Gruesome Fatalities",
+      "url": "https://www.youtube.com/watch?v=8Xo1HJ8pU34",
+      "published": "2026-05-08T17:04:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/8Xo1HJ8pU34/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false,
       "cinebret_match": {
-        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
-        "titulo": "Resident evil - El huésped maldito",
-        "anio": 2002
+        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
+        "titulo": "Mortal Kombat",
+        "anio": 1995
       }
     },
     {
-      "video_id": "gISxQzi0evY",
-      "title": "Resident Evil Requiem - Leon Must Die Forever Update Trailer",
-      "url": "https://www.youtube.com/watch?v=gISxQzi0evY",
-      "published": "2026-05-08T03:33:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/gISxQzi0evY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
-        "titulo": "Resident evil - El huésped maldito",
-        "anio": 2002
-      }
-    },
-    {
-      "video_id": "lJCg0ZlN4o4",
-      "title": "LEGO Batman honors The Animated Series",
-      "url": "https://www.youtube.com/watch?v=lJCg0ZlN4o4",
-      "published": "2026-05-08T02:49:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/lJCg0ZlN4o4/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "RGLCwWzsTlw",
-      "title": "The Boys parodied the AMC promo",
-      "url": "https://www.youtube.com/watch?v=RGLCwWzsTlw",
-      "published": "2026-05-08T02:49:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/RGLCwWzsTlw/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "q9mKq87imDY",
-      "title": "Detective Trupo's Fate 👮 #AmericanGangster #Shorts",
-      "url": "https://www.youtube.com/watch?v=q9mKq87imDY",
-      "published": "2026-05-07T21:00:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/q9mKq87imDY/hqdefault.jpg",
+      "video_id": "R4bXrkMnyfc",
+      "title": "We love you, mothers! | 🎬 Despicable Me 2 (2013)",
+      "url": "https://www.youtube.com/watch?v=R4bXrkMnyfc",
+      "published": "2026-05-08T17:00:37Z",
+      "thumbnail": "https://i.ytimg.com/vi/R4bXrkMnyfc/hqdefault.jpg",
       "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "6d41075c-efdc-454d-95d5-037040669001",
+        "titulo": "Gru: Mi villano favorito",
+        "anio": 2010
+      }
+    },
+    {
+      "video_id": "OmuhfmpZSSQ",
+      "title": "Pitfall - Official Trailer (2026) Randy Couture",
+      "url": "https://www.youtube.com/watch?v=OmuhfmpZSSQ",
+      "published": "2026-05-08T17:00:37Z",
+      "thumbnail": "https://i.ytimg.com/vi/OmuhfmpZSSQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "jvTV9K-fVK4",
+      "title": "“Who owns our days?” LA GRAZIA, the latest from the great Paolo Sorrentino, is now streaming | MUBI",
+      "url": "https://www.youtube.com/watch?v=jvTV9K-fVK4",
+      "published": "2026-05-08T17:00:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/jvTV9K-fVK4/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "1iAnmzNW66c",
+      "title": "The Great Viltrumite Purge | Invincible Season 4 | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=1iAnmzNW66c",
+      "published": "2026-05-08T17:00:03Z",
+      "thumbnail": "https://i.ytimg.com/vi/1iAnmzNW66c/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "NL9Ohi8OeOc",
+      "title": "For All Mankind — News From Mars | Season 5 Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=NL9Ohi8OeOc",
+      "published": "2026-05-08T16:59:59Z",
+      "thumbnail": "https://i.ytimg.com/vi/NL9Ohi8OeOc/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "1-rLXY_jFcE",
+      "title": "KIRBY - Saving Grace (Official Music Video) from Spider-Noir (The Prime Original Series)",
+      "url": "https://www.youtube.com/watch?v=1-rLXY_jFcE",
+      "published": "2026-05-08T15:59:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/1-rLXY_jFcE/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "XGznyk5KpU0",
+      "title": "THE BREADWINNER - Nate Rate",
+      "url": "https://www.youtube.com/watch?v=XGznyk5KpU0",
+      "published": "2026-05-08T15:14:56Z",
+      "thumbnail": "https://i.ytimg.com/vi/XGznyk5KpU0/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "92644993-f7c5-4f5c-9390-24b52b7ed0f2",
+        "titulo": "The Breadwinner (El pan de la guerra)",
+        "anio": 2017
+      }
+    },
+    {
+      "video_id": "-CCX6zeD7C8",
+      "title": "Reunited | Tom Clancy's Jack Ryan: Ghost War | Prime Video",
+      "url": "https://www.youtube.com/watch?v=-CCX6zeD7C8",
+      "published": "2026-05-08T15:14:47Z",
+      "thumbnail": "https://i.ytimg.com/vi/-CCX6zeD7C8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "aUio1KhuCTc",
+      "title": "Day one on the set of MICHAEL. #MichaelMovie NOW PLAYING in theaters: https://tickets.michael.movie/",
+      "url": "https://www.youtube.com/watch?v=aUio1KhuCTc",
+      "published": "2026-05-08T15:02:12Z",
+      "thumbnail": "https://i.ytimg.com/vi/aUio1KhuCTc/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "-KkNPUvFqco",
+      "title": "Michael (2026) On the Set of Michael - Jaafar Jackson, Antoine Fuqua, Graham King",
+      "url": "https://www.youtube.com/watch?v=-KkNPUvFqco",
+      "published": "2026-05-08T15:00:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/-KkNPUvFqco/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "s4NtUTagkmo",
+      "title": "FOREVER Season 2 is now in production.",
+      "url": "https://www.youtube.com/watch?v=s4NtUTagkmo",
+      "published": "2026-05-08T14:01:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/s4NtUTagkmo/hqdefault.jpg",
+      "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -85,32 +245,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "1y5VTrBttEs",
-      "title": "Never too old for whimsy. | The House of the Spirits | Prime Video",
-      "url": "https://www.youtube.com/watch?v=1y5VTrBttEs",
-      "published": "2026-05-07T21:00:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/1y5VTrBttEs/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "xdngF3F4DWI",
       "title": "Crafting the Homelander Character",
       "url": "https://www.youtube.com/watch?v=xdngF3F4DWI",
       "published": "2026-05-07T19:00:55Z",
       "thumbnail": "https://i.ytimg.com/vi/xdngF3F4DWI/hqdefault.jpg",
       "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "02uM-EbaRGw",
-      "title": "Former Lovers Fight Each Other in Home Invasion | Citadel Season 2 | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=02uM-EbaRGw",
-      "published": "2026-05-07T19:00:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/02uM-EbaRGw/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -145,16 +285,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "u1qjMVQArFU",
-      "title": "Omni-Man's Day of Adulthood | Invincible Season 4 | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=u1qjMVQArFU",
-      "published": "2026-05-07T17:01:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/u1qjMVQArFU/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "D9h0wSvS2ls",
       "title": "The Yogurt Shop Murders: The Final Chapter | Official Trailer | HBO",
       "url": "https://www.youtube.com/watch?v=D9h0wSvS2ls",
@@ -163,21 +293,6 @@
       "channel": "HBO Max",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "TXIhnSkuBs4",
-      "title": "Two Russells, one Shaw. #Monarch: Legacy of Monsters — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=TXIhnSkuBs4",
-      "published": "2026-05-07T16:59:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/TXIhnSkuBs4/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
-        "titulo": "Monsters: El infierno del dragón",
-        "anio": 2024
-      }
     },
     {
       "video_id": "TnHby2cxJzs",
@@ -270,16 +385,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "255PDnEdK4I",
-      "title": "That feeling when you get V1 | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=255PDnEdK4I",
-      "published": "2026-05-07T15:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/255PDnEdK4I/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "E7mzCan6psA",
       "title": "Devil May Cry: Season 2 | See U in Hell | Netflix",
       "url": "https://www.youtube.com/watch?v=E7mzCan6psA",
@@ -320,16 +425,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "FZ3sN5E-mBU",
-      "title": "Cape Fear — Official Trailer | Apple TV",
-      "url": "https://www.youtube.com/watch?v=FZ3sN5E-mBU",
-      "published": "2026-05-07T12:59:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/FZ3sN5E-mBU/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "q7taU9-vOAo",
       "title": "Untold UK: Jamie Vardy | Official Trailer | Netflix",
       "url": "https://www.youtube.com/watch?v=q7taU9-vOAo",
@@ -338,26 +433,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "wbkXRNivbKU",
-      "title": "Relationship advice from mum. No notes. #TedLasso returns August 5.",
-      "url": "https://www.youtube.com/watch?v=wbkXRNivbKU",
-      "published": "2026-05-07T00:59:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/wbkXRNivbKU/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "wubYLUQq7U4",
-      "title": "PJ's Snack Attack Part 2 | Jury Duty Presents: Company Retreat | Prime Video",
-      "url": "https://www.youtube.com/watch?v=wubYLUQq7U4",
-      "published": "2026-05-06T23:01:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/wubYLUQq7U4/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "OwltW9kxSRg",
@@ -380,26 +455,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "fO6-IPlHoV0",
-      "title": "A modern western with a magical twist. THE MYSTERIOUS GAZE OF THE FLAMINGO - streaming May 15 | MUBI",
-      "url": "https://www.youtube.com/watch?v=fO6-IPlHoV0",
-      "published": "2026-05-06T15:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/fO6-IPlHoV0/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "EkOADMbfCKw",
-      "title": "WHISPER OF THE HEART — Hayao Miyazaki takes “Country Roads” | MUBI Podcast",
-      "url": "https://www.youtube.com/watch?v=EkOADMbfCKw",
-      "published": "2026-05-06T14:28:14Z",
-      "thumbnail": "https://i.ytimg.com/vi/EkOADMbfCKw/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "IcyJvPOwbrY",
       "title": "Ed Boon Picks His Mortal Kombat Defender",
       "url": "https://www.youtube.com/watch?v=IcyJvPOwbrY",
@@ -413,26 +468,6 @@
         "titulo": "Mortal Kombat",
         "anio": 1995
       }
-    },
-    {
-      "video_id": "Ltrc8z4AXKo",
-      "title": "Berlin and the Lady with an Ermine | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=Ltrc8z4AXKo",
-      "published": "2026-05-06T14:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/Ltrc8z4AXKo/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "pkEFfWBCI_8",
-      "title": "ORPHAN, from SON OF SAUL director László Nemes is in cinemas May 15. A MUBI Release | MUBI",
-      "url": "https://www.youtube.com/watch?v=pkEFfWBCI_8",
-      "published": "2026-05-06T13:01:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/pkEFfWBCI_8/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "UCK6KI7yQ10",
@@ -492,7 +527,12 @@
       "thumbnail": "https://i.ytimg.com/vi/Q-SLPVSsS4U/hqdefault.jpg",
       "channel": "Paramount Pictures",
       "channel_tier": 1,
-      "is_trailer": false
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "3c7cf4e9-c328-4447-95ac-a5fda571386c",
+        "titulo": "Zoolander (Un descerebrado de moda)",
+        "anio": 2001
+      }
     },
     {
       "video_id": "hLGD0VE1PvA",
@@ -646,26 +686,6 @@
       "published": "2026-05-03T21:00:53Z",
       "thumbnail": "https://i.ytimg.com/vi/tN-oiFCRGuc/hqdefault.jpg",
       "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "d79L3vUtthA",
-      "title": "Thriller comes to life. #MichaelMovie – NOW PLAYING in theaters & IMAX https://tickets.michael.movie",
-      "url": "https://www.youtube.com/watch?v=d79L3vUtthA",
-      "published": "2026-05-01T23:02:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/d79L3vUtthA/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "n6Q0-oUHayQ",
-      "title": "That's what a good song does. #PowerBallad - in select theaters May 29, everywhere June 5.",
-      "url": "https://www.youtube.com/watch?v=n6Q0-oUHayQ",
-      "published": "2026-05-01T22:45:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/n6Q0-oUHayQ/hqdefault.jpg",
-      "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
     }

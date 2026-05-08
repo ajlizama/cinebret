@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-08T12:07:25.851Z",
-  "cycle": "am",
+  "generated_at": "2026-05-08T20:58:56.691Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; tu rating 10 y aún sin review en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5 backlog reevaluado: Parásitos sigue siendo el candidato más fuerte del pool — rating 10, IMDb 8.5, Bong Joon-ho, continuidad coreanas; no en historial IG."
+      "critic_reason": "§5.2 backlog reevaluado: Parásitos, rating 10 + IMDb 8.5 + sello bret + Bong Joon-ho + Netflix activa; sin review. (Mismo id que propuesta fresca — score idéntico.)"
     },
     {
       "id": "119c0775fc431172",
@@ -49,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson con IMDb 9.0; uno de los ratings 10 más urgentes del catálogo.",
+      "reasoning": "IMDb 9.0 y 11 Óscars; la conclusión épica de Jackson que merece su review oficial.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -61,7 +61,7 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: El Retorno del Rey, rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa; no aparece en historial IG reciente."
+      "critic_reason": "§4.5 review válida: LOTR Return of the King, rating 10 + IMDb 9.0 + sello bret + Peter Jackson (muy respetado) + plataforma activa; sin review publicado."
     },
     {
       "id": "057ed8a4300465a7",
@@ -69,7 +69,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Bastardos sin gloria (2009)",
-      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados sin review publicado todavía.",
+      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados que aún espera su review.",
       "score": 95,
       "category": "review",
       "angle": "review",
@@ -81,16 +81,16 @@
         "anio": 2009,
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review válida: Inglourious Basterds, rating 10 + sello bret + Tarantino (Olimpo) + IMDb 8.3 + plataforma activa; no aparece en historial IG reciente."
+      "critic_reason": "§4.5 review válida: Inglourious Basterds, rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; sin review publicado."
     },
     {
-      "id": "104c6cc38a62011f",
+      "id": "cce60d869699bb87",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 finales que te dejan con la boca abierta",
-      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
-      "score": 85,
+      "title": "TOP 10 giros de guión que nadie vio venir",
+      "reasoning": "Prestige, Usual Suspects, Oldboy: el tipo de cine que más amas convertido en lista definitiva.",
+      "score": 83,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§instrucción creativa: slot abierto — propongo TOP de finales que cambiaron todo (twist endings), kind=narrative que no está en recent_top_kinds y conecta directamente con el gusto de Alberto por plot twists (Prestige, Usual Suspects, Memento, Fight Club, Oldboy)."
+      "critic_reason": "Slot creativo: kinds a evitar son [genre,era,director,theme,mood]; propongo kind=craft (ángulo narrativo específico no explorado). 'Las 10 películas con el mejor giro de guión de la historia' conecta directamente con los plot twists que Alberto ama (Prestige, Usual Suspects, Memento, Fight Club, Oldboy) y nunca ha aparecido como lista explícita."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas de A24: el sello que redefinió el cine indie",
-      "reasoning": "A24 concentra lo mejor del cine de autor moderno; kind 'studio' nunca explorado en el feed.",
-      "score": 82,
+      "title": "TOP 10 películas A24: el sello que redefinió el cine indie",
+      "reasoning": "A24 agrupa a los mejores autores modernos del catálogo; kind 'studio' nunca explotado.",
+      "score": 80,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 mix: topic_kind=studio no está en recent_top_kinds; A24 es el sello con mayor convergencia con el gusto de Alberto (Hereditary, Midsommar, Everything Everywhere, Anora, Sinners) y no ha tenido post dedicado."
+      "critic_reason": "§3 mix: top válido; kind=studio es territorio virgen en el feed y A24 tiene enorme resonancia cinéfila moderna alineada con el gusto de Alberto (Ari Aster, Eggers, Lanthimos, Sean Baker, Yorgos)."
     }
   ],
   "backlog": [
@@ -164,6 +164,14 @@
       "skill_to_invoke": "cinebret-review"
     },
     {
+      "id": "2cbe21c0e2cfc26c",
+      "type": "FEED",
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
+      "days_ago": 0,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
       "id": "ee7db1141ee271a2",
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
@@ -178,49 +186,37 @@
       "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
       "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "c98f2cae36b16b75",
-      "type": "FEED",
-      "title": "Noticia: Terminator",
-      "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
-      "days_ago": 2,
-      "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Sandra Hüller habla de Proyecto Salvación en Cannes",
-      "summary_es": "Hüller confirma presencia en Cannes y comenta sobre la película que Alberto tiene en el radar.",
-      "source": "Hollywood Reporter",
-      "age_hours": 0,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/cannes-sandra-huller-thr-awards-chatter-pod-guest-1236587142/",
-      "angle": "festival",
-      "catalog_match": {
-        "pelicula_id": "98a598c1-7c8f-4d7d-b77b-483dc849060b",
-        "titulo": "Proyecto Salvación",
-        "anio": 2026
-      },
-      "score": 52,
-      "reason": "§4.4 r3 news_only: match con 'Proyecto Salvación' (Hail Mary, 2026) — película anticipada del catálogo; la noticia es Sandra Hüller en Cannes hablando de esa película, informativo pero sin ángulo postable claro aún."
+      "title_es": "Guillermo del Toro anuncia adaptación stop-motion de 'The Buried Giant' (Ishiguro)",
+      "summary_es": "Del Toro recibió la Beca BFI y confirmó su próximo proyecto; cine de autor de calidad para seguir.",
+      "source": "Deadline",
+      "age_hours": 1,
+      "url": "https://deadline.com/2026/05/guillermo-del-tor-kazuo-ishiguros-the-buried-giant-bfi-1236888463/",
+      "angle": null,
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§4.4 sin match directo al catálogo de calidad ni director match (Guillermo del Toro no está en ninguna lista de directores de AGENT-RULES); sin embargo es noticia interesante de industria — queda como news_only por BFI Fellowship y proyecto stop-motion adulto."
     }
   ],
   "raw_signal_counts": {
     "news_items": 120,
     "newsapi_items": 90,
     "reddit_posts": 0,
-    "trailers": 62
+    "trailers": 63
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 5,
+    "agedCount": 4,
     "expiredByTime": 0,
-    "expiredByCritic": 1
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15630,
-    "output": 11210
+    "input": 15196,
+    "output": 10044
   }
 }

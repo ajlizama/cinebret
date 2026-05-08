@@ -506,8 +506,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-08T12:07:25.851Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-08T20:58:56.691Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -606,11 +606,12 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-08T12:07:25.851Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-05-08T20:58:56.691Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T20:58:56.691Z"
     },
     {
       "id": "902de345b63b2883",
@@ -630,11 +631,12 @@
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-08T12:07:25.851Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-05-08T20:58:56.691Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T20:58:56.691Z"
     },
     {
       "id": "ad96cb2e590a873b",
@@ -655,9 +657,10 @@
       "first_proposed": "2026-05-08T12:07:25.851Z",
       "last_proposed": "2026-05-08T12:07:25.851Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T20:58:56.691Z"
     },
     {
       "id": "361a04ccac09da93",
@@ -678,10 +681,57 @@
       "first_proposed": "2026-05-08T12:07:25.851Z",
       "last_proposed": "2026-05-08T12:07:25.851Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T20:58:56.691Z"
+    },
+    {
+      "id": "07a653c73a5ef8df",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 giros de guión que nadie vio venir",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 83,
+      "reasoning": "Prestige, Usual Suspects, Oldboy: el tipo de cine que más amas convertido en lista definitiva.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-08T20:58:56.691Z",
+      "last_proposed": "2026-05-08T20:58:56.691Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "b63b43990c3a140e",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas A24: el sello que redefinió el cine indie",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "A24 agrupa a los mejores autores modernos del catálogo; kind 'studio' nunca explotado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "studio",
+        "topic": "A24"
+      },
+      "first_proposed": "2026-05-08T20:58:56.691Z",
+      "last_proposed": "2026-05-08T20:58:56.691Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-08T12:10:37.592Z"
+  "last_saved": "2026-05-08T21:01:43.912Z"
 }

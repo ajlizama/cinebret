@@ -1,9 +1,69 @@
 {
-  "generated_at": "2026-05-07T21:55:48.928Z",
+  "generated_at": "2026-05-08T12:06:58.275Z",
   "total_videos": 62,
-  "trailers_count": 13,
-  "matched_to_cinebret": 7,
+  "trailers_count": 11,
+  "matched_to_cinebret": 9,
   "videos": [
+    {
+      "video_id": "IZKjOyHac0M",
+      "title": "STAR WARS: Galactic Racer™ launches worldwide on October 6. Pre-order now #sponsored",
+      "url": "https://www.youtube.com/watch?v=IZKjOyHac0M",
+      "published": "2026-05-08T11:26:11Z",
+      "thumbnail": "https://i.ytimg.com/vi/IZKjOyHac0M/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "mqQs5t0kZKg",
+      "title": "Resident Evil Requiem: Leon Must Die Forever Gameplay",
+      "url": "https://www.youtube.com/watch?v=mqQs5t0kZKg",
+      "published": "2026-05-08T11:20:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/mqQs5t0kZKg/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+        "titulo": "Resident evil - El huésped maldito",
+        "anio": 2002
+      }
+    },
+    {
+      "video_id": "gISxQzi0evY",
+      "title": "Resident Evil Requiem - Leon Must Die Forever Update Trailer",
+      "url": "https://www.youtube.com/watch?v=gISxQzi0evY",
+      "published": "2026-05-08T03:33:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/gISxQzi0evY/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+        "titulo": "Resident evil - El huésped maldito",
+        "anio": 2002
+      }
+    },
+    {
+      "video_id": "lJCg0ZlN4o4",
+      "title": "LEGO Batman honors The Animated Series",
+      "url": "https://www.youtube.com/watch?v=lJCg0ZlN4o4",
+      "published": "2026-05-08T02:49:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/lJCg0ZlN4o4/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "RGLCwWzsTlw",
+      "title": "The Boys parodied the AMC promo",
+      "url": "https://www.youtube.com/watch?v=RGLCwWzsTlw",
+      "published": "2026-05-08T02:49:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/RGLCwWzsTlw/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "q9mKq87imDY",
       "title": "Detective Trupo's Fate 👮 #AmericanGangster #Shorts",
@@ -13,16 +73,6 @@
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "g5xhFgI69FU",
-      "title": "The Mound: Omen of Cthulhu - Official Gameplay Showcase Trailer | Nacon Connect 2026",
-      "url": "https://www.youtube.com/watch?v=g5xhFgI69FU",
-      "published": "2026-05-07T21:00:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/g5xhFgI69FU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "D2FFBM7sr-Q",
@@ -45,36 +95,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "MzmVbMQ3XjU",
-      "title": "Hunter: The Reckoning - Deathwish - Official Developer Diary: 'Pillars of The Hunt' Video",
-      "url": "https://www.youtube.com/watch?v=MzmVbMQ3XjU",
-      "published": "2026-05-07T20:30:08Z",
-      "thumbnail": "https://i.ytimg.com/vi/MzmVbMQ3XjU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "CGa5ZfGL0os",
-      "title": "Order of Wallachia - Official Demo Trailer",
-      "url": "https://www.youtube.com/watch?v=CGa5ZfGL0os",
-      "published": "2026-05-07T20:00:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/CGa5ZfGL0os/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "oDIGnjxhhgU",
-      "title": "Hands-On With Honeycomb's Echo Flight Controller",
-      "url": "https://www.youtube.com/watch?v=oDIGnjxhhgU",
-      "published": "2026-05-07T19:04:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/oDIGnjxhhgU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "xdngF3F4DWI",
       "title": "Crafting the Homelander Character",
       "url": "https://www.youtube.com/watch?v=xdngF3F4DWI",
@@ -83,16 +103,6 @@
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "d_RbhADWJzk",
-      "title": "Hypnos - Official Early Access Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=d_RbhADWJzk",
-      "published": "2026-05-07T19:00:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/d_RbhADWJzk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "02uM-EbaRGw",

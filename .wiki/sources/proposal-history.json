@@ -483,9 +483,10 @@
       "first_proposed": "2026-05-07T21:56:26.719Z",
       "last_proposed": "2026-05-07T21:56:26.719Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T12:07:25.851Z"
     },
     {
       "id": "ee7db1141ee271a2",
@@ -505,11 +506,12 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-07T21:56:26.719Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-05-08T12:07:25.851Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T12:07:25.851Z"
     },
     {
       "id": "be95948db0c5563b",
@@ -531,9 +533,10 @@
       "first_proposed": "2026-05-07T21:56:26.719Z",
       "last_proposed": "2026-05-07T21:56:26.719Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T12:07:25.851Z"
     },
     {
       "id": "78c8d7cf66585306",
@@ -554,9 +557,12 @@
       "first_proposed": "2026-05-07T21:56:26.719Z",
       "last_proposed": "2026-05-07T21:56:26.719Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T12:07:25.851Z",
+      "expired_at": "2026-05-08T12:07:25.851Z",
+      "expired_reason": "§8 anti-pattern topic repetitivo: topic_kind=genre está en recent_top_kinds (últimos 14d); aunque sci-fi cerebral es el género con mayor rating promedio, forzar rotación descarta este kind por ahora."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -577,10 +583,105 @@
       "first_proposed": "2026-05-07T21:56:26.719Z",
       "last_proposed": "2026-05-07T21:56:26.719Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-08T12:07:25.851Z"
+    },
+    {
+      "id": "2cbe21c0e2cfc26c",
+      "action": "generate_review",
+      "title": "Review: Parásitos (2019)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "기생충",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-08T12:07:25.851Z",
+      "last_proposed": "2026-05-08T12:07:25.851Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "902de345b63b2883",
+      "action": "generate_review",
+      "title": "Review: Bastardos sin gloria (2009)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 95,
+      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados sin review publicado todavía.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
+      },
+      "first_proposed": "2026-05-08T12:07:25.851Z",
+      "last_proposed": "2026-05-08T12:07:25.851Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "ad96cb2e590a873b",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 finales que te dejan con la boca abierta",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-08T12:07:25.851Z",
+      "last_proposed": "2026-05-08T12:07:25.851Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "361a04ccac09da93",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas de A24: el sello que redefinió el cine indie",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "A24 concentra lo mejor del cine de autor moderno; kind 'studio' nunca explorado en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "studio",
+        "topic": "A24"
+      },
+      "first_proposed": "2026-05-08T12:07:25.851Z",
+      "last_proposed": "2026-05-08T12:07:25.851Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-07T21:59:57.645Z"
+  "last_saved": "2026-05-08T12:10:37.592Z"
 }

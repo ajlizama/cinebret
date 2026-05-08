@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-07T21:56:26.719Z",
+  "generated_at": "2026-05-08T12:07:25.851Z",
   "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
-  "backlog_count": 7,
+  "backlog_count": 8,
   "news_count": 1,
   "ig_mix": {
     "last6_counts": {
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásitos (2019) — Bong Joon-ho",
-      "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 backlog reevaluado: Parásitos sigue válido — rating 10, sello bret, Bong Joon-ho, IMDb 8.5, Netflix activo; continuidad temática con TOP coreanas."
+      "critic_reason": "§5 backlog reevaluado: Parásitos sigue siendo el candidato más fuerte del pool — rating 10, IMDb 8.5, Bong Joon-ho, continuidad coreanas; no en historial IG."
     },
     {
       "id": "119c0775fc431172",
@@ -49,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
+      "reasoning": "El cierre épico de Jackson con IMDb 9.0; uno de los ratings 10 más urgentes del catálogo.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: El Retorno del Rey, rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; sin review previo en historial."
+      "critic_reason": "§4.5 review válida: El Retorno del Rey, rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa; no aparece en historial IG reciente."
     },
     {
       "id": "057ed8a4300465a7",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Inglourious Basterds (2009) — Tarantino",
-      "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
+      "title": "Review: Bastardos sin gloria (2009)",
+      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados sin review publicado todavía.",
       "score": 95,
       "category": "review",
       "angle": "review",
@@ -81,15 +81,15 @@
         "anio": 2009,
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review válida: Inglourious Basterds, rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; sin review previo en historial."
+      "critic_reason": "§4.5 review válida: Inglourious Basterds, rating 10 + sello bret + Tarantino (Olimpo) + IMDb 8.3 + plataforma activa; no aparece en historial IG reciente."
     },
     {
-      "id": "15fd5d7f3894a573",
+      "id": "104c6cc38a62011f",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 ciencia ficción cerebral",
-      "reasoning": "Sci-fi cerebral es el género con rating promedio más alto en tu catálogo; tema sin post reciente.",
+      "title": "TOP 10 finales que te dejan con la boca abierta",
+      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -97,29 +97,29 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "genre",
-        "topic": "sci-fi cerebral"
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§3 mix editorial: déficits en 0, siguiente slot en patrón es TOP; sci-fi cerebral es Tier 1 del perfil de Alberto y no hay post reciente de ese tema."
+      "critic_reason": "§instrucción creativa: slot abierto — propongo TOP de finales que cambiaron todo (twist endings), kind=narrative que no está en recent_top_kinds y conecta directamente con el gusto de Alberto por plot twists (Prestige, Usual Suspects, Memento, Fight Club, Oldboy)."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas",
-      "reasoning": "Miyazaki tiene 4 sello bret y Japón complementa el TOP coreanas del 30 de abril.",
-      "score": 80,
+      "title": "TOP 10 películas de A24: el sello que redefinió el cine indie",
+      "reasoning": "A24 concentra lo mejor del cine de autor moderno; kind 'studio' nunca explorado en el feed.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "country",
-        "topic": "japón"
+        "topic_type": "studio",
+        "topic": "A24"
       },
-      "critic_reason": "§3 mix: propuesta TOP válida; japonesas complementa el TOP coreanas reciente y Miyazaki tiene 4 sello bret."
+      "critic_reason": "§3 mix: topic_kind=studio no está en recent_top_kinds; A24 es el sello con mayor convergencia con el gusto de Alberto (Hereditary, Midsommar, Everything Everywhere, Anora, Sinners) y no ha tenido post dedicado."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,67 +152,75 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-share-story"
+    },
+    {
+      "id": "43d3869a8b1ce657",
+      "type": "FEED",
+      "title": "Review: Parásitos (2019) — Bong Joon-ho",
+      "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "ee7db1141ee271a2",
+      "type": "FEED",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "be95948db0c5563b",
+      "type": "FEED",
+      "title": "Review: Inglourious Basterds (2009) — Tarantino",
+      "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
     },
     {
       "id": "c98f2cae36b16b75",
       "type": "FEED",
       "title": "Noticia: Terminator",
       "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
-      "days_ago": 1,
-      "skill_to_invoke": "cinebret-list-from-news"
-    },
-    {
-      "id": "fecc4d46aebb463c",
-      "type": "FEED",
-      "title": "TOP 10 películas francesas",
-      "reasoning": "Tema con tracción (66 pts: news + estacional + sin posts recientes).",
-      "days_ago": 1,
-      "skill_to_invoke": "cinebret-carousel-topic"
-    },
-    {
-      "id": "787cebed76170ab8",
-      "type": "FEED",
-      "title": "TOP 10 películas británicas",
-      "reasoning": "Tema con tracción: 80 pts (news + estacional + sin posts recientes).",
       "days_ago": 2,
-      "skill_to_invoke": "cinebret-carousel-topic"
+      "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Todos los hombres del presidente cumple 50 años",
-      "summary_es": "El thriller político de Redford y Hoffman cumple medio siglo; hay debate sobre remake actualizado.",
-      "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1t6niol/all_the_presidents_men_turns_50_years_old_half_a/",
-      "angle": "anniversary",
+      "title_es": "Sandra Hüller habla de Proyecto Salvación en Cannes",
+      "summary_es": "Hüller confirma presencia en Cannes y comenta sobre la película que Alberto tiene en el radar.",
+      "source": "Hollywood Reporter",
+      "age_hours": 0,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/cannes-sandra-huller-thr-awards-chatter-pod-guest-1236587142/",
+      "angle": "festival",
       "catalog_match": {
-        "pelicula_id": "2b5b3e1a-b044-4845-a8c3-4ac1854c3cf8",
-        "titulo": "Todos los hombres del presidente",
-        "anio": 1976
+        "pelicula_id": "98a598c1-7c8f-4d7d-b77b-483dc849060b",
+        "titulo": "Proyecto Salvación",
+        "anio": 2026
       },
-      "score": 62,
-      "reason": "§4.4 regla 3: 'Todos los hombres del presidente' cumple aniversario 50 y está en catálogo, pero rating < 7 no confirmado y ángulo es informativo/cultural sin match de calidad sólido; va a bloque noticias."
+      "score": 52,
+      "reason": "§4.4 r3 news_only: match con 'Proyecto Salvación' (Hail Mary, 2026) — película anticipada del catálogo; la noticia es Sandra Hüller en Cannes hablando de esa película, informativo pero sin ángulo postable claro aún."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 118,
-    "newsapi_items": 89,
+    "news_items": 120,
+    "newsapi_items": 90,
     "reddit_posts": 0,
     "trailers": 62
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 1,
+    "agedCount": 5,
     "expiredByTime": 0,
-    "expiredByCritic": 10
+    "expiredByCritic": 1
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15321,
-    "output": 10872
+    "input": 15630,
+    "output": 11210
   }
 }

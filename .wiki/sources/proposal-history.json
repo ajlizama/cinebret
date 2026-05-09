@@ -379,10 +379,12 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+      "became_backlog_at": "2026-05-06T21:09:49.676Z",
+      "expired_at": "2026-05-09T20:41:42.123Z",
+      "expired_reason": "§backlog reevaluación: kind=country ya cubierto con Japón y Reino Unido en este ciclo; Francia tiene menor ancla en catálogo — descartado para evitar saturar kind=country en un solo ciclo."
     },
     {
       "id": "c98f2cae36b16b75",
@@ -506,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-09T11:45:19.177Z",
-      "cycles_proposed": 4,
+      "last_proposed": "2026-05-09T20:41:42.123Z",
+      "cycles_proposed": 5,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -606,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-09T11:45:19.177Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-09T20:41:42.123Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -631,8 +633,8 @@
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-09T11:45:19.177Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-09T20:41:42.123Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -729,10 +731,12 @@
       "first_proposed": "2026-05-08T20:58:56.691Z",
       "last_proposed": "2026-05-08T20:58:56.691Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-09T11:45:19.177Z"
+      "became_backlog_at": "2026-05-09T11:45:19.177Z",
+      "expired_at": "2026-05-09T20:41:42.123Z",
+      "expired_reason": "§8 anti-pattern 6: duplicado del sujeto A24 ya cubierto con b4c419b4 y 361a04cc en este ciclo — mismo kind=studio, mismo topic; se descarta el de menor urgencia para evitar repetición."
     },
     {
       "id": "e149394a31c04ccc",
@@ -753,9 +757,10 @@
       "first_proposed": "2026-05-09T11:45:19.177Z",
       "last_proposed": "2026-05-09T11:45:19.177Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-09T20:41:42.123Z"
     },
     {
       "id": "59668ffd71b9b7d8",
@@ -773,13 +778,39 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "first_proposed": "2026-05-09T11:45:19.177Z",
-      "last_proposed": "2026-05-09T11:45:19.177Z",
+      "first_proposed": "2026-05-09T20:41:42.123Z",
+      "last_proposed": "2026-05-09T20:41:42.123Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-09T20:41:42.123Z",
+      "expired_at": "2026-05-09T20:41:42.123Z",
+      "expired_reason": "§8 anti-pattern 6: tercer duplicado del sujeto A24 (junto a b4c419b4, 361a04cc, b63b43990) — mismo kind=studio, mismo topic; descartado por redundancia."
+    },
+    {
+      "id": "55e0da46c29771c6",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas que transcurren en un solo día (y se sienten en tiempo real)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Locke, Uncut Gems, Die Hard, Cleo de 5 a 7 — el cine que comprime todo en 24 horas sin perder intensidad.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-09T20:41:42.123Z",
+      "last_proposed": "2026-05-09T20:41:42.123Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-09T11:48:40.068Z"
+  "last_saved": "2026-05-09T20:45:48.316Z"
 }

@@ -1,9 +1,149 @@
 {
-  "generated_at": "2026-05-09T11:44:47.418Z",
+  "generated_at": "2026-05-09T20:41:42.036Z",
   "total_videos": 63,
-  "trailers_count": 9,
-  "matched_to_cinebret": 12,
+  "trailers_count": 6,
+  "matched_to_cinebret": 17,
   "videos": [
+    {
+      "video_id": "HNMP1UdjOsE",
+      "title": "The world of 'Money Heist' continues | Official Announcement | Netflix",
+      "url": "https://www.youtube.com/watch?v=HNMP1UdjOsE",
+      "published": "2026-05-09T20:28:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/HNMP1UdjOsE/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "SCSu-qYq5JE",
+      "title": "Jennifer Lawrence and Robert Pattinson recommend a selection of marriage stories and mad love | MUBI",
+      "url": "https://www.youtube.com/watch?v=SCSu-qYq5JE",
+      "published": "2026-05-09T19:00:59Z",
+      "thumbnail": "https://i.ytimg.com/vi/SCSu-qYq5JE/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "RmQYH_wiU2s",
+      "title": "The Police Corruption Scandal 🚓 #AmericanGangster #Shorts",
+      "url": "https://www.youtube.com/watch?v=RmQYH_wiU2s",
+      "published": "2026-05-09T19:00:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/RmQYH_wiU2s/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "q8q-vmgjOUA",
+      "title": "Subnautica 2 - Official Early Access Gameplay Trailer",
+      "url": "https://www.youtube.com/watch?v=q8q-vmgjOUA",
+      "published": "2026-05-09T18:16:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/q8q-vmgjOUA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "QLorWOhZCts",
+      "title": "The Roast of Kevin Hart LIVE on Netflix, Sunday, May 10. 8PM ET | 5PM PT",
+      "url": "https://www.youtube.com/watch?v=QLorWOhZCts",
+      "published": "2026-05-09T18:00:20Z",
+      "thumbnail": "https://i.ytimg.com/vi/QLorWOhZCts/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "hPHDGCQEKuM",
+      "title": "Poolside lounging only. #MargosGotMoneyTroubles — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=hPHDGCQEKuM",
+      "published": "2026-05-09T17:59:59Z",
+      "thumbnail": "https://i.ytimg.com/vi/hPHDGCQEKuM/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "134FTuHbw2g",
+      "title": "American Gangster | Frank Lucas Snitches on Corrupt Police",
+      "url": "https://www.youtube.com/watch?v=134FTuHbw2g",
+      "published": "2026-05-09T17:00:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/134FTuHbw2g/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "b0bb65f5-3cf7-4e70-9bae-cf042008de5c",
+        "titulo": "American gangster",
+        "anio": 2007
+      }
+    },
+    {
+      "video_id": "0yg4gYK9-14",
+      "title": "Nick and Noah’s Meet Cute | My Fault: London | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=0yg4gYK9-14",
+      "published": "2026-05-09T17:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/0yg4gYK9-14/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
+        "titulo": "Culpa mía: Londres",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "V7kLc3oK_zE",
+      "title": "Your Friends & Neighbors — The Eulogy | Season 2 Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=V7kLc3oK_zE",
+      "published": "2026-05-09T16:59:47Z",
+      "thumbnail": "https://i.ytimg.com/vi/V7kLc3oK_zE/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
+        "titulo": "Malditos vecinos",
+        "anio": 2014
+      }
+    },
+    {
+      "video_id": "WcDa_BTvOG0",
+      "title": "What would you do to protect the ones you love? THE MYSTERIOUS GAZE OF THE FLAMINGO | MUBI",
+      "url": "https://www.youtube.com/watch?v=WcDa_BTvOG0",
+      "published": "2026-05-09T15:00:23Z",
+      "thumbnail": "https://i.ytimg.com/vi/WcDa_BTvOG0/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "aB9eX4hnDx0",
+      "title": "Welcome to the Team | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=aB9eX4hnDx0",
+      "published": "2026-05-09T15:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/aB9eX4hnDx0/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "z-tIu-Qv5JQ",
+      "title": "Monarch: Legacy of Monsters — Best Monster Sightings of Season 2 | Apple TV",
+      "url": "https://www.youtube.com/watch?v=z-tIu-Qv5JQ",
+      "published": "2026-05-09T12:59:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/z-tIu-Qv5JQ/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
+        "titulo": "Monsters: El infierno del dragón",
+        "anio": 2024
+      }
+    },
     {
       "video_id": "CwsLLrVS-Io",
       "title": "Leon Must Die Forever is a new mode added to Resident Evil Requiem",
@@ -45,16 +185,6 @@
       "url": "https://www.youtube.com/watch?v=hMUI9tpV69U",
       "published": "2026-05-09T00:59:17Z",
       "thumbnail": "https://i.ytimg.com/vi/hMUI9tpV69U/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "fpQbEgJOerU",
-      "title": "Mixtape is a masterpiece.",
-      "url": "https://www.youtube.com/watch?v=fpQbEgJOerU",
-      "published": "2026-05-09T00:58:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/fpQbEgJOerU/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
@@ -160,16 +290,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "tNZF4Z7vn7M",
-      "title": "A hit that goes hard and plays soft. Billie Eilish: #TheWorldsALittleBlurry — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=tNZF4Z7vn7M",
-      "published": "2026-05-08T18:59:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/tNZF4Z7vn7M/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "1h57u2ask6A",
       "title": "ACM Awards - The country collabs of our dreams. | Prime Video",
       "url": "https://www.youtube.com/watch?v=1h57u2ask6A",
@@ -202,36 +322,6 @@
       "thumbnail": "https://i.ytimg.com/vi/jvTV9K-fVK4/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "1iAnmzNW66c",
-      "title": "The Great Viltrumite Purge | Invincible Season 4 | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=1iAnmzNW66c",
-      "published": "2026-05-08T17:00:03Z",
-      "thumbnail": "https://i.ytimg.com/vi/1iAnmzNW66c/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "NL9Ohi8OeOc",
-      "title": "For All Mankind — News From Mars | Season 5 Scene | Apple TV",
-      "url": "https://www.youtube.com/watch?v=NL9Ohi8OeOc",
-      "published": "2026-05-08T16:59:59Z",
-      "thumbnail": "https://i.ytimg.com/vi/NL9Ohi8OeOc/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "1-rLXY_jFcE",
-      "title": "KIRBY - Saving Grace (Official Music Video) from Spider-Noir (The Prime Original Series)",
-      "url": "https://www.youtube.com/watch?v=1-rLXY_jFcE",
-      "published": "2026-05-08T15:59:53Z",
-      "thumbnail": "https://i.ytimg.com/vi/1-rLXY_jFcE/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -300,16 +390,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "13xxP6gxSRQ",
-      "title": "She remembers the summer of ’99 well. #MargosGotMoneyTroubles — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=13xxP6gxSRQ",
-      "published": "2026-05-07T18:59:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/13xxP6gxSRQ/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "BGscqrNbXW8",
       "title": "Let it play. Paul Rudd and Nick Jonas star in #PowerBallad.",
       "url": "https://www.youtube.com/watch?v=BGscqrNbXW8",
@@ -337,16 +417,6 @@
       "thumbnail": "https://i.ytimg.com/vi/TnHby2cxJzs/hqdefault.jpg",
       "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "M25rV3eUyBs",
-      "title": "MITSKI: THE LAND | Trailer | Hand-picked by MUBI",
-      "url": "https://www.youtube.com/watch?v=M25rV3eUyBs",
-      "published": "2026-05-07T16:48:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/M25rV3eUyBs/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
       "is_trailer": true
     },
     {
@@ -400,16 +470,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "SlaT0rq-LOc",
-      "title": "From 'indie TV on a shoestring' to journalists on the verge of exile.  MY UNDESIRABLE FRIENDS | MUBI",
-      "url": "https://www.youtube.com/watch?v=SlaT0rq-LOc",
-      "published": "2026-05-07T15:01:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/SlaT0rq-LOc/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "fsni9_lPh1k",
       "title": "Hot Fuzz | Sgt. Nicholas Angel’s First Day on the Job",
       "url": "https://www.youtube.com/watch?v=fsni9_lPh1k",
@@ -445,26 +505,6 @@
       "url": "https://www.youtube.com/watch?v=PJIJwZk-Vuw",
       "published": "2026-05-07T13:30:00Z",
       "thumbnail": "https://i.ytimg.com/vi/PJIJwZk-Vuw/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "ZRDp88kZn2A",
-      "title": "I Will Find You | Official Teaser | Netflix",
-      "url": "https://www.youtube.com/watch?v=ZRDp88kZn2A",
-      "published": "2026-05-07T13:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/ZRDp88kZn2A/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "q7taU9-vOAo",
-      "title": "Untold UK: Jamie Vardy | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=q7taU9-vOAo",
-      "published": "2026-05-07T09:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/q7taU9-vOAo/hqdefault.jpg",
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": true
@@ -592,7 +632,12 @@
       "thumbnail": "https://i.ytimg.com/vi/HaZsOipO-xE/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
-      "is_trailer": false
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "7a4f6909-0f63-4e4f-b97d-4badd929d87b",
+        "titulo": "Obsession",
+        "anio": 2026
+      }
     },
     {
       "video_id": "PbgTrT7Cf4U",
@@ -660,31 +705,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "f_bKjZeJBBI",
-      "title": "The Odyssey | Official New Trailer",
-      "url": "https://www.youtube.com/watch?v=f_bKjZeJBBI",
-      "published": "2026-05-05T04:10:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/f_bKjZeJBBI/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "SmUe1IaoMQ4",
-      "title": "Let's just say he has an uncompromising vision | 🎬 Phantom Thread (2017)",
-      "url": "https://www.youtube.com/watch?v=SmUe1IaoMQ4",
-      "published": "2026-05-04T21:00:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/SmUe1IaoMQ4/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "1ef8622b-54c6-48e9-a592-cfc366b98603",
-        "titulo": "El hilo invisible",
-        "anio": 2017
-      }
-    },
-    {
       "video_id": "UWVznyWUS-E",
       "title": "OBSESSION - \"Nice Date\" Official Clip",
       "url": "https://www.youtube.com/watch?v=UWVznyWUS-E",
@@ -692,7 +712,12 @@
       "thumbnail": "https://i.ytimg.com/vi/UWVznyWUS-E/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
-      "is_trailer": false
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "7a4f6909-0f63-4e4f-b97d-4badd929d87b",
+        "titulo": "Obsession",
+        "anio": 2026
+      }
     }
   ]
 }

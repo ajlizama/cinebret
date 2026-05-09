@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-09T11:45:19.177Z",
-  "cycle": "am",
+  "generated_at": "2026-05-09T20:41:42.123Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "La película que ganó el Óscar a Mejor Película y cambió la conversación sobre el cine internacional.",
+      "reasoning": "La película que ganó el Óscar y cambió cómo el mundo ve el cine coreano — sin review en cinebret.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,27 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review (backlog): Rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho + plataforma activa; backlog de 3 días, sigue siendo el review más urgente del pool."
+      "critic_reason": "§4.5 backlog review: Parasite rating 10 + sello bret + Bong Joon-ho + Netflix activa; backlog vigente (3 días), sin review publicado — máxima prioridad."
+    },
+    {
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson ganó 11 Óscars — uno de tus sagrados que el feed todavía no tiene.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review: Return of the King rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa; sin review en historial reciente."
     },
     {
       "id": "057ed8a4300465a7",
@@ -49,7 +69,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Bastardos sin gloria (2009)",
-      "reasoning": "Tarantino en su cima narrativa: una de tus 38 sagradas que todavía no tiene review en el feed.",
+      "reasoning": "Tarantino en su cima narrativa: uno de tus 38 sagrados todavía sin review publicado.",
       "score": 95,
       "category": "review",
       "angle": "review",
@@ -61,36 +81,16 @@
         "anio": 2009,
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review: Rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; no hay review publicado; boost +15 director Olimpo."
+      "critic_reason": "§4.5 review: Inglourious Basterds rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; sin review en historial reciente."
     },
     {
-      "id": "119c0775fc431172",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson: 11 Óscars y una de tus 38 sagradas que el feed todavía no ha revisado.",
-      "score": 95,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
-      },
-      "critic_reason": "§4.5 review: Rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret) + plataforma activa; no hay review publicado."
-    },
-    {
-      "id": "9b4f0f990f40851c",
+      "id": "f87e46a86f7cd735",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 directores de un solo hit: los que lo dieron todo en una película",
-      "reasoning": "Directores que filmaron una obra maestra y desaparecieron — el cine más honesto y misterioso que existe.",
-      "score": 80,
+      "title": "TOP 10 películas que transcurren en un solo día (y se sienten en tiempo real)",
+      "reasoning": "Locke, Uncut Gems, Die Hard, Cleo de 5 a 7 — el cine que comprime todo en 24 horas sin perder intensidad.",
+      "score": 85,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=studio, ángulo 'twist narrativo por director desconocido' — idea fresca que evita todos los recent_top_kinds [theme,genre,era,director,mood] y conecta con el amor de Alberto por plot twists."
+      "critic_reason": "§instrucción creativa: kinds a evitar [theme, genre, era, director, mood]; propongo kind=craft/technique — '10 películas filmadas casi en tiempo real' es un ángulo narrativo no obvio, con alto valor cinéfilo y sin precedente en el feed."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
-      "priority": "media",
+      "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas A24: el sello que redefinió el cine de autor",
-      "reasoning": "A24 agrupa a Ari Aster, Robert Eggers y Sean Baker — los autores que más están dando de qué hablar.",
-      "score": 76,
+      "reasoning": "A24 concentra a Aster, Eggers y Baker — los autores modernos más alineados con tu gusto cinéfilo.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 mix: kind=studio no está en recent_top_kinds; A24 es el sello más relevante del cine de autor moderno con match fuerte en catálogo."
+      "critic_reason": "§3 mix: kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers, Sean Baker y Yorgos Lanthimos — autores del catálogo con alto engagement cinéfilo."
     }
   ],
   "backlog": [
@@ -190,34 +190,34 @@
   ],
   "news": [
     {
-      "title_es": "Dato de Puñales por la espalda: Toni Collette improvisó su acento australiano a propósito",
-      "summary_es": "Collette cometió un error de pronunciación y decidió mantenerlo como rasgo del personaje; dato de trivia.",
-      "source": "r/MovieDetails",
-      "age_hours": 12,
-      "url": "https://www.reddit.com/r/MovieDetails/comments/1t7nye2/knives_out_2019_toni_collette_mistakenly_uses_her/",
+      "title_es": "12 hombres sin piedad (1957) vuelve a viral en Reddit con escena 'Those People'",
+      "summary_es": "La escena clásica de Lumet circula en Reddit — muestra que tus 38 sagrados siguen vigentes culturalmente.",
+      "source": "r/movies",
+      "age_hours": 3,
+      "url": "https://www.reddit.com/r/movies/comments/1t8b10a/12_angry_men_1957_sidney_lumet_those_people/",
       "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "1c7462d4-bd29-46c6-b215-96f55a403cce",
-        "titulo": "Puñales por la espalda",
-        "anio": 2019
+        "pelicula_id": "6ef951a5-ab61-489f-87a0-f2af49616266",
+        "titulo": "12 hombres sin piedad: Veredicto final",
+        "anio": 1997
       },
-      "score": 65,
-      "reason": "§4.4 regla 3: catalog_match de calidad con Puñales por la espalda (Rian Johnson, rating ≥7, sello); ángulo informativo/curioso sobre detalles de actuación — no hay event postable pero es del tipo 'dato detrás de cámara' que Alberto valora."
+      "score": 60,
+      "reason": "§4.2/4.4: 12 Angry Men (1957) tiene sello bret (rating 10 en catálogo Alberto); clip de Reddit de escena icónica es informativo y muestra que la película sigue generando conversación, pero el ángulo es solo un clip, no un evento postable."
     },
     {
-      "title_es": "¿Sabías que existe 'The Godfather Saga'? El corte cronológico de Partes I y II",
-      "summary_es": "Existe una miniserie oficial de 1977 que une El Padrino I y II en orden cronológico con escenas inéditas.",
-      "source": "r/television",
-      "age_hours": 11,
-      "url": "https://www.reddit.com/r/television/comments/1t7pdfo/so_i_just_learned_theres_an_official_godfather/",
-      "angle": "cultural-moment",
+      "title_es": "Sally Field confiesa que Robin Williams no le causaba gracia en el set de Señora Doubtfire",
+      "summary_es": "Field revela que nunca reía en set — dato curioso sobre la química real detrás de la comedia clásica de 1993.",
+      "source": "Variety",
+      "age_hours": 2,
+      "url": "https://variety.com/2026/film/news/sally-field-robin-williams-wasnt-funny-mrs-doubtfire-1236742374/",
+      "angle": null,
       "catalog_match": {
-        "pelicula_id": "b8e66308-faff-4599-bc3f-32fb2a890cc0",
-        "titulo": "El padrino",
-        "anio": 1972
+        "pelicula_id": "56c78f91-95d1-41cf-a10c-3357b31b4804",
+        "titulo": "Señora Doubtfire: Papá de por vida",
+        "anio": 1993
       },
-      "score": 62,
-      "reason": "§4.4 regla 3: catalog_match de calidad con El Padrino (rating alto, catálogo icónico); pero el ángulo es puramente informativo/curioso — no hay event postable concreto (trailer, aniversario, lanzamiento)."
+      "score": 55,
+      "reason": "§4.3/4.4: Mrs. Doubtfire tiene match catálogo (rating implícito por sello, año 1993); anécdota de Sally Field sobre Robin Williams es curiosidad de making-of entretenida, pero el ángulo es §4.1 behind-the-scenes/featurette — informativo, no postable."
     }
   ],
   "raw_signal_counts": {
@@ -230,12 +230,12 @@
     "acceptedCount": 0,
     "agedCount": 2,
     "expiredByTime": 0,
-    "expiredByCritic": 0
+    "expiredByCritic": 3
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16359,
-    "output": 10894
+    "input": 16016,
+    "output": 11836
   }
 }

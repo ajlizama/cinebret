@@ -1,18 +1,118 @@
 {
-  "generated_at": "2026-05-08T20:58:56.601Z",
+  "generated_at": "2026-05-09T11:44:47.418Z",
   "total_videos": 63,
-  "trailers_count": 12,
-  "matched_to_cinebret": 11,
+  "trailers_count": 9,
+  "matched_to_cinebret": 12,
   "videos": [
     {
-      "video_id": "u-6n7pkRnU4",
-      "title": "Star Wars: Legion - Official Mandalorian Army Trailer",
-      "url": "https://www.youtube.com/watch?v=u-6n7pkRnU4",
-      "published": "2026-05-08T20:05:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/u-6n7pkRnU4/hqdefault.jpg",
+      "video_id": "CwsLLrVS-Io",
+      "title": "Leon Must Die Forever is a new mode added to Resident Evil Requiem",
+      "url": "https://www.youtube.com/watch?v=CwsLLrVS-Io",
+      "published": "2026-05-09T01:01:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/CwsLLrVS-Io/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
-      "is_trailer": true
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+        "titulo": "Resident evil - El huésped maldito",
+        "anio": 2002
+      }
+    },
+    {
+      "video_id": "CTpILnebW50",
+      "title": "Interviewing Kano on a roller coaster",
+      "url": "https://www.youtube.com/watch?v=CTpILnebW50",
+      "published": "2026-05-09T01:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/CTpILnebW50/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "_c_s291jpSM",
+      "title": "Animated moms join Fortnite in time for Mother's Day",
+      "url": "https://www.youtube.com/watch?v=_c_s291jpSM",
+      "published": "2026-05-09T00:59:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/_c_s291jpSM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "hMUI9tpV69U",
+      "title": "Johnny Cage x Kano movie when?",
+      "url": "https://www.youtube.com/watch?v=hMUI9tpV69U",
+      "published": "2026-05-09T00:59:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/hMUI9tpV69U/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "fpQbEgJOerU",
+      "title": "Mixtape is a masterpiece.",
+      "url": "https://www.youtube.com/watch?v=fpQbEgJOerU",
+      "published": "2026-05-09T00:58:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/fpQbEgJOerU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "AoCzxZO4MVg",
+      "title": "I, Frankenstein (2014) | Full Movie | Aaron Eckhart, Bill Nighy, Miranda Otto, Yvonne Strahovski",
+      "url": "https://www.youtube.com/watch?v=AoCzxZO4MVg",
+      "published": "2026-05-08T22:51:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/AoCzxZO4MVg/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "b51f4e42-fe0b-46ea-a130-5fa9bb80f3b3",
+        "titulo": "Frankenstein",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "j8JS0AiHzQ8",
+      "title": "It's showtime. 😎 #MortalKombatMovie",
+      "url": "https://www.youtube.com/watch?v=j8JS0AiHzQ8",
+      "published": "2026-05-08T21:00:57Z",
+      "thumbnail": "https://i.ytimg.com/vi/j8JS0AiHzQ8/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "fsPJ1GsUTUs",
+      "title": "Hot Fuzz | The Moment Sgt. Angel Discovers a Cult",
+      "url": "https://www.youtube.com/watch?v=fsPJ1GsUTUs",
+      "published": "2026-05-08T21:00:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/fsPJ1GsUTUs/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "UeymsozLfbc",
+      "title": "The Many Voice Actors Behind Kevin | Prime Video",
+      "url": "https://www.youtube.com/watch?v=UeymsozLfbc",
+      "published": "2026-05-08T21:00:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/UeymsozLfbc/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ea65ii_uec8",
+      "title": "Lip liner is her love language. No notes. #MargosGotMoneyTroubles — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=ea65ii_uec8",
+      "published": "2026-05-08T20:59:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/ea65ii_uec8/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
     },
     {
       "video_id": "QxgPLkDwcGM",
@@ -60,16 +160,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "HuSE_Uv6rUg",
-      "title": "Escape from Tarkov - Official Icebreaker Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=HuSE_Uv6rUg",
-      "published": "2026-05-08T19:00:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/HuSE_Uv6rUg/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "tNZF4Z7vn7M",
       "title": "A hit that goes hard and plays soft. Billie Eilish: #TheWorldsALittleBlurry — Now Streaming",
       "url": "https://www.youtube.com/watch?v=tNZF4Z7vn7M",
@@ -90,31 +180,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "y-e6wweSvgw",
-      "title": "Michael - Official 'Visiting the Set' Featurette (2026) Jaafar Jackson, Nia Long, Colman Domingo",
-      "url": "https://www.youtube.com/watch?v=y-e6wweSvgw",
-      "published": "2026-05-08T18:00:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/y-e6wweSvgw/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "8Xo1HJ8pU34",
-      "title": "A&E Doctors React to Mortal Kombat’s Most Gruesome Fatalities",
-      "url": "https://www.youtube.com/watch?v=8Xo1HJ8pU34",
-      "published": "2026-05-08T17:04:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/8Xo1HJ8pU34/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
-        "titulo": "Mortal Kombat",
-        "anio": 1995
-      }
-    },
-    {
       "video_id": "R4bXrkMnyfc",
       "title": "We love you, mothers! | 🎬 Despicable Me 2 (2013)",
       "url": "https://www.youtube.com/watch?v=R4bXrkMnyfc",
@@ -128,16 +193,6 @@
         "titulo": "Gru: Mi villano favorito",
         "anio": 2010
       }
-    },
-    {
-      "video_id": "OmuhfmpZSSQ",
-      "title": "Pitfall - Official Trailer (2026) Randy Couture",
-      "url": "https://www.youtube.com/watch?v=OmuhfmpZSSQ",
-      "published": "2026-05-08T17:00:37Z",
-      "thumbnail": "https://i.ytimg.com/vi/OmuhfmpZSSQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "jvTV9K-fVK4",
@@ -193,16 +248,6 @@
         "titulo": "The Breadwinner (El pan de la guerra)",
         "anio": 2017
       }
-    },
-    {
-      "video_id": "-CCX6zeD7C8",
-      "title": "Reunited | Tom Clancy's Jack Ryan: Ghost War | Prime Video",
-      "url": "https://www.youtube.com/watch?v=-CCX6zeD7C8",
-      "published": "2026-05-08T15:14:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/-CCX6zeD7C8/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "aUio1KhuCTc",
@@ -272,16 +317,6 @@
       "thumbnail": "https://i.ytimg.com/vi/BGscqrNbXW8/hqdefault.jpg",
       "channel": "Lionsgate",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "PFU0TbcGJEA",
-      "title": "What to Watch on Apple TV in 2026 | Ted Lasso, Silo, Slow Horses & More | Apple TV",
-      "url": "https://www.youtube.com/watch?v=PFU0TbcGJEA",
-      "published": "2026-05-07T17:59:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/PFU0TbcGJEA/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -510,16 +545,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "VOkqdSx0-9Q",
-      "title": "You dropped some things. #EvilDeadBurn only in theaters July 10.",
-      "url": "https://www.youtube.com/watch?v=VOkqdSx0-9Q",
-      "published": "2026-05-05T20:10:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/VOkqdSx0-9Q/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "Q-SLPVSsS4U",
       "title": "Still thinking about Bieberchella? Real ones are still thinking about his scene in Zoolander 2.",
       "url": "https://www.youtube.com/watch?v=Q-SLPVSsS4U",
@@ -577,16 +602,6 @@
       "thumbnail": "https://i.ytimg.com/vi/PbgTrT7Cf4U/hqdefault.jpg",
       "channel": "Universal Pictures",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "jWddzd1YM34",
-      "title": "In one month, one song changes it all. #PowerBallad",
-      "url": "https://www.youtube.com/watch?v=jWddzd1YM34",
-      "published": "2026-05-05T16:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/jWddzd1YM34/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -675,16 +690,6 @@
       "url": "https://www.youtube.com/watch?v=UWVznyWUS-E",
       "published": "2026-05-04T17:00:39Z",
       "thumbnail": "https://i.ytimg.com/vi/UWVznyWUS-E/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "tN-oiFCRGuc",
-      "title": "A Thousand and One | Inez's New Landlord Wants to do Renovations",
-      "url": "https://www.youtube.com/watch?v=tN-oiFCRGuc",
-      "published": "2026-05-03T21:00:53Z",
-      "thumbnail": "https://i.ytimg.com/vi/tN-oiFCRGuc/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false

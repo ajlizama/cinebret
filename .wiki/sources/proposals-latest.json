@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-08T20:58:56.691Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-09T11:45:19.177Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 1,
+  "news_count": 2,
   "ig_mix": {
     "last6_counts": {
-      "review": 3,
-      "contenido": 1,
+      "review": 2,
+      "contenido": 2,
       "top": 2
     },
     "target": {
@@ -17,7 +17,7 @@
       "top": 2
     },
     "deficits": {
-      "review": 0,
+      "review": 1,
       "contenido": 0,
       "top": 0
     }
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; tu rating 10 y aún sin review en el feed.",
+      "reasoning": "La película que ganó el Óscar a Mejor Película y cambió la conversación sobre el cine internacional.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,27 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog reevaluado: Parásitos, rating 10 + IMDb 8.5 + sello bret + Bong Joon-ho + Netflix activa; sin review. (Mismo id que propuesta fresca — score idéntico.)"
-    },
-    {
-      "id": "119c0775fc431172",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "IMDb 9.0 y 11 Óscars; la conclusión épica de Jackson que merece su review oficial.",
-      "score": 96,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
-      },
-      "critic_reason": "§4.5 review válida: LOTR Return of the King, rating 10 + IMDb 9.0 + sello bret + Peter Jackson (muy respetado) + plataforma activa; sin review publicado."
+      "critic_reason": "§4.5 review (backlog): Rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho + plataforma activa; backlog de 3 días, sigue siendo el review más urgente del pool."
     },
     {
       "id": "057ed8a4300465a7",
@@ -69,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Bastardos sin gloria (2009)",
-      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados que aún espera su review.",
+      "reasoning": "Tarantino en su cima narrativa: una de tus 38 sagradas que todavía no tiene review en el feed.",
       "score": 95,
       "category": "review",
       "angle": "review",
@@ -81,16 +61,36 @@
         "anio": 2009,
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review válida: Inglourious Basterds, rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; sin review publicado."
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; no hay review publicado; boost +15 director Olimpo."
     },
     {
-      "id": "cce60d869699bb87",
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson: 11 Óscars y una de tus 38 sagradas que el feed todavía no ha revisado.",
+      "score": 95,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret) + plataforma activa; no hay review publicado."
+    },
+    {
+      "id": "9b4f0f990f40851c",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 giros de guión que nadie vio venir",
-      "reasoning": "Prestige, Usual Suspects, Oldboy: el tipo de cine que más amas convertido en lista definitiva.",
-      "score": 83,
+      "title": "TOP 10 directores de un solo hit: los que lo dieron todo en una película",
+      "reasoning": "Directores que filmaron una obra maestra y desaparecieron — el cine más honesto y misterioso que existe.",
+      "score": 80,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kinds a evitar son [genre,era,director,theme,mood]; propongo kind=craft (ángulo narrativo específico no explorado). 'Las 10 películas con el mejor giro de guión de la historia' conecta directamente con los plot twists que Alberto ama (Prestige, Usual Suspects, Memento, Fight Club, Oldboy) y nunca ha aparecido como lista explícita."
+      "critic_reason": "Slot creativo: kind=studio, ángulo 'twist narrativo por director desconocido' — idea fresca que evita todos los recent_top_kinds [theme,genre,era,director,mood] y conecta con el amor de Alberto por plot twists."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
-      "priority": "alta",
+      "priority": "media",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas A24: el sello que redefinió el cine indie",
-      "reasoning": "A24 agrupa a los mejores autores modernos del catálogo; kind 'studio' nunca explotado.",
-      "score": 80,
+      "title": "TOP 10 películas A24: el sello que redefinió el cine de autor",
+      "reasoning": "A24 agrupa a Ari Aster, Robert Eggers y Sean Baker — los autores que más están dando de qué hablar.",
+      "score": 76,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 mix: top válido; kind=studio es territorio virgen en el feed y A24 tiene enorme resonancia cinéfila moderna alineada con el gusto de Alberto (Ari Aster, Eggers, Lanthimos, Sean Baker, Yorgos)."
+      "critic_reason": "§3 mix: kind=studio no está en recent_top_kinds; A24 es el sello más relevante del cine de autor moderno con match fuerte en catálogo."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 0,
+      "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,39 +184,58 @@
       "type": "FEED",
       "title": "Review: Inglourious Basterds (2009) — Tarantino",
       "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Guillermo del Toro anuncia adaptación stop-motion de 'The Buried Giant' (Ishiguro)",
-      "summary_es": "Del Toro recibió la Beca BFI y confirmó su próximo proyecto; cine de autor de calidad para seguir.",
-      "source": "Deadline",
-      "age_hours": 1,
-      "url": "https://deadline.com/2026/05/guillermo-del-tor-kazuo-ishiguros-the-buried-giant-bfi-1236888463/",
-      "angle": null,
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4 sin match directo al catálogo de calidad ni director match (Guillermo del Toro no está en ninguna lista de directores de AGENT-RULES); sin embargo es noticia interesante de industria — queda como news_only por BFI Fellowship y proyecto stop-motion adulto."
+      "title_es": "Dato de Puñales por la espalda: Toni Collette improvisó su acento australiano a propósito",
+      "summary_es": "Collette cometió un error de pronunciación y decidió mantenerlo como rasgo del personaje; dato de trivia.",
+      "source": "r/MovieDetails",
+      "age_hours": 12,
+      "url": "https://www.reddit.com/r/MovieDetails/comments/1t7nye2/knives_out_2019_toni_collette_mistakenly_uses_her/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "1c7462d4-bd29-46c6-b215-96f55a403cce",
+        "titulo": "Puñales por la espalda",
+        "anio": 2019
+      },
+      "score": 65,
+      "reason": "§4.4 regla 3: catalog_match de calidad con Puñales por la espalda (Rian Johnson, rating ≥7, sello); ángulo informativo/curioso sobre detalles de actuación — no hay event postable pero es del tipo 'dato detrás de cámara' que Alberto valora."
+    },
+    {
+      "title_es": "¿Sabías que existe 'The Godfather Saga'? El corte cronológico de Partes I y II",
+      "summary_es": "Existe una miniserie oficial de 1977 que une El Padrino I y II en orden cronológico con escenas inéditas.",
+      "source": "r/television",
+      "age_hours": 11,
+      "url": "https://www.reddit.com/r/television/comments/1t7pdfo/so_i_just_learned_theres_an_official_godfather/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "b8e66308-faff-4599-bc3f-32fb2a890cc0",
+        "titulo": "El padrino",
+        "anio": 1972
+      },
+      "score": 62,
+      "reason": "§4.4 regla 3: catalog_match de calidad con El Padrino (rating alto, catálogo icónico); pero el ángulo es puramente informativo/curioso — no hay event postable concreto (trailer, aniversario, lanzamiento)."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 120,
-    "newsapi_items": 90,
+    "news_items": 123,
+    "newsapi_items": 92,
     "reddit_posts": 0,
     "trailers": 63
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 4,
+    "agedCount": 2,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15196,
-    "output": 10044
+    "input": 16359,
+    "output": 10894
   }
 }

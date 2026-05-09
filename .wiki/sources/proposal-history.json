@@ -506,8 +506,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-08T20:58:56.691Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-09T11:45:19.177Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -606,8 +606,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-08T20:58:56.691Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-09T11:45:19.177Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -631,8 +631,8 @@
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-08T20:58:56.691Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-09T11:45:19.177Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -705,9 +705,10 @@
       "first_proposed": "2026-05-08T20:58:56.691Z",
       "last_proposed": "2026-05-08T20:58:56.691Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-09T11:45:19.177Z"
     },
     {
       "id": "b63b43990c3a140e",
@@ -728,10 +729,57 @@
       "first_proposed": "2026-05-08T20:58:56.691Z",
       "last_proposed": "2026-05-08T20:58:56.691Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-09T11:45:19.177Z"
+    },
+    {
+      "id": "e149394a31c04ccc",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 directores de un solo hit: los que lo dieron todo en una película",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "Directores que filmaron una obra maestra y desaparecieron — el cine más honesto y misterioso que existe.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-09T11:45:19.177Z",
+      "last_proposed": "2026-05-09T11:45:19.177Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "59668ffd71b9b7d8",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas A24: el sello que redefinió el cine de autor",
+      "type": "FEED",
+      "priority": "media",
+      "score": 76,
+      "reasoning": "A24 agrupa a Ari Aster, Robert Eggers y Sean Baker — los autores que más están dando de qué hablar.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "studio",
+        "topic": "A24"
+      },
+      "first_proposed": "2026-05-09T11:45:19.177Z",
+      "last_proposed": "2026-05-09T11:45:19.177Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-08T21:01:43.912Z"
+  "last_saved": "2026-05-09T11:48:40.068Z"
 }

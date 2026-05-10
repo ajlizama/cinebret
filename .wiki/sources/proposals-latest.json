@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-10T11:45:29.936Z",
-  "cycle": "am",
+  "generated_at": "2026-05-10T20:44:21.368Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 0,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra maestra; rating 10 sin review publicado todavía.",
+      "reasoning": "Bong Joon-ho ganó el Óscar; IMDb 8.5 y sin review publicado en el catálogo.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 backlog vigente (4 días): Parásitos rating 10 + Bong Joon-ho (autor admirado) + sello bret + IMDb 8.5 + Netflix activa; ya evaluado como propose en propuesta fresca."
+      "critic_reason": "§4.5 rating 10 + sello bret + IMDb 8.5 + director admired (Bong Joon-ho) + no review publicado; backlog 4 días vigente. (Duplicado de propuesta fresh — mismo id, mantener.)"
     },
     {
       "id": "057ed8a4300465a7",
@@ -49,8 +49,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Bastardos sin gloria (2009)",
-      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados y sin review publicado todavía.",
-      "score": 96,
+      "reasoning": "Tarantino en su cima narrativa; uno de los 38 sagrados del catálogo sin review publicado todavía.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,7 +61,7 @@
         "anio": 2009,
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.3 + Tarantino (Olimpo) + plataforma activa; +15 boost olimpo."
+      "critic_reason": "§4.5 rating 10 + sello bret + director olimpo (Tarantino) + IMDb 8.3 + no review publicado en historial IG."
     },
     {
       "id": "119c0775fc431172",
@@ -69,8 +69,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de la trilogía de Jackson; IMDb 9.0 y uno de tus 38 sagrados sin review.",
-      "score": 95,
+      "reasoning": "El cierre épico de la trilogía, IMDb 9.0 y 11 Óscares; ninguna de las tres partes tiene review publicado.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -81,15 +81,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + IMDb 9.0 + sello bret + Peter Jackson (muy respetado) + plataforma activa; no posteado en últimos 45 días."
+      "critic_reason": "§4.5 rating 10 + sello bret + IMDb 9.0 + director muy respetado (Peter Jackson) + no review publicado en historial IG."
     },
     {
-      "id": "13c37b77501ca0fc",
+      "id": "1e0091646eb1eccb",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 finales que reescriben toda la película",
-      "reasoning": "Prestige, Usual Suspects, Oldboy: los cierres que hacen querer volver a ver todo desde el principio.",
+      "title": "TOP 10 dúos director-actor que definieron una era del cine",
+      "reasoning": "Scorsese-DiCaprio, Nolan-Cillian, Tarantino-Jackson: los dúos que crearon filmografías completas juntos.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -100,15 +100,15 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=studio/narrative no está en recent_top_kinds; propongo TOP sobre finales que cambian todo lo visto — ángulo narrativo fuerte alineado con los plot twists que Alberto ama (Prestige, Usual Suspects, Memento, Fight Club, Oldboy)."
+      "critic_reason": "Slot creativo: kind=studio no está en recent_top_kinds; propongo ángulo narrativo de 'productoras que apuestan por directores', cruzando A24 con studios históricos como Miramax y New Line — pero dado el pool ya tiene A24 cubierto, override con ángulo de 'actores fetiche': directores del olimpo y sus actores de confianza."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas A24: el sello que redefinió el cine indie",
-      "reasoning": "Aster, Eggers y Baker están bajo este mismo sello; una lista que conecta directamente con tus autores admirados.",
+      "title": "TOP 10 películas A24: el sello que redefinió el cine de autor",
+      "reasoning": "Aster, Eggers, Baker y Lanthimos vienen de aquí; kind 'studio' nunca explorado en el feed.",
       "score": 80,
       "category": "top",
       "angle": null,
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers, Sean Baker (autores admirados de AGENT-RULES); ángulo editorial fuerte y diferenciado."
+      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers, Sean Baker y Lanthimos — todos en la lista de autores admirados — y es un ángulo editorial único."
     }
   ],
   "backlog": [
@@ -188,9 +188,25 @@
       "skill_to_invoke": "cinebret-review"
     }
   ],
-  "news": [],
+  "news": [
+    {
+      "title_es": "Muere Michael Pennington, actor de 'El retorno del Jedi', a los 82 años",
+      "summary_es": "Pennington dio vida a Moff Jerjerrod en la trilogía original; El retorno del Jedi está en el catálogo.",
+      "source": "The Wrap",
+      "age_hours": 1,
+      "url": "https://www.thewrap.com/creative-content/movies/michael-pennington-star-wars-actor-dies-at-82/",
+      "angle": "obituary",
+      "catalog_match": {
+        "pelicula_id": "fac46ea0-2aa0-4962-b3ae-d539d6d6ce92",
+        "titulo": "El retorno del Jedi",
+        "anio": 1983
+      },
+      "score": 55,
+      "reason": "§4.4 match al catálogo (El retorno del Jedi, sello bret) + obituario actor secundario; ángulo informativo, no accionable como propuesta."
+    }
+  ],
   "raw_signal_counts": {
-    "news_items": 123,
+    "news_items": 122,
     "newsapi_items": 93,
     "reddit_posts": 0,
     "trailers": 63
@@ -204,7 +220,7 @@
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 17563,
-    "output": 11175
+    "input": 15859,
+    "output": 11563
   }
 }

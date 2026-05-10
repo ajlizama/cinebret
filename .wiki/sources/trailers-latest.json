@@ -1,9 +1,89 @@
 {
-  "generated_at": "2026-05-10T11:44:58.682Z",
+  "generated_at": "2026-05-10T20:44:21.278Z",
   "total_videos": 63,
-  "trailers_count": 6,
-  "matched_to_cinebret": 17,
+  "trailers_count": 9,
+  "matched_to_cinebret": 16,
   "videos": [
+    {
+      "video_id": "4OChSWmpWIQ",
+      "title": "KKND: Krush Kill 'N Destroy - Official Series Major Update Announce Trailer",
+      "url": "https://www.youtube.com/watch?v=4OChSWmpWIQ",
+      "published": "2026-05-10T20:00:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/4OChSWmpWIQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "wLSkwdfp38o",
+      "title": "The Five-Year Engagement | Tom and Violet's Awkward Birthday Call",
+      "url": "https://www.youtube.com/watch?v=wLSkwdfp38o",
+      "published": "2026-05-10T19:00:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/wLSkwdfp38o/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "VLguaut3k30",
+      "title": "Debbie Being a W Mom for 14 Minutes | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=VLguaut3k30",
+      "published": "2026-05-10T19:00:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/VLguaut3k30/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "a1qNSf6_unM",
+      "title": "Bandit Trap - Official Launch Trailer",
+      "url": "https://www.youtube.com/watch?v=a1qNSf6_unM",
+      "published": "2026-05-10T18:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/a1qNSf6_unM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "3mNTYippvM0",
+      "title": "Shadow Operatives Ambush Undercover Supermarket Meetup | Citadel Season 2 | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=3mNTYippvM0",
+      "published": "2026-05-10T17:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/3mNTYippvM0/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "OIPVIu6G5yk",
+      "title": "The Guild: Europa 1410 - Official City Showcase Trailer",
+      "url": "https://www.youtube.com/watch?v=OIPVIu6G5yk",
+      "published": "2026-05-10T16:00:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/OIPVIu6G5yk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "hdIuW87l7B8",
+      "title": "Sandra Oh: The Voice Behind Debbie | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=hdIuW87l7B8",
+      "published": "2026-05-10T15:01:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/hdIuW87l7B8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "F7S2sTgYdig",
+      "title": "\"I have never been brave\". LA GRAZIA - the latest from Paolo Sorrentino | MUBI",
+      "url": "https://www.youtube.com/watch?v=F7S2sTgYdig",
+      "published": "2026-05-10T15:01:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/F7S2sTgYdig/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "vCSVSMa-b0w",
       "title": "Driving each other crazy... in the best way | Maxton Hall | Prime Video",
@@ -145,16 +225,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "aB9eX4hnDx0",
-      "title": "Welcome to the Team | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=aB9eX4hnDx0",
-      "published": "2026-05-09T15:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/aB9eX4hnDx0/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "z-tIu-Qv5JQ",
       "title": "Monarch: Legacy of Monsters — Best Monster Sightings of Season 2 | Apple TV",
       "url": "https://www.youtube.com/watch?v=z-tIu-Qv5JQ",
@@ -183,36 +253,6 @@
         "titulo": "Resident evil - El huésped maldito",
         "anio": 2002
       }
-    },
-    {
-      "video_id": "CTpILnebW50",
-      "title": "Interviewing Kano on a roller coaster",
-      "url": "https://www.youtube.com/watch?v=CTpILnebW50",
-      "published": "2026-05-09T01:00:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/CTpILnebW50/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "_c_s291jpSM",
-      "title": "Animated moms join Fortnite in time for Mother's Day",
-      "url": "https://www.youtube.com/watch?v=_c_s291jpSM",
-      "published": "2026-05-09T00:59:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/_c_s291jpSM/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "hMUI9tpV69U",
-      "title": "Johnny Cage x Kano movie when?",
-      "url": "https://www.youtube.com/watch?v=hMUI9tpV69U",
-      "published": "2026-05-09T00:59:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/hMUI9tpV69U/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "AoCzxZO4MVg",
@@ -247,16 +287,6 @@
       "thumbnail": "https://i.ytimg.com/vi/fsPJ1GsUTUs/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "UeymsozLfbc",
-      "title": "The Many Voice Actors Behind Kevin | Prime Video",
-      "url": "https://www.youtube.com/watch?v=UeymsozLfbc",
-      "published": "2026-05-08T21:00:36Z",
-      "thumbnail": "https://i.ytimg.com/vi/UeymsozLfbc/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -305,16 +335,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "Nl6R5JgjfB8",
-      "title": "Stanley Tucci Confronts Richard Madden in Citadel Season 2 | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=Nl6R5JgjfB8",
-      "published": "2026-05-08T19:00:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/Nl6R5JgjfB8/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "R4bXrkMnyfc",
       "title": "We love you, mothers! | 🎬 Despicable Me 2 (2013)",
       "url": "https://www.youtube.com/watch?v=R4bXrkMnyfc",
@@ -328,16 +348,6 @@
         "titulo": "Gru: Mi villano favorito",
         "anio": 2010
       }
-    },
-    {
-      "video_id": "jvTV9K-fVK4",
-      "title": "“Who owns our days?” LA GRAZIA, the latest from the great Paolo Sorrentino, is now streaming | MUBI",
-      "url": "https://www.youtube.com/watch?v=jvTV9K-fVK4",
-      "published": "2026-05-08T17:00:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/jvTV9K-fVK4/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "XGznyk5KpU0",
@@ -622,21 +632,6 @@
         "pelicula_id": "3c7cf4e9-c328-4447-95ac-a5fda571386c",
         "titulo": "Zoolander (Un descerebrado de moda)",
         "anio": 2001
-      }
-    },
-    {
-      "video_id": "hLGD0VE1PvA",
-      "title": "♾️ aura points | 🎬 The Fast and the Furious: Tokyo Drift (2006)",
-      "url": "https://www.youtube.com/watch?v=hLGD0VE1PvA",
-      "published": "2026-05-05T17:01:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/hLGD0VE1PvA/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "75d9be1e-a88a-4126-bb52-813142d9b50e",
-        "titulo": "A todo gas: Tokyo Race",
-        "anio": 2006
       }
     },
     {

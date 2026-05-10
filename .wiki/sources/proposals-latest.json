@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-09T20:41:42.123Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-10T11:45:29.936Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 2,
+  "news_count": 0,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "La película que ganó el Óscar y cambió cómo el mundo ve el cine coreano — sin review en cinebret.",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra maestra; rating 10 sin review publicado todavía.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,27 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 backlog review: Parasite rating 10 + sello bret + Bong Joon-ho + Netflix activa; backlog vigente (3 días), sin review publicado — máxima prioridad."
-    },
-    {
-      "id": "119c0775fc431172",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson ganó 11 Óscars — uno de tus sagrados que el feed todavía no tiene.",
-      "score": 96,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
-      },
-      "critic_reason": "§4.5 review: Return of the King rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa; sin review en historial reciente."
+      "critic_reason": "§4.5 backlog vigente (4 días): Parásitos rating 10 + Bong Joon-ho (autor admirado) + sello bret + IMDb 8.5 + Netflix activa; ya evaluado como propose en propuesta fresca."
     },
     {
       "id": "057ed8a4300465a7",
@@ -69,8 +49,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Bastardos sin gloria (2009)",
-      "reasoning": "Tarantino en su cima narrativa: uno de tus 38 sagrados todavía sin review publicado.",
-      "score": 95,
+      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados y sin review publicado todavía.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -81,16 +61,36 @@
         "anio": 2009,
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review: Inglourious Basterds rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; sin review en historial reciente."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.3 + Tarantino (Olimpo) + plataforma activa; +15 boost olimpo."
     },
     {
-      "id": "f87e46a86f7cd735",
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de la trilogía de Jackson; IMDb 9.0 y uno de tus 38 sagrados sin review.",
+      "score": 95,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + IMDb 9.0 + sello bret + Peter Jackson (muy respetado) + plataforma activa; no posteado en últimos 45 días."
+    },
+    {
+      "id": "13c37b77501ca0fc",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas que transcurren en un solo día (y se sienten en tiempo real)",
-      "reasoning": "Locke, Uncut Gems, Die Hard, Cleo de 5 a 7 — el cine que comprime todo en 24 horas sin perder intensidad.",
-      "score": 85,
+      "title": "TOP 10 finales que reescriben toda la película",
+      "reasoning": "Prestige, Usual Suspects, Oldboy: los cierres que hacen querer volver a ver todo desde el principio.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§instrucción creativa: kinds a evitar [theme, genre, era, director, mood]; propongo kind=craft/technique — '10 películas filmadas casi en tiempo real' es un ángulo narrativo no obvio, con alto valor cinéfilo y sin precedente en el feed."
+      "critic_reason": "Slot creativo: kind=studio/narrative no está en recent_top_kinds; propongo TOP sobre finales que cambian todo lo visto — ángulo narrativo fuerte alineado con los plot twists que Alberto ama (Prestige, Usual Suspects, Memento, Fight Club, Oldboy)."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas A24: el sello que redefinió el cine de autor",
-      "reasoning": "A24 concentra a Aster, Eggers y Baker — los autores modernos más alineados con tu gusto cinéfilo.",
-      "score": 82,
+      "title": "TOP 10 películas A24: el sello que redefinió el cine indie",
+      "reasoning": "Aster, Eggers y Baker están bajo este mismo sello; una lista que conecta directamente con tus autores admirados.",
+      "score": 80,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 mix: kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers, Sean Baker y Yorgos Lanthimos — autores del catálogo con alto engagement cinéfilo."
+      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers, Sean Baker (autores admirados de AGENT-RULES); ángulo editorial fuerte y diferenciado."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,45 +184,14 @@
       "type": "FEED",
       "title": "Review: Inglourious Basterds (2009) — Tarantino",
       "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     }
   ],
-  "news": [
-    {
-      "title_es": "12 hombres sin piedad (1957) vuelve a viral en Reddit con escena 'Those People'",
-      "summary_es": "La escena clásica de Lumet circula en Reddit — muestra que tus 38 sagrados siguen vigentes culturalmente.",
-      "source": "r/movies",
-      "age_hours": 3,
-      "url": "https://www.reddit.com/r/movies/comments/1t8b10a/12_angry_men_1957_sidney_lumet_those_people/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "6ef951a5-ab61-489f-87a0-f2af49616266",
-        "titulo": "12 hombres sin piedad: Veredicto final",
-        "anio": 1997
-      },
-      "score": 60,
-      "reason": "§4.2/4.4: 12 Angry Men (1957) tiene sello bret (rating 10 en catálogo Alberto); clip de Reddit de escena icónica es informativo y muestra que la película sigue generando conversación, pero el ángulo es solo un clip, no un evento postable."
-    },
-    {
-      "title_es": "Sally Field confiesa que Robin Williams no le causaba gracia en el set de Señora Doubtfire",
-      "summary_es": "Field revela que nunca reía en set — dato curioso sobre la química real detrás de la comedia clásica de 1993.",
-      "source": "Variety",
-      "age_hours": 2,
-      "url": "https://variety.com/2026/film/news/sally-field-robin-williams-wasnt-funny-mrs-doubtfire-1236742374/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "56c78f91-95d1-41cf-a10c-3357b31b4804",
-        "titulo": "Señora Doubtfire: Papá de por vida",
-        "anio": 1993
-      },
-      "score": 55,
-      "reason": "§4.3/4.4: Mrs. Doubtfire tiene match catálogo (rating implícito por sello, año 1993); anécdota de Sally Field sobre Robin Williams es curiosidad de making-of entretenida, pero el ángulo es §4.1 behind-the-scenes/featurette — informativo, no postable."
-    }
-  ],
+  "news": [],
   "raw_signal_counts": {
     "news_items": 123,
-    "newsapi_items": 92,
+    "newsapi_items": 93,
     "reddit_posts": 0,
     "trailers": 63
   },
@@ -230,12 +199,12 @@
     "acceptedCount": 0,
     "agedCount": 2,
     "expiredByTime": 0,
-    "expiredByCritic": 3
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16016,
-    "output": 11836
+    "input": 17563,
+    "output": 11175
   }
 }

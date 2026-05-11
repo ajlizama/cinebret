@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-10T20:44:21.368Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-11T13:43:04.410Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 1,
+  "news_count": 2,
   "ig_mix": {
     "last6_counts": {
-      "review": 2,
+      "review": 1,
       "contenido": 2,
-      "top": 2
+      "top": 3
     },
     "target": {
       "review": 3,
@@ -17,19 +17,39 @@
       "top": 2
     },
     "deficits": {
-      "review": 1,
+      "review": 2,
       "contenido": 0,
       "top": 0
     }
   },
   "top": [
     {
-      "id": "f39545c3a701989b",
+      "id": "6276902b8705f60e",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "score": 97,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 boost; déficit de review ≥1 prioriza este slot."
+    },
+    {
+      "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar; IMDb 8.5 y sin review publicado en el catálogo.",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra maestra; tu sagrada sin review publicado todavía.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -37,31 +57,11 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "기생충",
+        "titulo": "Parasite",
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 rating 10 + sello bret + IMDb 8.5 + director admired (Bong Joon-ho) + no review publicado; backlog 4 días vigente. (Duplicado de propuesta fresh — mismo id, mantener.)"
-    },
-    {
-      "id": "057ed8a4300465a7",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: Bastardos sin gloria (2009)",
-      "reasoning": "Tarantino en su cima narrativa; uno de los 38 sagrados del catálogo sin review publicado todavía.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "Inglourious Basterds",
-        "anio": 2009,
-        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
-      },
-      "critic_reason": "§4.5 rating 10 + sello bret + director olimpo (Tarantino) + IMDb 8.3 + no review publicado en historial IG."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (autor admirado); déficit de review activo."
     },
     {
       "id": "119c0775fc431172",
@@ -69,8 +69,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de la trilogía, IMDb 9.0 y 11 Óscares; ninguna de las tres partes tiene review publicado.",
-      "score": 96,
+      "reasoning": "IMDb 9.0, tu rating 10 y el cierre épico de la trilogía; pendiente en el feed.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -81,16 +81,16 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 rating 10 + sello bret + IMDb 9.0 + director muy respetado (Peter Jackson) + no review publicado en historial IG."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret); diversidad director vs otros propuestos."
     },
     {
-      "id": "1e0091646eb1eccb",
+      "id": "1c3325630890f1aa",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 dúos director-actor que definieron una era del cine",
-      "reasoning": "Scorsese-DiCaprio, Nolan-Cillian, Tarantino-Jackson: los dúos que crearon filmografías completas juntos.",
-      "score": 82,
+      "reasoning": "Scorsese-DiCaprio, Nolan-Murphy, Tarantino-Jackson: los dúos que construyeron filmografías enteras juntos.",
+      "score": 85,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,15 +100,15 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=studio no está en recent_top_kinds; propongo ángulo narrativo de 'productoras que apuestan por directores', cruzando A24 con studios históricos como Miramax y New Line — pero dado el pool ya tiene A24 cubierto, override con ángulo de 'actores fetiche': directores del olimpo y sus actores de confianza."
+      "critic_reason": "Slot creativo: kind=studio/narrative_device, no está en recent_top_kinds [genre, director, theme, era, mood]; ángulo de dúos director-actor es relacional y narrativo, muy afín al universo cinebret."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas A24: el sello que redefinió el cine de autor",
-      "reasoning": "Aster, Eggers, Baker y Lanthimos vienen de aquí; kind 'studio' nunca explorado en el feed.",
+      "title": "TOP 10 películas de A24: el sello que redefinió el cine de autor",
+      "reasoning": "Ari Aster, Robert Eggers y Sean Baker en un solo sello; kind 'studio' nunca explotado en el feed.",
       "score": 80,
       "category": "top",
       "angle": null,
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers, Sean Baker y Lanthimos — todos en la lista de autores admirados — y es un ángulo editorial único."
+      "critic_reason": "§3 top válido: kind=studio no está en recent_top_kinds; A24 concentra a Aster, Eggers, Baker y Sean Baker del catálogo de admired directors."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,43 +184,50 @@
       "type": "FEED",
       "title": "Review: Inglourious Basterds (2009) — Tarantino",
       "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Muere Michael Pennington, actor de 'El retorno del Jedi', a los 82 años",
-      "summary_es": "Pennington dio vida a Moff Jerjerrod en la trilogía original; El retorno del Jedi está en el catálogo.",
+      "title_es": "Por qué Hollywood está evitando Cannes 2026",
+      "summary_es": "Las majors calculan que una premiere en el Palais ya no compensa; contexto útil para el ciclo Cannes.",
+      "source": "Hollywood Reporter",
+      "age_hours": 0,
+      "url": "https://www.hollywoodreporter.com/movies/movie-features/why-is-hollywood-ghosting-cannes-2-1236592024/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 52,
+      "reason": "§4.3 sin director match ni catálogo directo, pero Cannes 2026 está en curso (≤7 días) y el análisis de por qué Hollywood evita el festival es contexto valioso para Alberto como cinéfilo."
+    },
+    {
+      "title_es": "Las 12 películas más esperadas en venta en Cannes 2026",
+      "summary_es": "Farhadi y otros autores respetados entre los títulos en venta; útil para seguir qué llega al catálogo.",
       "source": "The Wrap",
-      "age_hours": 1,
-      "url": "https://www.thewrap.com/creative-content/movies/michael-pennington-star-wars-actor-dies-at-82/",
-      "angle": "obituary",
-      "catalog_match": {
-        "pelicula_id": "fac46ea0-2aa0-4962-b3ae-d539d6d6ce92",
-        "titulo": "El retorno del Jedi",
-        "anio": 1983
-      },
-      "score": 55,
-      "reason": "§4.4 match al catálogo (El retorno del Jedi, sello bret) + obituario actor secundario; ángulo informativo, no accionable como propuesta."
+      "age_hours": 0,
+      "url": "https://www.thewrap.com/creative-content/movies/buzziest-cannes-movies-for-sale-2026/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 48,
+      "reason": "§4.4 Cannes 2026 en curso (≤7 días); sin match directo al catálogo pero relevante como panorama del mercado de ventas del festival que Alberto sigue."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 122,
-    "newsapi_items": 93,
+    "news_items": 121,
+    "newsapi_items": 94,
     "reddit_posts": 0,
     "trailers": 63
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 1,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15859,
-    "output": 11563
+    "input": 14991,
+    "output": 10130
   }
 }

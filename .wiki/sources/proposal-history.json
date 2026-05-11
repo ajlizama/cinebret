@@ -508,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-10T20:44:21.368Z",
-      "cycles_proposed": 7,
+      "last_proposed": "2026-05-11T13:43:04.410Z",
+      "cycles_proposed": 8,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -608,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-10T20:44:21.368Z",
-      "cycles_proposed": 6,
+      "last_proposed": "2026-05-11T13:43:04.410Z",
+      "cycles_proposed": 7,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -853,12 +853,60 @@
         "topic": "__TBD_BY_CRITIC__"
       },
       "first_proposed": "2026-05-10T20:44:21.368Z",
-      "last_proposed": "2026-05-10T20:44:21.368Z",
+      "last_proposed": "2026-05-11T13:43:04.410Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-11T13:43:04.410Z"
+    },
+    {
+      "id": "96f13eee305fe1c4",
+      "action": "generate_review",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "first_proposed": "2026-05-11T13:43:04.410Z",
+      "last_proposed": "2026-05-11T13:43:04.410Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "ceecbc6e16e39bdf",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas de A24: el sello que redefinió el cine de autor",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "Ari Aster, Robert Eggers y Sean Baker en un solo sello; kind 'studio' nunca explotado en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "studio",
+        "topic": "A24"
+      },
+      "first_proposed": "2026-05-11T13:43:04.410Z",
+      "last_proposed": "2026-05-11T13:43:04.410Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-10T20:47:34.697Z"
+  "last_saved": "2026-05-11T13:45:46.377Z"
 }

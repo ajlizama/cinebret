@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-11T13:43:04.410Z",
-  "cycle": "am",
+  "generated_at": "2026-05-11T21:15:34.263Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 2,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 1,
@@ -24,32 +24,12 @@
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
-      },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 boost; déficit de review ≥1 prioriza este slot."
-    },
-    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra maestra; tu sagrada sin review publicado todavía.",
+      "title": "Parasite (2019) — Bong Joon-ho",
+      "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,35 +41,55 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (autor admirado); déficit de review activo."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho admired director + plataforma activa; déficit de review activo."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "057ed8a4300465a7",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "IMDb 9.0, tu rating 10 y el cierre épico de la trilogía; pendiente en el feed.",
-      "score": 97,
+      "title": "Bastardos sin Gloria (2009) — Tarantino",
+      "reasoning": "Tarantino en estado puro; uno de tus sagrados del olimpo sin review en el feed.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret); diversidad director vs otros propuestos."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Tarantino olimpo + plataforma activa; déficit de review activo."
     },
     {
-      "id": "1c3325630890f1aa",
+      "id": "6276902b8705f60e",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Cómo entrenar a tu dragón (2025) — live action de DeBlois",
+      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "score": 95,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director respetado Dean DeBlois + año 2025 + plataforma activa; déficit de review activo."
+    },
+    {
+      "id": "420ac1f1ced346f4",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 dúos director-actor que definieron una era del cine",
-      "reasoning": "Scorsese-DiCaprio, Nolan-Murphy, Tarantino-Jackson: los dúos que construyeron filmografías enteras juntos.",
+      "reasoning": "Scorsese-DiCaprio, Nolan-Cillian, Tarantino-Jackson: relaciones creativas que construyeron filmografías enteras.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=studio/narrative_device, no está en recent_top_kinds [genre, director, theme, era, mood]; ángulo de dúos director-actor es relacional y narrativo, muy afín al universo cinebret."
+      "critic_reason": "§instrucción slot creativo: kind 'studio' o 'narrative-device' no usado; propongo TOP sobre dúos director-actor que definieron una era — ángulo relacional único fuera de los kinds recientes."
     },
     {
       "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas de A24: el sello que redefinió el cine de autor",
-      "reasoning": "Ari Aster, Robert Eggers y Sean Baker en un solo sello; kind 'studio' nunca explotado en el feed.",
-      "score": 80,
+      "title": "TOP 10 películas de A24: el sello que redefinió el cine indie",
+      "reasoning": "Aster, Eggers y Baker bajo un solo sello; A24 es el estudio más cinéfilo de la última década.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "studio",
         "topic": "A24"
       },
-      "critic_reason": "§3 top válido: kind=studio no está en recent_top_kinds; A24 concentra a Aster, Eggers, Baker y Sean Baker del catálogo de admired directors."
+      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 concentra autores admirados del catálogo y tiene alta tracción cultural."
     }
   ],
   "backlog": [
@@ -172,62 +172,55 @@
       "skill_to_invoke": "cinebret-review"
     },
     {
+      "id": "96f13eee305fe1c4",
+      "type": "FEED",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "days_ago": 0,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
       "id": "ee7db1141ee271a2",
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
       "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "be95948db0c5563b",
-      "type": "FEED",
-      "title": "Review: Inglourious Basterds (2009) — Tarantino",
-      "reasoning": "Rating 10, sello bret, Tarantino del Olimpo; disponible en Netflix y Amazon Prime.",
-      "days_ago": 4,
-      "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Por qué Hollywood está evitando Cannes 2026",
-      "summary_es": "Las majors calculan que una premiere en el Palais ya no compensa; contexto útil para el ciclo Cannes.",
-      "source": "Hollywood Reporter",
+      "title_es": "David Koepp (guionista de Jurassic Park) escribe el reboot de Westworld",
+      "summary_es": "Koepp vuelve a los parques temáticos retorcidos; contexto relevante por su vínculo con Spielberg.",
+      "source": "Variety",
       "age_hours": 0,
-      "url": "https://www.hollywoodreporter.com/movies/movie-features/why-is-hollywood-ghosting-cannes-2-1236592024/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 52,
-      "reason": "§4.3 sin director match ni catálogo directo, pero Cannes 2026 está en curso (≤7 días) y el análisis de por qué Hollywood evita el festival es contexto valioso para Alberto como cinéfilo."
-    },
-    {
-      "title_es": "Las 12 películas más esperadas en venta en Cannes 2026",
-      "summary_es": "Farhadi y otros autores respetados entre los títulos en venta; útil para seguir qué llega al catálogo.",
-      "source": "The Wrap",
-      "age_hours": 0,
-      "url": "https://www.thewrap.com/creative-content/movies/buzziest-cannes-movies-for-sale-2026/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 48,
-      "reason": "§4.4 Cannes 2026 en curso (≤7 días); sin match directo al catálogo pero relevante como panorama del mercado de ventas del festival que Alberto sigue."
+      "url": "https://variety.com/2026/film/news/westworld-movie-reboot-1236745151/",
+      "angle": "sequel",
+      "catalog_match": {
+        "pelicula_id": "3f67d2c0-9b38-4b08-87b3-18515277beda",
+        "titulo": "Jurassic Park (Parque Jurásico)",
+        "anio": 1993
+      },
+      "score": 58,
+      "reason": "§4.4 match de catálogo: Jurassic Park (Spielberg, olimpo, rating alto) aparece mencionado en contexto del guionista David Koepp; ángulo informativo sobre reboot de Westworld es relevante para Alberto."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 121,
+    "news_items": 120,
     "newsapi_items": 94,
     "reddit_posts": 0,
     "trailers": 63
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 1,
+    "agedCount": 2,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 14991,
-    "output": 10130
+    "input": 15655,
+    "output": 12470
   }
 }

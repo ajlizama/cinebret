@@ -681,8 +681,8 @@
         "topic": "A24"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-08T12:07:25.851Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-11T21:15:34.263Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -853,8 +853,8 @@
         "topic": "__TBD_BY_CRITIC__"
       },
       "first_proposed": "2026-05-10T20:44:21.368Z",
-      "last_proposed": "2026-05-11T13:43:04.410Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-11T21:15:34.263Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -880,9 +880,10 @@
       "first_proposed": "2026-05-11T13:43:04.410Z",
       "last_proposed": "2026-05-11T13:43:04.410Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-11T21:15:34.263Z"
     },
     {
       "id": "ceecbc6e16e39bdf",
@@ -903,10 +904,83 @@
       "first_proposed": "2026-05-11T13:43:04.410Z",
       "last_proposed": "2026-05-11T13:43:04.410Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-11T21:15:34.263Z"
+    },
+    {
+      "id": "f9c8a88b4cccacee",
+      "action": "generate_review",
+      "title": "Parasite (2019) — Bong Joon-ho",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-11T21:15:34.263Z",
+      "last_proposed": "2026-05-11T21:15:34.263Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "a542bc4117625263",
+      "action": "generate_review",
+      "title": "Bastardos sin Gloria (2009) — Tarantino",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 96,
+      "reasoning": "Tarantino en estado puro; uno de tus sagrados del olimpo sin review en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
+      },
+      "first_proposed": "2026-05-11T21:15:34.263Z",
+      "last_proposed": "2026-05-11T21:15:34.263Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "60c45386e63d3051",
+      "action": "generate_review",
+      "title": "Cómo entrenar a tu dragón (2025) — live action de DeBlois",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 95,
+      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "first_proposed": "2026-05-11T21:15:34.263Z",
+      "last_proposed": "2026-05-11T21:15:34.263Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-11T13:45:46.377Z"
+  "last_saved": "2026-05-11T21:19:08.539Z"
 }

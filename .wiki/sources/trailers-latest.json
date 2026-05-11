@@ -1,9 +1,214 @@
 {
-  "generated_at": "2026-05-11T13:42:36.756Z",
+  "generated_at": "2026-05-11T21:15:34.172Z",
   "total_videos": 63,
-  "trailers_count": 9,
-  "matched_to_cinebret": 14,
+  "trailers_count": 8,
+  "matched_to_cinebret": 12,
   "videos": [
+    {
+      "video_id": "RZ7FyKpU01g",
+      "title": "Butcher. That's all. | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=RZ7FyKpU01g",
+      "published": "2026-05-11T21:00:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/RZ7FyKpU01g/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "7cmfpBPZ8dc",
+      "title": "Avatar Legends: The Fighting Game - Official Sokka Developer Overview",
+      "url": "https://www.youtube.com/watch?v=7cmfpBPZ8dc",
+      "published": "2026-05-11T19:15:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/7cmfpBPZ8dc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "YLWVAfA48wU",
+      "title": "Discover the films that defined past festivals. Now streaming in our \"Cannes Takeover\" collection.",
+      "url": "https://www.youtube.com/watch?v=YLWVAfA48wU",
+      "published": "2026-05-11T19:00:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/YLWVAfA48wU/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Sm94NvZC7gQ",
+      "title": "Sleeper Agent Ordered to Kill Lover | Citadel Season 2 | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=Sm94NvZC7gQ",
+      "published": "2026-05-11T19:00:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/Sm94NvZC7gQ/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "kIbR3oCBOT8",
+      "title": "Little House on the Prairie | Official Teaser #2 | Netflix",
+      "url": "https://www.youtube.com/watch?v=kIbR3oCBOT8",
+      "published": "2026-05-11T18:00:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/kIbR3oCBOT8/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "ELE0MrCjBxk",
+      "title": "This is a somber joint. #YourFriendsAndNeighbors — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=ELE0MrCjBxk",
+      "published": "2026-05-11T17:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/ELE0MrCjBxk/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "3RvBwLwvg-E",
+      "title": "The Rivals of Amziah King - Official Trailer (2026) Matthew McConaughey, Kurt Russell",
+      "url": "https://www.youtube.com/watch?v=3RvBwLwvg-E",
+      "published": "2026-05-11T17:33:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/3RvBwLwvg-E/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "42b1d372-fd6c-456c-b0b0-0b56079721ab",
+        "titulo": "The Rivals of Amziah King",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "nt58VH5BZbM",
+      "title": "The word is out. Paul Rudd and Nick Jonas shine in #PowerBallad.",
+      "url": "https://www.youtube.com/watch?v=nt58VH5BZbM",
+      "published": "2026-05-11T17:33:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/nt58VH5BZbM/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "9QGiDwwG58E",
+      "title": "Make-A-Wish & Disney granted a Star-Lord fan's wish to kick off a dance party at Avengers Campus ❤️",
+      "url": "https://www.youtube.com/watch?v=9QGiDwwG58E",
+      "published": "2026-05-11T17:11:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/9QGiDwwG58E/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "t_UvPV_C9y0",
+      "title": "Nick and Noah’s Steamy Reunion | Culpa Tuya | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=t_UvPV_C9y0",
+      "published": "2026-05-11T17:01:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/t_UvPV_C9y0/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "JaMpxqVZVeg",
+      "title": "no nicolas cages were harmed in the making of this film #FaceOff",
+      "url": "https://www.youtube.com/watch?v=JaMpxqVZVeg",
+      "published": "2026-05-11T17:00:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/JaMpxqVZVeg/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "4jaQDvU9p0Y",
+      "title": "Oh yeah, he’s *definitely* seen E.T | 🎬 Dìdi 弟弟 (2024)",
+      "url": "https://www.youtube.com/watch?v=4jaQDvU9p0Y",
+      "published": "2026-05-11T17:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/4jaQDvU9p0Y/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "umdDAJavJ7s",
+      "title": "Calabasas Confidential | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=umdDAJavJ7s",
+      "published": "2026-05-11T17:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/umdDAJavJ7s/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "U3V16m9MxX8",
+      "title": "He's pumped. #ForAllMankind — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=U3V16m9MxX8",
+      "published": "2026-05-11T16:59:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/U3V16m9MxX8/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "d8_FSNLyTAY",
+      "title": "Sweet Magnolias: Season 5 | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=d8_FSNLyTAY",
+      "published": "2026-05-11T16:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/d8_FSNLyTAY/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "VA6sUtCsZBE",
+      "title": "Tom Clancy's Jack Ryan: Ghost War - Official 'Rooftop Debrief' Clip (2026) John Krasinski",
+      "url": "https://www.youtube.com/watch?v=VA6sUtCsZBE",
+      "published": "2026-05-11T16:03:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/VA6sUtCsZBE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "gid_m_y17kU",
+      "title": "One of the Many Reasons We Love Debbie | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=gid_m_y17kU",
+      "published": "2026-05-11T15:01:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/gid_m_y17kU/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "CpAcf-EZViY",
+      "title": "Director Gianfranco Rosi on the ideas that shaped his latest project, POMPEI: BELOW THE CLOUDS.",
+      "url": "https://www.youtube.com/watch?v=CpAcf-EZViY",
+      "published": "2026-05-11T15:00:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/CpAcf-EZViY/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "KJJpz-jhpTQ",
+      "title": "Battlestar Galactica: Scattered Hopes Review",
+      "url": "https://www.youtube.com/watch?v=KJJpz-jhpTQ",
+      "published": "2026-05-11T15:00:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/KJJpz-jhpTQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "N-J-HR3quc4",
+      "title": "72 Hours | Kevin Hart | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=N-J-HR3quc4",
+      "published": "2026-05-11T15:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/N-J-HR3quc4/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
     {
       "video_id": "FZUjpsyY1uc",
       "title": "Serena and Venus Williams presented Kevin Hart with a G.O.A.T. Ring #KevinHartRoast",
@@ -13,76 +218,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "Ty-L20D4GAA",
-      "title": "Kevin Hart reignites his beef with Katt Williams. #KevinHartRoast",
-      "url": "https://www.youtube.com/watch?v=Ty-L20D4GAA",
-      "published": "2026-05-11T03:07:59Z",
-      "thumbnail": "https://i.ytimg.com/vi/Ty-L20D4GAA/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "hgU8sDVyN24",
-      "title": "Regina Hall with a...message! #kevinhartroast",
-      "url": "https://www.youtube.com/watch?v=hgU8sDVyN24",
-      "published": "2026-05-11T02:48:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/hgU8sDVyN24/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "V0oRt3XfGdg",
-      "title": "THE ROCK HAS ENTERED THE BUILDING #KevinHartRoast",
-      "url": "https://www.youtube.com/watch?v=V0oRt3XfGdg",
-      "published": "2026-05-11T02:27:41Z",
-      "thumbnail": "https://i.ytimg.com/vi/V0oRt3XfGdg/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "TkpDuAsdhJg",
-      "title": "Kevin Hart and Katt Williams squash their beef #kevinhartroast",
-      "url": "https://www.youtube.com/watch?v=TkpDuAsdhJg",
-      "published": "2026-05-11T02:23:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/TkpDuAsdhJg/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "1YSnx8dg_j4",
-      "title": "Empty Heaven: Liminal Dream - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=1YSnx8dg_j4",
-      "published": "2026-05-11T00:00:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/1YSnx8dg_j4/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "RWojX9WPPcU",
-      "title": "Prime Monster - Official Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=RWojX9WPPcU",
-      "published": "2026-05-10T23:00:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/RWojX9WPPcU/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "3eAWq-H-rAg",
-      "title": "R-Type Dimensions 3 - Official Release Date Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=3eAWq-H-rAg",
-      "published": "2026-05-10T22:00:08Z",
-      "thumbnail": "https://i.ytimg.com/vi/3eAWq-H-rAg/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "gfCDQx2I2aE",
@@ -120,62 +255,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "EoRUAJ5khlI",
-      "title": "Red Recon: 1944 - Official Gameplay Trailer",
-      "url": "https://www.youtube.com/watch?v=EoRUAJ5khlI",
-      "published": "2026-05-10T21:00:12Z",
-      "thumbnail": "https://i.ytimg.com/vi/EoRUAJ5khlI/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "4OChSWmpWIQ",
-      "title": "KKND: Krush Kill 'N Destroy - Official Series Major Update Announce Trailer",
-      "url": "https://www.youtube.com/watch?v=4OChSWmpWIQ",
-      "published": "2026-05-10T20:00:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/4OChSWmpWIQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "wLSkwdfp38o",
       "title": "The Five-Year Engagement | Tom and Violet's Awkward Birthday Call",
       "url": "https://www.youtube.com/watch?v=wLSkwdfp38o",
       "published": "2026-05-10T19:00:48Z",
       "thumbnail": "https://i.ytimg.com/vi/wLSkwdfp38o/hqdefault.jpg",
       "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "VLguaut3k30",
-      "title": "Debbie Being a W Mom for 14 Minutes | Invincible | Prime Video",
-      "url": "https://www.youtube.com/watch?v=VLguaut3k30",
-      "published": "2026-05-10T19:00:33Z",
-      "thumbnail": "https://i.ytimg.com/vi/VLguaut3k30/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "3mNTYippvM0",
-      "title": "Shadow Operatives Ambush Undercover Supermarket Meetup | Citadel Season 2 | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=3mNTYippvM0",
-      "published": "2026-05-10T17:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/3mNTYippvM0/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "hdIuW87l7B8",
-      "title": "Sandra Oh: The Voice Behind Debbie | Invincible | Prime Video",
-      "url": "https://www.youtube.com/watch?v=hdIuW87l7B8",
-      "published": "2026-05-10T15:01:10Z",
-      "thumbnail": "https://i.ytimg.com/vi/hdIuW87l7B8/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -187,16 +272,6 @@
       "thumbnail": "https://i.ytimg.com/vi/F7S2sTgYdig/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "vCSVSMa-b0w",
-      "title": "Driving each other crazy... in the best way | Maxton Hall | Prime Video",
-      "url": "https://www.youtube.com/watch?v=vCSVSMa-b0w",
-      "published": "2026-05-09T21:00:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/vCSVSMa-b0w/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -333,66 +408,6 @@
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "ea65ii_uec8",
-      "title": "Lip liner is her love language. No notes. #MargosGotMoneyTroubles — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=ea65ii_uec8",
-      "published": "2026-05-08T20:59:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/ea65ii_uec8/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "QxgPLkDwcGM",
-      "title": "The belle of the ball! Audrey Hepburn in Billy Wilder’s SABRINA | MUBI",
-      "url": "https://www.youtube.com/watch?v=QxgPLkDwcGM",
-      "published": "2026-05-08T20:00:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/QxgPLkDwcGM/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "oGSifJMwXrY",
-      "title": "A monster menagerie. #Monarch: Legacy of Monsters — Season 2 Now Streaming",
-      "url": "https://www.youtube.com/watch?v=oGSifJMwXrY",
-      "published": "2026-05-08T19:59:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/oGSifJMwXrY/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
-        "titulo": "Monsters: El infierno del dragón",
-        "anio": 2024
-      }
-    },
-    {
-      "video_id": "XFHKGMZu8vM",
-      "title": "\"I am a forest fire.\" Presenting our new trailer for MITSKI: THE LAND | MUBI",
-      "url": "https://www.youtube.com/watch?v=XFHKGMZu8vM",
-      "published": "2026-05-08T19:01:13Z",
-      "thumbnail": "https://i.ytimg.com/vi/XFHKGMZu8vM/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "R4bXrkMnyfc",
-      "title": "We love you, mothers! | 🎬 Despicable Me 2 (2013)",
-      "url": "https://www.youtube.com/watch?v=R4bXrkMnyfc",
-      "published": "2026-05-08T17:00:37Z",
-      "thumbnail": "https://i.ytimg.com/vi/R4bXrkMnyfc/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "6d41075c-efdc-454d-95d5-037040669001",
-        "titulo": "Gru: Mi villano favorito",
-        "anio": 2010
-      }
     },
     {
       "video_id": "XGznyk5KpU0",
@@ -550,16 +565,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "OwltW9kxSRg",
-      "title": "The hits keep coming. See @JasonStatham in #MutinyMovie. Only in theaters August 21.",
-      "url": "https://www.youtube.com/watch?v=OwltW9kxSRg",
-      "published": "2026-05-06T21:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/OwltW9kxSRg/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "Tcqqykqzz3I",
       "title": "How to Lose a Guy in 10 Minutes #HowtoLoseaGuyin10Days",
       "url": "https://www.youtube.com/watch?v=Tcqqykqzz3I",
@@ -678,21 +683,6 @@
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "W67IUHNx8M0",
-      "title": "Top Gun and Top Gun: Maverick. May 13th. One week only. Get #TopGun tickets now!",
-      "url": "https://www.youtube.com/watch?v=W67IUHNx8M0",
-      "published": "2026-05-05T14:00:41Z",
-      "thumbnail": "https://i.ytimg.com/vi/W67IUHNx8M0/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "77aed65a-d6ec-45d8-bf1e-a1935f9a92cb",
-        "titulo": "Top Gun: Maverick",
-        "anio": 2022
-      }
     },
     {
       "video_id": "k1MVnzd2aVc",

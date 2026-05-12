@@ -608,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-12T13:03:18.531Z",
-      "cycles_proposed": 8,
+      "last_proposed": "2026-05-12T21:19:11.632Z",
+      "cycles_proposed": 9,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -878,8 +878,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-12T13:03:18.531Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-12T21:19:11.632Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1003,10 +1003,81 @@
       "first_proposed": "2026-05-12T13:03:18.531Z",
       "last_proposed": "2026-05-12T13:03:18.531Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-12T21:19:11.632Z"
+    },
+    {
+      "id": "e041c4c4d8d26942",
+      "action": "generate_review",
+      "title": "Review: Joker (2019)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 93,
+      "reasoning": "Phoenix convierte a Arthur Fleck en un ícono; tu rating 10 y aún sin review publicado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Joker",
+        "anio": 2019,
+        "pelicula_id": "87c1e799-0cef-49ab-806d-60e8a26d0366"
+      },
+      "first_proposed": "2026-05-12T21:19:11.632Z",
+      "last_proposed": "2026-05-12T21:19:11.632Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "e17327a38c2fa841",
+      "action": "react_to_news",
+      "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 88,
+      "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
+      "suggested_caption": null,
+      "source_name": "The Wrap",
+      "source_url": "https://www.thewrap.com/culture-lifestyle/culture/christopher-nolan-the-odyssey-armor-critics/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.thewrap.com/culture-lifestyle/culture/christopher-nolan-the-odyssey-armor-critics/",
+        "angle": "cultural-moment"
+      },
+      "first_proposed": "2026-05-12T21:19:11.632Z",
+      "last_proposed": "2026-05-12T21:19:11.632Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "d73d15678bf75d3b",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas de Pixar que van más allá de los niños",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Up, Soul, WALL·E y Ratatouille demuestran que Pixar hace el drama más honesto de Hollywood.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-12T21:19:11.632Z",
+      "last_proposed": "2026-05-12T21:19:11.632Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-12T13:06:28.775Z"
+  "last_saved": "2026-05-12T21:22:26.068Z"
 }

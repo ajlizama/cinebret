@@ -1,9 +1,219 @@
 {
-  "generated_at": "2026-05-12T13:02:30.103Z",
-  "total_videos": 62,
-  "trailers_count": 6,
-  "matched_to_cinebret": 13,
+  "generated_at": "2026-05-12T21:19:11.545Z",
+  "total_videos": 56,
+  "trailers_count": 8,
+  "matched_to_cinebret": 11,
   "videos": [
+    {
+      "video_id": "zLGgraEtDhY",
+      "title": "When Noah said “thanks for the kiss”, we felt that | My Fault: London | Prime Video",
+      "url": "https://www.youtube.com/watch?v=zLGgraEtDhY",
+      "published": "2026-05-12T21:00:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/zLGgraEtDhY/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
+        "titulo": "Culpa mía: Londres",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "bYmiqh7-Fnw",
+      "title": "Pluribus — Carol's Trip Bonus Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=bYmiqh7-Fnw",
+      "published": "2026-05-12T19:59:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/bYmiqh7-Fnw/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "EIj2I-buIp8",
+      "title": "THE MYSTERIOUS GAZE OF THE FLAMINGO is streaming exclusively on MUBI from May 15 | MUBI",
+      "url": "https://www.youtube.com/watch?v=EIj2I-buIp8",
+      "published": "2026-05-12T19:01:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/EIj2I-buIp8/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "EVHksdCfEWA",
+      "title": "The guardian of Recife. Dona Sebastiana 🚬 in Kleber Mendonça Filho's THE SECRET AGENT | MUBI",
+      "url": "https://www.youtube.com/watch?v=EVHksdCfEWA",
+      "published": "2026-05-12T19:00:54Z",
+      "thumbnail": "https://i.ytimg.com/vi/EVHksdCfEWA/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "qMnaJBjNxFk",
+      "title": "Nick & Noah's Hottest Kisses | My Fault: London | Prime Video",
+      "url": "https://www.youtube.com/watch?v=qMnaJBjNxFk",
+      "published": "2026-05-12T19:00:41Z",
+      "thumbnail": "https://i.ytimg.com/vi/qMnaJBjNxFk/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
+        "titulo": "Culpa mía: Londres",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "bCggdUyBfNk",
+      "title": "Fighting | Shawn Fights Evan in an Epic Fight on the Rooftop",
+      "url": "https://www.youtube.com/watch?v=bCggdUyBfNk",
+      "published": "2026-05-12T19:00:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/bCggdUyBfNk/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "kpJXXFITc8w",
+      "title": "Call of the Elder Gods Review",
+      "url": "https://www.youtube.com/watch?v=kpJXXFITc8w",
+      "published": "2026-05-12T18:50:18Z",
+      "thumbnail": "https://i.ytimg.com/vi/kpJXXFITc8w/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "TD9jpS-tf90",
+      "title": "A definitive crowd-pleaser. #PowerBallad, starring Paul Rudd and Nick Jonas,.",
+      "url": "https://www.youtube.com/watch?v=TD9jpS-tf90",
+      "published": "2026-05-12T18:31:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/TD9jpS-tf90/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "vpaoPQw2fBk",
+      "title": "Deadzone Rogue 2 - Official Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=vpaoPQw2fBk",
+      "published": "2026-05-12T18:00:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/vpaoPQw2fBk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "MqphlLsienY",
+      "title": "The Sinking City 2 Preview: A Promising but Inconsistent Eldritch Horror Adventure",
+      "url": "https://www.youtube.com/watch?v=MqphlLsienY",
+      "published": "2026-05-12T17:38:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/MqphlLsienY/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "5aknIIFc2oQ",
+      "title": "whose side will you choose? 👀 From the creator of Power comes NEMESIS, premiering May 14",
+      "url": "https://www.youtube.com/watch?v=5aknIIFc2oQ",
+      "published": "2026-05-12T17:30:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/5aknIIFc2oQ/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "kkAKL5qAmNM",
+      "title": "Marvel Rivals - Official Devil Dinosaur Character Reveal Trailer",
+      "url": "https://www.youtube.com/watch?v=kkAKL5qAmNM",
+      "published": "2026-05-12T17:28:20Z",
+      "thumbnail": "https://i.ytimg.com/vi/kkAKL5qAmNM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "jrulLtKVqGw",
+      "title": "Bombsight vs. The Boys & Soldier Boy | The Boys Final Season | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=jrulLtKVqGw",
+      "published": "2026-05-12T17:01:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/jrulLtKVqGw/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "TRsZK_gkWVs",
+      "title": "Perfect Match: Season 4 | Ally & Jimmy's Broadway Baby? | Sneak Peek | Netflix",
+      "url": "https://www.youtube.com/watch?v=TRsZK_gkWVs",
+      "published": "2026-05-12T17:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/TRsZK_gkWVs/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "8jfLZHNZ_68",
+      "title": "Marvel Rivals - Official Season 8 Dev Vision Vol. 17",
+      "url": "https://www.youtube.com/watch?v=8jfLZHNZ_68",
+      "published": "2026-05-12T16:24:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/8jfLZHNZ_68/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "LWgUWiQ26ys",
+      "title": "The Last Showgirl (2025) Official Trailer - Pamela Anderson, Kiernan Shipka, Brenda Song",
+      "url": "https://www.youtube.com/watch?v=LWgUWiQ26ys",
+      "published": "2026-05-12T16:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/LWgUWiQ26ys/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "wc2UjmPzN8c",
+      "title": "FINDING EMILY - Official Trailer [HD] - Only In Theaters August 28",
+      "url": "https://www.youtube.com/watch?v=wc2UjmPzN8c",
+      "published": "2026-05-12T15:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/wc2UjmPzN8c/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "uXOwgIf8HTU",
+      "title": "Donald Faison's Certified Fresh Song!",
+      "url": "https://www.youtube.com/watch?v=uXOwgIf8HTU",
+      "published": "2026-05-12T14:01:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/uXOwgIf8HTU/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "F5SpqQ8dNa8",
+      "title": "Every Year After - Official Trailer | Prime Video",
+      "url": "https://www.youtube.com/watch?v=F5SpqQ8dNa8",
+      "published": "2026-05-12T13:59:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/F5SpqQ8dNa8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "3xVaG8NS7Tk",
+      "title": "For more of #TheComeback official podcast, head to the link in bio to find more episodes.",
+      "url": "https://www.youtube.com/watch?v=3xVaG8NS7Tk",
+      "published": "2026-05-12T13:30:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/3xVaG8NS7Tk/hqdefault.jpg",
+      "channel": "HBO Max",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "xxhqCH3uhQw",
       "title": "See it and believe in it. | Project Hail Mary | Prime Video",
@@ -18,16 +228,6 @@
         "titulo": "Proyecto Salvación",
         "anio": 2026
       }
-    },
-    {
-      "video_id": "LY7FxeZRMq0",
-      "title": "Better Than Dead - Official Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=LY7FxeZRMq0",
-      "published": "2026-05-12T12:00:37Z",
-      "thumbnail": "https://i.ytimg.com/vi/LY7FxeZRMq0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "PJiUKZRKVf4",
@@ -70,61 +270,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "deZVW3o9iY0",
-      "title": "Max Huang KILLED it as Kung Lao in Mortal Kombat 2",
-      "url": "https://www.youtube.com/watch?v=deZVW3o9iY0",
-      "published": "2026-05-12T02:29:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/deZVW3o9iY0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
-        "titulo": "Mortal Kombat",
-        "anio": 1995
-      }
-    },
-    {
-      "video_id": "BGSdU6ZL48k",
-      "title": "Is Xbox making Game Pass more accessible?",
-      "url": "https://www.youtube.com/watch?v=BGSdU6ZL48k",
-      "published": "2026-05-12T02:28:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/BGSdU6ZL48k/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "7seYc_VopGk",
-      "title": "Breaking Bad star joins the Fallout show",
-      "url": "https://www.youtube.com/watch?v=7seYc_VopGk",
-      "published": "2026-05-12T02:27:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/7seYc_VopGk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "lISGNb0xa0M",
-      "title": "Terry Crews is in Call of Duty y'all! Terry's son acted totally different when he found out... #ign",
-      "url": "https://www.youtube.com/watch?v=lISGNb0xa0M",
-      "published": "2026-05-12T00:55:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/lISGNb0xa0M/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "RZ7FyKpU01g",
-      "title": "Butcher. That's all. | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=RZ7FyKpU01g",
-      "published": "2026-05-11T21:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/RZ7FyKpU01g/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "YLWVAfA48wU",
       "title": "Discover the films that defined past festivals. Now streaming in our \"Cannes Takeover\" collection.",
       "url": "https://www.youtube.com/watch?v=YLWVAfA48wU",
@@ -133,26 +278,6 @@
       "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "Sm94NvZC7gQ",
-      "title": "Sleeper Agent Ordered to Kill Lover | Citadel Season 2 | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=Sm94NvZC7gQ",
-      "published": "2026-05-11T19:00:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/Sm94NvZC7gQ/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "kIbR3oCBOT8",
-      "title": "Little House on the Prairie | Official Teaser #2 | Netflix",
-      "url": "https://www.youtube.com/watch?v=kIbR3oCBOT8",
-      "published": "2026-05-11T18:00:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/kIbR3oCBOT8/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "ELE0MrCjBxk",
@@ -172,16 +297,6 @@
       "thumbnail": "https://i.ytimg.com/vi/nt58VH5BZbM/hqdefault.jpg",
       "channel": "Lionsgate",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "t_UvPV_C9y0",
-      "title": "Nick and Noah’s Steamy Reunion | Culpa Tuya | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=t_UvPV_C9y0",
-      "published": "2026-05-11T17:01:10Z",
-      "thumbnail": "https://i.ytimg.com/vi/t_UvPV_C9y0/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -205,32 +320,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "umdDAJavJ7s",
-      "title": "Calabasas Confidential | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=umdDAJavJ7s",
-      "published": "2026-05-11T17:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/umdDAJavJ7s/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "U3V16m9MxX8",
       "title": "He's pumped. #ForAllMankind — Now Streaming",
       "url": "https://www.youtube.com/watch?v=U3V16m9MxX8",
       "published": "2026-05-11T16:59:49Z",
       "thumbnail": "https://i.ytimg.com/vi/U3V16m9MxX8/hqdefault.jpg",
       "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "gid_m_y17kU",
-      "title": "One of the Many Reasons We Love Debbie | Invincible | Prime Video",
-      "url": "https://www.youtube.com/watch?v=gid_m_y17kU",
-      "published": "2026-05-11T15:01:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/gid_m_y17kU/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -280,16 +375,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "F7S2sTgYdig",
-      "title": "\"I have never been brave\". LA GRAZIA - the latest from Paolo Sorrentino | MUBI",
-      "url": "https://www.youtube.com/watch?v=F7S2sTgYdig",
-      "published": "2026-05-10T15:01:10Z",
-      "thumbnail": "https://i.ytimg.com/vi/F7S2sTgYdig/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "DvE-MTJVBO0",
       "title": "Armageddon Time | Family Dinner Turns into a Debate About Private Schooling",
       "url": "https://www.youtube.com/watch?v=DvE-MTJVBO0",
@@ -303,16 +388,6 @@
         "titulo": "Armageddon",
         "anio": 1998
       }
-    },
-    {
-      "video_id": "SCSu-qYq5JE",
-      "title": "Jennifer Lawrence and Robert Pattinson recommend a selection of marriage stories and mad love | MUBI",
-      "url": "https://www.youtube.com/watch?v=SCSu-qYq5JE",
-      "published": "2026-05-09T19:00:59Z",
-      "thumbnail": "https://i.ytimg.com/vi/SCSu-qYq5JE/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "RmQYH_wiU2s",
@@ -335,21 +410,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "134FTuHbw2g",
-      "title": "American Gangster | Frank Lucas Snitches on Corrupt Police",
-      "url": "https://www.youtube.com/watch?v=134FTuHbw2g",
-      "published": "2026-05-09T17:00:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/134FTuHbw2g/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "b0bb65f5-3cf7-4e70-9bae-cf042008de5c",
-        "titulo": "American gangster",
-        "anio": 2007
-      }
-    },
-    {
       "video_id": "V7kLc3oK_zE",
       "title": "Your Friends & Neighbors — The Eulogy | Season 2 Scene | Apple TV",
       "url": "https://www.youtube.com/watch?v=V7kLc3oK_zE",
@@ -362,21 +422,6 @@
         "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
         "titulo": "Malditos vecinos",
         "anio": 2014
-      }
-    },
-    {
-      "video_id": "z-tIu-Qv5JQ",
-      "title": "Monarch: Legacy of Monsters — Best Monster Sightings of Season 2 | Apple TV",
-      "url": "https://www.youtube.com/watch?v=z-tIu-Qv5JQ",
-      "published": "2026-05-09T12:59:53Z",
-      "thumbnail": "https://i.ytimg.com/vi/z-tIu-Qv5JQ/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
-        "titulo": "Monsters: El infierno del dragón",
-        "anio": 2024
       }
     },
     {
@@ -440,16 +485,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "-KkNPUvFqco",
-      "title": "Michael (2026) On the Set of Michael - Jaafar Jackson, Antoine Fuqua, Graham King",
-      "url": "https://www.youtube.com/watch?v=-KkNPUvFqco",
-      "published": "2026-05-08T15:00:13Z",
-      "thumbnail": "https://i.ytimg.com/vi/-KkNPUvFqco/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "D2FFBM7sr-Q",
       "title": "Hot Fuzz | A Montage of Connecting the Dots Leads to a Murder",
       "url": "https://www.youtube.com/watch?v=D2FFBM7sr-Q",
@@ -467,16 +502,6 @@
       "thumbnail": "https://i.ytimg.com/vi/xdngF3F4DWI/hqdefault.jpg",
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "BGscqrNbXW8",
-      "title": "Let it play. Paul Rudd and Nick Jonas star in #PowerBallad.",
-      "url": "https://www.youtube.com/watch?v=BGscqrNbXW8",
-      "published": "2026-05-07T18:08:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/BGscqrNbXW8/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -550,16 +575,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "fsni9_lPh1k",
-      "title": "Hot Fuzz | Sgt. Nicholas Angel’s First Day on the Job",
-      "url": "https://www.youtube.com/watch?v=fsni9_lPh1k",
-      "published": "2026-05-07T15:01:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/fsni9_lPh1k/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "ePUAGZh42Qw",
       "title": "Billie Eilish Previews Hit Me Hard and Soft: The Tour Live in 3D",
       "url": "https://www.youtube.com/watch?v=ePUAGZh42Qw",
@@ -601,91 +616,6 @@
       "published": "2026-05-06T11:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/UCK6KI7yQ10/hqdefault.jpg",
       "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "hStSWLBUV8U",
-      "title": "THE MENU | Taco Tuesday",
-      "url": "https://www.youtube.com/watch?v=hStSWLBUV8U",
-      "published": "2026-05-05T20:59:45Z",
-      "thumbnail": "https://i.ytimg.com/vi/hStSWLBUV8U/hqdefault.jpg",
-      "channel": "Searchlight Pictures",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "elFjvTbN_7Q",
-      "title": "Get forked. #EvilDeadBurn only in theaters July 10.",
-      "url": "https://www.youtube.com/watch?v=elFjvTbN_7Q",
-      "published": "2026-05-05T20:20:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/elFjvTbN_7Q/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "62INRo8U5pU",
-      "title": "Let’s get to work. #EvilDeadBurn only in theaters July 10.",
-      "url": "https://www.youtube.com/watch?v=62INRo8U5pU",
-      "published": "2026-05-05T20:15:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/62INRo8U5pU/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "Q-SLPVSsS4U",
-      "title": "Still thinking about Bieberchella? Real ones are still thinking about his scene in Zoolander 2.",
-      "url": "https://www.youtube.com/watch?v=Q-SLPVSsS4U",
-      "published": "2026-05-05T18:00:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/Q-SLPVSsS4U/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "3c7cf4e9-c328-4447-95ac-a5fda571386c",
-        "titulo": "Zoolander (Un descerebrado de moda)",
-        "anio": 2001
-      }
-    },
-    {
-      "video_id": "NWTOcb3ID5A",
-      "title": "Johnny Cage vs. Homelander",
-      "url": "https://www.youtube.com/watch?v=NWTOcb3ID5A",
-      "published": "2026-05-05T17:00:33Z",
-      "thumbnail": "https://i.ytimg.com/vi/NWTOcb3ID5A/hqdefault.jpg",
-      "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "X-IedTnw_48",
-      "title": "The Set of Passenger was Haunted | (2026 Movie) – André Øvredal, Jacob Scipio, Lou Llobell",
-      "url": "https://www.youtube.com/watch?v=X-IedTnw_48",
-      "published": "2026-05-05T15:05:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/X-IedTnw_48/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "A9UuaFCF78A",
-      "title": "We were not alone on the set of #PassengerMovie. 𖨆 Get tickets now, only in theatres May 22.",
-      "url": "https://www.youtube.com/watch?v=A9UuaFCF78A",
-      "published": "2026-05-05T15:05:05Z",
-      "thumbnail": "https://i.ytimg.com/vi/A9UuaFCF78A/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "GZtdUgkuKeU",
-      "title": "What are Glenn Close's Favorite Movies?",
-      "url": "https://www.youtube.com/watch?v=GZtdUgkuKeU",
-      "published": "2026-05-05T14:18:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/GZtdUgkuKeU/hqdefault.jpg",
-      "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
     }

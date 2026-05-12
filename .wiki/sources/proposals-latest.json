@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-12T13:03:18.531Z",
-  "cycle": "am",
+  "generated_at": "2026-05-12T21:19:11.632Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
@@ -24,12 +24,32 @@
   },
   "top": [
     {
+      "id": "6276902b8705f60e",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "score": 97,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "critic_reason": "§4.5 review: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa; déficit review=2 lo prioriza."
+    },
+    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parásitos (2019)",
-      "reasoning": "La única película en ganar el Óscar a mejor film y mejor película extranjera; una de tus 38 sagradas.",
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,56 +61,55 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + plataforma activa; Bong Joon-ho autor admirado."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (autor admirado) + plataforma activa; déficit review=2."
     },
     {
-      "id": "057ed8a4300465a7",
+      "id": "e041c4c4d8d26942",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Bastardos sin Gloria (2009)",
-      "reasoning": "Tarantino reescribe la Segunda Guerra Mundial con su guión más afilado; uno de tus sagrados del olimpo.",
-      "score": 96,
+      "title": "Review: Joker (2019)",
+      "reasoning": "Phoenix convierte a Arthur Fleck en un ícono; tu rating 10 y aún sin review publicado.",
+      "score": 93,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Inglourious Basterds",
-        "anio": 2009,
-        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
+        "titulo": "Joker",
+        "anio": 2019,
+        "pelicula_id": "87c1e799-0cef-49ab-806d-60e8a26d0366"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director olimpo (Tarantino) + plataforma activa."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 8.4 + plataforma activa; distinto director de los dos anteriores, buena diversidad."
     },
     {
-      "id": "6276902b8705f60e",
+      "id": "9ad425e891d3279b",
       "type": "FEED",
       "priority": "alta",
-      "action": "generate_review",
-      "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 95,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
+      "action": "react_to_news",
+      "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
+      "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
+      "score": 88,
+      "category": "contenido",
+      "angle": "cultural-moment",
+      "source_name": "The Wrap",
+      "source_url": "https://www.thewrap.com/culture-lifestyle/culture/christopher-nolan-the-odyssey-armor-critics/",
+      "skill_to_invoke": "cinebret-list-from-news",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "url": "https://www.thewrap.com/culture-lifestyle/culture/christopher-nolan-the-odyssey-armor-critics/",
+        "angle": "cultural-moment"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director respetado (Dean DeBlois) + plataforma activa; déficit review ≥1."
+      "critic_reason": "§4.4 regla 2: Christopher Nolan (olimpo) defiende The Odyssey mencionando Interstellar; ángulo cultural-moment posteable como contenido reactivo."
     },
     {
-      "id": "67d8f88af1c235f7",
+      "id": "f86ec87e9c3ceaf3",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas filmadas (casi) en tiempo real: el cine que no te deja respirar",
-      "reasoning": "Locke, Uncut Gems, Die Hard en un solo día — una estructura narrativa que Alberto adora y el feed nunca ha listado.",
-      "score": 87,
+      "title": "TOP 10 películas de Pixar que van más allá de los niños",
+      "reasoning": "Up, Soul, WALL·E y Ratatouille demuestran que Pixar hace el drama más honesto de Hollywood.",
+      "score": 85,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,26 +119,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=narrative_structure no está en recent_top_kinds; ángulo fresco con alta identidad cinebret."
-    },
-    {
-      "id": "b4c419b4ad0432bd",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_carousel_topic",
-      "title": "TOP 10 películas de A24: el sello que redefinió el cine de autor",
-      "reasoning": "A24 es el sello que lanzó a Ari Aster y Robert Eggers; kind 'studio' nunca explorado en el feed.",
-      "score": 85,
-      "category": "top",
-      "angle": null,
-      "source_name": "cinebret-carousel-topic",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-topic",
-      "skill_args": {
-        "topic_type": "studio",
-        "topic": "A24"
-      },
-      "critic_reason": "§3 top válido: kind=studio no está en recent_top_kinds; A24 agrupa a Aster, Eggers y Baker — autores del catálogo."
+      "critic_reason": "Slot creativo: kind=studio (no en recent_top_kinds); idea editorial fresca y alineada con el catálogo cinebret."
     }
   ],
   "backlog": [
@@ -190,55 +190,63 @@
   ],
   "news": [
     {
-      "title_es": "Lupita Nyong'o interpretará a Helena de Troya y Clitemnestra en 'The Odyssey' de Nolan",
-      "summary_es": "Nolan suma a Nyong'o en doble rol; el cast de The Odyssey sigue creciendo con nombres de primer nivel.",
-      "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1tazcjn/lupita_nyongo_will_play_both_helen_of_troy_and/",
-      "angle": "casting",
-      "catalog_match": null,
-      "score": 78,
-      "reason": "§4.3 director match: Christopher Nolan mencionado explícitamente; casting nuevo (Lupita Nyong'o doble rol) en The Odyssey es ángulo postable."
+      "title_es": "Avatar: Fuego y ceniza llega a Disney+ el 24 de junio",
+      "summary_es": "La tercera entrega de Cameron llega al streaming seis meses después del cine; dato útil para Alberto.",
+      "source": "Deadline",
+      "age_hours": 0,
+      "url": "https://deadline.com/2026/05/avatar-fire-and-ash-streaming-date-disney-plus-1236899898/",
+      "angle": null,
+      "catalog_match": {
+        "pelicula_id": "c8b779ba-3f8f-4af5-bf65-b01f1e28aafe",
+        "titulo": "Avatar: Fuego y ceniza",
+        "anio": 2025
+      },
+      "score": 68,
+      "reason": "§4.4 regla 3: match al catálogo (Avatar: Fuego y ceniza, James Cameron olimpo) con ángulo informativo (fecha streaming); no es posteable pero Alberto quiere saberlo."
     },
     {
-      "title_es": "Park Chan-wook en el mercado de Cannes con nuevo proyecto estrellado",
-      "summary_es": "Park Chan-wook prepara su próximo film con cast de alto nivel; primer indicio público del proyecto.",
-      "source": "Deadline",
+      "title_es": "Avatar: Fuego y ceniza confirma llegada a Disney+ el 24 de junio",
+      "summary_es": "Segunda fuente confirmando la fecha; ya cubierta por noticia principal de Deadline.",
+      "source": "Variety",
+      "age_hours": 0,
+      "url": "https://variety.com/2026/film/news/avatar-3-disney-release-date-fire-ash-streaming-1236621478/",
+      "angle": null,
+      "catalog_match": {
+        "pelicula_id": "c8b779ba-3f8f-4af5-bf65-b01f1e28aafe",
+        "titulo": "Avatar: Fuego y ceniza",
+        "anio": 2025
+      },
+      "score": 66,
+      "reason": "§4.4 regla 3: match al catálogo Avatar: Fuego y ceniza (James Cameron) + fecha streaming; ángulo informativo, dedup con c62a4aacf11b5df7 (misma noticia, menor score)."
+    },
+    {
+      "title_es": "Conan O'Brien presentará los Óscar por tercer año consecutivo en 2027",
+      "summary_es": "La Academia confirma continuidad con O'Brien; dato de contexto para cuando arranque la temporada de premios.",
+      "source": "IndieWire",
       "age_hours": 1,
-      "url": "https://deadline.com/2026/05/cannes-film-festival-market-talking-points-buzz-list-1236897173/",
-      "angle": "festival",
+      "url": "https://www.indiewire.com/news/breaking-news/conan-obrien-will-host-oscars-2027-1235193586/",
+      "angle": "oscar",
       "catalog_match": null,
       "score": 62,
-      "reason": "§4.3 director match: Park Chan-wook mencionado con nombre completo en descripción; ángulo informativo (Cannes market) sin evento postable claro."
-    },
-    {
-      "title_es": "A24 rueda 'Flesh of the Gods': thriller de vampiros de los 80 con Kristen Stewart",
-      "summary_es": "Panos Cosmatos (Mandy) dirige el próximo film A24; producción ya en marcha en Canarias y Colonia.",
-      "source": "Deadline",
-      "age_hours": 2,
-      "url": "https://deadline.com/2026/05/kristen-stewart-wagner-moura-begin-a24-flesh-of-the-gods-1236899048/",
-      "angle": "casting",
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4: A24 tiene match de calidad (b4c419b4 en pool); Panos Cosmatos (Mandy) es ángulo informativo de interés para Alberto; no hay ángulo postable directo."
+      "reason": "§4.4 regla 3: Óscar es relevante para el universo cinebret; noticia informativa (confirmación de host 2027) sin ángulo posteable directo."
     }
   ],
   "raw_signal_counts": {
     "news_items": 119,
     "newsapi_items": 93,
     "reddit_posts": 0,
-    "trailers": 62
+    "trailers": 56
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 3,
+    "agedCount": 1,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16887,
-    "output": 11477
+    "input": 15663,
+    "output": 11973
   }
 }

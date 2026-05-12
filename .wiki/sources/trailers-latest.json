@@ -1,9 +1,119 @@
 {
-  "generated_at": "2026-05-11T21:15:34.172Z",
-  "total_videos": 63,
-  "trailers_count": 8,
-  "matched_to_cinebret": 12,
+  "generated_at": "2026-05-12T13:02:30.103Z",
+  "total_videos": 62,
+  "trailers_count": 6,
+  "matched_to_cinebret": 13,
   "videos": [
+    {
+      "video_id": "xxhqCH3uhQw",
+      "title": "See it and believe in it. | Project Hail Mary | Prime Video",
+      "url": "https://www.youtube.com/watch?v=xxhqCH3uhQw",
+      "published": "2026-05-12T13:01:42Z",
+      "thumbnail": "https://i.ytimg.com/vi/xxhqCH3uhQw/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "98a598c1-7c8f-4d7d-b77b-483dc849060b",
+        "titulo": "Proyecto Salvación",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "LY7FxeZRMq0",
+      "title": "Better Than Dead - Official Launch Trailer",
+      "url": "https://www.youtube.com/watch?v=LY7FxeZRMq0",
+      "published": "2026-05-12T12:00:37Z",
+      "thumbnail": "https://i.ytimg.com/vi/LY7FxeZRMq0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "PJiUKZRKVf4",
+      "title": "A boy. A secret. A city still bleeding. ORPHAN. | In cinemas May 15",
+      "url": "https://www.youtube.com/watch?v=PJiUKZRKVf4",
+      "published": "2026-05-12T11:01:03Z",
+      "thumbnail": "https://i.ytimg.com/vi/PJiUKZRKVf4/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "COUkUkLAIII",
+      "title": "Poldi | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=COUkUkLAIII",
+      "published": "2026-05-12T11:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/COUkUkLAIII/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "GDmP5tobo9A",
+      "title": "We flipped the switch and the world started watching. This is the Netflix Effect.",
+      "url": "https://www.youtube.com/watch?v=GDmP5tobo9A",
+      "published": "2026-05-12T10:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/GDmP5tobo9A/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "qCaCxy0HrBA",
+      "title": "The Netflix Effect | Netflix",
+      "url": "https://www.youtube.com/watch?v=qCaCxy0HrBA",
+      "published": "2026-05-12T10:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/qCaCxy0HrBA/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "deZVW3o9iY0",
+      "title": "Max Huang KILLED it as Kung Lao in Mortal Kombat 2",
+      "url": "https://www.youtube.com/watch?v=deZVW3o9iY0",
+      "published": "2026-05-12T02:29:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/deZVW3o9iY0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
+        "titulo": "Mortal Kombat",
+        "anio": 1995
+      }
+    },
+    {
+      "video_id": "BGSdU6ZL48k",
+      "title": "Is Xbox making Game Pass more accessible?",
+      "url": "https://www.youtube.com/watch?v=BGSdU6ZL48k",
+      "published": "2026-05-12T02:28:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/BGSdU6ZL48k/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "7seYc_VopGk",
+      "title": "Breaking Bad star joins the Fallout show",
+      "url": "https://www.youtube.com/watch?v=7seYc_VopGk",
+      "published": "2026-05-12T02:27:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/7seYc_VopGk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "lISGNb0xa0M",
+      "title": "Terry Crews is in Call of Duty y'all! Terry's son acted totally different when he found out... #ign",
+      "url": "https://www.youtube.com/watch?v=lISGNb0xa0M",
+      "published": "2026-05-12T00:55:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/lISGNb0xa0M/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "RZ7FyKpU01g",
       "title": "Butcher. That's all. | The Boys | Prime Video",
@@ -12,16 +122,6 @@
       "thumbnail": "https://i.ytimg.com/vi/RZ7FyKpU01g/hqdefault.jpg",
       "channel": "Prime Video",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "7cmfpBPZ8dc",
-      "title": "Avatar Legends: The Fighting Game - Official Sokka Developer Overview",
-      "url": "https://www.youtube.com/watch?v=7cmfpBPZ8dc",
-      "published": "2026-05-11T19:15:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/7cmfpBPZ8dc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -65,37 +165,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "3RvBwLwvg-E",
-      "title": "The Rivals of Amziah King - Official Trailer (2026) Matthew McConaughey, Kurt Russell",
-      "url": "https://www.youtube.com/watch?v=3RvBwLwvg-E",
-      "published": "2026-05-11T17:33:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/3RvBwLwvg-E/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "42b1d372-fd6c-456c-b0b0-0b56079721ab",
-        "titulo": "The Rivals of Amziah King",
-        "anio": 2026
-      }
-    },
-    {
       "video_id": "nt58VH5BZbM",
       "title": "The word is out. Paul Rudd and Nick Jonas shine in #PowerBallad.",
       "url": "https://www.youtube.com/watch?v=nt58VH5BZbM",
       "published": "2026-05-11T17:33:01Z",
       "thumbnail": "https://i.ytimg.com/vi/nt58VH5BZbM/hqdefault.jpg",
       "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "9QGiDwwG58E",
-      "title": "Make-A-Wish & Disney granted a Star-Lord fan's wish to kick off a dance party at Avengers Campus ❤️",
-      "url": "https://www.youtube.com/watch?v=9QGiDwwG58E",
-      "published": "2026-05-11T17:11:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/9QGiDwwG58E/hqdefault.jpg",
-      "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -150,26 +225,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "d8_FSNLyTAY",
-      "title": "Sweet Magnolias: Season 5 | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=d8_FSNLyTAY",
-      "published": "2026-05-11T16:30:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/d8_FSNLyTAY/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "VA6sUtCsZBE",
-      "title": "Tom Clancy's Jack Ryan: Ghost War - Official 'Rooftop Debrief' Clip (2026) John Krasinski",
-      "url": "https://www.youtube.com/watch?v=VA6sUtCsZBE",
-      "published": "2026-05-11T16:03:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/VA6sUtCsZBE/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "gid_m_y17kU",
       "title": "One of the Many Reasons We Love Debbie | Invincible | Prime Video",
       "url": "https://www.youtube.com/watch?v=gid_m_y17kU",
@@ -187,36 +242,6 @@
       "thumbnail": "https://i.ytimg.com/vi/CpAcf-EZViY/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "KJJpz-jhpTQ",
-      "title": "Battlestar Galactica: Scattered Hopes Review",
-      "url": "https://www.youtube.com/watch?v=KJJpz-jhpTQ",
-      "published": "2026-05-11T15:00:27Z",
-      "thumbnail": "https://i.ytimg.com/vi/KJJpz-jhpTQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "N-J-HR3quc4",
-      "title": "72 Hours | Kevin Hart | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=N-J-HR3quc4",
-      "published": "2026-05-11T15:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/N-J-HR3quc4/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "FZUjpsyY1uc",
-      "title": "Serena and Venus Williams presented Kevin Hart with a G.O.A.T. Ring #KevinHartRoast",
-      "url": "https://www.youtube.com/watch?v=FZUjpsyY1uc",
-      "published": "2026-05-11T03:47:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/FZUjpsyY1uc/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -243,16 +268,6 @@
         "titulo": "Together: Juntos hasta la muerte",
         "anio": 2025
       }
-    },
-    {
-      "video_id": "7-ONyvzybS4",
-      "title": "How to Find Bombsight | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=7-ONyvzybS4",
-      "published": "2026-05-10T21:00:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/7-ONyvzybS4/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "wLSkwdfp38o",
@@ -348,16 +363,6 @@
         "titulo": "Malditos vecinos",
         "anio": 2014
       }
-    },
-    {
-      "video_id": "WcDa_BTvOG0",
-      "title": "What would you do to protect the ones you love? THE MYSTERIOUS GAZE OF THE FLAMINGO | MUBI",
-      "url": "https://www.youtube.com/watch?v=WcDa_BTvOG0",
-      "published": "2026-05-09T15:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/WcDa_BTvOG0/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "z-tIu-Qv5JQ",
@@ -683,16 +688,6 @@
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "k1MVnzd2aVc",
-      "title": "Tony | Official Trailer HD | A24",
-      "url": "https://www.youtube.com/watch?v=k1MVnzd2aVc",
-      "published": "2026-05-05T13:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/k1MVnzd2aVc/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": true
     }
   ]
 }

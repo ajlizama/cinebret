@@ -608,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-11T13:43:04.410Z",
-      "cycles_proposed": 7,
+      "last_proposed": "2026-05-12T13:03:18.531Z",
+      "cycles_proposed": 8,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -633,8 +633,8 @@
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-10T20:44:21.368Z",
-      "cycles_proposed": 6,
+      "last_proposed": "2026-05-12T13:03:18.531Z",
+      "cycles_proposed": 7,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -878,8 +878,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-11T13:43:04.410Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-12T13:03:18.531Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -902,8 +902,8 @@
         "topic": "A24"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-11T13:43:04.410Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-12T13:03:18.531Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -929,9 +929,10 @@
       "first_proposed": "2026-05-11T21:15:34.263Z",
       "last_proposed": "2026-05-11T21:15:34.263Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-12T13:03:18.531Z"
     },
     {
       "id": "a542bc4117625263",
@@ -953,9 +954,10 @@
       "first_proposed": "2026-05-11T21:15:34.263Z",
       "last_proposed": "2026-05-11T21:15:34.263Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-12T13:03:18.531Z"
     },
     {
       "id": "60c45386e63d3051",
@@ -977,10 +979,34 @@
       "first_proposed": "2026-05-11T21:15:34.263Z",
       "last_proposed": "2026-05-11T21:15:34.263Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-12T13:03:18.531Z"
+    },
+    {
+      "id": "aa217c14665fa967",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas filmadas (casi) en tiempo real: el cine que no te deja respirar",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 87,
+      "reasoning": "Locke, Uncut Gems, Die Hard en un solo día — una estructura narrativa que Alberto adora y el feed nunca ha listado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-12T13:03:18.531Z",
+      "last_proposed": "2026-05-12T13:03:18.531Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-11T21:19:08.539Z"
+  "last_saved": "2026-05-12T13:06:28.775Z"
 }

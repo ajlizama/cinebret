@@ -508,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-13T13:09:14.141Z",
-      "cycles_proposed": 9,
+      "last_proposed": "2026-05-13T21:25:39.118Z",
+      "cycles_proposed": 10,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -878,8 +878,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-12T21:19:11.632Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-13T21:25:39.118Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -902,8 +902,8 @@
         "topic": "A24"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-13T13:09:14.141Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-13T21:25:39.118Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1099,11 +1099,12 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-13T13:09:14.141Z",
-      "last_proposed": "2026-05-13T13:09:14.141Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-05-13T21:25:39.118Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-13T21:25:39.118Z"
     },
     {
       "id": "7931bc79ae4d34c3",
@@ -1124,10 +1125,34 @@
       "first_proposed": "2026-05-13T13:09:14.141Z",
       "last_proposed": "2026-05-13T13:09:14.141Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-13T21:25:39.118Z"
+    },
+    {
+      "id": "ec5e92e69c6010b8",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 bandas sonoras que convirtieron una película buena en grande",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Zimmer en Interstellar, Horner en Titanic, Desplat en Whiplash — las OST que elevan todo al siguiente nivel.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-13T21:25:39.118Z",
+      "last_proposed": "2026-05-13T21:25:39.118Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-13T13:12:54.722Z"
+  "last_saved": "2026-05-13T21:29:31.404Z"
 }

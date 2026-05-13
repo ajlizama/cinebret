@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-12T21:19:11.632Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-13T13:09:14.141Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 5,
   "ig_mix": {
     "last6_counts": {
       "review": 1,
@@ -24,32 +24,12 @@
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
-      },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa; déficit review=2 lo prioriza."
-    },
-    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásitos (2019)",
-      "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
+      "title": "Review: Parasite (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,55 +41,75 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (autor admirado) + plataforma activa; déficit review=2."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + plataforma activa."
     },
     {
-      "id": "e041c4c4d8d26942",
+      "id": "057ed8a4300465a7",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Joker (2019)",
-      "reasoning": "Phoenix convierte a Arthur Fleck en un ícono; tu rating 10 y aún sin review publicado.",
-      "score": 93,
+      "title": "Review: Bastardos sin gloria (2009)",
+      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados sin review publicado todavía.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Joker",
-        "anio": 2019,
-        "pelicula_id": "87c1e799-0cef-49ab-806d-60e8a26d0366"
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 8.4 + plataforma activa; distinto director de los dos anteriores, buena diversidad."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa."
     },
     {
-      "id": "9ad425e891d3279b",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
-      "action": "react_to_news",
-      "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
-      "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "score": 88,
-      "category": "contenido",
-      "angle": "cultural-moment",
-      "source_name": "The Wrap",
-      "source_url": "https://www.thewrap.com/culture-lifestyle/culture/christopher-nolan-the-odyssey-armor-critics/",
-      "skill_to_invoke": "cinebret-list-from-news",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Jackson cierra su trilogía épica con 11 Óscar; rating 10 y aún sin review en el feed.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "url": "https://www.thewrap.com/culture-lifestyle/culture/christopher-nolan-the-odyssey-armor-critics/",
-        "angle": "cultural-moment"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.4 regla 2: Christopher Nolan (olimpo) defiende The Odyssey mencionando Interstellar; ángulo cultural-moment posteable como contenido reactivo."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa."
     },
     {
-      "id": "f86ec87e9c3ceaf3",
+      "id": "b4c419b4ad0432bd",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas de Pixar que van más allá de los niños",
-      "reasoning": "Up, Soul, WALL·E y Ratatouille demuestran que Pixar hace el drama más honesto de Hollywood.",
+      "title": "TOP 10 películas de A24: el sello que redefinió el cine de autor",
+      "reasoning": "A24 concentra lo mejor del cine independiente moderno; kind 'studio' nunca explorado en el feed.",
       "score": 85,
+      "category": "top",
+      "angle": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "studio",
+        "topic": "A24"
+      },
+      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 agrupa a Ari Aster, Robert Eggers y Sean Baker del catálogo — ángulo editorial fuerte y único."
+    },
+    {
+      "id": "c81685b56e458be7",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 dúos director-actor que definieron el cine moderno",
+      "reasoning": "Scorsese-DiCaprio, Nolan-Cillian, Tarantino-Jackson: las alianzas que convirtieron filmografías enteras en obras maestras.",
+      "score": 84,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=studio (no en recent_top_kinds); idea editorial fresca y alineada con el catálogo cinebret."
+      "critic_reason": "Slot creativo: kind 'collaboration' no está en recent_top_kinds [genre, director, theme, era, mood]; dúos director-actor son el ángulo más cinéfilo y personal del catálogo de Alberto."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,69 +184,91 @@
       "type": "FEED",
       "title": "Parasite (2019) — Bong Joon-ho",
       "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Avatar: Fuego y ceniza llega a Disney+ el 24 de junio",
-      "summary_es": "La tercera entrega de Cameron llega al streaming seis meses después del cine; dato útil para Alberto.",
-      "source": "Deadline",
-      "age_hours": 0,
-      "url": "https://deadline.com/2026/05/avatar-fire-and-ash-streaming-date-disney-plus-1236899898/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "c8b779ba-3f8f-4af5-bf65-b01f1e28aafe",
-        "titulo": "Avatar: Fuego y ceniza",
-        "anio": 2025
-      },
-      "score": 68,
-      "reason": "§4.4 regla 3: match al catálogo (Avatar: Fuego y ceniza, James Cameron olimpo) con ángulo informativo (fecha streaming); no es posteable pero Alberto quiere saberlo."
-    },
-    {
-      "title_es": "Avatar: Fuego y ceniza confirma llegada a Disney+ el 24 de junio",
-      "summary_es": "Segunda fuente confirmando la fecha; ya cubierta por noticia principal de Deadline.",
-      "source": "Variety",
-      "age_hours": 0,
-      "url": "https://variety.com/2026/film/news/avatar-3-disney-release-date-fire-ash-streaming-1236621478/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "c8b779ba-3f8f-4af5-bf65-b01f1e28aafe",
-        "titulo": "Avatar: Fuego y ceniza",
-        "anio": 2025
-      },
-      "score": 66,
-      "reason": "§4.4 regla 3: match al catálogo Avatar: Fuego y ceniza (James Cameron) + fecha streaming; ángulo informativo, dedup con c62a4aacf11b5df7 (misma noticia, menor score)."
-    },
-    {
-      "title_es": "Conan O'Brien presentará los Óscar por tercer año consecutivo en 2027",
-      "summary_es": "La Academia confirma continuidad con O'Brien; dato de contexto para cuando arranque la temporada de premios.",
-      "source": "IndieWire",
-      "age_hours": 1,
-      "url": "https://www.indiewire.com/news/breaking-news/conan-obrien-will-host-oscars-2027-1235193586/",
-      "angle": "oscar",
+      "title_es": "Peter Jackson en Cannes: Palme honoraria, Tintin y comentarios sobre IA en el cine",
+      "summary_es": "Jackson revela proyectos futuros y opina sobre IA; su Palme honoraria es evento cinéfilo de la semana.",
+      "source": "Hollywood Reporter",
+      "age_hours": 2,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/peter-jackson-talks-ai-filmmaking-in-cannes-a-tool-like-any-other-1236594608/",
+      "angle": "festival",
       "catalog_match": null,
+      "score": 78,
+      "reason": "§4.3 director match: Peter Jackson (olimpo) nombrado completo en título; recibe Palme d'Or honoraria en Cannes y tease proyectos Tintin + WWII + Gollum. Ángulo informativo potente."
+    },
+    {
+      "title_es": "Peter Jackson sorprendido por su Palme honoraria: 'No hago ese tipo de películas'",
+      "summary_es": "Jackson confiesa que nunca esperó el reconocimiento de Cannes; comentario honesto de uno del olimpo.",
+      "source": "The Wrap",
+      "age_hours": 2,
+      "url": "https://www.thewrap.com/creative-content/movies/peter-jackson-was-shocked-by-his-cannes-honor/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 75,
+      "reason": "§4.3 director match: Peter Jackson (olimpo) nombrado completo; dedup parcial con b86a9385911bf2fe pero aporta ángulo humano distinto ('never make Palme-type films')."
+    },
+    {
+      "title_es": "Trailer de 'Wildwood': Laika encadena 5 nominaciones al Óscar de animación",
+      "summary_es": "Cinco nominadas al Óscar en fila desde Coraline; Wildwood busca continuar esa racha en octubre.",
+      "source": "Deadline",
+      "age_hours": 1,
+      "url": "https://deadline.com/2026/05/wildwood-trailer-laika-movie-1236900381/",
+      "angle": "trailer-drop",
+      "catalog_match": {
+        "pelicula_id": "c9e0b1e1-b708-46fd-824b-8902d6ebcfa8",
+        "titulo": "Los mundos de Coraline",
+        "anio": 2009
+      },
+      "score": 63,
+      "reason": "§4.4 regla 2 + §6 dedup: mismo evento que 139a3ee6b14297f1 (Wildwood trailer/Laika); mantener el de mayor score, este queda como news_only secundario."
+    },
+    {
+      "title_es": "Laika presenta teaser de 'Wildwood' en Cannes: el estudio de Coraline regresa",
+      "summary_es": "Travis Knight dirige la nueva stop-motion de Laika; estreno 23 de octubre, conexión con Coraline del catálogo.",
+      "source": "Hollywood Reporter",
+      "age_hours": 1,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/laika-wildwood-trailer-cannes-2026-1236594437/",
+      "angle": "trailer-drop",
+      "catalog_match": {
+        "pelicula_id": "c9e0b1e1-b708-46fd-824b-8902d6ebcfa8",
+        "titulo": "Los mundos de Coraline",
+        "anio": 2009
+      },
       "score": 62,
-      "reason": "§4.4 regla 3: Óscar es relevante para el universo cinebret; noticia informativa (confirmación de host 2027) sin ángulo posteable directo."
+      "reason": "§4.4 regla 2: match al catálogo con 'Los mundos de Coraline' (sello bret potencial) + trailer-drop de Laika en Cannes; ángulo informativo más que propuesta accionable dado déficit de reviews."
+    },
+    {
+      "title_es": "Primer teaser de 'Wildwood': Laika vuelve al stop-motion con fantasía épica",
+      "summary_es": "Laika, el estudio detrás de Coraline, estrena su primera película stop-motion desde 2019.",
+      "source": "The Wrap",
+      "age_hours": 0,
+      "url": "https://www.thewrap.com/creative-content/movies/wildwood-trailer-laika-fathom-entertainment-travis-knight/",
+      "angle": "trailer-drop",
+      "catalog_match": null,
+      "score": 58,
+      "reason": "§4.4 regla 3: Laika conecta indirectamente con Coraline (sello bret potencial, stop-motion) pero sin match formal al catálogo; ángulo informativo válido."
     }
   ],
   "raw_signal_counts": {
     "news_items": 119,
     "newsapi_items": 93,
     "reddit_posts": 0,
-    "trailers": 56
+    "trailers": 57
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 1,
+    "agedCount": 3,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15663,
-    "output": 11973
+    "input": 16446,
+    "output": 13430
   }
 }

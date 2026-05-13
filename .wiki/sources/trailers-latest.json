@@ -1,9 +1,94 @@
 {
-  "generated_at": "2026-05-12T21:19:11.545Z",
-  "total_videos": 56,
-  "trailers_count": 8,
-  "matched_to_cinebret": 11,
+  "generated_at": "2026-05-13T13:08:36.694Z",
+  "total_videos": 57,
+  "trailers_count": 6,
+  "matched_to_cinebret": 14,
   "videos": [
+    {
+      "video_id": "DGUteHiZLTY",
+      "title": "Mina the Hollower Preview: Kinda Like Bloodborne as a Cute 8-Bit Adventure Game",
+      "url": "https://www.youtube.com/watch?v=DGUteHiZLTY",
+      "published": "2026-05-13T13:00:18Z",
+      "thumbnail": "https://i.ytimg.com/vi/DGUteHiZLTY/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "2z6a6NUFlsU",
+      "title": "Backrooms | Official Promo | A24",
+      "url": "https://www.youtube.com/watch?v=2z6a6NUFlsU",
+      "published": "2026-05-13T13:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/2z6a6NUFlsU/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "jGnhVhBuu74",
+      "title": "Instupendo | Live From The Backrooms",
+      "url": "https://www.youtube.com/watch?v=jGnhVhBuu74",
+      "published": "2026-05-13T05:07:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/jGnhVhBuu74/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "WtT1_WDyb-s",
+      "title": "Mortal Kombat II is loaded with pop culture references",
+      "url": "https://www.youtube.com/watch?v=WtT1_WDyb-s",
+      "published": "2026-05-13T01:57:42Z",
+      "thumbnail": "https://i.ytimg.com/vi/WtT1_WDyb-s/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "8f7c8792-20ce-436e-b56d-65de5297aefc",
+        "titulo": "Mortal Kombat II",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "gE8_-ZEh5EI",
+      "title": "The new Dark Pictures Anthology game is GREAT",
+      "url": "https://www.youtube.com/watch?v=gE8_-ZEh5EI",
+      "published": "2026-05-13T01:56:37Z",
+      "thumbnail": "https://i.ytimg.com/vi/gE8_-ZEh5EI/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "xhzfDnJJhAU",
+      "title": "Almost didn't recognize Jude Law",
+      "url": "https://www.youtube.com/watch?v=xhzfDnJJhAU",
+      "published": "2026-05-13T01:55:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/xhzfDnJJhAU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "FIkhwQKadOI",
+      "title": "Forza Horizon 6 Pirate Gets Banned Until the Year 10,000 - IGN Daily Fix",
+      "url": "https://www.youtube.com/watch?v=FIkhwQKadOI",
+      "published": "2026-05-12T22:59:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/FIkhwQKadOI/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "zLGgraEtDhY",
       "title": "When Noah said “thanks for the kiss”, we felt that | My Fault: London | Prime Video",
@@ -75,42 +160,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "kpJXXFITc8w",
-      "title": "Call of the Elder Gods Review",
-      "url": "https://www.youtube.com/watch?v=kpJXXFITc8w",
-      "published": "2026-05-12T18:50:18Z",
-      "thumbnail": "https://i.ytimg.com/vi/kpJXXFITc8w/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "TD9jpS-tf90",
       "title": "A definitive crowd-pleaser. #PowerBallad, starring Paul Rudd and Nick Jonas,.",
       "url": "https://www.youtube.com/watch?v=TD9jpS-tf90",
       "published": "2026-05-12T18:31:32Z",
       "thumbnail": "https://i.ytimg.com/vi/TD9jpS-tf90/hqdefault.jpg",
       "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "vpaoPQw2fBk",
-      "title": "Deadzone Rogue 2 - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=vpaoPQw2fBk",
-      "published": "2026-05-12T18:00:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/vpaoPQw2fBk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "MqphlLsienY",
-      "title": "The Sinking City 2 Preview: A Promising but Inconsistent Eldritch Horror Adventure",
-      "url": "https://www.youtube.com/watch?v=MqphlLsienY",
-      "published": "2026-05-12T17:38:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/MqphlLsienY/hqdefault.jpg",
-      "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -123,16 +178,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "kkAKL5qAmNM",
-      "title": "Marvel Rivals - Official Devil Dinosaur Character Reveal Trailer",
-      "url": "https://www.youtube.com/watch?v=kkAKL5qAmNM",
-      "published": "2026-05-12T17:28:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/kkAKL5qAmNM/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "jrulLtKVqGw",
@@ -152,16 +197,6 @@
       "thumbnail": "https://i.ytimg.com/vi/TRsZK_gkWVs/hqdefault.jpg",
       "channel": "Netflix",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "8jfLZHNZ_68",
-      "title": "Marvel Rivals - Official Season 8 Dev Vision Vol. 17",
-      "url": "https://www.youtube.com/watch?v=8jfLZHNZ_68",
-      "published": "2026-05-12T16:24:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/8jfLZHNZ_68/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -608,16 +643,6 @@
         "titulo": "Mortal Kombat",
         "anio": 1995
       }
-    },
-    {
-      "video_id": "UCK6KI7yQ10",
-      "title": "Kane Parsons & James Wan | The A24 Podcast",
-      "url": "https://www.youtube.com/watch?v=UCK6KI7yQ10",
-      "published": "2026-05-06T11:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/UCK6KI7yQ10/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false
     }
   ]
 }

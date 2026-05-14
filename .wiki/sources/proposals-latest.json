@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-13T21:25:39.118Z",
+  "generated_at": "2026-05-14T21:09:21.524Z",
   "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 1,
+  "news_count": 2,
   "ig_mix": {
     "last6_counts": {
-      "review": 1,
+      "review": 0,
       "contenido": 2,
-      "top": 3
+      "top": 4
     },
     "target": {
       "review": 3,
@@ -17,39 +17,39 @@
       "top": 2
     },
     "deficits": {
-      "review": 2,
+      "review": 3,
       "contenido": 0,
       "top": 0
     }
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 97,
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Peter Jackson cierra la trilogía con 11 Óscars; tu rating 10 y sin review en el feed.",
+      "score": 98,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director respetado (DeBlois) + año 2025 boost + plataforma activa; déficit review≥1 prioriza reviews."
+      "critic_reason": "§4.5 review válida: Rating 10 + IMDb 9.0 + sello bret + Peter Jackson + plataforma activa; El Retorno del Rey sin review publicado."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parasite (2019)",
-      "reasoning": "Bong Joon-ho y el Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida: Parasite rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho + 0 días backlog; prioridad máxima del ciclo."
+      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho + Netflix activa; backlog 1 día. Dedup: mismo id y film que candidato proposal 6134534c."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "057ed8a4300465a7",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson que arrasó en los Óscar; tu rating 10 y sin review publicado.",
+      "title": "Review: Bastardos sin Gloria (2009)",
+      "reasoning": "Tarantino en su cima narrativa; uno de tus 38 sagrados del Olimpo todavía sin review.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -77,19 +77,38 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Inglourious Basterds",
+        "anio": 2009,
+        "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson + plataforma activa; LOTR es franquicia icónica del catálogo."
+      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + Tarantino (Olimpo) + plataforma activa; Inglourious Basterds sin review publicado."
     },
     {
-      "id": "398d8675522f2763",
+      "id": "d59f522c5724a180",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "react_to_news",
+      "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
+      "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
+      "score": 88,
+      "category": "contenido",
+      "angle": "casting",
+      "source_name": "Deadline",
+      "source_url": "https://deadline.com/2026/05/james-bond-nina-gold-casting-director-1236905192/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://deadline.com/2026/05/james-bond-nina-gold-casting-director-1236905192/",
+        "angle": "casting"
+      },
+      "critic_reason": "§4.3 director match: Denis Villeneuve (Olimpo) confirmado como director del próximo James Bond; ángulo casting de alto interés para Alberto."
+    },
+    {
+      "id": "44ab4b8a5edd3f16",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 bandas sonoras que convirtieron una película buena en grande",
-      "reasoning": "Zimmer en Interstellar, Horner en Titanic, Desplat en Whiplash — las OST que elevan todo al siguiente nivel.",
+      "title": "TOP 10 películas con la narrativa más retorcida del cine moderno",
+      "reasoning": "Memento, Pulp Fiction, Oldboy: las películas que usan la estructura como arma narrativa definitiva.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,26 +119,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§slot creativo: kind=studio nunca explorado; idea: TOP 10 bandas sonoras que convirtieron una película buena en grande — kind=soundtrack, fresco y nunca hecho."
-    },
-    {
-      "id": "b4c419b4ad0432bd",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_carousel_topic",
-      "title": "TOP 10 películas de A24: el sello que redefinió el cine de autor",
-      "reasoning": "Ari Aster, Robert Eggers y Sean Baker bajo un mismo sello; una lista que el feed necesita.",
-      "score": 82,
-      "category": "top",
-      "angle": null,
-      "source_name": "cinebret-carousel-topic",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-topic",
-      "skill_args": {
-        "topic_type": "studio",
-        "topic": "A24"
-      },
-      "critic_reason": "§3 kind=studio no está en recent_top_kinds; A24 es el sello más relevante del cine moderno y nunca ha aparecido en el feed."
+      "critic_reason": "Slot creativo: kind=narrative-structure no está en recent_top_kinds; ángulo fresco sobre películas con narración no lineal, eje que Alberto adora (Memento, Pulp Fiction, Oldboy)."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 8,
+      "days_ago": 9,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,43 +184,50 @@
       "type": "FEED",
       "title": "Parasite (2019) — Bong Joon-ho",
       "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Paramount fecha 'Heart of the Beast' (Pitt/Ayer) para septiembre; compite con re-estreno de Endgame",
-      "summary_es": "Vengadores: Endgame vuelve a cines el 25 de septiembre junto al nuevo thriller de Brad Pitt.",
+      "title_es": "Farhadi recibe ovación de 7 minutos en Cannes por 'Parallel Tales'",
+      "summary_es": "Su primer largometraje en cinco años, rodado en París con Huppert y Cassel, arrasa en Cannes 2026.",
+      "source": "Deadline",
+      "age_hours": 0,
+      "url": "https://deadline.com/2026/05/parallel-tales-tk-minute-standing-ovation-cannes-1236904995/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§4.3 director match: Asghar Farhadi no está en ninguna lista de directores favoritos; §4.4 regla 1 aplica — no hay match al catálogo de calidad ni director match."
+    },
+    {
+      "title_es": "Cannes 2026: todas las críticas de Deadline al día",
+      "summary_es": "Farhadi, Kore-eda y Mungiu entre los grandes nombres; contexto del festival que Alberto sigue.",
       "source": "Deadline",
       "age_hours": 1,
-      "url": "https://deadline.com/2026/05/heart-of-the-beast-movie-release-date-brad-pitt-1236901777/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "b9102015-2439-42de-8933-f0417c0153f1",
-        "titulo": "Vengadores: Endgame",
-        "anio": 2019
-      },
-      "score": 42,
-      "reason": "§4.4 regla 3: match débil a 'Vengadores: Endgame' (re-estreno mencionado) pero el ángulo principal es Heart of the Beast; informativo marginal."
+      "url": "https://deadline.com/2026/05/cannes-2026-movie-reviews-1236887972/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 52,
+      "reason": "§6 bloque noticias: Cannes 2026 en curso (≤7 días); no hay match directo al catálogo pero es contexto general del festival relevante para Alberto."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 120,
+    "news_items": 119,
     "newsapi_items": 93,
     "reddit_posts": 0,
-    "trailers": 57
+    "trailers": 55
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 1,
     "expiredByTime": 0,
-    "expiredByCritic": 0
+    "expiredByCritic": 5
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16564,
-    "output": 13783
+    "input": 17516,
+    "output": 13116
   }
 }

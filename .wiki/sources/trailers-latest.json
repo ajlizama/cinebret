@@ -1,9 +1,309 @@
 {
-  "generated_at": "2026-05-13T21:25:39.030Z",
-  "total_videos": 57,
-  "trailers_count": 8,
-  "matched_to_cinebret": 11,
+  "generated_at": "2026-05-14T21:09:21.437Z",
+  "total_videos": 55,
+  "trailers_count": 11,
+  "matched_to_cinebret": 7,
   "videos": [
+    {
+      "video_id": "WNB40Hnjfok",
+      "title": "The Outfit | A Mob Boss Comes to Inquire About his Son",
+      "url": "https://www.youtube.com/watch?v=WNB40Hnjfok",
+      "published": "2026-05-14T21:00:40Z",
+      "thumbnail": "https://i.ytimg.com/vi/WNB40Hnjfok/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "bNGCoSe9FPw",
+      "title": "Even Supes have tough days. | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=bNGCoSe9FPw",
+      "published": "2026-05-14T21:00:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/bNGCoSe9FPw/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "TwaiTxzDOP4",
+      "title": "Hell Let Loose: Vietnam - Official Release Date Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=TwaiTxzDOP4",
+      "published": "2026-05-14T21:00:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/TwaiTxzDOP4/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "bpcxQXNV3Ds",
+      "title": "Subnautica 2 Early Access Review",
+      "url": "https://www.youtube.com/watch?v=bpcxQXNV3Ds",
+      "published": "2026-05-14T20:31:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/bpcxQXNV3Ds/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "DAcRcY2_VCc",
+      "title": "Forza Horizon 6: Racing a Giant Mech (4K 60fps Gameplay)",
+      "url": "https://www.youtube.com/watch?v=DAcRcY2_VCc",
+      "published": "2026-05-14T20:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/DAcRcY2_VCc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "xdVZ2yiYaBw",
+      "title": "Shawn Escapes the Chokehold 👊 #Fighting #Shorts",
+      "url": "https://www.youtube.com/watch?v=xdVZ2yiYaBw",
+      "published": "2026-05-14T19:00:57Z",
+      "thumbnail": "https://i.ytimg.com/vi/xdVZ2yiYaBw/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Dxhmv8HfsNI",
+      "title": "Borderlands 4 - Official Raid Boss 2 Reveal Trailer",
+      "url": "https://www.youtube.com/watch?v=Dxhmv8HfsNI",
+      "published": "2026-05-14T19:00:18Z",
+      "thumbnail": "https://i.ytimg.com/vi/Dxhmv8HfsNI/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "5IByT-JLudo",
+      "title": "Retroneer - Official Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=5IByT-JLudo",
+      "published": "2026-05-14T18:30:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/5IByT-JLudo/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "ojdjZg0EKUc",
+      "title": "Inside John Carney's writing process for #PowerBallad starring Paul Rudd and Nick Jonas.",
+      "url": "https://www.youtube.com/watch?v=ojdjZg0EKUc",
+      "published": "2026-05-14T18:11:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/ojdjZg0EKUc/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "vLVs2-9fUFo",
+      "title": "Stay off the quieter roads.𖨆 Get tickets for #PassengerMovie now, only in theatres May 22.",
+      "url": "https://www.youtube.com/watch?v=vLVs2-9fUFo",
+      "published": "2026-05-14T18:10:59Z",
+      "thumbnail": "https://i.ytimg.com/vi/vLVs2-9fUFo/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "_P4F4aQcBKs",
+      "title": "GET /// TICKETS ⍉ NOW 𖨆. Before it's too late. #PassengerMovie - only in theatres May 22.",
+      "url": "https://www.youtube.com/watch?v=_P4F4aQcBKs",
+      "published": "2026-05-14T18:09:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/_P4F4aQcBKs/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "_G-k1x6Js58",
+      "title": "Always check the backseat. 𖨆 Get tickets now for #PassengerMovie - only in theatres May 22",
+      "url": "https://www.youtube.com/watch?v=_G-k1x6Js58",
+      "published": "2026-05-14T18:09:24Z",
+      "thumbnail": "https://i.ytimg.com/vi/_G-k1x6Js58/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "nM9NvGxQfVE",
+      "title": "No one outruns the Passenger. 𖨆 Get tickets now for #PassengerMovie - only in theatres May 22",
+      "url": "https://www.youtube.com/watch?v=nM9NvGxQfVE",
+      "published": "2026-05-14T18:09:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/nM9NvGxQfVE/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HdMtgc_sMWg",
+      "title": "No one outruns the Passenger. /// Get tickets now for #PassengerMovie - only in theatres May 22",
+      "url": "https://www.youtube.com/watch?v=HdMtgc_sMWg",
+      "published": "2026-05-14T18:08:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/HdMtgc_sMWg/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Ap6UhCcHRC0",
+      "title": "The Furious (2026) ’Who Are You’ Official Clip - Xie Miao, Joe Taslim",
+      "url": "https://www.youtube.com/watch?v=Ap6UhCcHRC0",
+      "published": "2026-05-14T18:00:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/Ap6UhCcHRC0/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Dy6qLO9EmBQ",
+      "title": "Bad Thoughts: Season 2 | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=Dy6qLO9EmBQ",
+      "published": "2026-05-14T17:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/Dy6qLO9EmBQ/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "yoldPHih4Aw",
+      "title": "Oh-Father Confronts Starlight | The Boys Final Season | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=yoldPHih4Aw",
+      "published": "2026-05-14T17:01:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/yoldPHih4Aw/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "kJODS1_1yY0",
+      "title": "Ratty, snatty, and ready to throw punches. #MargosGotMoneyTroubles — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=kJODS1_1yY0",
+      "published": "2026-05-14T16:59:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/kJODS1_1yY0/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "EnvBoDKSNKg",
+      "title": "Outlast: The Jungle | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=EnvBoDKSNKg",
+      "published": "2026-05-14T16:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/EnvBoDKSNKg/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "VNjMLkzLxTo",
+      "title": "Backrooms | The Cast Maps the Backrooms Set | A24",
+      "url": "https://www.youtube.com/watch?v=VNjMLkzLxTo",
+      "published": "2026-05-14T15:33:26Z",
+      "thumbnail": "https://i.ytimg.com/vi/VNjMLkzLxTo/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "pEdfYmxsUDE",
+      "title": "J.K. Simmons & Sandra Oh giving it their all | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=pEdfYmxsUDE",
+      "published": "2026-05-14T15:01:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/pEdfYmxsUDE/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HqqYxLYIwBc",
+      "title": "Mating Season | Ray Introduces Addy | Sneak Peek | Netflix",
+      "url": "https://www.youtube.com/watch?v=HqqYxLYIwBc",
+      "published": "2026-05-14T15:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/HqqYxLYIwBc/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "A3ZbjkDxYUs",
+      "title": "Your Fault: London - Official Trailer | Prime Video",
+      "url": "https://www.youtube.com/watch?v=A3ZbjkDxYUs",
+      "published": "2026-05-14T14:00:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/A3ZbjkDxYUs/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "6GW4JPeqm3s",
+      "title": "SPIDER-MAN: BRAND NEW DAY - Practical Production",
+      "url": "https://www.youtube.com/watch?v=6GW4JPeqm3s",
+      "published": "2026-05-14T13:15:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/6GW4JPeqm3s/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "pwEEEIdViKg",
+      "title": "THE FALL OF SIR DOUGLAS WEATHERFORD | Official Trailer | In Cinemas June 12",
+      "url": "https://www.youtube.com/watch?v=pwEEEIdViKg",
+      "published": "2026-05-14T10:00:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/pwEEEIdViKg/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "kxDLkNfPBUA",
+      "title": "FATHERLAND | Official Clip | Coming Soon",
+      "url": "https://www.youtube.com/watch?v=kxDLkNfPBUA",
+      "published": "2026-05-14T09:14:28Z",
+      "thumbnail": "https://i.ytimg.com/vi/kxDLkNfPBUA/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "d48b638b-ba50-49d9-9fb2-470ab1af990f",
+        "titulo": "Coming soon",
+        "anio": 2008
+      }
+    },
+    {
+      "video_id": "KlyNjng1SjU",
+      "title": "Untold UK: Liverpool's Miracle of Istanbul | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=KlyNjng1SjU",
+      "published": "2026-05-14T09:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/KlyNjng1SjU/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "W5KloE-t1bE",
+      "title": "PRESSURE - \"We Must Face the Facts\" Official Clip",
+      "url": "https://www.youtube.com/watch?v=W5KloE-t1bE",
+      "published": "2026-05-13T23:40:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/W5KloE-t1bE/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "-KC9Fag11uA",
+      "title": "She saw an opportunity and she took it. #YourFriendsAndNeighbors — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=-KC9Fag11uA",
+      "published": "2026-05-13T22:59:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/-KC9Fag11uA/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "iRc9LpJTokY",
       "title": "The Outfit | The Moment a Tailor Stitches Up a Gangster",
@@ -15,16 +315,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "IzKOhYub1Lg",
-      "title": "NieR: Orchestra Concert - Official Trailer",
-      "url": "https://www.youtube.com/watch?v=IzKOhYub1Lg",
-      "published": "2026-05-13T21:00:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/IzKOhYub1Lg/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "96aKY8NSexE",
       "title": "Some of Bombsight's finest work. | The Boys | Prime Video",
       "url": "https://www.youtube.com/watch?v=96aKY8NSexE",
@@ -33,56 +323,6 @@
       "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "R3zrAUUrJls",
-      "title": "Is it a gentleman caller? #MaximumPleasureGuaranteed — May 20",
-      "url": "https://www.youtube.com/watch?v=R3zrAUUrJls",
-      "published": "2026-05-13T20:59:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/R3zrAUUrJls/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "HnbB1XYMaYY",
-      "title": "Terry Crews' GOAT picks reveal where he likes to sit in a movie theater! #terrycrews #goat #ign",
-      "url": "https://www.youtube.com/watch?v=HnbB1XYMaYY",
-      "published": "2026-05-13T20:58:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/HnbB1XYMaYY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "mLIl96XxCcQ",
-      "title": "We're in the Backrooms looking for the director of Backrooms Kane Parsons. HELP! #backrooms #movie",
-      "url": "https://www.youtube.com/watch?v=mLIl96XxCcQ",
-      "published": "2026-05-13T20:35:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/mLIl96XxCcQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "D9vWivzVWFs",
-      "title": "Flawed Victory: The Long Road to a Good Mortal Kombat Movie Sequel",
-      "url": "https://www.youtube.com/watch?v=D9vWivzVWFs",
-      "published": "2026-05-13T20:00:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/D9vWivzVWFs/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
-        "titulo": "Mortal Kombat",
-        "anio": 1995
-      }
     },
     {
       "video_id": "SP0ma-o8xQc",
@@ -103,26 +343,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "uMu3MbrKDak",
-      "title": "Would You Kindly... Finish BioShock? - Game Scoop! Clip",
-      "url": "https://www.youtube.com/watch?v=uMu3MbrKDak",
-      "published": "2026-05-13T19:02:28Z",
-      "thumbnail": "https://i.ytimg.com/vi/uMu3MbrKDak/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "mUT7j8wSnao",
-      "title": "Throwback to Ruby and James’ First Kiss | Maxton Hall | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=mUT7j8wSnao",
-      "published": "2026-05-13T19:00:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/mUT7j8wSnao/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "D5pp9Lpi5HU",
@@ -160,26 +380,6 @@
       }
     },
     {
-      "video_id": "fdBr5KyUilU",
-      "title": "East of Eden | Official Teaser | Netflix",
-      "url": "https://www.youtube.com/watch?v=fdBr5KyUilU",
-      "published": "2026-05-13T18:56:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/fdBr5KyUilU/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "FhwGyRufypg",
-      "title": "Sounds like there's a deal to be made. | Off Campus | Prime Video",
-      "url": "https://www.youtube.com/watch?v=FhwGyRufypg",
-      "published": "2026-05-13T18:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/FhwGyRufypg/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "FjbCYz_7tvI",
       "title": "Lawyer Lace on the case. #MargosGotMoneyTroubles — Now Streaming",
       "url": "https://www.youtube.com/watch?v=FjbCYz_7tvI",
@@ -200,26 +400,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "D70tf7sngik",
-      "title": "Soldier Boy Gives Homelander V1 | The Boys Final Season | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=D70tf7sngik",
-      "published": "2026-05-13T17:00:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/D70tf7sngik/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "W_xhw1KV9Tc",
-      "title": "For All Mankind — Flashmob Disaster | Season 5 Scene | Apple TV",
-      "url": "https://www.youtube.com/watch?v=W_xhw1KV9Tc",
-      "published": "2026-05-13T16:59:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/W_xhw1KV9Tc/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "E1VNiIwAUPs",
       "title": "Get your tickets NOW to see #PowerBallad on May 29 in select cities. In theaters everywhere June 5.",
       "url": "https://www.youtube.com/watch?v=E1VNiIwAUPs",
@@ -236,16 +416,6 @@
       "published": "2026-05-13T16:00:01Z",
       "thumbnail": "https://i.ytimg.com/vi/aLd3wB5B9xk/hqdefault.jpg",
       "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "f7Hx6qVmYWA",
-      "title": "Prime Book Club | Welcome to the Club: Off Campus",
-      "url": "https://www.youtube.com/watch?v=f7Hx6qVmYWA",
-      "published": "2026-05-13T14:59:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/f7Hx6qVmYWA/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -320,26 +490,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "5aknIIFc2oQ",
-      "title": "whose side will you choose? 👀 From the creator of Power comes NEMESIS, premiering May 14",
-      "url": "https://www.youtube.com/watch?v=5aknIIFc2oQ",
-      "published": "2026-05-12T17:30:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/5aknIIFc2oQ/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "TRsZK_gkWVs",
-      "title": "Perfect Match: Season 4 | Ally & Jimmy's Broadway Baby? | Sneak Peek | Netflix",
-      "url": "https://www.youtube.com/watch?v=TRsZK_gkWVs",
-      "published": "2026-05-12T17:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/TRsZK_gkWVs/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "LWgUWiQ26ys",
       "title": "The Last Showgirl (2025) Official Trailer - Pamela Anderson, Kiernan Shipka, Brenda Song",
       "url": "https://www.youtube.com/watch?v=LWgUWiQ26ys",
@@ -390,71 +540,11 @@
       "is_trailer": false
     },
     {
-      "video_id": "COUkUkLAIII",
-      "title": "Poldi | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=COUkUkLAIII",
-      "published": "2026-05-12T11:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/COUkUkLAIII/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "YLWVAfA48wU",
-      "title": "Discover the films that defined past festivals. Now streaming in our \"Cannes Takeover\" collection.",
-      "url": "https://www.youtube.com/watch?v=YLWVAfA48wU",
-      "published": "2026-05-11T19:00:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/YLWVAfA48wU/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "nt58VH5BZbM",
-      "title": "The word is out. Paul Rudd and Nick Jonas shine in #PowerBallad.",
-      "url": "https://www.youtube.com/watch?v=nt58VH5BZbM",
-      "published": "2026-05-11T17:33:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/nt58VH5BZbM/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "JaMpxqVZVeg",
-      "title": "no nicolas cages were harmed in the making of this film #FaceOff",
-      "url": "https://www.youtube.com/watch?v=JaMpxqVZVeg",
-      "published": "2026-05-11T17:00:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/JaMpxqVZVeg/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "4jaQDvU9p0Y",
       "title": "Oh yeah, he’s *definitely* seen E.T | 🎬 Dìdi 弟弟 (2024)",
       "url": "https://www.youtube.com/watch?v=4jaQDvU9p0Y",
       "published": "2026-05-11T17:00:07Z",
       "thumbnail": "https://i.ytimg.com/vi/4jaQDvU9p0Y/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "CpAcf-EZViY",
-      "title": "Director Gianfranco Rosi on the ideas that shaped his latest project, POMPEI: BELOW THE CLOUDS.",
-      "url": "https://www.youtube.com/watch?v=CpAcf-EZViY",
-      "published": "2026-05-11T15:00:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/CpAcf-EZViY/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "gfCDQx2I2aE",
-      "title": "\"It's Not About the Age of the Donut\" 🍩 #TheFiveYearEngagement #Shorts",
-      "url": "https://www.youtube.com/watch?v=gfCDQx2I2aE",
-      "published": "2026-05-10T21:00:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/gfCDQx2I2aE/hqdefault.jpg",
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
@@ -475,36 +565,6 @@
       }
     },
     {
-      "video_id": "DvE-MTJVBO0",
-      "title": "Armageddon Time | Family Dinner Turns into a Debate About Private Schooling",
-      "url": "https://www.youtube.com/watch?v=DvE-MTJVBO0",
-      "published": "2026-05-09T21:00:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/DvE-MTJVBO0/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2815ee14-654f-4a19-b1a8-c8358c348394",
-        "titulo": "Armageddon",
-        "anio": 1998
-      }
-    },
-    {
-      "video_id": "AoCzxZO4MVg",
-      "title": "I, Frankenstein (2014) | Full Movie | Aaron Eckhart, Bill Nighy, Miranda Otto, Yvonne Strahovski",
-      "url": "https://www.youtube.com/watch?v=AoCzxZO4MVg",
-      "published": "2026-05-08T22:51:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/AoCzxZO4MVg/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "b51f4e42-fe0b-46ea-a130-5fa9bb80f3b3",
-        "titulo": "Frankenstein",
-        "anio": 2025
-      }
-    },
-    {
       "video_id": "j8JS0AiHzQ8",
       "title": "It's showtime. 😎 #MortalKombatMovie",
       "url": "https://www.youtube.com/watch?v=j8JS0AiHzQ8",
@@ -512,16 +572,6 @@
       "thumbnail": "https://i.ytimg.com/vi/j8JS0AiHzQ8/hqdefault.jpg",
       "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "fsPJ1GsUTUs",
-      "title": "Hot Fuzz | The Moment Sgt. Angel Discovers a Cult",
-      "url": "https://www.youtube.com/watch?v=fsPJ1GsUTUs",
-      "published": "2026-05-08T21:00:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/fsPJ1GsUTUs/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -538,96 +588,6 @@
         "titulo": "The Breadwinner (El pan de la guerra)",
         "anio": 2017
       }
-    },
-    {
-      "video_id": "xdngF3F4DWI",
-      "title": "Crafting the Homelander Character",
-      "url": "https://www.youtube.com/watch?v=xdngF3F4DWI",
-      "published": "2026-05-07T19:00:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/xdngF3F4DWI/hqdefault.jpg",
-      "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "D9h0wSvS2ls",
-      "title": "The Yogurt Shop Murders: The Final Chapter | Official Trailer | HBO",
-      "url": "https://www.youtube.com/watch?v=D9h0wSvS2ls",
-      "published": "2026-05-07T17:00:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/D9h0wSvS2ls/hqdefault.jpg",
-      "channel": "HBO Max",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "TnHby2cxJzs",
-      "title": "Evil Dead Burn | Official Trailer",
-      "url": "https://www.youtube.com/watch?v=TnHby2cxJzs",
-      "published": "2026-05-07T16:52:53Z",
-      "thumbnail": "https://i.ytimg.com/vi/TnHby2cxJzs/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "0IWQIjx8xtg",
-      "title": "The fans summoned, the book of the dead answered. #EvilDeadBurn",
-      "url": "https://www.youtube.com/watch?v=0IWQIjx8xtg",
-      "published": "2026-05-07T16:05:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/0IWQIjx8xtg/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "A4eGlqRk_HA",
-      "title": "Kane Parsons & James Wan | Origins of the Backrooms | The A24 Podcast",
-      "url": "https://www.youtube.com/watch?v=A4eGlqRk_HA",
-      "published": "2026-05-07T15:21:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/A4eGlqRk_HA/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "Bm__0kg1g_U",
-      "title": "Kane Parsons & James Wan | What's Scary About the Backrooms | The A24 Podcast",
-      "url": "https://www.youtube.com/watch?v=Bm__0kg1g_U",
-      "published": "2026-05-07T15:19:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/Bm__0kg1g_U/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "XYNDFeepZHA",
-      "title": "Beef | You Don't Love Me | A24",
-      "url": "https://www.youtube.com/watch?v=XYNDFeepZHA",
-      "published": "2026-05-07T15:16:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/XYNDFeepZHA/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "ePUAGZh42Qw",
-      "title": "Billie Eilish Previews Hit Me Hard and Soft: The Tour Live in 3D",
-      "url": "https://www.youtube.com/watch?v=ePUAGZh42Qw",
-      "published": "2026-05-07T14:25:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/ePUAGZh42Qw/hqdefault.jpg",
-      "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
     }
   ]
 }

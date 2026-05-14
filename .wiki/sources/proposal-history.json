@@ -508,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-13T21:25:39.118Z",
-      "cycles_proposed": 10,
+      "last_proposed": "2026-05-14T21:09:21.524Z",
+      "cycles_proposed": 11,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -608,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-12T21:19:11.632Z",
-      "cycles_proposed": 9,
+      "last_proposed": "2026-05-14T21:09:21.524Z",
+      "cycles_proposed": 10,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -633,8 +633,8 @@
         "pelicula_id": "bae319bb-04b8-4b90-9c87-e1d17209766c"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-13T13:09:14.141Z",
-      "cycles_proposed": 8,
+      "last_proposed": "2026-05-14T21:09:21.524Z",
+      "cycles_proposed": 9,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -683,10 +683,12 @@
       "first_proposed": "2026-05-08T12:07:25.851Z",
       "last_proposed": "2026-05-11T21:15:34.263Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T20:58:56.691Z"
+      "became_backlog_at": "2026-05-08T20:58:56.691Z",
+      "expired_at": "2026-05-14T21:09:21.524Z",
+      "expired_reason": "§8 anti-pattern: kind=studio está en recent_top_kinds; múltiples duplicados de A24 en backlog; descartar en favor de versión más reciente y refinada."
     },
     {
       "id": "07a653c73a5ef8df",
@@ -731,12 +733,12 @@
       "first_proposed": "2026-05-10T11:45:29.936Z",
       "last_proposed": "2026-05-10T11:45:29.936Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-10T20:44:21.368Z",
-      "expired_at": "2026-05-09T20:41:42.123Z",
-      "expired_reason": "§8 anti-pattern 6: duplicado del sujeto A24 ya cubierto con b4c419b4 y 361a04cc en este ciclo — mismo kind=studio, mismo topic; se descarta el de menor urgencia para evitar repetición."
+      "expired_at": "2026-05-14T21:09:21.524Z",
+      "expired_reason": "§8 anti-pattern: kind=studio está en recent_top_kinds; cuarto duplicado de A24 en backlog; descartar."
     },
     {
       "id": "e149394a31c04ccc",
@@ -781,12 +783,12 @@
       "first_proposed": "2026-05-09T20:41:42.123Z",
       "last_proposed": "2026-05-10T20:44:21.368Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-10T11:45:29.936Z",
-      "expired_at": "2026-05-09T20:41:42.123Z",
-      "expired_reason": "§8 anti-pattern 6: tercer duplicado del sujeto A24 (junto a b4c419b4, 361a04cc, b63b43990) — mismo kind=studio, mismo topic; descartado por redundancia."
+      "expired_at": "2026-05-14T21:09:21.524Z",
+      "expired_reason": "§8 anti-pattern: kind=studio está en recent_top_kinds; quinto duplicado de A24 en backlog; descartar definitivamente."
     },
     {
       "id": "55e0da46c29771c6",
@@ -904,10 +906,12 @@
       "first_proposed": "2026-05-11T13:43:04.410Z",
       "last_proposed": "2026-05-13T21:25:39.118Z",
       "cycles_proposed": 4,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-11T21:15:34.263Z"
+      "became_backlog_at": "2026-05-11T21:15:34.263Z",
+      "expired_at": "2026-05-14T21:09:21.524Z",
+      "expired_reason": "§8 anti-pattern: kind=studio está en recent_top_kinds; sexto duplicado de A24 en backlog; expirar definitivamente."
     },
     {
       "id": "f9c8a88b4cccacee",
@@ -1076,10 +1080,12 @@
       "first_proposed": "2026-05-12T21:19:11.632Z",
       "last_proposed": "2026-05-12T21:19:11.632Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-13T13:09:14.141Z"
+      "became_backlog_at": "2026-05-13T13:09:14.141Z",
+      "expired_at": "2026-05-14T21:09:21.524Z",
+      "expired_reason": "§8 anti-pattern: kind=studio (Pixar/Disney) está próximo a recent_top_kinds de studio; además acaba de haber TOP 20 Animadas (2026-05-13) — repetir animación en 2 días es redundante."
     },
     {
       "id": "6134534c62ee6a31",
@@ -1149,10 +1155,57 @@
       "first_proposed": "2026-05-13T21:25:39.118Z",
       "last_proposed": "2026-05-13T21:25:39.118Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-14T21:09:21.524Z"
+    },
+    {
+      "id": "740a5e134bba1070",
+      "action": "react_to_news",
+      "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 88,
+      "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
+      "suggested_caption": null,
+      "source_name": "Deadline",
+      "source_url": "https://deadline.com/2026/05/james-bond-nina-gold-casting-director-1236905192/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://deadline.com/2026/05/james-bond-nina-gold-casting-director-1236905192/",
+        "angle": "casting"
+      },
+      "first_proposed": "2026-05-14T21:09:21.524Z",
+      "last_proposed": "2026-05-14T21:09:21.524Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "e5803a8efbe64b94",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas con la narrativa más retorcida del cine moderno",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Memento, Pulp Fiction, Oldboy: las películas que usan la estructura como arma narrativa definitiva.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-14T21:09:21.524Z",
+      "last_proposed": "2026-05-14T21:09:21.524Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-13T21:29:31.404Z"
+  "last_saved": "2026-05-14T21:12:59.418Z"
 }

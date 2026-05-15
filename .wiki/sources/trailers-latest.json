@@ -1,9 +1,214 @@
 {
-  "generated_at": "2026-05-15T12:28:56.533Z",
-  "total_videos": 55,
-  "trailers_count": 7,
-  "matched_to_cinebret": 7,
+  "generated_at": "2026-05-15T20:58:55.199Z",
+  "total_videos": 54,
+  "trailers_count": 10,
+  "matched_to_cinebret": 9,
   "videos": [
+    {
+      "video_id": "W5Zw7p37X9w",
+      "title": "EVE Vanguard - Official 'Operation Avalon' Alpha Playtest Trailer",
+      "url": "https://www.youtube.com/watch?v=W5Zw7p37X9w",
+      "published": "2026-05-15T20:00:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/W5Zw7p37X9w/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "I2q0LVnkryY",
+      "title": "Nothing is off limits. Star City premieres May 29 on Apple TV. #StarCity",
+      "url": "https://www.youtube.com/watch?v=I2q0LVnkryY",
+      "published": "2026-05-15T19:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/I2q0LVnkryY/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "uY-IyDIQI0E",
+      "title": "SOME 🚪💥 BODY | 🎬 Shrek (2001)",
+      "url": "https://www.youtube.com/watch?v=uY-IyDIQI0E",
+      "published": "2026-05-15T19:00:47Z",
+      "thumbnail": "https://i.ytimg.com/vi/uY-IyDIQI0E/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "OOvh2AINMis",
+      "title": "Nick & Noah's Heartfelt Pool Kiss | My Fault: London | Prime Video",
+      "url": "https://www.youtube.com/watch?v=OOvh2AINMis",
+      "published": "2026-05-15T19:00:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/OOvh2AINMis/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
+        "titulo": "Culpa mía: Londres",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "ic7-NoEtPeE",
+      "title": "Vanran - Official Demo Gameplay Trailer",
+      "url": "https://www.youtube.com/watch?v=ic7-NoEtPeE",
+      "published": "2026-05-15T19:00:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/ic7-NoEtPeE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "9wKjCJp4e60",
+      "title": "Avatar Legends: The Fighting Game - Official Toph vs Sokka Match 1 Gameplay",
+      "url": "https://www.youtube.com/watch?v=9wKjCJp4e60",
+      "published": "2026-05-15T19:00:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/9wKjCJp4e60/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "WyJleaP-K48",
+      "title": "Maximum Pleasure Guaranteed — Official Teaser \"Maximum Chaos\" | Apple TV",
+      "url": "https://www.youtube.com/watch?v=WyJleaP-K48",
+      "published": "2026-05-15T18:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/WyJleaP-K48/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "3762efff-79eb-40db-9910-5215e4ed120c",
+        "titulo": "Pleasure",
+        "anio": 2021
+      }
+    },
+    {
+      "video_id": "Jn4mdBTuziM",
+      "title": "The Walking Dead: Dead City Season 3 - Official Teaser Trailer (2026)",
+      "url": "https://www.youtube.com/watch?v=Jn4mdBTuziM",
+      "published": "2026-05-15T18:31:56Z",
+      "thumbnail": "https://i.ytimg.com/vi/Jn4mdBTuziM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "3s0m7S3H-f8",
+      "title": "Stern Pinball's Transformers: More Than Meets the Eye - Official Story Trailer",
+      "url": "https://www.youtube.com/watch?v=3s0m7S3H-f8",
+      "published": "2026-05-15T18:00:05Z",
+      "thumbnail": "https://i.ytimg.com/vi/3s0m7S3H-f8/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "29e8cc15-b2f8-4da1-97fd-cb3c4b91f068",
+        "titulo": "Transformers",
+        "anio": 2007
+      }
+    },
+    {
+      "video_id": "-o3UA9LXVLI",
+      "title": "They don't know what they're missing. #WidowsBay — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=-o3UA9LXVLI",
+      "published": "2026-05-15T17:59:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/-o3UA9LXVLI/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "1-lZrCQjF_k",
+      "title": "we bumpin ts all day. Bigger Than Ever (We Back) by Chris Patrick from #ScaryMovie is out now!",
+      "url": "https://www.youtube.com/watch?v=1-lZrCQjF_k",
+      "published": "2026-05-15T17:14:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/1-lZrCQjF_k/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "xR_65Mj7sgI",
+      "title": "“Somebody help me! I’m being spontaneous!” #TheTrumanShow",
+      "url": "https://www.youtube.com/watch?v=xR_65Mj7sgI",
+      "published": "2026-05-15T17:01:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/xR_65Mj7sgI/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "eIfSFaGhVl8",
+      "title": "Garrett Rescues Hannah from Her Flirting | Off Campus | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=eIfSFaGhVl8",
+      "published": "2026-05-15T17:00:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/eIfSFaGhVl8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "wooXsYmtTb4",
+      "title": "Flight 7500 (2014) | Full Movie | Leslie Bibb, Ryan Kwanten, Amy Smart, Jamie Chung",
+      "url": "https://www.youtube.com/watch?v=wooXsYmtTb4",
+      "published": "2026-05-15T17:00:06Z",
+      "thumbnail": "https://i.ytimg.com/vi/wooXsYmtTb4/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "X2eyq2kKPdk",
+      "title": "For All Mankind — Landing on Titan | Season 5 Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=X2eyq2kKPdk",
+      "published": "2026-05-15T16:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/X2eyq2kKPdk/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "P86645IBs-Q",
+      "title": "Hits every beat. Get your tickets NOW to see #PowerBallad.",
+      "url": "https://www.youtube.com/watch?v=P86645IBs-Q",
+      "published": "2026-05-15T16:36:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/P86645IBs-Q/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "SKGARUQcFtU",
+      "title": "Debbie's really pulling at the heartstrings... | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=SKGARUQcFtU",
+      "published": "2026-05-15T15:00:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/SKGARUQcFtU/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "g6UThuHMvro",
+      "title": "Enjoy the show. THE MYSTERIOUS GAZE OF THE FLAMINGO. | Now Streaming on MUBI",
+      "url": "https://www.youtube.com/watch?v=g6UThuHMvro",
+      "published": "2026-05-15T15:00:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/g6UThuHMvro/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "DLXxbRxuL9A",
+      "title": "ORPHAN, the latest from Academy Award-Winning director László Nemes. | In Cinemas Now",
+      "url": "https://www.youtube.com/watch?v=DLXxbRxuL9A",
+      "published": "2026-05-15T13:00:20Z",
+      "thumbnail": "https://i.ytimg.com/vi/DLXxbRxuL9A/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "Vw9zgL0VH0w",
       "title": "RONDA ROUSEY AND GINA CARANO FACE OFF #RouseyCarano",
@@ -12,56 +217,6 @@
       "thumbnail": "https://i.ytimg.com/vi/Vw9zgL0VH0w/hqdefault.jpg",
       "channel": "Netflix",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "ECXcCCOnZ_Q",
-      "title": "Overwatch characters are now in Fortnite",
-      "url": "https://www.youtube.com/watch?v=ECXcCCOnZ_Q",
-      "published": "2026-05-15T02:35:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/ECXcCCOnZ_Q/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "SnJJ2ccVJ58",
-      "title": "GTA 6 pre-orders are starting...soon??",
-      "url": "https://www.youtube.com/watch?v=SnJJ2ccVJ58",
-      "published": "2026-05-15T02:35:27Z",
-      "thumbnail": "https://i.ytimg.com/vi/SnJJ2ccVJ58/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "ci8dz1PMpkk",
-      "title": "Why Forza Horizon 6 is a 10",
-      "url": "https://www.youtube.com/watch?v=ci8dz1PMpkk",
-      "published": "2026-05-15T02:35:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/ci8dz1PMpkk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "D9ivGRj6uUM",
-      "title": "Fortnite Zero Build gets some new changes",
-      "url": "https://www.youtube.com/watch?v=D9ivGRj6uUM",
-      "published": "2026-05-15T02:11:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/D9ivGRj6uUM/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "gcTm8CSPddc",
-      "title": "Underwater gameplay is getting an upgrade in AC: Black Flag Resynced",
-      "url": "https://www.youtube.com/watch?v=gcTm8CSPddc",
-      "published": "2026-05-15T02:10:36Z",
-      "thumbnail": "https://i.ytimg.com/vi/gcTm8CSPddc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -145,26 +300,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "nM9NvGxQfVE",
-      "title": "No one outruns the Passenger. 𖨆 Get tickets now for #PassengerMovie - only in theatres May 22",
-      "url": "https://www.youtube.com/watch?v=nM9NvGxQfVE",
-      "published": "2026-05-14T18:09:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/nM9NvGxQfVE/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "HdMtgc_sMWg",
-      "title": "No one outruns the Passenger. /// Get tickets now for #PassengerMovie - only in theatres May 22",
-      "url": "https://www.youtube.com/watch?v=HdMtgc_sMWg",
-      "published": "2026-05-14T18:08:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/HdMtgc_sMWg/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "Ap6UhCcHRC0",
       "title": "The Furious (2026) ’Who Are You’ Official Clip - Xie Miao, Joe Taslim",
       "url": "https://www.youtube.com/watch?v=Ap6UhCcHRC0",
@@ -183,16 +318,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "yoldPHih4Aw",
-      "title": "Oh-Father Confronts Starlight | The Boys Final Season | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=yoldPHih4Aw",
-      "published": "2026-05-14T17:01:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/yoldPHih4Aw/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "kJODS1_1yY0",
@@ -230,16 +355,6 @@
       }
     },
     {
-      "video_id": "pEdfYmxsUDE",
-      "title": "J.K. Simmons & Sandra Oh giving it their all | Invincible | Prime Video",
-      "url": "https://www.youtube.com/watch?v=pEdfYmxsUDE",
-      "published": "2026-05-14T15:01:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/pEdfYmxsUDE/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "HqqYxLYIwBc",
       "title": "Mating Season | Ray Introduces Addy | Sneak Peek | Netflix",
       "url": "https://www.youtube.com/watch?v=HqqYxLYIwBc",
@@ -248,16 +363,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "A3ZbjkDxYUs",
-      "title": "Your Fault: London - Official Trailer | Prime Video",
-      "url": "https://www.youtube.com/watch?v=A3ZbjkDxYUs",
-      "published": "2026-05-14T14:00:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/A3ZbjkDxYUs/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "6GW4JPeqm3s",
@@ -315,16 +420,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "-KC9Fag11uA",
-      "title": "She saw an opportunity and she took it. #YourFriendsAndNeighbors — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=-KC9Fag11uA",
-      "published": "2026-05-13T22:59:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/-KC9Fag11uA/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "iRc9LpJTokY",
       "title": "The Outfit | The Moment a Tailor Stitches Up a Gangster",
       "url": "https://www.youtube.com/watch?v=iRc9LpJTokY",
@@ -335,32 +430,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "SP0ma-o8xQc",
-      "title": "They came in peace then, they come in peace now. #ForAllMankind — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=SP0ma-o8xQc",
-      "published": "2026-05-13T19:59:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/SP0ma-o8xQc/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "D5pp9Lpi5HU",
       "title": "The Fighting Begins 🥊 #Fighting #Shorts",
       "url": "https://www.youtube.com/watch?v=D5pp9Lpi5HU",
       "published": "2026-05-13T19:00:10Z",
       "thumbnail": "https://i.ytimg.com/vi/D5pp9Lpi5HU/hqdefault.jpg",
       "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "NICmaUVvB4w",
-      "title": "The question every host must ask themselves. #WidowsBay — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=NICmaUVvB4w",
-      "published": "2026-05-13T18:59:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/NICmaUVvB4w/hqdefault.jpg",
-      "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -378,16 +453,6 @@
         "titulo": "Kinds of Kindness",
         "anio": 2024
       }
-    },
-    {
-      "video_id": "FjbCYz_7tvI",
-      "title": "Lawyer Lace on the case. #MargosGotMoneyTroubles — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=FjbCYz_7tvI",
-      "published": "2026-05-13T17:59:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/FjbCYz_7tvI/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "byKivma1588",
@@ -460,16 +525,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "EVHksdCfEWA",
-      "title": "The guardian of Recife. Dona Sebastiana 🚬 in Kleber Mendonça Filho's THE SECRET AGENT | MUBI",
-      "url": "https://www.youtube.com/watch?v=EVHksdCfEWA",
-      "published": "2026-05-12T19:00:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/EVHksdCfEWA/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "bCggdUyBfNk",
       "title": "Fighting | Shawn Fights Evan in an Epic Fight on the Rooftop",
       "url": "https://www.youtube.com/watch?v=bCggdUyBfNk",
@@ -478,26 +533,6 @@
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "TD9jpS-tf90",
-      "title": "A definitive crowd-pleaser. #PowerBallad, starring Paul Rudd and Nick Jonas,.",
-      "url": "https://www.youtube.com/watch?v=TD9jpS-tf90",
-      "published": "2026-05-12T18:31:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/TD9jpS-tf90/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "LWgUWiQ26ys",
-      "title": "The Last Showgirl (2025) Official Trailer - Pamela Anderson, Kiernan Shipka, Brenda Song",
-      "url": "https://www.youtube.com/watch?v=LWgUWiQ26ys",
-      "published": "2026-05-12T16:00:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/LWgUWiQ26ys/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "wc2UjmPzN8c",
@@ -530,26 +565,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "PJiUKZRKVf4",
-      "title": "A boy. A secret. A city still bleeding. ORPHAN. | In cinemas May 15",
-      "url": "https://www.youtube.com/watch?v=PJiUKZRKVf4",
-      "published": "2026-05-12T11:01:03Z",
-      "thumbnail": "https://i.ytimg.com/vi/PJiUKZRKVf4/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "4jaQDvU9p0Y",
-      "title": "Oh yeah, he’s *definitely* seen E.T | 🎬 Dìdi 弟弟 (2024)",
-      "url": "https://www.youtube.com/watch?v=4jaQDvU9p0Y",
-      "published": "2026-05-11T17:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/4jaQDvU9p0Y/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "W6Y1dTdAskE",
       "title": "Armageddon Time | Paul and his Grandpa’s Last Moment Together",
       "url": "https://www.youtube.com/watch?v=W6Y1dTdAskE",
@@ -573,21 +588,6 @@
       "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "XGznyk5KpU0",
-      "title": "THE BREADWINNER - Nate Rate",
-      "url": "https://www.youtube.com/watch?v=XGznyk5KpU0",
-      "published": "2026-05-08T15:14:56Z",
-      "thumbnail": "https://i.ytimg.com/vi/XGznyk5KpU0/hqdefault.jpg",
-      "channel": "Sony Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "92644993-f7c5-4f5c-9390-24b52b7ed0f2",
-        "titulo": "The Breadwinner (El pan de la guerra)",
-        "anio": 2017
-      }
     }
   ]
 }

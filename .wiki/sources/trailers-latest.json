@@ -1,9 +1,79 @@
 {
-  "generated_at": "2026-05-14T21:09:21.437Z",
+  "generated_at": "2026-05-15T12:28:56.533Z",
   "total_videos": 55,
-  "trailers_count": 11,
+  "trailers_count": 7,
   "matched_to_cinebret": 7,
   "videos": [
+    {
+      "video_id": "Vw9zgL0VH0w",
+      "title": "RONDA ROUSEY AND GINA CARANO FACE OFF #RouseyCarano",
+      "url": "https://www.youtube.com/watch?v=Vw9zgL0VH0w",
+      "published": "2026-05-15T03:19:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/Vw9zgL0VH0w/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ECXcCCOnZ_Q",
+      "title": "Overwatch characters are now in Fortnite",
+      "url": "https://www.youtube.com/watch?v=ECXcCCOnZ_Q",
+      "published": "2026-05-15T02:35:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/ECXcCCOnZ_Q/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "SnJJ2ccVJ58",
+      "title": "GTA 6 pre-orders are starting...soon??",
+      "url": "https://www.youtube.com/watch?v=SnJJ2ccVJ58",
+      "published": "2026-05-15T02:35:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/SnJJ2ccVJ58/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ci8dz1PMpkk",
+      "title": "Why Forza Horizon 6 is a 10",
+      "url": "https://www.youtube.com/watch?v=ci8dz1PMpkk",
+      "published": "2026-05-15T02:35:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/ci8dz1PMpkk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "D9ivGRj6uUM",
+      "title": "Fortnite Zero Build gets some new changes",
+      "url": "https://www.youtube.com/watch?v=D9ivGRj6uUM",
+      "published": "2026-05-15T02:11:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/D9ivGRj6uUM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "gcTm8CSPddc",
+      "title": "Underwater gameplay is getting an upgrade in AC: Black Flag Resynced",
+      "url": "https://www.youtube.com/watch?v=gcTm8CSPddc",
+      "published": "2026-05-15T02:10:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/gcTm8CSPddc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "WpoioC5Emn0",
+      "title": "Garrett & Hannah's First Kiss | Off Campus | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=WpoioC5Emn0",
+      "published": "2026-05-14T23:30:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/WpoioC5Emn0/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "WNB40Hnjfok",
       "title": "The Outfit | A Mob Boss Comes to Inquire About his Son",
@@ -25,36 +95,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "TwaiTxzDOP4",
-      "title": "Hell Let Loose: Vietnam - Official Release Date Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=TwaiTxzDOP4",
-      "published": "2026-05-14T21:00:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/TwaiTxzDOP4/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "bpcxQXNV3Ds",
-      "title": "Subnautica 2 Early Access Review",
-      "url": "https://www.youtube.com/watch?v=bpcxQXNV3Ds",
-      "published": "2026-05-14T20:31:10Z",
-      "thumbnail": "https://i.ytimg.com/vi/bpcxQXNV3Ds/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "DAcRcY2_VCc",
-      "title": "Forza Horizon 6: Racing a Giant Mech (4K 60fps Gameplay)",
-      "url": "https://www.youtube.com/watch?v=DAcRcY2_VCc",
-      "published": "2026-05-14T20:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/DAcRcY2_VCc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "xdVZ2yiYaBw",
       "title": "Shawn Escapes the Chokehold 👊 #Fighting #Shorts",
       "url": "https://www.youtube.com/watch?v=xdVZ2yiYaBw",
@@ -63,26 +103,6 @@
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "Dxhmv8HfsNI",
-      "title": "Borderlands 4 - Official Raid Boss 2 Reveal Trailer",
-      "url": "https://www.youtube.com/watch?v=Dxhmv8HfsNI",
-      "published": "2026-05-14T19:00:18Z",
-      "thumbnail": "https://i.ytimg.com/vi/Dxhmv8HfsNI/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "5IByT-JLudo",
-      "title": "Retroneer - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=5IByT-JLudo",
-      "published": "2026-05-14T18:30:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/5IByT-JLudo/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "ojdjZg0EKUc",
@@ -315,16 +335,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "96aKY8NSexE",
-      "title": "Some of Bombsight's finest work. | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=96aKY8NSexE",
-      "published": "2026-05-13T21:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/96aKY8NSexE/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "SP0ma-o8xQc",
       "title": "They came in peace then, they come in peace now. #ForAllMankind — Now Streaming",
       "url": "https://www.youtube.com/watch?v=SP0ma-o8xQc",
@@ -333,16 +343,6 @@
       "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "ga8bJyvnSYs",
-      "title": "The Hawk | Official Teaser | Netflix",
-      "url": "https://www.youtube.com/watch?v=ga8bJyvnSYs",
-      "published": "2026-05-13T19:05:05Z",
-      "thumbnail": "https://i.ytimg.com/vi/ga8bJyvnSYs/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "D5pp9Lpi5HU",

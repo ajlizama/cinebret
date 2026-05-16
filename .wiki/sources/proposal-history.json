@@ -508,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-15T20:58:55.291Z",
-      "cycles_proposed": 13,
+      "last_proposed": "2026-05-16T11:46:25.258Z",
+      "cycles_proposed": 14,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -608,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-15T20:58:55.291Z",
-      "cycles_proposed": 12,
+      "last_proposed": "2026-05-16T11:46:25.258Z",
+      "cycles_proposed": 13,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -711,10 +711,12 @@
       "first_proposed": "2026-05-08T20:58:56.691Z",
       "last_proposed": "2026-05-08T20:58:56.691Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-09T11:45:19.177Z"
+      "became_backlog_at": "2026-05-09T11:45:19.177Z",
+      "expired_at": "2026-05-16T11:46:25.258Z",
+      "expired_reason": "§8 anti-pattern 8: duplicado temático de ad96cb2e590a873b (giros de guión vs finales); mismo ángulo en el mismo ciclo; descartar el de menor score."
     },
     {
       "id": "b63b43990c3a140e",
@@ -835,10 +837,12 @@
       "first_proposed": "2026-05-10T11:45:29.936Z",
       "last_proposed": "2026-05-10T11:45:29.936Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-10T20:44:21.368Z"
+      "became_backlog_at": "2026-05-10T20:44:21.368Z",
+      "expired_at": "2026-05-16T11:46:25.258Z",
+      "expired_reason": "§8 anti-pattern 8: duplicado temático de ad96cb2e590a873b ('finales que te dejan con la boca abierta'); descartado por redundancia."
     },
     {
       "id": "fdf6ec156737a2a7",
@@ -882,8 +886,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-15T20:58:55.291Z",
-      "cycles_proposed": 6,
+      "last_proposed": "2026-05-16T11:46:25.258Z",
+      "cycles_proposed": 7,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1011,10 +1015,12 @@
       "first_proposed": "2026-05-12T13:03:18.531Z",
       "last_proposed": "2026-05-12T13:03:18.531Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-12T21:19:11.632Z"
+      "became_backlog_at": "2026-05-12T21:19:11.632Z",
+      "expired_at": "2026-05-16T11:46:25.258Z",
+      "expired_reason": "§8 anti-pattern 8: duplicado temático de 55e0da46c29771c6 ('películas en tiempo real/un solo día'); descartado por redundancia en el mismo ciclo."
     },
     {
       "id": "e041c4c4d8d26942",
@@ -1135,10 +1141,12 @@
       "first_proposed": "2026-05-13T13:09:14.141Z",
       "last_proposed": "2026-05-13T13:09:14.141Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-13T21:25:39.118Z"
+      "became_backlog_at": "2026-05-13T21:25:39.118Z",
+      "expired_at": "2026-05-16T11:46:25.258Z",
+      "expired_reason": "§8 anti-pattern 8: duplicado temático de fdf6ec156737a2a7 ('dúos director-actor'); descartado por redundancia en el mismo ciclo."
     },
     {
       "id": "ec5e92e69c6010b8",
@@ -1207,10 +1215,12 @@
       "first_proposed": "2026-05-14T21:09:21.524Z",
       "last_proposed": "2026-05-14T21:09:21.524Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-15T12:29:46.065Z"
+      "became_backlog_at": "2026-05-15T12:29:46.065Z",
+      "expired_at": "2026-05-16T11:46:25.258Z",
+      "expired_reason": "§8 anti-pattern 8: duplicado temático de ad96cb2e590a873b ('narrativa retorcida' vs 'finales con la boca abierta'); mismo ángulo de twists/estructura no lineal, redundante en este ciclo."
     },
     {
       "id": "23c32a1621f0ea7e",
@@ -1255,10 +1265,56 @@
       "first_proposed": "2026-05-15T20:58:55.291Z",
       "last_proposed": "2026-05-15T20:58:55.291Z",
       "cycles_proposed": 1,
+      "status": "accepted",
+      "accepted_at": "2026-05-16T11:46:25.258Z",
+      "accepted_match_url": null
+    },
+    {
+      "id": "46ae158885609ffe",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 actuaciones que merecían el Óscar y no lo ganaron",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Ledger ganó póstumamente, pero cuántas actuaciones del nivel de Pitt en Seven o Hopkins en Silence se perdieron.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-16T11:46:25.258Z",
+      "last_proposed": "2026-05-16T11:46:25.258Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "90e0d61707839e9a",
+      "action": "generate_carousel_topic",
+      "title": "10 películas de menos de 90 minutos que no te puedes perder",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "El cine que prueba que no necesitas 3 horas para hacer una obra maestra.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "theme",
+        "topic": "menos 90 min"
+      },
+      "first_proposed": "2026-05-16T11:46:25.258Z",
+      "last_proposed": "2026-05-16T11:46:25.258Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-15T21:02:52.450Z"
+  "last_saved": "2026-05-16T11:50:50.837Z"
 }

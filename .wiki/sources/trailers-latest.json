@@ -1,18 +1,93 @@
 {
-  "generated_at": "2026-05-15T20:58:55.199Z",
+  "generated_at": "2026-05-16T11:45:21.862Z",
   "total_videos": 54,
-  "trailers_count": 10,
-  "matched_to_cinebret": 9,
+  "trailers_count": 6,
+  "matched_to_cinebret": 8,
   "videos": [
     {
-      "video_id": "W5Zw7p37X9w",
-      "title": "EVE Vanguard - Official 'Operation Avalon' Alpha Playtest Trailer",
-      "url": "https://www.youtube.com/watch?v=W5Zw7p37X9w",
-      "published": "2026-05-15T20:00:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/W5Zw7p37X9w/hqdefault.jpg",
+      "video_id": "QgzGjs7LcWE",
+      "title": "Movies we're excited to see in the coming weeks",
+      "url": "https://www.youtube.com/watch?v=QgzGjs7LcWE",
+      "published": "2026-05-16T02:48:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/QgzGjs7LcWE/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
-      "is_trailer": true
+      "is_trailer": false
+    },
+    {
+      "video_id": "-0ltl3BRlWA",
+      "title": "The games we're excited to play in May and June",
+      "url": "https://www.youtube.com/watch?v=-0ltl3BRlWA",
+      "published": "2026-05-16T02:39:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/-0ltl3BRlWA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "8_soFB5ozyc",
+      "title": "Rapidfire GOATs with Terry Crews",
+      "url": "https://www.youtube.com/watch?v=8_soFB5ozyc",
+      "published": "2026-05-16T02:39:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/8_soFB5ozyc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "cZarkywckcg",
+      "title": "NFL schedule release videos went hard with the references",
+      "url": "https://www.youtube.com/watch?v=cZarkywckcg",
+      "published": "2026-05-16T02:38:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/cZarkywckcg/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "6zY6Ql2TiBQ",
+      "title": "Gollum movie will be like Joker?",
+      "url": "https://www.youtube.com/watch?v=6zY6Ql2TiBQ",
+      "published": "2026-05-16T02:37:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/6zY6Ql2TiBQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "j4k7nTD_-8Q",
+      "title": "THE BREADWINNER – Charades",
+      "url": "https://www.youtube.com/watch?v=j4k7nTD_-8Q",
+      "published": "2026-05-15T22:00:54Z",
+      "thumbnail": "https://i.ytimg.com/vi/j4k7nTD_-8Q/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "92644993-f7c5-4f5c-9390-24b52b7ed0f2",
+        "titulo": "The Breadwinner (El pan de la guerra)",
+        "anio": 2017
+      }
+    },
+    {
+      "video_id": "QgBuCNGK1fs",
+      "title": "The Outfit | Francis Tries to Cut Off His Loose Ends",
+      "url": "https://www.youtube.com/watch?v=QgBuCNGK1fs",
+      "published": "2026-05-15T21:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/QgBuCNGK1fs/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "J_2keri1fYc",
+      "title": "Homelander & Butcher: men of their word | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=J_2keri1fYc",
+      "published": "2026-05-15T21:00:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/J_2keri1fYc/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
     },
     {
       "video_id": "I2q0LVnkryY",
@@ -50,26 +125,6 @@
       }
     },
     {
-      "video_id": "ic7-NoEtPeE",
-      "title": "Vanran - Official Demo Gameplay Trailer",
-      "url": "https://www.youtube.com/watch?v=ic7-NoEtPeE",
-      "published": "2026-05-15T19:00:27Z",
-      "thumbnail": "https://i.ytimg.com/vi/ic7-NoEtPeE/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "9wKjCJp4e60",
-      "title": "Avatar Legends: The Fighting Game - Official Toph vs Sokka Match 1 Gameplay",
-      "url": "https://www.youtube.com/watch?v=9wKjCJp4e60",
-      "published": "2026-05-15T19:00:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/9wKjCJp4e60/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "WyJleaP-K48",
       "title": "Maximum Pleasure Guaranteed — Official Teaser \"Maximum Chaos\" | Apple TV",
       "url": "https://www.youtube.com/watch?v=WyJleaP-K48",
@@ -82,31 +137,6 @@
         "pelicula_id": "3762efff-79eb-40db-9910-5215e4ed120c",
         "titulo": "Pleasure",
         "anio": 2021
-      }
-    },
-    {
-      "video_id": "Jn4mdBTuziM",
-      "title": "The Walking Dead: Dead City Season 3 - Official Teaser Trailer (2026)",
-      "url": "https://www.youtube.com/watch?v=Jn4mdBTuziM",
-      "published": "2026-05-15T18:31:56Z",
-      "thumbnail": "https://i.ytimg.com/vi/Jn4mdBTuziM/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "3s0m7S3H-f8",
-      "title": "Stern Pinball's Transformers: More Than Meets the Eye - Official Story Trailer",
-      "url": "https://www.youtube.com/watch?v=3s0m7S3H-f8",
-      "published": "2026-05-15T18:00:05Z",
-      "thumbnail": "https://i.ytimg.com/vi/3s0m7S3H-f8/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "29e8cc15-b2f8-4da1-97fd-cb3c4b91f068",
-        "titulo": "Transformers",
-        "anio": 2007
       }
     },
     {
@@ -237,16 +267,6 @@
       "thumbnail": "https://i.ytimg.com/vi/WNB40Hnjfok/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "bNGCoSe9FPw",
-      "title": "Even Supes have tough days. | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=bNGCoSe9FPw",
-      "published": "2026-05-14T21:00:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/bNGCoSe9FPw/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -561,31 +581,6 @@
       "published": "2026-05-12T13:30:04Z",
       "thumbnail": "https://i.ytimg.com/vi/3xVaG8NS7Tk/hqdefault.jpg",
       "channel": "HBO Max",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "W6Y1dTdAskE",
-      "title": "Armageddon Time | Paul and his Grandpa’s Last Moment Together",
-      "url": "https://www.youtube.com/watch?v=W6Y1dTdAskE",
-      "published": "2026-05-10T21:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/W6Y1dTdAskE/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-        "titulo": "Together: Juntos hasta la muerte",
-        "anio": 2025
-      }
-    },
-    {
-      "video_id": "j8JS0AiHzQ8",
-      "title": "It's showtime. 😎 #MortalKombatMovie",
-      "url": "https://www.youtube.com/watch?v=j8JS0AiHzQ8",
-      "published": "2026-05-08T21:00:57Z",
-      "thumbnail": "https://i.ytimg.com/vi/j8JS0AiHzQ8/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
       "is_trailer": false
     }

@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-15T20:58:55.291Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-16T11:46:25.258Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 5,
   "ig_mix": {
     "last6_counts": {
-      "review": 1,
+      "review": 2,
       "contenido": 1,
-      "top": 4
+      "top": 3
     },
     "target": {
       "review": 3,
@@ -17,19 +17,19 @@
       "top": 2
     },
     "deficits": {
-      "review": 2,
+      "review": 1,
       "contenido": 0,
       "top": 0
     }
   },
   "top": [
     {
-      "id": "6134534c62ee6a31",
+      "id": "6276902b8705f60e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado todavía.",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 y sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -37,19 +37,19 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Parasite",
-        "anio": 2019,
-        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 backlog válido: Parásitos rating 10 + Bong Joon-ho + netflix; 2 días vigente — dedup en email final."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + director muy respetado (Dean DeBlois) + plataforma activa + año 2025; déficit de review activo."
     },
     {
       "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "Peter Jackson cierra su trilogía épica con su película más premiada; rating 10 sin review.",
+      "title": "Review: El Señor de los Anillos — El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson con IMDb 9.0; tu rating 10 sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,36 +61,36 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; una de las 38 sagradas prioritarias."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 9.0 + director muy respetado Peter Jackson + plataforma activa."
     },
     {
-      "id": "6276902b8705f60e",
+      "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 95,
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a Mejor Película; una de tus 38 sagradas sin review publicado.",
+      "score": 94,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + director muy respetado (DeBlois) + año 2025 + plataforma activa; déficit de review activo."
+      "critic_reason": "§4.5 backlog: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho + Netflix activa; duplicado de propuesta fresh del mismo ID."
     },
     {
-      "id": "8c63514460df4391",
+      "id": "5443916014c0f877",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas coreanas que cambiaron el cine mundial",
-      "reasoning": "De Oldboy a Parásitos: Corea redefinió el cine del siglo XXI y aquí está la evidencia.",
-      "score": 82,
+      "title": "TOP 10 actuaciones que merecían el Óscar y no lo ganaron",
+      "reasoning": "Ledger ganó póstumamente, pero cuántas actuaciones del nivel de Pitt en Seven o Hopkins en Silence se perdieron.",
+      "score": 85,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,26 +100,26 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=country no está en recent_top_kinds; propuesta de lista por cinematografía de origen coreano aprovecha la tracción reciente del feed (TOP coreanas, reviews Park/Bong) con ángulo narrativo más específico que un simple country top."
+      "critic_reason": "Slot creativo: kind=craft/technique, no está en recent_top_kinds; ángulo de actuaciones sin nominación al Óscar es único y alineado con el gusto de Alberto."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "821614788fb4f853",
       "type": "FEED",
-      "priority": "media",
+      "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas imprescindibles (Miyazaki y mucho más)",
-      "reasoning": "Miyazaki lidera pero Japón da mucho más; kind=country fresco y catálogo con peso real.",
-      "score": 78,
+      "title": "10 películas de menos de 90 minutos que no te puedes perder",
+      "reasoning": "El cine que prueba que no necesitas 3 horas para hacer una obra maestra.",
+      "score": 80,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "country",
-        "topic": "japón"
+        "topic_type": "theme",
+        "topic": "menos 90 min"
       },
-      "critic_reason": "§3 backlog válido: kind=country (Japón) no en recent_top_kinds; Miyazaki 4 sello bret; 8 días vigente."
+      "critic_reason": "§3 kind=format no está en recent_top_kinds; ángulo de duración es creativo y diferenciador en el feed."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 9,
+      "days_ago": 10,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 9,
+      "days_ago": 10,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 9,
+      "days_ago": 10,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 8,
+      "days_ago": 9,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,65 +184,103 @@
       "type": "FEED",
       "title": "Parasite (2019) — Bong Joon-ho",
       "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Guy Ritchie estrena 'En la sombra' con Cavill y Gyllenhaal: críticas tibias",
-      "summary_es": "Ritchie vuelve al thriller de acción pero los críticos apuntan a una película genérica sin su sello.",
-      "source": "Hollywood Reporter",
-      "age_hours": 1,
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/in-the-grey-review-jake-gyllenhaal-henry-cavill-guy-ritchie-1236596910/",
-      "angle": null,
-      "catalog_match": null,
-      "score": 60,
-      "reason": "§4.4 regla 3: Guy Ritchie (muy respetado, 3 sello bret) tiene match de director; pero 'In the Grey' es película nueva sin match catálogo propio y la review es negativa — ángulo solo informativo."
-    },
-    {
-      "title_es": "Sam Raimi dirigirá remake de 'Magic', el clásico de terror de Attenborough",
-      "summary_es": "El director de Spider-Man regresa al horror con una historia sobre un ventrílocuo asesino en Lionsgate.",
-      "source": "The Wrap",
-      "age_hours": 1,
-      "url": "https://www.thewrap.com/creative-content/movies/sam-raimi-to-direct-dummy-horror-movie-magic-lionsgate/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "69ba6ccc-14dc-4b4a-acf7-0ebe617e4523",
-        "titulo": "El hombre araña",
-        "anio": 2002
-      },
-      "score": 55,
-      "reason": "§4.4 regla 3: catalog_match es Spider-Man (Sam Raimi) con rating implícito de catálogo; Sam Raimi dirige nueva película de horror — ángulo informativo sin propuesta posteable clara."
-    },
-    {
-      "title_es": "Sam Raimi dirigirá el remake de 'Magic' (1978), el horror de Hopkins con un muñeco ventrílocuo",
-      "summary_es": "Raimi retoma el horror clásico: el original tenía a Hopkins y fue dirigido por Attenborough en 1978.",
-      "source": "Hollywood Reporter",
+      "title_es": "Pulp Fiction en el Pentágono: secretario leyó el versículo falso de Tarantino como si fuera real",
+      "summary_es": "Pete Hegseth leyó el monólogo de Jules de Pulp Fiction como versículo bíblico; momento cultural que nombra tu película.",
+      "source": "Variety",
       "age_hours": 2,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/sam-raimi-direct-ventriloquist-horror-movie-magic-1236597227/",
-      "angle": null,
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4 regla 3: duplicado de ed852485b51f9e86 con más contexto (Anthony Hopkins en el original); dedup por sujeto pero conservar uno como news_only."
+      "url": "https://variety.com/2026/tv/news/colin-jost-snl-pete-hegseth-pulp-fiction-bible-verse-1236750638/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "46d4b5b6-1d29-4c4a-aee4-79b9feae0cbc",
+        "titulo": "Pulp Fiction",
+        "anio": 1994
+      },
+      "score": 62,
+      "reason": "§4.2 match al catálogo Pulp Fiction (rating 10, Tarantino olimpo); momento cultural curioso donde la biblia del Pentágono cita a Tarantino. Ángulo informativo pero no accionable como post."
+    },
+    {
+      "title_es": "Tim Roth (Pulp Fiction) protagonizará thriller de crimen 'Murdering Michael Malloy'",
+      "summary_es": "El Mr. Orange de Tarantino vuelve al crimen; nuevo film con Timothy Spall apunta al 2026.",
+      "source": "Deadline",
+      "age_hours": 5,
+      "url": "https://deadline.com/2026/05/tim-roth-timothy-spall-film-murdering-michael-malloy-1236906094/",
+      "angle": "casting",
+      "catalog_match": {
+        "pelicula_id": "46d4b5b6-1d29-4c4a-aee4-79b9feae0cbc",
+        "titulo": "Pulp Fiction",
+        "anio": 1994
+      },
+      "score": 60,
+      "reason": "§4.2 match al catálogo Pulp Fiction (rating 10, Tarantino olimpo) via Tim Roth; nueva película de crimen con el actor de Jules Winnfield es dato de interés."
+    },
+    {
+      "title_es": "James Franco se une al reparto de la precuela de John Rambo",
+      "summary_es": "Franco, Noah Centineo y David Harbour en la nueva precuela; dato de casting para el radar.",
+      "source": "Variety",
+      "age_hours": 2,
+      "url": "https://variety.com/2026/film/global/james-franco-joins-john-rambo-prequel-movie-1236750019/",
+      "angle": "casting",
+      "catalog_match": {
+        "pelicula_id": "d32d6fd1-fdc4-4d13-b856-45afb3b77e37",
+        "titulo": "John Rambo",
+        "anio": null
+      },
+      "score": 50,
+      "reason": "§4.4 regla 3: match catálogo 'John Rambo' existe pero rating/sello no verificable; casting notable (Franco, Centineo, Harbour) con ángulo informativo válido para el bloque noticias."
+    },
+    {
+      "title_es": "Aaron Eckhart (Harvey Dent en TDK) empieza rodaje de thriller en Bulgaria",
+      "summary_es": "El Harvey Dent de Nolan rueda 'The Walk-In'; dato curioso para los fans de El caballero oscuro.",
+      "source": "Deadline",
+      "age_hours": 0,
+      "url": "https://deadline.com/2026/05/aaron-eckhart-action-thriller-the-walk-in-shooting-bulgaria-1236907069/",
+      "angle": "casting",
+      "catalog_match": {
+        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
+        "titulo": "El caballero oscuro",
+        "anio": 2008
+      },
+      "score": 45,
+      "reason": "§4.2 match al catálogo 'El caballero oscuro' (2008, rating 10, olimpo Nolan) via mención de Aaron Eckhart; pero la noticia es sobre una nueva película sin conexión directa a TDK, ángulo solo informativo."
+    },
+    {
+      "title_es": "Sophie Okonedo (Hotel Rwanda) lleva 'Clarissa' a la Quincena en Cannes",
+      "summary_es": "La nominada al Óscar por Hotel Rwanda debuta en Cannes con adaptación de Virginia Woolf.",
+      "source": "Deadline",
+      "age_hours": 5,
+      "url": "https://deadline.com/2026/05/sophie-okoneno-interview-directors-fortnight-1236879477/",
+      "angle": "festival",
+      "catalog_match": {
+        "pelicula_id": "12a4d019-7297-429a-a0d4-193b4da5f4c2",
+        "titulo": "Hotel Rwanda",
+        "anio": 2004
+      },
+      "score": 42,
+      "reason": "§4.2 match catálogo Hotel Rwanda (2004, rating en catálogo); Sophie Okonedo presente pero el ángulo es sobre nueva película 'Clarissa' sin match cinebret, solo informativo."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 117,
+    "news_items": 115,
     "newsapi_items": 92,
     "reddit_posts": 0,
     "trailers": 54
   },
   "reconciliation_stats": {
-    "acceptedCount": 0,
-    "agedCount": 1,
+    "acceptedCount": 1,
+    "agedCount": 0,
     "expiredByTime": 0,
-    "expiredByCritic": 2
+    "expiredByCritic": 5
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16636,
-    "output": 12472
+    "input": 17577,
+    "output": 13043
   }
 }

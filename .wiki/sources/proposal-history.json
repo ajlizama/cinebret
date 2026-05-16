@@ -508,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-16T11:46:25.258Z",
-      "cycles_proposed": 14,
+      "last_proposed": "2026-05-16T20:44:03.156Z",
+      "cycles_proposed": 15,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -608,8 +608,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-16T11:46:25.258Z",
-      "cycles_proposed": 13,
+      "last_proposed": "2026-05-16T20:44:03.156Z",
+      "cycles_proposed": 14,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -886,8 +886,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-16T11:46:25.258Z",
-      "cycles_proposed": 7,
+      "last_proposed": "2026-05-16T20:44:03.156Z",
+      "cycles_proposed": 8,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1239,8 +1239,8 @@
         "topic": "japón"
       },
       "first_proposed": "2026-05-15T12:29:46.065Z",
-      "last_proposed": "2026-05-15T20:58:55.291Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-16T20:44:03.156Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1288,9 +1288,10 @@
       "first_proposed": "2026-05-16T11:46:25.258Z",
       "last_proposed": "2026-05-16T11:46:25.258Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-16T20:44:03.156Z"
     },
     {
       "id": "90e0d61707839e9a",
@@ -1311,10 +1312,34 @@
       "first_proposed": "2026-05-16T11:46:25.258Z",
       "last_proposed": "2026-05-16T11:46:25.258Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-16T20:44:03.156Z"
+    },
+    {
+      "id": "8199e4d558aa637a",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas rodadas en una sola locación (y que no lo parecen)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Buried, Locke, 12 Angry Men: el cine que convierte una habitación en un universo completo.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-16T20:44:03.156Z",
+      "last_proposed": "2026-05-16T20:44:03.156Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-16T11:50:50.837Z"
+  "last_saved": "2026-05-16T20:47:44.107Z"
 }

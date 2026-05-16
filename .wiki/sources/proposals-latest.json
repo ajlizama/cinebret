@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-16T11:46:25.258Z",
-  "cycle": "am",
+  "generated_at": "2026-05-16T20:44:03.156Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 5,
+  "news_count": 2,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 y sin review publicado.",
+      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,27 +41,7 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + director muy respetado (Dean DeBlois) + plataforma activa + año 2025; déficit de review activo."
-    },
-    {
-      "id": "119c0775fc431172",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: El Señor de los Anillos — El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson con IMDb 9.0; tu rating 10 sin review publicado.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
-      },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 9.0 + director muy respetado Peter Jackson + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + plataforma activa + año 2025; déficit review≥1 lo prioriza."
     },
     {
       "id": "6134534c62ee6a31",
@@ -69,8 +49,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a Mejor Película; una de tus 38 sagradas sin review publicado.",
-      "score": 94,
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -81,16 +61,36 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 backlog: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho + Netflix activa; duplicado de propuesta fresh del mismo ID."
+      "critic_reason": "§4.5 backlog válido: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; 3 días — quinto duplicado semántico de Parásitos."
     },
     {
-      "id": "5443916014c0f877",
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos — El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson: IMDb 9.0, 11 Óscares y una de tus 38 sagradas sin review.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa."
+    },
+    {
+      "id": "573a9adcdd312f2e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 actuaciones que merecían el Óscar y no lo ganaron",
-      "reasoning": "Ledger ganó póstumamente, pero cuántas actuaciones del nivel de Pitt en Seven o Hopkins en Silence se perdieron.",
-      "score": 85,
+      "title": "TOP 10 películas rodadas en una sola locación (y que no lo parecen)",
+      "reasoning": "Buried, Locke, 12 Angry Men: el cine que convierte una habitación en un universo completo.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,15 +100,15 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=craft/technique, no está en recent_top_kinds; ángulo de actuaciones sin nominación al Óscar es único y alineado con el gusto de Alberto."
+      "critic_reason": "Slot creativo: kind=format/narrative no usado; ángulo de 'una sola locación' es fresco, ejecutable y alineado con el gusto de Alberto por la tensión concentrada."
     },
     {
-      "id": "821614788fb4f853",
+      "id": "fe5875c8c649d23e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas de menos de 90 minutos que no te puedes perder",
-      "reasoning": "El cine que prueba que no necesitas 3 horas para hacer una obra maestra.",
+      "title": "TOP 10 películas japonesas imprescindibles (Miyazaki y mucho más)",
+      "reasoning": "Miyazaki lidera pero Japón da mucho más; kind=country fresco con peso real en catálogo.",
       "score": 80,
       "category": "top",
       "angle": null,
@@ -116,10 +116,10 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "theme",
-        "topic": "menos 90 min"
+        "topic_type": "country",
+        "topic": "japón"
       },
-      "critic_reason": "§3 kind=format no está en recent_top_kinds; ángulo de duración es creativo y diferenciador en el feed."
+      "critic_reason": "§5.1 backlog válido a 9 días; kind=country no en recent_top_kinds; Miyazaki (4 sello bret) ancla lista sólida."
     }
   ],
   "backlog": [
@@ -190,97 +190,48 @@
   ],
   "news": [
     {
-      "title_es": "Pulp Fiction en el Pentágono: secretario leyó el versículo falso de Tarantino como si fuera real",
-      "summary_es": "Pete Hegseth leyó el monólogo de Jules de Pulp Fiction como versículo bíblico; momento cultural que nombra tu película.",
-      "source": "Variety",
+      "title_es": "Mark Ruffalo protagonizará 'Gatto', la nueva película de Pixar",
+      "summary_es": "Pixar avanza en su próximo film; Ruffalo como protagonista y arte conceptual ya confirmado como estilo final.",
+      "source": "r/movies",
+      "age_hours": 1,
+      "url": "https://www.reddit.com/r/movies/comments/1tf2yth/mark_ruffalo_to_star_in_pixars_gatto_pixar_artist/",
+      "angle": "casting",
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§4.3 Pixar es estudio que Alberto respeta (Docter, Bird, Sanders); nuevo film anunciado con Ruffalo es informativo pero sin ángulo postable aún."
+    },
+    {
+      "title_es": "Lucy Liu en Cannes recuerda 'Kung Fu Panda' como su primera vez en el festival",
+      "summary_es": "Liu menciona Kung Fu Panda al hablar de su debut en Cannes; dato curioso para el feed.",
+      "source": "Hollywood Reporter",
       "age_hours": 2,
-      "url": "https://variety.com/2026/tv/news/colin-jost-snl-pete-hegseth-pulp-fiction-bible-verse-1236750638/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "46d4b5b6-1d29-4c4a-aee4-79b9feae0cbc",
-        "titulo": "Pulp Fiction",
-        "anio": 1994
-      },
-      "score": 62,
-      "reason": "§4.2 match al catálogo Pulp Fiction (rating 10, Tarantino olimpo); momento cultural curioso donde la biblia del Pentágono cita a Tarantino. Ángulo informativo pero no accionable como post."
-    },
-    {
-      "title_es": "Tim Roth (Pulp Fiction) protagonizará thriller de crimen 'Murdering Michael Malloy'",
-      "summary_es": "El Mr. Orange de Tarantino vuelve al crimen; nuevo film con Timothy Spall apunta al 2026.",
-      "source": "Deadline",
-      "age_hours": 5,
-      "url": "https://deadline.com/2026/05/tim-roth-timothy-spall-film-murdering-michael-malloy-1236906094/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "46d4b5b6-1d29-4c4a-aee4-79b9feae0cbc",
-        "titulo": "Pulp Fiction",
-        "anio": 1994
-      },
-      "score": 60,
-      "reason": "§4.2 match al catálogo Pulp Fiction (rating 10, Tarantino olimpo) via Tim Roth; nueva película de crimen con el actor de Jules Winnfield es dato de interés."
-    },
-    {
-      "title_es": "James Franco se une al reparto de la precuela de John Rambo",
-      "summary_es": "Franco, Noah Centineo y David Harbour en la nueva precuela; dato de casting para el radar.",
-      "source": "Variety",
-      "age_hours": 2,
-      "url": "https://variety.com/2026/film/global/james-franco-joins-john-rambo-prequel-movie-1236750019/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "d32d6fd1-fdc4-4d13-b856-45afb3b77e37",
-        "titulo": "John Rambo",
-        "anio": null
-      },
-      "score": 50,
-      "reason": "§4.4 regla 3: match catálogo 'John Rambo' existe pero rating/sello no verificable; casting notable (Franco, Centineo, Harbour) con ángulo informativo válido para el bloque noticias."
-    },
-    {
-      "title_es": "Aaron Eckhart (Harvey Dent en TDK) empieza rodaje de thriller en Bulgaria",
-      "summary_es": "El Harvey Dent de Nolan rueda 'The Walk-In'; dato curioso para los fans de El caballero oscuro.",
-      "source": "Deadline",
-      "age_hours": 0,
-      "url": "https://deadline.com/2026/05/aaron-eckhart-action-thriller-the-walk-in-shooting-bulgaria-1236907069/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
-      },
-      "score": 45,
-      "reason": "§4.2 match al catálogo 'El caballero oscuro' (2008, rating 10, olimpo Nolan) via mención de Aaron Eckhart; pero la noticia es sobre una nueva película sin conexión directa a TDK, ángulo solo informativo."
-    },
-    {
-      "title_es": "Sophie Okonedo (Hotel Rwanda) lleva 'Clarissa' a la Quincena en Cannes",
-      "summary_es": "La nominada al Óscar por Hotel Rwanda debuta en Cannes con adaptación de Virginia Woolf.",
-      "source": "Deadline",
-      "age_hours": 5,
-      "url": "https://deadline.com/2026/05/sophie-okoneno-interview-directors-fortnight-1236879477/",
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/lucy-liu-cannes-immersive-pirate-queen-no-safe-waters-1236597696/",
       "angle": "festival",
       "catalog_match": {
-        "pelicula_id": "12a4d019-7297-429a-a0d4-193b4da5f4c2",
-        "titulo": "Hotel Rwanda",
-        "anio": 2004
+        "pelicula_id": "2e55c8b5-f2b7-4efc-8db4-ad223b2f904b",
+        "titulo": "Kung fu panda",
+        "anio": 2008
       },
-      "score": 42,
-      "reason": "§4.2 match catálogo Hotel Rwanda (2004, rating en catálogo); Sophie Okonedo presente pero el ángulo es sobre nueva película 'Clarissa' sin match cinebret, solo informativo."
+      "score": 52,
+      "reason": "§4.2 catalog_match a 'Kung Fu Panda (2008)' con IMDb alto y sello-adjacent; Lucy Liu menciona la peli en Cannes — informativo para Alberto."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
     "newsapi_items": 92,
     "reddit_posts": 0,
-    "trailers": 54
+    "trailers": 55
   },
   "reconciliation_stats": {
-    "acceptedCount": 1,
-    "agedCount": 0,
+    "acceptedCount": 0,
+    "agedCount": 2,
     "expiredByTime": 0,
-    "expiredByCritic": 5
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 17577,
-    "output": 13043
+    "input": 16914,
+    "output": 12383
   }
 }

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-16T20:44:03.156Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-17T11:58:41.228Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,16 +41,16 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + plataforma activa + año 2025; déficit review≥1 lo prioriza."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director muy respetado (DeBlois) + año 2025 + plataforma activa; sin post reciente de esta peli."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásitos (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "score": 97,
+      "title": "Review: Parásitos (2019) — Bong Joon-ho",
+      "reasoning": "El Óscar a mejor película que sacudió Hollywood; una de tus 38 sagradas sin review publicado.",
+      "score": 95,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,16 +61,16 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 backlog válido: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; 3 días — quinto duplicado semántico de Parásitos."
+      "critic_reason": "§4.5 review válida (backlog): rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + Netflix activo; 4 días en backlog."
     },
     {
       "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos — El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson: IMDb 9.0, 11 Óscares y una de tus 38 sagradas sin review.",
-      "score": 96,
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de la trilogía de Jackson; IMDb 9.0 y todavía sin review en el feed.",
+      "score": 95,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -81,15 +81,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa; sin post reciente."
     },
     {
-      "id": "573a9adcdd312f2e",
+      "id": "73feb5c792884feb",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas rodadas en una sola locación (y que no lo parecen)",
-      "reasoning": "Buried, Locke, 12 Angry Men: el cine que convierte una habitación en un universo completo.",
+      "title": "TOP 10 películas con el mejor guion de la historia (y por qué cada línea importa)",
+      "reasoning": "Pulp Fiction, Usual Suspects, Network: los guiones que convirtieron el diálogo en arte puro.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=format/narrative no usado; ángulo de 'una sola locación' es fresco, ejecutable y alineado con el gusto de Alberto por la tensión concentrada."
+      "critic_reason": "Slot creativo: kind=craft/technique no está en recent_top_kinds; ángulo de narrativa interna muy cinebret."
     },
     {
       "id": "fe5875c8c649d23e",
       "type": "FEED",
-      "priority": "alta",
+      "priority": "media",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas imprescindibles (Miyazaki y mucho más)",
-      "reasoning": "Miyazaki lidera pero Japón da mucho más; kind=country fresco con peso real en catálogo.",
-      "score": 80,
+      "reasoning": "Miyazaki lidera pero el cine japonés del catálogo tiene mucho más; kind country fresco para hoy.",
+      "score": 75,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§5.1 backlog válido a 9 días; kind=country no en recent_top_kinds; Miyazaki (4 sello bret) ancla lista sólida."
+      "critic_reason": "§3 kind=country no en recent_top_kinds; backlog de 10 días, Miyazaki 4 sello bret, complementa catálogo asiático."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: 올드보이 (2003)",
       "reasoning": "Tu rating 10 + sello bret en mubi. Dirigida por Park Chan-wook (autor admirado). Continuidad temática con tu última semana.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: 기생충 (2019)",
       "reasoning": "Tu rating 10 + sello bret en netflix. Dirigida por Bong Joon Ho. Continuidad temática con tu última semana.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019) — Bong Joon-ho",
       "reasoning": "Rating 10, IMDb 8.5, sello bret, en Netflix; máxima continuidad temática con el TOP coreanas.",
-      "days_ago": 9,
+      "days_ago": 10,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 8,
+      "days_ago": 9,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,54 +184,54 @@
       "type": "FEED",
       "title": "Parasite (2019) — Bong Joon-ho",
       "reasoning": "La película que ganó el Óscar a mejor film; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     }
   ],
   "news": [
     {
-      "title_es": "Mark Ruffalo protagonizará 'Gatto', la nueva película de Pixar",
-      "summary_es": "Pixar avanza en su próximo film; Ruffalo como protagonista y arte conceptual ya confirmado como estilo final.",
+      "title_es": "Reddit debate The Social Network: ¿era Zuckerberg realmente tan valioso como coder?",
+      "summary_es": "Conversación activa sobre La red social de Fincher; puede inspirar contenido reactivo o aniversario.",
       "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1tf2yth/mark_ruffalo_to_star_in_pixars_gatto_pixar_artist/",
-      "angle": "casting",
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.3 Pixar es estudio que Alberto respeta (Docter, Bird, Sanders); nuevo film anunciado con Ruffalo es informativo pero sin ángulo postable aún."
+      "age_hours": 4,
+      "url": "https://www.reddit.com/r/movies/comments/1tfj7ct/the_social_network_something_that_always_puzzled/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "4152cdfd-7a1e-4538-b65f-d65074bb5049",
+        "titulo": "La red social",
+        "anio": 2010
+      },
+      "score": 65,
+      "reason": "§4.4 regla 2: match real a 'La red social (2010)' de David Fincher (Olimpo); debate en Reddit sobre escena específica es informativamente interesante."
     },
     {
-      "title_es": "Lucy Liu en Cannes recuerda 'Kung Fu Panda' como su primera vez en el festival",
-      "summary_es": "Liu menciona Kung Fu Panda al hablar de su debut en Cannes; dato curioso para el feed.",
-      "source": "Hollywood Reporter",
+      "title_es": "Keanu Reeves pondrá voz al protagonista de 'Hidari', épica samurái en stop-motion japonés",
+      "summary_es": "Animación japonesa de autor con Reeves; visualmente ambiciosa y del tipo que a Alberto le llama.",
+      "source": "r/movies",
       "age_hours": 2,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/lucy-liu-cannes-immersive-pirate-queen-no-safe-waters-1236597696/",
-      "angle": "festival",
-      "catalog_match": {
-        "pelicula_id": "2e55c8b5-f2b7-4efc-8db4-ad223b2f904b",
-        "titulo": "Kung fu panda",
-        "anio": 2008
-      },
+      "url": "https://www.reddit.com/r/movies/comments/1tfkoyc/keanu_reeves_to_voice_lead_in_stopmotion_samurai/",
+      "angle": "casting",
+      "catalog_match": null,
       "score": 52,
-      "reason": "§4.2 catalog_match a 'Kung Fu Panda (2008)' con IMDb alto y sello-adjacent; Lucy Liu menciona la peli en Cannes — informativo para Alberto."
+      "reason": "§4.4 regla 3: sin match formal al catálogo pero Keanu Reeves + animación stop-motion japonesa; interesante informativamente para Alberto aunque no posteable."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 92,
+    "newsapi_items": 91,
     "reddit_posts": 0,
     "trailers": 55
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 1,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16914,
-    "output": 12383
+    "input": 16645,
+    "output": 12467
   }
 }

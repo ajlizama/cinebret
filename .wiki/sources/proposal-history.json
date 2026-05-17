@@ -483,8 +483,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-07T21:56:26.719Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-17T11:58:41.228Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -508,8 +508,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-16T20:44:03.156Z",
-      "cycles_proposed": 15,
+      "last_proposed": "2026-05-17T11:58:41.228Z",
+      "cycles_proposed": 16,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -886,8 +886,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-16T20:44:03.156Z",
-      "cycles_proposed": 8,
+      "last_proposed": "2026-05-17T11:58:41.228Z",
+      "cycles_proposed": 9,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1239,8 +1239,8 @@
         "topic": "japón"
       },
       "first_proposed": "2026-05-15T12:29:46.065Z",
-      "last_proposed": "2026-05-16T20:44:03.156Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-17T11:58:41.228Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1336,10 +1336,34 @@
       "first_proposed": "2026-05-16T20:44:03.156Z",
       "last_proposed": "2026-05-16T20:44:03.156Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-17T11:58:41.228Z"
+    },
+    {
+      "id": "82e888893ba1e41d",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas con el mejor guion de la historia (y por qué cada línea importa)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Pulp Fiction, Usual Suspects, Network: los guiones que convirtieron el diálogo en arte puro.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-17T11:58:41.228Z",
+      "last_proposed": "2026-05-17T11:58:41.228Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-16T20:47:44.107Z"
+  "last_saved": "2026-05-17T12:02:44.609Z"
 }

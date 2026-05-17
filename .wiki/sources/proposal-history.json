@@ -330,10 +330,12 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+      "became_backlog_at": "2026-05-06T21:09:49.676Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§8 anti-pattern: duplicado de 4d3a9be16ea459aa (Oldboy/Park Chan-wook) que ya está en propuestas activas con mismo id; este backlog usa título en coreano pero es la misma película."
     },
     {
       "id": "f39545c3a701989b",
@@ -355,10 +357,12 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+      "became_backlog_at": "2026-05-06T21:09:49.676Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado de 6134534c62ee6a31 (Parasite/Bong) que ya está en propuestas activas; título en coreano pero misma película."
     },
     {
       "id": "fecc4d46aebb463c",
@@ -485,10 +489,12 @@
       "first_proposed": "2026-05-07T21:56:26.719Z",
       "last_proposed": "2026-05-17T11:58:41.228Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T12:07:25.851Z"
+      "became_backlog_at": "2026-05-08T12:07:25.851Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado de 6134534c62ee6a31 (Parasite/Bong Joon-ho) ya en propuestas activas de este ciclo; expirar backlog."
     },
     {
       "id": "ee7db1141ee271a2",
@@ -507,13 +513,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "first_proposed": "2026-05-07T21:56:26.719Z",
-      "last_proposed": "2026-05-17T11:58:41.228Z",
-      "cycles_proposed": 16,
-      "status": "backlog",
+      "first_proposed": "2026-05-17T20:49:19.561Z",
+      "last_proposed": "2026-05-17T20:49:19.561Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T12:07:25.851Z"
+      "became_backlog_at": "2026-05-08T12:07:25.851Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado de 119c0775fc431172 (LOTR Return of the King/Jackson) ya en propuestas activas de este ciclo; expirar backlog."
     },
     {
       "id": "be95948db0c5563b",
@@ -585,10 +593,12 @@
       "first_proposed": "2026-05-07T21:56:26.719Z",
       "last_proposed": "2026-05-07T21:56:26.719Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T12:07:25.851Z"
+      "became_backlog_at": "2026-05-08T12:07:25.851Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado del candidato activo fe5875c8c649d23e (TOP 10 películas japonesas) ya evaluado como propose en este ciclo; expirar backlog redundante."
     },
     {
       "id": "2cbe21c0e2cfc26c",
@@ -610,10 +620,12 @@
       "first_proposed": "2026-05-08T12:07:25.851Z",
       "last_proposed": "2026-05-16T20:44:03.156Z",
       "cycles_proposed": 14,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T20:58:56.691Z"
+      "became_backlog_at": "2026-05-08T20:58:56.691Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: tercer duplicado de Parasite/Bong (6134534c ya en propuestas); expirar."
     },
     {
       "id": "902de345b63b2883",
@@ -863,10 +875,12 @@
       "first_proposed": "2026-05-10T20:44:21.368Z",
       "last_proposed": "2026-05-15T12:29:46.065Z",
       "cycles_proposed": 4,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-11T13:43:04.410Z"
+      "became_backlog_at": "2026-05-11T13:43:04.410Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§8 anti-pattern: kind=director en recent_top_kinds; dúos director-actor es sub-categoría de director y se solapa con lo ya publicado."
     },
     {
       "id": "96f13eee305fe1c4",
@@ -885,13 +899,15 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "first_proposed": "2026-05-11T13:43:04.410Z",
-      "last_proposed": "2026-05-17T11:58:41.228Z",
-      "cycles_proposed": 9,
-      "status": "backlog",
+      "first_proposed": "2026-05-17T20:49:19.561Z",
+      "last_proposed": "2026-05-17T20:49:19.561Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-11T21:15:34.263Z"
+      "became_backlog_at": "2026-05-11T21:15:34.263Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado de 6276902b8705f60e (HTTYD 2025/DeBlois) ya en propuestas activas de este ciclo; expirar backlog."
     },
     {
       "id": "ceecbc6e16e39bdf",
@@ -939,10 +955,12 @@
       "first_proposed": "2026-05-11T21:15:34.263Z",
       "last_proposed": "2026-05-11T21:15:34.263Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-12T13:03:18.531Z"
+      "became_backlog_at": "2026-05-12T13:03:18.531Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: cuarto duplicado de Parasite/Bong (6134534c ya en propuestas); expirar."
     },
     {
       "id": "a542bc4117625263",
@@ -991,10 +1009,12 @@
       "first_proposed": "2026-05-11T21:15:34.263Z",
       "last_proposed": "2026-05-11T21:15:34.263Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-12T13:03:18.531Z"
+      "became_backlog_at": "2026-05-12T13:03:18.531Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado de 6276902b (HTTYD 2025/DeBlois) ya en propuestas activas; expirar backlog."
     },
     {
       "id": "aa217c14665fa967",
@@ -1042,10 +1062,12 @@
       "first_proposed": "2026-05-12T21:19:11.632Z",
       "last_proposed": "2026-05-12T21:19:11.632Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-13T13:09:14.141Z"
+      "became_backlog_at": "2026-05-13T13:09:14.141Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado exacto del candidato activo e041c4c4d8d26942 (Joker/Todd Phillips) ya evaluado como propose en este ciclo; expirar backlog."
     },
     {
       "id": "e17327a38c2fa841",
@@ -1117,10 +1139,12 @@
       "first_proposed": "2026-05-13T13:09:14.141Z",
       "last_proposed": "2026-05-13T21:25:39.118Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-13T21:25:39.118Z"
+      "became_backlog_at": "2026-05-13T21:25:39.118Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado exacto del candidato activo 6134534c62ee6a31 (Parasite/Bong) ya evaluado como propose en este ciclo; expirar backlog."
     },
     {
       "id": "7931bc79ae4d34c3",
@@ -1241,10 +1265,12 @@
       "first_proposed": "2026-05-15T12:29:46.065Z",
       "last_proposed": "2026-05-17T11:58:41.228Z",
       "cycles_proposed": 4,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-15T20:58:55.291Z"
+      "became_backlog_at": "2026-05-15T20:58:55.291Z",
+      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_reason": "§5.2 garbage collection: duplicado de fe5875c8c649d23e (TOP japonesas) ya evaluado como propose en este ciclo; expirar backlog."
     },
     {
       "id": "3dcef05050227826",
@@ -1360,10 +1386,81 @@
       "first_proposed": "2026-05-17T11:58:41.228Z",
       "last_proposed": "2026-05-17T11:58:41.228Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-17T20:49:19.561Z"
+    },
+    {
+      "id": "b89c5321cbd38858",
+      "action": "generate_review",
+      "title": "Review: Oldboy (2003) — Park Chan-wook",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 93,
+      "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Oldboy",
+        "anio": 2003,
+        "pelicula_id": "33b36b2f-7cab-40be-a753-7c6fbdfcd957"
+      },
+      "first_proposed": "2026-05-17T20:49:19.561Z",
+      "last_proposed": "2026-05-17T20:49:19.561Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "677e8c13da416c81",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 escenas de diálogo que son pura literatura (y las películas que las rodean)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Pulp Fiction, Network, El Padrino: los momentos donde el guion se convirtió en arte puro.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-17T20:49:19.561Z",
+      "last_proposed": "2026-05-17T20:49:19.561Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "ecf9966025a2c60d",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas británicas: de Nolan a Guy Ritchie",
+      "type": "FEED",
+      "priority": "media",
+      "score": 76,
+      "reasoning": "UK tiene algunos de tus directores favoritos; kind=country fresco y catálogo con mucho peso.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "reino unido"
+      },
+      "first_proposed": "2026-05-17T20:49:19.561Z",
+      "last_proposed": "2026-05-17T20:49:19.561Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-17T12:02:44.609Z"
+  "last_saved": "2026-05-17T20:52:51.533Z"
 }

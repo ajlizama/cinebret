@@ -1,9 +1,119 @@
 {
-  "generated_at": "2026-05-17T11:57:55.679Z",
-  "total_videos": 55,
-  "trailers_count": 3,
+  "generated_at": "2026-05-17T20:49:19.470Z",
+  "total_videos": 56,
+  "trailers_count": 5,
   "matched_to_cinebret": 9,
   "videos": [
+    {
+      "video_id": "vtSwBaV3s5s",
+      "title": "Kingfish - Official Reveal Trailer",
+      "url": "https://www.youtube.com/watch?v=vtSwBaV3s5s",
+      "published": "2026-05-17T20:15:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/vtSwBaV3s5s/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "eOV_DMe13nI",
+      "title": "Garrett Tells Hannah He Loves Her | Off Campus | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=eOV_DMe13nI",
+      "published": "2026-05-17T19:00:24Z",
+      "thumbnail": "https://i.ytimg.com/vi/eOV_DMe13nI/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "FOG4fN0h9pA",
+      "title": "THE BREADWINNER - Exclusive Scene Featuring Taylor Swift's \"Opalite\"",
+      "url": "https://www.youtube.com/watch?v=FOG4fN0h9pA",
+      "published": "2026-05-17T19:00:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/FOG4fN0h9pA/hqdefault.jpg",
+      "channel": "Sony Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "92644993-f7c5-4f5c-9390-24b52b7ed0f2",
+        "titulo": "The Breadwinner (El pan de la guerra)",
+        "anio": 2017
+      }
+    },
+    {
+      "video_id": "4_b2j1irHQw",
+      "title": "The Battle for the Timeline Begins 🥋⏱️ #Timecop2 #Shorts",
+      "url": "https://www.youtube.com/watch?v=4_b2j1irHQw",
+      "published": "2026-05-17T19:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/4_b2j1irHQw/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Qg3H5pQMCDs",
+      "title": "It will obsess you. #DouglasSirk’s MAGNIFICENT OBSESSION. starring #JaneWyman and #RockHudson.",
+      "url": "https://www.youtube.com/watch?v=Qg3H5pQMCDs",
+      "published": "2026-05-17T18:00:23Z",
+      "thumbnail": "https://i.ytimg.com/vi/Qg3H5pQMCDs/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "7a4f6909-0f63-4e4f-b97d-4badd929d87b",
+        "titulo": "Obsession",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "gzrdKSwJweo",
+      "title": "Why you should see the new MSG Hathaway film on the big screen.",
+      "url": "https://www.youtube.com/watch?v=gzrdKSwJweo",
+      "published": "2026-05-17T17:30:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/gzrdKSwJweo/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "4yYiuEfX1fQ",
+      "title": "Tom Clancy’s Jack Ryan: Everything Before the Movie in 10 Minutes | Prime Video",
+      "url": "https://www.youtube.com/watch?v=4yYiuEfX1fQ",
+      "published": "2026-05-17T17:00:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/4yYiuEfX1fQ/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "yam-0zgpG4g",
+      "title": "The Mandalorian and Grogu Complete Recap",
+      "url": "https://www.youtube.com/watch?v=yam-0zgpG4g",
+      "published": "2026-05-17T15:30:28Z",
+      "thumbnail": "https://i.ytimg.com/vi/yam-0zgpG4g/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "shnzsiRaWhc",
+      "title": "Fortnite x The Mandalorian and Grogu - Official Watch Party Island Trailer",
+      "url": "https://www.youtube.com/watch?v=shnzsiRaWhc",
+      "published": "2026-05-17T15:23:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/shnzsiRaWhc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "axOto9x5vAM",
+      "title": "Debbie always knows just what to say | Invincible | Prime Video",
+      "url": "https://www.youtube.com/watch?v=axOto9x5vAM",
+      "published": "2026-05-17T15:00:03Z",
+      "thumbnail": "https://i.ytimg.com/vi/axOto9x5vAM/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "a-_2b2VSS1k",
       "title": "In the trenches, the stage is a sanctuary. A first look at Lukas Dhont’s COWARD. #Cannes2026.",
@@ -110,26 +220,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "F0yyf00BLaI",
-      "title": "Watch a clip from MSG Hathaway: The Sorcery of Nymph Circe.",
-      "url": "https://www.youtube.com/watch?v=F0yyf00BLaI",
-      "published": "2026-05-16T17:30:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/F0yyf00BLaI/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "mp8BIY8gB1k",
-      "title": "Garrett & Hannah's Meet Cute | Off Campus | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=mp8BIY8gB1k",
-      "published": "2026-05-16T17:00:57Z",
-      "thumbnail": "https://i.ytimg.com/vi/mp8BIY8gB1k/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "hvkhaZFQVaI",
       "title": "One full year of avoiding eye-contact. #Murderbot",
       "url": "https://www.youtube.com/watch?v=hvkhaZFQVaI",
@@ -137,51 +227,6 @@
       "thumbnail": "https://i.ytimg.com/vi/hvkhaZFQVaI/hqdefault.jpg",
       "channel": "Apple TV",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "kqdWc23JlbE",
-      "title": "Mortal Kombat 1 - Everything Added Since Launch",
-      "url": "https://www.youtube.com/watch?v=kqdWc23JlbE",
-      "published": "2026-05-16T15:01:08Z",
-      "thumbnail": "https://i.ytimg.com/vi/kqdWc23JlbE/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
-        "titulo": "Mortal Kombat",
-        "anio": 1995
-      }
-    },
-    {
-      "video_id": "iDAarxfNJWo",
-      "title": "Homelander's 5 MOST Unhinged Moments | The Boys Season 4 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=iDAarxfNJWo",
-      "published": "2026-05-16T15:01:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/iDAarxfNJWo/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "hZORrzVP2bA",
-      "title": "Biggest Differences Between Zero Parades and Disco Elysium",
-      "url": "https://www.youtube.com/watch?v=hZORrzVP2bA",
-      "published": "2026-05-16T15:01:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/hZORrzVP2bA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "ziDp7DlXsPs",
-      "title": "Hitman - Everything Added Since Launch",
-      "url": "https://www.youtube.com/watch?v=ziDp7DlXsPs",
-      "published": "2026-05-16T14:01:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/ziDp7DlXsPs/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -207,16 +252,6 @@
       "thumbnail": "https://i.ytimg.com/vi/QgBuCNGK1fs/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "J_2keri1fYc",
-      "title": "Homelander & Butcher: men of their word | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=J_2keri1fYc",
-      "published": "2026-05-15T21:00:30Z",
-      "thumbnail": "https://i.ytimg.com/vi/J_2keri1fYc/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -450,21 +485,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "kxDLkNfPBUA",
-      "title": "FATHERLAND | Official Clip | Coming Soon",
-      "url": "https://www.youtube.com/watch?v=kxDLkNfPBUA",
-      "published": "2026-05-14T09:14:28Z",
-      "thumbnail": "https://i.ytimg.com/vi/kxDLkNfPBUA/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "d48b638b-ba50-49d9-9fb2-470ab1af990f",
-        "titulo": "Coming soon",
-        "anio": 2008
-      }
-    },
-    {
       "video_id": "W5KloE-t1bE",
       "title": "PRESSURE - \"We Must Face the Facts\" Official Clip",
       "url": "https://www.youtube.com/watch?v=W5KloE-t1bE",
@@ -508,16 +528,6 @@
         "titulo": "Kinds of Kindness",
         "anio": 2024
       }
-    },
-    {
-      "video_id": "byKivma1588",
-      "title": "Same actress, different fonts.",
-      "url": "https://www.youtube.com/watch?v=byKivma1588",
-      "published": "2026-05-13T17:00:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/byKivma1588/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "E1VNiIwAUPs",

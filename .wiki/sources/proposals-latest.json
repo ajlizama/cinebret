@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-17T20:49:19.561Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-18T14:28:09.503Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 1,
+  "news_count": 4,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -29,8 +29,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 sin review publicado.",
-      "score": 95,
+      "reasoning": "DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -41,7 +41,27 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + director Muy Respetado (DeBlois) + año 2025 + plataforma activa; déficit de review activo."
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + director Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025; déficit de review activo."
+    },
+    {
+      "id": "6134534c62ee6a31",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: Parasite (2019)",
+      "reasoning": "Bong Joon-ho y la película que ganó el Óscar a Mejor Película; aún sin review en tu feed.",
+      "score": 97,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + IMDb 8.5 + director Bong Joon Ho (admired); plataforma activa Netflix."
     },
     {
       "id": "119c0775fc431172",
@@ -49,8 +69,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson; IMDb 9.0 y tu rating 10 entre las 38 sagradas.",
-      "score": 94,
+      "reasoning": "El cierre épico de Jackson: IMDb 9.0, tu rating 10 y ninguna review publicada en el feed.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,35 +81,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 9.0 + director Muy Respetado (Jackson) + plataforma activa; cierre de la trilogía LOTR sin review."
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + IMDb 9.0 + director Peter Jackson (muy respetado); plataforma activa."
     },
     {
-      "id": "4d3a9be16ea459aa",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: Oldboy (2003) — Park Chan-wook",
-      "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "score": 93,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "Oldboy",
-        "anio": 2003,
-        "pelicula_id": "33b36b2f-7cab-40be-a753-7c6fbdfcd957"
-      },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + director Admired (Park Chan-wook) + plataforma activa MUBI; sin review publicado."
-    },
-    {
-      "id": "251bd70e8af7fc1d",
+      "id": "10e274c554e277c2",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 escenas de diálogo que son pura literatura (y las películas que las rodean)",
-      "reasoning": "Pulp Fiction, Network, El Padrino: los momentos donde el guion se convirtió en arte puro.",
+      "title": "TOP 10 películas rodadas en una sola locación (y que no lo parecen)",
+      "reasoning": "Buried, Locke, 12 Angry Men: el cine que convierte una habitación en un universo completo.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=country evitado; propongo kind=craft (guion/estructura) que no está en recent_top_kinds y conecta con la obsesión de Alberto por los diálogos."
+      "critic_reason": "Slot creativo: kind=country no repetido; ángulo original que conecta con el catálogo y el perfil de Alberto — películas rodadas en una sola locación, kind=production."
     },
     {
-      "id": "787cebed76170ab8",
+      "id": "fe5875c8c649d23e",
       "type": "FEED",
       "priority": "media",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas británicas: de Nolan a Guy Ritchie",
-      "reasoning": "UK tiene algunos de tus directores favoritos; kind=country fresco y catálogo con mucho peso.",
-      "score": 76,
+      "title": "TOP 10 películas japonesas imprescindibles (con Miyazaki y más)",
+      "reasoning": "Miyazaki, Kurosawa y el cine japonés que Alberto más respeta; kind=country sin uso reciente.",
+      "score": 78,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -117,9 +117,9 @@
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
         "topic_type": "country",
-        "topic": "reino unido"
+        "topic": "japón"
       },
-      "critic_reason": "§3 mix: kind=country fresco; UK tiene alto peso en catálogo (Nolan, Boyle, Wright, Ritchie); backlog de 12 días aún válido."
+      "critic_reason": "§3 kind=country no está en recent_top_kinds; Japón tiene peso fuerte en el catálogo (Miyazaki, animación); continuidad con post de animadas reciente."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,15 +136,39 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 12,
+      "days_ago": 13,
       "skill_to_invoke": "cinebret-share-story"
+    },
+    {
+      "id": "96f13eee305fe1c4",
+      "type": "FEED",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "ee7db1141ee271a2",
+      "type": "FEED",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "b89c5321cbd38858",
+      "type": "FEED",
+      "title": "Review: Oldboy (2003) — Park Chan-wook",
+      "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-review"
     },
     {
       "id": "e17327a38c2fa841",
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-list-from-news"
     },
     {
@@ -152,7 +176,7 @@
       "type": "FEED",
       "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
       "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-list-from-news"
     },
     {
@@ -160,63 +184,72 @@
       "type": "FEED",
       "title": "Noticia: Terminator",
       "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-list-from-news"
-    },
-    {
-      "id": "ad96cb2e590a873b",
-      "type": "FEED",
-      "title": "TOP 10 finales que te dejan con la boca abierta",
-      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
-      "days_ago": 9,
-      "skill_to_invoke": "cinebret-carousel-topic"
-    },
-    {
-      "id": "55e0da46c29771c6",
-      "type": "FEED",
-      "title": "TOP 10 películas que transcurren en un solo día (y se sienten en tiempo real)",
-      "reasoning": "Locke, Uncut Gems, Die Hard, Cleo de 5 a 7 — el cine que comprime todo en 24 horas sin perder intensidad.",
-      "days_ago": 8,
-      "skill_to_invoke": "cinebret-carousel-topic"
-    },
-    {
-      "id": "ec5e92e69c6010b8",
-      "type": "FEED",
-      "title": "TOP 10 bandas sonoras que convirtieron una película buena en grande",
-      "reasoning": "Zimmer en Interstellar, Horner en Titanic, Desplat en Whiplash — las OST que elevan todo al siguiente nivel.",
-      "days_ago": 4,
-      "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "title_es": "El laberinto del fauno regresa a Cannes restaurado: Del Toro presenta su obra maestra",
-      "summary_es": "Versión restaurada del clásico de Del Toro en Cannes; si está en tu catálogo, es para saber.",
-      "source": "Hollywood Reporter",
-      "age_hours": 3,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/the-night-pans-labyrinth-changed-cannes-forever-1236597680/",
+      "title_es": "Nicolas Winding Refn vuelve al cine con 'Her Private Hell' tras casi una década",
+      "summary_es": "Refn regresa con Sophie Thatcher y Charles Melton en un nuevo thriller de estética neon.",
+      "source": "IndieWire",
+      "age_hours": 0,
+      "url": "https://www.indiewire.com/news/trailers/her-private-hell-teaser-nicolas-winding-refn-1235194598/",
+      "angle": "trailer-drop",
+      "catalog_match": null,
+      "score": 58,
+      "reason": "§4.3 Nicolas Winding Refn no está en ninguna lista de directores favoritos; match débil — informativo pero no accionable."
+    },
+    {
+      "title_es": "Cannes 2026: primeras reviews de Deadline desde la Croisette",
+      "summary_es": "El festival está en marcha; útil para seguir si aparece algo del catálogo de Alberto.",
+      "source": "Deadline",
+      "age_hours": 0,
+      "url": "https://deadline.com/2026/05/cannes-2026-movie-reviews-1236887972/",
       "angle": "festival",
       "catalog_match": null,
-      "score": 62,
-      "reason": "§4.4: 'Pan's Labyrinth' (El Laberinto del Fauno) tiene match al catálogo de calidad; versión restaurada en Cannes es ángulo informativo válido aunque Guillermo del Toro no está en listas de directores favoritos."
+      "score": 55,
+      "reason": "§4.2 Cannes 2026 en curso (≤7 días); ningún match de catálogo de calidad ni director del olimpo mencionado; informativo general de festival."
+    },
+    {
+      "title_es": "Director coreano Na Hong-jin ya tiene escrita la secuela de 'Hope' en Cannes 2026",
+      "summary_es": "El director de Train to Busan estrena nueva sci-fi épica de 160 minutos en Cannes.",
+      "source": "The Wrap",
+      "age_hours": 0,
+      "url": "https://www.thewrap.com/creative-content/movies/hope-sequel-na-hong-jin-michael-fassbender-interview/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 52,
+      "reason": "§4.4 Na Hong-jin (Train to Busan) no está en listas de directores favoritos; Cannes en curso; informativo sobre cine coreano que Alberto sigue."
+    },
+    {
+      "title_es": "Yeon Sang-ho habla sobre IA y el renacimiento del cine coreano desde Cannes 2026",
+      "summary_es": "El director de Train to Busan reflexiona sobre el impacto de la IA en el cine coreano.",
+      "source": "Deadline",
+      "age_hours": 1,
+      "url": "https://deadline.com/2026/05/colony-cannes-yeon-sangho-showbox-ai-korea-box-office-japan-1236913577/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 50,
+      "reason": "§4.4 Yeon Sang-ho (Train to Busan director) no está en lista de favoritos; Cannes en curso; cine coreano es de interés general para Alberto aunque no sea accionable."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 91,
+    "newsapi_items": 90,
     "reddit_posts": 0,
     "trailers": 56
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 1,
+    "agedCount": 5,
     "expiredByTime": 0,
-    "expiredByCritic": 13
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15865,
-    "output": 10682
+    "input": 15901,
+    "output": 11146
   }
 }

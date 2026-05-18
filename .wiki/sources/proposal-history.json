@@ -514,8 +514,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-18T14:28:09.503Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-18T21:11:30.072Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -900,8 +900,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-18T14:28:09.503Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-18T21:11:30.072Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1139,10 +1139,10 @@
       "first_proposed": "2026-05-18T14:28:09.503Z",
       "last_proposed": "2026-05-18T14:28:09.503Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-13T21:25:39.118Z",
+      "became_backlog_at": "2026-05-18T21:11:30.072Z",
       "expired_at": "2026-05-17T20:49:19.561Z",
       "expired_reason": "§5.2 garbage collection: duplicado exacto del candidato activo 6134534c62ee6a31 (Parasite/Bong) ya evaluado como propose en este ciclo; expirar backlog."
     },
@@ -1189,8 +1189,8 @@
         "topic": "__TBD_BY_CRITIC__"
       },
       "first_proposed": "2026-05-13T21:25:39.118Z",
-      "last_proposed": "2026-05-13T21:25:39.118Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-18T21:11:30.072Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1435,10 +1435,12 @@
       "first_proposed": "2026-05-17T20:49:19.561Z",
       "last_proposed": "2026-05-17T20:49:19.561Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-18T14:28:09.503Z"
+      "became_backlog_at": "2026-05-18T14:28:09.503Z",
+      "expired_at": "2026-05-18T21:11:30.072Z",
+      "expired_reason": "§8 anti-pattern 8: tema muy similar a 82e888893ba1e41d (guiones/diálogos como arte); descartar para evitar tópico repetitivo en el pool."
     },
     {
       "id": "ecf9966025a2c60d",
@@ -1481,12 +1483,37 @@
         "topic": "japón"
       },
       "first_proposed": "2026-05-18T14:28:09.503Z",
-      "last_proposed": "2026-05-18T14:28:09.503Z",
+      "last_proposed": "2026-05-18T21:11:30.072Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-18T21:11:30.072Z"
+    },
+    {
+      "id": "a6131cf3e9710217",
+      "action": "generate_review",
+      "title": "Review: Parásito (2019)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-18T21:11:30.072Z",
+      "last_proposed": "2026-05-18T21:11:30.072Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-18T14:32:00.099Z"
+  "last_saved": "2026-05-18T21:14:51.360Z"
 }

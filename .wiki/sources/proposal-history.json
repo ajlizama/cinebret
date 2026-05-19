@@ -53,10 +53,11 @@
       "first_proposed": "2026-05-05T18:43:10.136Z",
       "last_proposed": "2026-05-05T18:43:10.136Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-05T21:01:49.643Z"
+      "became_backlog_at": "2026-05-05T21:01:49.643Z",
+      "expired_at": "2026-05-19T21:18:39.819Z"
     },
     {
       "id": "dbc30e07255e374c",
@@ -280,10 +281,11 @@
       "first_proposed": "2026-05-05T21:01:49.643Z",
       "last_proposed": "2026-05-05T21:01:49.643Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T12:25:45.639Z"
+      "became_backlog_at": "2026-05-06T12:25:45.639Z",
+      "expired_at": "2026-05-19T21:18:39.819Z"
     },
     {
       "id": "86cd64c42c4ddc8b",
@@ -303,8 +305,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-06T12:25:45.639Z",
-      "last_proposed": "2026-05-19T13:53:46.169Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-19T21:18:39.819Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -900,8 +902,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-18T21:11:30.072Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-19T21:18:39.819Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1507,15 +1509,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-19T13:53:46.169Z",
-      "last_proposed": "2026-05-19T13:53:46.169Z",
+      "first_proposed": "2026-05-19T21:18:39.819Z",
+      "last_proposed": "2026-05-19T21:18:39.819Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-19T13:53:46.169Z",
-      "expired_at": "2026-05-19T13:53:46.169Z",
-      "expired_reason": "§5.3 dedup: duplicado exacto de 6134534c62ee6a31 (Parásito 2019, misma película, mismo action); el id original ya está propuesto con score 97."
+      "became_backlog_at": "2026-05-19T21:18:39.819Z",
+      "expired_at": "2026-05-19T21:18:39.819Z",
+      "expired_reason": "§5 dedup: duplicado exacto con id 6134534c62ee6a31 (Parásito 2019, Bong Joon-ho); mismo candidato con distinto id; se mantiene el de mayor score."
     },
     {
       "id": "080b5658325e2dfe",
@@ -1536,10 +1538,57 @@
       "first_proposed": "2026-05-19T13:53:46.169Z",
       "last_proposed": "2026-05-19T13:53:46.169Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-19T21:18:39.819Z"
+    },
+    {
+      "id": "3243a95f7de4e9e3",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10: Los países que cambiaron el cine para siempre",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Francia, Corea, Italia, Japón — cada país con una película que reescribió las reglas del cine.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-19T21:18:39.819Z",
+      "last_proposed": "2026-05-19T21:18:39.819Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "cb80a5bc8f1cd3eb",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas francesas imprescindibles",
+      "type": "FEED",
+      "priority": "media",
+      "score": 78,
+      "reasoning": "El cine francés tiene joyas en tu catálogo; kind=country fresco para el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "francia"
+      },
+      "first_proposed": "2026-05-19T21:18:39.819Z",
+      "last_proposed": "2026-05-19T21:18:39.819Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-19T13:57:07.332Z"
+  "last_saved": "2026-05-19T21:22:09.331Z"
 }

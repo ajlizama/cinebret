@@ -1,15 +1,80 @@
 {
-  "generated_at": "2026-05-18T21:11:29.984Z",
+  "generated_at": "2026-05-19T13:53:03.279Z",
   "total_videos": 58,
-  "trailers_count": 4,
-  "matched_to_cinebret": 16,
+  "trailers_count": 2,
+  "matched_to_cinebret": 15,
   "videos": [
     {
-      "video_id": "lIJ7RXYYcFA",
-      "title": "Marvel Rivals: Devil Dinosaur Gameplay - Moveset and Strategy Breakdown",
-      "url": "https://www.youtube.com/watch?v=lIJ7RXYYcFA",
-      "published": "2026-05-18T21:00:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/lIJ7RXYYcFA/hqdefault.jpg",
+      "video_id": "treg8h3dWO0",
+      "title": "Yoshi and the Mysterious Book Review",
+      "url": "https://www.youtube.com/watch?v=treg8h3dWO0",
+      "published": "2026-05-19T13:35:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/treg8h3dWO0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "vTXE6r9bWQM",
+      "title": "Street Fighter 6 - Official Random Avatar Matches and Avatar Arcade Mode Trailer",
+      "url": "https://www.youtube.com/watch?v=vTXE6r9bWQM",
+      "published": "2026-05-19T13:29:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/vTXE6r9bWQM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "2e98a9b8-b170-4e7e-b696-590d74207984",
+        "titulo": "Street Fighter",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "WYwTjmv97xQ",
+      "title": "The Mandalorian and Grogu - Review",
+      "url": "https://www.youtube.com/watch?v=WYwTjmv97xQ",
+      "published": "2026-05-19T13:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/WYwTjmv97xQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Z2vvM8hPgfg",
+      "title": "David Lowery & Anne Hathaway | The A24 Podcast",
+      "url": "https://www.youtube.com/watch?v=Z2vvM8hPgfg",
+      "published": "2026-05-19T11:00:28Z",
+      "thumbnail": "https://i.ytimg.com/vi/Z2vvM8hPgfg/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "5-1faljMWFs",
+      "title": "Video essay: “Joachim Trier: The Spaces Between Us” | MUBI",
+      "url": "https://www.youtube.com/watch?v=5-1faljMWFs",
+      "published": "2026-05-19T10:48:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/5-1faljMWFs/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "WoZY6Q7huFM",
+      "title": "Seth Rogen really doesn't like AI",
+      "url": "https://www.youtube.com/watch?v=WoZY6Q7huFM",
+      "published": "2026-05-19T03:00:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/WoZY6Q7huFM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "JJC0hEjup4w",
+      "title": "You can complete quests, defeat waves of Stormtroopers, and more on Nevarro in Fortnite! #starwars",
+      "url": "https://www.youtube.com/watch?v=JJC0hEjup4w",
+      "published": "2026-05-19T00:10:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/JJC0hEjup4w/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
@@ -30,21 +95,6 @@
       }
     },
     {
-      "video_id": "du6j_2JwZEs",
-      "title": "Scary Movie - Official 'The Wayans' Behind the Scenes Clip (2026)",
-      "url": "https://www.youtube.com/watch?v=du6j_2JwZEs",
-      "published": "2026-05-18T20:00:12Z",
-      "thumbnail": "https://i.ytimg.com/vi/du6j_2JwZEs/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
-        "titulo": "Scary Movie",
-        "anio": 2026
-      }
-    },
-    {
       "video_id": "uBVzzmN0KBc",
       "title": "Tapping Into Creepy Mode for 'Obsession'",
       "url": "https://www.youtube.com/watch?v=uBVzzmN0KBc",
@@ -58,16 +108,6 @@
         "titulo": "Obsession",
         "anio": 2026
       }
-    },
-    {
-      "video_id": "hsbaHsXOboY",
-      "title": "Aztecs: The Last Sun - Official Version 1.0 Gameplay Overview Trailer",
-      "url": "https://www.youtube.com/watch?v=hsbaHsXOboY",
-      "published": "2026-05-18T19:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/hsbaHsXOboY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "adkTYPoSFHQ",
@@ -113,16 +153,6 @@
         "titulo": "Faces of Death",
         "anio": 2026
       }
-    },
-    {
-      "video_id": "3HMsE28wKx8",
-      "title": "Gambit - Official Demo Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=3HMsE28wKx8",
-      "published": "2026-05-18T17:42:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/3HMsE28wKx8/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "Fn6bk3cz7MI",
@@ -195,16 +225,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "Uhhws2QatmA",
-      "title": "Marvel Cosmic Invasion - Official Cyclops & The Thing DLC 1 Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=Uhhws2QatmA",
-      "published": "2026-05-18T15:21:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/Uhhws2QatmA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "dDay8ogJQgU",
       "title": "Ultimate Invincible Edit | Prime Video",
       "url": "https://www.youtube.com/watch?v=dDay8ogJQgU",
@@ -233,21 +253,6 @@
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "sBGyW9Nv-bA",
-      "title": "5 of Nick's hottest lines in My Fault: London | Prime Video",
-      "url": "https://www.youtube.com/watch?v=sBGyW9Nv-bA",
-      "published": "2026-05-17T21:00:45Z",
-      "thumbnail": "https://i.ytimg.com/vi/sBGyW9Nv-bA/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
-        "titulo": "Culpa mía: Londres",
-        "anio": 2025
-      }
     },
     {
       "video_id": "FOG4fN0h9pA",
@@ -400,6 +405,16 @@
       "is_trailer": false
     },
     {
+      "video_id": "5_OZ2VLle0Y",
+      "title": "Homelander Being a Psychopath ON LOOP | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=5_OZ2VLle0Y",
+      "published": "2026-05-15T20:53:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/5_OZ2VLle0Y/hqdefault_live.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
       "video_id": "I2q0LVnkryY",
       "title": "Nothing is off limits. Star City premieres May 29 on Apple TV. #StarCity",
       "url": "https://www.youtube.com/watch?v=I2q0LVnkryY",
@@ -485,16 +500,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "g6UThuHMvro",
-      "title": "Enjoy the show. THE MYSTERIOUS GAZE OF THE FLAMINGO. | Now Streaming on MUBI",
-      "url": "https://www.youtube.com/watch?v=g6UThuHMvro",
-      "published": "2026-05-15T15:00:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/g6UThuHMvro/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "WNB40Hnjfok",
       "title": "The Outfit | A Mob Boss Comes to Inquire About his Son",
       "url": "https://www.youtube.com/watch?v=WNB40Hnjfok",
@@ -536,7 +541,7 @@
     },
     {
       "video_id": "Ap6UhCcHRC0",
-      "title": "The Furious (2026) ’Who Are You’ Official Clip - Xie Miao, Joe Taslim",
+      "title": "The Furious (2026) Official Clip ’Who Are You’ - Xie Miao, Joe Taslim",
       "url": "https://www.youtube.com/watch?v=Ap6UhCcHRC0",
       "published": "2026-05-14T18:00:04Z",
       "thumbnail": "https://i.ytimg.com/vi/Ap6UhCcHRC0/hqdefault.jpg",
@@ -651,16 +656,6 @@
       "published": "2026-05-12T14:01:17Z",
       "thumbnail": "https://i.ytimg.com/vi/uXOwgIf8HTU/hqdefault.jpg",
       "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "3xVaG8NS7Tk",
-      "title": "For more of #TheComeback official podcast, head to the link in bio to find more episodes.",
-      "url": "https://www.youtube.com/watch?v=3xVaG8NS7Tk",
-      "published": "2026-05-12T13:30:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/3xVaG8NS7Tk/hqdefault.jpg",
-      "channel": "HBO Max",
       "channel_tier": 1,
       "is_trailer": false
     }

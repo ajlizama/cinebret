@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-18T21:11:30.072Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-19T13:53:46.169Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
   "news_count": 0,
   "ig_mix": {
     "last6_counts": {
-      "review": 2,
+      "review": 3,
       "contenido": 1,
-      "top": 3
+      "top": 2
     },
     "target": {
       "review": 3,
@@ -17,7 +17,7 @@
       "top": 2
     },
     "deficits": {
-      "review": 1,
+      "review": 0,
       "contenido": 0,
       "top": 0
     }
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
+      "reasoning": "Óscar a mejor película, tu rating 10, sin review publicado; prioridad máxima.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida backlog: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (admired) + día 0 en backlog."
+      "critic_reason": "§4.5 review válida backlog: rating 10 + IMDb 8.5 + sello bret + director admirado (Bong Joon-ho) + plataforma activa; dedup con candidato tipo proposal del mismo id."
     },
     {
       "id": "119c0775fc431172",
@@ -49,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "IMDb 9.0 y cierre épico de la trilogía más importante de Alberto; sin review publicado.",
+      "reasoning": "Cierre épico de la trilogía de Jackson, tu rating 10, IMDb 9.0 y sin review.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado) + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + director muy respetado (Jackson) + plataforma activa sin review."
     },
     {
-      "id": "6276902b8705f60e",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois con tu rating 10; prioridad máxima sin review publicado.",
+      "title": "Review: Fight Club (1999)",
+      "reasoning": "Fincher en el olimpo, tu rating 10 absoluto, IMDb 8.8 y plataformas activas sin review.",
       "score": 95,
       "category": "review",
       "angle": "review",
@@ -77,20 +77,20 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director muy respetado (Dean DeBlois) + año 2025 boost + plataforma activa."
+      "critic_reason": "§4.5 review válida backlog: rating 10 + sello bret + director olimpo (Fincher) +15 + IMDb 8.8; sin review publicado."
     },
     {
-      "id": "077695b3c50aa1c2",
+      "id": "0c4dec7024505227",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 bandas sonoras que convirtieron una película buena en grande",
-      "reasoning": "Zimmer en Interstellar, Horner en Titanic: las OST que elevan todo al siguiente nivel. Kind=craft, fresco.",
-      "score": 84,
+      "title": "10 películas filmadas (casi) en una sola toma continua",
+      "reasoning": "1917, Birdman, Rope: el truco técnico que convierte cada plano en una apuesta total.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=craft/scoring no está en recent_top_kinds; ángulo narrativo sobre bandas sonoras que transforman películas — ancla fuerte en catálogo (Zimmer, Horner, Desplat)."
+      "critic_reason": "§instrucción creative slot: kinds a evitar [director,genre,theme,era,studio,mood]; propongo kind=craft (técnica narrativa) — ángulo fresco nunca explorado en el feed."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "787cebed76170ab8",
       "type": "FEED",
-      "priority": "alta",
+      "priority": "media",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas imprescindibles (con Miyazaki y más)",
-      "reasoning": "Miyazaki lidera pero Japón tiene más que animación; kind=country fresco para el feed.",
-      "score": 82,
+      "title": "TOP 10 películas británicas: de Nolan a Guy Ritchie",
+      "reasoning": "UK concentra varios de tus directores favoritos; kind=country fresco en el feed.",
+      "score": 74,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -117,9 +117,9 @@
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
         "topic_type": "country",
-        "topic": "japón"
+        "topic": "reino unido"
       },
-      "critic_reason": "§3 kind=country no está en recent_top_kinds; Japón tiene peso especial con Miyazaki y el cine asiático que Alberto admira."
+      "critic_reason": "§3 kind=country fresco, no está en recent_top_kinds; backlog válido con peso editorial fuerte (Nolan, Ritchie, Boyle)."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 12,
+      "days_ago": 13,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "STORY",
       "title": "Trailer: Christopher Nolan",
       "reasoning": "IndieWire (2h): \"New &#8216;The Odyssey&#8217; Trailer Lays Out the Epic Stakes for Matt Damon (and Shows Off Some Ne\". Director favorito: Christopher Nolan.",
-      "days_ago": 13,
+      "days_ago": 14,
       "skill_to_invoke": "cinebret-share-story"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 0,
+      "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-list-from-news"
     },
     {
@@ -184,27 +184,27 @@
       "type": "FEED",
       "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
       "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 90,
+    "newsapi_items": 98,
     "reddit_posts": 0,
     "trailers": 58
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 1,
     "expiredByTime": 0,
     "expiredByCritic": 1
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15978,
-    "output": 9803
+    "input": 15204,
+    "output": 11202
   }
 }

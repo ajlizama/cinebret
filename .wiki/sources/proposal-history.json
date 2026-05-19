@@ -303,8 +303,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-06T12:25:45.639Z",
-      "last_proposed": "2026-05-06T12:25:45.639Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-19T13:53:46.169Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -514,8 +514,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-18T21:11:30.072Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-19T13:53:46.169Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1459,8 +1459,8 @@
         "topic": "reino unido"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-17T20:49:19.561Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-19T13:53:46.169Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1507,13 +1507,39 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-18T21:11:30.072Z",
-      "last_proposed": "2026-05-18T21:11:30.072Z",
+      "first_proposed": "2026-05-19T13:53:46.169Z",
+      "last_proposed": "2026-05-19T13:53:46.169Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-19T13:53:46.169Z",
+      "expired_at": "2026-05-19T13:53:46.169Z",
+      "expired_reason": "§5.3 dedup: duplicado exacto de 6134534c62ee6a31 (Parásito 2019, misma película, mismo action); el id original ya está propuesto con score 97."
+    },
+    {
+      "id": "080b5658325e2dfe",
+      "action": "generate_carousel_topic",
+      "title": "10 películas filmadas (casi) en una sola toma continua",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "1917, Birdman, Rope: el truco técnico que convierte cada plano en una apuesta total.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-19T13:53:46.169Z",
+      "last_proposed": "2026-05-19T13:53:46.169Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-18T21:14:51.360Z"
+  "last_saved": "2026-05-19T13:57:07.332Z"
 }

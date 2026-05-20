@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-20T13:36:31.578Z",
-  "cycle": "am",
+  "generated_at": "2026-05-20T21:51:55.698Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 0,
+  "news_count": 3,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "El live action de DeBlois sobre tu película favorita de animación, disponible ahora en streaming.",
+      "reasoning": "Dean DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,27 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Director DeBlois (muy respetado, 4 sello bret) + año 2025 + plataforma activa; no está en historial IG reciente."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + plataforma activa + año 2025 boost."
+    },
+    {
+      "id": "6134534c62ee6a31",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: Parásito (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review en el feed.",
+      "score": 97,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "critic_reason": "§backlog re-evaluado: rating 10 + Bong Joon-ho + IMDb 8.5 + sello bret; sigue siendo prioridad máxima (2 días)."
     },
     {
       "id": "119c0775fc431172",
@@ -49,7 +69,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson: 11 Óscars y la trilogía que lo cambió todo.",
+      "reasoning": "El cierre épico de Jackson tiene IMDb 9.0 y tu rating 10; falta su review en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,35 +81,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa; no publicada en IG reciente."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 boost + plataforma activa."
     },
     {
-      "id": "86cd64c42c4ddc8b",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: Fight Club (1999)",
-      "reasoning": "Fincher y Pitt en el thriller que redefinió la transgresión narrativa en los 90s.",
-      "score": 96,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
-      },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + David Fincher (olimpo) + IMDb 8.8 + plataforma activa; no publicada IG reciente."
-    },
-    {
-      "id": "568d85a10570f693",
+      "id": "9790ebae315db2bc",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
-      "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
+      "title": "10 películas filmadas (casi) en una sola toma — y cómo lo lograron",
+      "reasoning": "1917, Birdman, Rope: el truco técnico que convierte cada plano en una apuesta total.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,15 +100,15 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=craft/technique no usado recientemente; idea fresca sobre el poder de los actores secundarios en la historia del cine."
+      "critic_reason": "§instrucción-creativo: slot abierto con idea fresca kind=craft (técnica narrativa), no usada en los 14d; ángulo cinéfilo específico que Alberto ama."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "787cebed76170ab8",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas imprescindibles (Miyazaki y más)",
-      "reasoning": "Miyazaki, Kurosawa y el cine japonés que más respeta Alberto: un país que reinventó el cine.",
+      "title": "TOP 10 películas británicas: de Nolan a Guy Ritchie",
+      "reasoning": "El cine del Reino Unido concentra a varios de tus directores favoritos del olimpo.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -117,12 +117,20 @@
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
         "topic_type": "country",
-        "topic": "japón"
+        "topic": "reino unido"
       },
-      "critic_reason": "§3 kind=country no está en recent_top_kinds; Miyazaki y el cine japonés tienen peso fuerte en catálogo."
+      "critic_reason": "§3 kind=country no está en recent_top_kinds; UK tiene a Nolan, Fincher, Guy Ritchie: match fuerte al olimpo."
     }
   ],
   "backlog": [
+    {
+      "id": "86cd64c42c4ddc8b",
+      "type": "FEED",
+      "title": "Review: Fight Club (1999)",
+      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
+      "days_ago": 0,
+      "skill_to_invoke": "cinebret-review"
+    },
     {
       "id": "96f13eee305fe1c4",
       "type": "FEED",
@@ -178,17 +186,55 @@
       "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
       "days_ago": 6,
       "skill_to_invoke": "cinebret-list-from-news"
-    },
-    {
-      "id": "ad96cb2e590a873b",
-      "type": "FEED",
-      "title": "TOP 10 finales que te dejan con la boca abierta",
-      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
-      "days_ago": 12,
-      "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
-  "news": [],
+  "news": [
+    {
+      "title_es": "The Mandalorian y Grogu apunta a $80M en su debut en taquilla",
+      "summary_es": "El primer Star Wars post-Favreau en cines se perfila como gran estreno familiar para 2026.",
+      "source": "Hollywood Reporter",
+      "age_hours": 0,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/star-wars-the-mandalorian-and-grogu-box-office-1236601814/",
+      "angle": null,
+      "catalog_match": {
+        "pelicula_id": "7dc2aed7-e432-4cb2-83f1-c697947636a4",
+        "titulo": "Star Wars: The Mandalorian and Grogu",
+        "anio": 2026
+      },
+      "score": 60,
+      "reason": "§4.3 Star Wars es franquicia del catálogo pero el match es una película 2026 aún sin calidad verificada; informativo relevante para Alberto."
+    },
+    {
+      "title_es": "Damon Lindelof revela por qué lo despidieron de su película de Star Wars",
+      "summary_es": "El creador de 'Lost' detalla la historia detrás del proyecto que no fue; curioso para fans de la franquicia.",
+      "source": "Variety",
+      "age_hours": 1,
+      "url": "https://variety.com/2026/film/news/star-wars-damon-lindelof-fired-movie-nostalgia-1236755369/",
+      "angle": null,
+      "catalog_match": {
+        "pelicula_id": "a6543a0d-56ef-4b7d-9c0f-fd1fb05e76da",
+        "titulo": "Watchmen",
+        "anio": 2009
+      },
+      "score": 55,
+      "reason": "§4.3 match débil a 'Watchmen' (2009) como contexto; la historia sobre Lindelof y Star Wars es informativa para Alberto pero no accionable."
+    },
+    {
+      "title_es": "Talladega Nights cumple 20 años: trailer del aniversario de la comedia de Will Ferrell",
+      "summary_es": "Sony lanzó trailer oficial por los 20 años; match al catálogo pero sin calidad suficiente para propuesta.",
+      "source": "Sony Pictures",
+      "age_hours": 5,
+      "url": "https://www.youtube.com/watch?v=A0fgugC7ZCo",
+      "angle": "anniversary",
+      "catalog_match": {
+        "pelicula_id": "73ce8d6b-2425-4ed9-b586-7a3a150f6f4d",
+        "titulo": "Pasado de vueltas",
+        "anio": 2006
+      },
+      "score": 45,
+      "reason": "§4.2 match al catálogo con 'Pasado de vueltas' (2006); aniversario 20 años es ángulo válido pero la peli no tiene rating ≥7 ni sello bret verificado para propose."
+    }
+  ],
   "raw_signal_counts": {
     "news_items": 115,
     "newsapi_items": 88,
@@ -198,13 +244,13 @@
   "reconciliation_stats": {
     "acceptedCount": 0,
     "agedCount": 3,
-    "expiredByTime": 2,
+    "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15523,
-    "output": 11776
+    "input": 16263,
+    "output": 12446
   }
 }

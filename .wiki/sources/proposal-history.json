@@ -307,10 +307,10 @@
       "first_proposed": "2026-05-20T13:36:31.578Z",
       "last_proposed": "2026-05-20T13:36:31.578Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z",
+      "became_backlog_at": "2026-05-20T21:51:55.698Z",
       "expired_at": "2026-05-20T13:36:31.578Z"
     },
     {
@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-20T13:36:31.578Z",
-      "cycles_proposed": 5,
+      "last_proposed": "2026-05-20T21:51:55.698Z",
+      "cycles_proposed": 6,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -904,8 +904,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-20T13:36:31.578Z",
-      "cycles_proposed": 5,
+      "last_proposed": "2026-05-20T21:51:55.698Z",
+      "cycles_proposed": 6,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1463,8 +1463,8 @@
         "topic": "reino unido"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-19T13:53:46.169Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-20T21:51:55.698Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1512,8 +1512,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-19T21:18:39.819Z",
-      "last_proposed": "2026-05-19T21:18:39.819Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-20T21:51:55.698Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1612,9 +1612,10 @@
       "first_proposed": "2026-05-20T13:36:31.578Z",
       "last_proposed": "2026-05-20T13:36:31.578Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-20T21:51:55.698Z"
     },
     {
       "id": "5711a048811f755a",
@@ -1635,10 +1636,34 @@
       "first_proposed": "2026-05-20T13:36:31.578Z",
       "last_proposed": "2026-05-20T13:36:31.578Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-20T21:51:55.698Z"
+    },
+    {
+      "id": "e765c77c5a65e016",
+      "action": "generate_carousel_topic",
+      "title": "10 películas filmadas (casi) en una sola toma — y cómo lo lograron",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "1917, Birdman, Rope: el truco técnico que convierte cada plano en una apuesta total.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-20T21:51:55.698Z",
+      "last_proposed": "2026-05-20T21:51:55.698Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-20T13:40:27.651Z"
+  "last_saved": "2026-05-20T21:55:50.541Z"
 }

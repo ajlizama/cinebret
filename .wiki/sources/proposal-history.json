@@ -304,13 +304,14 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "first_proposed": "2026-05-06T12:25:45.639Z",
-      "last_proposed": "2026-05-19T21:18:39.819Z",
-      "cycles_proposed": 3,
-      "status": "backlog",
+      "first_proposed": "2026-05-20T13:36:31.578Z",
+      "last_proposed": "2026-05-20T13:36:31.578Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+      "became_backlog_at": "2026-05-06T21:09:49.676Z",
+      "expired_at": "2026-05-20T13:36:31.578Z"
     },
     {
       "id": "642db2ce3ffde83d",
@@ -412,10 +413,11 @@
       "first_proposed": "2026-05-06T12:25:45.639Z",
       "last_proposed": "2026-05-06T12:25:45.639Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-06T21:09:49.676Z"
+      "became_backlog_at": "2026-05-06T21:09:49.676Z",
+      "expired_at": "2026-05-20T13:36:31.578Z"
     },
     {
       "id": "3be713053fb84c1a",
@@ -516,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-19T13:53:46.169Z",
-      "cycles_proposed": 4,
+      "last_proposed": "2026-05-20T13:36:31.578Z",
+      "cycles_proposed": 5,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -902,8 +904,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-19T21:18:39.819Z",
-      "cycles_proposed": 4,
+      "last_proposed": "2026-05-20T13:36:31.578Z",
+      "cycles_proposed": 5,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1512,10 +1514,10 @@
       "first_proposed": "2026-05-19T21:18:39.819Z",
       "last_proposed": "2026-05-19T21:18:39.819Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-19T21:18:39.819Z",
+      "became_backlog_at": "2026-05-20T13:36:31.578Z",
       "expired_at": "2026-05-19T21:18:39.819Z",
       "expired_reason": "§5 dedup: duplicado exacto con id 6134534c62ee6a31 (Parásito 2019, Bong Joon-ho); mismo candidato con distinto id; se mantiene el de mayor score."
     },
@@ -1562,9 +1564,10 @@
       "first_proposed": "2026-05-19T21:18:39.819Z",
       "last_proposed": "2026-05-19T21:18:39.819Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-20T13:36:31.578Z"
     },
     {
       "id": "cb80a5bc8f1cd3eb",
@@ -1585,10 +1588,57 @@
       "first_proposed": "2026-05-19T21:18:39.819Z",
       "last_proposed": "2026-05-19T21:18:39.819Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-20T13:36:31.578Z"
+    },
+    {
+      "id": "7e36148fa29bda49",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-20T13:36:31.578Z",
+      "last_proposed": "2026-05-20T13:36:31.578Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "5711a048811f755a",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas japonesas imprescindibles (Miyazaki y más)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Miyazaki, Kurosawa y el cine japonés que más respeta Alberto: un país que reinventó el cine.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "japón"
+      },
+      "first_proposed": "2026-05-20T13:36:31.578Z",
+      "last_proposed": "2026-05-20T13:36:31.578Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-19T21:22:09.331Z"
+  "last_saved": "2026-05-20T13:40:27.651Z"
 }

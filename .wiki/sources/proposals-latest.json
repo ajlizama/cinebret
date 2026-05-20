@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-19T21:18:39.819Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-20T13:36:31.578Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 0,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois ya disponible; tu rating 10 la convierte en prioridad máxima.",
+      "reasoning": "El live action de DeBlois sobre tu película favorita de animación, disponible ahora en streaming.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,27 +41,27 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + año 2025 + plataforma activa; sin review previo en historial IG."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Director DeBlois (muy respetado, 4 sello bret) + año 2025 + plataforma activa; no está en historial IG reciente."
     },
     {
-      "id": "6134534c62ee6a31",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a Mejor Película; una de tus 38 sagradas sin review publicado.",
-      "score": 96,
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson: 11 Óscars y la trilogía que lo cambió todo.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Parasite",
-        "anio": 2019,
-        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§5 backlog válido (1 día); rating 10 + Bong Joon-ho + IMDb 8.5; duplicado con proposal principal pero backlog se mantiene activo."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa; no publicada en IG reciente."
     },
     {
       "id": "86cd64c42c4ddc8b",
@@ -69,8 +69,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Fight Club (1999)",
-      "reasoning": "Fincher en estado puro; tu rating 10 y el twist más icónico de los 90s.",
-      "score": 94,
+      "reasoning": "Fincher y Pitt en el thriller que redefinió la transgresión narrativa en los 90s.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -81,15 +81,15 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 backlog re-evaluado: rating 10 + sello bret + David Fincher (Olimpo) + plataforma activa; sigue válido, no expirado."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + David Fincher (olimpo) + IMDb 8.8 + plataforma activa; no publicada IG reciente."
     },
     {
-      "id": "15c5c4bbaf0374ef",
+      "id": "568d85a10570f693",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10: Los países que cambiaron el cine para siempre",
-      "reasoning": "Francia, Corea, Italia, Japón — cada país con una película que reescribió las reglas del cine.",
+      "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
+      "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§slot creativo: kind=country es fresco; propongo TOP 10 países que cambiaron el cine — ángulo narrativo único que cruza geografía con impacto cultural, evitando todos los recent_top_kinds."
+      "critic_reason": "Slot creativo: kind=craft/technique no usado recientemente; idea fresca sobre el poder de los actores secundarios en la historia del cine."
     },
     {
-      "id": "fecc4d46aebb463c",
+      "id": "fe5875c8c649d23e",
       "type": "FEED",
-      "priority": "media",
+      "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas francesas imprescindibles",
-      "reasoning": "El cine francés tiene joyas en tu catálogo; kind=country fresco para el feed.",
-      "score": 78,
+      "title": "TOP 10 películas japonesas imprescindibles (Miyazaki y más)",
+      "reasoning": "Miyazaki, Kurosawa y el cine japonés que más respeta Alberto: un país que reinventó el cine.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -117,32 +117,32 @@
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
         "topic_type": "country",
-        "topic": "francia"
+        "topic": "japón"
       },
-      "critic_reason": "§3 déficit cero pero patrón sigue con top; kind=country no está en recent_top_kinds; Francia tiene peso en catálogo (Amélie, etc.)."
+      "critic_reason": "§3 kind=country no está en recent_top_kinds; Miyazaki y el cine japonés tienen peso fuerte en catálogo."
     }
   ],
   "backlog": [
-    {
-      "id": "86cd64c42c4ddc8b",
-      "type": "FEED",
-      "title": "Review: Fight Club (1999)",
-      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 13,
-      "skill_to_invoke": "cinebret-review"
-    },
     {
       "id": "96f13eee305fe1c4",
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "title": "Review: Parasite (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
+      "days_ago": 2,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "a6131cf3e9710217",
+      "type": "FEED",
+      "title": "Review: Parásito (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
       "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-list-from-news"
     },
     {
@@ -176,73 +176,35 @@
       "type": "FEED",
       "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
       "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-list-from-news"
     },
     {
-      "id": "c98f2cae36b16b75",
+      "id": "ad96cb2e590a873b",
       "type": "FEED",
-      "title": "Noticia: Terminator",
-      "reasoning": "r/movies (13h): \"Terminator 2: Judgment Day (1991) - Hospital Escape - Dir. James Cameron\". Match catálogo: Terminator (rating 9).",
-      "days_ago": 13,
-      "skill_to_invoke": "cinebret-list-from-news"
+      "title": "TOP 10 finales que te dejan con la boca abierta",
+      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
+      "days_ago": 12,
+      "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
-  "news": [
-    {
-      "title_es": "Cannes 2026: 'Amarga Navidad' de Almodóvar recibe 9 minutos de ovación",
-      "summary_es": "Almodóvar regresa al español en Cannes; ovación de 9 minutos marca el evento del festival.",
-      "source": "Deadline",
-      "age_hours": 2,
-      "url": "https://deadline.com/2026/05/pedro-almodovar-bitter-christmas-cannes-ovation-1236915741/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 58,
-      "reason": "§4.4 regla 3: Cannes 2026 en curso; Almodóvar relevante como figura de autor aunque no en listas; 9 minutos de ovación es dato notable."
-    },
-    {
-      "title_es": "Almodóvar triunfa en Cannes: 'Bitter Christmas' recibe ovación en premiere",
-      "summary_es": "Almodóvar vuelve al español tras ganar Venecia; Cannes 2026 está en curso.",
-      "source": "Hollywood Reporter",
-      "age_hours": 1,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/pedro-almodovar-bitter-christmas-cannes-premiere-1236601144/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4 regla 3: Almodóvar no está en listas de directores favoritos pero es figura relevante de Cannes 2026 en curso; ángulo informativo sin propuesta accionable directa."
-    },
-    {
-      "title_es": "Mattel explica por qué eligió Masters of the Universo tras el éxito de Barbie",
-      "summary_es": "He-Man 2026 tiene premiere; contexto de por qué Mattel apostó fuerte en esta IP tras Barbie.",
-      "source": "The Wrap",
-      "age_hours": 1,
-      "url": "https://www.thewrap.com/creative-content/movies/masters-of-the-universe-premiere-mattel-he-man-interviews/",
-      "angle": "trailer-drop",
-      "catalog_match": {
-        "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
-        "titulo": "He-Man y los masters del universo",
-        "anio": 2026
-      },
-      "score": 52,
-      "reason": "§4.4 regla 3: 'Masters of the Universe' matchea catálogo (He-Man 2026) con ángulo de estreno/premiere; informativo pero no accionable como post."
-    }
-  ],
+  "news": [],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 98,
+    "newsapi_items": 88,
     "reddit_posts": 0,
-    "trailers": 60
+    "trailers": 59
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 3,
     "expiredByTime": 2,
-    "expiredByCritic": 1
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15517,
-    "output": 11823
+    "input": 15523,
+    "output": 11776
   }
 }

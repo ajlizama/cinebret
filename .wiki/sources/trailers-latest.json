@@ -1,9 +1,164 @@
 {
-  "generated_at": "2026-05-19T21:18:39.729Z",
-  "total_videos": 60,
-  "trailers_count": 11,
-  "matched_to_cinebret": 14,
+  "generated_at": "2026-05-20T13:35:39.926Z",
+  "total_videos": 59,
+  "trailers_count": 10,
+  "matched_to_cinebret": 10,
   "videos": [
+    {
+      "video_id": "BP4tm_BcTCw",
+      "title": "Romestead Lets You Play the Supernatural Fall and Rise of Rome | IGN Preview",
+      "url": "https://www.youtube.com/watch?v=BP4tm_BcTCw",
+      "published": "2026-05-20T13:00:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/BP4tm_BcTCw/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ii1gTLxWukk",
+      "title": "The Death of Robin Hood | Official First Look | A24",
+      "url": "https://www.youtube.com/watch?v=ii1gTLxWukk",
+      "published": "2026-05-20T13:00:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/ii1gTLxWukk/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "a3566360-53c4-48a6-9441-27d4d08d7f6f",
+        "titulo": "La muerte de Robin Hood",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "D2Y-KW4Q7iw",
+      "title": "AVATAR: THE LAST AIRBENDER S2 TRAILER TOMORROW💥🪨 #Netflix #Shorts #AvatarTheLastAirbender",
+      "url": "https://www.youtube.com/watch?v=D2Y-KW4Q7iw",
+      "published": "2026-05-20T13:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/D2Y-KW4Q7iw/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "IQrJPP9cEHQ",
+      "title": "One Hundred Years of Solitude: Part Two | Official Teaser | Netflix",
+      "url": "https://www.youtube.com/watch?v=IQrJPP9cEHQ",
+      "published": "2026-05-20T12:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/IQrJPP9cEHQ/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "84YUb2g-PEU",
+      "title": "Clive Barker's Hellraiser: Revival - Official Genesis Configuration Trailer",
+      "url": "https://www.youtube.com/watch?v=84YUb2g-PEU",
+      "published": "2026-05-20T12:23:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/84YUb2g-PEU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "bWtrFcerKE0",
+      "title": "Little Brother | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=bWtrFcerKE0",
+      "published": "2026-05-20T12:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/bWtrFcerKE0/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "0LPRIIWFSIs",
+      "title": "#JoshO’Connor, you’re not made for human eyes 💙 | MUBI",
+      "url": "https://www.youtube.com/watch?v=0LPRIIWFSIs",
+      "published": "2026-05-20T11:00:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/0LPRIIWFSIs/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "fzW61JgRbNk",
+      "title": "Maternal Instinct | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=fzW61JgRbNk",
+      "published": "2026-05-20T11:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/fzW61JgRbNk/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "NinOvK8zp-8",
+      "title": "The fish killing debate of Subnautica 2",
+      "url": "https://www.youtube.com/watch?v=NinOvK8zp-8",
+      "published": "2026-05-20T02:02:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/NinOvK8zp-8/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "t10N3qW4B1Y",
+      "title": "Which Batsuit ISN'T in LEGO Batman??",
+      "url": "https://www.youtube.com/watch?v=t10N3qW4B1Y",
+      "published": "2026-05-20T02:01:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/t10N3qW4B1Y/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ALsjYiB5I78",
+      "title": "Black and white is the best way to watch Spider-Noir",
+      "url": "https://www.youtube.com/watch?v=ALsjYiB5I78",
+      "published": "2026-05-20T02:00:37Z",
+      "thumbnail": "https://i.ytimg.com/vi/ALsjYiB5I78/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "fgLhfIC6rBA",
+      "title": "Time to lock in. The season finale of #MargosGotMoneyTroubles is now streaming.",
+      "url": "https://www.youtube.com/watch?v=fgLhfIC6rBA",
+      "published": "2026-05-20T01:59:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/fgLhfIC6rBA/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "9-MZXdAWLv0",
+      "title": "She saw something she can’t unsee. #MaximumPleasureGuaranteed — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=9-MZXdAWLv0",
+      "published": "2026-05-20T00:59:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/9-MZXdAWLv0/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "zJeMNsrvTt4",
+      "title": "For All Mankind — Asteroid Escape | Season 5 Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=zJeMNsrvTt4",
+      "published": "2026-05-19T22:59:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/zJeMNsrvTt4/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "OxN7AbAA-Y0",
+      "title": "Secrecy, surveillance, #StarCity. A new series from the creators of For All Mankind premieres May 29",
+      "url": "https://www.youtube.com/watch?v=OxN7AbAA-Y0",
+      "published": "2026-05-19T21:59:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/OxN7AbAA-Y0/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "2vUTbKiA5MQ",
       "title": "Like Grandpa, Like Father, Like Son... | The Boys Season 4 | Prime Video",
@@ -55,16 +210,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "TYJ_Ezb27Ww",
-      "title": "Capcom Has It All Figured Out - Game Scoop! Clip",
-      "url": "https://www.youtube.com/watch?v=TYJ_Ezb27Ww",
-      "published": "2026-05-19T18:24:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/TYJ_Ezb27Ww/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "wPDR7vjE4yY",
       "title": "Passenger | Tire Jack Scene (2026 Movie) – André Øvredal, Jacob Scipio, Lou Llobell",
       "url": "https://www.youtube.com/watch?v=wPDR7vjE4yY",
@@ -78,16 +223,6 @@
         "titulo": "El pasajero nocturno",
         "anio": 2026
       }
-    },
-    {
-      "video_id": "XhGa4dH1Q-o",
-      "title": "Ironfront Express - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=XhGa4dH1Q-o",
-      "published": "2026-05-19T18:16:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/XhGa4dH1Q-o/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "kv5SDLpHg3o",
@@ -130,36 +265,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "mIQhYhcjKU8",
-      "title": "Spider-Noir - Official Authentic Black & White Final Trailer (2026) Nicolas Cage, Lamorne Morris",
-      "url": "https://www.youtube.com/watch?v=mIQhYhcjKU8",
-      "published": "2026-05-19T17:21:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/mIQhYhcjKU8/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "A9CWNkXXbjQ",
-      "title": "Spider-Noir - Official True-Hue Full Color Final Trailer (2026) Nicolas Cage, Li Jun Li",
-      "url": "https://www.youtube.com/watch?v=A9CWNkXXbjQ",
-      "published": "2026-05-19T17:14:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/A9CWNkXXbjQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "s_BbPPNYfXc",
-      "title": "Fallout Season 2 is available now on 4K Ultra HD, Blu-ray, and DVD. Presented by @Fallout",
-      "url": "https://www.youtube.com/watch?v=s_BbPPNYfXc",
-      "published": "2026-05-19T17:11:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/s_BbPPNYfXc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "ln6QqZA1YSM",
       "title": "TOWANDA! | 🎬 Fried Green Tomatoes (1991)",
       "url": "https://www.youtube.com/watch?v=ln6QqZA1YSM",
@@ -171,18 +276,13 @@
     },
     {
       "video_id": "dnVvVBNwqbo",
-      "title": "Top-Secret Meeting Takes Deadly Turn | Jack Ryan: Ghost War | Clip | Prime Video",
+      "title": "Jack Ryan: Ghost War - Sneak Peek | Prime Video",
       "url": "https://www.youtube.com/watch?v=dnVvVBNwqbo",
       "published": "2026-05-19T17:00:52Z",
       "thumbnail": "https://i.ytimg.com/vi/dnVvVBNwqbo/hqdefault.jpg",
       "channel": "Prime Video",
       "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "d09bf25f-11ed-40f6-b8c7-62f58084fd90",
-        "titulo": "Top Secret!",
-        "anio": 1984
-      }
+      "is_trailer": false
     },
     {
       "video_id": "VGzqkAB_-hQ",
@@ -201,16 +301,6 @@
       "published": "2026-05-19T16:59:32Z",
       "thumbnail": "https://i.ytimg.com/vi/wEecc5JvWbs/hqdefault.jpg",
       "channel": "HBO Max",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "9mi3YVYm3ZU",
-      "title": "Voicemails for Isabelle | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=9mi3YVYm3ZU",
-      "published": "2026-05-19T16:10:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/9mi3YVYm3ZU/hqdefault.jpg",
-      "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": true
     },
@@ -280,16 +370,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "tQ31ScZSYFQ",
-      "title": "Rafa | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=tQ31ScZSYFQ",
-      "published": "2026-05-19T15:00:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/tQ31ScZSYFQ/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "Z2vvM8hPgfg",
       "title": "David Lowery & Anne Hathaway | The A24 Podcast",
       "url": "https://www.youtube.com/watch?v=Z2vvM8hPgfg",
@@ -345,21 +425,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "L-PhyCXLRn0",
-      "title": "Rhythm of the night, faces of death. #WidowsBay — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=L-PhyCXLRn0",
-      "published": "2026-05-18T17:59:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/L-PhyCXLRn0/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "6a5d07e3-8f60-4b2d-bf94-2530a7b4767e",
-        "titulo": "Faces of Death",
-        "anio": 2026
-      }
-    },
-    {
       "video_id": "Fn6bk3cz7MI",
       "title": "As #Cannes2026 unfolds, look back at last year's Jury Prize winner: #SIRÂT.  | MUBI",
       "url": "https://www.youtube.com/watch?v=Fn6bk3cz7MI",
@@ -405,26 +470,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "_EfmpzqDFQA",
-      "title": "MY UNDESIRABLE FRIENDS | In Conversation with the director & protagonists | Now Streaming",
-      "url": "https://www.youtube.com/watch?v=_EfmpzqDFQA",
-      "published": "2026-05-18T15:50:11Z",
-      "thumbnail": "https://i.ytimg.com/vi/_EfmpzqDFQA/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "5C8yGUQ7gww",
-      "title": "Welcome to The Boroughs | Netflix",
-      "url": "https://www.youtube.com/watch?v=5C8yGUQ7gww",
-      "published": "2026-05-18T15:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/5C8yGUQ7gww/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "xuk385UM5v8",
       "title": "Champions | The First Team Road-Trip",
       "url": "https://www.youtube.com/watch?v=xuk385UM5v8",
@@ -460,16 +505,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "BVgAS9bkfCg",
-      "title": "RONDA ROUSEY DEFEATS GINA CARANO VIA ARMBAR SUBMISSION IN ROUND ONE #RouseyCarano",
-      "url": "https://www.youtube.com/watch?v=BVgAS9bkfCg",
-      "published": "2026-05-17T04:35:06Z",
-      "thumbnail": "https://i.ytimg.com/vi/BVgAS9bkfCg/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "Ljn-wZ-uJx4",
       "title": "Timecop 2 | Ryan Chan Fights Brandon Miller to Save the Timeline",
       "url": "https://www.youtube.com/watch?v=Ljn-wZ-uJx4",
@@ -493,16 +528,6 @@
         "titulo": "Napoleón",
         "anio": 2023
       }
-    },
-    {
-      "video_id": "hvkhaZFQVaI",
-      "title": "One full year of avoiding eye-contact. #Murderbot",
-      "url": "https://www.youtube.com/watch?v=hvkhaZFQVaI",
-      "published": "2026-05-16T16:59:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/hvkhaZFQVaI/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "j4k7nTD_-8Q",
@@ -530,16 +555,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "I2q0LVnkryY",
-      "title": "Nothing is off limits. Star City premieres May 29 on Apple TV. #StarCity",
-      "url": "https://www.youtube.com/watch?v=I2q0LVnkryY",
-      "published": "2026-05-15T19:59:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/I2q0LVnkryY/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "uY-IyDIQI0E",
       "title": "SOME 🚪💥 BODY | 🎬 Shrek (2001)",
       "url": "https://www.youtube.com/watch?v=uY-IyDIQI0E",
@@ -548,21 +563,6 @@
       "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "WyJleaP-K48",
-      "title": "Maximum Pleasure Guaranteed — Official Teaser \"Maximum Chaos\" | Apple TV",
-      "url": "https://www.youtube.com/watch?v=WyJleaP-K48",
-      "published": "2026-05-15T18:59:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/WyJleaP-K48/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "3762efff-79eb-40db-9910-5215e4ed120c",
-        "titulo": "Pleasure",
-        "anio": 2021
-      }
     },
     {
       "video_id": "1-lZrCQjF_k",
@@ -643,36 +643,6 @@
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "2z6a6NUFlsU",
-      "title": "Backrooms | Official Promo | A24",
-      "url": "https://www.youtube.com/watch?v=2z6a6NUFlsU",
-      "published": "2026-05-13T13:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/2z6a6NUFlsU/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "jGnhVhBuu74",
-      "title": "Instupendo | Live From The Backrooms",
-      "url": "https://www.youtube.com/watch?v=jGnhVhBuu74",
-      "published": "2026-05-13T05:07:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/jGnhVhBuu74/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      }
     }
   ]
 }

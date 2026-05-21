@@ -1,33 +1,133 @@
 {
-  "generated_at": "2026-05-20T21:51:55.616Z",
-  "total_videos": 59,
-  "trailers_count": 11,
-  "matched_to_cinebret": 16,
+  "generated_at": "2026-05-21T14:02:22.764Z",
+  "total_videos": 58,
+  "trailers_count": 9,
+  "matched_to_cinebret": 14,
   "videos": [
     {
-      "video_id": "KSJIyFzwsiA",
-      "title": "Open-World Lord of the Rings RPG Announced by Kingdom Come: Deliverance Developer - IGN Daily Fix",
-      "url": "https://www.youtube.com/watch?v=KSJIyFzwsiA",
-      "published": "2026-05-20T21:39:13Z",
-      "thumbnail": "https://i.ytimg.com/vi/KSJIyFzwsiA/hqdefault.jpg",
+      "video_id": "_nyTvY5EEVE",
+      "title": "Lego Batman: Legacy of the Dark Knight - 10 Things to Do FIRST",
+      "url": "https://www.youtube.com/watch?v=_nyTvY5EEVE",
+      "published": "2026-05-21T14:00:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/_nyTvY5EEVE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
+        "titulo": "El caballero oscuro",
+        "anio": 2008
+      }
+    },
+    {
+      "video_id": "i6KgoDV8sKw",
+      "title": "TEKKEN 8 - Kunimitsu Early Look and Starter Guide",
+      "url": "https://www.youtube.com/watch?v=i6KgoDV8sKw",
+      "published": "2026-05-21T14:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/i6KgoDV8sKw/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },
     {
-      "video_id": "abKyfYqAZYs",
-      "title": "Masters of the Universe - Official Final Trailer (2026) Nicholas Galitzine, Jared Leto",
-      "url": "https://www.youtube.com/watch?v=abKyfYqAZYs",
-      "published": "2026-05-20T21:30:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/abKyfYqAZYs/hqdefault.jpg",
+      "video_id": "Uk4t1wPYEnk",
+      "title": "Terror: Endless Night – Official Cinematic Trailer",
+      "url": "https://www.youtube.com/watch?v=Uk4t1wPYEnk",
+      "published": "2026-05-21T14:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/Uk4t1wPYEnk/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
-        "titulo": "He-Man y los masters del universo",
-        "anio": 2026
-      }
+      "is_trailer": true
+    },
+    {
+      "video_id": "5L6jIlhSCOk",
+      "title": "Petit Planet: Where Animal Crossing and Outer Space Meet",
+      "url": "https://www.youtube.com/watch?v=5L6jIlhSCOk",
+      "published": "2026-05-21T13:30:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/5L6jIlhSCOk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "27fKoZqmdiA",
+      "title": "What Studio Closure Bummed You Out The Most? - Beyond Clips",
+      "url": "https://www.youtube.com/watch?v=27fKoZqmdiA",
+      "published": "2026-05-21T13:00:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/27fKoZqmdiA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "M_Las484swM",
+      "title": "Avatar: The Last Airbender: Season 2 | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=M_Las484swM",
+      "published": "2026-05-21T13:00:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/M_Las484swM/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "PJtfS84s8Bs",
+      "title": "Avatar: The Last Airbender: Season 2 | Audio Described Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=PJtfS84s8Bs",
+      "published": "2026-05-21T13:00:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/PJtfS84s8Bs/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "FOMyUc-dK18",
+      "title": "Something's not right. #WidowsBay — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=FOMyUc-dK18",
+      "published": "2026-05-20T23:59:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/FOMyUc-dK18/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "j1ya6CIdzBY",
+      "title": "Who's with him? | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=j1ya6CIdzBY",
+      "published": "2026-05-20T23:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/j1ya6CIdzBY/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "ozCMvTyjcOQ",
+      "title": "Quite the morning for mom. #MaximumPleasureGuaranteed — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=ozCMvTyjcOQ",
+      "published": "2026-05-20T22:59:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/ozCMvTyjcOQ/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "nWVGqvlz_OM",
+      "title": "Tom Clancy's Jack Ryan: Ghost War | Action Featurette | Prime Video",
+      "url": "https://www.youtube.com/watch?v=nWVGqvlz_OM",
+      "published": "2026-05-20T22:34:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/nWVGqvlz_OM/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "3G4VyDarKUk",
+      "title": "Frog and Toad — Too Many Cookies | Season 1 Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=3G4VyDarKUk",
+      "published": "2026-05-20T22:02:44Z",
+      "thumbnail": "https://i.ytimg.com/vi/3G4VyDarKUk/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
     },
     {
       "video_id": "0X4QjgHAM4I",
@@ -62,21 +162,6 @@
         "pelicula_id": "e77bc287-f2f9-496e-8f6b-2274eddf7cc3",
         "titulo": "Última noche en el Soho",
         "anio": 2021
-      }
-    },
-    {
-      "video_id": "MIDL-j2JDWs",
-      "title": "Lego Batman: Legacy of the Dark Knight - First 23 Minutes of Gameplay",
-      "url": "https://www.youtube.com/watch?v=MIDL-j2JDWs",
-      "published": "2026-05-20T20:24:11Z",
-      "thumbnail": "https://i.ytimg.com/vi/MIDL-j2JDWs/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
       }
     },
     {
@@ -145,16 +230,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "g2sM8gFVtzY",
-      "title": "Stranger Than Heaven - Official Story Overview Trailer",
-      "url": "https://www.youtube.com/watch?v=g2sM8gFVtzY",
-      "published": "2026-05-20T18:05:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/g2sM8gFVtzY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "qPGL5IEne48",
       "title": "Teddy Sanders: Sorority mentor | 🎬 Neighbors 2: Sorority Rising (2016)",
       "url": "https://www.youtube.com/watch?v=qPGL5IEne48",
@@ -167,21 +242,6 @@
         "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
         "titulo": "Malditos vecinos",
         "anio": 2014
-      }
-    },
-    {
-      "video_id": "UN8a-Jlllzk",
-      "title": "Talladega Nights: The Ballad of Ricky Bobby - Official 20th Anniversary Trailer",
-      "url": "https://www.youtube.com/watch?v=UN8a-Jlllzk",
-      "published": "2026-05-20T17:00:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/UN8a-Jlllzk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "73ce8d6b-2425-4ed9-b586-7a3a150f6f4d",
-        "titulo": "Pasado de vueltas",
-        "anio": 2006
       }
     },
     {
@@ -240,16 +300,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "CKzp13aZuk0",
-      "title": "Homelander, Butcher, and Soldier Boy OH MY | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=CKzp13aZuk0",
-      "published": "2026-05-20T15:00:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/CKzp13aZuk0/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "BvAZygKC8wQ",
       "title": "Before MY FATHER’S SHADOW, Akinola Davies Jr. found his voice with LIZARD | MUBI",
       "url": "https://www.youtube.com/watch?v=BvAZygKC8wQ",
@@ -265,16 +315,6 @@
       "url": "https://www.youtube.com/watch?v=rElZKbmkcIM",
       "published": "2026-05-20T14:59:57Z",
       "thumbnail": "https://i.ytimg.com/vi/rElZKbmkcIM/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "NAP_TeaSeLs",
-      "title": "Ready for seconds? #KnifeEdge: Chasing Michelin Stars is officially renewed for Season 2",
-      "url": "https://www.youtube.com/watch?v=NAP_TeaSeLs",
-      "published": "2026-05-20T14:05:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/NAP_TeaSeLs/hqdefault.jpg",
       "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
@@ -305,26 +345,6 @@
       }
     },
     {
-      "video_id": "D2Y-KW4Q7iw",
-      "title": "AVATAR: THE LAST AIRBENDER S2 TRAILER TOMORROW💥🪨 #Netflix #Shorts #AvatarTheLastAirbender",
-      "url": "https://www.youtube.com/watch?v=D2Y-KW4Q7iw",
-      "published": "2026-05-20T13:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/D2Y-KW4Q7iw/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "IQrJPP9cEHQ",
-      "title": "One Hundred Years of Solitude: Part Two | Official Teaser | Netflix",
-      "url": "https://www.youtube.com/watch?v=IQrJPP9cEHQ",
-      "published": "2026-05-20T12:30:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/IQrJPP9cEHQ/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "0LPRIIWFSIs",
       "title": "#JoshO’Connor, you’re not made for human eyes 💙 | MUBI",
       "url": "https://www.youtube.com/watch?v=0LPRIIWFSIs",
@@ -332,36 +352,6 @@
       "thumbnail": "https://i.ytimg.com/vi/0LPRIIWFSIs/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "fgLhfIC6rBA",
-      "title": "Time to lock in. The season finale of #MargosGotMoneyTroubles is now streaming.",
-      "url": "https://www.youtube.com/watch?v=fgLhfIC6rBA",
-      "published": "2026-05-20T01:59:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/fgLhfIC6rBA/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "9-MZXdAWLv0",
-      "title": "She saw something she can’t unsee. #MaximumPleasureGuaranteed — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=9-MZXdAWLv0",
-      "published": "2026-05-20T00:59:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/9-MZXdAWLv0/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "2vUTbKiA5MQ",
-      "title": "Like Grandpa, Like Father, Like Son... | The Boys Season 4 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=2vUTbKiA5MQ",
-      "published": "2026-05-19T21:00:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/2vUTbKiA5MQ/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -663,16 +653,6 @@
         "titulo": "Backrooms",
         "anio": 2026
       }
-    },
-    {
-      "video_id": "6GW4JPeqm3s",
-      "title": "SPIDER-MAN: BRAND NEW DAY - Practical Production",
-      "url": "https://www.youtube.com/watch?v=6GW4JPeqm3s",
-      "published": "2026-05-14T13:15:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/6GW4JPeqm3s/hqdefault.jpg",
-      "channel": "Sony Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
     }
   ]
 }

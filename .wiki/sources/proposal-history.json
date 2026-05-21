@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-20T21:51:55.698Z",
-      "cycles_proposed": 6,
+      "last_proposed": "2026-05-21T14:03:17.427Z",
+      "cycles_proposed": 7,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1463,8 +1463,8 @@
         "topic": "reino unido"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-20T21:51:55.698Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-21T14:03:17.427Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1511,15 +1511,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-19T21:18:39.819Z",
-      "last_proposed": "2026-05-20T21:51:55.698Z",
-      "cycles_proposed": 2,
-      "status": "backlog",
+      "first_proposed": "2026-05-21T14:03:17.427Z",
+      "last_proposed": "2026-05-21T14:03:17.427Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-20T13:36:31.578Z",
-      "expired_at": "2026-05-19T21:18:39.819Z",
-      "expired_reason": "§5 dedup: duplicado exacto con id 6134534c62ee6a31 (Parásito 2019, Bong Joon-ho); mismo candidato con distinto id; se mantiene el de mayor score."
+      "expired_at": "2026-05-21T14:03:17.427Z",
+      "expired_reason": "§5.2 reevaluación backlog: duplicado exacto de 6134534c62ee6a31 (Parasite/Parásito mismo backlog); descartar para evitar duplicados."
     },
     {
       "id": "080b5658325e2dfe",
@@ -1636,10 +1636,12 @@
       "first_proposed": "2026-05-20T13:36:31.578Z",
       "last_proposed": "2026-05-20T13:36:31.578Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-20T21:51:55.698Z"
+      "became_backlog_at": "2026-05-20T21:51:55.698Z",
+      "expired_at": "2026-05-21T14:03:17.427Z",
+      "expired_reason": "§5.2 reevaluación backlog: duplicado de d9a912f6cba7561b (TOP películas japonesas); descartar para evitar duplicados."
     },
     {
       "id": "e765c77c5a65e016",
@@ -1657,13 +1659,40 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "first_proposed": "2026-05-20T21:51:55.698Z",
-      "last_proposed": "2026-05-20T21:51:55.698Z",
+      "first_proposed": "2026-05-21T14:03:17.427Z",
+      "last_proposed": "2026-05-21T14:03:17.427Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-21T14:03:17.427Z",
+      "expired_at": "2026-05-21T14:03:17.427Z",
+      "expired_reason": "§5.2 reevaluación backlog: duplicado de 080b5658325e2dfe (misma idea de toma continua); descartar para evitar duplicados."
+    },
+    {
+      "id": "3a1597536d2d0237",
+      "action": "generate_review",
+      "title": "Review: El club de la pelea (1999)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 96,
+      "reasoning": "Fincher y su obra más perturbadora; rating 10 e IMDb 8.8 sin review en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "first_proposed": "2026-05-21T14:03:17.427Z",
+      "last_proposed": "2026-05-21T14:03:17.427Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-20T21:55:50.541Z"
+  "last_saved": "2026-05-21T14:06:52.477Z"
 }

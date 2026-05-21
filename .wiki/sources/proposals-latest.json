@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-20T21:51:55.698Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-21T14:03:17.427Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 2,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -24,24 +24,24 @@
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Dean DeBlois lleva su obra más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 97,
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Peter Jackson cierra la trilogía; IMDb 9.0, rating 10 y sin review publicado.",
+      "score": 98,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + plataforma activa + año 2025 boost."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa."
     },
     {
       "id": "6134534c62ee6a31",
@@ -49,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review en el feed.",
+      "reasoning": "Bong Joon-ho y el Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,30 +61,30 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§backlog re-evaluado: rating 10 + Bong Joon-ho + IMDb 8.5 + sello bret; sigue siendo prioridad máxima (2 días)."
+      "critic_reason": "§5.2 reevaluación backlog: rating 10 + Bong Joon-ho + IMDb 8.5; sigue siendo prioridad máxima."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson tiene IMDb 9.0 y tu rating 10; falta su review en el feed.",
-      "score": 97,
+      "title": "Review: El club de la pelea (1999)",
+      "reasoning": "Fincher y su obra más perturbadora; rating 10 e IMDb 8.8 sin review en el feed.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 boost + plataforma activa."
+      "critic_reason": "§5.2 reevaluación backlog: rating 10 + sello bret + Fincher (olimpo) + plataforma activa; sigue siendo válido."
     },
     {
-      "id": "9790ebae315db2bc",
+      "id": "779bce41417a6f23",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§instrucción-creativo: slot abierto con idea fresca kind=craft (técnica narrativa), no usada en los 14d; ángulo cinéfilo específico que Alberto ama."
+      "critic_reason": "§instrucción creativo: slot abierto; propongo kind=craft (técnica/oficio) no usado, ángulo fresco sobre tomas continuas."
     },
     {
       "id": "787cebed76170ab8",
@@ -108,7 +108,7 @@
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas británicas: de Nolan a Guy Ritchie",
-      "reasoning": "El cine del Reino Unido concentra a varios de tus directores favoritos del olimpo.",
+      "reasoning": "UK concentra varios de tus directores favoritos; una lista con mucho peso en el catálogo.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "reino unido"
       },
-      "critic_reason": "§3 kind=country no está en recent_top_kinds; UK tiene a Nolan, Fincher, Guy Ritchie: match fuerte al olimpo."
+      "critic_reason": "§instrucción top: kind=country fresco; UK alberga Nolan, Fincher, Ritchie, Boyle — catálogo con mucho peso."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 0,
+      "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,15 +144,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 2,
-      "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "a6131cf3e9710217",
-      "type": "FEED",
-      "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 1,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +152,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +168,7 @@
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 8,
+      "days_ago": 9,
       "skill_to_invoke": "cinebret-list-from-news"
     },
     {
@@ -184,73 +176,66 @@
       "type": "FEED",
       "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
       "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-list-from-news"
+    },
+    {
+      "id": "ad96cb2e590a873b",
+      "type": "FEED",
+      "title": "TOP 10 finales que te dejan con la boca abierta",
+      "reasoning": "Plot twists y cierres impredecibles: el tipo de cine que más amas y que el feed nunca ha listado explícitamente.",
+      "days_ago": 13,
+      "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "title_es": "The Mandalorian y Grogu apunta a $80M en su debut en taquilla",
-      "summary_es": "El primer Star Wars post-Favreau en cines se perfila como gran estreno familiar para 2026.",
-      "source": "Hollywood Reporter",
+      "title_es": "Las 10 películas más esperadas del verano 2026 (con Nolan y Spielberg incluidos)",
+      "summary_es": "Variety anticipa la temporada; La Odisea de Nolan lidera la lista de imperdibles.",
+      "source": "Variety",
       "age_hours": 0,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/star-wars-the-mandalorian-and-grogu-box-office-1236601814/",
-      "angle": null,
+      "url": "https://variety.com/lists/summer-movie-season-anticipated-blockbusters-the-odyssey-the-invite/",
+      "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "7dc2aed7-e432-4cb2-83f1-c697947636a4",
-        "titulo": "Star Wars: The Mandalorian and Grogu",
-        "anio": 2026
+        "pelicula_id": "5a320242-3c3c-4449-8576-34bf5ce27e11",
+        "titulo": "Toy Story",
+        "anio": 1995
       },
-      "score": 60,
-      "reason": "§4.3 Star Wars es franquicia del catálogo pero el match es una película 2026 aún sin calidad verificada; informativo relevante para Alberto."
+      "score": 62,
+      "reason": "§4.4 regla 3: Nolan y Spielberg mencionados pero sin match de calidad directo; informativo sobre temporada de verano."
     },
     {
-      "title_es": "Damon Lindelof revela por qué lo despidieron de su película de Star Wars",
-      "summary_es": "El creador de 'Lost' detalla la historia detrás del proyecto que no fue; curioso para fans de la franquicia.",
-      "source": "Variety",
+      "title_es": "Rami Malek dudó en rodar 'The Man I Love' por miedo a comparaciones con Freddie Mercury",
+      "summary_es": "El actor teme repetir el registro de Bohemian Rhapsody; nota de interés para fans de Malek.",
+      "source": "Hollywood Reporter",
       "age_hours": 1,
-      "url": "https://variety.com/2026/film/news/star-wars-damon-lindelof-fired-movie-nostalgia-1236755369/",
-      "angle": null,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/rami-malek-nearly-passed-on-aids-era-the-man-i-love-1236603249/",
+      "angle": "casting",
       "catalog_match": {
-        "pelicula_id": "a6543a0d-56ef-4b7d-9c0f-fd1fb05e76da",
-        "titulo": "Watchmen",
-        "anio": 2009
+        "pelicula_id": "d15db1f2-2a6b-4bfe-99e4-1e47991886b2",
+        "titulo": "Bohemian Rhapsody",
+        "anio": 2018
       },
       "score": 55,
-      "reason": "§4.3 match débil a 'Watchmen' (2009) como contexto; la historia sobre Lindelof y Star Wars es informativa para Alberto pero no accionable."
-    },
-    {
-      "title_es": "Talladega Nights cumple 20 años: trailer del aniversario de la comedia de Will Ferrell",
-      "summary_es": "Sony lanzó trailer oficial por los 20 años; match al catálogo pero sin calidad suficiente para propuesta.",
-      "source": "Sony Pictures",
-      "age_hours": 5,
-      "url": "https://www.youtube.com/watch?v=A0fgugC7ZCo",
-      "angle": "anniversary",
-      "catalog_match": {
-        "pelicula_id": "73ce8d6b-2425-4ed9-b586-7a3a150f6f4d",
-        "titulo": "Pasado de vueltas",
-        "anio": 2006
-      },
-      "score": 45,
-      "reason": "§4.2 match al catálogo con 'Pasado de vueltas' (2006); aniversario 20 años es ángulo válido pero la peli no tiene rating ≥7 ni sello bret verificado para propose."
+      "reason": "§4.4 regla 3: match con Bohemian Rhapsody (catálogo, rating aceptable) pero ángulo solo informativo sobre nueva película."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 88,
+    "newsapi_items": 92,
     "reddit_posts": 0,
-    "trailers": 59
+    "trailers": 58
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 3,
+    "agedCount": 1,
     "expiredByTime": 0,
-    "expiredByCritic": 0
+    "expiredByCritic": 3
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16263,
-    "output": 12446
+    "input": 16181,
+    "output": 10684
   }
 }

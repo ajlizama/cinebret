@@ -904,8 +904,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-20T21:51:55.698Z",
-      "cycles_proposed": 6,
+      "last_proposed": "2026-05-21T21:27:02.250Z",
+      "cycles_proposed": 7,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1465,10 +1465,12 @@
       "first_proposed": "2026-05-17T20:49:19.561Z",
       "last_proposed": "2026-05-21T14:03:17.427Z",
       "cycles_proposed": 4,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-18T14:28:09.503Z"
+      "became_backlog_at": "2026-05-18T14:28:09.503Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§3 diversidad: kind=country ya cubierto por fecc4d46aebb463c (Francia) y fe5875c8c649d23e (Japón) en este ciclo; un tercer top de country (UK) sería redundante."
     },
     {
       "id": "d9a912f6cba7561b",
@@ -1489,10 +1491,12 @@
       "first_proposed": "2026-05-18T14:28:09.503Z",
       "last_proposed": "2026-05-18T21:11:30.072Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-18T21:11:30.072Z"
+      "became_backlog_at": "2026-05-18T21:11:30.072Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§8 duplicado: mismo tema y kind=country que fe5875c8c649d23e (TOP Japón) ya propuesto en este ciclo."
     },
     {
       "id": "a6131cf3e9710217",
@@ -1511,15 +1515,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-21T14:03:17.427Z",
-      "last_proposed": "2026-05-21T14:03:17.427Z",
+      "first_proposed": "2026-05-21T21:27:02.250Z",
+      "last_proposed": "2026-05-21T21:27:02.250Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-20T13:36:31.578Z",
-      "expired_at": "2026-05-21T14:03:17.427Z",
-      "expired_reason": "§5.2 reevaluación backlog: duplicado exacto de 6134534c62ee6a31 (Parasite/Parásito mismo backlog); descartar para evitar duplicados."
+      "became_backlog_at": "2026-05-21T21:27:02.250Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§8 duplicado: mismo film que 6134534c62ee6a31 (Parásito / Parasite 2019, Bong Joon-ho) ya propuesto en este ciclo; dedup por sujeto."
     },
     {
       "id": "080b5658325e2dfe",
@@ -1564,10 +1568,12 @@
       "first_proposed": "2026-05-19T21:18:39.819Z",
       "last_proposed": "2026-05-19T21:18:39.819Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-20T13:36:31.578Z"
+      "became_backlog_at": "2026-05-20T13:36:31.578Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§3 diversidad: kind=country ya cubierto por fecc4d46aebb463c (Francia) y fe5875c8c649d23e (Japón); además este top mezcla países de forma genérica sin ángulo editorial fuerte."
     },
     {
       "id": "cb80a5bc8f1cd3eb",
@@ -1588,10 +1594,12 @@
       "first_proposed": "2026-05-19T21:18:39.819Z",
       "last_proposed": "2026-05-19T21:18:39.819Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-20T13:36:31.578Z"
+      "became_backlog_at": "2026-05-20T13:36:31.578Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§8 duplicado: mismo tema que fecc4d46aebb463c (TOP películas francesas) ya propuesto en este ciclo."
     },
     {
       "id": "7e36148fa29bda49",
@@ -1662,12 +1670,12 @@
       "first_proposed": "2026-05-21T14:03:17.427Z",
       "last_proposed": "2026-05-21T14:03:17.427Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-21T14:03:17.427Z",
-      "expired_at": "2026-05-21T14:03:17.427Z",
-      "expired_reason": "§5.2 reevaluación backlog: duplicado de 080b5658325e2dfe (misma idea de toma continua); descartar para evitar duplicados."
+      "became_backlog_at": "2026-05-21T21:27:02.250Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§8 duplicado: mismo tema que 080b5658325e2dfe (películas en una sola toma) ya propuesto en este ciclo; título ligeramente distinto pero sujeto idéntico."
     },
     {
       "id": "3a1597536d2d0237",
@@ -1686,13 +1694,62 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "first_proposed": "2026-05-21T14:03:17.427Z",
-      "last_proposed": "2026-05-21T14:03:17.427Z",
+      "first_proposed": "2026-05-21T21:27:02.250Z",
+      "last_proposed": "2026-05-21T21:27:02.250Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-21T21:27:02.250Z",
+      "expired_at": "2026-05-21T21:27:02.250Z",
+      "expired_reason": "§8 duplicado: mismo film que 86cd64c42c4ddc8b (Fight Club 1999, David Fincher) ya propuesto en este ciclo como proposal y backlog; dedup por sujeto."
+    },
+    {
+      "id": "671afc46c7215a07",
+      "action": "generate_carousel_topic",
+      "title": "10 escenas donde el director ignoró el guion y ganó",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Kubrick, Tarantino, Fincher: las decisiones de rodaje que hicieron historia sin estar escritas.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-21T21:27:02.250Z",
+      "last_proposed": "2026-05-21T21:27:02.250Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "308a93b46c33df64",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas francesas que no sabías que necesitabas ver",
+      "type": "FEED",
+      "priority": "media",
+      "score": 78,
+      "reasoning": "El cine francés tiene joyas en tu catálogo; kind=country fresco para el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "francia"
+      },
+      "first_proposed": "2026-05-21T21:27:02.250Z",
+      "last_proposed": "2026-05-21T21:27:02.250Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-21T14:06:52.477Z"
+  "last_saved": "2026-05-21T21:31:16.957Z"
 }

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-21T14:02:16.571Z",
+  "generated_at": "2026-05-21T21:26:55.922Z",
   "feeds_count": 10,
   "total_items": 115,
-  "items_with_cinebret_match": 22,
+  "items_with_cinebret_match": 30,
   "by_source": {
     "Variety": 10,
     "Hollywood Reporter": 10,
@@ -17,44 +17,1008 @@
   },
   "items": [
     {
-      "source": "Variety",
-      "title": "Fortyseven Communications Opens London Office and Integrates With Sister Agency Indigo Pearl; Launches Global Creator Relations Practice",
-      "link": "https://variety.com/2026/gaming/news/fortyseven-pr-london-office-creator-relations-1236755868/",
-      "description": "The Keywords Studios-owned Fortyseven Communications (47) is opening a London office and launching a global creation relations division, two developments that come as the gaming and entertainment-focused PR company is marking its 20th anniversary. As part of the move into London, 47&#8217;s UK sister agency, Indigo Pearl, will be integrated into the 47 team. According [&#8230;]",
-      "published": "Thu, 21 May 2026 14:00:02 +0000",
-      "published_iso": "2026-05-21T14:00:02.000Z",
+      "source": "Hollywood Reporter",
+      "title": "Streaming Ratings: &#8216;Bluey&#8217; and &#8216;The Boys&#8217; Lead a Quiet Week",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/streaming-ratings-april-20-26-2026-1236603721/",
+      "description": "For the first time this year, no show or movie in Nielsen's top 10 charts reaches a billion viewing minutes.",
+      "published": "Thu, 21 May 2026 21:26:27 +0000",
+      "published_iso": "2026-05-21T21:26:27.000Z",
       "source_weight": 5,
       "source_lang": "en",
       "source_category": "industry"
     },
     {
+      "source": "Roger Ebert",
+      "title": "Cannes 2026: Table of Contents",
+      "link": "https://www.rogerebert.com/festivals/cannes-2026-table-of-contents",
+      "description": "Where to find every piece of our coverage of the 79th Annual Cannes Film Festival.",
+      "published": "Thu, 21 May 2026 21:24:43 +0000",
+      "published_iso": "2026-05-21T21:24:43.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "reviews"
+    },
+    {
+      "source": "Roger Ebert",
+      "title": "Cannes 2026: The Black Ball, Bitter Christmas",
+      "link": "https://www.rogerebert.com/festivals/cannes-2026-the-black-ball-bitter-christmas",
+      "description": "On two Spanish melodramas from this year's Cannes, including one of the best of the fest.",
+      "published": "Thu, 21 May 2026 21:20:41 +0000",
+      "published_iso": "2026-05-21T21:20:41.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "reviews"
+    },
+    {
+      "source": "r/television",
+      "title": "Really enjoyed the Mel Brooks doc on HBO",
+      "link": "https://www.reddit.com/r/television/comments/1tjya9c/really_enjoyed_the_mel_brooks_doc_on_hbo/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;HBO released their two-part doc “Mel Brooks: The 99 Year Old Man” and I’ve absolutely loved it. I didn’t realize how much of a legend this dude was/is. And he’s still totally with it and has the humor still. Just felt a genuine good vibe with this doc and loved being able to learn about comedy of the past. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/QuantamMoose&quot;&gt; /u/QuantamMoose &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddi",
+      "published": "2026-05-21T21:19:28+00:00",
+      "published_iso": "2026-05-21T21:19:28.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Deadline",
+      "title": "CAA &#038; Finch &#038; Partners Aim To Recreate Cannes Future Of Film Symposium In Venice, Doha &#038; Other Locations",
+      "link": "https://deadline.com/2026/05/caa-finch-partners-future-of-film-symposium-venice-doha-1236918308/",
+      "description": "EXCLUSIVE: CAA teamed up with Charles Finch&#8217;s Finch &#38; Partners to throw an exclusive film symposium in Cannes and the teams are now eyeing an expansion of the event to other festivals/cities including Venice and Doha. Additional locations are also being discussed, alongside a return to the same venue in Cannes next year. The private [&#8230;]",
+      "published": "Thu, 21 May 2026 21:14:31 +0000",
+      "published_iso": "2026-05-21T21:14:31.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "&#8216;Resurrection of the Christ&#8217; Release Pushed at Lionsgate, Replaced by Johnny Depp&#8217;s &#8216;Day Drinker&#8217;",
+      "link": "https://www.thewrap.com/industry-news/business/lionsgate-johnny-depp-day-drinker-resurrection-christ-release-date/",
+      "description": "Mel Gibson's two-part Gospel film will be released a year apart in May 2027 and 2028 The post &#8216;Resurrection of the Christ&#8217; Release Pushed at Lionsgate, Replaced by Johnny Depp&#8217;s &#8216;Day Drinker&#8217; appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 21:10:40 +0000",
+      "published_iso": "2026-05-21T21:10:40.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
       "source": "Variety",
-      "title": "From &#8216;The Odyssey&#8217; to &#8216;The Invite,&#8217; 10 Summer Movies We Can&#8217;t Wait to See in Theaters",
-      "link": "https://variety.com/lists/summer-movie-season-anticipated-blockbusters-the-odyssey-the-invite/",
-      "description": "Say hello to summer movie season! As always, studios are bringing back familiar franchises — “Star Wars,” “Minions,” Marvel and “Toy Story” among them — to fuel the most profitable stretch for the industry. But Hollywood isn’t steering clear of new ideas over the next four months. Directors like Christopher Nolan, Steven Spielberg and Olivia [&#8230;]",
-      "published": "Thu, 21 May 2026 14:00:00 +0000",
-      "published_iso": "2026-05-21T14:00:00.000Z",
+      "title": "Lionsgate Earnings Climb Thanks to Success of &#8216;The Housemaid&#8217;",
+      "link": "https://variety.com/2026/film/news/lionsgate-earnings-improve-the-housemaid-1236755911/",
+      "description": "Revenue increased and profits rebounded during Lionsgate&#8217;s most recent quarter thanks to the box office success of &#8220;The Housemaid.&#8221; Overall revenue hit $906.5 million, which compared favorably to the $865.6 billion in revenues that Lionsgate reported a year ago. The rise in sales was driven primarily by the motion picture group, which saw revenue up [&#8230;]",
+      "published": "Thu, 21 May 2026 21:03:14 +0000",
+      "published_iso": "2026-05-21T21:03:14.000Z",
       "source_weight": 5,
       "source_lang": "en",
       "source_category": "industry",
       "cinebret_matches": [
         {
-          "pelicula_id": "5a320242-3c3c-4449-8576-34bf5ce27e11",
-          "titulo": "Toy Story",
-          "anio": 1995
+          "pelicula_id": "2f8462d7-b5c3-4f56-97db-382382eb33cb",
+          "titulo": "La asistenta",
+          "anio": 2025
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Javier Bardem, Mark Ruffalo, Walter Salles, Isabel Coixet, Annemarie Jacir &#038; Yorgos Lanthimos Sign Anti-Bolloré Letter As Signatures Swell To 3.5K",
+      "link": "https://deadline.com/2026/05/javier-bardem-mark-ruffalo-walter-sallesbollore-letter-1236918350/",
+      "description": "An open letter, initiated by members of the French cinema world to protest tycoon Vincent Bolloré’s growing control of France’s media and entertainment sectors, has started to gather international support. Organisers of the letter entitled “Time To Switch-Off Bolloré” announced a raft of international signatories on Thursday evening, including Javier Bardem, Mark Ruffalo, Walter Salles, [&#8230;]",
+      "published": "Thu, 21 May 2026 20:57:16 +0000",
+      "published_iso": "2026-05-21T20:57:16.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Survivor 50&#8242; Scores CBS Competition Series&#8217; Best Live+Same-Day Finale Audience In 6 Years",
+      "link": "https://deadline.com/2026/05/survivor-50-finale-live-same-day-ratings-cbs-1236918370/",
+      "description": "Survivor 50 ended on a high note with the franchise&#8217;s most-watched finale in six years. The finale episode, which aired Wednesday night, drew 5.78M live + same-day viewers, per Nielsen&#8217;s preliminary panel only data. That&#8217;s the best since the Season 40 finale pulled 7.61M viewers on May 13, 2020. These numbers will likely slightly increase [&#8230;]",
+      "published": "Thu, 21 May 2026 20:56:44 +0000",
+      "published_iso": "2026-05-21T20:56:44.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Two Strangers (Carry A Cake Across New York)&#8217; Sets North American Tour For Fall 2027 Launch",
+      "link": "https://deadline.com/2026/05/two-strangers-carry-a-cake-across-new-york-broadway-tour-1236918358/",
+      "description": "The Tony-nominated musical Two Strangers (Carry a Cake Across New York) will tour North America beginning in the fall of 2027, producers announced today, launching at Providence Performing Arts Center in Providence, Rhode Island, before continuing onto cities across the U.S. and Canada. Additional tour stops and casting will be announced at a later date. [&#8230;]",
+      "published": "Thu, 21 May 2026 20:56:03 +0000",
+      "published_iso": "2026-05-21T20:56:03.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "3f0ffffb-69c9-46db-80bf-1bb675acabc6",
+          "titulo": "Beginning",
+          "anio": 2021
         }
       ]
     },
     {
       "source": "Variety",
-      "title": "Apple to Broadcast MLS Game Shot Entirely on 15 iPhones, First Major Live Sports Event Captured Using Only Smartphones",
-      "link": "https://variety.com/2026/digital/news/apple-mls-match-shot-entirely-on-iphone-first-time-1236755744/",
-      "description": "Apple has frequently touted the use of professional-grade iPhones by filmmakers to make shorts, commercials and even feature-length movies. And it recently added iPhones to the mix for its MLB and Major League Soccer brodcasts. Now the tech giant is taking the eat-your-own-dog-food approach to a new level. This Saturday, May 23, Apple TV will [&#8230;]",
-      "published": "Thu, 21 May 2026 14:00:00 +0000",
-      "published_iso": "2026-05-21T14:00:00.000Z",
+      "title": "Korean Content Leaders Take Stock After a Decade of Growth and Look to Future: &#8216;Korean Entertainment is Everywhere&#8217;",
+      "link": "https://variety.com/2026/biz/news/korean-content-cj-enm-hybe-extraordinary-attorney-woo-1236756341/",
+      "description": "The world of Korean entertainment has come a long way since “Gangnum Style” set dancers galloping around the world nearly 15 years ago. Korean content industry leaders on both sides of the Pacific gathered earlier this month at the London West Hollywood to take stock of the country’s rapid progress as an exporter of music, [&#8230;]",
+      "published": "Thu, 21 May 2026 20:54:26 +0000",
+      "published_iso": "2026-05-21T20:54:26.000Z",
       "source_weight": 5,
       "source_lang": "en",
       "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "Netflix Bounces Back on Nielsen Charts With &#8216;Running Point,&#8217; &#8216;Beef&#8217; After Scripted Slowdown",
+      "link": "https://www.thewrap.com/creative-content/tv-shows/netflix-running-point-beef-ratings-nielsen-chart/",
+      "description": "But \"Bluey\" dominates streaming viewership while \"The Boys\" gains momentum on the week of April 20 The post Netflix Bounces Back on Nielsen Charts With &#8216;Running Point,&#8217; &#8216;Beef&#8217; After Scripted Slowdown appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 20:54:23 +0000",
+      "published_iso": "2026-05-21T20:54:23.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Trey Parker Admits &#8220;It&#8217;s Scarier&#8221; to Do &#8216;South Park&#8217; in the Trump Era: &#8220;That Group Has a Military&#8221;",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/trey-parker-south-park-scarier-trump-military-1236603652/",
+      "description": "'South Park' was honored alongside 'Adolescence,' 'Deaf President Now!,' 'Dying for Sex,' 'Heated Rivalry' and 'Seen &#38; Heard: The History of Black Television' at the TV Academy Honors ceremony.",
+      "published": "Thu, 21 May 2026 20:53:26 +0000",
+      "published_iso": "2026-05-21T20:53:26.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Sinners&#8217; House to Sink Its Teeth Into Halloween Horror Nights 2026",
+      "link": "https://www.hollywoodreporter.com/news/general-news/sinners-house-halloween-horror-nights-2026-1236603746/",
+      "description": "Universal Orlando Resort and Universal Studios Hollywood will transport fans of the Oscar-winning box office hit from writer-director-producer Ryan Coogler to 1930s Mississippi Delta with Smoke, Stack, Remmick and more.",
+      "published": "Thu, 21 May 2026 20:49:09 +0000",
+      "published_iso": "2026-05-21T20:49:09.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "2d70c72f-9cd5-4ed1-8635-12cadd8c5e31",
+          "titulo": "La noche de Halloween",
+          "anio": 1978
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Elon Musk Calls &#8216;The Boys&#8217; Finale &#8220;Pathetic,&#8221; Eric Kripke Raves: &#8220;I&#8217;ll Never Get A Better Review&#8221;",
+      "link": "https://deadline.com/2026/05/elon-musk-calls-the-boys-finale-pathetic-eric-kripke-raves-1236918337/",
+      "description": "SPOILERS: This post contains details about The Boys series finale &#8216;Blood and Bone&#8217; As The Boys comes to an end, one Homelander fan is not pleased with the Prime Video show&#8217;s series finale. Following the release of the episode &#8216;Blood and Bone&#8217;, Elon Musk took to X to criticize the finale as &#8220;pathetic&#8221; after the [&#8230;]",
+      "published": "Thu, 21 May 2026 20:44:33 +0000",
+      "published_iso": "2026-05-21T20:44:33.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
+          "titulo": "Following",
+          "anio": 1999
+        }
+      ]
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Off Campus&#8217; Star Stephen Kalyn on Next Addictive Hockey Romance and Those &#8220;Heartfelt Moments&#8221;",
+      "link": "https://www.hollywoodreporter.com/tv/tv-features/off-campus-dean-allie-stephen-kalyn-season-one-interview-1236603001/",
+      "description": "The 28-year-old actor digs into where viewers find his character, Dean, coming into season one and how Mika Abdalla’s Allie turns everything upside down: “Dean always gets what he wants, but Allie puts him in his place”",
+      "published": "Thu, 21 May 2026 20:40:00 +0000",
+      "published_iso": "2026-05-21T20:40:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "Johnny Depp-Starring &#8216;Day Drinker&#8217; Gets Release Date From Lionsgate",
+      "link": "https://deadline.com/2026/05/lionsgate-day-drinker-release-date-johnny-depp-1236918245/",
+      "description": "Lionsgate has set a March 26, 2027 release date for supernatural revenge thriller Day Drinker starring Johnny Depp – the spot originally set for the first installment of The Resurrection Of The Christ, which the studio is moving to May. The film, also starring Madelyn Cline and Penélope Cruz, is directed by Marc Webb, written [&#8230;]",
+      "published": "Thu, 21 May 2026 20:35:00 +0000",
+      "published_iso": "2026-05-21T20:35:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "Is the Shield a great tv show?",
+      "link": "https://www.reddit.com/r/television/comments/1tjx2t0/is_the_shield_a_great_tv_show/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Is the Shield a great tv show? I am thinking about watching it. Is it a good watch?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Beautiful_Author_816&quot;&gt; /u/Beautiful_Author_816 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjx2t0/is_the_shield_a_great_tv_show/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjx2t0/is_the_shie",
+      "published": "2026-05-21T20:34:54+00:00",
+      "published_iso": "2026-05-21T20:34:54.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Variety",
+      "title": "How &#8216;Fallout,&#8217; &#8216;Chad Powers and &#8216;Stranger Things&#8217; Makeup and VFX Artists Went all in on Prosthetics and Transformations",
+      "link": "https://variety.com/2026/artisans/news/stranger-things-chad-powers-prosthetics-and-transformations-1236755996/",
+      "description": "This season, makeup artists have transformed actors using everything from sublime touches to complete prosthetics. Underneath it all, no matter how many hours and prosthetic pieces, they have one common goal: to preserve the actor&#8217;s performance. For Prime Video&#8217;s &#8220;Fallout,&#8221; Walton Goggins returns as the Ghoul, a character for which prosthetic department head Jake Gerber [&#8230;]",
+      "published": "Thu, 21 May 2026 20:32:00 +0000",
+      "published_iso": "2026-05-21T20:32:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "The Creator Of 'The Resident' Amy Holden Jones Accuses ABC Of Ripping Off Her Idea And Recreating It As A 'Grey's Anatomy' Spinoff Set In Texas.",
+      "link": "https://www.reddit.com/r/television/comments/1tjwy97/the_creator_of_the_resident_amy_holden_jones/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Jones says, &amp;quot;If you are wondering what our business is like I created &amp;#39; The Resident&amp;#39; I sold and developed a pilot at ABC that was a cross between a western &amp;amp; a medical show. Rural medicine was key. They loved it and kept it alive as all other pilots fell. The idea was passed on in late March. Now they have announced a deal with the exact same premise with Shonda Rhimes attached.&amp;quot; &lt;a href=&quot;https://www.usmagazine.com/entertainment/news/resident-ep-claims-greys-anatomy-spinoff-ripped-o",
+      "published": "2026-05-21T20:30:23+00:00",
+      "published_iso": "2026-05-21T20:30:23.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Variety",
+      "title": "Johnny Depp, Penelope Cruz&#8217;s Action Thriller &#8216;Day Drinker&#8217; Sets 2027 Release Date",
+      "link": "https://variety.com/2026/film/news/johnny-depp-day-drinker-release-date-1236756113/",
+      "description": "&#8220;Day Drinker,&#8221; an action thriller starring Johnny Depp and Penélope Cruz, will sail to theaters in 2027. Lionsgate, which is releasing the film, has set a release of March 26, 2027. &#8220;Day Drinker&#8221; is taking the place of the studio&#8217;s &#8220;The Resurrection of the Christ Part One,&#8221; which was postponed to May 6, 2027. “Day [&#8230;]",
+      "published": "Thu, 21 May 2026 20:30:00 +0000",
+      "published_iso": "2026-05-21T20:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "a764fc23-bde0-47a1-b59a-6e2d53125ec6",
+          "titulo": "Una chica diferente",
+          "anio": 2007
+        }
+      ]
+    },
+    {
+      "source": "Variety",
+      "title": "Mel Gibson Unveils &#8216;Resurrection of the Christ&#8217; First Look, Delays Release Dates for Two-Part Biblical Epic",
+      "link": "https://variety.com/2026/film/news/resurrection-of-the-christ-first-look-release-date-delay-mel-gibson-1236756143/",
+      "description": "Mel Gibson has unveiled the first look at &#8220;The Resurrection of the Christ,&#8221; the director&#8217;s long-delayed follow-up to 2004’s “The Passion of the Christ.&#8221; Filming on the two-part epic has officially wrapped, with production concluding ahead of schedule after shooting for 134 days across Italy in Rome, Bari, Ginosa, Craco, Brindisi and Matera. But Gibson [&#8230;]",
+      "published": "Thu, 21 May 2026 20:30:00 +0000",
+      "published_iso": "2026-05-21T20:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "6b3e5ef7-b5c5-4091-b9b0-81fc3b08c44f",
+          "titulo": "La pasión de Cristo",
+          "anio": 2004
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Jason Clarke Circling Michael Mann&#8217;s &#8216;Heat 2&#8217; – The Dish",
+      "link": "https://deadline.com/2026/05/heat-2-jason-clarke-circling-mystery-role-the-dish-1236918173/",
+      "description": "EXCLUSIVE:&#160;Jason Clarke is being eyed to join the cast of Michael Mann&#8217;s&#160;Heat 2&#160;from Amazon MGM Studios and United Artists, multiple sources tell Deadline. Reps for Amazon and the actor declined comment, and what role Clarke will play is not yet clear. While sources say there are no cast deals in place, Leonardo DiCaprio and Christian [&#8230;]",
+      "published": "Thu, 21 May 2026 20:30:00 +0000",
+      "published_iso": "2026-05-21T20:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "Lionsgate Shifts ‘The Resurrection Of The Christ’ Release Dates, &#8216;Part Two&#8217; Moves To 2028",
+      "link": "https://deadline.com/2026/05/lionsgate-the-resurrection-of-the-christ-new-release-dates-1236918193/",
+      "description": "Lionsgate has shifted the release dates of Mel Gibson’s The Resurrection Of The Christ with Part One now set to arrive on May 6, 2027 (Ascension Day), and Part Two on May 25, 2028 (Ascension Day and Memorial Day Weekend). The previous dates were March 26, 2027 (Good Friday) for Part One, with Part Two slated to [&#8230;]",
+      "published": "Thu, 21 May 2026 20:30:00 +0000",
+      "published_iso": "2026-05-21T20:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "IndieWire",
+      "title": "To Financiers, Films Are No Longer the Product. Relationships with Audiences Are",
+      "link": "https://www.indiewire.com/news/events/future-of-film-financing-cannes-american-pavilion-panel-1235195362/",
+      "description": "Decision-makers behind an eclectic group of film financing companies stopped by The American Pavilion at Cannes for a conversation about one of the most complex and ever-changing aspects of the industry.",
+      "published": "Thu, 21 May 2026 20:30:00 +0000",
+      "published_iso": "2026-05-21T20:30:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
+          "titulo": "Joika",
+          "anio": 2023
+        }
+      ]
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Lionsgate Swings to Quarterly Profit on Higher Revenues",
+      "link": "https://www.hollywoodreporter.com/business/business-news/lionsgate-q4-profit-higher-revenues-2-1236603595/",
+      "description": "The ‘Michael’ and 'Hunger Games' studio, led by CEO Jon Feltheimer, became a standalone company after splitting from the Starz premium cable and streaming service.",
+      "published": "Thu, 21 May 2026 20:26:10 +0000",
+      "published_iso": "2026-05-21T20:26:10.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "Box Office Hit &#8216;The Housemaid&#8217; Burnishes Lionsgate&#8217;s March Quarter",
+      "link": "https://deadline.com/2026/05/the-housemaid-boosts-lionsgate-quarterly-earnings-1236918301/",
+      "description": "Lionsgate Studios blew past Wall Street forecasts for its fiscal fourth quarter ended in March as The Housemaid buoyed results at the motion picture group. Segment revenue of $651.9 million and sprofit of $187.1 million grew by 23% and 39%, respectively, year-over-year, with the ancillary performance of Now You See Me: Now You Don&#8217;t and [&#8230;]",
+      "published": "Thu, 21 May 2026 20:25:04 +0000",
+      "published_iso": "2026-05-21T20:25:04.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "2f8462d7-b5c3-4f56-97db-382382eb33cb",
+          "titulo": "La asistenta",
+          "anio": 2025
+        },
+        {
+          "pelicula_id": "71c34741-efcd-44e8-9c7a-618be8596315",
+          "titulo": "Wall Street",
+          "anio": 1987
+        }
+      ]
+    },
+    {
+      "source": "Variety",
+      "title": "Penelope Cruz Lights up Los Javis&#8217; Queer García Lorca Epic &#8216;The Black Ball,&#8217; Earning 16-Minute Cannes Ovation",
+      "link": "https://variety.com/2026/film/festivals/penelope-cruz-los-javis-queer-garcia-lorca-epic-the-black-ball-cannes-ovation-1236741563/",
+      "description": "Javier Ambrossi and Javier Calvo&#8217;s &#8220;The Black Ball&#8221; (La Bola Negra) a queer epic spanning 85 years of Spanish history and inspired by an unfinished fragment by Federico García Lorca, premiered in competition at the Cannes Film Festival on Thursday to a 16-minute standing ovation. The premiere marks the Cannes competition debut for the filmmaking [&#8230;]",
+      "published": "Thu, 21 May 2026 20:23:40 +0000",
+      "published_iso": "2026-05-21T20:23:40.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "a764fc23-bde0-47a1-b59a-6e2d53125ec6",
+          "titulo": "Una chica diferente",
+          "anio": 2007
+        }
+      ]
+    },
+    {
+      "source": "The Wrap",
+      "title": "Lupita Nyong&#8217;o Responds to Racist &#8216;Odyssey&#8217; Backlash: &#8216;I’m Not Spending My Time Thinking of a Defense&#8217;",
+      "link": "https://www.thewrap.com/creative-content/movies/lupita-nyongo-responds-the-odyssey-helen-casting-backlash/",
+      "description": "\"Our cast is a representation of the world,\" the actress playing Helen of Troy in the Christopher Nolan epic says The post Lupita Nyong&#8217;o Responds to Racist &#8216;Odyssey&#8217; Backlash: &#8216;I’m Not Spending My Time Thinking of a Defense&#8217; appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 20:23:12 +0000",
+      "published_iso": "2026-05-21T20:23:12.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "Lionsgate Rebounds With $906 Million in Revenue Thanks to &#8216;The Housemaid&#8217;",
+      "link": "https://www.thewrap.com/creative-content/movies/lionsgate-q1-2026-earnings-2/",
+      "description": "“All of the pieces of our business are coming together,\" CEO Jon Feltheimer says as studio reports $70 million in net income The post Lionsgate Rebounds With $906 Million in Revenue Thanks to &#8216;The Housemaid&#8217; appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 20:20:51 +0000",
+      "published_iso": "2026-05-21T20:20:51.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "2f8462d7-b5c3-4f56-97db-382382eb33cb",
+          "titulo": "La asistenta",
+          "anio": 2025
+        },
+        {
+          "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
+          "titulo": "Together: Juntos hasta la muerte",
+          "anio": 2025
+        }
+      ]
+    },
+    {
+      "source": "Variety",
+      "title": "&#8216;GTA 6&#8217; Price Still Not Revealed, but Take-Two Chief Says Rockstar on Track to Begin Marketing This Summer",
+      "link": "https://variety.com/2026/gaming/news/gta-5-no-delay-price-marketing-summer-1236755303/",
+      "description": "Rockstar Games&#8217; &#8220;Grand Theft Auto 6&#8221; is still on track for its Nov. 19 release but does not yet have an announced price. And that reveal isn&#8217;t coming along with parent company Take-Two Interactive&#8217;s earnings results today. &#8220;No,&#8221; Take-Two Interactive CEO Zelnick told Variety, when asked during an interview Thursday if a &#8220;GTA 6&#8221; pricing [&#8230;]",
+      "published": "Thu, 21 May 2026 20:15:02 +0000",
+      "published_iso": "2026-05-21T20:15:02.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Survivor 50&#8217; Winner Aubry Bracco on Her Triumphant Finish, Those Kalshi Spoilers and Social Media Toxicity: &#8220;Call Me Whatever You Want&#8221;",
+      "link": "https://www.hollywoodreporter.com/tv/tv-features/survivor-50-winner-aubry-bracco-exit-interview-1236603649/",
+      "description": "Fourth time proved the charm for the underdog, who gets emotional repeatedly in her conversation with The Hollywood Reporter: “I will always cry — that's my thing.”",
+      "published": "Thu, 21 May 2026 20:12:18 +0000",
+      "published_iso": "2026-05-21T20:12:18.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Variety",
+      "title": "&#8216;The Odyssey&#8217; Star Lupita Nyong&#8217;o Responds to Racist Casting Backlash: &#8216;This Is a Mythological Story&#8217;",
+      "link": "https://variety.com/2026/film/news/odyssey-lupita-nyongo-racist-casting-backlash-1236756272/",
+      "description": "Lupita Nyong&#8217;o is addressing the backlash to her casting as Helen of Troy in Christopher Nolan&#8217;s &#8220;The Odyssey.&#8221; Nyong&#8217;o plays Helen of Troy, the Greek mythological character who was thought of as the most beautiful woman in the world and is often referred to as &#8220;the face that launched 1,000 ships&#8221; because her marriage to [&#8230;]",
+      "published": "Thu, 21 May 2026 20:08:08 +0000",
+      "published_iso": "2026-05-21T20:08:08.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "Netflix&#8217;s Kevin Hart Roast Knocks &#8216;Euphoria&#8217; Out of No. 1 on Streaming Chart",
+      "link": "https://www.thewrap.com/commentary-analysis/data-analysis/keven-hart-roast-streaming-chart-data/",
+      "description": "\"The Boys\" drops to No. 4 ahead of its series finale, while Netflix film \"Remarkably Bright Creatures\" climbs to No. 2 The post Netflix&#8217;s Kevin Hart Roast Knocks &#8216;Euphoria&#8217; Out of No. 1 on Streaming Chart appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 20:02:25 +0000",
+      "published_iso": "2026-05-21T20:02:25.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "d8a22aec-75f5-419c-a1ac-4105d00ded16",
+          "titulo": "Criaturas luminosas",
+          "anio": 2026
+        }
+      ]
+    },
+    {
+      "source": "The Wrap",
+      "title": "Do You Need to Watch &#8216;The Mandalorian&#8217; Before &#8216;The Mandalorian and Grogu&#8217;?",
+      "link": "https://www.thewrap.com/creative-content/what-to-watch/do-you-need-to-watch-mandalorian-grogu-series-before-movie/",
+      "description": "The newest \"Star Wars\" film hits theaters this week The post Do You Need to Watch &#8216;The Mandalorian&#8217; Before &#8216;The Mandalorian and Grogu&#8217;? appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 20:00:00 +0000",
+      "published_iso": "2026-05-21T20:00:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "IndieWire",
+      "title": "Ira Sachs Cast Rami Malek to Sing in ‘The Man I Love’ Without Seeing ‘Bohemian Rhapsody’",
+      "link": "https://www.indiewire.com/features/interviews/ira-sachs-rami-malek-the-man-i-love-bohemian-rhapsody-cannes-1235195408/",
+      "description": "Sachs and co-writer Mauricio Zacharias tell IndieWire about the beauty and horror of gay life in 1980s NYC, and borrowing their film’s title from the 1941 Raoul Walsh classic.",
+      "published": "Thu, 21 May 2026 20:00:00 +0000",
+      "published_iso": "2026-05-21T20:00:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "d15db1f2-2a6b-4bfe-99e4-1e47991886b2",
+          "titulo": "Bohemian Rhapsody",
+          "anio": 2018
+        }
+      ]
+    },
+    {
+      "source": "r/movies",
+      "title": "New images of Anne Hathaway as Penelope, Zendaya as Athena, Lupita Nyong’o as Clytemnestra, and Charlize Theron as Calypso in The Odyssey",
+      "link": "https://www.reddit.com/r/movies/comments/1tjw0b6/new_images_of_anne_hathaway_as_penelope_zendaya/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjw0b6/new_images_of_anne_hathaway_as_penelope_zendaya/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/9pdpeaz9qj2h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=f17bed2fa1c060f1da585c2837bc35c9142f5bd6&quot; alt=&quot;New images of Anne Hathaway as Penelope, Zendaya as Athena, Lupita Nyong’o as Clytemnestra, and Charlize Theron as Calypso in The Odyssey&quot; title=&quot;New images of Anne Hathaway as Penelope, Zendaya as Athena, Lupita Nyong’o as Clytemnestra, and Charlize Ther",
+      "published": "2026-05-21T19:57:24+00:00",
+      "published_iso": "2026-05-21T19:57:24.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "a764fc23-bde0-47a1-b59a-6e2d53125ec6",
+          "titulo": "Una chica diferente",
+          "anio": 2007
+        }
+      ]
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;South Park&#8217; Only Planned to Mock Trump Once Until Pushback Made Them Change Course: &#8220;Who&#8217;s the Bully Now?&#8221;",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/south-park-trump-mock-white-house-pushback-1236602987/",
+      "description": "Trey Parker and Matt Stone describe the Comedy Central show's buzzy past year as \"stressful\" and maintain that they were willing to lose it all: \"We'll go back to Colorado. We don't give a fu**.\"",
+      "published": "Thu, 21 May 2026 19:53:27 +0000",
+      "published_iso": "2026-05-21T19:53:27.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "&#8216;Ready or Not&#8217; Directors Radio Silence to Direct &#8216;Choose Your Own Adventure&#8217; Movie at 20th Century",
+      "link": "https://www.thewrap.com/creative-content/movies/radio-silence-to-direct-choose-your-own-adventure-movie-at-20th-century/",
+      "description": "“Andor” writer Tom Bissell will adapt the script from the book series of the same name The post &#8216;Ready or Not&#8217; Directors Radio Silence to Direct &#8216;Choose Your Own Adventure&#8217; Movie at 20th Century appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 19:53:00 +0000",
+      "published_iso": "2026-05-21T19:53:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "It Starts On The Page: Read &#8216;Slow Horses&#8217; Season 5 Finale Script &#8220;Scars&#8221; With Foreword By Will Smith",
+      "link": "https://deadline.com/2026/05/slow-horses-season-5-finale-script-scars-1236906855/",
+      "description": "Editor&#8217;s note:&#160;Deadline&#8217;s&#160;It Starts on the Page&#160;(Drama)&#160;features standout drama series scripts in 2026 Emmy contention. The Season 5 finale of Apple TV&#8217;s Slow Horses marks the final episode for creator and executive producer Will Smith who left the spy thriller after five seasons. Smith, who has earned two writing Emmy nominations and one win for his [&#8230;]",
+      "published": "Thu, 21 May 2026 19:49:55 +0000",
+      "published_iso": "2026-05-21T19:49:55.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Awards Chatter&#8217; in Cannes: Julia Louis-Dreyfus on Comedy, Staying Relevant and New Animated Alzheimer&#8217;s Pic &#8216;Tangles&#8217;",
+      "link": "https://www.hollywoodreporter.com/movies/movie-news/julia-louis-dreyfus-career-tangles-awards-chatter-podcast-1236603547/",
+      "description": "The 11-time Emmy winner sat down with THR at Meta House during the Cannes Film Festival.",
+      "published": "Thu, 21 May 2026 19:44:40 +0000",
+      "published_iso": "2026-05-21T19:44:40.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Death Has No Master&#8217; Review: Asia Argento Plays a Woman Contending With Unwanted Housemates in Listless Venezuelan Drama",
+      "link": "https://www.hollywoodreporter.com/movies/movie-reviews/death-has-no-master-asia-argento-1236602591/",
+      "description": "The third feature by Jorge Thielen Armand, debuting in Cannes' Directors' Fortnight sidebar, is about a woman who encounters unexpected obstacles when she tries to sell her childhood home.",
+      "published": "Thu, 21 May 2026 19:44:22 +0000",
+      "published_iso": "2026-05-21T19:44:22.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "IndieWire",
+      "title": "Cannes 2026 Movies Sold So Far: Critics&#8217; Week Winner &#8216;La Gradiva&#8217; Bought by 1-2 Special",
+      "link": "https://www.indiewire.com/news/festivals/cannes-2026-movies-sold-so-far-paper-tiger-minotaur-1235191174/",
+      "description": "The directorial debut of filmmaker Marine Atlan is a high school coming of age film that won the section's Grand Prize.",
+      "published": "Thu, 21 May 2026 19:41:53 +0000",
+      "published_iso": "2026-05-21T19:41:53.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "Deadline",
+      "title": "‘The Boroughs’ Creators Break Down The Netflix Series They “Could Only Do With The Duffer Brothers”",
+      "link": "https://deadline.com/2026/05/the-boroughs-creators-interview-netflix-duffer-brothers-1236917466/",
+      "description": "SPOILER ALERT: This piece contains some spoilers for Season 1 of The Boroughs on Netflix. The second of two 2026 projects shepherded to fruition by Netflix and The Duffer Brothers’ shingle Upside Down Pictures, The Boroughs, has arrived on the streamer ahead of Memorial Day weekend, complete with sprawling mythology and an ensemble cast assembled [&#8230;]",
+      "published": "Thu, 21 May 2026 19:36:08 +0000",
+      "published_iso": "2026-05-21T19:36:08.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Survivor 50&#8217; Runner-Up Jonathan Young Knows What Led to His Downfall",
+      "link": "https://www.hollywoodreporter.com/tv/tv-features/survivor-50-runner-up-jonathan-young-loss-interview-1236603287/",
+      "description": "Young discusses his second-place finish, his strategic evolution and why he still has unfinished business.",
+      "published": "Thu, 21 May 2026 19:30:41 +0000",
+      "published_iso": "2026-05-21T19:30:41.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "67538c77-1914-4b63-bbae-bc55725549ab",
+          "titulo": "El hundimiento",
+          "anio": 2004
+        }
+      ]
+    },
+    {
+      "source": "Variety",
+      "title": "Kate Bush Wins First Film Award for Directorial Debut: &#8216;How Wonderful!&#8217; (EXCLUSIVE)",
+      "link": "https://variety.com/2026/film/global/kate-bush-celebrates-winning-first-ever-film-award-1236756038/",
+      "description": "Beloved music icon, Brit Award winner, Grammy nominee and now &#8230; award-winning film director. Kate Bush has set out her stalls as a filmmaker by winning a prize for her directorial debut. The &#8220;Wuthering Heights&#8221; legend won the animation award on Thursday for her anti-war short film &#8220;Little Shrew&#8221; at the Carmarthen Bay Film Festival [&#8230;]",
+      "published": "Thu, 21 May 2026 19:30:00 +0000",
+      "published_iso": "2026-05-21T19:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "209dcadf-242f-486e-905b-f2b5fb3e6a87",
+          "titulo": "Cumbres borrascosas",
+          "anio": 2026
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Harry Melling, Adam Nagaitis &#038; Aminah Nieves Join &#8216;Task&#8217; Season 2 At HBO",
+      "link": "https://deadline.com/2026/05/task-season-2-cast-adds-harry-melling-adam-nagaitis-1236917884/",
+      "description": "EXCLUSIVE:&#160;Harry Melling (Pillion), Adam Nagaitis (Star City), and Aminah Nieves (1923) have landed roles alongside Mahershala Ali in the second season of HBO&#8217;s lauded crime drama&#160;Task. Melling will play Brennan Boylan, a powder-keg DEA agent, with Nagaitis as the loyal and unflappable DEA agent, Luke Clemmons. Nieves plays Nataly Zamora, a no-nonsense FBI agent and [&#8230;]",
+      "published": "Thu, 21 May 2026 19:30:00 +0000",
+      "published_iso": "2026-05-21T19:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "IndieWire",
+      "title": "Billy Bob Thornton Relishes His Magic Hour Moment with Ali Larter in the &#8216;Landman&#8217; Season 2 Finale",
+      "link": "https://www.indiewire.com/awards/consider-this/billy-bob-thornton-my-favorite-scene-landman-season-2-1235194140/",
+      "description": "\"For us, it was just one of those scenes where you need to stay connected the whole time until you're done with it,\" said the Emmy-nominated actor of their final scene in Season 2of the Paramount+ hit.",
+      "published": "Thu, 21 May 2026 19:30:00 +0000",
+      "published_iso": "2026-05-21T19:30:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "Variety",
+      "title": "&#8216;Choose Your Own Adventure&#8217; Movie in the Works From &#8216;Ready or Not&#8217; Directors Radio Silence",
+      "link": "https://variety.com/2026/film/news/choose-your-own-adventure-movie-ready-or-not-directors-radio-silence-1236756248/",
+      "description": "Matt Bettinelli-Olpin and Tyler Gillett, the filmmaking team known as Radio Silence, will bring &#8220;Choose Your Own Adventure,&#8221; the popular children&#8217;s gamebook series, to the big screen for 20th Century Studios. The duo will work with &#8220;Andor&#8221; and &#8220;The Disaster Artist&#8221; screenwriter Tom Bissell on the project. The books were nonlinear and allowed readers to [&#8230;]",
+      "published": "Thu, 21 May 2026 19:27:28 +0000",
+      "published_iso": "2026-05-21T19:27:28.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "Christopher Nolan's 'The Odyssey' has an official runtime of 2 Hours &amp; 52 Minutes",
+      "link": "https://www.reddit.com/r/movies/comments/1tjv009/christopher_nolans_the_odyssey_has_an_official/",
+      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/ChiefLeef22&quot;&gt; /u/ChiefLeef22 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.amctheatres.com/movies/the-odyssey-76238&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjv009/christopher_nolans_the_odyssey_has_an_official/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
+      "published": "2026-05-21T19:22:34+00:00",
+      "published_iso": "2026-05-21T19:22:34.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "As The Late Show comes to an end this week what will be the most remembered or iconic moment from the show?",
+      "link": "https://www.reddit.com/r/television/comments/1tjur08/as_the_late_show_comes_to_an_end_this_week_what/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;If you had to pick one. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/LollipopChainsawZz&quot;&gt; /u/LollipopChainsawZz &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjur08/as_the_late_show_comes_to_an_end_this_week_what/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjur08/as_the_late_show_comes_to_an_end_this_week_what/&quot;&g",
+      "published": "2026-05-21T19:14:10+00:00",
+      "published_iso": "2026-05-21T19:14:10.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Kyle Gallner Joins Brie Larson In ‘Skeletons’ From Sony Pictures And Director JT Mollner",
+      "link": "https://www.reddit.com/r/movies/comments/1tjukwz/kyle_gallner_joins_brie_larson_in_skeletons_from/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjukwz/kyle_gallner_joins_brie_larson_in_skeletons_from/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/XLWeAyTOxs2FBHAyD342ubs_S6STR8HuJexNG8NDEvU.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=77f4afe2ee78becfbd4629708739ae02ad789b25&quot; alt=&quot;Kyle Gallner Joins Brie Larson In ‘Skeletons’ From Sony Pictures And Director JT Mollner&quot; title=&quot;Kyle Gallner Joins Brie Larson In ‘Skeletons’ From Sony Pictures And Director JT Mollner&quot; /&gt; &lt;/a&gt; &lt;/t",
+      "published": "2026-05-21T19:08:23+00:00",
+      "published_iso": "2026-05-21T19:08:23.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "‘I have a lot of rage inside me’: Bob Odenkirk on Saul, satire and his heart attack",
+      "link": "https://www.reddit.com/r/television/comments/1tjug15/i_have_a_lot_of_rage_inside_me_bob_odenkirk_on/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjug15/i_have_a_lot_of_rage_inside_me_bob_odenkirk_on/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/IQqB6L8bqe53uPlrRppXPTjGlZUcTcKm_TBARO0uN3E.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=4a846cd57933d86577c1029c9d4337a97c381e42&quot; alt=&quot;‘I have a lot of rage inside me’: Bob Odenkirk on Saul, satire and his heart attack&quot; title=&quot;‘I have a lot of rage inside me’: Bob Odenkirk on Saul, satire and his heart attack&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt",
+      "published": "2026-05-21T19:03:51+00:00",
+      "published_iso": "2026-05-21T19:03:51.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "IndieWire",
+      "title": "Lawrence Kasdan&#8217;s Relationship with One of His Best Friends Yielded One of His Best Movies",
+      "link": "https://www.indiewire.com/features/interviews/lawrence-kasdan-marty-life-is-short-1235195044/",
+      "description": "The director talks about his most recent film, the documentary \"Marty, Life Is Short,\" and looks back at the beginning of his career as his directorial debut \"Body Heat\" is newly released by Criterion.",
+      "published": "Thu, 21 May 2026 19:00:00 +0000",
+      "published_iso": "2026-05-21T19:00:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "3f0ffffb-69c9-46db-80bf-1bb675acabc6",
+          "titulo": "Beginning",
+          "anio": 2021
+        },
+        {
+          "pelicula_id": "0099583b-4cee-4818-a228-cc936a83d34f",
+          "titulo": "Marty, Life Is Short: El documental",
+          "anio": 2026
+        },
+        {
+          "pelicula_id": "ffbf8917-81c0-4104-b31d-7761053661da",
+          "titulo": "Kenshin, el guerrero samurái: El principio",
+          "anio": 2021
+        }
+      ]
+    },
+    {
+      "source": "The Wrap",
+      "title": "Eric Kripke Celebrates Elon Musk&#8217;s &#8216;Pathetic&#8217; Response to &#8216;The Boys&#8217; Series Finale: &#8216;I&#8217;ll Never Get a Better Review&#8217;",
+      "link": "https://www.thewrap.com/creative-content/tv-shows/the-boys-series-finale-eric-kripke-elon-musk-homelander-reaction/",
+      "description": "The billionaire was not happy with Homelander's ending The post Eric Kripke Celebrates Elon Musk&#8217;s &#8216;Pathetic&#8217; Response to &#8216;The Boys&#8217; Series Finale: &#8216;I&#8217;ll Never Get a Better Review&#8217; appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 18:57:24 +0000",
+      "published_iso": "2026-05-21T18:57:24.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "NYC Mayor Zohran Mamdani Launches Twitch Streaming Series ‘Talk With the People’",
+      "link": "https://www.thewrap.com/media-platforms/politics/zohran-mamdani-twitch-streaming-series-talk-with-the-people/",
+      "description": "\"We’re opening up a new conversation between government and the people it serves, especially younger generations who have too often been ignored,\" he explains The post NYC Mayor Zohran Mamdani Launches Twitch Streaming Series ‘Talk With the People’ appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 18:37:31 +0000",
+      "published_iso": "2026-05-21T18:37:31.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "From &#8216;Rooster&#8217; to &#8216;Running Point&#8217;: How Hollywood Is Rethinking Its Comedy Hits",
+      "link": "https://www.thewrap.com/commentary-analysis/columns/rooster-running-point-comedy-ratings/",
+      "description": "Plus, live events keep scoring for Netflix and \"The Rookie\" ends Season 8 on a high note The post From &#8216;Rooster&#8217; to &#8216;Running Point&#8217;: How Hollywood Is Rethinking Its Comedy Hits appeared first on TheWrap .",
+      "published": "Thu, 21 May 2026 18:30:00 +0000",
+      "published_iso": "2026-05-21T18:30:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "IndieWire",
+      "title": "How a Tribe of Cinematographers Shoot &#8216;Survivor&#8217; — 50 Times Over",
+      "link": "https://www.indiewire.com/features/craft/survivor-50-behind-the-scenes-camera-team-1235195207/",
+      "description": "Veterans of the CBS show's camera team explain how they work behind the lens to turn a reality competition into cinematic filmmaking.",
+      "published": "Thu, 21 May 2026 18:30:00 +0000",
+      "published_iso": "2026-05-21T18:30:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "IndieWire",
+      "title": "&#8216;Victorian Psycho&#8217; Review: Maika Monroe Scares Up a Very Different Kind of Final Girl",
+      "link": "https://www.indiewire.com/criticism/movies/victorian-psycho-review-maika-monroe-adaptation-1235195211/",
+      "description": "Cannes: In Zachary Wigon’s deliciously dark adaptation of Virginia Feito's novel of the same name, the beloved scream queen switches sides. Kind of.",
+      "published": "Thu, 21 May 2026 18:15:00 +0000",
+      "published_iso": "2026-05-21T18:15:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "IndieWire",
+      "title": "&#8216;A Man of His Time&#8217; Review: Swann Arlaud Plays a Fly on the Wall to Creeping Fascism",
+      "link": "https://www.indiewire.com/criticism/movies/a-man-of-his-time-review-1235195506/",
+      "description": "Cannes: Emmanuel Marre fictionalizes the experiences of his great-grandfather in this bold political drama, who was a functionary in France’s collaborationist government during World War II.",
+      "published": "Thu, 21 May 2026 18:15:00 +0000",
+      "published_iso": "2026-05-21T18:15:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "IndieWire",
+      "title": "&#8216;Roma Elastica&#8217; Review: Marion Cotillard Is a Dying Scream Queen in Bertrand Mandico&#8217;s Film Industry Pastiche",
+      "link": "https://www.indiewire.com/criticism/movies/roma-elastica-review-bertrand-mandico-marion-cotillard-1235195497/",
+      "description": "Cannes: One of cinema's most idiosyncratic auteurs delivers a kaleidoscope of riffs and references that showcase his baroquely wrought aesthetic, even if the story is thin.",
+      "published": "Thu, 21 May 2026 18:00:00 +0000",
+      "published_iso": "2026-05-21T18:00:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "IndieWire",
+      "title": "&#8216;La Gradiva&#8217; Review: Cannes Critics&#8217; Week Winner Is a Wholly Transporting Story of Youth",
+      "link": "https://www.indiewire.com/criticism/movies/la-gradiva-review-marine-atlan-1235195477/",
+      "description": "Cannes: Mercifully free of typical high school movie tropes, the teenagers at the heart of Marine Atlan’s film are fully realized people, allowing this stunning work to reach toward the sublime.",
+      "published": "Thu, 21 May 2026 17:15:31 +0000",
+      "published_iso": "2026-05-21T17:15:31.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "r/television",
+      "title": "Michael Keating, EastEnders and Blake's 7 star, dies aged 79",
+      "link": "https://www.reddit.com/r/television/comments/1tjqz6i/michael_keating_eastenders_and_blakes_7_star_dies/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjqz6i/michael_keating_eastenders_and_blakes_7_star_dies/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/_EDcL9KWaFypZ8iwchDqYZbC9PZAeWO_dWyoqpLoL8c.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=399d362c9653d833e5a009b9ada5842248864677&quot; alt=&quot;Michael Keating, EastEnders and Blake's 7 star, dies aged 79&quot; title=&quot;Michael Keating, EastEnders and Blake's 7 star, dies aged 79&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &l",
+      "published": "2026-05-21T17:08:59+00:00",
+      "published_iso": "2026-05-21T17:08:59.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Official Poster for Questlove's 'Earth, Wind &amp; Fire' Documentary",
+      "link": "https://www.reddit.com/r/movies/comments/1tjqsv9/official_poster_for_questloves_earth_wind_fire/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjqsv9/official_poster_for_questloves_earth_wind_fire/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/3bjylac0vi2h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c62d2fd5f8e4fe685190225b6f30c9e75a8a387d&quot; alt=&quot;Official Poster for Questlove's 'Earth, Wind &amp;amp; Fire' Documentary&quot; title=&quot;Official Poster for Questlove's 'Earth, Wind &amp;amp; Fire' Documentary&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https:/",
+      "published": "2026-05-21T17:03:06+00:00",
+      "published_iso": "2026-05-21T17:03:06.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "IndieWire",
+      "title": "&#8216;The Black Ball&#8217; Review: Los Javis’ Era-Spanning Monument to Gay Storytellers Is a Heartbreaking Work of Staggering Genius",
+      "link": "https://www.indiewire.com/criticism/movies/the-black-ball-review-los-javis-1235195462/",
+      "description": "Cannes: Javier Calvo and Javier Ambrossi blend real and imaginary people in this Lorca-inspired ode to love stories buried by Spanish history.",
+      "published": "Thu, 21 May 2026 17:00:35 +0000",
+      "published_iso": "2026-05-21T17:00:35.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "auteur"
+    },
+    {
+      "source": "r/television",
+      "title": "Inside the Dumpster's Secrets: The Chris Gethard Show's &quot;One Man's Trash&quot; Turns 10",
+      "link": "https://www.reddit.com/r/television/comments/1tjqjre/inside_the_dumpsters_secrets_the_chris_gethard/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjqjre/inside_the_dumpsters_secrets_the_chris_gethard/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/1Qh_rcBuObvHsb-UlT9itzrnrIGLRNKwx8VU841EVNg.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=6c86e649634a1c2ccccb15df7e12f53a33af38b3&quot; alt=&quot;Inside the Dumpster's Secrets: The Chris Gethard Show's &amp;quot;One Man's Trash&amp;quot; Turns 10&quot; title=&quot;Inside the Dumpster's Secrets: The Chris Gethard Show's &amp;quot;One Man's Trash&amp;quot; Turns 10&quo",
+      "published": "2026-05-21T16:54:53+00:00",
+      "published_iso": "2026-05-21T16:54:53.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "BBC plots 'Poirot' reboot; casting underway for Agatha Christie icon",
+      "link": "https://www.reddit.com/r/television/comments/1tjqgis/bbc_plots_poirot_reboot_casting_underway_for/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjqgis/bbc_plots_poirot_reboot_casting_underway_for/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/pvYSf0A48SgfjylL_QFOXkgidF31qP5G-Afi1VyuW4c.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=22156fc1bae7a0d93691e35cbcdf05c511011485&quot; alt=&quot;BBC plots 'Poirot' reboot; casting underway for Agatha Christie icon&quot; title=&quot;BBC plots 'Poirot' reboot; casting underway for Agatha Christie icon&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &",
+      "published": "2026-05-21T16:51:49+00:00",
+      "published_iso": "2026-05-21T16:51:49.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Michael Keating, EastEnders and Blake's 7 star, dies aged 79",
+      "link": "https://www.reddit.com/r/movies/comments/1tjq3m7/michael_keating_eastenders_and_blakes_7_star_dies/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjq3m7/michael_keating_eastenders_and_blakes_7_star_dies/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/_EDcL9KWaFypZ8iwchDqYZbC9PZAeWO_dWyoqpLoL8c.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=399d362c9653d833e5a009b9ada5842248864677&quot; alt=&quot;Michael Keating, EastEnders and Blake's 7 star, dies aged 79&quot; title=&quot;Michael Keating, EastEnders and Blake's 7 star, dies aged 79&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a ",
+      "published": "2026-05-21T16:39:03+00:00",
+      "published_iso": "2026-05-21T16:39:03.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Army of Darkness (1992) Alternative ending",
+      "link": "https://www.reddit.com/r/movies/comments/1tjpxdc/army_of_darkness_1992_alternative_ending/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjpxdc/army_of_darkness_1992_alternative_ending/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/MV4gwIEOk-SN9eis4TgaAab7AaIJXzpHdRgdjb596nM.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=040703484d3f8b6a7ef4051078e9dc5b96f674e9&quot; alt=&quot;Army of Darkness (1992) Alternative ending&quot; title=&quot;Army of Darkness (1992) Alternative ending&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/ONEto1",
+      "published": "2026-05-21T16:32:51+00:00",
+      "published_iso": "2026-05-21T16:32:51.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "fbcfafbc-a21e-4735-bbde-e0b55afeb027",
+          "titulo": "El ejército de las tinieblas",
+          "anio": 1992
+        }
+      ]
+    },
+    {
+      "source": "r/movies",
+      "title": "New teaser for Zach Cregger's ‘RESIDENT EVIL’ talking about Survival Horror",
+      "link": "https://www.reddit.com/r/movies/comments/1tjps6e/new_teaser_for_zach_creggers_resident_evil/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjps6e/new_teaser_for_zach_creggers_resident_evil/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/Z-liCHO7McnNTldM0Lqbl0UM_ppB8ANcVW2rh973PYo.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=b94b141d86c339163105575774d058fa0fee014d&quot; alt=&quot;New teaser for Zach Cregger's ‘RESIDENT EVIL’ talking about Survival Horror&quot; title=&quot;New teaser for Zach Cregger's ‘RESIDENT EVIL’ talking about Survival Horror&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submit",
+      "published": "2026-05-21T16:27:56+00:00",
+      "published_iso": "2026-05-21T16:27:56.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+          "titulo": "Resident evil - El huésped maldito",
+          "anio": 2002
+        }
+      ]
+    },
+    {
+      "source": "Roger Ebert",
+      "title": "Cannes 2026: Dua, Flesh and Fuel, Six Months in a Pink and Blue Building",
+      "link": "https://www.rogerebert.com/festivals/cannes-2026-dua-flesh-and-fuel-six-months-in-a-pink-and-blue-building",
+      "description": "On three pictures that highlighted Cannes Critics' Week sidebar.",
+      "published": "Thu, 21 May 2026 16:17:41 +0000",
+      "published_iso": "2026-05-21T16:17:41.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "reviews"
+    },
+    {
+      "source": "r/television",
+      "title": "Teenage Mutant Ninja Turtles Go Teeny for YouTube, Thanks to Nick Jr.",
+      "link": "https://www.reddit.com/r/television/comments/1tjp27h/teenage_mutant_ninja_turtles_go_teeny_for_youtube/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjp27h/teenage_mutant_ninja_turtles_go_teeny_for_youtube/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/yAVNHtLXLBhpx4EqxVm6WjxEiIZPe8a4sMcR-kREEVg.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=a259d9dd0de8c10a5a79a9f9932bb1b16ca89942&quot; alt=&quot;Teenage Mutant Ninja Turtles Go Teeny for YouTube, Thanks to Nick Jr.&quot; title=&quot;Teenage Mutant Ninja Turtles Go Teeny for YouTube, Thanks to Nick Jr.&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitt",
+      "published": "2026-05-21T16:03:43+00:00",
+      "published_iso": "2026-05-21T16:03:43.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Roger Ebert",
+      "title": "Cannes 2026 Video #7: Festival Dispatch with Jason Gorber",
+      "link": "https://www.rogerebert.com/festivals/cannes-2026-video-7-festival-dispatch-with-jason-gorber",
+      "description": "Jason Gorber reflects on his time at the fest so far.",
+      "published": "Thu, 21 May 2026 16:02:48 +0000",
+      "published_iso": "2026-05-21T16:02:48.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "reviews"
+    },
+    {
+      "source": "r/television",
+      "title": "The Boroughs premiere discussion (Netflix)",
+      "link": "https://www.reddit.com/r/television/comments/1tjozyk/the_boroughs_premiere_discussion_netflix/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I&amp;#39;m really enjoying the first episode. It has a great cast (Alfred Molina, Alfre Woodard, Geena Davis, Bill Pullman, Clarke Peters, Denis O&amp;#39;Hare). Enjoying the New Mexico setting too, makes me want to rewatch &lt;em&gt;The Vast of Night&lt;/em&gt;. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/LadySynth&quot;&gt; /u/LadySynth &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjozyk/the_boroughs_",
+      "published": "2026-05-21T16:01:50+00:00",
+      "published_iso": "2026-05-21T16:01:50.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "‘Jackass’ TV Show Returns to Paramount+ With ‘Restored Original’ Episodes",
+      "link": "https://www.reddit.com/r/television/comments/1tjo8vl/jackass_tv_show_returns_to_paramount_with/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjo8vl/jackass_tv_show_returns_to_paramount_with/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/TqLfwDQNienUEQoREgCLZBN1rvxb0IbAHh6lI4egqt8.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c0ceb0a49371be2d9240233ace2d6d5a50a35155&quot; alt=&quot;‘Jackass’ TV Show Returns to Paramount+ With ‘Restored Original’ Episodes&quot; title=&quot;‘Jackass’ TV Show Returns to Paramount+ With ‘Restored Original’ Episodes&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitt",
+      "published": "2026-05-21T15:36:38+00:00",
+      "published_iso": "2026-05-21T15:36:38.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "'Emily In Paris' To End With Season 6 On Netflix, Production Starts in Greece",
+      "link": "https://www.reddit.com/r/television/comments/1tjo49j/emily_in_paris_to_end_with_season_6_on_netflix/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjo49j/emily_in_paris_to_end_with_season_6_on_netflix/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/-DI3gaJmRdJS8OuvtqpCaiK7jm2quBJ2yFWBLCZCCzE.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=05fa34b6e857e6730f6d77caed36e80e2a641d82&quot; alt=&quot;'Emily In Paris' To End With Season 6 On Netflix, Production Starts in Greece&quot; title=&quot;'Emily In Paris' To End With Season 6 On Netflix, Production Starts in Greece&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp",
+      "published": "2026-05-21T15:32:00+00:00",
+      "published_iso": "2026-05-21T15:32:00.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "The Vampire Lestat Extended Look | Debuts June 7 on AMC &amp; AMC+",
+      "link": "https://www.reddit.com/r/television/comments/1tjmsk5/the_vampire_lestat_extended_look_debuts_june_7_on/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjmsk5/the_vampire_lestat_extended_look_debuts_june_7_on/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/KDsSltXoU_PqgpI3mAS3qzt80rcUMG3oaSXcrBYebsA.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=2bc3f9a0be1b339c659c454d2514177b4bea5bd4&quot; alt=&quot;The Vampire Lestat Extended Look | Debuts June 7 on AMC &amp;amp; AMC+&quot; title=&quot;The Vampire Lestat Extended Look | Debuts June 7 on AMC &amp;amp; AMC+&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submi",
+      "published": "2026-05-21T14:47:30+00:00",
+      "published_iso": "2026-05-21T14:47:30.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "New image of Anne Hathaway and Ewan McGregor in 'THE END OF OAK STREET'",
+      "link": "https://www.reddit.com/r/movies/comments/1tjmivt/new_image_of_anne_hathaway_and_ewan_mcgregor_in/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjmivt/new_image_of_anne_hathaway_and_ewan_mcgregor_in/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/ucjc57db5i2h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=20afb128b0ebc3a7fbba1240a623ff36e342d47b&quot; alt=&quot;New image of Anne Hathaway and Ewan McGregor in 'THE END OF OAK STREET'&quot; title=&quot;New image of Anne Hathaway and Ewan McGregor in 'THE END OF OAK STREET'&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://",
+      "published": "2026-05-21T14:38:12+00:00",
+      "published_iso": "2026-05-21T14:38:12.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
     },
     {
       "source": "IndieWire",
@@ -68,208 +1032,33 @@
       "source_category": "auteur"
     },
     {
-      "source": "IndieWire",
-      "title": "Cannes 2026 Movies Sold So Far: Louis Clichy&#8217;s Hand-Painted &#8216;Iron Boy&#8217; Goes to Sony Pictures Classics",
-      "link": "https://www.indiewire.com/news/festivals/cannes-2026-movies-sold-so-far-paper-tiger-minotaur-1235191174/",
-      "description": "An animator on \"Up\" and \"WALL-E\" made his solo directing debut with this film that premiered Tuesday in Un Certain Regard.",
-      "published": "Thu, 21 May 2026 13:55:41 +0000",
-      "published_iso": "2026-05-21T13:55:41.000Z",
-      "source_weight": 4,
+      "source": "r/movies",
+      "title": "Liar Liar (1997), Fletcher roasts everyone in the office after being forced to tell the truth: Directed by Tom Shadyac",
+      "link": "https://www.reddit.com/r/movies/comments/1tjl4hy/liar_liar_1997_fletcher_roasts_everyone_in_the/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjl4hy/liar_liar_1997_fletcher_roasts_everyone_in_the/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/dHNhZDdmbnJ2aDJoMWPT4Z-zzozJNsXd0-GIsnYLWgcVkaQvjl1HxMuFxD7z.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=ca7cee5e6460ce52464093f124f43b38f8f4196f&quot; alt=&quot;Liar Liar (1997), Fletcher roasts everyone in the office after being forced to tell the truth: Directed by Tom Shadyac&quot; title=&quot;Liar Liar (1997), Fletcher roasts everyone in the office after being force",
+      "published": "2026-05-21T13:49:17+00:00",
+      "published_iso": "2026-05-21T13:49:17.000Z",
+      "source_weight": 3,
       "source_lang": "en",
-      "source_category": "auteur"
+      "source_category": "pulse"
     },
     {
-      "source": "Deadline",
-      "title": "Sony Classics Buys North America &#038; Multiple International Markets On Cannes Animated Film &#8216;Iron Boy&#8217;",
-      "link": "https://deadline.com/2026/05/sony-classics-buys-animated-film-iron-boy-cannes-ucr-1236917773/",
-      "description": "Sony Pictures Classics has acquired all rights in North and Latin America, India and Southeast Asian TV to Iron Boy, Louis Clichy’s hand-painted animated feature. Premiering in the Un Certain Regard section at this year’s Cannes Film Festival, the childhood drama has drawn some enthusiastic notices from critics. The French-language film is co-written by Clichy [&#8230;]",
-      "published": "Thu, 21 May 2026 13:51:10 +0000",
-      "published_iso": "2026-05-21T13:51:10.000Z",
-      "source_weight": 5,
+      "source": "r/movies",
+      "title": "Sleepy Hollow (1999) | Dir: Tim Burton | The origin of the Headless Horseman",
+      "link": "https://www.reddit.com/r/movies/comments/1tjkoku/sleepy_hollow_1999_dir_tim_burton_the_origin_of/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjkoku/sleepy_hollow_1999_dir_tim_burton_the_origin_of/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/dDR0eXVoaGl0aDJoMYxUvTok8_hERcGquiUBivNF9DgXhRsNROcpYD4R6_qN.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=6f53c82a40c8696be9726085d674cf7df615f3d2&quot; alt=&quot;Sleepy Hollow (1999) | Dir: Tim Burton | The origin of the Headless Horseman&quot; title=&quot;Sleepy Hollow (1999) | Dir: Tim Burton | The origin of the Headless Horseman&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;",
+      "published": "2026-05-21T13:33:03+00:00",
+      "published_iso": "2026-05-21T13:33:03.000Z",
+      "source_weight": 3,
       "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "Stephen Colbert Mocks Trump Phone for Dropping &#8216;Made in America&#8217; Promise: &#8216;Hey, That&#8217;s Close Enough&#8217; &#124; Video",
-      "link": "https://www.thewrap.com/creative-content/tv-shows/stephen-colbert-mocks-trump-golden-phone-made-in-america-promise/",
-      "description": "\"That's fine!\" the CBS host jokes The post Stephen Colbert Mocks Trump Phone for Dropping &#8216;Made in America&#8217; Promise: &#8216;Hey, That&#8217;s Close Enough&#8217; | Video appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 13:46:10 +0000",
-      "published_iso": "2026-05-21T13:46:10.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "Film AlUla Bolsters Role as Movie Industry Driver as Saudi Kingdom Raises Its Film Production Rebate to 60 Percent",
-      "link": "https://variety.com/2026/film/news/saudi-arabia-film-alula-movie-industry-1236754664/",
-      "description": "Saudi Arabia’s Film AlUla – the film commission for the swathe of northwest Saudi Arabia – is bolstering its role as a cornerstone of the kingdom’s ongoing effort to build a film industry ecosystem thanks to its recent partnership with global studios giant MBS Group and its ongoing rapport with the Red Sea Film Foundation. [&#8230;]",
-      "published": "Thu, 21 May 2026 13:45:00 +0000",
-      "published_iso": "2026-05-21T13:45:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "As &#8216;The Late Show&#8217; Comes to an End, Stephen Colbert&#8217;s Sincerity Will Be Missed Most of All",
-      "link": "https://www.hollywoodreporter.com/tv/tv-reviews/stephen-colbert-the-late-show-critic-appreciation-1236602734/",
-      "description": "It's not Colbert's sense of irony or his political commentary that set him apart from the late-night pack, but his ability to be candid, clear-eyed and emotionally direct when the moment called for it.",
-      "published": "Thu, 21 May 2026 13:45:00 +0000",
-      "published_iso": "2026-05-21T13:45:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "Bruce Springsteen Jabs Donald Trump And The Ellisons As He Performs On Stephen Colbert&#8217;s Second-To-Last Show",
-      "link": "https://deadline.com/2026/05/bruce-springsteen-trump-stephen-colbert-1236917737/",
-      "description": "Bruce Springsteen made a few jabs at Donald Trump and David and Larry Ellison before he performed on Stephen Colbert&#8217;s second-to-last The Late Show on CBS. &#8220;I&#8217;m here in support tonight for Stephen, because you&#8217;re the first guy in America who has lost his show because we got a president who can&#8217;t take a joke,&#8221; [&#8230;]",
-      "published": "Thu, 21 May 2026 13:43:26 +0000",
-      "published_iso": "2026-05-21T13:43:26.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Jimmy Kimmel Urges Viewers to &#8220;Never Watch CBS Again&#8221; After Colbert Finale",
-      "link": "https://www.hollywoodreporter.com/tv/tv-news/jimmy-kimmel-stephen-colbert-finale-cbs-1236603264/",
-      "description": "The 'Jimmy Kimmel Live!' host had some advice for viewers on the eve of 'The Late Show' series finale.",
-      "published": "Thu, 21 May 2026 13:42:26 +0000",
-      "published_iso": "2026-05-21T13:42:26.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "Showrunners and Creators of Emmy Season 2026",
-      "link": "http://thewrap.com/showrunners-list-emmy-contenders-2026/",
-      "description": "From \"Beef\" and \"The 'Burbs\" to \"Shrinking\" and \"Widow's Bay,\" we're celebrating the people who made some of the year's best TV series The post Showrunners and Creators of Emmy Season 2026 appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 13:36:07 +0000",
-      "published_iso": "2026-05-21T13:36:07.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "‘Victorian Psycho’ Review: Maika Monroe Is Maddeningly Good",
-      "link": "https://www.thewrap.com/creative-content/movies/victorian-psycho-review-maika-monroe-cannes/",
-      "description": "Cannes 2026: Filmmaker Zachary Wigon conjures a darkly fun yet fleeting period horror starring today's premier scream queen The post ‘Victorian Psycho’ Review: Maika Monroe Is Maddeningly Good appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 13:35:00 +0000",
-      "published_iso": "2026-05-21T13:35:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "‘The Boroughs’ Review: Netflix’s Big-Hearted Sci-Fi Thriller Dares You to Underestimate Its Boomer Heroes",
-      "link": "https://www.thewrap.com/creative-content/reviews/the-boroughs-review-netflix/",
-      "description": "Surreal series from ‘Stranger Things’ producers lets its legendary cast run amok to great effect The post ‘The Boroughs’ Review: Netflix’s Big-Hearted Sci-Fi Thriller Dares You to Underestimate Its Boomer Heroes appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 13:30:00 +0000",
-      "published_iso": "2026-05-21T13:30:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Rami Malek Nearly Passed on AIDS-Era &#8216;The Man I Love&#8217; Fearing Freddie Mercury Comparisons",
-      "link": "https://www.hollywoodreporter.com/movies/movie-news/rami-malek-nearly-passed-on-aids-era-the-man-i-love-1236603249/",
-      "description": "Malek almost passed on Ira Sachs’ AIDS-era Cannes drama 'The Man I Love,' fearing comparisons to his Oscar-winning turn as Freddie Mercury in 'Bohemian Rhapsody.'",
-      "published": "Thu, 21 May 2026 13:29:55 +0000",
-      "published_iso": "2026-05-21T13:29:55.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
+      "source_category": "pulse",
       "cinebret_matches": [
         {
-          "pelicula_id": "d15db1f2-2a6b-4bfe-99e4-1e47991886b2",
-          "titulo": "Bohemian Rhapsody",
-          "anio": 2018
-        }
-      ]
-    },
-    {
-      "source": "Variety",
-      "title": "&#8216;Clarissa&#8217; Review: Sophie Okonedo Illuminates a Quietly Dazzling Nigerian Reinterpretation of &#8220;Mrs Dalloway&#8221;",
-      "link": "https://variety.com/2026/film/reviews/clarissa-review-sophie-okonedo-1236755796/",
-      "description": "Virginia Woolf&#8217;s interior epic &#8220;Mrs Dalloway&#8221; survives — and thrives — following a surprisingly successful transplantation from London to Lagos in brothers Arie and Chuko Esiri&#8217;s vivid and velvety &#8220;Clarissa,&#8221; which places a superb Sophie Okonedo, radiant with melancholy, at the heart of its remarkably well-cast ensemble. Expanding in ambition and feeling from their promising [&#8230;]",
-      "published": "Thu, 21 May 2026 13:27:05 +0000",
-      "published_iso": "2026-05-21T13:27:05.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-          "titulo": "Following",
+          "pelicula_id": "0b84221f-bd23-4ff4-990f-5c951e7b42f6",
+          "titulo": "Sleepy Hollow (El Jinete sin Cabeza)",
           "anio": 1999
         }
       ]
-    },
-    {
-      "source": "Deadline",
-      "title": "Netflix Turns To Daily Live Video With Deal For Charlamagne Tha God&#8217;s &#8216;The Breakfast Club&#8217; Podcast",
-      "link": "https://deadline.com/2026/05/netflix-charlamagne-tha-god-the-breakfast-club-1236917738/",
-      "description": "Netflix will start its first daily live program next month when it streams the video podcast The Breakfast Club with Charlamagne Tha God, DJ Envy and Jess Hilarious. The daily show will debut on Netflix on June 1, and will simulcast on iHeartMedia, which entered into a partnership with the streamer last year. The radio [&#8230;]",
-      "published": "Thu, 21 May 2026 13:22:35 +0000",
-      "published_iso": "2026-05-21T13:22:35.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "b778af2c-92e2-4bb7-9be3-511b617f2a01",
-          "titulo": "El club de los cinco",
-          "anio": 1985
-        }
-      ]
-    },
-    {
-      "source": "Variety",
-      "title": "Director Lukas Dhont on Queer World War I Romance &#8216;Courage&#8217;: &#8216;It&#8217;s a Part of History I Hadn&#8217;t Seen Portrayed&#8217;",
-      "link": "https://variety.com/2026/film/markets-festivals/lukas-dhont-gay-world-war-i-romance-courage-cannes-1236752360/",
-      "description": "Lukas Dhont was inspired to make &#8220;Coward,&#8221; a gay love story set in the trenches of World War I, after he came across a series of black-and-white photographs of soldiers staging shows for their fellow troops. As part of the performances, some of the men would crossdress in order to play everything from can-can dancers [&#8230;]",
-      "published": "Thu, 21 May 2026 13:20:46 +0000",
-      "published_iso": "2026-05-21T13:20:46.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "Esports World Cup to Move From Saudi Arabia to France in 2026 (Gaming News Roundup)",
-      "link": "https://variety.com/2026/digital/news/gaming-news-roundup-week-of-may-18-1236755479/",
-      "description": "The 2026 Esports World Cup will be held outside Saudi Arabia for the first time in the event&#8217;s history, taking place in Paris, France, from July 6 through August 23. The Esports Foundation made the announcement, stating that “following an extended evaluation process, and in light of the current regional situation, the Esports Foundation decided [&#8230;]",
-      "published": "Thu, 21 May 2026 13:17:32 +0000",
-      "published_iso": "2026-05-21T13:17:32.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-          "titulo": "Following",
-          "anio": 1999
-        }
-      ]
-    },
-    {
-      "source": "The Wrap",
-      "title": "Colbert’s Late Night Legacy: Did We Ask Too Much of Him? &#124; Commentary",
-      "link": "https://www.thewrap.com/creative-content/tv-shows/late-show-colbert-ending-commentary/",
-      "description": "Whether he liked it or not, Stephen Colbert spent decades being a clear voice in torrid political times. The end of “The Late Show” is the end of that era The post Colbert’s Late Night Legacy: Did We Ask Too Much of Him? | Commentary appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 13:15:00 +0000",
-      "published_iso": "2026-05-21T13:15:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/television",
@@ -283,106 +1072,33 @@
       "source_category": "pulse"
     },
     {
-      "source": "Variety",
-      "title": "Rami Malek Hesitated to Star in Ira Sachs&#8217; Gay Drama &#8216;The Man I Love&#8217; After Playing Freddie Mercury: &#8216;I Had to Address the Fear&#8217;",
-      "link": "https://variety.com/2026/film/festivals/rami-malek-fear-gay-drama-freddie-mercury-1236755809/",
-      "description": "Rami Malek had been itching to work with Ira Sachs for some time — going as far as to ask his representatives to get him a meeting with the filmmaker. But when he got the script for Sachs&#8217; next movie, &#8220;The Man I Love&#8221; — about a New York theater performer navigating life, love and [&#8230;]",
-      "published": "Thu, 21 May 2026 13:04:48 +0000",
-      "published_iso": "2026-05-21T13:04:48.000Z",
-      "source_weight": 5,
+      "source": "r/movies",
+      "title": "Official Posters for Zach Cregger’s ‘Resident Evil’",
+      "link": "https://www.reddit.com/r/movies/comments/1tjjv38/official_posters_for_zach_creggers_resident_evil/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tjjv38/official_posters_for_zach_creggers_resident_evil/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/6usx06waoh2h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=d2da456666731611d7874739d025ab4910adb31d&quot; alt=&quot;Official Posters for Zach Cregger’s ‘Resident Evil’&quot; title=&quot;Official Posters for Zach Cregger’s ‘Resident Evil’&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/MarvelsGrantMan136&",
+      "published": "2026-05-21T13:02:48+00:00",
+      "published_iso": "2026-05-21T13:02:48.000Z",
+      "source_weight": 3,
       "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "Ex-TikTok Exec Stuart Flint To Advise Caspar Lee &#038; Ben Jeffries&#8217; Influencer",
-      "link": "https://deadline.com/2026/05/stuart-flint-influencer-caspar-lee-1236917728/",
-      "description": "EXCLUSIVE: Former TikTok exec Stuart Flint has joined the advisory board of Influencer, the global creator marketing biz founded by Caspar Lee and Ben Jeffries. Flint was TikTok&#8217;s VP, Sales in Europe, leading the social media app on commercial operations in the continent and is now SVP and Managing Director, EMEA for DoubleVerify. We hear [&#8230;]",
-      "published": "Thu, 21 May 2026 13:01:13 +0000",
-      "published_iso": "2026-05-21T13:01:13.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "MC Jin, Pacific Music Group Launch Family Style Records Imprint (EXCLUSIVE)",
-      "link": "https://variety.com/2026/music/news/mc-jin-pacific-music-group-family-style-records-1236755340/",
-      "description": "Pacific Music Group has launched Family Style Records, a new Hip-Hop imprint led by MC Jin, debuting alongside Jin&#8217;s new single, &#8220;Humble Flex,&#8221; in celebration of AAPI Heritage Month. The label launches with a four-act roster: MC Jin alongside Korean sibling duo Lil Cherry and Goldbuuda, 13-year-old Indonesian rapper Nada (Nada Askana) – who has [&#8230;]",
-      "published": "Thu, 21 May 2026 13:00:00 +0000",
-      "published_iso": "2026-05-21T13:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "Broadway Publicity Firm BBB Announces New Ownership, Rebrands as Aperture Public Relations",
-      "link": "https://variety.com/2026/legit/news/broadway-publicity-firm-bbb-rebrands-aperture-public-relations-1236755368/",
-      "description": "BBB, one of the leading publicity firms that covers Broadway, has been acquired by veteran press agents and longtime employees Heath Schwartz and Michelle Farabaugh. The company will be rebranded as Aperture Public Relations, effective June 1. Boneau/Bryan-Brown, formed in 1991 by Chris Boneau and Adrian Bryan-Brown, has represented more than 400 theatrical productions on [&#8230;]",
-      "published": "Thu, 21 May 2026 13:00:00 +0000",
-      "published_iso": "2026-05-21T13:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Love in the Time of Microdrama: The Sexy Mini-Movies Taking Over Hollywood",
-      "link": "https://www.hollywoodreporter.com/business/digital/microdramas-inside-mini-movies-hollywood-1236601176/",
-      "description": "The indie film scene isn’t dead — it’s just creating low-budget bodice rippers for the TikTok era. THR embeds with the buzzy production company that’s putting the steam into streaming.",
-      "published": "Thu, 21 May 2026 13:00:00 +0000",
-      "published_iso": "2026-05-21T13:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "Longtime Broadway Press Agency Boneau/Bryan-Brown Gets New Principal Owners, Name Change",
-      "link": "https://deadline.com/2026/05/boneau-bryan-brown-aperture-broadway-1236917090/",
-      "description": "Boneau/Bryan-Brown, for more than 30 years one of Broadway&#8217;s busiest preeminent press agencies representing hundreds of shows with campaigns garnering 254 Tony Awards, is soon to have new principal ownership and a name change to Aperture Public Relations. Formed in 1991 by press agents&#160;Chris Boneau&#160;and&#160;Adrian Bryan-Brown and quickly establishing itself in the forefront of a [&#8230;]",
-      "published": "Thu, 21 May 2026 13:00:00 +0000",
-      "published_iso": "2026-05-21T13:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "‘Passenger’ Review: Hitchhiking Ghost Takes the Highway to Ho-Hum",
-      "link": "https://www.thewrap.com/creative-content/reviews/passenger-2026-review/",
-      "description": "André Øvredal’s supernatural road trip debuts a new cinematic boogeyman, but hits big potholes along the way The post ‘Passenger’ Review: Hitchhiking Ghost Takes the Highway to Ho-Hum appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 13:00:00 +0000",
-      "published_iso": "2026-05-21T13:00:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry",
+      "source_category": "pulse",
       "cinebret_matches": [
         {
-          "pelicula_id": "f5ebcecf-0e15-487e-b734-be4e3700d74c",
-          "titulo": "El pasajero nocturno",
-          "anio": 2026
+          "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
+          "titulo": "Resident evil - El huésped maldito",
+          "anio": 2002
         }
       ]
     },
     {
-      "source": "IndieWire",
-      "title": "&#8216;Passenger&#8217; Review: André Øvredal Shatters the Fantasy of Van Life in a Brutal and Ghostly Road Trip",
-      "link": "https://www.indiewire.com/criticism/movies/passenger-film-review-andre-ovredal-1235195372/",
-      "description": "Jacob Scipio and Lou Llobell star as doomed lovers taking a supernatural thrill ride that's packed with nerve-shredding jump scares, but could use some more emotional fuel.",
+      "source": "Roger Ebert",
+      "title": "Netflix’s “The Boroughs” Offers a Clever Spin on the “Stranger Things” Formula",
+      "link": "https://www.rogerebert.com/streaming/netflix-the-boroughs-tv-review-2026",
+      "description": "Refreshingly more than just \"Elder Things.\"",
       "published": "Thu, 21 May 2026 13:00:00 +0000",
       "published_iso": "2026-05-21T13:00:00.000Z",
       "source_weight": 4,
       "source_lang": "en",
-      "source_category": "auteur",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "f5ebcecf-0e15-487e-b734-be4e3700d74c",
-          "titulo": "El pasajero nocturno",
-          "anio": 2026
-        }
-      ]
+      "source_category": "reviews"
     },
     {
       "source": "r/television",
@@ -396,26 +1112,22 @@
       "source_category": "pulse"
     },
     {
-      "source": "Hollywood Reporter",
-      "title": "Netflix Launches First Live Daily Video Podcast: Charlamagne tha God&#8217;s &#8216;Breakfast Club&#8217;",
-      "link": "https://www.hollywoodreporter.com/business/digital/netflix-video-podcast-charlamagne-tha-god-1236603243/",
-      "description": "The streaming platform will compete with wake up shows starting with the 6 a.m. hour on the weekdays.",
-      "published": "Thu, 21 May 2026 12:43:03 +0000",
-      "published_iso": "2026-05-21T12:43:03.000Z",
-      "source_weight": 5,
+      "source": "r/movies",
+      "title": "The bullet proof suit in the John Wick franchise is so frustrating",
+      "link": "https://www.reddit.com/r/movies/comments/1tjjgom/the_bullet_proof_suit_in_the_john_wick_franchise/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I&amp;#39;ll point out from the start that I really enjoy all of the John Wick movies. While I recognize the &amp;quot;realism&amp;quot; angle fell off after the first one, they&amp;#39;re still incredibly well put together movies and I&amp;#39;ll happily watch further installments for the fight choreography alone. That said...&lt;/p&gt; &lt;p&gt;The bullet proof suit is the worst thing they ever added to this franchise. It completely nullifies any anxiety about John needing to worry about gunfire in fights. The number of times he r",
+      "published": "2026-05-21T12:47:14+00:00",
+      "published_iso": "2026-05-21T12:47:14.000Z",
+      "source_weight": 3,
       "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "&#8216;Victorian Psycho&#8217;: Maika Monroe Is A Crazed Governess In First Trailer For Cannes Horror",
-      "link": "https://deadline.com/2026/05/victorian-psycho-maika-monroe-first-teaser-trailer-horror-1236917718/",
-      "description": "Here&#8217;s your first teaser trailer for Maika Monroe horror Victorian Psycho, which debuts today in Cannes&#8217; UCR section. Based on the novel by Virginia Feito, the synopsis reads: &#8220;When eccentric governess Winifred (Monroe) arrives at a remote gothic manor in Victorian England, her unnerving charm hides a deadly secret. Strange, unsettling incidents become harder to [&#8230;]",
-      "published": "Thu, 21 May 2026 12:17:57 +0000",
-      "published_iso": "2026-05-21T12:17:57.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
+          "titulo": "Together: Juntos hasta la muerte",
+          "anio": 2025
+        }
+      ]
     },
     {
       "source": "r/movies",
@@ -441,68 +1153,6 @@
       ]
     },
     {
-      "source": "IndieWire",
-      "title": "&#8216;Victorian Psycho&#8217; Teaser: Maika Monroe Is a Disturbed Governess in a Gothic Horror Tale",
-      "link": "https://www.indiewire.com/news/trailers/victorian-psycho-trailer-maika-monroe-horror-gothic-1235195339/",
-      "description": "The film premieres in the Un Certain Regard category at the Cannes Film Festival, ahead of its fall theatrical release.",
-      "published": "Thu, 21 May 2026 12:01:00 +0000",
-      "published_iso": "2026-05-21T12:01:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Mixed Martial Arts Pioneer Scott Coker Plans 2027 Launch of New Global MMA League With $60M in Financing, Including From Tony Hawk",
-      "link": "https://www.hollywoodreporter.com/business/business-news/new-mma-league-scott-coker-tony-hawk-2027-launch-1236600979/",
-      "description": "The ex-Bellator boss and Strikeforce founder sees \"incredible demand for a fresh, new global brand in MMA\" focused on \"the integrity of competition, respect for the athletes and sharing their remarkable journeys.\"",
-      "published": "Thu, 21 May 2026 12:00:00 +0000",
-      "published_iso": "2026-05-21T12:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Maika Monroe&#8217;s Wayward Governess Is Bloodthirsty in Gory Teaser Trailer for &#8216;Victorian Psycho&#8217;",
-      "link": "https://www.hollywoodreporter.com/movies/movie-news/maika-monroe-cannes-victorian-psycho-trailer-premiere-film-1236603208/",
-      "description": "The horror film gets its world premiere in Cannes' Un Certain Regard on Thursday, after giving The Hollywood Reporter an exclusive first look.",
-      "published": "Thu, 21 May 2026 12:00:00 +0000",
-      "published_iso": "2026-05-21T12:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "Rami Malek Says &#8220;There Was A Certain Sense Of Fear&#8221; In Taking On &#8216;The Man I Love&#8217; After Playing Freddie Mercury In &#8216;Bohemian Rhapsody&#8217; &#8211; Cannes",
-      "link": "https://deadline.com/2026/05/rami-malek-cannes-man-i-love-1236917649/",
-      "description": "Before taking on a performing artist who is battling AIDs in 1980s New York in Ira Sachs&#8217; latest Cannes feature The Man I Love, star Rami Malek said, &#8220;I can&#8217;t do this, there&#8217;s too many similarities.&#8221; Similarities to his Oscar winning Best Actor role of Freddie Mercury in Bohemian Rhapsody who also suffered from AIDs. [&#8230;]",
-      "published": "Thu, 21 May 2026 11:55:33 +0000",
-      "published_iso": "2026-05-21T11:55:33.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "d15db1f2-2a6b-4bfe-99e4-1e47991886b2",
-          "titulo": "Bohemian Rhapsody",
-          "anio": 2018
-        }
-      ]
-    },
-    {
-      "source": "Deadline",
-      "title": "‘Fatherland’ Producer Ewa Puszczyńska On Working With Paweł Pawlikowski, Poland’s Growing Production Landscape &#038; “Finding Common Ground” With Filmmakers",
-      "link": "https://deadline.com/2026/05/fatherland-ewa-puszczynska-extreme-emotions-pawilkowski-1236917366/",
-      "description": "Polish producer Ewa Puszczyńska has long been one of the country’s most recognized film producers who has steadily built a reputation for supporting some of the most ambitious cinema to come out of Europe across the last decade. She’s worked with directors such as Paweł Pawlikowski, David Lynch, Jonathan Glazer, Jesse Eisenberg and Agnieszka Smoczyńska [&#8230;]",
-      "published": "Thu, 21 May 2026 11:37:19 +0000",
-      "published_iso": "2026-05-21T11:37:19.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
       "source": "r/movies",
       "title": "Mick Jagger Set to Star in Alice Rohrwacher’s Gothic-Drama ‘Three Incestuous Sisters’ Joining Josh O’Connor, Dakota Johnson, Saoirse Ronan, Jessie Buckley, Isabella Rossellini",
       "link": "https://www.reddit.com/r/movies/comments/1tjhs8t/mick_jagger_set_to_star_in_alice_rohrwachers/",
@@ -514,15 +1164,27 @@
       "source_category": "pulse"
     },
     {
-      "source": "Deadline",
-      "title": "European Screenwriters Body Voices Support For Signatories Of Anti-Bolloré Letter &#038; Says Canal+ Talent Boycott Is Symptomatic Of Wider Pan-Europe Trend",
-      "link": "https://deadline.com/2026/05/screenwriters-fsa-bollore-letter-boycott-europe-trend-1236917667/",
-      "description": "EXCLUSIVE: The Federation of Screenwriters in Europe (FSE) has waded into the debate over Vincent Bolloré’s growing control of the French entertainment and media sectors, sparked by the &#8216;It’s Time To Switch-Off Bolloré’ letter launched on the opening of the Cannes Film Festival, saying it is symptomatic of a wider trend across Europe. &#8220;The 2026 [&#8230;]",
-      "published": "Thu, 21 May 2026 11:06:42 +0000",
-      "published_iso": "2026-05-21T11:06:42.000Z",
-      "source_weight": 5,
+      "source": "r/movies",
+      "title": "What's the largest drop off in screen time for a central character returning for a sequel? (*who wasn't recast or written out entirely)",
+      "link": "https://www.reddit.com/r/movies/comments/1tjg07f/whats_the_largest_drop_off_in_screen_time_for_a/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I saw Mortal Kombat II the other day and was genuinely shocked at how reduced Lewis Tan&amp;#39;s role was coming from the first film where he essentially served as the central protagonist the entire previous film. Granted, I think it was a smart move to shift the focus away from his character and make the sequel more about the ensemble - it just took me by surprise because when a franchise/series tends to make that drastic of a shift, the original actor hardly ever returns (see Johnny Cage in Mortal Kombat: Annihilation).&lt;/p&gt;",
+      "published": "2026-05-21T10:09:10+00:00",
+      "published_iso": "2026-05-21T10:09:10.000Z",
+      "source_weight": 3,
       "source_lang": "en",
-      "source_category": "industry"
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "8f7c8792-20ce-436e-b56d-65de5297aefc",
+          "titulo": "Mortal Kombat II",
+          "anio": 2026
+        },
+        {
+          "pelicula_id": "3665e02f-2c85-45da-91c2-205e2758edb0",
+          "titulo": "Mortal Kombat",
+          "anio": 1995
+        }
+      ]
     },
     {
       "source": "r/television",
@@ -536,17 +1198,6 @@
       "source_category": "pulse"
     },
     {
-      "source": "Deadline",
-      "title": "Deadline’s Reality TV Summit Comes To SXSW London Featuring Netflix’s UK Unscripted Boss, Top Producers, AI Deep Dive &#038; &#8216;Taskmaster’ With Alex Horne",
-      "link": "https://deadline.com/2026/05/deadline-reality-tv-summit-sxsw-london-netflix-taskmaster-1236917635/",
-      "description": "Deadline is bringing its Reality TV Summit to SXSW London with panels, keynotes and masterclasses on June 2. Syeda Irtizaali, Netflix’s UK unscripted boss, will be the keynote speaker. Irtizaali is one of the UK’s best-known unscripted execs. She was one of the architects behind the landmark BBC-NBC deal that has seen The Traitors become [&#8230;]",
-      "published": "Thu, 21 May 2026 09:51:50 +0000",
-      "published_iso": "2026-05-21T09:51:50.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
       "source": "Roger Ebert",
       "title": "Cannes 2026: The Man I Love, Orange-Flavoured Wedding",
       "link": "https://www.rogerebert.com/festivals/cannes-2026-the-man-i-love-orange-flavoured-wedding",
@@ -558,70 +1209,15 @@
       "source_category": "reviews"
     },
     {
-      "source": "Deadline",
-      "title": "‘The Birthday Party’ Clip: First Look At Monica Bellucci In Cannes Palme D’Or Contender Unveiled",
-      "link": "https://deadline.com/2026/05/clip-birthday-party-monica-bellucci-cannes-contender-1236917377/",
-      "description": "EXCLUSIVE: Monica Bellucci hits Cannes Film Festival this year in Léa Mysius’ Palme d’Or contender The Birthday Party (Histoires De La Nuit) and Deadline can reveal a first look of the star in the dark thriller, which closes the main competition program on Friday. Adapted from Laurent Mauvignier’s eponymous best-selling, the picture revolves around Thomas, [&#8230;]",
-      "published": "Thu, 21 May 2026 09:21:16 +0000",
-      "published_iso": "2026-05-21T09:21:16.000Z",
-      "source_weight": 5,
+      "source": "r/television",
+      "title": "Netflix Partners With NHK On 20 Japanese Drama Plus 'Monday Late Show'",
+      "link": "https://www.reddit.com/r/television/comments/1tjf73o/netflix_partners_with_nhk_on_20_japanese_drama/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tjf73o/netflix_partners_with_nhk_on_20_japanese_drama/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/3f2VxsvgdcjfmXTUYFo-vn1vV2FyN1CicO27VsTHWxQ.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=09ef16faeaf4295c1f899d88f13140a7dd5ec774&quot; alt=&quot;Netflix Partners With NHK On 20 Japanese Drama Plus 'Monday Late Show'&quot; title=&quot;Netflix Partners With NHK On 20 Japanese Drama Plus 'Monday Late Show'&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted",
+      "published": "2026-05-21T09:26:14+00:00",
+      "published_iso": "2026-05-21T09:26:14.000Z",
+      "source_weight": 2,
       "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "Netflix Going Big In Japan With Deal For 20 NHK Dramas &#038; Variety Show",
-      "link": "https://deadline.com/2026/05/netflix-japan-nhk-deal-20-drama-monday-late-show-1236917636/",
-      "description": "Netflix is going big in Japan after striking a deal with national broadcaster NHK for a wealth of dramas and landing its first variety show. The streamer, which has been keen to expand its Japanese footprint, will launch six NHK series next month including Taiga drama Strategist KANBE; the morning serial Mampuku; Drama 10&#8217;s Descending [&#8230;]",
-      "published": "Thu, 21 May 2026 09:19:16 +0000",
-      "published_iso": "2026-05-21T09:19:16.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "IndieWire",
-      "title": "&#8216;Viva Carmen&#8217; Review: Sébastien Laudenbach Spins Bizet&#8217;s Tragic Opera Into a Beautifully Animated Story of Fate, Failure, and the Hope They Leave Behind",
-      "link": "https://www.indiewire.com/criticism/movies/viva-carmen-animated-movie-review-sebastien-laudenbach-1235195382/",
-      "description": "The \"Chicken for Linda!\" director returns with another singularly gorgeous work of animation.",
-      "published": "Thu, 21 May 2026 08:15:02 +0000",
-      "published_iso": "2026-05-21T08:15:02.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Diego Luna, &#8216;Andor&#8217; Star Denise Gough, Jeffrey Wright, Richard Ayoade Lend Their Voices to Liam Young&#8217;s Immersive Experience &#8216;In Other Worlds&#8217;",
-      "link": "https://www.hollywoodreporter.com/lifestyle/arts/barbican-london-in-other-worlds-diego-luna-richard-ayoade-1236602537/",
-      "description": "Hosted at London's Barbican, May 21-Sept. 6, the exhibition of imaginary worlds invites us to \"imagine what the future of humanity could look like, and the challenges and adventures to come.\"",
-      "published": "Thu, 21 May 2026 08:06:00 +0000",
-      "published_iso": "2026-05-21T08:06:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Ruben Östlund Adds New Scene to &#8216;The Entertainment System Is Down&#8217; With Nicholas Braun",
-      "link": "https://www.hollywoodreporter.com/movies/movie-news/ostlund-shoots-new-scene-of-the-entertainment-system-is-down-1236603185/",
-      "description": "The two-time Palme d'Or winner, who ruled himself out of this year's Cannes race, makes a festival pit stop to launch MyList, a film recommendation site he's launched in Sweden.",
-      "published": "Thu, 21 May 2026 07:36:36 +0000",
-      "published_iso": "2026-05-21T07:36:36.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "&#8216;The Boroughs&#8217; Review: Alfred Molina Leads an All-Star Ensemble Through Netflix&#8217;s Clunky Geriatric Spin on &#8216;Stranger Things&#8217;",
-      "link": "https://www.hollywoodreporter.com/tv/tv-reviews/the-boroughs-review-alfred-molina-duffer-bros-netflix-1236602497/",
-      "description": "Geena Davis, Alfre Woodard and Bill Pullman also appear in the sci-fi thriller executive produced by the Duffer brothers, about a supernatural mystery unfolding in a desert retirement community.",
-      "published": "Thu, 21 May 2026 07:01:00 +0000",
-      "published_iso": "2026-05-21T07:01:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
+      "source_category": "pulse"
     },
     {
       "source": "r/movies",
@@ -640,28 +1236,6 @@
           "anio": 2004
         }
       ]
-    },
-    {
-      "source": "The Wrap",
-      "title": "Stephen Colbert Grilled by Billy Crystal, Amy Sedaris, Wife Evie and More for Final &#8216;Late Show&#8217; Questionnaire",
-      "link": "https://www.thewrap.com/creative-content/tv-shows/the-late-show-stephen-colbert-questionert-segment-billy-crystal-amy-sedaris/",
-      "description": "\"Being in this seat is weird for me,\" the late night host quips The post Stephen Colbert Grilled by Billy Crystal, Amy Sedaris, Wife Evie and More for Final &#8216;Late Show&#8217; Questionnaire appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 04:59:40 +0000",
-      "published_iso": "2026-05-21T04:59:40.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "Nexstar Slams Judge’s Injunction Pausing Tegna Merger in Expedited Appeal Request: &#8216;Inflicts Unrecoverable Harm&#8217;",
-      "link": "https://www.thewrap.com/industry-news/business/nexstar-files-expedited-appeal-request-slams-injunction/",
-      "description": "\"Worse still, it degrades the very assets it purports to protect,\" the multimedia conglomerate argues The post Nexstar Slams Judge’s Injunction Pausing Tegna Merger in Expedited Appeal Request: &#8216;Inflicts Unrecoverable Harm&#8217; appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 04:53:04 +0000",
-      "published_iso": "2026-05-21T04:53:04.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/television",
@@ -684,28 +1258,6 @@
       "source_weight": 3,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "The Wrap",
-      "title": "JonBenét Ramsey’s Father Offers Advice to Nancy Guthrie’s Family on Police: &#8216;Really Scrutinize What They&#8217;re Doing&#8217; &#124; Video",
-      "link": "https://www.thewrap.com/culture-lifestyle/culture/jonbenet-ramsey-father-advice-nancy-guthrie-family-video/",
-      "description": "\"They handle everything from traffic tickets ... to serial murders. You can't do everything well,\" the Ramsey patriarch adds The post JonBenét Ramsey’s Father Offers Advice to Nancy Guthrie’s Family on Police: &#8216;Really Scrutinize What They&#8217;re Doing&#8217; | Video appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 03:00:13 +0000",
-      "published_iso": "2026-05-21T03:00:13.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "The Wrap",
-      "title": "&#8216;Survivor 50&#8217; Winner Revealed: Who Won the $2 Million Prize?",
-      "link": "https://www.thewrap.com/creative-content/tv-shows/survivor-50-winner-revealed-aubry-bracco/",
-      "description": "The three-hour finale also unveils who America picked to win the $100,000 Sia Fan Favorite prize The post &#8216;Survivor 50&#8217; Winner Revealed: Who Won the $2 Million Prize? appeared first on TheWrap .",
-      "published": "Thu, 21 May 2026 02:44:20 +0000",
-      "published_iso": "2026-05-21T02:44:20.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/movies",
@@ -818,24 +1370,6 @@
       "source_category": "pulse"
     },
     {
-      "source": "IndieWire",
-      "title": "Watch Four of the Most Important Film Festival Directors Discuss the Future of the Circuit at Cannes",
-      "link": "https://www.indiewire.com/news/events/film-festival-directors-discuss-future-cannes-1235195002/",
-      "description": "The leaders of the Sundance, Berlin, Telluride, and New York film festivals discussed the future of the industry at The American Pavilion at Cannes, presented by United for Business.",
-      "published": "Wed, 20 May 2026 23:30:00 +0000",
-      "published_iso": "2026-05-20T23:30:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
-          "titulo": "Joika",
-          "anio": 2023
-        }
-      ]
-    },
-    {
       "source": "r/television",
       "title": "Seth Myers On Upcoming Final Episode Of ‘The Late Show With Stephen Colbert’: “A Very Sad Week For Television In America”",
       "link": "https://www.reddit.com/r/television/comments/1tj2mki/seth_myers_on_upcoming_final_episode_of_the_late/",
@@ -920,17 +1454,6 @@
       "source_category": "pulse"
     },
     {
-      "source": "IndieWire",
-      "title": "&#8216;The Man I Love&#8217; Review: Rami Malek Is a Tortured Actor Dying of AIDS in Ira Sachs&#8217; Minor-Key &#8217;80s New York Love Triangle",
-      "link": "https://www.indiewire.com/criticism/movies/the-man-i-love-review-rami-malek-ira-sachs-1235194951/",
-      "description": "Cannes: Malek and Tom Sturridge play partners whose already-strained relationship is tested by the arrival of a new and beguiling twink neighbor, played by Luther Ford, downstairs.",
-      "published": "Wed, 20 May 2026 22:00:00 +0000",
-      "published_iso": "2026-05-20T22:00:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
       "source": "r/television",
       "title": "Ryan Condal Extends HBO Overall Deal Through Season 4 Of ‘House Of The Dragon’ &amp; Beyond",
       "link": "https://www.reddit.com/r/television/comments/1tj041l/ryan_condal_extends_hbo_overall_deal_through/",
@@ -940,84 +1463,6 @@
       "source_weight": 2,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "IndieWire",
-      "title": "Watch the Team Behind &#8216;Undertone&#8217; Explain Their $500K Indie Success Story",
-      "link": "https://www.indiewire.com/news/events/undertone-cannes-future-of-filmmaking-panel-1235195073/",
-      "description": "Daril Fannin of KINO and Chad Archibald of Black Fawn Films stopped by The American Pavilion to explain why they bet on a first time filmmaker's vision for an audio-driven horror movie — and why it paid off.",
-      "published": "Wed, 20 May 2026 21:30:00 +0000",
-      "published_iso": "2026-05-20T21:30:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "f889058d-5e67-4962-86e1-cf0932abc355",
-          "titulo": "undertone",
-          "anio": 2026
-        },
-        {
-          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
-          "titulo": "Joika",
-          "anio": 2023
-        }
-      ]
-    },
-    {
-      "source": "r/movies",
-      "title": "Has a casting announcement ever made you lose interest in an otherwise promising movie?",
-      "link": "https://www.reddit.com/r/movies/comments/1tizkn3/has_a_casting_announcement_ever_made_you_lose/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;A movie can have a great director, strong premise, big budget, and still lose people at the casting stage.&lt;/p&gt; &lt;p&gt;Sometimes it’s because the actors feel completely wrong for the roles. Sometimes it feels like celebrity stunt casting. Sometimes the tone just no longer matches what you imagined.&lt;/p&gt; &lt;p&gt;Has a casting announcement ever made you go from “I was excited for this” to “yeah… probably not”? Which movie?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https:/",
-      "published": "2026-05-20T21:24:17+00:00",
-      "published_iso": "2026-05-20T21:24:17.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "IndieWire",
-      "title": "&#8216;Ask E. Jean&#8217; Review: An Irrepressible Icon, Beyond the Reach of Her Own Advice",
-      "link": "https://www.indiewire.com/criticism/movies/ask-e-jean-review-ivy-meeropol-documentary-1235145565/",
-      "description": "Ivy Meeropol's intimate documentary about the trailblazer — in more ways than one, for better and quite worse — works hard to contextualize her as a person, not a victim.",
-      "published": "Wed, 20 May 2026 21:15:00 +0000",
-      "published_iso": "2026-05-20T21:15:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
-      "source": "r/movies",
-      "title": "Movie about a crew of scientists exploring an underground cave, but they're actually inside of a giant monster?",
-      "link": "https://www.reddit.com/r/movies/comments/1tizagt/movie_about_a_crew_of_scientists_exploring_an/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;There was a crew of scientists on a mission to explore a gloomy cave system. The twist was that as they went deeper they eventually realized that it wasn&amp;#39;t a cave, but they were inside some giant eldritch monster. The cave walls were its internal tubes and organs. Then they realized that the monster knew they were in there, and was going to close its mouth or use its immune system to trap them.&lt;/p&gt; &lt;p&gt;I may have seen this in a dream so I don&amp;#39;t know if it&amp;#39;s an actual film/based on something real, o",
-      "published": "2026-05-20T21:14:21+00:00",
-      "published_iso": "2026-05-20T21:14:21.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "The Vampire Lestat Extended Look | Premieres June 7 on AMC &amp; AMC+",
-      "link": "https://www.reddit.com/r/television/comments/1tixyzw/the_vampire_lestat_extended_look_premieres_june_7/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tixyzw/the_vampire_lestat_extended_look_premieres_june_7/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/KDsSltXoU_PqgpI3mAS3qzt80rcUMG3oaSXcrBYebsA.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=2bc3f9a0be1b339c659c454d2514177b4bea5bd4&quot; alt=&quot;The Vampire Lestat Extended Look | Premieres June 7 on AMC &amp;amp; AMC+&quot; title=&quot;The Vampire Lestat Extended Look | Premieres June 7 on AMC &amp;amp; AMC+&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32;",
-      "published": "2026-05-20T20:30:03+00:00",
-      "published_iso": "2026-05-20T20:30:03.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "Roger Ebert",
-      "title": "Cannes 2026: Table of Contents",
-      "link": "https://www.rogerebert.com/festivals/cannes-2026-table-of-contents",
-      "description": "Where to find every piece of our coverage of the 79th Annual Cannes Film Festival.",
-      "published": "Wed, 20 May 2026 20:20:48 +0000",
-      "published_iso": "2026-05-20T20:20:48.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "reviews"
     },
     {
       "source": "Roger Ebert",
@@ -1031,50 +1476,6 @@
       "source_category": "reviews"
     },
     {
-      "source": "IndieWire",
-      "title": "&#8216;I Love Boosters&#8217; Review: Boots Riley&#8217;s Crazy Fashion Heist Comedy Is Both Stoner Movie and Anti-Capitalist Protest Art",
-      "link": "https://www.indiewire.com/criticism/movies/i-love-boosters-review-boots-riley-1235183563/",
-      "description": "Keke Palmer, Naomi Ackie, Taylour Paige, and Demi Moore are all deeply attuned to Riley's weird rhythms, even as his high-concept sci-fi ideas grow scattershot.",
-      "published": "Wed, 20 May 2026 20:15:00 +0000",
-      "published_iso": "2026-05-20T20:15:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
-      "source": "r/television",
-      "title": "'American Horror Story' Sets Return Of John Carroll Lynch &amp; Mat Fraser",
-      "link": "https://www.reddit.com/r/television/comments/1tixa0a/american_horror_story_sets_return_of_john_carroll/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tixa0a/american_horror_story_sets_return_of_john_carroll/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/00Ed5ODCpoCOrGI81vlf7_kFFOcTJivNzsai1HatKs0.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=0497ee2f4f3fe19158a6d931d685c62eb192ec84&quot; alt=&quot;'American Horror Story' Sets Return Of John Carroll Lynch &amp;amp; Mat Fraser&quot; title=&quot;'American Horror Story' Sets Return Of John Carroll Lynch &amp;amp; Mat Fraser&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt;",
-      "published": "2026-05-20T20:05:53+00:00",
-      "published_iso": "2026-05-20T20:05:53.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "IndieWire",
-      "title": "Jeff Probst Breaks Down the Wild Legal Contingencies Before &#8216;Survivor&#8217; Could Pull Off Its Epic Mr. Beast Twist",
-      "link": "https://www.indiewire.com/awards/consider-this/jeff-probst-survivor-mr-beast-twist-1235195189/",
-      "description": "At a Tuesday evening event, the host and showrunner looked back on the finest moment of Season 50, before he reveals the sole survivor on Wednesday night in the reality show's first live finale in 10 seasons.",
-      "published": "Wed, 20 May 2026 20:00:00 +0000",
-      "published_iso": "2026-05-20T20:00:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
-      "source": "r/television",
-      "title": "One Hundred Years of Solitude: Part Two | Official Teaser | Netflix",
-      "link": "https://www.reddit.com/r/television/comments/1tiwms8/one_hundred_years_of_solitude_part_two_official/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tiwms8/one_hundred_years_of_solitude_part_two_official/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/tRZBxda-2f66MP2ooQ1tNIRNx-UBeJDtfuZIUWH5V-Y.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=598cc072f8c74e63a94d3b31426fff0cd21a3221&quot; alt=&quot;One Hundred Years of Solitude: Part Two | Official Teaser | Netflix&quot; title=&quot;One Hundred Years of Solitude: Part Two | Official Teaser | Netflix&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by ",
-      "published": "2026-05-20T19:43:27+00:00",
-      "published_iso": "2026-05-20T19:43:27.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
       "source": "Roger Ebert",
       "title": "Cannes 2026: Minotaur, Red Rocks",
       "link": "https://www.rogerebert.com/festivals/cannes-2026-minotaur-red-rocks",
@@ -1086,293 +1487,12 @@
       "source_category": "reviews"
     },
     {
-      "source": "r/television",
-      "title": "Season 1 of the boys felt like a completely different show",
-      "link": "https://www.reddit.com/r/television/comments/1tiwdwg/season_1_of_the_boys_felt_like_a_completely/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Homelander was an actual threat - intelligent and seemingly immune to every weapon. He didn’t hesitate to murder Stillwell, even saving Butcher as a bargaining chip for Ryan. The latter seasons, he turned into a whining brat, it was like his intelligence was stripped away. Worse still, he was shown to be just slightly stronger than the average supe - Butcher was able to hold him down, The Gas guy wrecked him, the Uranium nearly destroyed him, Soldier Boy could’ve killed him. Homelander should’ve been immune to threats from any numbe",
-      "published": "2026-05-20T19:34:56+00:00",
-      "published_iso": "2026-05-20T19:34:56.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "IndieWire",
-      "title": "This Season, Watercooler TV Fell by the Wayside",
-      "link": "https://www.indiewire.com/awards/predictions/tv-series-lack-huge-audience-emmy-prospects-combo-1235195075/",
-      "description": "There is a widening divide between the shows that the majority of the general public are watching and the shows that are being presented to Television Academy members as prospective Emmy nominees.",
-      "published": "Wed, 20 May 2026 19:30:00 +0000",
-      "published_iso": "2026-05-20T19:30:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "auteur"
-    },
-    {
-      "source": "r/television",
-      "title": "31 Years Ago, Larry David Shut Down One of the Weirdest ‘Seinfeld’ Ideas Ever Pitched",
-      "link": "https://www.reddit.com/r/television/comments/1tivg8t/31_years_ago_larry_david_shut_down_one_of_the/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tivg8t/31_years_ago_larry_david_shut_down_one_of_the/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/sIMTRE9BzQjKwGgZS-m0sGOvQ7TYDmh141TnwRa3VII.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=864cfd5ff4f32a680c6ca6fc6b6b2ee4d3715f82&quot; alt=&quot;31 Years Ago, Larry David Shut Down One of the Weirdest ‘Seinfeld’ Ideas Ever Pitched&quot; title=&quot;31 Years Ago, Larry David Shut Down One of the Weirdest ‘Seinfeld’ Ideas Ever Pitched&quot; /&gt; &lt;/a&gt; &lt;/td&gt;",
-      "published": "2026-05-20T19:03:31+00:00",
-      "published_iso": "2026-05-20T19:03:31.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Brad Pitt returns as Cliff Booth in a new film directed by David Fincher and written by Quentin Tarantino. Coming to IMAX theaters globally November 25 for an exclusive two-week run. Coming to Netflix December 23.",
-      "link": "https://www.reddit.com/r/movies/comments/1tivf9b/brad_pitt_returns_as_cliff_booth_in_a_new_film/",
-      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/yourfavchoom&quot;&gt; /u/yourfavchoom &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.netflix.com/tudum/articles/david-fincher-new-film-release-date&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tivf9b/brad_pitt_returns_as_cliff_booth_in_a_new_film/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
-      "published": "2026-05-20T19:02:38+00:00",
-      "published_iso": "2026-05-20T19:02:38.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "The Westies (MGM+ 2026 Series) Official Teaser - July 12",
-      "link": "https://www.reddit.com/r/television/comments/1tiuych/the_westies_mgm_2026_series_official_teaser_july/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tiuych/the_westies_mgm_2026_series_official_teaser_july/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/iR-kHtvwh2we1bF-M4kEIWGF6oYv0CygI0RHGrtt93I.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=9e917e0b0416efafccc65c0054d61353c9cfffa9&quot; alt=&quot;The Westies (MGM+ 2026 Series) Official Teaser - July 12&quot; title=&quot;The Westies (MGM+ 2026 Series) Official Teaser - July 12&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&",
-      "published": "2026-05-20T18:46:53+00:00",
-      "published_iso": "2026-05-20T18:46:53.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Paramount’s Junk-Status Credit Rating to Be Downgraded Further Following Warner Bros. Merger to Reflect ‘Major Ongoing Uncertainties,’ S&amp;P Global Says",
-      "link": "https://www.reddit.com/r/movies/comments/1tiup4r/paramounts_junkstatus_credit_rating_to_be/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tiup4r/paramounts_junkstatus_credit_rating_to_be/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/Rz-l1Q52Y1UU_jeByTrZiJtdIulV19XNsg-sZBEMd6w.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=9c1c235fd98451f59599801d6d819fec5b23fd14&quot; alt=&quot;Paramount’s Junk-Status Credit Rating to Be Downgraded Further Following Warner Bros. Merger to Reflect ‘Major Ongoing Uncertainties,’ S&amp;amp;P Global Says&quot; title=&quot;Paramount’s Junk-Status Credit Rating to Be Downgraded ",
-      "published": "2026-05-20T18:38:04+00:00",
-      "published_iso": "2026-05-20T18:38:04.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-          "titulo": "Following",
-          "anio": 1999
-        }
-      ]
-    },
-    {
-      "source": "r/television",
-      "title": "Brandon Sanderson’s Sci-Fi Novel ‘Skyward’ Getting TV Series Adaptation By ‘One Piece’ Producer Tomorrow Studios",
-      "link": "https://www.reddit.com/r/television/comments/1tit7t6/brandon_sandersons_scifi_novel_skyward_getting_tv/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tit7t6/brandon_sandersons_scifi_novel_skyward_getting_tv/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/jTgqT-HsjBYhg8pD3lf8gdVOLRxKnm3eC8brEMpfPAI.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=9af70cd228191a4ec2d583a72d7258d53b9875ac&quot; alt=&quot;Brandon Sanderson’s Sci-Fi Novel ‘Skyward’ Getting TV Series Adaptation By ‘One Piece’ Producer Tomorrow Studios&quot; title=&quot;Brandon Sanderson’s Sci-Fi Novel ‘Skyward’ Getting TV Series Adaptation By ‘One Piece’ Pr",
-      "published": "2026-05-20T17:48:57+00:00",
-      "published_iso": "2026-05-20T17:48:57.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "Are there examples of shows where the good writing is let down by bad acting?",
-      "link": "https://www.reddit.com/r/television/comments/1tisqg4/are_there_examples_of_shows_where_the_good/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I&amp;#39;m watching The Boys (still on season 4) and a lot of the consensus seems to be the performances are still really good but the writing has gone downhill.&lt;/p&gt; &lt;p&gt;It&amp;#39;s a phrase I&amp;#39;ve heard A LOT over the last few years from shows ranging from Game of Thrones to The Office or Silicon Valley where people say the acting stays consistently good throughout, but the writing gets bad.&lt;/p&gt; &lt;p&gt;Are there any shows where the opposite is true? Where the writing is top notch throughout but the acting",
-      "published": "2026-05-20T17:32:12+00:00",
-      "published_iso": "2026-05-20T17:32:12.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Godzilla: King of The Monster 2019, Godzilla vs King Ghidorah Fight Scene, Director: Michael Dougherty",
-      "link": "https://www.reddit.com/r/movies/comments/1tish17/godzilla_king_of_the_monster_2019_godzilla_vs/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tish17/godzilla_king_of_the_monster_2019_godzilla_vs/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/Y3I0MXM4bTZ0YjJoMVTRhb-vgXzQxbNGn_gPFzruOfNAxU1aKdgSW7B0EZQq.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=ec7f5d9bb21bca840b0a9c99d98b9cd533d95775&quot; alt=&quot;Godzilla: King of The Monster 2019, Godzilla vs King Ghidorah Fight Scene, Director: Michael Dougherty&quot; title=&quot;Godzilla: King of The Monster 2019, Godzilla vs King Ghidorah Fight Scene, Director: Michae",
-      "published": "2026-05-20T17:23:21+00:00",
-      "published_iso": "2026-05-20T17:23:21.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Which Steven Spielberg movie you feel doesn't get enough love?",
-      "link": "https://www.reddit.com/r/movies/comments/1tirvnm/which_steven_spielberg_movie_you_feel_doesnt_get/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Empire of the Sun, absolutely. It&amp;#39;s been a slightly forgotten movie by Spielberg because, while it did get good reviews, especially for Christian Bale, it was a commercial failure. I grew up watching that movie and identified greatly with the lead. Some scenes are as good as the best sequences filmed by Spielberg, I go gaga over that epic, emotional score by John Williams. I love this movie so much I have a hard time seeing Bale play another role. Because, to me, he&amp;#39;ll always be the spoiled rich brat Jamie who gets s",
-      "published": "2026-05-20T17:03:09+00:00",
-      "published_iso": "2026-05-20T17:03:09.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "50bacd72-abb5-4298-9e90-e7e7e6133f79",
-          "titulo": "El imperio del sol",
-          "anio": 1987
-        }
-      ]
-    },
-    {
-      "source": "r/movies",
-      "title": "Comedy movies with premises that don't sound like comedies.",
-      "link": "https://www.reddit.com/r/movies/comments/1tirm54/comedy_movies_with_premises_that_dont_sound_like/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;A few years ago, TCM was showing arsenic and old lace. The presenter described the plot of the movie and iterated that, while it may not sound like a comedy, it is indeed one. This has made me think of whether or not there are other comedies with premises that don&amp;#39;t sound like comedies.&lt;/p&gt; &lt;p&gt;Here are some that I thought of. Dr strangelove, weapons, dogma, kind hearts and cornets, an American werewolf in London, fargo, crimes and misdemeanors, four lions, the death of stalin.&lt;/p&gt; &lt;p&gt;Any you can think",
-      "published": "2026-05-20T16:54:13+00:00",
-      "published_iso": "2026-05-20T16:54:13.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Matt Damon and Universal Eyeing Reunion on Secret Daniels Project",
-      "link": "https://www.reddit.com/r/movies/comments/1tirdyy/matt_damon_and_universal_eyeing_reunion_on_secret/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tirdyy/matt_damon_and_universal_eyeing_reunion_on_secret/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/KHCb7uxN0oqi1DcjOti6DeZXcd0yt_wC_ce8XGnXf6k.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=a8f885eb613f6d9dbdf7a1a6bc840c0df8755134&quot; alt=&quot;Matt Damon and Universal Eyeing Reunion on Secret Daniels Project&quot; title=&quot;Matt Damon and Universal Eyeing Reunion on Secret Daniels Project&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#",
-      "published": "2026-05-20T16:46:19+00:00",
-      "published_iso": "2026-05-20T16:46:19.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "'The Testaments' Renewed For Season 2 By Hulu - Exclusive",
-      "link": "https://www.reddit.com/r/television/comments/1tir2yo/the_testaments_renewed_for_season_2_by_hulu/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tir2yo/the_testaments_renewed_for_season_2_by_hulu/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/MIbU9sFY36ndfOsej33IDOVh2aJnMiaP0OnyoIbb2Fc.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=7f398395d8d6646f80ff487a07f6709e2fb2d23a&quot; alt=&quot;'The Testaments' Renewed For Season 2 By Hulu - Exclusive&quot; title=&quot;'The Testaments' Renewed For Season 2 By Hulu - Exclusive&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&qu",
-      "published": "2026-05-20T16:35:55+00:00",
-      "published_iso": "2026-05-20T16:35:55.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Quinta Brunson to Develop and Star in ‘Betty Boop’ Feature Film",
-      "link": "https://www.reddit.com/r/movies/comments/1tiqy55/quinta_brunson_to_develop_and_star_in_betty_boop/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tiqy55/quinta_brunson_to_develop_and_star_in_betty_boop/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/YGPGPsJXpnPLPpFrHxW5TYEHK4Lc1JFYVwlSwSIuwNg.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c896c4071aded1f60c43ca06ea9b31ade55471db&quot; alt=&quot;Quinta Brunson to Develop and Star in ‘Betty Boop’ Feature Film&quot; title=&quot;Quinta Brunson to Develop and Star in ‘Betty Boop’ Feature Film&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &",
-      "published": "2026-05-20T16:31:16+00:00",
-      "published_iso": "2026-05-20T16:31:16.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
       "source": "r/MovieDetails",
       "title": "In The Road to El Dorado (2000) you can see the Dreamworks logo in the book of the high priest, Tzekel-Kan.",
       "link": "https://www.reddit.com/r/MovieDetails/comments/1tiqx30/in_the_road_to_el_dorado_2000_you_can_see_the/",
       "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/MovieDetails/comments/1tiqx30/in_the_road_to_el_dorado_2000_you_can_see_the/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/dx9ea2sekb2h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=858412c75811ec0ad2eb92ccafbd6d0d24ec0971&quot; alt=&quot;In The Road to El Dorado (2000) you can see the Dreamworks logo in the book of the high priest, Tzekel-Kan.&quot; title=&quot;In The Road to El Dorado (2000) you can see the Dreamworks logo in the book of the high priest, Tzekel-Kan.&quot; /&gt; &lt;/a&gt; &lt;",
       "published": "2026-05-20T16:30:20+00:00",
       "published_iso": "2026-05-20T16:30:20.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Masters of The Universe – Official Final Trailer",
-      "link": "https://www.reddit.com/r/movies/comments/1tiqugq/masters_of_the_universe_official_final_trailer/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tiqugq/masters_of_the_universe_official_final_trailer/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/zfElXxINhf8h39B5YSif9mmBevOT0V5B6gv9Tvh8oSQ.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c7524d13c723405a596140ad789c6d1f054d9c8b&quot; alt=&quot;Masters of The Universe – Official Final Trailer&quot; title=&quot;Masters of The Universe – Official Final Trailer&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.redd",
-      "published": "2026-05-20T16:27:51+00:00",
-      "published_iso": "2026-05-20T16:27:51.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
-          "titulo": "He-Man y los masters del universo",
-          "anio": 2026
-        }
-      ]
-    },
-    {
-      "source": "r/television",
-      "title": "Inside the Series Finale of ‘The Boys’",
-      "link": "https://www.reddit.com/r/television/comments/1tiqf0a/inside_the_series_finale_of_the_boys/",
-      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Commercial_Avocado86&quot;&gt; /u/Commercial_Avocado86 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.rollingstone.com/tv-movies/tv-movie-features/the-boys-series-finale-eric-kripke-interview-1235565963/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tiqf0a/inside_the_series_finale_of_the_boys/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
-      "published": "2026-05-20T16:13:36+00:00",
-      "published_iso": "2026-05-20T16:13:36.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "What book would you adapt into a miniseries?",
-      "link": "https://www.reddit.com/r/television/comments/1tiptuc/what_book_would_you_adapt_into_a_miniseries/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;If you were given an unlimited budget to turn any book into a miniseries, what book would you do? I&amp;#39;m talking something akin to the scale ABC went to for Winds of War/War and Remembrance (which was unheard of at the time) but of course with modern technology.&lt;/p&gt; &lt;p&gt;For me, I&amp;#39;d go with Red Storm Rising. Putting that 1980s late Cold War going hot scenario on screen would be amazing. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Sel",
-      "published": "2026-05-20T15:53:45+00:00",
-      "published_iso": "2026-05-20T15:53:45.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "What’s your favorite live action role/appearance in a TV show from somebody who mainly voice acts or is primarily known for their voice acting roles, rather than appearing in live action?",
-      "link": "https://www.reddit.com/r/television/comments/1tip9oy/whats_your_favorite_live_action_roleappearance_in/",
-      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/MaggieLinzer&quot;&gt; /u/MaggieLinzer &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tip9oy/whats_your_favorite_live_action_roleappearance_in/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tip9oy/whats_your_favorite_live_action_roleappearance_in/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
-      "published": "2026-05-20T15:33:45+00:00",
-      "published_iso": "2026-05-20T15:33:45.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Hi r/movies, I'm Katie Aselton, writer/director/and star of the upcoming drama MAGIC HOUR. You may recognize me from FX's THE LEAGUE, LEGION, THE PUFFY CHAIR, among other things. AMA!",
-      "link": "https://www.reddit.com/r/movies/comments/1tip4gs/hi_rmovies_im_katie_aselton_writerdirectorand/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tip4gs/hi_rmovies_im_katie_aselton_writerdirectorand/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/e2qjkqv99b2h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=c32121937224113ab4e77713a2cfff930e855160&quot; alt=&quot;Hi r/movies, I'm Katie Aselton, writer/director/and star of the upcoming drama MAGIC HOUR. You may recognize me from FX's THE LEAGUE, LEGION, THE PUFFY CHAIR, among other things. AMA!&quot; title=&quot;Hi r/movies, I'm Katie Aselton, writer/director/and star of the u",
-      "published": "2026-05-20T15:28:42+00:00",
-      "published_iso": "2026-05-20T15:28:42.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "‘Scary Stories to Tell in the Dark’ Sequel Is Stuck in Legal Limbo",
-      "link": "https://www.reddit.com/r/movies/comments/1tioy9m/scary_stories_to_tell_in_the_dark_sequel_is_stuck/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tioy9m/scary_stories_to_tell_in_the_dark_sequel_is_stuck/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/jnoKDsUSNQDmtdQRz0NYr8zxdFQ_nFU3If3SM-HojOk.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=94148e3f38b707194ee114b334801d73f8b0f34d&quot; alt=&quot;‘Scary Stories to Tell in the Dark’ Sequel Is Stuck in Legal Limbo&quot; title=&quot;‘Scary Stories to Tell in the Dark’ Sequel Is Stuck in Legal Limbo&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &lt;!-- SC_OFF --&gt;&lt;di",
-      "published": "2026-05-20T15:22:34+00:00",
-      "published_iso": "2026-05-20T15:22:34.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "6b91bef7-4bc2-4e53-84da-3b06914bad04",
-          "titulo": "Historias de miedo para contar en la oscuridad",
-          "anio": 2019
-        }
-      ]
-    },
-    {
-      "source": "r/movies",
-      "title": "Jenna Ortega to Star in Leos Carax’s Next Film ‘Lily May B,’ Produced by France’s Hugo Selignac",
-      "link": "https://www.reddit.com/r/movies/comments/1tinsaz/jenna_ortega_to_star_in_leos_caraxs_next_film/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tinsaz/jenna_ortega_to_star_in_leos_caraxs_next_film/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/8HD8nQdkwUFCuLfwwqNSDhAgHNe__CSBMTBDsyTqDBg.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=5a25531155b5d4e92d28ca66e694257eb0322c91&quot; alt=&quot;Jenna Ortega to Star in Leos Carax’s Next Film ‘Lily May B,’ Produced by France’s Hugo Selignac&quot; title=&quot;Jenna Ortega to Star in Leos Carax’s Next Film ‘Lily May B,’ Produced by France’s Hugo Selignac&quot; /&gt; &lt;/a",
-      "published": "2026-05-20T14:42:46+00:00",
-      "published_iso": "2026-05-20T14:42:46.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "Remembering 'Macho Man' Randy Savage who passed away exactly 15 years ago today (November 15, 1952 – May 20, 2011)",
-      "link": "https://www.reddit.com/r/television/comments/1ting89/remembering_macho_man_randy_savage_who_passed/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1ting89/remembering_macho_man_randy_savage_who_passed/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/az3Ij2jEqdXNOoFaKe4NRALezWoLixC3balxqzQgCbw.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=2cc6d9f5b37bae668150831d79296ff7663e8e85&quot; alt=&quot;Remembering 'Macho Man' Randy Savage who passed away exactly 15 years ago today (November 15, 1952 – May 20, 2011)&quot; title=&quot;Remembering 'Macho Man' Randy Savage who passed away exactly 15 years ago today (November 1",
-      "published": "2026-05-20T14:30:51+00:00",
-      "published_iso": "2026-05-20T14:30:51.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "Jack Ryan: Ghost War review – Nothing more than a bland TV movie | &quot;There isn’t much to lift the spirits in this feature length spin-off starring John Krasinski as the iconic CIA agent.&quot;",
-      "link": "https://www.reddit.com/r/television/comments/1tin6s5/jack_ryan_ghost_war_review_nothing_more_than_a/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tin6s5/jack_ryan_ghost_war_review_nothing_more_than_a/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/jH4JgU5q8dxAxw9grn0dRCqEfVYRvx3Z3WYeHC5AYPM.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=1641137e7231aaa32bfa1653158ee64a1d02d730&quot; alt=&quot;Jack Ryan: Ghost War review – Nothing more than a bland TV movie | &amp;quot;There isn’t much to lift the spirits in this feature length spin-off starring John Krasinski as the iconic CIA agent.&amp;quot;&quot; title=&quot;",
-      "published": "2026-05-20T14:21:50+00:00",
-      "published_iso": "2026-05-20T14:21:50.000Z",
       "source_weight": 2,
       "source_lang": "en",
       "source_category": "pulse"
@@ -1402,50 +1522,6 @@
       "description": "On two from Cannes Competition, featuring world-famous actresses.",
       "published": "Wed, 20 May 2026 05:42:40 +0000",
       "published_iso": "2026-05-20T05:42:40.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "reviews"
-    },
-    {
-      "source": "Roger Ebert",
-      "title": "Cannes 2026 Video #6: Club Kid, Paper Tiger, Clarissa",
-      "link": "https://www.rogerebert.com/festivals/cannes-2026-video-6-club-kid-paper-tiger-clarissa",
-      "description": "Our Managing Editor on three hotly-discussed films at the fest, and a Cannes flashback.",
-      "published": "Tue, 19 May 2026 20:04:58 +0000",
-      "published_iso": "2026-05-19T20:04:58.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "reviews"
-    },
-    {
-      "source": "Roger Ebert",
-      "title": "Cannes 2026: Club Kid, Marie Madeleine",
-      "link": "https://www.rogerebert.com/festivals/cannes-2026-club-kid-marie-madeleine",
-      "description": "On two powerful Queer films from Cannes by actors-turned-directors, including the fest breakout hit just bought by A24.",
-      "published": "Tue, 19 May 2026 12:07:30 +0000",
-      "published_iso": "2026-05-19T12:07:30.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "reviews"
-    },
-    {
-      "source": "Roger Ebert",
-      "title": "Cannes 2026: Avedon, Visitation",
-      "link": "https://www.rogerebert.com/festivals/cannes-2026-avedon-visitation",
-      "description": "On the latest from Ron Howard &#038; Volker Schlondorff.",
-      "published": "Mon, 18 May 2026 21:53:37 +0000",
-      "published_iso": "2026-05-18T21:53:37.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "reviews"
-    },
-    {
-      "source": "Roger Ebert",
-      "title": "Cannes 2026 Video #5: Festival Dispatch with Ben Kenigsberg",
-      "link": "https://www.rogerebert.com/festivals/cannes-2026-video-5-festival-dispatch-with-ben-kenigsberg",
-      "description": "Longtime correspondent Ben Kenigsberg discusses the latest from two Cannes-favorite auteurs.",
-      "published": "Mon, 18 May 2026 14:46:55 +0000",
-      "published_iso": "2026-05-18T14:46:55.000Z",
       "source_weight": 4,
       "source_lang": "en",
       "source_category": "reviews"

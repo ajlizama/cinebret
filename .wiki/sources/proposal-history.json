@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-21T14:03:17.427Z",
-      "cycles_proposed": 7,
+      "last_proposed": "2026-05-22T13:28:52.694Z",
+      "cycles_proposed": 8,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -677,10 +677,11 @@
       "first_proposed": "2026-05-08T12:07:25.851Z",
       "last_proposed": "2026-05-08T12:07:25.851Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T20:58:56.691Z"
+      "became_backlog_at": "2026-05-08T20:58:56.691Z",
+      "expired_at": "2026-05-22T13:28:52.694Z"
     },
     {
       "id": "361a04ccac09da93",
@@ -904,8 +905,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-21T21:27:02.250Z",
-      "cycles_proposed": 7,
+      "last_proposed": "2026-05-22T13:28:52.694Z",
+      "cycles_proposed": 8,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1516,12 +1517,12 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-21T21:27:02.250Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-05-22T13:28:52.694Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-21T21:27:02.250Z",
+      "became_backlog_at": "2026-05-22T13:28:52.694Z",
       "expired_at": "2026-05-21T21:27:02.250Z",
       "expired_reason": "§8 duplicado: mismo film que 6134534c62ee6a31 (Parásito / Parasite 2019, Bong Joon-ho) ya propuesto en este ciclo; dedup por sujeto."
     },
@@ -1697,10 +1698,10 @@
       "first_proposed": "2026-05-21T21:27:02.250Z",
       "last_proposed": "2026-05-21T21:27:02.250Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-21T21:27:02.250Z",
+      "became_backlog_at": "2026-05-22T13:28:52.694Z",
       "expired_at": "2026-05-21T21:27:02.250Z",
       "expired_reason": "§8 duplicado: mismo film que 86cd64c42c4ddc8b (Fight Club 1999, David Fincher) ya propuesto en este ciclo como proposal y backlog; dedup por sujeto."
     },
@@ -1723,9 +1724,10 @@
       "first_proposed": "2026-05-21T21:27:02.250Z",
       "last_proposed": "2026-05-21T21:27:02.250Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-22T13:28:52.694Z"
     },
     {
       "id": "308a93b46c33df64",
@@ -1744,12 +1746,36 @@
         "topic": "francia"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-21T21:27:02.250Z",
+      "last_proposed": "2026-05-22T13:28:52.694Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-22T13:28:52.694Z"
+    },
+    {
+      "id": "77631095cd02bcc9",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 giros narrativos que no viste venir (y que cambian la película entera)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Memento, Usual Suspects, The Prestige: los finales que te obligan a repasar todo lo que viste.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-22T13:28:52.694Z",
+      "last_proposed": "2026-05-22T13:28:52.694Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-21T21:31:16.957Z"
+  "last_saved": "2026-05-22T13:33:02.718Z"
 }

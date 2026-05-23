@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-22T21:08:20.992Z",
-      "cycles_proposed": 9,
+      "last_proposed": "2026-05-23T20:50:44.214Z",
+      "cycles_proposed": 10,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -831,10 +831,11 @@
       "first_proposed": "2026-05-09T20:41:42.123Z",
       "last_proposed": "2026-05-09T20:41:42.123Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-10T11:45:29.936Z"
+      "became_backlog_at": "2026-05-10T11:45:29.936Z",
+      "expired_at": "2026-05-23T20:50:44.214Z"
     },
     {
       "id": "72dbb8e655197a2a",
@@ -1342,8 +1343,8 @@
         "topic": "menos 90 min"
       },
       "first_proposed": "2026-05-16T11:46:25.258Z",
-      "last_proposed": "2026-05-16T11:46:25.258Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-23T20:50:44.214Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1517,15 +1518,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-23T11:58:50.991Z",
-      "cycles_proposed": 4,
-      "status": "backlog",
+      "first_proposed": "2026-05-23T20:50:44.214Z",
+      "last_proposed": "2026-05-23T20:50:44.214Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-22T13:28:52.694Z",
-      "expired_at": "2026-05-21T21:27:02.250Z",
-      "expired_reason": "§8 duplicado: mismo film que 6134534c62ee6a31 (Parásito / Parasite 2019, Bong Joon-ho) ya propuesto en este ciclo; dedup por sujeto."
+      "expired_at": "2026-05-23T20:50:44.214Z",
+      "expired_reason": "§5 backlog duplicado: mismo sujeto que 6134534c62ee6a31 (Parásito 2019, Bong Joon-ho); dedup — mantener el de mayor score."
     },
     {
       "id": "080b5658325e2dfe",
@@ -1697,8 +1698,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-23T11:58:50.991Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-23T20:50:44.214Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1749,10 +1750,12 @@
       "first_proposed": "2026-05-21T21:27:02.250Z",
       "last_proposed": "2026-05-22T13:28:52.694Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-22T13:28:52.694Z"
+      "became_backlog_at": "2026-05-22T13:28:52.694Z",
+      "expired_at": "2026-05-23T20:50:44.214Z",
+      "expired_reason": "§8 anti-pattern #6: mismo sujeto (películas francesas) que fecc4d46aebb463c del pool actual; dedup — mantener la versión del pool."
     },
     {
       "id": "77631095cd02bcc9",
@@ -1823,12 +1826,12 @@
       "first_proposed": "2026-05-23T11:58:50.991Z",
       "last_proposed": "2026-05-23T11:58:50.991Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-23T11:58:50.991Z",
-      "expired_at": "2026-05-23T11:58:50.991Z",
-      "expired_reason": "§8 anti-pattern #6: dedup con fe5875c8 (TOP 10 películas japonesas) — mismo tema, mismo kind=country, ya propuesto con score superior en este ciclo."
+      "became_backlog_at": "2026-05-23T20:50:44.214Z",
+      "expired_at": "2026-05-23T20:50:44.214Z",
+      "expired_reason": "§8 anti-pattern #6: mismo sujeto (películas japonesas) que fe5875c8c649d23e del pool actual; dedup — mantener la versión del pool."
     },
     {
       "id": "f4fe7feddc397275",
@@ -1849,10 +1852,36 @@
       "first_proposed": "2026-05-23T11:58:50.991Z",
       "last_proposed": "2026-05-23T11:58:50.991Z",
       "cycles_proposed": 1,
+      "status": "expired",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-23T20:50:44.214Z",
+      "expired_at": "2026-05-23T20:50:44.214Z",
+      "expired_reason": "§8 anti-pattern #6: mismo sujeto (actores secundarios que se robaron la película) que 7e36148fa29bda49 y dbf7b31d5557fe07; dedup — mantener las versiones de mayor score."
+    },
+    {
+      "id": "13d93e5b0d7df5f6",
+      "action": "generate_carousel_topic",
+      "title": "10 actores secundarios que se robaron la película y deberían ser los protagonistas",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Ledger, Bardem, Simmons: los secundarios que eclipsaron a todo el elenco principal.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-23T20:50:44.214Z",
+      "last_proposed": "2026-05-23T20:50:44.214Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-23T12:03:05.050Z"
+  "last_saved": "2026-05-23T20:54:10.851Z"
 }

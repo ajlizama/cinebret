@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-23T11:58:50.991Z",
-  "cycle": "am",
+  "generated_at": "2026-05-23T20:50:44.214Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 1,
+  "news_count": 3,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -24,52 +24,12 @@
   },
   "top": [
     {
-      "id": "86cd64c42c4ddc8b",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "El club de la pelea (1999)",
-      "reasoning": "Fincher en el Olimpo con tu rating 10; sin review publicado y en backlog activo.",
-      "score": 98,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
-      },
-      "critic_reason": "§5.2 backlog revalidado: rating 10 + sello bret + David Fincher (Olimpo) + IMDb 8.8; sigue siendo propuesta máxima prioridad."
-    },
-    {
-      "id": "6276902b8705f60e",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois disponible en Netflix; tu rating 10 sin review publicado.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
-      },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Director Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025."
-    },
-    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parásito (2019)",
-      "reasoning": "Óscar a mejor película de Bong Joon-ho; una de tus 38 sagradas sin review.",
+      "title": "Review: Parásito (2019)",
+      "reasoning": "Bong Joon-ho y el Óscar a mejor película; una de tus 38 sagradas aún sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -81,15 +41,55 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog revalidado: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo propuesta máxima."
+      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo propuesta de alta prioridad."
     },
     {
-      "id": "3c28a078e46b2134",
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Peter Jackson cerró la trilogía con 11 Óscares; tu rating 10 y el IMDb 9.0 lo dicen todo.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; sin review publicado."
+    },
+    {
+      "id": "86cd64c42c4ddc8b",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Club de la Pelea (1999)",
+      "reasoning": "Fincher y su obra más perturbadora; IMDb 8.8 y tu rating 10 sin review publicado en el feed.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + Fincher olimpo + IMDb 8.8; sigue siendo propuesta válida, sin post publicado."
+    },
+    {
+      "id": "dbf7b31d5557fe07",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 actuaciones que convirtieron a un secundario en el alma de la película",
-      "reasoning": "Ledger, Bardem, Simmons: los secundarios que se robaron todo — kind performance, nunca hecho.",
+      "title": "10 actores secundarios que se robaron la película y deberían ser los protagonistas",
+      "reasoning": "Ledger, Bardem, Simmons: los secundarios que eclipsaron a todo el elenco principal.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,26 +100,26 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§instrucción CREATIVE_TOPIC: slot creativo; kind=performance es fresco y la idea conecta directamente con el perfil de Alberto (valora actuaciones memorables sobre todo lo demás)."
+      "critic_reason": "Slot creativo: kind=performance nunca hecho, no repite recent_top_kinds; ángulo de actores secundarios muy alineado con el perfil de Alberto (Ledger, Bardem, Simmons)."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "821614788fb4f853",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas que marcaron el cine mundial",
-      "reasoning": "Kind country fresco; Miyazaki y Kurosawa anclan una lista de alto valor para el feed.",
-      "score": 80,
+      "title": "10 películas de menos de 90 minutos que no te puedes perder",
+      "reasoning": "El cine que prueba que no necesitas 3 horas para hacer una obra maestra.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "country",
-        "topic": "japón"
+        "topic_type": "theme",
+        "topic": "menos 90 min"
       },
-      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Miyazaki y cine japonés tienen peso fuerte en el perfil de Alberto."
+      "critic_reason": "§3 kind=format no está en recent_top_kinds; ángulo de duración es fresco y diferenciador en el feed."
     }
   ],
   "backlog": [
@@ -145,14 +145,6 @@
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
       "days_ago": 5,
-      "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "a6131cf3e9710217",
-      "type": "FEED",
-      "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -186,41 +178,75 @@
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
       "days_ago": 11,
       "skill_to_invoke": "cinebret-list-from-news"
+    },
+    {
+      "id": "740a5e134bba1070",
+      "type": "FEED",
+      "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
+      "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
+      "days_ago": 9,
+      "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Reddit redescubre el director's cut de 'El reino de los cielos' de Ridley Scott",
-      "summary_es": "Fans afirman que el director's cut es literalmente otra película; match con Scott en tu catálogo.",
+      "title_es": "Reddit redescubre por qué Terminator 1 y 2 son infinitamente revisitables",
+      "summary_es": "Cameron construyó dos películas que mejoran en cada visionado; debate confirma su legado indestructible.",
       "source": "r/movies",
-      "age_hours": 9,
-      "url": "https://www.reddit.com/r/movies/comments/1tl4kcq/finally_watched_the_directors_cut_of_kingdom_of/",
+      "age_hours": 3,
+      "url": "https://www.reddit.com/r/movies/comments/1tln5ht/why_the_first_two_terminator_movies_are_worth/",
       "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "41b18aff-26c3-41d6-a9dd-58c57b84280c",
-        "titulo": "El reino de los cielos",
-        "anio": 2005
+        "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
+        "titulo": "Terminator",
+        "anio": 1984
       },
       "score": 62,
-      "reason": "§4.4 regla 3: catalog match 'El reino de los cielos' (Ridley Scott, muy respetado) con rating suficiente; ángulo es opinión de Reddit sobre el director's cut, informativo pero sin event-driven accionable."
+      "reason": "§6 match al catálogo de calidad: Terminator (1984) de James Cameron (olimpo) tiene sello bret; cultural-moment sobre rewatchability válido."
+    },
+    {
+      "title_es": "Neon extiende su racha a 7 Palmas de Oro consecutivas en Cannes con 'Fjord'",
+      "summary_es": "Cristian Mungiu gana su segunda Palma; Sebastian Stan y Renate Reinsve protagonizan el film ganador.",
+      "source": "Deadline",
+      "age_hours": 1,
+      "url": "https://deadline.com/2026/05/cannes-neon-palme-dor-record-fjord-1236919669/",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§6 Cannes Palme d'Or es evento de cine relevante pero 'Fjord' no está en catálogo de Alberto; ángulo solo informativo sobre el hito de Neon."
+    },
+    {
+      "title_es": "Reddit declara que Ratatouille (2007) es una obra de arte intemporal",
+      "summary_es": "Debate viral confirma que Ratatouille sigue siendo una de las mejores películas de Pixar después de 20 años.",
+      "source": "r/movies",
+      "age_hours": 2,
+      "url": "https://www.reddit.com/r/movies/comments/1tlp5ia/ratatouille_2007_is_flawless/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "6cd4bf31-e8a4-43b6-82ae-b365b8f97d28",
+        "titulo": "Ratatouille",
+        "anio": 2007
+      },
+      "score": 50,
+      "reason": "§6 Ratatouille tiene match al catálogo con calidad (sello bret implícito en animación Pixar); cultural-moment sobre film apreciado por Alberto."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
     "newsapi_items": 87,
     "reddit_posts": 0,
-    "trailers": 60
+    "trailers": 59
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
     "agedCount": 2,
     "expiredByTime": 1,
-    "expiredByCritic": 2
+    "expiredByCritic": 4
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 17386,
-    "output": 11278
+    "input": 16191,
+    "output": 10182
   }
 }

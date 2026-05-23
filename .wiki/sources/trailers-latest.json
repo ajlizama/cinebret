@@ -1,38 +1,143 @@
 {
-  "generated_at": "2026-05-23T11:57:34.960Z",
-  "total_videos": 60,
-  "trailers_count": 8,
-  "matched_to_cinebret": 15,
+  "generated_at": "2026-05-23T20:50:44.122Z",
+  "total_videos": 59,
+  "trailers_count": 11,
+  "matched_to_cinebret": 11,
   "videos": [
     {
-      "video_id": "jExqU7Ev5I0",
-      "title": "This Masters of the Universe drone show was wild. Presented by @AmazonMGMStudios",
-      "url": "https://www.youtube.com/watch?v=jExqU7Ev5I0",
-      "published": "2026-05-22T22:14:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/jExqU7Ev5I0/hqdefault.jpg",
+      "video_id": "7vJKd_P0Wx8",
+      "title": "1982 Cannes Film Festival, Wim Wenders speaks to his colleagues about cinema's future in ROOM 666",
+      "url": "https://www.youtube.com/watch?v=7vJKd_P0Wx8",
+      "published": "2026-05-23T19:00:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/7vJKd_P0Wx8/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "q-KfvzpiQq4",
+      "title": "Chinese Zodiac | Jackie Fights in the Furniture Factory",
+      "url": "https://www.youtube.com/watch?v=q-KfvzpiQq4",
+      "published": "2026-05-23T19:00:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/q-KfvzpiQq4/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "KgM0_LXtyXs",
+      "title": "Jack & Cathy’s Relationship Timeline | Tom Clancy’s Jack Ryan | Prime Video",
+      "url": "https://www.youtube.com/watch?v=KgM0_LXtyXs",
+      "published": "2026-05-23T19:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/KgM0_LXtyXs/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "0W7LMhjQ6H0",
+      "title": "Fatal Fury: City of the Wolves - Official Mr. Karate Character Trailer",
+      "url": "https://www.youtube.com/watch?v=0W7LMhjQ6H0",
+      "published": "2026-05-23T19:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/0W7LMhjQ6H0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "05ZS0PWzyVs",
+      "title": "Starpath - Official Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=05ZS0PWzyVs",
+      "published": "2026-05-23T17:30:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/05ZS0PWzyVs/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "eHKXzg5Oe0M",
+      "title": "Hughie Confronts Butcher | The Boys Final Season | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=eHKXzg5Oe0M",
+      "published": "2026-05-23T17:00:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/eHKXzg5Oe0M/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "s1kksM02U_A",
+      "title": "Margo's Got Money Troubles — Elle Fanning, Nick Offerman & Thaddea Make Orange Meal | Apple TV",
+      "url": "https://www.youtube.com/watch?v=s1kksM02U_A",
+      "published": "2026-05-23T16:59:47Z",
+      "thumbnail": "https://i.ytimg.com/vi/s1kksM02U_A/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "76xWY6uClxw",
+      "title": "Dead by Daylight x Jason - Official Trailer",
+      "url": "https://www.youtube.com/watch?v=76xWY6uClxw",
+      "published": "2026-05-23T16:30:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/76xWY6uClxw/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "LmVBXXFjHjg",
+      "title": "Diego Céspedes on his Cannes-winning debut THE MYSTERIOUS GAZE OF THE FLAMINGO. Now Streaming.",
+      "url": "https://www.youtube.com/watch?v=LmVBXXFjHjg",
+      "published": "2026-05-23T16:00:44Z",
+      "thumbnail": "https://i.ytimg.com/vi/LmVBXXFjHjg/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "vuf6n5MpNt4",
+      "title": "Lego Batman - How to Find Gentleman Ghost (Legacy of the Dark Knight)",
+      "url": "https://www.youtube.com/watch?v=vuf6n5MpNt4",
+      "published": "2026-05-23T15:38:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/vuf6n5MpNt4/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false,
       "cinebret_match": {
-        "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
-        "titulo": "He-Man y los masters del universo",
-        "anio": 2026
+        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
+        "titulo": "El caballero oscuro",
+        "anio": 2008
       }
     },
     {
-      "video_id": "yvxt_UeagWA",
-      "title": "Sinners - Official Announcement Video | Halloween Horror Nights 2026",
-      "url": "https://www.youtube.com/watch?v=yvxt_UeagWA",
-      "published": "2026-05-22T22:00:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/yvxt_UeagWA/hqdefault.jpg",
+      "video_id": "_VpE5WA0rIk",
+      "title": "They are everything we wanted and more | Off Campus | Prime Video",
+      "url": "https://www.youtube.com/watch?v=_VpE5WA0rIk",
+      "published": "2026-05-23T15:00:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/_VpE5WA0rIk/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "oSzhJtonCBA",
+      "title": "Like uncovered archive footage. #BenWhishaw & #RebeccaHall in PETER HUJAR'S DAY. Now streaming.",
+      "url": "https://www.youtube.com/watch?v=oSzhJtonCBA",
+      "published": "2026-05-23T13:00:44Z",
+      "thumbnail": "https://i.ytimg.com/vi/oSzhJtonCBA/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "uPFbuojVCrQ",
+      "title": "Inferius - Official Gameplay Trailer | Endix Showcase 2026",
+      "url": "https://www.youtube.com/watch?v=uPFbuojVCrQ",
+      "published": "2026-05-23T13:00:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/uPFbuojVCrQ/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2d70c72f-9cd5-4ed1-8635-12cadd8c5e31",
-        "titulo": "La noche de Halloween",
-        "anio": 1978
-      }
+      "is_trailer": true
     },
     {
       "video_id": "J71L0_a8kn0",
@@ -70,46 +175,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "lSLApbol98c",
-      "title": "Lego Batman: Legacy of the Dark Knight - All Chapter 1 Red Bricks and Mission Collectibles",
-      "url": "https://www.youtube.com/watch?v=lSLApbol98c",
-      "published": "2026-05-22T20:44:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/lSLApbol98c/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
-      }
-    },
-    {
-      "video_id": "ERqFxxY6Lj8",
-      "title": "Overwatch - Official 10th Anniversary Theme Behind-the-Scenes Trailer",
-      "url": "https://www.youtube.com/watch?v=ERqFxxY6Lj8",
-      "published": "2026-05-22T20:30:13Z",
-      "thumbnail": "https://i.ytimg.com/vi/ERqFxxY6Lj8/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "EeAQwbezvpY",
-      "title": "Lego Batman: Legacy of the Dark Knight - How to Unlock the Absolute Batman Suit",
-      "url": "https://www.youtube.com/watch?v=EeAQwbezvpY",
-      "published": "2026-05-22T20:04:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/EeAQwbezvpY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
-      }
-    },
-    {
       "video_id": "VZ9ABh81jtI",
       "title": "Jack Ryan Gets Into a Firefight | Jack Ryan: Ghost War | Clip | Prime Video",
       "url": "https://www.youtube.com/watch?v=VZ9ABh81jtI",
@@ -136,16 +201,6 @@
       "published": "2026-05-22T18:59:57Z",
       "thumbnail": "https://i.ytimg.com/vi/V7GiJTX44gY/hqdefault.jpg",
       "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "XTjRcw5UCmM",
-      "title": "Tom Clancy's Jack Ryan: Ghost War | Jump In Featurette | Prime Video",
-      "url": "https://www.youtube.com/watch?v=XTjRcw5UCmM",
-      "published": "2026-05-22T18:32:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/XTjRcw5UCmM/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -180,16 +235,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "vwb_fc_lkH0",
-      "title": "Homelander's Final Stand | The Boys Final Season | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=vwb_fc_lkH0",
-      "published": "2026-05-22T17:00:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/vwb_fc_lkH0/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "U-Yqhtv55kA",
       "title": "Darktide (2012) | Full Movie | Halle Berry, Olivier Martinez, Ralph Brown",
       "url": "https://www.youtube.com/watch?v=U-Yqhtv55kA",
@@ -216,16 +261,6 @@
       "published": "2026-05-22T16:59:12Z",
       "thumbnail": "https://i.ytimg.com/vi/-Z1M-I7_dtM/hqdefault.jpg",
       "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "OkqCoKidT4s",
-      "title": "Keep your friends close enough. | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=OkqCoKidT4s",
-      "published": "2026-05-22T15:00:24Z",
-      "thumbnail": "https://i.ytimg.com/vi/OkqCoKidT4s/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -276,16 +311,6 @@
       "published": "2026-05-21T23:54:36Z",
       "thumbnail": "https://i.ytimg.com/vi/JwRG-vZig2o/hqdefault.jpg",
       "channel": "Sony Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "eLJqdNdyNF8",
-      "title": "Circuits In Focus — Canada Race | F1 on Apple TV",
-      "url": "https://www.youtube.com/watch?v=eLJqdNdyNF8",
-      "published": "2026-05-21T23:15:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/eLJqdNdyNF8/hqdefault.jpg",
-      "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -440,16 +465,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "0X4QjgHAM4I",
-      "title": "Get lost in THE MYSTERIOUS GAZE OF THE FLAMINGO. | Now Streaming on MUBI",
-      "url": "https://www.youtube.com/watch?v=0X4QjgHAM4I",
-      "published": "2026-05-20T21:01:08Z",
-      "thumbnail": "https://i.ytimg.com/vi/0X4QjgHAM4I/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "05-uXK1phQU",
       "title": "Last Night in Soho | Sandie Meets Jack at the Café de Paris",
       "url": "https://www.youtube.com/watch?v=05-uXK1phQU",
@@ -535,16 +550,6 @@
       }
     },
     {
-      "video_id": "BvAZygKC8wQ",
-      "title": "Before MY FATHER’S SHADOW, Akinola Davies Jr. found his voice with LIZARD | MUBI",
-      "url": "https://www.youtube.com/watch?v=BvAZygKC8wQ",
-      "published": "2026-05-20T15:00:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/BvAZygKC8wQ/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "lpbvwAchkuI",
       "title": "Be Careful What You Wish For...",
       "url": "https://www.youtube.com/watch?v=lpbvwAchkuI",
@@ -570,16 +575,6 @@
       }
     },
     {
-      "video_id": "0LPRIIWFSIs",
-      "title": "#JoshO’Connor, you’re not made for human eyes 💙 | MUBI",
-      "url": "https://www.youtube.com/watch?v=0LPRIIWFSIs",
-      "published": "2026-05-20T11:00:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/0LPRIIWFSIs/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "yKN8ACgMXH4",
       "title": "Champions | Coach Marcus Marakovich Gets Fired and Arrested",
       "url": "https://www.youtube.com/watch?v=yKN8ACgMXH4",
@@ -587,16 +582,6 @@
       "thumbnail": "https://i.ytimg.com/vi/yKN8ACgMXH4/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "THXKu-5Ok_0",
-      "title": "Smokey and the Bandit II | The Sheriff's Mountie Army Vs. Bandit's Truck Army",
-      "url": "https://www.youtube.com/watch?v=THXKu-5Ok_0",
-      "published": "2026-05-19T19:00:17Z",
-      "thumbnail": "https://i.ytimg.com/vi/THXKu-5Ok_0/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -663,21 +648,6 @@
       "channel": "A24",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "_QigUIqIvtQ",
-      "title": "NAPOLEON DYNAMITE | Dance",
-      "url": "https://www.youtube.com/watch?v=_QigUIqIvtQ",
-      "published": "2026-05-16T18:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/_QigUIqIvtQ/hqdefault.jpg",
-      "channel": "Searchlight Pictures",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "763d8c5f-ce64-46e8-a83c-35701154289b",
-        "titulo": "Napoleón",
-        "anio": 2023
-      }
     }
   ]
 }

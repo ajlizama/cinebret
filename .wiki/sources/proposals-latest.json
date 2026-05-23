@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-22T21:08:20.992Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-23T11:58:50.991Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 6,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -24,12 +24,32 @@
   },
   "top": [
     {
+      "id": "86cd64c42c4ddc8b",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "El club de la pelea (1999)",
+      "reasoning": "Fincher en el Olimpo con tu rating 10; sin review publicado y en backlog activo.",
+      "score": 98,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "critic_reason": "§5.2 backlog revalidado: rating 10 + sello bret + David Fincher (Olimpo) + IMDb 8.8; sigue siendo propuesta máxima prioridad."
+    },
+    {
       "id": "6276902b8705f60e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois, tu rating 10 — sin review publicado y con plataforma activa.",
+      "title": "Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Live action de DeBlois disponible en Netflix; tu rating 10 sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,15 +61,15 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + plataforma activa + director Dean DeBlois (muy respetado, 4 sello bret); año 2025 boost +5."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Director Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásito (2019)",
-      "reasoning": "La película coreana que ganó el Óscar a mejor film; una de tus 38 sagradas sin review.",
+      "title": "Parásito (2019)",
+      "reasoning": "Óscar a mejor película de Bong Joon-ho; una de tus 38 sagradas sin review.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,35 +81,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5 backlog reevaluado (duplicado del proposal): rating 10 + IMDb 8.5 + sello bret + Bong Joon-ho; sigue siendo propuesta válida."
+      "critic_reason": "§5.2 backlog revalidado: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo propuesta máxima."
     },
     {
-      "id": "119c0775fc431172",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson; IMDb 9.0 y tu rating 10 sin review publicado.",
-      "score": 96,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
-      },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret); sin review publicado."
-    },
-    {
-      "id": "be0f45f8271f07c5",
+      "id": "3c28a078e46b2134",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas rodadas (casi) en una sola toma continua — y el tour de force que esconden",
-      "reasoning": "1917, Birdman, Rope: el truco técnico que convierte cada plano en una apuesta total.",
+      "title": "10 actuaciones que convirtieron a un secundario en el alma de la película",
+      "reasoning": "Ledger, Bardem, Simmons: los secundarios que se robaron todo — kind performance, nunca hecho.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§slot creativo: kinds a evitar son director/genre/theme/era/studio/mood; propongo kind=craft (técnica narrativa) con ángulo fresco no explorado."
+      "critic_reason": "§instrucción CREATIVE_TOPIC: slot creativo; kind=performance es fresco y la idea conecta directamente con el perfil de Alberto (valora actuaciones memorables sobre todo lo demás)."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -108,8 +108,8 @@
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas que marcaron el cine mundial",
-      "reasoning": "De Miyazaki a Kurosawa: las películas japonesas de tu catálogo que todo cinéfilo debe conocer.",
-      "score": 82,
+      "reasoning": "Kind country fresco; Miyazaki y Kurosawa anclan una lista de alto valor para el feed.",
+      "score": 80,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§instrucción tops: kind=country no está en recent_top_kinds; Japón es el país con más peso en el catálogo de Alberto (Miyazaki, Park, Bong)."
+      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Miyazaki y cine japonés tienen peso fuerte en el perfil de Alberto."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: Parásito (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: El club de la pelea (1999)",
       "reasoning": "Fincher y su obra más perturbadora; rating 10 e IMDb 8.8 sin review en el feed.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 5,
+      "days_ago": 6,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,102 +184,43 @@
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Todo lo que sabemos sobre La Odisea de Nolan: fecha, reparto y más",
-      "summary_es": "Resumen actualizado de La Odisea post-Oppenheimer; útil si quieres ampliar tu contenido reactivo.",
-      "source": "Deadline",
-      "age_hours": 0,
-      "url": "https://deadline.com/feature/christopher-nolan-the-odyssey-news-1236284537/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "6ff735a5-f3d7-4478-b81d-1176dc29a5b4",
-        "titulo": "Oppenheimer",
-        "anio": 2023
-      },
-      "score": 82,
-      "reason": "§4.4 regla 3: match de director (Christopher Nolan, olimpo) y película próxima The Odyssey; ángulo informativo completo sobre casting/release — Alberto ya tiene contenido reactivo sobre esto."
-    },
-    {
-      "title_es": "Lego Batman: Legacy of the Dark Knight junta versiones de Nolan, Reeves y más",
-      "summary_es": "Primer videojuego que reúne el Tumbler de Nolan con versiones de otros directores; dato curioso para tu feed.",
-      "source": "Variety",
-      "age_hours": 1,
-      "url": "https://variety.com/2026/gaming/news/lego-batman-legacy-dark-knight-1236755243/",
+      "title_es": "Reddit redescubre el director's cut de 'El reino de los cielos' de Ridley Scott",
+      "summary_es": "Fans afirman que el director's cut es literalmente otra película; match con Scott en tu catálogo.",
+      "source": "r/movies",
+      "age_hours": 9,
+      "url": "https://www.reddit.com/r/movies/comments/1tl4kcq/finally_watched_the_directors_cut_of_kingdom_of/",
       "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-        "titulo": "Together: Juntos hasta la muerte",
-        "anio": 2025
+        "pelicula_id": "41b18aff-26c3-41d6-a9dd-58c57b84280c",
+        "titulo": "El reino de los cielos",
+        "anio": 2005
       },
-      "score": 72,
-      "reason": "§4.4 regla 2: match con The Dark Knight (Nolan, olimpo) mencionado explícitamente; ángulo es videojuego Lego, informativo pero no posteable directamente."
-    },
-    {
-      "title_es": "Las 20 mejores películas de Cannes 2026 según Hollywood Reporter",
-      "summary_es": "Selección de THR con Gray, Malek y Hüller entre los favoritos; útil para radar de contenido futuro.",
-      "source": "Hollywood Reporter",
-      "age_hours": 1,
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/best-of-cannes-2026-1236601445/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 65,
-      "reason": "§4.4 regla 3: Cannes 2026 en curso, lista de mejores sin match directo al catálogo pero festival relevante; informativo para Alberto."
-    },
-    {
-      "title_es": "Cobertura completa de Cannes 2026 — índice de todas las reseñas",
-      "summary_es": "Roger Ebert cubre el festival; útil como referencia si quieres hacer contenido de Cannes.",
-      "source": "Roger Ebert",
-      "age_hours": 1,
-      "url": "https://www.rogerebert.com/festivals/cannes-2026-table-of-contents",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 60,
-      "reason": "§4.4 regla 3: Cannes 2026 en curso (≤7 días), índice de cobertura sin match directo pero festival activo relevante para cinéfilos; ángulo solo informativo."
-    },
-    {
-      "title_es": "Cannes 2026: ¿quién ganará la Palma de Oro? Los favoritos según IndieWire",
-      "summary_es": "Ranking actualizado de contendientes con Minotaur y The Black Ball al frente; útil para seguir el festival.",
-      "source": "IndieWire",
-      "age_hours": 2,
-      "url": "https://www.indiewire.com/features/commentary/cannes-palme-dor-contenders-2026-who-will-win-1235194267/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 58,
-      "reason": "§4.4 regla 3: Cannes 2026 en curso, pronóstico de Palme d'Or informativamente relevante; sin match directo al catálogo cinebret."
-    },
-    {
-      "title_es": "Cannes 2026: 'Everytime' gana el premio Un Certain Regard",
-      "summary_es": "Premio principal de la sección paralela; útil si quieres hacer cobertura de Cannes.",
-      "source": "Hollywood Reporter",
-      "age_hours": 1,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/everytime-elephants-in-the-fog-win-cannes-un-certain-regard-1236604574/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4 regla 3: Cannes 2026 en curso, premios Un Certain Regard informativos; sin match directo al catálogo pero relevante como cobertura del festival activo."
+      "score": 62,
+      "reason": "§4.4 regla 3: catalog match 'El reino de los cielos' (Ridley Scott, muy respetado) con rating suficiente; ángulo es opinión de Reddit sobre el director's cut, informativo pero sin event-driven accionable."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 92,
+    "newsapi_items": 87,
     "reddit_posts": 0,
     "trailers": 60
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 1,
-    "expiredByTime": 0,
-    "expiredByCritic": 0
+    "agedCount": 2,
+    "expiredByTime": 1,
+    "expiredByCritic": 2
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15417,
-    "output": 11688
+    "input": 17386,
+    "output": 11278
   }
 }

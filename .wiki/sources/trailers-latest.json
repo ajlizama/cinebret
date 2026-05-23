@@ -1,9 +1,39 @@
 {
-  "generated_at": "2026-05-22T21:08:20.902Z",
+  "generated_at": "2026-05-23T11:57:34.960Z",
   "total_videos": 60,
-  "trailers_count": 9,
-  "matched_to_cinebret": 14,
+  "trailers_count": 8,
+  "matched_to_cinebret": 15,
   "videos": [
+    {
+      "video_id": "jExqU7Ev5I0",
+      "title": "This Masters of the Universe drone show was wild. Presented by @AmazonMGMStudios",
+      "url": "https://www.youtube.com/watch?v=jExqU7Ev5I0",
+      "published": "2026-05-22T22:14:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/jExqU7Ev5I0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
+        "titulo": "He-Man y los masters del universo",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "yvxt_UeagWA",
+      "title": "Sinners - Official Announcement Video | Halloween Horror Nights 2026",
+      "url": "https://www.youtube.com/watch?v=yvxt_UeagWA",
+      "published": "2026-05-22T22:00:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/yvxt_UeagWA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "2d70c72f-9cd5-4ed1-8635-12cadd8c5e31",
+        "titulo": "La noche de Halloween",
+        "anio": 1978
+      }
+    },
     {
       "video_id": "J71L0_a8kn0",
       "title": "Ben Schwartz's acting in Season 4 of Invincible is everything | Prime Video",
@@ -78,31 +108,6 @@
         "titulo": "El caballero oscuro",
         "anio": 2008
       }
-    },
-    {
-      "video_id": "JIrog_RSrOk",
-      "title": "Lego Batman Legacy of the Dark Knight: Iceberg Lounge Vault Puzzle Solution",
-      "url": "https://www.youtube.com/watch?v=JIrog_RSrOk",
-      "published": "2026-05-22T20:01:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/JIrog_RSrOk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
-      }
-    },
-    {
-      "video_id": "M8vDVyLhUyA",
-      "title": "Arknights: Endfield - Official 'Sketches of Lost Heirlooms' Trailer",
-      "url": "https://www.youtube.com/watch?v=M8vDVyLhUyA",
-      "published": "2026-05-22T19:30:14Z",
-      "thumbnail": "https://i.ytimg.com/vi/M8vDVyLhUyA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "VZ9ABh81jtI",

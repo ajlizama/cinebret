@@ -780,10 +780,11 @@
       "first_proposed": "2026-05-09T11:45:19.177Z",
       "last_proposed": "2026-05-09T11:45:19.177Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-09T20:41:42.123Z"
+      "became_backlog_at": "2026-05-09T20:41:42.123Z",
+      "expired_at": "2026-05-23T11:58:50.991Z"
     },
     {
       "id": "59668ffd71b9b7d8",
@@ -905,8 +906,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-22T21:08:20.992Z",
-      "cycles_proposed": 9,
+      "last_proposed": "2026-05-23T11:58:50.991Z",
+      "cycles_proposed": 10,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1517,8 +1518,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-22T21:08:20.992Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-23T11:58:50.991Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1696,8 +1697,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-21T21:27:02.250Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-23T11:58:50.991Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1796,9 +1797,12 @@
       "first_proposed": "2026-05-22T21:08:20.992Z",
       "last_proposed": "2026-05-22T21:08:20.992Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-23T11:58:50.991Z",
+      "expired_at": "2026-05-23T11:58:50.991Z",
+      "expired_reason": "§8 anti-pattern #6: dedup con 080b5658 — mismo tema de plano continuo, ya propuesto con mejor redacción; este es redundante."
     },
     {
       "id": "2f8910bd59c16291",
@@ -1816,13 +1820,39 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "first_proposed": "2026-05-22T21:08:20.992Z",
-      "last_proposed": "2026-05-22T21:08:20.992Z",
+      "first_proposed": "2026-05-23T11:58:50.991Z",
+      "last_proposed": "2026-05-23T11:58:50.991Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-23T11:58:50.991Z",
+      "expired_at": "2026-05-23T11:58:50.991Z",
+      "expired_reason": "§8 anti-pattern #6: dedup con fe5875c8 (TOP 10 películas japonesas) — mismo tema, mismo kind=country, ya propuesto con score superior en este ciclo."
+    },
+    {
+      "id": "f4fe7feddc397275",
+      "action": "generate_carousel_topic",
+      "title": "10 actuaciones que convirtieron a un secundario en el alma de la película",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Ledger, Bardem, Simmons: los secundarios que se robaron todo — kind performance, nunca hecho.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-23T11:58:50.991Z",
+      "last_proposed": "2026-05-23T11:58:50.991Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-22T21:12:03.587Z"
+  "last_saved": "2026-05-23T12:03:05.050Z"
 }

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-24T12:00:25.007Z",
-  "cycle": "am",
+  "generated_at": "2026-05-24T20:54:29.653Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 4,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois con tu rating 10 y sello bret; sin review publicado en el feed.",
+      "reasoning": "El live action de DeBlois llega con tu rating 10; prioridad máxima para review.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025 boost."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + live action 2025 + plataforma activa; boost por año 2025 y director admirado."
     },
     {
       "id": "6134534c62ee6a31",
@@ -49,8 +49,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "score": 97,
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de las 38 sagradas sin review.",
+      "score": 95,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,35 +61,35 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog reevaluado: sigue siendo válido. Rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sin review publicado."
+      "critic_reason": "§5.2 re-evaluación backlog: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + plataforma activa; una de las 38 sagradas sin review."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "La conclusión épica de Jackson con IMDb 9.0 y tu rating 10; sin review en el feed.",
-      "score": 97,
+      "title": "El Club de la Pelea (1999)",
+      "reasoning": "Fincher y su obra más perturbadora; tu rating 10 e IMDb 8.8 esperan review.",
+      "score": 94,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa."
+      "critic_reason": "§5.2 re-evaluación backlog: rating 10 + sello bret + David Fincher (olimpo) + IMDb 8.8 + plataforma activa; sigue siendo propuesta de máxima calidad."
     },
     {
-      "id": "a3ad949aecd8e65e",
+      "id": "d6ed4d04922cf047",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas donde el villano tiene más razón que el héroe",
-      "reasoning": "Thanos, Magneto, Anton Chigurh: los antagonistas de CineBret que te hacen dudar de quién tiene razón.",
+      "title": "10 actuaciones que convirtieron una película buena en obra maestra",
+      "reasoning": "Ledger, Hopkins, Simmons: los actores que elevaron todo con una sola escena.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§3 slot creativo: kind=country encaja y está disponible; propuesta de lista por país de producción como ángulo narrativo fresco no explotado."
+      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds; idea fresca sobre actuaciones que definen la película entera, alineada con el gusto de Alberto por actuaciones memorables."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -108,7 +108,7 @@
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas que te dejan sin palabras",
-      "reasoning": "Miyazaki, Kurosawa y compañía: el catálogo japonés de CineBret merece su lista propia.",
+      "reasoning": "Miyazaki, Kurosawa y el catálogo japonés de CineBret merecen su lista propia.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Japón conecta fuerte con el gusto de Alberto (Miyazaki, anime, Park/Bong adyacente)."
+      "critic_reason": "§3 kind=country no está en recent_top_kinds; Japón tiene peso especial por Miyazaki y el perfil de gustos."
     }
   ],
   "backlog": [
@@ -190,56 +190,23 @@
   ],
   "news": [
     {
-      "title_es": "Park Chan-wook en Cannes: 'No quería darle la Palma a ninguna película'",
-      "summary_es": "Park Chan-wook presidió el jurado de Cannes 2026 y se burló de sí mismo en la rueda de prensa.",
-      "source": "Variety",
-      "age_hours": 12,
-      "url": "https://variety.com/2026/film/news/cannes-park-chan-wook-joke-palme-dor-jury-president-1236757779/",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 78,
-      "reason": "§4.4 regla 2: Park Chan-wook (admired, nombre completo en título) como presidente del jurado de Cannes; ángulo informativo relevante con declaración jugosa."
-    },
-    {
-      "title_es": "Cannes 2026: 'Fjord' gana la Palma de Oro",
-      "summary_es": "El festival de Cannes coronó a 'Fjord' como la mejor película de 2026; evento cinéfilo de referencia.",
-      "source": "Roger Ebert",
-      "age_hours": 6,
-      "url": "https://www.rogerebert.com/festivals/cannes-2026-fjord-wins-palme-dor",
-      "angle": "festival",
-      "catalog_match": null,
-      "score": 65,
-      "reason": "§4.4 regla 3: Cannes en curso (≤7 días), Palme d'Or es evento mayor de cine; sin match catálogo pero es información que Alberto querría saber como cinéfilo."
-    },
-    {
-      "title_es": "Reddit debate cuál es la mejor película de Gore Verbinski",
-      "summary_es": "Verbinski tiene 3 sello bret en tu catálogo; el hilo compara desde Pirates hasta The Ring.",
-      "source": "r/movies",
-      "age_hours": 11,
-      "url": "https://www.reddit.com/r/movies/comments/1tlxwg1/which_gore_verbinski_movie_do_you_prefer/",
-      "angle": null,
-      "catalog_match": null,
-      "score": 62,
-      "reason": "§4.4 regla 3: Gore Verbinski está en la lista de muy respetados (3 sello bret); el hilo compara sus películas; ángulo solo informativo para Alberto."
-    },
-    {
-      "title_es": "Mandalorian y Grogu arrasa en taquilla con apertura de $97M en 4 días",
-      "summary_es": "La película de Star Wars lidera el fin de semana largo Memorial Day; box office de referencia para el universo.",
+      "title_es": "Nicolas Cage confiesa que Nolan no le devuelve las llamadas tras rechazar 'Insomnia'",
+      "summary_es": "Cage reveló que Nolan se resintió cuando rechazó Insomnia en 2002; dato de color sobre The Odyssey.",
       "source": "Deadline",
-      "age_hours": 4,
-      "url": "https://deadline.com/2026/05/box-office-mandalorian-and-grogu-1236918713/",
-      "angle": null,
+      "age_hours": 1,
+      "url": "https://deadline.com/2026/05/nicolas-cage-christopher-nolan-wont-call-me-turning-down-insomnia-1236920221/",
+      "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "7dc2aed7-e432-4cb2-83f1-c697947636a4",
-        "titulo": "Star Wars: The Mandalorian and Grogu",
-        "anio": 2026
+        "pelicula_id": "b8339432-ac7b-4fd2-ac6b-ba7c83e95a1e",
+        "titulo": "Insomnio",
+        "anio": 2002
       },
-      "score": 60,
-      "reason": "§4.4 regla 3: match al catálogo (Star Wars: The Mandalorian and Grogu, 2026) con ángulo informativo de box office; no hay ángulo postable accionable para CineBret."
+      "score": 72,
+      "reason": "§4.4 regla 3: match con Insomnia (Nolan, olimpo) y mención explícita de The Odyssey; ángulo informativo sobre Cage-Nolan, no accionable como post propio."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 115,
+    "news_items": 116,
     "newsapi_items": 93,
     "reddit_posts": 0,
     "trailers": 59
@@ -248,12 +215,12 @@
     "acceptedCount": 0,
     "agedCount": 2,
     "expiredByTime": 0,
-    "expiredByCritic": 1
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 17382,
-    "output": 9803
+    "input": 16667,
+    "output": 9967
   }
 }

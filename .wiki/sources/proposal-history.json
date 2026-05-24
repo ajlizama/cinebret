@@ -907,8 +907,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-24T12:00:25.007Z",
-      "cycles_proposed": 11,
+      "last_proposed": "2026-05-24T20:54:29.653Z",
+      "cycles_proposed": 12,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1519,8 +1519,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-23T20:50:44.214Z",
-      "last_proposed": "2026-05-24T12:00:25.007Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-24T20:54:29.653Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1698,8 +1698,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-23T20:50:44.214Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-24T20:54:29.653Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1904,9 +1904,10 @@
       "first_proposed": "2026-05-24T12:00:25.007Z",
       "last_proposed": "2026-05-24T12:00:25.007Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-24T20:54:29.653Z"
     },
     {
       "id": "ab276674a644b02d",
@@ -1925,12 +1926,36 @@
         "topic": "japón"
       },
       "first_proposed": "2026-05-24T12:00:25.007Z",
-      "last_proposed": "2026-05-24T12:00:25.007Z",
+      "last_proposed": "2026-05-24T20:54:29.653Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-24T20:54:29.653Z"
+    },
+    {
+      "id": "66992078c76d77b2",
+      "action": "generate_carousel_topic",
+      "title": "10 actuaciones que convirtieron una película buena en obra maestra",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Ledger, Hopkins, Simmons: los actores que elevaron todo con una sola escena.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-24T20:54:29.653Z",
+      "last_proposed": "2026-05-24T20:54:29.653Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-24T12:03:53.271Z"
+  "last_saved": "2026-05-24T20:57:57.626Z"
 }

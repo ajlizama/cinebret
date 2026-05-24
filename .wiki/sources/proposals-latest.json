@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-23T20:50:44.214Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-24T12:00:25.007Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 4,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -24,12 +24,32 @@
   },
   "top": [
     {
+      "id": "6276902b8705f60e",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Live action de DeBlois con tu rating 10 y sello bret; sin review publicado en el feed.",
+      "score": 97,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025 boost."
+    },
+    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y el Óscar a mejor película; una de tus 38 sagradas aún sin review publicado.",
+      "title": "Parásito (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,16 +61,16 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo propuesta de alta prioridad."
+      "critic_reason": "§5.2 backlog reevaluado: sigue siendo válido. Rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sin review publicado."
     },
     {
       "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "Peter Jackson cerró la trilogía con 11 Óscares; tu rating 10 y el IMDb 9.0 lo dicen todo.",
-      "score": 96,
+      "title": "El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "La conclusión épica de Jackson con IMDb 9.0 y tu rating 10; sin review en el feed.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,35 +81,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; sin review publicado."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa."
     },
     {
-      "id": "86cd64c42c4ddc8b",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: El Club de la Pelea (1999)",
-      "reasoning": "Fincher y su obra más perturbadora; IMDb 8.8 y tu rating 10 sin review publicado en el feed.",
-      "score": 96,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
-      },
-      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + Fincher olimpo + IMDb 8.8; sigue siendo propuesta válida, sin post publicado."
-    },
-    {
-      "id": "dbf7b31d5557fe07",
+      "id": "a3ad949aecd8e65e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 actores secundarios que se robaron la película y deberían ser los protagonistas",
-      "reasoning": "Ledger, Bardem, Simmons: los secundarios que eclipsaron a todo el elenco principal.",
+      "title": "TOP 10 películas donde el villano tiene más razón que el héroe",
+      "reasoning": "Thanos, Magneto, Anton Chigurh: los antagonistas de CineBret que te hacen dudar de quién tiene razón.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,15 +100,15 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=performance nunca hecho, no repite recent_top_kinds; ángulo de actores secundarios muy alineado con el perfil de Alberto (Ledger, Bardem, Simmons)."
+      "critic_reason": "§3 slot creativo: kind=country encaja y está disponible; propuesta de lista por país de producción como ángulo narrativo fresco no explotado."
     },
     {
-      "id": "821614788fb4f853",
+      "id": "fe5875c8c649d23e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas de menos de 90 minutos que no te puedes perder",
-      "reasoning": "El cine que prueba que no necesitas 3 horas para hacer una obra maestra.",
+      "title": "TOP 10 películas japonesas que te dejan sin palabras",
+      "reasoning": "Miyazaki, Kurosawa y compañía: el catálogo japonés de CineBret merece su lista propia.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -116,10 +116,10 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "theme",
-        "topic": "menos 90 min"
+        "topic_type": "country",
+        "topic": "japón"
       },
-      "critic_reason": "§3 kind=format no está en recent_top_kinds; ángulo de duración es fresco y diferenciador en el feed."
+      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Japón conecta fuerte con el gusto de Alberto (Miyazaki, anime, Park/Bong adyacente)."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,15 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 5,
+      "days_ago": 6,
+      "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "a6131cf3e9710217",
+      "type": "FEED",
+      "title": "Review: Parásito (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
+      "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +160,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +168,7 @@
       "type": "FEED",
       "title": "Review: El club de la pelea (1999)",
       "reasoning": "Fincher y su obra más perturbadora; rating 10 e IMDb 8.8 sin review en el feed.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,77 +184,76 @@
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 11,
-      "skill_to_invoke": "cinebret-list-from-news"
-    },
-    {
-      "id": "740a5e134bba1070",
-      "type": "FEED",
-      "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
-      "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
-      "days_ago": 9,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Reddit redescubre por qué Terminator 1 y 2 son infinitamente revisitables",
-      "summary_es": "Cameron construyó dos películas que mejoran en cada visionado; debate confirma su legado indestructible.",
-      "source": "r/movies",
-      "age_hours": 3,
-      "url": "https://www.reddit.com/r/movies/comments/1tln5ht/why_the_first_two_terminator_movies_are_worth/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "be6f8e44-9924-4880-8599-401cf31190ec",
-        "titulo": "Terminator",
-        "anio": 1984
-      },
-      "score": 62,
-      "reason": "§6 match al catálogo de calidad: Terminator (1984) de James Cameron (olimpo) tiene sello bret; cultural-moment sobre rewatchability válido."
-    },
-    {
-      "title_es": "Neon extiende su racha a 7 Palmas de Oro consecutivas en Cannes con 'Fjord'",
-      "summary_es": "Cristian Mungiu gana su segunda Palma; Sebastian Stan y Renate Reinsve protagonizan el film ganador.",
-      "source": "Deadline",
-      "age_hours": 1,
-      "url": "https://deadline.com/2026/05/cannes-neon-palme-dor-record-fjord-1236919669/",
+      "title_es": "Park Chan-wook en Cannes: 'No quería darle la Palma a ninguna película'",
+      "summary_es": "Park Chan-wook presidió el jurado de Cannes 2026 y se burló de sí mismo en la rueda de prensa.",
+      "source": "Variety",
+      "age_hours": 12,
+      "url": "https://variety.com/2026/film/news/cannes-park-chan-wook-joke-palme-dor-jury-president-1236757779/",
       "angle": "festival",
       "catalog_match": null,
-      "score": 55,
-      "reason": "§6 Cannes Palme d'Or es evento de cine relevante pero 'Fjord' no está en catálogo de Alberto; ángulo solo informativo sobre el hito de Neon."
+      "score": 78,
+      "reason": "§4.4 regla 2: Park Chan-wook (admired, nombre completo en título) como presidente del jurado de Cannes; ángulo informativo relevante con declaración jugosa."
     },
     {
-      "title_es": "Reddit declara que Ratatouille (2007) es una obra de arte intemporal",
-      "summary_es": "Debate viral confirma que Ratatouille sigue siendo una de las mejores películas de Pixar después de 20 años.",
+      "title_es": "Cannes 2026: 'Fjord' gana la Palma de Oro",
+      "summary_es": "El festival de Cannes coronó a 'Fjord' como la mejor película de 2026; evento cinéfilo de referencia.",
+      "source": "Roger Ebert",
+      "age_hours": 6,
+      "url": "https://www.rogerebert.com/festivals/cannes-2026-fjord-wins-palme-dor",
+      "angle": "festival",
+      "catalog_match": null,
+      "score": 65,
+      "reason": "§4.4 regla 3: Cannes en curso (≤7 días), Palme d'Or es evento mayor de cine; sin match catálogo pero es información que Alberto querría saber como cinéfilo."
+    },
+    {
+      "title_es": "Reddit debate cuál es la mejor película de Gore Verbinski",
+      "summary_es": "Verbinski tiene 3 sello bret en tu catálogo; el hilo compara desde Pirates hasta The Ring.",
       "source": "r/movies",
-      "age_hours": 2,
-      "url": "https://www.reddit.com/r/movies/comments/1tlp5ia/ratatouille_2007_is_flawless/",
-      "angle": "cultural-moment",
+      "age_hours": 11,
+      "url": "https://www.reddit.com/r/movies/comments/1tlxwg1/which_gore_verbinski_movie_do_you_prefer/",
+      "angle": null,
+      "catalog_match": null,
+      "score": 62,
+      "reason": "§4.4 regla 3: Gore Verbinski está en la lista de muy respetados (3 sello bret); el hilo compara sus películas; ángulo solo informativo para Alberto."
+    },
+    {
+      "title_es": "Mandalorian y Grogu arrasa en taquilla con apertura de $97M en 4 días",
+      "summary_es": "La película de Star Wars lidera el fin de semana largo Memorial Day; box office de referencia para el universo.",
+      "source": "Deadline",
+      "age_hours": 4,
+      "url": "https://deadline.com/2026/05/box-office-mandalorian-and-grogu-1236918713/",
+      "angle": null,
       "catalog_match": {
-        "pelicula_id": "6cd4bf31-e8a4-43b6-82ae-b365b8f97d28",
-        "titulo": "Ratatouille",
-        "anio": 2007
+        "pelicula_id": "7dc2aed7-e432-4cb2-83f1-c697947636a4",
+        "titulo": "Star Wars: The Mandalorian and Grogu",
+        "anio": 2026
       },
-      "score": 50,
-      "reason": "§6 Ratatouille tiene match al catálogo con calidad (sello bret implícito en animación Pixar); cultural-moment sobre film apreciado por Alberto."
+      "score": 60,
+      "reason": "§4.4 regla 3: match al catálogo (Star Wars: The Mandalorian and Grogu, 2026) con ángulo informativo de box office; no hay ángulo postable accionable para CineBret."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 87,
+    "newsapi_items": 93,
     "reddit_posts": 0,
     "trailers": 59
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
     "agedCount": 2,
-    "expiredByTime": 1,
-    "expiredByCritic": 4
+    "expiredByTime": 0,
+    "expiredByCritic": 1
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16191,
-    "output": 10182
+    "input": 17382,
+    "output": 9803
   }
 }

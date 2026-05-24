@@ -1,9 +1,54 @@
 {
-  "generated_at": "2026-05-23T20:50:44.122Z",
+  "generated_at": "2026-05-24T11:59:11.550Z",
   "total_videos": 59,
   "trailers_count": 11,
-  "matched_to_cinebret": 11,
+  "matched_to_cinebret": 10,
   "videos": [
+    {
+      "video_id": "9N9OqAlQGQA",
+      "title": "#PedroPascal and #EthanHawke in STRANGE WAY OF LIFE, directed by Pedro Almodóvar",
+      "url": "https://www.youtube.com/watch?v=9N9OqAlQGQA",
+      "published": "2026-05-24T11:00:33Z",
+      "thumbnail": "https://i.ytimg.com/vi/9N9OqAlQGQA/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "0oi0wIveMN8",
+      "title": "Avatar Legends: The Fighting Game - Official Azula Reveal Trailer",
+      "url": "https://www.youtube.com/watch?v=0oi0wIveMN8",
+      "published": "2026-05-23T22:30:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/0oi0wIveMN8/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "cGD8l_Y8Txs",
+      "title": "Nick on his knees is all the healing we need | My Fault: London | Prime Video",
+      "url": "https://www.youtube.com/watch?v=cGD8l_Y8Txs",
+      "published": "2026-05-23T21:00:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/cGD8l_Y8Txs/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
+        "titulo": "Culpa mía: Londres",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "Nw9u8DUSFqY",
+      "title": "Greta | Frances Finds Something Disturbing in Greta's Cabinet",
+      "url": "https://www.youtube.com/watch?v=Nw9u8DUSFqY",
+      "published": "2026-05-23T21:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/Nw9u8DUSFqY/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "7vJKd_P0Wx8",
       "title": "1982 Cannes Film Festival, Wim Wenders speaks to his colleagues about cinema's future in ROOM 666",
@@ -95,21 +140,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "vuf6n5MpNt4",
-      "title": "Lego Batman - How to Find Gentleman Ghost (Legacy of the Dark Knight)",
-      "url": "https://www.youtube.com/watch?v=vuf6n5MpNt4",
-      "published": "2026-05-23T15:38:33Z",
-      "thumbnail": "https://i.ytimg.com/vi/vuf6n5MpNt4/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
-      }
-    },
-    {
       "video_id": "_VpE5WA0rIk",
       "title": "They are everything we wanted and more | Off Campus | Prime Video",
       "url": "https://www.youtube.com/watch?v=_VpE5WA0rIk",
@@ -128,16 +158,6 @@
       "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "uPFbuojVCrQ",
-      "title": "Inferius - Official Gameplay Trailer | Endix Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=uPFbuojVCrQ",
-      "published": "2026-05-23T13:00:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/uPFbuojVCrQ/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "J71L0_a8kn0",
@@ -171,16 +191,6 @@
       "published": "2026-05-22T20:59:48Z",
       "thumbnail": "https://i.ytimg.com/vi/C1F7KKGToVM/hqdefault.jpg",
       "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "VZ9ABh81jtI",
-      "title": "Jack Ryan Gets Into a Firefight | Jack Ryan: Ghost War | Clip | Prime Video",
-      "url": "https://www.youtube.com/watch?v=VZ9ABh81jtI",
-      "published": "2026-05-22T19:00:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/VZ9ABh81jtI/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -420,21 +430,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "pGMQxkpqFxw",
-      "title": "The story of life is this. Spike Lee’s DO THE RIGHT THING.",
-      "url": "https://www.youtube.com/watch?v=pGMQxkpqFxw",
-      "published": "2026-05-21T15:05:30Z",
-      "thumbnail": "https://i.ytimg.com/vi/pGMQxkpqFxw/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "cc4d6d41-b4f0-4a9b-b0dc-7bb2537e5639",
-        "titulo": "Haz lo que debas",
-        "anio": 1989
-      }
-    },
-    {
       "video_id": "xcPgrKoXe_c",
       "title": "PRESSURE - Official Trailer 2 [HD] - Only In Theaters May 29",
       "url": "https://www.youtube.com/watch?v=xcPgrKoXe_c",
@@ -575,12 +570,12 @@
       }
     },
     {
-      "video_id": "yKN8ACgMXH4",
-      "title": "Champions | Coach Marcus Marakovich Gets Fired and Arrested",
-      "url": "https://www.youtube.com/watch?v=yKN8ACgMXH4",
-      "published": "2026-05-19T19:00:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/yKN8ACgMXH4/hqdefault.jpg",
-      "channel": "Focus Features",
+      "video_id": "AiLZWvBxymE",
+      "title": "Rocket League Championship Series Paris Major Final",
+      "url": "https://www.youtube.com/watch?v=AiLZWvBxymE",
+      "published": "2026-05-19T19:07:54Z",
+      "thumbnail": "https://i.ytimg.com/vi/AiLZWvBxymE/hqdefault_live.jpg",
+      "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },

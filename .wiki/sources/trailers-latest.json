@@ -1,9 +1,89 @@
 {
-  "generated_at": "2026-05-24T20:54:29.569Z",
+  "generated_at": "2026-05-25T13:57:20.648Z",
   "total_videos": 59,
   "trailers_count": 9,
-  "matched_to_cinebret": 10,
+  "matched_to_cinebret": 11,
   "videos": [
+    {
+      "video_id": "CzX4MejBKLA",
+      "title": "Top 10 Lego Games (Lego Batman: Legacy of The Dark Knight Update)",
+      "url": "https://www.youtube.com/watch?v=CzX4MejBKLA",
+      "published": "2026-05-25T11:30:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/CzX4MejBKLA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
+        "titulo": "El caballero oscuro",
+        "anio": 2008
+      }
+    },
+    {
+      "video_id": "161b4xLkokE",
+      "title": "The Marked Woman | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=161b4xLkokE",
+      "published": "2026-05-25T10:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/161b4xLkokE/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "eC_BQENT5Tk",
+      "title": "Tekken 8 - Official Yujiro Hanma Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=eC_BQENT5Tk",
+      "published": "2026-05-24T23:03:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/eC_BQENT5Tk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "TiPNqKDtDXQ",
+      "title": "Rocket League - Official 'A New Era' Teaser Trailer",
+      "url": "https://www.youtube.com/watch?v=TiPNqKDtDXQ",
+      "published": "2026-05-24T22:34:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/TiPNqKDtDXQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "eJI7SFXRTP0",
+      "title": "Red Light On - Official Gameplay Trailer 2",
+      "url": "https://www.youtube.com/watch?v=eJI7SFXRTP0",
+      "published": "2026-05-24T22:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/eJI7SFXRTP0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "F_vW118aEWk",
+      "title": "TFW you find out who your new coworker is... | Culpa Nuestra | Prime Video",
+      "url": "https://www.youtube.com/watch?v=F_vW118aEWk",
+      "published": "2026-05-24T21:00:12Z",
+      "thumbnail": "https://i.ytimg.com/vi/F_vW118aEWk/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "86d2826d-2bd6-4725-9a96-731e98034bfc",
+        "titulo": "Culpa nuestra",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "WDzvi2pUgy0",
+      "title": "Greta | Frances Has a Dream About Being Kidnapped",
+      "url": "https://www.youtube.com/watch?v=WDzvi2pUgy0",
+      "published": "2026-05-24T21:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/WDzvi2pUgy0/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "AiLZWvBxymE",
       "title": "Rocket League Championship Series Paris Major Final",
@@ -13,16 +93,6 @@
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "dj_vpxBM8sA",
-      "title": "Her Private Hell - Official Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=dj_vpxBM8sA",
-      "published": "2026-05-24T20:00:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/dj_vpxBM8sA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "gCqs7kVV1Pg",
@@ -45,16 +115,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "KEpqxUhFx0A",
-      "title": "The Westies (MGM+ 2026 Series) - Official Teaser",
-      "url": "https://www.youtube.com/watch?v=KEpqxUhFx0A",
-      "published": "2026-05-24T19:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/KEpqxUhFx0A/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "EqL4bzwxokM",
       "title": "Off Campus Kisses, Steamy Moments, & More! | Prime Video",
       "url": "https://www.youtube.com/watch?v=EqL4bzwxokM",
@@ -63,16 +123,6 @@
       "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "SFATW7xohPI",
-      "title": "Vought Rising - Official Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=SFATW7xohPI",
-      "published": "2026-05-24T18:00:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/SFATW7xohPI/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "JNSUtGlhHKU",
@@ -88,16 +138,6 @@
         "titulo": "Enola Holmes",
         "anio": 2020
       }
-    },
-    {
-      "video_id": "p5d7y1cbWIk",
-      "title": "Rocket League x Unreal Engine 6 - Official Reveal Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=p5d7y1cbWIk",
-      "published": "2026-05-24T17:20:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/p5d7y1cbWIk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "hhQNNm68e4s",
@@ -201,16 +241,6 @@
       "published": "2026-05-23T19:00:33Z",
       "thumbnail": "https://i.ytimg.com/vi/q-KfvzpiQq4/hqdefault.jpg",
       "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "KgM0_LXtyXs",
-      "title": "Jack & Cathy’s Relationship Timeline | Tom Clancy’s Jack Ryan | Prime Video",
-      "url": "https://www.youtube.com/watch?v=KgM0_LXtyXs",
-      "published": "2026-05-23T19:00:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/KgM0_LXtyXs/hqdefault.jpg",
-      "channel": "Prime Video",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -475,16 +505,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "91ung0bfqjc",
-      "title": "Same city, final chapter. merci, Paris. 💋 #EmilyInParis",
-      "url": "https://www.youtube.com/watch?v=91ung0bfqjc",
-      "published": "2026-05-21T15:15:24Z",
-      "thumbnail": "https://i.ytimg.com/vi/91ung0bfqjc/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "xcPgrKoXe_c",
       "title": "PRESSURE - Official Trailer 2 [HD] - Only In Theaters May 29",
       "url": "https://www.youtube.com/watch?v=xcPgrKoXe_c",
@@ -493,21 +513,6 @@
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": true
-    },
-    {
-      "video_id": "05-uXK1phQU",
-      "title": "Last Night in Soho | Sandie Meets Jack at the Café de Paris",
-      "url": "https://www.youtube.com/watch?v=05-uXK1phQU",
-      "published": "2026-05-20T21:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/05-uXK1phQU/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "e77bc287-f2f9-496e-8f6b-2274eddf7cc3",
-        "titulo": "Última noche en el Soho",
-        "anio": 2021
-      }
     },
     {
       "video_id": "pIO73Q-ZnBY",

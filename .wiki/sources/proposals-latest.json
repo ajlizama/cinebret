@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-24T20:54:29.653Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-25T13:58:36.522Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 1,
+  "news_count": 3,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "El live action de DeBlois llega con tu rating 10; prioridad máxima para review.",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Live action de DeBlois con tu rating 10; ningún review publicado todavía.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,16 +41,16 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado) + live action 2025 + plataforma activa; boost por año 2025 y director admirado."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + director Dean DeBlois (muy respetado) + año 2025 + plataforma activa."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parásito (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de las 38 sagradas sin review.",
-      "score": 95,
+      "title": "Review: Parásito (2019)",
+      "reasoning": "Bong Joon-ho y el primer Óscar a mejor película no angloparlante; una de tus 38 sagradas.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,35 +61,35 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 re-evaluación backlog: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + plataforma activa; una de las 38 sagradas sin review."
+      "critic_reason": "§5.2 backlog reevaluado: Parásito rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo válido, sin review publicado."
     },
     {
-      "id": "86cd64c42c4ddc8b",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El Club de la Pelea (1999)",
-      "reasoning": "Fincher y su obra más perturbadora; tu rating 10 e IMDb 8.8 esperan review.",
-      "score": 94,
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson; IMDb 9.0 y tu rating 10 esperando su review.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§5.2 re-evaluación backlog: rating 10 + sello bret + David Fincher (olimpo) + IMDb 8.8 + plataforma activa; sigue siendo propuesta de máxima calidad."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; sin review publicado."
     },
     {
-      "id": "d6ed4d04922cf047",
+      "id": "c5ae71e0ec039e27",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 actuaciones que convirtieron una película buena en obra maestra",
-      "reasoning": "Ledger, Hopkins, Simmons: los actores que elevaron todo con una sola escena.",
+      "title": "TOP 10 actuaciones que convirtieron una película buena en obra maestra",
+      "reasoning": "Ledger, Hopkins, Simmons: los actores que con una sola escena elevaron todo al siguiente nivel.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds; idea fresca sobre actuaciones que definen la película entera, alineada con el gusto de Alberto por actuaciones memorables."
+      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds [director,genre,theme,era,studio,mood]; ángulo fresco sobre actuaciones vs guion."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -108,8 +108,8 @@
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas que te dejan sin palabras",
-      "reasoning": "Miyazaki, Kurosawa y el catálogo japonés de CineBret merecen su lista propia.",
-      "score": 82,
+      "reasoning": "Miyazaki, Kurosawa y el cine japonés del catálogo CineBret que merece su lista propia.",
+      "score": 81,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§3 kind=country no está en recent_top_kinds; Japón tiene peso especial por Miyazaki y el perfil de gustos."
+      "critic_reason": "§3 kind=country no está en recent_top_kinds; Miyazaki + Kurosawa dan base sólida de catálogo."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 4,
+      "days_ago": 5,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 6,
+      "days_ago": 7,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: Parásito (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: El club de la pelea (1999)",
       "reasoning": "Fincher y su obra más perturbadora; rating 10 e IMDb 8.8 sin review en el feed.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,43 +184,73 @@
       "type": "FEED",
       "title": "Nolan defiende la armadura de La Odisea: 'Lo mismo dijeron de Interstellar'",
       "reasoning": "Nolan responde a críticos históricos y menciona Interstellar; ángulo fuerte para contenido reactivo.",
-      "days_ago": 12,
+      "days_ago": 13,
       "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Nicolas Cage confiesa que Nolan no le devuelve las llamadas tras rechazar 'Insomnia'",
-      "summary_es": "Cage reveló que Nolan se resintió cuando rechazó Insomnia en 2002; dato de color sobre The Odyssey.",
-      "source": "Deadline",
+      "title_es": "Reddit celebra la introducción de Davy Jones en Piratas del Caribe 2",
+      "summary_es": "La escena de apertura de Verbinski sigue generando conversación; contexto para tu próxima reactiva.",
+      "source": "r/movies",
       "age_hours": 1,
-      "url": "https://deadline.com/2026/05/nicolas-cage-christopher-nolan-wont-call-me-turning-down-insomnia-1236920221/",
+      "url": "https://www.reddit.com/r/movies/comments/1tn8xhp/pirates_of_the_caribbean_dead_mans_chest_2006_dir/",
       "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "b8339432-ac7b-4fd2-ac6b-ba7c83e95a1e",
-        "titulo": "Insomnio",
-        "anio": 2002
+        "pelicula_id": "d78c2b64-491a-46d3-ac60-2682c7762f9d",
+        "titulo": "Piratas del Caribe: El cofre del hombre muerto",
+        "anio": 2006
       },
-      "score": 72,
-      "reason": "§4.4 regla 3: match con Insomnia (Nolan, olimpo) y mención explícita de The Odyssey; ángulo informativo sobre Cage-Nolan, no accionable como post propio."
+      "score": 70,
+      "reason": "§4.2 catalog match de calidad: Piratas del Caribe 2 (sello bret, Gore Verbinski); Reddit post celebrando la intro de Davy Jones, ángulo informativo."
+    },
+    {
+      "title_es": "James Gray: 'Fox tomó Ad Astra, la alargó y me quitó el control'",
+      "summary_es": "El director confiesa en Cannes que el corte de estudio traicionó su visión original.",
+      "source": "Variety",
+      "age_hours": 2,
+      "url": "https://variety.com/2026/film/news/james-gray-ad-astra-taken-away-by-studio-1236758244/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "2d1895c5-1ad6-4123-932a-122242fd650d",
+        "titulo": "Ad astra",
+        "anio": 2019
+      },
+      "score": 63,
+      "reason": "§4.2 catalog match: Ad Astra en catálogo; mismo evento que 879780189d1d1b10, dedup — tomar el de Variety por más detalle."
+    },
+    {
+      "title_es": "James Gray revela que Fox le quitó el corte final de Ad Astra y la alargó 20 minutos",
+      "summary_es": "Gray dice que su versión habría sido muy diferente; el debate del director's cut sigue vivo.",
+      "source": "r/movies",
+      "age_hours": 2,
+      "url": "https://www.reddit.com/r/movies/comments/1tn7k89/james_gray_says_ad_astra_was_taken_away_from_him/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "2d1895c5-1ad6-4123-932a-122242fd650d",
+        "titulo": "Ad astra",
+        "anio": 2019
+      },
+      "score": 62,
+      "reason": "§4.2 catalog match: Ad Astra (2019) en catálogo; James Gray revela que Fox alargó la película contra su voluntad, ángulo informativo interesante."
     }
   ],
   "raw_signal_counts": {
     "news_items": 116,
-    "newsapi_items": 93,
+    "newsapi_items": 92,
     "reddit_posts": 0,
     "trailers": 59
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 1,
     "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16667,
-    "output": 9967
+    "input": 17619,
+    "output": 10421
   }
 }

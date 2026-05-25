@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-25T13:57:13.086Z",
+  "generated_at": "2026-05-25T21:04:38.647Z",
   "feeds_count": 10,
   "total_items": 116,
-  "items_with_cinebret_match": 28,
+  "items_with_cinebret_match": 23,
   "by_source": {
     "Variety": 10,
     "Hollywood Reporter": 10,
@@ -17,6 +17,708 @@
   },
   "items": [
     {
+      "source": "Deadline",
+      "title": "Films Are More Likely To Star Actors Named Chris Or A Talking Animal Than Women Over 60, UK Anti-Ageism Analysis Finds",
+      "link": "https://deadline.com/2026/05/films-star-actors-named-chris-talking-animal-older-women-1236920528/",
+      "description": "A new analysis of the top-grossing U.K. films of the past three years has unveiled that they are more likely to star actors named Chris or feature a talking animal in the lead role than a woman over the age of 60. The study, conducted by the Centre for Aging Better as part of the [&#8230;]",
+      "published": "Mon, 25 May 2026 20:50:47 +0000",
+      "published_iso": "2026-05-25T20:50:47.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "FULL SHOW: Stephen Colbert Hosts Public Access Show &quot;ONLY IN MONROE&quot;",
+      "link": "https://www.reddit.com/r/television/comments/1tnjwca/full_show_stephen_colbert_hosts_public_access/",
+      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/No-Promise3950&quot;&gt; /u/No-Promise3950 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://youtube.com/live/4nrWhB2Q_CU?si=5OBFF1q_8KEH4buE&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tnjwca/full_show_stephen_colbert_hosts_public_access/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
+      "published": "2026-05-25T19:51:22+00:00",
+      "published_iso": "2026-05-25T19:51:22.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Films Are More Likely to Star a Man Named Chris or a Talking Animal Than an Older Woman (Over 60), According to Study",
+      "link": "https://www.reddit.com/r/movies/comments/1tnj2th/films_are_more_likely_to_star_a_man_named_chris/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tnj2th/films_are_more_likely_to_star_a_man_named_chris/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/X1X54j0N83AUUd0y9McEDF_mqSbjy6AJcKRShqDcwxk.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=bab5d480c98c57321be396fec8d0b2af1ebcd98a&quot; alt=&quot;Films Are More Likely to Star a Man Named Chris or a Talking Animal Than an Older Woman (Over 60), According to Study&quot; title=&quot;Films Are More Likely to Star a Man Named Chris or a Talking Animal Than an Older Woman (O",
+      "published": "2026-05-25T19:21:18+00:00",
+      "published_iso": "2026-05-25T19:21:18.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Variety",
+      "title": "Films Are More Likely to Star a Man Named Chris or a Talking Animal Than an Older Woman, According to Study",
+      "link": "https://variety.com/2026/film/global/films-star-man-chris-talking-animal-than-woman-over-60-1236758341/",
+      "description": "A new study out of the United Kingdom found that out of the top films from the past three years at the U.K. box office, movies are more likely to feature a lead actor named Chris than a female lead actor over the age of 60. The Age Without Limits survey found that films are [&#8230;]",
+      "published": "Mon, 25 May 2026 19:19:10 +0000",
+      "published_iso": "2026-05-25T19:19:10.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "Pope Leo Sounds Alarm on AI: &#8216;Pursuit of Greater Profits Cannot Justify Choices That Systematically Sacrifice Jobs&#8217;",
+      "link": "https://www.thewrap.com/industry-news/tech/pope-leo-xiv-ai-regulation-open-letter/",
+      "description": "The open letter also advocates for the protection and retraining of workers whose jobs are threatened by the technology The post Pope Leo Sounds Alarm on AI: &#8216;Pursuit of Greater Profits Cannot Justify Choices That Systematically Sacrifice Jobs&#8217; appeared first on TheWrap .",
+      "published": "Mon, 25 May 2026 19:13:45 +0000",
+      "published_iso": "2026-05-25T19:13:45.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "California and L.A. Candidates To Participate In Jamie&#8217;s List Forum With One Week To Primary",
+      "link": "https://deadline.com/2026/05/los-angeles-mayor-candidates-forum-1236920257/",
+      "description": "With one week until the primary election, producer and podcaster Jamie Patricof and political strategist Mathew Littman plan to host what may be a final candidates&#8217; forum for those seeking city, congressional and statewide office. The Zoom forum, to start at noon PT on Tuesday, will feature mayoral candidates Karen Bass, Nithya Raman and Adam [&#8230;]",
+      "published": "Mon, 25 May 2026 19:00:00 +0000",
+      "published_iso": "2026-05-25T19:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "69c76f64-20fb-44a0-8e30-322b6e3a0438",
+          "titulo": "Election",
+          "anio": 1999
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Owen Wilson &#038; Jason Keller On The Impact Of Father Figures On Burgeoning Athletes In &#8216;Stick&#8217; &#8211; Crew Call Podcast",
+      "link": "https://deadline.com/2026/05/owen-wilson-stick-podcast-interview-1236920491/",
+      "description": "If you have a high school student in competitive sports, then when it comes to Apple TV&#8217;s Stick, if you know, you know. Although set in the world of golf, the Jason Keller-created series captures the idiosyncrasies, cynicisms, headaches and ambitions of young athletes no matter how talented they are. Oh, and that nagging coach [&#8230;]",
+      "published": "Mon, 25 May 2026 18:38:41 +0000",
+      "published_iso": "2026-05-25T18:38:41.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Global Powerhouse BTS Takes Over Las Vegas With High-Energy Arirang World Tour",
+      "link": "https://www.hollywoodreporter.com/music/music-news/bts-las-vegas-arirang-world-tour-night-2-highlights-1236605470/",
+      "description": "The group is slated to make a special appearance at tonight’s American Music Awards before picking the tour back up later in the week with two more shows at Allegiant Stadium.",
+      "published": "Mon, 25 May 2026 18:31:10 +0000",
+      "published_iso": "2026-05-25T18:31:10.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "Wendell Pierce Challenged Himself to an Annual Acting Trifecta. Now He’s Starring in a ‘Jack Ryan’ Movie, ‘Elsbeth’ and ‘Othello’ All at Once",
+      "link": "https://www.reddit.com/r/movies/comments/1tnhffi/wendell_pierce_challenged_himself_to_an_annual/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tnhffi/wendell_pierce_challenged_himself_to_an_annual/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/j6f9rtUDCZYl6glHodFmP1S3dRMUyEZKldXT003w2_g.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=66200edaeb71483c116beb64e7f2b9e4b340f547&quot; alt=&quot;Wendell Pierce Challenged Himself to an Annual Acting Trifecta. Now He’s Starring in a ‘Jack Ryan’ Movie, ‘Elsbeth’ and ‘Othello’ All at Once&quot; title=&quot;Wendell Pierce Challenged Himself to an Annual Acting Trifecta. Now",
+      "published": "2026-05-25T18:22:29+00:00",
+      "published_iso": "2026-05-25T18:22:29.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Variety",
+      "title": "Wendell Pierce Challenged Himself to an Annual Acting Trifecta. Now He&#8217;s Starring in a &#8216;Jack Ryan&#8217; Movie, &#8216;Elsbeth&#8217; and &#8216;Othello&#8217; All at Once",
+      "link": "https://variety.com/2026/film/features/wendell-pierce-jack-ryan-movie-elsbeth-othello-power-raising-kanan-1236755962/",
+      "description": "In 2019, Wendell Pierce was walking through London’s Piccadilly Circus to make it to that night’s performance of “Death of a Salesman,” when he stumbled upon a massive billboard. The ad was for the latest season of “Jack Ryan,” the Prime Video series in which he also stars. As he looked at himself on the [&#8230;]",
+      "published": "Mon, 25 May 2026 18:18:59 +0000",
+      "published_iso": "2026-05-25T18:18:59.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "&#8216;The Late Show With Stephen Colbert&#8217; Set Donated to Chicago&#8217;s Museum of Broadcast Communications",
+      "link": "https://www.thewrap.com/media-platforms/tv/late-show-stephen-colbert-set-donated-museum-of-broadcast-communications/",
+      "description": "The late night talk show wrapped its 11-season run on CBS on Thursday The post &#8216;The Late Show With Stephen Colbert&#8217; Set Donated to Chicago&#8217;s Museum of Broadcast Communications appeared first on TheWrap .",
+      "published": "Mon, 25 May 2026 18:01:59 +0000",
+      "published_iso": "2026-05-25T18:01:59.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Canada Tripling “Netflix Tax” on U.S. Streamers Draws Skepticism From Local Unions, Creatives",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/canada-netflix-tax-us-streamers-1236605464/",
+      "description": "More money may be squeezed from foreign digital platforms, but there's concern it won’t subsidize dramas, docs and other content local actors, directors and creative teams depend on for work.",
+      "published": "Mon, 25 May 2026 18:00:28 +0000",
+      "published_iso": "2026-05-25T18:00:28.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Star Wars: Mandalorian &#038; Grogu&#8217; With $100M, &#8216;Obsession&#8217; With Amorous $30M+ Lead Near $222M Memorial Day Weekend &#8211; Update With Chart",
+      "link": "https://deadline.com/2026/05/box-office-mandalorian-and-grogu-1236918713/",
+      "description": "UPDATED, MONDAY AM: ComScore is weighing the four-day Memorial Day weekend at $221.9 million, which is off 33% from last year&#8217;s all-time record ($330.1M) for the holiday stretch. However, that&#8217;s the third-best for the frame since Covid, following last year and 2022, when Top Gun: Maverick led all titles to a $224.4M marketplace. We&#8217;ve already [&#8230;]",
+      "published": "Mon, 25 May 2026 18:00:00 +0000",
+      "published_iso": "2026-05-25T18:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "7a4f6909-0f63-4e4f-b97d-4badd929d87b",
+          "titulo": "Obsession",
+          "anio": 2026
+        },
+        {
+          "pelicula_id": "77aed65a-d6ec-45d8-bf1e-a1935f9a92cb",
+          "titulo": "Top Gun: Maverick",
+          "anio": 2022
+        },
+        {
+          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
+          "titulo": "Following",
+          "anio": 1999
+        }
+      ]
+    },
+    {
+      "source": "The Wrap",
+      "title": "The 7 Best New Movies on Peacock in May",
+      "link": "https://www.thewrap.com/creative-content/movies/best-new-movies-peacock-may-2026/",
+      "description": "Fans waited decades for one movie making its streaming debut on Peacock The post The 7 Best New Movies on Peacock in May appeared first on TheWrap .",
+      "published": "Mon, 25 May 2026 18:00:00 +0000",
+      "published_iso": "2026-05-25T18:00:00.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "‘Hacks’ Creators Want DVD Box Set To Ensure Show “Stays In Existence” Amid Hollywood Mergers: “It Is Really Scary”",
+      "link": "https://www.reddit.com/r/television/comments/1tng5sg/hacks_creators_want_dvd_box_set_to_ensure_show/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tng5sg/hacks_creators_want_dvd_box_set_to_ensure_show/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/HYZp3swluPgcnWrkrWHqP03VMvn1Xwh-8vl8nruTwQg.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=2a1a1b0379720ca201a855a4eedb8d4bed7f7cec&quot; alt=&quot;‘Hacks’ Creators Want DVD Box Set To Ensure Show “Stays In Existence” Amid Hollywood Mergers: “It Is Really Scary”&quot; title=&quot;‘Hacks’ Creators Want DVD Box Set To Ensure Show “Stays In Existence” Amid Hollywood Merge",
+      "published": "2026-05-25T17:37:29+00:00",
+      "published_iso": "2026-05-25T17:37:29.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;Euphoria&#8217; Creator Explains Season 3&#8217;s &#8220;Horrific&#8221; Death Scene in Penultimate Episode, Star Calls It &#8220;a Cool Way to Go&#8221;",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/euphoria-creator-explains-season-3-death-scene-star-reacts-1236605459/",
+      "description": "Sam Levinson unpacked his decision to kill off one of the show's main characters and explained that he had always known it was their fate in an interview with Esquire.",
+      "published": "Mon, 25 May 2026 17:37:24 +0000",
+      "published_iso": "2026-05-25T17:37:24.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Big Bang Theory&#8217; Alum Joins Spinoff &#8216;Stuart Fails To Save The Universe&#8217;",
+      "link": "https://deadline.com/2026/05/big-bang-theory-alum-stuart-spinoff-wil-wheaton-1236920427/",
+      "description": "We&#8217;re getting a first glimpse of another Big Bang Theory alum in the upcoming spinoff Stuart Fails to Save the Universe. Wil Wheaton, who recurred as a heightened version of himself in the mothership series, makes a very quick cameo appearance in a new sizzle reel released Sunday by HBO Max. At the 30-second mark, [&#8230;]",
+      "published": "Mon, 25 May 2026 17:35:48 +0000",
+      "published_iso": "2026-05-25T17:35:48.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "I just finished the first two parts of La Casa de Papel/ Money Heist. I WISH I watched it when it came out!",
+      "link": "https://www.reddit.com/r/television/comments/1tnfsxq/i_just_finished_the_first_two_parts_of_la_casa_de/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I was bored last week and randomly watched the new Berlin spinoff. I thought it was good. Then thought what the hell lets watch the OG while we’re at it. Guys… I‘ve barely slept in 3 days. The last time I binged sth like this was GOT. This shit is like crack. It’s such a shame I didn’t watch it when it came out tho. Time for part 3. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/flyawaywithmeee&quot;&gt; /u/flyawaywithmeee &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&",
+      "published": "2026-05-25T17:24:40+00:00",
+      "published_iso": "2026-05-25T17:24:40.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8220;The Evolution Of Late Night Is Here&#8221;: Ben Gleib Talks Launching World&#8217;s First YouTube-Native Late-Night Talk Show From His House &#8211; Comedy Means Business Podcast",
+      "link": "https://deadline.com/2026/05/ben-gleib-youtube-talk-show-comedy-means-business-podcast-1236920336/",
+      "description": "With late-night at a crossroads, Ben Gleib is forging a new path. On May 28, just a week after the permanent shuttering of The Late Show, Gleib is set to launch Good Night with Ben Gleib, the world&#8217;s first late-night talk show built specifically for YouTube. It&#8217;s a bet rooted in the belief that late-night as a [&#8230;]",
+      "published": "Mon, 25 May 2026 17:20:00 +0000",
+      "published_iso": "2026-05-25T17:20:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "e8fb5c88-e680-48ea-a1ad-bf09aacb947f",
+          "titulo": "Casa ajena",
+          "anio": 2020
+        }
+      ]
+    },
+    {
+      "source": "r/television",
+      "title": "Is the X-Files still worth watching today?",
+      "link": "https://www.reddit.com/r/television/comments/1tnfmus/is_the_xfiles_still_worth_watching_today/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;As the title says, is it still worth watching and does it hold up? I’ve always thought of watching it because it has inspired so many directors/writers that I like and it’s going to be getting a reboot soon. But I’m worried it’s one of those things you kinda just had to be there for since it came out in the early 90s and that it may look cheesy by today’s standards? &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/the_dayman623&quot;&gt; /u/the_dayman623 &lt;/a",
+      "published": "2026-05-25T17:19:17+00:00",
+      "published_iso": "2026-05-25T17:19:17.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Hacks&#8217; Creators Want DVD Box Set To Ensure Show &#8220;Stays In Existence&#8221; Amid Hollywood Mergers: &#8220;It Is Really Scary&#8221;",
+      "link": "https://deadline.com/2026/05/hacks-creators-plan-dvd-box-set-hollywood-mergers-1236918472/",
+      "description": "EXCLUSIVE: In perfect Deborah Vance fashion, the creators of Hacks are trying to preserve the show with a physical media release. While discussing the fifth and final season of their HBO Max series, Lucia Aniello, Paul W. Downs and Jen Statsky revealed to Deadline that they&#8217;re planning to release a full series DVD box set [&#8230;]",
+      "published": "Mon, 25 May 2026 17:06:58 +0000",
+      "published_iso": "2026-05-25T17:06:58.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "One of my favorite scenes in The Sopranos",
+      "link": "https://www.reddit.com/r/television/comments/1tnf3bv/one_of_my_favorite_scenes_in_the_sopranos/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tnf3bv/one_of_my_favorite_scenes_in_the_sopranos/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/4iWtpm59RGcczetoMkKYFxBgtYEokgnG0iTghtaHfQY.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=a861afd79ef2fc797c69562805c8d67ba5927325&quot; alt=&quot;One of my favorite scenes in The Sopranos&quot; title=&quot;One of my favorite scenes in The Sopranos&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Nak",
+      "published": "2026-05-25T17:00:18+00:00",
+      "published_iso": "2026-05-25T17:00:18.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Hell in the Pacific (1968) | Director: John Boorman | Starring: Lee Marvin and Toshiro Mifune",
+      "link": "https://www.reddit.com/r/movies/comments/1tnf37i/hell_in_the_pacific_1968_director_john_boorman/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tnf37i/hell_in_the_pacific_1968_director_john_boorman/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/2vw7cvx1BuP6Li7HXSxDSO5FPVc--CGAI8xhpWK6MAc.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=0ac759e6529e2e27bcbba7d7991e3bf45ce4fa52&quot; alt=&quot;Hell in the Pacific (1968) | Director: John Boorman | Starring: Lee Marvin and Toshiro Mifune&quot; title=&quot;Hell in the Pacific (1968) | Director: John Boorman | Starring: Lee Marvin and Toshiro Mifune&quot; /&gt; &lt;/a&gt",
+      "published": "2026-05-25T17:00:11+00:00",
+      "published_iso": "2026-05-25T17:00:11.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Variety",
+      "title": "Queen Latifah on Hosting the American Music Awards, Releasing New Music This Year and Being a Taylor Swift Fan: ‘She Makes Really Great, Catchy Songs That We Love’",
+      "link": "https://variety.com/2026/music/awards/queen-latifah-host-american-music-awards-releasing-new-music-being-a-taylor-swift-fan-1236756276/",
+      "description": "Queen Latifah is getting ready to host the American Music Awards on Monday night. The last and only time she hosted was back in 1995 as part of a trio that included Tom Jones and country singer Lorrie Morgan. “It&#8217;s been a long time, but it was exciting then and It&#8217;s exciting now,” Latifah tells [&#8230;]",
+      "published": "Mon, 25 May 2026 17:00:00 +0000",
+      "published_iso": "2026-05-25T17:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
+          "titulo": "Joika",
+          "anio": 2023
+        }
+      ]
+    },
+    {
+      "source": "r/movies",
+      "title": "Boots Riley Says ‘I Love Boosters’ Was Rejected By Cannes Along With Other Past Projects; Picked ‘The Idol’ Over ‘I’m A Virgo’",
+      "link": "https://www.reddit.com/r/movies/comments/1tnext1/boots_riley_says_i_love_boosters_was_rejected_by/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tnext1/boots_riley_says_i_love_boosters_was_rejected_by/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/HkUnNqqQGKzvv1Ttq866T-glr_54tfF4PCZsit0Jk8o.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=2e4f3df85f98fb96efce6400c8e3712fbcffdb8b&quot; alt=&quot;Boots Riley Says ‘I Love Boosters’ Was Rejected By Cannes Along With Other Past Projects; Picked ‘The Idol’ Over ‘I’m A Virgo’&quot; title=&quot;Boots Riley Says ‘I Love Boosters’ Was Rejected By Cannes Along With Other Past ",
+      "published": "2026-05-25T16:54:50+00:00",
+      "published_iso": "2026-05-25T16:54:50.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "The Wrap",
+      "title": "Why CBS Sent Takedown Notices for Stephen Colbert&#8217;s &#8216;Only in Monroe&#8217; Episode",
+      "link": "https://www.thewrap.com/media-platforms/tv/why-cbs-sent-takedown-notices-for-stephen-colberts-only-in-monroe-episode/",
+      "description": "And why the network has suspended its effort to police unauthorized versions of the public access show online The post Why CBS Sent Takedown Notices for Stephen Colbert&#8217;s &#8216;Only in Monroe&#8217; Episode appeared first on TheWrap .",
+      "published": "Mon, 25 May 2026 16:49:51 +0000",
+      "published_iso": "2026-05-25T16:49:51.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "The Wrap",
+      "title": "&#8216;Euphoria&#8217; Creator Sam Levinson Explains That Shocking Death",
+      "link": "https://www.thewrap.com/creative-content/tv-shows/euphoria-nate-death-explained-sam-levinson-jacob-elordi/",
+      "description": "Spoilers, obviously The post &#8216;Euphoria&#8217; Creator Sam Levinson Explains That Shocking Death appeared first on TheWrap .",
+      "published": "Mon, 25 May 2026 16:37:43 +0000",
+      "published_iso": "2026-05-25T16:37:43.000Z",
+      "source_weight": 4,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Variety",
+      "title": "&#8216;Mono 222,&#8217; &#8216;Dreaming of Lions&#8217; and &#8216;I Got Bombed at Harvey’s&#8217; Top Mammoth Lakes Film Festival Awards &#8211; Film News in Brief",
+      "link": "https://variety.com/2026/film/news/film-news-in-brief-week-of-may-25-1236758294/",
+      "description": "The 12th annual Mammoth Lakes Film Festival has awarded its top prizes for the May 20-24 event in the California mountain town. &#8220;Mono 222,&#8221; directed by Quinton Dominguez, was awarded the jury prize for best North American narrative feature, while “Dreaming of Lions,” directed and written by Paolo Marinou-Blanco, won best international narrative feature. Best [&#8230;]",
+      "published": "Mon, 25 May 2026 16:36:46 +0000",
+      "published_iso": "2026-05-25T16:36:46.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Star Wars: The Mandalorian &#038; Grogu&#8217; Opens To $163M WW, $100M 4-Day U.S.: What Does This Even Mean? &#8211; Box Office",
+      "link": "https://deadline.com/2026/05/box-office-star-wars-the-mandalorian-and-grogu-analysis-1236920328/",
+      "description": "MONDAY AM UPDATE: The last time a Star Wars movie under Disney ownership registered a low opening, it was 2018&#8217;s Solo: A Star Wars Story with an $84M 3-day, $103M 4-day and $153M WW (in like for likes). We bashed that result, the ambitious expansion of Star Wars lore&#8217;s ticket sales impacted by behind-the-scenes drama, [&#8230;]",
+      "published": "Mon, 25 May 2026 16:34:25 +0000",
+      "published_iso": "2026-05-25T16:34:25.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "888ef2a0-702f-443b-89c3-952a195136e6",
+          "titulo": "Han Solo: Una historia de Star Wars",
+          "anio": 2018
+        }
+      ]
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "The 25 Best Drama Schools in the World, 2026",
+      "link": "https://www.hollywoodreporter.com/lifestyle/arts/best-drama-schools-2026-1236601303/",
+      "description": "A diploma from one of these ace institutions can launch an acting career. Just ask alums like Meryl Streep, Adam Driver and Cynthia Erivo.",
+      "published": "Mon, 25 May 2026 16:30:00 +0000",
+      "published_iso": "2026-05-25T16:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "Which movie do you think has the best casting of &quot;child version of character to adult actor&quot;?",
+      "link": "https://www.reddit.com/r/movies/comments/1tne7ka/which_movie_do_you_think_has_the_best_casting_of/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;For me, I gotta nominate Goodfellas (1990). The kid they used in that movie to stand in as a young Henry Hill/Ray Liotta was actually believable. Like I could imagine that kid growing up to be him. Same thing with Joe Pesci/Tommy&amp;#39;s child version, even though the aging process made less sense in that case, Tommy aged like 30 years in only 7.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/InternationalPick163&quot;&gt; /u/InternationalPick163 &lt;/a&gt; ",
+      "published": "2026-05-25T16:28:37+00:00",
+      "published_iso": "2026-05-25T16:28:37.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "c5691cdc-d093-4d5b-8380-1253cbb013c2",
+          "titulo": "Uno de los nuestros",
+          "anio": 1990
+        }
+      ]
+    },
+    {
+      "source": "r/movies",
+      "title": "Haunting dialogue that lives rent free in your head/hits close to home",
+      "link": "https://www.reddit.com/r/movies/comments/1tndx0c/haunting_dialogue_that_lives_rent_free_in_your/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;LENA &lt;/p&gt; &lt;p&gt;&amp;quot;Then I have to ask why did my husband volunteer for a suicide mission?&amp;quot;&lt;/p&gt; &lt;p&gt;DR VENTRESS pauses.&lt;/p&gt; &lt;p&gt;&amp;quot;Why would I have an answer to that question?&amp;quot;&lt;/p&gt; &lt;p&gt;LENA&lt;/p&gt; &lt;p&gt;&amp;quot;Because you ran the programme. must have assessed him. And he must have told you.&amp;quot;&lt;/p&gt; &lt;p&gt;DR VENTRESS&lt;/p&gt; &lt;p&gt;&amp;quot;So you&amp;#39;re asking me as a psychologist?&amp;quot;&lt;/p&gt; &lt;p&gt;LENA&lt;/p&gt; &lt",
+      "published": "2026-05-25T16:18:27+00:00",
+      "published_iso": "2026-05-25T16:18:27.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Deadline",
+      "title": "Boots Riley Says &#8216;I Love Boosters&#8217; Was Rejected By Cannes Along With Other Past Projects; Picked &#8216;The Idol&#8217; Over &#8216;I&#8217;m A Virgo&#8217;",
+      "link": "https://deadline.com/2026/05/boots-riley-i-love-boosters-rejected-cannes-im-a-virgo-1236920344/",
+      "description": "Boots Riley was recently asked on X why he chose to premiere I Love Boosters at SXSW rather than Cannes. He acknowledged that Cannes rejected the film, as well as several of his previous works. Sorry To Bother You, his 2018 dark comedy feature premiered at Sundance where it received the Sundance Institute&#8217;s Vanguard Award. [&#8230;]",
+      "published": "Mon, 25 May 2026 16:10:39 +0000",
+      "published_iso": "2026-05-25T16:10:39.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/television",
+      "title": "Who are your favorite non-romantic male and female relationships?",
+      "link": "https://www.reddit.com/r/television/comments/1tndmao/who_are_your_favorite_nonromantic_male_and_female/",
+      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/OCGamerboy&quot;&gt; /u/OCGamerboy &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tndmao/who_are_your_favorite_nonromantic_male_and_female/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tndmao/who_are_your_favorite_nonromantic_male_and_female/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
+      "published": "2026-05-25T16:07:40+00:00",
+      "published_iso": "2026-05-25T16:07:40.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "hey it's don hertzfeldt, some sort of animator guy, and maybe you should AMA",
+      "link": "https://www.reddit.com/r/movies/comments/1tndjrg/hey_its_don_hertzfeldt_some_sort_of_animator_guy/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tndjrg/hey_its_don_hertzfeldt_some_sort_of_animator_guy/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/qedffgp54b3h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=bab777f08261b005cc3abe8c855c68aa03dd9735&quot; alt=&quot;hey it's don hertzfeldt, some sort of animator guy, and maybe you should AMA&quot; title=&quot;hey it's don hertzfeldt, some sort of animator guy, and maybe you should AMA&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quo",
+      "published": "2026-05-25T16:05:08+00:00",
+      "published_iso": "2026-05-25T16:05:08.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Legendary Palme d'Or-winning British filmmaker Ken Loach, who turns 90 in June, has confirmed that 2023's 'The Old Oak' will be his final film, saying he is no longer physically strong enough for the rigors of being on set.",
+      "link": "https://www.reddit.com/r/movies/comments/1tndf78/legendary_palme_dorwinning_british_filmmaker_ken/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tndf78/legendary_palme_dorwinning_british_filmmaker_ken/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/y-01T1kaUxp6NGtpG6EQ_KN6ELWmPVNDJmA0fuFA-c4.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=721f26745b4d59de5da57ab0a668800b826cb1ad&quot; alt=&quot;Legendary Palme d'Or-winning British filmmaker Ken Loach, who turns 90 in June, has confirmed that 2023's 'The Old Oak' will be his final film, saying he is no longer physically strong enough for the rigors of being on set.&q",
+      "published": "2026-05-25T16:00:48+00:00",
+      "published_iso": "2026-05-25T16:00:48.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Scariest movie to watch alone?",
+      "link": "https://www.reddit.com/r/movies/comments/1tndec2/scariest_movie_to_watch_alone/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Give me some suggestions. For some reason, I feel like wanting to test my mind and watch a scary movie alone in the dark at night while Wifey is sleeping since she doesn’t like scary movies. To be fair, I haven’t seen many myself. My favorite is probably Halloween, the original. Something unnerving about Myers, and the way he acts. The music is definitely iconic and helps too, so a movie with a good tense soundtrack would be appreciated as well!&lt;/p&gt; &lt;p&gt;Edit: Wow didn’t expect this many comments/options, but I appreciate ",
+      "published": "2026-05-25T16:00:06+00:00",
+      "published_iso": "2026-05-25T16:00:06.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
+          "titulo": "Scary Movie",
+          "anio": 2026
+        },
+        {
+          "pelicula_id": "2d70c72f-9cd5-4ed1-8635-12cadd8c5e31",
+          "titulo": "La noche de Halloween",
+          "anio": 1978
+        }
+      ]
+    },
+    {
+      "source": "Variety",
+      "title": "How Marlon Wayans Survived Hell, Hollywood and Harvey Weinstein",
+      "link": "https://variety.com/2026/film/features/marlon-wayans-scary-movie-dave-chappelle-transgender-harvey-weinstein-1236755195/",
+      "description": "On the surface, “Scary Movie” may seem like just another summer sequel mining nostalgia for profit. But for Marlon Wayans, the film’s writer, producer and star, it represents the culmination of a quarter-century battle to wrest control of his family’s franchise back from its pillagers, as well as a promise he’d made to his dying [&#8230;]",
+      "published": "Mon, 25 May 2026 16:00:00 +0000",
+      "published_iso": "2026-05-25T16:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
+          "titulo": "Scary Movie",
+          "anio": 2026
+        }
+      ]
+    },
+    {
+      "source": "Variety",
+      "title": "How to Watch the 2026 American Music Awards Live Online",
+      "link": "https://variety.com/2026/music/news/how-to-watch-american-music-awards-live-online-2026-1236757266/",
+      "description": "The 2026 American Music Awards will air live on May 25 at 8 p.m. ET / 5 p.m. PT on CBS and Paramount+. Cable-cutters can also stream the ceremony live on DirecTV and Hulu + Live TV via your local CBS channel. Plus, these live TV streamers are both currently offering free trials, making them [&#8230;]",
+      "published": "Mon, 25 May 2026 16:00:00 +0000",
+      "published_iso": "2026-05-25T16:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Where to Watch the 2026 American Music Awards Live Online",
+      "link": "https://www.hollywoodreporter.com/tv/tv-news/watch-american-music-awards-2026-amas-streaming-online-free-1236604286/",
+      "description": "Host Queen Latifah is set to make her AMAs return three-plus decades after her 1995 hosting debut.",
+      "published": "Mon, 25 May 2026 16:00:00 +0000",
+      "published_iso": "2026-05-25T16:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Deadline",
+      "title": "&#8216;Backrooms&#8217; Creator Kane Parsons On Becoming A24&#8217;s Youngest Director Ever, Adapting His YouTube Series: &#8220;A Weird Dream Come True&#8221;",
+      "link": "https://deadline.com/2026/05/backrooms-kane-parsons-a24-youngest-director-ever-disruptors-1236862181/",
+      "description": "Born in 2005, the year YouTube launched, Backrooms director Kane Parsons has &#8220;always taken that for granted,&#8221; having the platform at his disposal. &#8220;YouTube, really more than just being a cultural reference for me, has been how I know how to do any of the stuff I do,&#8221; he explains while discussing his &#8220;weird dream [&#8230;]",
+      "published": "Mon, 25 May 2026 16:00:00 +0000",
+      "published_iso": "2026-05-25T16:00:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+          "titulo": "Backrooms",
+          "anio": 2026
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Pope Leo Warns That Artificial Intelligence Could Be &#8220;New Tower Of Babel&#8221;, Cautions Against AI In The Hands Of The Few",
+      "link": "https://deadline.com/2026/05/pope-leo-artificial-intelligence-magnifica-humanitas-1236920337/",
+      "description": "In his encyclical &#8220;Magnifica Humanitas&#8221; (Magnificent Humanity) released today, Pope Leo&#160;XIV warns that artificial intelligence “threatens to normalize an anti-human vision” and strongly cautions against the concentration of the new technology in the hands of the few. In the first sentence of the encyclical, the Pope writes, &#8220;Humanity, created by God in all its grandeur, [&#8230;]",
+      "published": "Mon, 25 May 2026 15:50:28 +0000",
+      "published_iso": "2026-05-25T15:50:28.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "I didn't expect The Fly (1986) to be so tragic",
+      "link": "https://www.reddit.com/r/movies/comments/1tnctts/i_didnt_expect_the_fly_1986_to_be_so_tragic/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I just watched it for the first time and I really liked it. It wasn&amp;#39;t really a scary movie, I was just heavily impressed with the special effects and the prosthetics and Jeff Goldblum&amp;#39;s 80s physique. It was also really nice how Veronica truly cared for Seth even when he didn&amp;#39;t look right anymore. And at the end, &lt;span class=&quot;md-spoiler-text&quot;&gt;when he&amp;#39;s completely transformed, when he pointed the gun to his head&lt;/span&gt;, just wow...&lt;/p&gt; &lt;p&gt;I went into this movie with the",
+      "published": "2026-05-25T15:39:44+00:00",
+      "published_iso": "2026-05-25T15:39:44.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
+          "titulo": "Scary Movie",
+          "anio": 2026
+        }
+      ]
+    },
+    {
+      "source": "r/television",
+      "title": "Sgt. James Doakes Hears Dexter's Internal Monologue",
+      "link": "https://www.reddit.com/r/television/comments/1tnctdm/sgt_james_doakes_hears_dexters_internal_monologue/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tnctdm/sgt_james_doakes_hears_dexters_internal_monologue/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/AFzzkaB4YPrd_0ma5fdokTFh6SN-WI2zdtTy72l-LkI.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=6e792e3c5c2b38b9073d170b3569fe350410b8d2&quot; alt=&quot;Sgt. James Doakes Hears Dexter's Internal Monologue&quot; title=&quot;Sgt. James Doakes Hears Dexter's Internal Monologue&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;htt",
+      "published": "2026-05-25T15:39:17+00:00",
+      "published_iso": "2026-05-25T15:39:17.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "What is the term for shows that are mostly music sequences/montages and made for dual-screen audiences?",
+      "link": "https://www.reddit.com/r/television/comments/1tncnhr/what_is_the_term_for_shows_that_are_mostly_music/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Without being derogatory, is there a name for this type of show? I&amp;#39;m having a hard time accurately describing them in conversation.&lt;/p&gt; &lt;p&gt;I&amp;#39;ve been calling them soundtracks shows, but I have never heard anyone else use the term. I&amp;#39;m thinking of something like The Summer I turned Pretty or Off Campus. Usually Netflix or Amazon originals that are extremely light on story, almost entirely college-aged relationship drama and full of sequences with pop music sound tracks. They&amp;#39;re extremely lig",
+      "published": "2026-05-25T15:33:21+00:00",
+      "published_iso": "2026-05-25T15:33:21.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "Tom Hanks Just Can&#8217;t Quit World War II (and It’s Keeping Him Up at Night)",
+      "link": "https://www.hollywoodreporter.com/movies/movie-features/tom-hanks-interview-wwii-series-1236601625/",
+      "description": "The actor-producer and historian Jon Meacham discuss their new History Channel docuseries on 'the largest event in human history'",
+      "published": "Mon, 25 May 2026 15:30:00 +0000",
+      "published_iso": "2026-05-25T15:30:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Variety",
+      "title": "Memorial Day Weekend Box Office: &#8216;Mandalorian and Grogu&#8217; Opens to $100 Million Domestically, $163 Million Globally",
+      "link": "https://variety.com/2026/film/box-office/memorial-day-weekend-box-office-mandalorian-grogu-debut-1236758284/",
+      "description": "Disney&#8217;s &#8220;The Mandalorian and Grogu&#8221; ignited to $100 million at the domestic box office over the Memorial Day holiday weekend. That&#8217;s ever-so-slightly behind Sunday&#8217;s estimates of $102 million for the four-day frame, which includes $81 million over the traditional weekend. The &#8220;Star Wars&#8221; spinoff, a continuation of the popular Disney+ streaming series, also collected a [&#8230;]",
+      "published": "Mon, 25 May 2026 15:24:48 +0000",
+      "published_iso": "2026-05-25T15:24:48.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Variety",
+      "title": "Ira Sachs on &#8216;The Man I Love,&#8217; Queer Cinema in the Age of Trump and Casting Straight Actors in Gay Roles: &#8216;I Don&#8217;t Ask People Who They&#8217;ve Slept With&#8217;",
+      "link": "https://variety.com/2026/film/news/ira-sachs-man-i-love-queer-cinema-trump-casting-rami-malek-1236756924/",
+      "description": "For four decades, Ira Sachs has chronicled queer life in New York, shining a light on the artists and iconoclasts whose work gives the city such a vibrant, transgressive edge. &#8220;The Man I Love,&#8221; which Sachs describes as one of his most personal films, adds to the canon. Set in the 1980s at the height [&#8230;]",
+      "published": "Mon, 25 May 2026 15:13:00 +0000",
+      "published_iso": "2026-05-25T15:13:00.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "First Image of Asia Argento in Thriller 'Death Has No Master' - After decades of living abroad, a Venezuelan woman finds her family’s plantation occupied by the former workers. In her quest for justice in a lawless environment, she unleashes her brutal side.",
+      "link": "https://www.reddit.com/r/movies/comments/1tnbtcv/first_image_of_asia_argento_in_thriller_death_has/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tnbtcv/first_image_of_asia_argento_in_thriller_death_has/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/2hnptj0ita3h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=3573a1ca59fe453ff9e55026c15fb7475cc0c754&quot; alt=&quot;First Image of Asia Argento in Thriller 'Death Has No Master' - After decades of living abroad, a Venezuelan woman finds her family’s plantation occupied by the former workers. In her quest for justice in a lawless environment, she unleashes her brutal side.&quot",
+      "published": "2026-05-25T15:03:57+00:00",
+      "published_iso": "2026-05-25T15:03:57.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "Variety",
+      "title": "Netflix Brazil Unveils Its First Medical Series, Plus an Evangelical Special, a Third Melodrama and an Open Marriage Comedy (EXCLUSIVE)",
+      "link": "https://variety.com/2026/tv/global/netflix-brazil-clara-moneke-heitor-dhalia-maria-farinha-1236758030/",
+      "description": "In the run-up to Brazilian mega creativity forum Rio2C, Netflix Brazil has unveiled five new titles which show it still exploring new genres and launching new industry partnerships. At stake for Netflix is its continuing SVOD dominion over one of its biggest subscriber markets in the world. Its lineup and panels at this week’s Rio2C [&#8230;]",
+      "published": "Mon, 25 May 2026 15:02:23 +0000",
+      "published_iso": "2026-05-25T15:02:23.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "Movies Where Someone Gets Caught Lying to Impress Others",
+      "link": "https://www.reddit.com/r/movies/comments/1tnbei4/movies_where_someone_gets_caught_lying_to_impress/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;My son has been struggling with telling lies to make himself seem “cool,” and I’m having a hard time helping him understand that lying ends up causing more harm than just telling the truth. I’m looking for movies or shows where a character lies to impress others, gets caught, and faces the natural consequences — embarrassment, losing trust, being laughed at, etc. I’m hoping that seeing those situations play out might help him understand why honesty matters&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &",
+      "published": "2026-05-25T14:49:04+00:00",
+      "published_iso": "2026-05-25T14:49:04.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/television",
+      "title": "‘President Curtis’ | ‘Rick and Morty’ Spin-Off Series Starring Keith David Coming in July | [adult swim]",
+      "link": "https://www.reddit.com/r/television/comments/1tnbc7v/president_curtis_rick_and_morty_spinoff_series/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tnbc7v/president_curtis_rick_and_morty_spinoff_series/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/BF4V7LFtcP3fO5yLs2dQc0Q-bHSH76JzmJ9TKrxBBpA.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=ac54e73f511f91a81c77a8cdefd4aa962decac40&quot; alt=&quot;‘President Curtis’ | ‘Rick and Morty’ Spin-Off Series Starring Keith David Coming in July | [adult swim]&quot; title=&quot;‘President Curtis’ | ‘Rick and Morty’ Spin-Off Series Starring Keith David Coming in July | [adult s",
+      "published": "2026-05-25T14:46:47+00:00",
+      "published_iso": "2026-05-25T14:46:47.000Z",
+      "source_weight": 2,
+      "source_lang": "en",
+      "source_category": "pulse"
+    },
+    {
+      "source": "r/movies",
+      "title": "Which movie uses a single room or claustrophobic space to build the best tension?",
+      "link": "https://www.reddit.com/r/movies/comments/1tnavho/which_movie_uses_a_single_room_or_claustrophobic/",
+      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I’m looking for films that don’t rely on massive sets or changing locations, but instead trap the characters (and the audience) in a single tight space to create pure psychological tension.A classic example would be 12 Angry Men or The Lighthouse, where the environment itself feels like an enemy.What are your favorite movies that master this claustrophobic atmosphere? No major spoilers, please.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Popa-Ioana06&quot;&",
+      "published": "2026-05-25T14:29:49+00:00",
+      "published_iso": "2026-05-25T14:29:49.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse",
+      "cinebret_matches": [
+        {
+          "pelicula_id": "a1d524dc-6ccb-4bcd-987d-78b94c35f574",
+          "titulo": "El faro",
+          "anio": 2019
+        },
+        {
+          "pelicula_id": "6ef951a5-ab61-489f-87a0-f2af49616266",
+          "titulo": "12 hombres sin piedad: Veredicto final",
+          "anio": 1997
+        }
+      ]
+    },
+    {
+      "source": "Deadline",
+      "title": "Slain &#8216;Virgin River&#8217; Actor Stewart McLean Recalled By Family &#038; Friends: &#8220;What A Rockstar He Was, A Loved Guy Everywhere He Went&#8221;",
+      "link": "https://deadline.com/2026/05/stewart-mclean-family-friends-slain-actor-1236920318/",
+      "description": "As the shock of Canadian actor Stewart McLean&#8217;s homicide last week transitions to numbed grief, friends and family of the Virgin River and Murder In A Small Town performer are struggling to make sense of the tragedy. In recent social media posts since Saturday&#8217;s announcement by Canadian law enforcement that McLean&#8217;s weeklong disappearance was being [&#8230;]",
+      "published": "Mon, 25 May 2026 14:08:45 +0000",
+      "published_iso": "2026-05-25T14:08:45.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
+      "source": "Hollywood Reporter",
+      "title": "&#8216;I&#8217;ll Be Gone in June&#8217; Review: Wispy but Atmospheric Drama Follows a German Student to New Mexico in 2001",
+      "link": "https://www.hollywoodreporter.com/movies/movie-reviews/ill-be-gone-in-june-review-1236604123/",
+      "description": "Director Katharina Rivilis draws on personal experience for her Cannes-bowing drama about a European navigating post-9/11 America.",
+      "published": "Mon, 25 May 2026 13:57:13 +0000",
+      "published_iso": "2026-05-25T13:57:13.000Z",
+      "source_weight": 5,
+      "source_lang": "en",
+      "source_category": "industry"
+    },
+    {
       "source": "Variety",
       "title": "Lebanese Comic John Achkar’s Special at L’Olympia Hall Acquired by Arabic Streamer MBC Shahid in &#8216;Milestone&#8217; for Arabic Stand-Up",
       "link": "https://variety.com/2026/film/global/lebanese-comic-john-achkar-olympia-hall-paris-mbc-shahid-1236758257/",
@@ -26,6 +728,17 @@
       "source_weight": 5,
       "source_lang": "en",
       "source_category": "industry"
+    },
+    {
+      "source": "r/movies",
+      "title": "MUBI Pulls Over Refn’s ‘Maniac Cop’ Remake",
+      "link": "https://www.reddit.com/r/movies/comments/1tn9m8j/mubi_pulls_over_refns_maniac_cop_remake/",
+      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tn9m8j/mubi_pulls_over_refns_maniac_cop_remake/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/jLAiGPQbxlhAI9g5RcnhbBPWY_sbinrKx1TpbmDhq7U.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=ffc722f398f45a2b7020a2ca452daea610972868&quot; alt=&quot;MUBI Pulls Over Refn’s ‘Maniac Cop’ Remake&quot; title=&quot;MUBI Pulls Over Refn’s ‘Maniac Cop’ Remake&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/MoneyLi",
+      "published": "2026-05-25T13:44:05+00:00",
+      "published_iso": "2026-05-25T13:44:05.000Z",
+      "source_weight": 3,
+      "source_lang": "en",
+      "source_category": "pulse"
     },
     {
       "source": "Hollywood Reporter",
@@ -44,17 +757,6 @@
           "anio": 2019
         }
       ]
-    },
-    {
-      "source": "Variety",
-      "title": "‘Triptych,’ ‘Dark Hope,’ ‘Naked’ Among Standouts at Conecta Magaluf-Mallorca Pitch Lineup",
-      "link": "https://variety.com/2026/tv/global/conecta-magaluf-mallorca-2026-pitch-lineup-1236758199/",
-      "description": "Art-world thriller “Triptych,” from Studio TF1’s Kubik Films; RTP-backed Afro-Portuguese music drama “Dark Hope” and “Naked,” a new drama from “Sirāt” producer Corte y Confección de Películas figure among the standout entries at this year’s Conecta Magaluf-Mallorca. Running May 25-28 on Magaluf beach in Calvià, Mallorca, Spain, the 10th anniversary edition of Conecta Fiction &#38; [&#8230;]",
-      "published": "Mon, 25 May 2026 13:28:41 +0000",
-      "published_iso": "2026-05-25T13:28:41.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/movies",
@@ -126,24 +828,6 @@
       ]
     },
     {
-      "source": "Variety",
-      "title": "James Gray Says &#8216;Ad Astra&#8217; Was &#8216;Taken Away&#8217; From Him and Made Longer by 20th Century Fox: &#8216;It Would Have Been a Very Different Movie&#8217;",
-      "link": "https://variety.com/2026/film/news/james-gray-ad-astra-taken-away-by-studio-1236758244/",
-      "description": "James Gray has revealed that the released version of his 2019 Brad Pitt-starring &#8220;Ad Astra&#8221; was not his cut — and was actually made longer than he wanted by the studio, 20th Century Fox. Speaking in Cannes to Brut to promote his latest film at the festival, &#8220;Paper Tiger,&#8221; the director didn&#8217;t hold back when it [&#8230;]",
-      "published": "Mon, 25 May 2026 12:21:37 +0000",
-      "published_iso": "2026-05-25T12:21:37.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "2d1895c5-1ad6-4123-932a-122242fd650d",
-          "titulo": "Ad astra",
-          "anio": 2019
-        }
-      ]
-    },
-    {
       "source": "r/movies",
       "title": "First Image from Mystery-Horror 'Recluse' - Follows Joan, an audio engineer who lives a solitary life, struggling to determine whether the horrors she encounters are real and caused by past actions of her father, or if they are manifestations of her own troubled mind.",
       "link": "https://www.reddit.com/r/movies/comments/1tn7h0b/first_image_from_mysteryhorror_recluse_follows/",
@@ -153,83 +837,6 @@
       "source_weight": 3,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "Which apple tv show should I watch first as I have many in my watchlist?I got apple tv subscription for the first time ever and haven't watched a single apple TV show.",
-      "link": "https://www.reddit.com/r/television/comments/1tn7grx/which_apple_tv_show_should_i_watch_first_as_i/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Severance &lt;/p&gt; &lt;p&gt;See &lt;/p&gt; &lt;p&gt;Servant &lt;/p&gt; &lt;p&gt;Slow horses &lt;/p&gt; &lt;p&gt;Silo&lt;/p&gt; &lt;p&gt;Your friends and neighbours &lt;/p&gt; &lt;p&gt;Foundation&lt;/p&gt; &lt;p&gt;Pluribus&lt;/p&gt; &lt;p&gt;Dark matter &lt;/p&gt; &lt;p&gt;Ted lasso&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/ElectronicPrice2532&quot;&gt; /u/ElectronicPrice2532 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/t",
-      "published": "2026-05-25T12:18:35+00:00",
-      "published_iso": "2026-05-25T12:18:35.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "Variety",
-      "title": "Pope Leo Issues AI Manifesto Warning That &#8216;Opaque Algorithms&#8217; Controlled by a &#8216;Few&#8217; Companies Can Bring &#8216;New Forms of Dehumanization&#8217;",
-      "link": "https://variety.com/2026/biz/global/pope-leo-ai-encyclical-algorithms-threaten-dehumanisation-1236758186/",
-      "description": "Pope Leo XIV on Monday launched an impassioned call for regulation of Artificial Intelligence, warning that &#8220;opaque algorithms,” controlled by a handful of powerful private companies, can bring “new forms of dehumanization.” In his eagerly awaited new encyclical called &#8220;Magnificent Humanity&#8221; – an encyclical is an ancient form of Vatican communication – Pope Leo also [&#8230;]",
-      "published": "Mon, 25 May 2026 10:43:59 +0000",
-      "published_iso": "2026-05-25T10:43:59.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "Boots Riley Says Cannes Didn&#8217;t Pick &#8216;I Love Boosters&#8217; or &#8216;Sorry to Bother You&#8217; and Chose &#8216;The Idol&#8217; Over &#8216;I&#8217;m a Virgo&#8217;: &#8216;They Just Don&#8217;t Like My Stuff. All Good&#8217;",
-      "link": "https://variety.com/2026/film/global/boots-riley-cannes-i-love-boosters-the-idol-im-a-virgo-1236758192/",
-      "description": "Neon may be the toast of Cannes — again — after landing its seventh consecutive Palme d&#8217;Or on Saturday thanks to &#8220;Fjord,&#8221; but according to Boots Riley, the distributor could have had another hot film in its festival lineup. With the musician and filmmaker&#8217;s latest movie &#8220;I Love Boosters&#8221; having hit cinemas on May 22, Riley has [&#8230;]",
-      "published": "Mon, 25 May 2026 10:01:26 +0000",
-      "published_iso": "2026-05-25T10:01:26.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "India&#8217;s JioStar Chief Uday Shankar Says Cricket Boards Are Pricing Themselves Out of Their Biggest Market (EXCLUSIVE)",
-      "link": "https://variety.com/2026/tv/news/ipl-uday-shankar-jiostar-cricket-rights-india-media-1236758190/",
-      "description": "&#8220;Cricket is at a crossroads,&#8221; says Uday Shankar. As vice-chair of JioStar &#8211; the behemoth Indian platform that serves more than 500 million viewers, spends some $3.9 billion a year on content, and was built, in no small part, on the back of cricket rights &#8211; he is not speaking as a neutral observer. The [&#8230;]",
-      "published": "Mon, 25 May 2026 09:40:56 +0000",
-      "published_iso": "2026-05-25T09:40:56.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "r/movies",
-      "title": "Cuba Gooding Jr., Luke Ford, Keith Duffy and Qymira Board Action Thriller ‘Lotus’",
-      "link": "https://www.reddit.com/r/movies/comments/1tn3662/cuba_gooding_jr_luke_ford_keith_duffy_and_qymira/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tn3662/cuba_gooding_jr_luke_ford_keith_duffy_and_qymira/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/mUz3Q6VNDsHZ1U8D8ik0X41cxWM1RGt5yfGgpEaV1v4.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=66e4526e6c31a505bb5ce135e2492ed34b8cfaff&quot; alt=&quot;Cuba Gooding Jr., Luke Ford, Keith Duffy and Qymira Board Action Thriller ‘Lotus’&quot; title=&quot;Cuba Gooding Jr., Luke Ford, Keith Duffy and Qymira Board Action Thriller ‘Lotus’&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt",
-      "published": "2026-05-25T08:42:58+00:00",
-      "published_iso": "2026-05-25T08:42:58.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "Variety",
-      "title": "Cuba Gooding Jr., Luke Ford, Keith Duffy and Qymira Board Action Thriller &#8216;Lotus&#8217; (EXCLUSIVE)",
-      "link": "https://variety.com/2026/film/markets-festivals/cuba-gooding-jr-luke-ford-keith-duffy-qymira-lotus-1236758182/",
-      "description": "Hong Kong-based ACT3 and Philippine production company Blackops Studios Asia have set Cuba Gooding Jr., Luke Ford, Keith Duffy and multimedia artist Qymira in &#8220;Lotus,&#8221; an international action thriller that marks the first production under the companies&#8217; multi-year, five-film slate deal. The project was introduced to international buyers and distribution partners at the Cannes Film [&#8230;]",
-      "published": "Mon, 25 May 2026 08:32:56 +0000",
-      "published_iso": "2026-05-25T08:32:56.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "‘Red Rocks’ Review: Weirdo, Cliff-Jumping Kiddies Are the Focus of Bruno Dumont’s Latest Experiment",
-      "link": "https://variety.com/2026/film/reviews/red-rocks-review-1236758180/",
-      "description": "From “The 400 Blows” to “The Florida Project,” kids have made fascinating cinematic subjects. Even if they’re working from scripts, there’s always the sense that they’re not entirely acting — that they can’t help but simply be themselves. The French director Bruno Dumont, a former philosophy professor who broke into Cannes nearly 30 years ago [&#8230;]",
-      "published": "Mon, 25 May 2026 08:24:32 +0000",
-      "published_iso": "2026-05-25T08:24:32.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/television",
@@ -248,28 +855,6 @@
           "anio": 2025
         }
       ]
-    },
-    {
-      "source": "Variety",
-      "title": "‘A Girl Unknown’ Review: An Understated and Aching Period Drama Set Against the Quiet Backdrop of China’s One-Child Policy",
-      "link": "https://variety.com/2026/film/reviews/a-girl-unknown-review-1236758021/",
-      "description": "The wounds of abandonment and displacement are at the root of Zou Jing’s achingly poetic “A Girl Unknown,” a sober and quietly devastating portrayal of an adolescent girl whose identity, maybe even humanity, has been toyed with by a fractured law. That would be China’s controversial one-child policy, recently interrogated in Nanfu Wang’s stunning documentary [&#8230;]",
-      "published": "Mon, 25 May 2026 07:52:59 +0000",
-      "published_iso": "2026-05-25T07:52:59.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Variety",
-      "title": "Korea Box Office: Yeon Sang-ho&#8217;s Cannes Midnight Screener &#8216;Colony&#8217; Rockets to No. 1 With Dominant Opening",
-      "link": "https://variety.com/2026/film/box-office/korea-box-office-yeon-sang-ho-colony-1236758164/",
-      "description": "Fresh from its world premiere in the Midnight Screenings section of the Cannes Film Festival, Yeon Sang-ho&#8217;s action-horror zombie extravaganza &#8220;Colony&#8221; re-energized the South Korean box office during the weekend of May 22–24. According to data from KOBIS, the tracking service operated by the Korean Film Council, the big-budget feature grossed a spectacular $9.4 million [&#8230;]",
-      "published": "Mon, 25 May 2026 07:45:23 +0000",
-      "published_iso": "2026-05-25T07:45:23.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/television",
@@ -316,17 +901,6 @@
       "source_category": "industry"
     },
     {
-      "source": "Deadline",
-      "title": "Colbert&#8217;s Next Act?: Ex-&#8216;Late Show&#8217; Host&#8217;s New YouTube Channel Way More Interesting Than BS That CBS Tried To Quash His Public Access Special",
-      "link": "https://deadline.com/2026/05/colbert-youtube-cbs-takedown-1236920297/",
-      "description": "Stephen Colbert may have revealed what his next move is now the Late Show is over on CBS. At the same time, CBS has absolutely revealed that they were behind Colbert&#8217;s May 22 Michigan public access special, the one that aired the day after the long running network late night franchise came to an end. [&#8230;]",
-      "published": "Mon, 25 May 2026 04:27:46 +0000",
-      "published_iso": "2026-05-25T04:27:46.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
       "source": "r/movies",
       "title": "Dumb and Dumber – Pepper scene. – Dir. Peter Farrelly – December 6, 1994.",
       "link": "https://www.reddit.com/r/movies/comments/1tmxt9x/dumb_and_dumber_pepper_scene_dir_peter_farrelly/",
@@ -368,17 +942,6 @@
     },
     {
       "source": "r/movies",
-      "title": "What is a movie you would want your favorite director to remake?",
-      "link": "https://www.reddit.com/r/movies/comments/1tmwm4n/what_is_a_movie_you_would_want_your_favorite/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;The Night of the Hunter is one of my favorite films. I love it so much that I also read the book. After watching the movie and reading the book, I kept thinking to myself “what if David Fincher made his version of this story?”&lt;/p&gt; &lt;p&gt;Again, I love the 1955 film and Charles Laughton did a terrific job directing it. However, Fincher is my favorite director, and I can’t help but imagine how cool a re-imagining of the film would be with him on the director’s chair. &lt;/p&gt; &lt;p&gt;What’s a movie (good or bad) that you wo",
-      "published": "2026-05-25T03:08:25+00:00",
-      "published_iso": "2026-05-25T03:08:25.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
       "title": "John Carpenter is such an anomalous legend in film and it makes me happy",
       "link": "https://www.reddit.com/r/movies/comments/1tmwlu4/john_carpenter_is_such_an_anomalous_legend_in/",
       "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Most directors have their big hit, and either coast off that success for as long as they can, or move on to other things but are still forever known as “the guy who directed that movie”. Obviously not everyone falls in this situation, but most smaller or lower budget directors almost always do. But then there’s John Carpenter.&lt;/p&gt; &lt;p&gt;Dude could have coasted with Halloween, but instead went on to make so many great movies, that when I think of him, I honestly don’t ever think about Halloween, and sometimes I even surprise",
@@ -407,53 +970,6 @@
       "source_category": "pulse"
     },
     {
-      "source": "Deadline",
-      "title": "&#8216;Euphoria&#8217; Season 3 Kills A Character &#038; Gives Another A Deeper Backstory In Penultimate Episode",
-      "link": "https://deadline.com/2026/05/euphoria-season-3-death-episode-7-recap-1236920287/",
-      "description": "SPOILER ALERT! This post contains details from the penultimate episode of HBO&#8217;s Euphoria Season 3. Sam Levinson has upped the ante with the penultimate episode of Euphoria Season 3. The war over drugs, money and girls now involves pretty much everyone as the storylines collide when Naz (Jack Topalian) comes knocking on Cassie&#8217;s (Sydney Sweeney) [&#8230;]",
-      "published": "Mon, 25 May 2026 02:53:08 +0000",
-      "published_iso": "2026-05-25T02:53:08.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "American Music Awards 2026: How To Watch AMAs Livestream Online &#038; On TV",
-      "link": "https://deadline.com/2026/05/amas-2026-watch-american-music-awards-livestream-online-tv-1236920208/",
-      "description": "The American Music Awards 2026 are set to celebrate the best in music with a live event from the MGM Grand Garden Arena in Las Vegas. Taylor Swift leads the nominations for the 52nd AMAs with eight nominations. Swift is followed closely by Morgan Wallen, Olivia Dean, Sabrina Carpenter and Sombr, who each received seven [&#8230;]",
-      "published": "Mon, 25 May 2026 02:50:00 +0000",
-      "published_iso": "2026-05-25T02:50:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
-          "titulo": "Joika",
-          "anio": 2023
-        }
-      ]
-    },
-    {
-      "source": "Deadline",
-      "title": "Kate Mansi Exiting &#8216;General Hospital&#8217; After 3 Years",
-      "link": "https://deadline.com/2026/05/kate-mansi-general-hospital-exit-1236920291/",
-      "description": "After logging three years on General Hospital as Kristina Corinthos-Davis, Kate Mansi is leaving the ABC sudser. The news was first reported by soap opera reporter Stephanie Sloane, and reposted by Mansi to her Instagram Story. “I’ve made the very difficult decision to leave General Hospital,&#8221; Mansi told Sloane. “I have a few new projects [&#8230;]",
-      "published": "Mon, 25 May 2026 02:45:43 +0000",
-      "published_iso": "2026-05-25T02:45:43.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "bfec3923-29e6-4c20-a2de-95445781a091",
-          "titulo": "Decision to Leave",
-          "anio": 2022
-        }
-      ]
-    },
-    {
       "source": "Hollywood Reporter",
       "title": "Drew Carey Blasts L.A. Mayoral Candidate Spencer Pratt: &#8220;F*** This Guy Already&#8221;",
       "link": "https://www.hollywoodreporter.com/news/general-news/drew-carey-spencer-pratt-los-angeles-mayor-1236605394/",
@@ -476,17 +992,6 @@
       "source_category": "pulse"
     },
     {
-      "source": "Hollywood Reporter",
-      "title": "Colman Domingo Knew It Was Time for &#8216;Euphoria&#8217; to Get Ali Out of the Diner: “We Already Did That”",
-      "link": "https://www.hollywoodreporter.com/tv/tv-features/colman-domingo-euphoria-season-3-episode-7-interview-1236605321/",
-      "description": "The Emmy winner talks his big return to the HBO show, and how it will lead into next week's finale: \"It’s going to smack people in the face.\"",
-      "published": "Mon, 25 May 2026 02:20:00 +0000",
-      "published_iso": "2026-05-25T02:20:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
       "source": "r/television",
       "title": "'El Tigre' Creator Reveals He's In Talks to Revive Iconic Nickelodeon Series - And It May Include Characters From 'Invader ZIM' and 'Teenage Robot'",
       "link": "https://www.reddit.com/r/television/comments/1tmv7rq/el_tigre_creator_reveals_hes_in_talks_to_revive/",
@@ -498,17 +1003,6 @@
       "source_category": "pulse"
     },
     {
-      "source": "Deadline",
-      "title": "&#8216;Tracker&#8217; Season 3 Finale: Colter Shaw Digs Deeper Into Secret Government Project Related To His Father&#8217;s Past",
-      "link": "https://deadline.com/2026/05/tracker-season-3-finale-recap-explained-1236920264/",
-      "description": "SPOILER ALERT! This post contains details from the Season 3 finale of CBS&#8217; Tracker. Colter Shaw (Justin Hartley) continues to unravel his father&#8217;s complicated past in the Season 3 finale of Tracker. As star and executive producer Hartley previously teased to Deadline, the end of the season provides some answers about Colter&#8217;s past, specifically related [&#8230;]",
-      "published": "Mon, 25 May 2026 02:00:00 +0000",
-      "published_iso": "2026-05-25T02:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
       "source": "The Wrap",
       "title": "&#8216;Tracker&#8217; Star Justin Hartley Promises &#8216;Most Ambitious Season&#8217; Yet After That Illuminating Finale",
       "link": "https://www.thewrap.com/creative-content/tv-shows/tracker-season-3-episode-22-justin-hartley-interview/",
@@ -516,28 +1010,6 @@
       "published": "Mon, 25 May 2026 02:00:00 +0000",
       "published_iso": "2026-05-25T02:00:00.000Z",
       "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "r/television",
-      "title": "What’s behind the push to make the Italian beef Illinois’ official sandwich? Thank ‘The Bear.’",
-      "link": "https://www.reddit.com/r/television/comments/1tmuzm8/whats_behind_the_push_to_make_the_italian_beef/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmuzm8/whats_behind_the_push_to_make_the_italian_beef/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/9CkKIWRkFYF2C4doXZU4zLMtZCi2tn7qjD_ph1QPuZo.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=da3d951a7fc866d32e875eef0d41eba43a27cb75&quot; alt=&quot;What’s behind the push to make the Italian beef Illinois’ official sandwich? Thank ‘The Bear.’&quot; title=&quot;What’s behind the push to make the Italian beef Illinois’ official sandwich? Thank ‘The Bear.’&quot; /&gt; &lt",
-      "published": "2026-05-25T01:53:38+00:00",
-      "published_iso": "2026-05-25T01:53:38.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "Deadline",
-      "title": "David Harbour Shares What He Learned From Young Castmates On &#8220;Magical&#8221; First Season Of &#8216;Stranger Things&#8217;: &#8220;Just A Joy To Work With And I Had A Blast&#8221;",
-      "link": "https://deadline.com/2026/05/stranger-things-david-harbour-lessons-from-young-cast-1236920280/",
-      "description": "During a Thursday FYC event at Hollywood Forever Cemetery, the tables were turned on the elder statesman of Stranger Things, David Harbour, as he was asked what he learned from his younger castmates on the Netflix thriller-drama series. &#8220;Uh, nothing,&#8221; he joked at first, before describing the first season of the Matt Duffer and Ross [&#8230;]",
-      "published": "Mon, 25 May 2026 01:39:57 +0000",
-      "published_iso": "2026-05-25T01:39:57.000Z",
-      "source_weight": 5,
       "source_lang": "en",
       "source_category": "industry"
     },
@@ -576,17 +1048,6 @@
     },
     {
       "source": "r/television",
-      "title": "The Audacity &amp; Hypergnosis… am I missing a joke?",
-      "link": "https://www.reddit.com/r/television/comments/1tmu4kf/the_audacity_hypergnosis_am_i_missing_a_joke/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Hey, neurodivergent Aussie here and I’m wondering if I’m missing a joke, reference or layered meaning behind the business name, “Hypergnosis”. At first I thought it was just classic big tech name nonsense but then when they talk about naming a new thing they’re like, “Yeah spell it with the Gn like in Hypergnosis.” Is there something special about the GN part? It’s not his initials. Or Hamish’s, so it’s not a tribute. Any ideas? Or is it just name nonsense as I initially suspected?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32",
-      "published": "2026-05-25T01:14:17+00:00",
-      "published_iso": "2026-05-25T01:14:17.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
       "title": "Caught Up on Yellowjackets",
       "link": "https://www.reddit.com/r/television/comments/1tmtwgv/caught_up_on_yellowjackets/",
       "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I thought this show started out strong, but as it&amp;#39;s gone on, I&amp;#39;ve found the supernatural elements to be way less interesting than a &amp;quot;Lord of the Flies, surviving in the woods&amp;quot; storyline would be. Plus, the longer the show goes on, the more it seems to add trashy soap opera elements, and given what we know about the adult characters, the less dramatic it makes the teenage portion of the story. &lt;/p&gt; &lt;p&gt;Just my two cents.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &am",
@@ -595,17 +1056,6 @@
       "source_weight": 2,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "Deadline",
-      "title": "‘Marshals’ Pays Tribute To Prop Master Leonard “Lenny” E. Hancock Jr. In Season Finale",
-      "link": "https://deadline.com/2026/05/marshals-tribute-prop-master-leonard-e-hancock-jr-1236917179/",
-      "description": "As Marshals closed out its freshman season, it paid tribute to one of its own. The CBS series included a card at the end of the episode before the credits that said, “In Loving Memory of Leonard “Lenny” E. Hancock Jr.”. Hancock was the prop master for the show. He died in December in the [&#8230;]",
-      "published": "Mon, 25 May 2026 01:01:00 +0000",
-      "published_iso": "2026-05-25T01:01:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/television",
@@ -617,17 +1067,6 @@
       "source_weight": 2,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "Deadline",
-      "title": "‘Marshals’: New Villains &#038; Love Interests Emerge In Season Finale Of CBS&#8217; ‘Yellowstone’ Spinoff",
-      "link": "https://deadline.com/2026/05/marshals-season-finale-cbs-yellowstone-spinoff-what-happens-1236917075/",
-      "description": "Marshals, CBS’ Yellowstone spinoff starring Luke Grimes’ Kayce Dutton, closed out its freshman finale with another firefight, a new bad guy and a love interest that seems to have cemented herself with full “Romeo and Juliet vibes”. It’s clearly still pretty violent in the mountains of Montana, long after John Dutton passed away. The finale [&#8230;]",
-      "published": "Mon, 25 May 2026 01:00:00 +0000",
-      "published_iso": "2026-05-25T01:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "IndieWire",
@@ -662,40 +1101,6 @@
       "source_weight": 2,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Stephen Colbert&#8217;s Surprise Appearance on Michigan Public-Access Show Erupts in Online Brouhaha",
-      "link": "https://www.hollywoodreporter.com/news/general-news/paramount-denies-suppress-stephen-colbert-public-access-show-1236605374/",
-      "description": "The social media-verse exploded with rumors that Paramount was trying to \"suppress\" the episode, but the truth is something different.",
-      "published": "Mon, 25 May 2026 00:34:09 +0000",
-      "published_iso": "2026-05-25T00:34:09.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "Judd Apatow Pens Earnest Essay About Importance Of Late-Night TV: &#8220;The Hosts We Have Now &#8230; Are Going To Fight Until Their Last Breath&#8221;",
-      "link": "https://deadline.com/2026/05/judd-apatow-late-night-tv-importance-essay-stephen-colbert-1236920275/",
-      "description": "Writer, producer and director Judd Apatow penned an earnest essay about the importance of late-night television — and safeguarding it in the American consciousness — as last week saw the shuttering of The Late Show with Stephen Colbert and end of the CBS franchise begun by David Letterman. In a tribute for Rolling Stone, the [&#8230;]",
-      "published": "Mon, 25 May 2026 00:20:53 +0000",
-      "published_iso": "2026-05-25T00:20:53.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "3f920cf2-ec7c-46f3-8947-f47f2e56caf4",
-          "titulo": "Joika",
-          "anio": 2023
-        },
-        {
-          "pelicula_id": "f59020ee-69eb-448d-acd6-fb094dd3a545",
-          "titulo": "Sin oxígeno",
-          "anio": 2025
-        }
-      ]
     },
     {
       "source": "The Wrap",
@@ -783,17 +1188,6 @@
       ]
     },
     {
-      "source": "Deadline",
-      "title": "Richard Dreyfuss Cancels &#8216;Jaws&#8217; Cast Reunion Appearance, Citing &#8220;Circumstances Completely Beyond My Control&#8221;",
-      "link": "https://deadline.com/2026/05/richard-dreyfuss-cancels-jaws-cast-reunion-appearance-1236920266/",
-      "description": "Jaws star and Oscar winner Richard Dreyfuss has canceled a scheduled appearance at a cast reunion event for the seminal blockbuster, citing &#8220;circumstances completely beyond my control.&#8221; The veteran actor was slated to appear at a Burbank, Calif. fan convention, Hollywood Show, May 30. &#8220;To all the incredible fans, my JAWS cast family, and everyone [&#8230;]",
-      "published": "Sun, 24 May 2026 22:24:27 +0000",
-      "published_iso": "2026-05-24T22:24:27.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
       "source": "r/movies",
       "title": "I have watched 10 Jean-Claude Van Damme movies in the last week. Here is how I rank them",
       "link": "https://www.reddit.com/r/movies/comments/1tmpyes/i_have_watched_10_jeanclaude_van_damme_movies_in/",
@@ -834,47 +1228,6 @@
       "source_category": "industry"
     },
     {
-      "source": "r/movies",
-      "title": "Been sick- Looking for new movies to pass the time",
-      "link": "https://www.reddit.com/r/movies/comments/1tmpd7t/been_sick_looking_for_new_movies_to_pass_the_time/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Hey all, &lt;/p&gt; &lt;p&gt;I’ve been sick the last few days and I’m trying to pass the time with some movies. I’m always on the prowl for more movies I haven’t seen and I keep finding myself doomscrolling trying to pick something new before I end up on one of my comfort watches like, “The Princess Bride”, “Superbad”, etc. My goal the next few days while I’m on the mend is to see at least 5 new movies, really any genre I’m game but preferably either comedy, fantasy, or adventure based movies. What are maybe some of your comfort wat",
-      "published": "2026-05-24T21:50:23+00:00",
-      "published_iso": "2026-05-24T21:50:23.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "f586580f-e2af-43de-926b-aec147640980",
-          "titulo": "Supersalidos",
-          "anio": 2007
-        },
-        {
-          "pelicula_id": "f69eda74-217a-469e-927d-6d9a14d8d6c4",
-          "titulo": "Lady Di",
-          "anio": 2022
-        }
-      ]
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Miley Cyrus Gets Emotional, References Dad Billy Ray Cyrus at Walk of Fame Ceremony",
-      "link": "https://www.hollywoodreporter.com/music/music-news/miley-cyrus-hollywood-walk-of-fame-star-billy-ray-cyrus-1236605357/",
-      "description": "The singer-actress spoke about \"continuing the cycle of creation,\" saying that the honor reflected an \"an accumulation of devotion,\" as Anya Taylor-Joy and Donatella Versace paid tribute to the 'Hannah Montana' star.",
-      "published": "Sun, 24 May 2026 21:48:52 +0000",
-      "published_iso": "2026-05-24T21:48:52.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "371d5bfb-a8aa-4863-a16a-687a976efcf0",
-          "titulo": "Historia de Honor",
-          "anio": 2022
-        }
-      ]
-    },
-    {
       "source": "r/television",
       "title": "One Tree Hill in its early years is so stellar",
       "link": "https://www.reddit.com/r/television/comments/1tmp73y/one_tree_hill_in_its_early_years_is_so_stellar/",
@@ -884,17 +1237,6 @@
       "source_weight": 2,
       "source_lang": "en",
       "source_category": "pulse"
-    },
-    {
-      "source": "The Wrap",
-      "title": "&#8216;Saccharine&#8217; Star Midori Francis Thinks Horror Was the &#8216;Perfect Vehicle&#8217; to Talk About Eating Disorders",
-      "link": "https://www.thewrap.com/creative-content/movies/saccharine-midori-francis-natalie-erika-james-interview-shudder/",
-      "description": "Filmmaker Natalie Erika James adds she wanted to ask \"big questions\" with her body horror movie from IFC and Shudder The post &#8216;Saccharine&#8217; Star Midori Francis Thinks Horror Was the &#8216;Perfect Vehicle&#8217; to Talk About Eating Disorders appeared first on TheWrap .",
-      "published": "Sun, 24 May 2026 21:39:12 +0000",
-      "published_iso": "2026-05-24T21:39:12.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
     },
     {
       "source": "r/movies",
@@ -913,113 +1255,6 @@
           "anio": 1987
         }
       ]
-    },
-    {
-      "source": "Deadline",
-      "title": "‘Tuner’ Plays Well For Black Bear In Limited Opening, ‘I Love Boosters’ Cracks Top 10 – Specialty Box Office",
-      "link": "https://deadline.com/2026/05/indie-film-box-office-tuner-i-love-boosters-obsession-1236920235/",
-      "description": "Tuner, Black Bear’s fourth release since launching a domestic distribution arm last summer, had a nice $102k opening at 4 theaters in NY and LA and is eyeing $122k for the four-day holiday weekend including. Memorial Day Monday. The distributor plans a moderate national expansion to about 375 screens (exact number still TBD) next week [&#8230;]",
-      "published": "Sun, 24 May 2026 21:21:39 +0000",
-      "published_iso": "2026-05-24T21:21:39.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Deadline",
-      "title": "&#8216;Maximum Pleasure Guaranteed&#8217; Cast &#038; EPs Unpack Apple TV&#8217;s Propulsive Dark Comedy About A Single Mom Caught In The Crosshairs Of A Grisly Crime",
-      "link": "https://deadline.com/2026/05/maximum-pleasure-guaranteed-apple-tv-premiere-interview-1236915228/",
-      "description": "Apple TV has, throughout the years, cemented itself as a platform of curiosities, offering televisual projects that resist easy genre categorization. David J. Rosen&#8217;s Maximum Pleasure Guaranteed, starring Tatiana Maslany, is no exception, following a single mom fighting for custody when her life is upended by being a witness to a murder. Or so she [&#8230;]",
-      "published": "Sun, 24 May 2026 21:00:00 +0000",
-      "published_iso": "2026-05-24T21:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "3762efff-79eb-40db-9910-5215e4ed120c",
-          "titulo": "Pleasure",
-          "anio": 2021
-        },
-        {
-          "pelicula_id": "b44cb3d4-b584-4e0e-a224-80cf84235a00",
-          "titulo": "Following",
-          "anio": 1999
-        }
-      ]
-    },
-    {
-      "source": "The Wrap",
-      "title": "Ted Cruz Spars With Gen Z Trump Staffer Over Iran Deal: &#8216;Hush, Child. The Adults Are Talking&#8217;",
-      "link": "https://www.thewrap.com/media-platforms/politics/ted-cruz-spars-with-gen-z-trump-staffer-over-iran-deal/",
-      "description": "\"I'm not your bro,\" the Texas senator tells adviser Alex Bruesewitz The post Ted Cruz Spars With Gen Z Trump Staffer Over Iran Deal: &#8216;Hush, Child. The Adults Are Talking&#8217; appeared first on TheWrap .",
-      "published": "Sun, 24 May 2026 20:37:41 +0000",
-      "published_iso": "2026-05-24T20:37:41.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "AEW&#8217;s Maxwell Jacob Friedman Talks All the Sh**",
-      "link": "https://www.hollywoodreporter.com/tv/tv-features/maxwell-jacob-friedman-mjf-full-interview-double-or-nothing-1236603413/",
-      "description": "Because as he'll be the first to tell you, no one is better at it.",
-      "published": "Sun, 24 May 2026 20:24:00 +0000",
-      "published_iso": "2026-05-24T20:24:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "r/movies",
-      "title": "What are some movies that have soundtracks which surpassed the film itself in terms of success?",
-      "link": "https://www.reddit.com/r/movies/comments/1tmmzci/what_are_some_movies_that_have_soundtracks_which/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;so far all i could think of is Richard Ayode’s 2011 “Submarine” with the soundtrack by Alex Turner from the Arctic Monkeys of the same name, and Bo Burnham’s “Inside” with a genuinely ridiculous number of streams, many of which from people who have no idea the comedy special itself even exists. &lt;/p&gt; &lt;p&gt;this question obviously includes original scores, but even movies with licensed music not made for the purpose of the film that became more memorable and commercially successful than the media it’s attached to can be consi",
-      "published": "2026-05-24T20:16:38+00:00",
-      "published_iso": "2026-05-24T20:16:38.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "The Wrap",
-      "title": "The 3 Best Movies to Watch on HBO Max This Week",
-      "link": "https://www.thewrap.com/creative-content/what-to-watch/best-movies-to-watch-hbo-max-5-22-26/",
-      "description": "Check out \"The Lego Batman Movie\" to celebrate the new video game or watch a film that inspired \"The Mandalorian\" The post The 3 Best Movies to Watch on HBO Max This Week appeared first on TheWrap .",
-      "published": "Sun, 24 May 2026 20:00:00 +0000",
-      "published_iso": "2026-05-24T20:00:00.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "89637fc0-6e25-4de5-9f84-bbbc6d3fde0e",
-          "titulo": "Batman: La LEGO película",
-          "anio": 2017
-        }
-      ]
-    },
-    {
-      "source": "The Wrap",
-      "title": "Annette Bening on Finding Her Flamboyant ‘Dutton Ranch’ Villainess: ‘A Woman Who Enjoys Her Bling’",
-      "link": "https://www.thewrap.com/creative-content/tv-shows/annette-bening-dutton-ranch-villain-interview/",
-      "description": "The Oscar nominee stars as the big bad in Kelly Reilly and Cole Hauser’s new \"Yellowstone\" spinoff on Paramount+ The post Annette Bening on Finding Her Flamboyant ‘Dutton Ranch’ Villainess: ‘A Woman Who Enjoys Her Bling’ appeared first on TheWrap .",
-      "published": "Sun, 24 May 2026 19:56:02 +0000",
-      "published_iso": "2026-05-24T19:56:02.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "r/television",
-      "title": "Triers the kingdom exodus",
-      "link": "https://www.reddit.com/r/television/comments/1tmlxbj/triers_the_kingdom_exodus/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;is it worth watching &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Thin_Situation3962&quot;&gt; /u/Thin_Situation3962 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmlxbj/triers_the_kingdom_exodus/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmlxbj/triers_the_kingdom_exodus/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
-      "published": "2026-05-24T19:36:06+00:00",
-      "published_iso": "2026-05-24T19:36:06.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
     },
     {
       "source": "r/MovieDetails",
@@ -1045,50 +1280,6 @@
       ]
     },
     {
-      "source": "The Wrap",
-      "title": "White House Shooting: NBC Reporter Who Turned Into a Viral Meme Jokes She&#8217;s Filling in for &#8216;SNL&#8217;",
-      "link": "https://www.thewrap.com/media-platforms/journalism/white-house-shooting-nbc-reporter-viral-meme-reaction/",
-      "description": "NBC News correspondent Jill Tsirkin embraces the meme-ification of the bewildering moment The post White House Shooting: NBC Reporter Who Turned Into a Viral Meme Jokes She&#8217;s Filling in for &#8216;SNL&#8217; appeared first on TheWrap .",
-      "published": "Sun, 24 May 2026 19:22:56 +0000",
-      "published_iso": "2026-05-24T19:22:56.000Z",
-      "source_weight": 4,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Stephen Amell Shares First &#8216;Baywatch&#8217; Reboot Promo: &#8220;I Dream in Slow Motion&#8221;",
-      "link": "https://www.hollywoodreporter.com/tv/tv-news/watch-first-baywatch-reboot-promo-livvy-dunne-brooks-nader-1236605332/",
-      "description": "The actor, who plays Captain Hobie Buchannon, son of David Hasselhoff's Mitch Buchannon, debuted the teaser for the Fox series, set to premiere in January.",
-      "published": "Sun, 24 May 2026 19:17:20 +0000",
-      "published_iso": "2026-05-24T19:17:20.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry"
-    },
-    {
-      "source": "r/movies",
-      "title": "DOGMA is streaming on Amazon!!!!",
-      "link": "https://www.reddit.com/r/movies/comments/1tmlcjb/dogma_is_streaming_on_amazon/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;The long awaited Kevin Smith movie Dogma is finally available for streaming and purchase on Amazon. We just had the 25th Anniversary in December but it still wasn&amp;#39;t widely available for streaming. I just noticed it today browsing for something to watch and was like &amp;quot;whhhaattt, put that shit in my hand!!!!&amp;quot; I&amp;#39;ve never hit the buy button faster on anything!&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Ethereal__Soul&quot;&gt; ",
-      "published": "2026-05-24T19:13:51+00:00",
-      "published_iso": "2026-05-24T19:13:51.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Vanishing Point (China, 2026)",
-      "link": "https://www.reddit.com/r/movies/comments/1tmla5h/vanishing_point_china_2026/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Just saw an excellent thriller made in China primarily for Chinese audiences, with a Taiwanese writer/director. It’s currently in select theaters in the US, at least in two theaters in NYC and presumably other cities with Chinese immigrant populations. I saw it in the Times Square AMC.&lt;/p&gt; &lt;p&gt;The movie takes place in a dense, maze-like housing project, giving a disorienting feel to everything. Various stories are introduced — a desperate gambler begs his father for money, a woman wakes up feeling as if she’s been assault",
-      "published": "2026-05-24T19:11:21+00:00",
-      "published_iso": "2026-05-24T19:11:21.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
       "source": "Roger Ebert",
       "title": "Cannes 2026: Full Phil, Sanguine (Species), Jim Queen",
       "link": "https://www.rogerebert.com/festivals/cannes-2026-full-phil-sanguine-species-jim-queen",
@@ -1109,247 +1300,6 @@
       "source_weight": 4,
       "source_lang": "en",
       "source_category": "reviews"
-    },
-    {
-      "source": "r/television",
-      "title": "What are the returning shows this year with good new seasons?",
-      "link": "https://www.reddit.com/r/television/comments/1tmjs0j/what_are_the_returning_shows_this_year_with_good/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;This year hasn&amp;#39;t been a great one for returning shows. A lot of them had pretty disappointing new seasons. Off the top of my head, the returning Apple TV series (&lt;em&gt;Shrinking&lt;/em&gt;, Y&lt;em&gt;our Friends &amp;amp; Neighbors&lt;/em&gt;, and a former fav of mine, &lt;em&gt;For All Mankind&lt;/em&gt;) are somewhere on a spectrum between forgettable and downright horrendous, and I don&amp;#39;t even bother keeping up with &lt;em&gt;FAM&lt;/em&gt; anymore. Some of the bigger franchise stuff like &lt;em&gt;The Boys&lt",
-      "published": "2026-05-24T18:15:40+00:00",
-      "published_iso": "2026-05-24T18:15:40.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
-          "titulo": "Malditos vecinos",
-          "anio": 2014
-        }
-      ]
-    },
-    {
-      "source": "r/movies",
-      "title": "First Image of Liam Neeson in ‘The Mongoose’ - Follows Ryan “Fang” Flanagan, a war hero who, accused of a crime he didn’t commit and with nothing to lose, leads police on an epic televised cross-country car chase",
-      "link": "https://www.reddit.com/r/movies/comments/1tmiwo7/first_image_of_liam_neeson_in_the_mongoose/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tmiwo7/first_image_of_liam_neeson_in_the_mongoose/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/170jdw88h43h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=88b5dc47804fbd0d64d3cd55f81ab0d0cabea93a&quot; alt=&quot;First Image of Liam Neeson in ‘The Mongoose’ - Follows Ryan “Fang” Flanagan, a war hero who, accused of a crime he didn’t commit and with nothing to lose, leads police on an epic televised cross-country car chase&quot; title=&quot;First Image of Liam Neeson in ‘The Mong",
-      "published": "2026-05-24T17:44:06+00:00",
-      "published_iso": "2026-05-24T17:44:06.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Alamo Drafthouse Cinemas are starting a new initiative to bring independent animated shorts into theaters as part of Alamo’s preshow programming, giving short-form animation an opportunity to play on the big screen alongside big-name mainstream features.",
-      "link": "https://www.reddit.com/r/movies/comments/1tmiuf9/alamo_drafthouse_cinemas_are_starting_a_new/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tmiuf9/alamo_drafthouse_cinemas_are_starting_a_new/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/4GmpXFyF0SqZh_Fzz5IUwMgjEPdMNqaQ9wUAto-GRZk.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=d2a4852566bf7769d31c97a27620c6c06f718926&quot; alt=&quot;Alamo Drafthouse Cinemas are starting a new initiative to bring independent animated shorts into theaters as part of Alamo’s preshow programming, giving short-form animation an opportunity to play on the big screen alongside big-n",
-      "published": "2026-05-24T17:41:45+00:00",
-      "published_iso": "2026-05-24T17:41:45.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "What are known examples of when studio executives stepped in and improved films?",
-      "link": "https://www.reddit.com/r/movies/comments/1tmi3mh/what_are_known_examples_of_when_studio_executives/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;There are many famous stories of studio executives either over-ruling directors and forcing them to make changes which damage films and of directors cunningly avoiding having to incorporate clueless and/or egotistical executives terrible ideas. &lt;/p&gt; &lt;p&gt;However, we hear far less frequently about the instances in which canny, conscientious, or pragmatic studio executives used their power to improve a film. This makes sense - the idea of the artist or auteur who knows better than the cynical money men is much more romantic ",
-      "published": "2026-05-24T17:14:46+00:00",
-      "published_iso": "2026-05-24T17:14:46.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "4a3414cf-de7a-42ff-8b75-882cf8c0aa6f",
-          "titulo": "Clueless (Fuera de onda)",
-          "anio": 1995
-        }
-      ]
-    },
-    {
-      "source": "r/television",
-      "title": "Shows with the before they were famous guest stars?",
-      "link": "https://www.reddit.com/r/television/comments/1tmhzct/shows_with_the_before_they_were_famous_guest_stars/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Watching curb your enthusiasm for the first time and while It makes sense given Larry David’s stature in comedy tv, I’m still a bit astounded that over half the actors in small day-player role has gone to have a major main or supporting role in a big sitcom of the past 25 years. Currently watching David yell at Jane from the Comeback !&lt;/p&gt; &lt;p&gt;Interested to hear discussion on other shows people have noticed have a lot of now very famous actors playing really small roles! Obviously Law and Order is the big one and the othe",
-      "published": "2026-05-24T17:10:20+00:00",
-      "published_iso": "2026-05-24T17:10:20.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "Coming Soon | HBO Max",
-      "link": "https://www.reddit.com/r/television/comments/1tmhsie/coming_soon_hbo_max/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmhsie/coming_soon_hbo_max/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/e1ohAh5Yl9c93RhECIMVr0B2ZS1armkqjLTv-eMnRG8.jpeg?width=320&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=47cef5cf5e9e8f5351b9214336b8a52ab486c051&quot; alt=&quot;Coming Soon | HBO Max&quot; title=&quot;Coming Soon | HBO Max&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/gramfer&quot;&gt; /u/gramfer &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&",
-      "published": "2026-05-24T17:03:23+00:00",
-      "published_iso": "2026-05-24T17:03:23.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "d48b638b-ba50-49d9-9fb2-470ab1af990f",
-          "titulo": "Coming soon",
-          "anio": 2008
-        }
-      ]
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "The Devil Wears Prada — and Drives Mercedes",
-      "link": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-devil-wears-prada-2-mercedes-1236601443/",
-      "description": "Even with box office stalling, auto brands are betting bigger than ever that putting their cars on the big screen can sell them off the lot.",
-      "published": "Sun, 24 May 2026 17:00:00 +0000",
-      "published_iso": "2026-05-24T17:00:00.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "2bdda5bf-ceae-430b-b6c5-2b82bab37330",
-          "titulo": "El diablo viste de Prada",
-          "anio": 2006
-        }
-      ]
-    },
-    {
-      "source": "r/movies",
-      "title": "Poster for the 4K Restoration and 50th Anniversary Re-Release of Nagisa Ōshima's 'In the Realm of the Senses'",
-      "link": "https://www.reddit.com/r/movies/comments/1tmhfcm/poster_for_the_4k_restoration_and_50th/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tmhfcm/poster_for_the_4k_restoration_and_50th/&quot;&gt; &lt;img src=&quot;https://preview.redd.it/mgiulpvs543h1.jpeg?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=4c0d376033448996d39f1c9de46b7c2e929c871c&quot; alt=&quot;Poster for the 4K Restoration and 50th Anniversary Re-Release of Nagisa Ōshima's 'In the Realm of the Senses'&quot; title=&quot;Poster for the 4K Restoration and 50th Anniversary Re-Release of Nagisa Ōshima's 'In the Realm of the Senses'&quot; /&gt; &lt;/a&gt; &lt;/td&gt;&l",
-      "published": "2026-05-24T16:49:50+00:00",
-      "published_iso": "2026-05-24T16:49:50.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "Horror time loop movie",
-      "link": "https://www.reddit.com/r/movies/comments/1tmgzh7/horror_time_loop_movie/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;At the beginning of the movie, a group of college friends were preparing to spend a weekend in the woods. If I remember correctly, they were either going in one vehicle, something like a large camper/van, or in two cars. Two of them were a couple, and one of them was using drugs. I’m not completely sure about the drug part, but I remember him smoking weed. They had a very close, friendly dynamic.&lt;/p&gt; &lt;p&gt;Anyway, they reach the forest without any problems. When they arrive, there is a single wooden house in the middle of t",
-      "published": "2026-05-24T16:32:57+00:00",
-      "published_iso": "2026-05-24T16:32:57.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "3f0ffffb-69c9-46db-80bf-1bb675acabc6",
-          "titulo": "Beginning",
-          "anio": 2021
-        },
-        {
-          "pelicula_id": "11f12cfe-be64-4342-9295-673ec4872b3e",
-          "titulo": "Remember",
-          "anio": 2015
-        },
-        {
-          "pelicula_id": "ffbf8917-81c0-4104-b31d-7761053661da",
-          "titulo": "Kenshin, el guerrero samurái: El principio",
-          "anio": 2021
-        }
-      ]
-    },
-    {
-      "source": "Hollywood Reporter",
-      "title": "Star Wars Box Office Rebound: &#8216;The Mandalorian and Grogu&#8217; Makes Major Gains on Saturday for $102M Domestic Opening",
-      "link": "https://www.hollywoodreporter.com/movies/movie-news/star-wars-mandalorian-grogu-box-office-franchise-low-1236604973/",
-      "description": "The Lucasfilm/Disney title is the first Star Wars movie to play on the big screen in seven long years in what seems like a galaxy far, far away. The other headline at the Memorial Day box office is the extraordinary hold of YouTuber Curry Barker's 'Obsession,' which is up an unheard of 30 percent over its opening frame.",
-      "published": "Sun, 24 May 2026 16:28:16 +0000",
-      "published_iso": "2026-05-24T16:28:16.000Z",
-      "source_weight": 5,
-      "source_lang": "en",
-      "source_category": "industry",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "7a4f6909-0f63-4e4f-b97d-4badd929d87b",
-          "titulo": "Obsession",
-          "anio": 2026
-        }
-      ]
-    },
-    {
-      "source": "r/movies",
-      "title": "So I Married an Axe Murderer (1993) dir. Thomas Schlamme - Mike Myers does beat poetry",
-      "link": "https://www.reddit.com/r/movies/comments/1tmg97u/so_i_married_an_axe_murderer_1993_dir_thomas/",
-      "description": "&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href=&quot;https://www.reddit.com/r/movies/comments/1tmg97u/so_i_married_an_axe_murderer_1993_dir_thomas/&quot;&gt; &lt;img src=&quot;https://external-preview.redd.it/MXZtNWVidm16MzNoMYJMwRsEbgaNdCyrIn5fEf3IBSIpke_XfefZSnWjwGp4.png?width=640&amp;amp;crop=smart&amp;amp;auto=webp&amp;amp;s=ebd32340f8a51c4fc9709ea3f9139b37202a5159&quot; alt=&quot;So I Married an Axe Murderer (1993) dir. Thomas Schlamme - Mike Myers does beat poetry&quot; title=&quot;So I Married an Axe Murderer (1993) dir. Thomas Schlamme - Mike Myers does beat poetry&quot; /&gt; &lt;/a&gt",
-      "published": "2026-05-24T16:05:36+00:00",
-      "published_iso": "2026-05-24T16:05:36.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "What movie’s final scene left you an ugly, blubbering mess?",
-      "link": "https://www.reddit.com/r/movies/comments/1tmg5xl/what_movies_final_scene_left_you_an_ugly/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I love a good final-scene cry. The ones where you can’t pull yourself together until the credits are over. What movies aren’t necessarily sad overall, maybe they’re even uplifting or funny or beautiful, but the end scene left you a blubbering mess?&lt;/p&gt; &lt;p&gt;For me, it’s always damn kid movies - Coco kicks my ass, E.T. does me in every time, and The Iron Giant *ugly sobs*. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/ArmyOfMe99&quot;&gt; /u/ArmyOfM",
-      "published": "2026-05-24T16:02:06+00:00",
-      "published_iso": "2026-05-24T16:02:06.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-          "titulo": "Together: Juntos hasta la muerte",
-          "anio": 2025
-        },
-        {
-          "pelicula_id": "0b1358c5-7e14-4d45-883c-003681afacfe",
-          "titulo": "El gigante de hierro",
-          "anio": 1999
-        }
-      ]
-    },
-    {
-      "source": "r/television",
-      "title": "We’ve all heard of One Hit Wonders when it comes to music, but are there any one hit wonders that you can think of when it comes to TV shows? (It can be for any actors, showrunners, producers, writers, etc.)",
-      "link": "https://www.reddit.com/r/television/comments/1tmfs8x/weve_all_heard_of_one_hit_wonders_when_it_comes/",
-      "description": "&amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/MaggieLinzer&quot;&gt; /u/MaggieLinzer &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmfs8x/weve_all_heard_of_one_hit_wonders_when_it_comes/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmfs8x/weve_all_heard_of_one_hit_wonders_when_it_comes/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;",
-      "published": "2026-05-24T15:47:55+00:00",
-      "published_iso": "2026-05-24T15:47:55.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/television",
-      "title": "Does anyone miss station voiceover promos during the End Credits to TV shows",
-      "link": "https://www.reddit.com/r/television/comments/1tmdpp0/does_anyone_miss_station_voiceover_promos_during/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;I feel like it’s very nostalgic now, I wish they would go back to doing voiceover promos during the end credits to TV shows than just use credits in a box or just scrunch the next show without playing the credits.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/Mikeyboy101591&quot;&gt; /u/Mikeyboy101591 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/television/comments/1tmdpp0/does_anyone_miss_station_voiceover_promos_during/&quot;",
-      "published": "2026-05-24T14:28:49+00:00",
-      "published_iso": "2026-05-24T14:28:49.000Z",
-      "source_weight": 2,
-      "source_lang": "en",
-      "source_category": "pulse"
-    },
-    {
-      "source": "r/movies",
-      "title": "What movie did you watch at the wrong age and it permanently altered your brain?",
-      "link": "https://www.reddit.com/r/movies/comments/1tmdi7m/what_movie_did_you_watch_at_the_wrong_age_and_it/",
-      "description": "&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;My older cousin showed me The Exorcist when I was 9 and told me it was &amp;#39;basically a comedy.&amp;#39; It was not basically a comedy. I slept with the lights on until high school and genuinely believed my bed could levitate for about three years. Every time my neck cracked I had a full panic attack. I&amp;#39;m 30 now and I still don&amp;#39;t fully trust stairs, priests, or pea soup. The worst part is my cousin still thinks it&amp;#39;s funny. Brings it up at every family dinner. &amp;#39;Remember when you cried during the sp",
-      "published": "2026-05-24T14:20:31+00:00",
-      "published_iso": "2026-05-24T14:20:31.000Z",
-      "source_weight": 3,
-      "source_lang": "en",
-      "source_category": "pulse",
-      "cinebret_matches": [
-        {
-          "pelicula_id": "11f12cfe-be64-4342-9295-673ec4872b3e",
-          "titulo": "Remember",
-          "anio": 2015
-        },
-        {
-          "pelicula_id": "a2ec90b7-2198-4141-9953-dc30144d9aeb",
-          "titulo": "El exorcista",
-          "anio": 1973
-        }
-      ]
     },
     {
       "source": "Roger Ebert",

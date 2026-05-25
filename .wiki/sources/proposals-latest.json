@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-25T13:58:36.522Z",
-  "cycle": "am",
+  "generated_at": "2026-05-25T21:04:44.986Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 2,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -24,32 +24,32 @@
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois con tu rating 10; ningún review publicado todavía.",
-      "score": 97,
+      "title": "El Señor de los Anillos: El Retorno del Rey (2003) — Review",
+      "reasoning": "La conclusión épica de Jackson con IMDb 9.0; la trilogía merece su propio review en el feed.",
+      "score": 98,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + director Dean DeBlois (muy respetado) + año 2025 + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado, 3 sello bret) + IMDb 9.0 + plataforma activa."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásito (2019)",
-      "reasoning": "Bong Joon-ho y el primer Óscar a mejor película no angloparlante; una de tus 38 sagradas.",
+      "title": "Parásito (2019) — Review",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de las 38 sagradas sin review publicado.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog reevaluado: Parásito rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo válido, sin review publicado."
+      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + Bong Joon-ho (Olimpo) + IMDb 8.5; sigue siendo propuesta máxima prioridad."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson; IMDb 9.0 y tu rating 10 esperando su review.",
+      "title": "El club de la pelea (1999) — Review",
+      "reasoning": "Fincher en el Olimpo con IMDb 8.8; una de las sagradas sin review publicado en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -77,19 +77,19 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + Peter Jackson + IMDb 9.0 + plataforma activa; sin review publicado."
+      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + David Fincher (Olimpo) + IMDb 8.8 + plataforma activa; sigue siendo propuesta máxima prioridad."
     },
     {
-      "id": "c5ae71e0ec039e27",
+      "id": "57e18899ac1e7740",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 actuaciones que convirtieron una película buena en obra maestra",
-      "reasoning": "Ledger, Hopkins, Simmons: los actores que con una sola escena elevaron todo al siguiente nivel.",
+      "title": "10 actuaciones que convirtieron una película buena en obra maestra",
+      "reasoning": "Ledger, Hopkins, Simmons: los actores que con una sola escena cambiaron todo — kind=performance, nunca publicado.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,26 +100,26 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds [director,genre,theme,era,studio,mood]; ángulo fresco sobre actuaciones vs guion."
+      "critic_reason": "Slot creativo: kind=performance (actores/actuaciones) no está en recent_top_kinds [director, genre, theme, era, studio, mood]; ángulo fresco con alta conexión al perfil de Alberto."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "821614788fb4f853",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas que te dejan sin palabras",
-      "reasoning": "Miyazaki, Kurosawa y el cine japonés del catálogo CineBret que merece su lista propia.",
-      "score": 81,
+      "title": "10 películas de menos de 90 minutos que no te puedes perder",
+      "reasoning": "El cine que prueba que no necesitas 3 horas para hacer una obra maestra; kind=format nunca publicado.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "country",
-        "topic": "japón"
+        "topic_type": "theme",
+        "topic": "menos 90 min"
       },
-      "critic_reason": "§3 kind=country no está en recent_top_kinds; Miyazaki + Kurosawa dan base sólida de catálogo."
+      "critic_reason": "§3 kind=format no está en recent_top_kinds; ángulo editorial fuerte — el cine eficiente que prueba que menos es más."
     }
   ],
   "backlog": [
@@ -190,49 +190,34 @@
   ],
   "news": [
     {
-      "title_es": "Reddit celebra la introducción de Davy Jones en Piratas del Caribe 2",
-      "summary_es": "La escena de apertura de Verbinski sigue generando conversación; contexto para tu próxima reactiva.",
-      "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1tn8xhp/pirates_of_the_caribbean_dead_mans_chest_2006_dir/",
-      "angle": "cultural-moment",
+      "title_es": "Enola Holmes 3 anuncia fecha de trailer con Millie Bobby Brown y Louis Partridge",
+      "summary_es": "Netflix confirma tercer entrega de Enola Holmes; match débil al catálogo sin sello bret.",
+      "source": "Netflix",
+      "age_hours": 28,
+      "url": "https://www.youtube.com/watch?v=JNSUtGlhHKU",
+      "angle": "sequel",
       "catalog_match": {
-        "pelicula_id": "d78c2b64-491a-46d3-ac60-2682c7762f9d",
-        "titulo": "Piratas del Caribe: El cofre del hombre muerto",
-        "anio": 2006
+        "pelicula_id": "2b0fd091-6df6-4217-8d32-db07a6a17136",
+        "titulo": "Enola Holmes",
+        "anio": 2020
       },
-      "score": 70,
-      "reason": "§4.2 catalog match de calidad: Piratas del Caribe 2 (sello bret, Gore Verbinski); Reddit post celebrando la intro de Davy Jones, ángulo informativo."
+      "score": 52,
+      "reason": "§4.4 match con 'Enola Holmes' (catálogo) pero sin rating ≥7 confirmado ni sello bret; secuela informativa sin ángulo postable fuerte."
     },
     {
-      "title_es": "James Gray: 'Fox tomó Ad Astra, la alargó y me quitó el control'",
-      "summary_es": "El director confiesa en Cannes que el corte de estudio traicionó su visión original.",
-      "source": "Variety",
-      "age_hours": 2,
-      "url": "https://variety.com/2026/film/news/james-gray-ad-astra-taken-away-by-studio-1236758244/",
-      "angle": "cultural-moment",
+      "title_es": "Mandalorian & Grogu abre con $100M: lo que significa para Star Wars en Disney",
+      "summary_es": "Solo cita a Han Solo como referencia; análisis de taquilla informativo para Alberto sin ángulo de post.",
+      "source": "Deadline",
+      "age_hours": 5,
+      "url": "https://deadline.com/2026/05/box-office-star-wars-the-mandalorian-and-grogu-analysis-1236920328/",
+      "angle": null,
       "catalog_match": {
-        "pelicula_id": "2d1895c5-1ad6-4123-932a-122242fd650d",
-        "titulo": "Ad astra",
-        "anio": 2019
+        "pelicula_id": "888ef2a0-702f-443b-89c3-952a195136e6",
+        "titulo": "Han Solo: Una historia de Star Wars",
+        "anio": 2018
       },
-      "score": 63,
-      "reason": "§4.2 catalog match: Ad Astra en catálogo; mismo evento que 879780189d1d1b10, dedup — tomar el de Variety por más detalle."
-    },
-    {
-      "title_es": "James Gray revela que Fox le quitó el corte final de Ad Astra y la alargó 20 minutos",
-      "summary_es": "Gray dice que su versión habría sido muy diferente; el debate del director's cut sigue vivo.",
-      "source": "r/movies",
-      "age_hours": 2,
-      "url": "https://www.reddit.com/r/movies/comments/1tn7k89/james_gray_says_ad_astra_was_taken_away_from_him/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "2d1895c5-1ad6-4123-932a-122242fd650d",
-        "titulo": "Ad astra",
-        "anio": 2019
-      },
-      "score": 62,
-      "reason": "§4.2 catalog match: Ad Astra (2019) en catálogo; James Gray revela que Fox alargó la película contra su voluntad, ángulo informativo interesante."
+      "score": 45,
+      "reason": "§4.4 match débil con 'Han Solo' (catálogo, sello bret) vía contexto comparativo; análisis de taquilla Memorial Day solo informativo, sin ángulo postable directo."
     }
   ],
   "raw_signal_counts": {
@@ -245,12 +230,12 @@
     "acceptedCount": 0,
     "agedCount": 1,
     "expiredByTime": 0,
-    "expiredByCritic": 0
+    "expiredByCritic": 1
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 17619,
-    "output": 10421
+    "input": 16755,
+    "output": 11615
   }
 }

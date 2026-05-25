@@ -1343,8 +1343,8 @@
         "topic": "menos 90 min"
       },
       "first_proposed": "2026-05-16T11:46:25.258Z",
-      "last_proposed": "2026-05-23T20:50:44.214Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-05-25T21:04:44.986Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1950,8 +1950,8 @@
         "topic": "__TBD_BY_CRITIC__"
       },
       "first_proposed": "2026-05-24T20:54:29.653Z",
-      "last_proposed": "2026-05-24T20:54:29.653Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-25T21:04:44.986Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1976,10 +1976,85 @@
       "first_proposed": "2026-05-25T13:58:36.522Z",
       "last_proposed": "2026-05-25T13:58:36.522Z",
       "cycles_proposed": 1,
+      "status": "expired",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-25T21:04:44.986Z",
+      "expired_at": "2026-05-25T21:04:44.986Z",
+      "expired_reason": "§8 dedup: mismo sujeto que 66992078c76d77b2 (actuaciones que convierten película en obra maestra); descartar el duplicado más reciente."
+    },
+    {
+      "id": "9e4305e2dd1b39a4",
+      "action": "generate_review",
+      "title": "El Señor de los Anillos: El Retorno del Rey (2003) — Review",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 98,
+      "reasoning": "La conclusión épica de Jackson con IMDb 9.0; la trilogía merece su propio review en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "first_proposed": "2026-05-25T21:04:44.986Z",
+      "last_proposed": "2026-05-25T21:04:44.986Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "7163cfb6762a3811",
+      "action": "generate_review",
+      "title": "Parásito (2019) — Review",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de las 38 sagradas sin review publicado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-05-25T21:04:44.986Z",
+      "last_proposed": "2026-05-25T21:04:44.986Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "568c2a5a255ef46b",
+      "action": "generate_review",
+      "title": "El club de la pelea (1999) — Review",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Fincher en el Olimpo con IMDb 8.8; una de las sagradas sin review publicado en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "first_proposed": "2026-05-25T21:04:44.986Z",
+      "last_proposed": "2026-05-25T21:04:44.986Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-25T14:02:24.261Z"
+  "last_saved": "2026-05-25T21:09:02.691Z"
 }

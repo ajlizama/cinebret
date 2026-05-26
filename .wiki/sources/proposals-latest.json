@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-26T13:52:15.054Z",
-  "cycle": "am",
+  "generated_at": "2026-05-26T21:43:46.437Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 3,
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parasite (2019)",
-      "reasoning": "Una de las 38 sagradas de Alberto, ganadora del Óscar, sin review en el feed.",
+      "title": "Parásito (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de las 38 sagradas sin review en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog reevaluado: sigue válido. Rating 10 + Bong Joon-ho + IMDb 8.5 + sin review publicado."
+      "critic_reason": "§5 backlog válido: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho admirado; 8 días en backlog."
     },
     {
       "id": "119c0775fc431172",
@@ -49,8 +49,8 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "IMDb 9.0, rating 10, cierre épico de la trilogía Jackson sin review en el feed.",
-      "score": 97,
+      "reasoning": "La conclusión épica de Jackson con IMDb 9.0; la trilogía merece su propio review en el feed.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
@@ -61,35 +61,35 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson muy respetado; sin review publicado."
     },
     {
-      "id": "86cd64c42c4ddc8b",
+      "id": "6276902b8705f60e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El club de la pelea (1999)",
-      "reasoning": "Fincher del Olimpo con IMDb 8.8; una de las 38 sagradas sin review en el feed.",
-      "score": 96,
+      "title": "Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Live action del rating 10 de Alberto; DeBlois lleva su historia más personal a la pantalla real.",
+      "score": 95,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§5.2 backlog reevaluado: sigue válido. Rating 10 + Fincher Olimpo + IMDb 8.8 + sin review publicado; no hay cambio que lo expire."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + plataforma activa; Dean DeBlois muy respetado, live action 2025 boost +5."
     },
     {
-      "id": "40cf0e2fbbe48897",
+      "id": "17fad3148d90ccc8",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 actores que se transformaron tanto que no los reconocerás",
-      "reasoning": "Bale en La Maquinista, Ledger en Joker, Clooney en Syriana: las metamorfosis que van más allá del maquillaje.",
+      "title": "10 escenas de apertura que definen una película entera (y te enganchan en 5 minutos)",
+      "reasoning": "Desde Se7en hasta Inglourious Basterds: los primeros minutos que te dicen que estás ante algo grande.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,26 +100,26 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds; ángulo sobre actuaciones transformadoras es único y potente para el catálogo de Alberto."
+      "critic_reason": "Slot creativo: kind=country ya cubierto en este ciclo; propongo kind=craft (ángulo no explorado): secuencias de apertura que definen una película entera."
     },
     {
-      "id": "821614788fb4f853",
+      "id": "fe5875c8c649d23e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas de menos de 90 minutos que son obras maestras",
-      "reasoning": "Prueba de que no necesitas tres horas para hacer una película perfecta; ángulo fresco y accionable.",
-      "score": 83,
+      "title": "TOP 10 películas japonesas que te dejan sin palabras",
+      "reasoning": "Miyazaki, Kurosawa y el cine japonés del catálogo: la lista que el feed necesitaba.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
       "source_url": null,
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
-        "topic_type": "theme",
-        "topic": "menos 90 min"
+        "topic_type": "country",
+        "topic": "japón"
       },
-      "critic_reason": "§3 kind=format no está en recent_top_kinds; concepto editorial sólido y diferenciador."
+      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Miyazaki y el cine japonés son territorio natural cinebret."
     }
   ],
   "backlog": [
@@ -190,67 +190,37 @@
   ],
   "news": [
     {
-      "title_es": "Paddington 4 confirma guionistas: Armando Iannucci y Simon Blackwell",
-      "summary_es": "La franquicia de los 700 millones suma al creador de Veep; continuación de Paddington en Perú.",
-      "source": "Deadline",
-      "age_hours": 4,
-      "url": "https://deadline.com/2026/05/paddington-4-armando-iannucci-simon-blackwell-cowriters-1236920812/",
-      "angle": "sequel",
+      "title_es": "One Battle After Another se proyecta en 35mm en el cine de Tarantino",
+      "summary_es": "El New Beverly de Tarantino estrena una copia 35mm de la épica ganadora del Óscar.",
+      "source": "IndieWire",
+      "age_hours": 1,
+      "url": "https://www.indiewire.com/news/general-news/one-battle-after-another-35mm-new-beverly-1235196422/",
+      "angle": "festival",
       "catalog_match": {
-        "pelicula_id": "42db3ca3-e2b8-48c5-924c-00f104a16b70",
-        "titulo": "Paddington: Aventura a la selva",
-        "anio": 2024
+        "pelicula_id": "4958e990-b4b1-42d4-bdfc-49cea311ae67",
+        "titulo": "Una batalla tras otra",
+        "anio": 2025
       },
-      "score": 58,
-      "reason": "§4.4 regla 3: match al catálogo con Paddington in Peru (2024) verificable; Paddington 4 con Iannucci es dato relevante para Alberto pero ángulo solo informativo."
-    },
-    {
-      "title_es": "Russell Crowe se enfrenta a cazadores de autógrafos en París",
-      "summary_es": "El protagonista de Gladiator protagoniza un intercambio tenso; anécdota curiosa sin ángulo editorial.",
-      "source": "Hollywood Reporter",
-      "age_hours": 2,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/russell-crowe-defends-video-paris-tmz-fans-gladiator-1236605811/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "7d30d0b9-d6bb-409e-bf87-0c37d0a3614a",
-        "titulo": "Gladiator (El gladiador)",
-        "anio": 2000
-      },
-      "score": 55,
-      "reason": "§4.4 regla 3: match de calidad con Gladiator (rating 10, Ridley Scott Olimpo) pero el ángulo es anécdota de famoso en París, no un movie-event postable."
-    },
-    {
-      "title_es": "Russell Crowe defiende su reacción ante fans en París",
-      "summary_es": "El actor de Gladiator justifica su tono directo con cazadores de autógrafos en video viral.",
-      "source": "Deadline",
-      "age_hours": 4,
-      "url": "https://deadline.com/2026/05/russell-crowe-defends-autograph-hunters-paris-1236920808/",
-      "angle": null,
-      "catalog_match": {
-        "pelicula_id": "7d30d0b9-d6bb-409e-bf87-0c37d0a3614a",
-        "titulo": "Gladiator (El gladiador)",
-        "anio": 2000
-      },
-      "score": 52,
-      "reason": "§4.4 regla 3: match de calidad con Gladiator (rating 10) pero anécdota de celebridad sin ángulo postable; dedup con e6f022b231f4f731 reduce score."
+      "score": 72,
+      "reason": "§4.4 regla 3: match al catálogo 'Una batalla tras otra' (2025) + Tarantino (olimpo) programa la proyección; ángulo informativo sin acción directa posteable."
     }
   ],
   "raw_signal_counts": {
     "news_items": 116,
     "newsapi_items": 91,
     "reddit_posts": 0,
-    "trailers": 58
+    "trailers": 57
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 3,
-    "expiredByTime": 0,
+    "agedCount": 2,
+    "expiredByTime": 1,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16143,
-    "output": 10784
+    "input": 16860,
+    "output": 11726
   }
 }

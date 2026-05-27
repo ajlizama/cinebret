@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-26T21:43:46.437Z",
-      "cycles_proposed": 14,
+      "last_proposed": "2026-05-27T14:24:59.587Z",
+      "cycles_proposed": 15,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1520,8 +1520,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-23T20:50:44.214Z",
-      "last_proposed": "2026-05-26T21:43:46.437Z",
-      "cycles_proposed": 5,
+      "last_proposed": "2026-05-27T14:24:59.587Z",
+      "cycles_proposed": 6,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1699,8 +1699,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-26T13:52:15.054Z",
-      "cycles_proposed": 5,
+      "last_proposed": "2026-05-27T14:24:59.587Z",
+      "cycles_proposed": 6,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -2102,10 +2102,12 @@
       "first_proposed": "2026-05-26T13:52:15.054Z",
       "last_proposed": "2026-05-26T13:52:15.054Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-26T21:43:46.437Z"
+      "became_backlog_at": "2026-05-26T21:43:46.437Z",
+      "expired_at": "2026-05-27T14:24:59.587Z",
+      "expired_reason": "§5 dedup: mismo sujeto que 90e0d61707839e9a ('películas de menos de 90 minutos'); con ese backlog aún activo, este es redundante."
     },
     {
       "id": "4b3356f5fb9297a7",
@@ -2126,10 +2128,57 @@
       "first_proposed": "2026-05-26T21:43:46.437Z",
       "last_proposed": "2026-05-26T21:43:46.437Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-27T14:24:59.587Z"
+    },
+    {
+      "id": "082fc9d62a854c77",
+      "action": "generate_carousel_topic",
+      "title": "10 escenas de apertura que te enganchan en 5 minutos (y definen la película entera)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Se7en, Inglourious Basterds, TDK: los primeros minutos que te dicen que estás ante algo grande.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-27T14:24:59.587Z",
+      "last_proposed": "2026-05-27T14:24:59.587Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "803da414a47202e4",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas británicas que todo cinéfilo debería conocer",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "Nolan, Boyle, Wright, Ritchie: el catálogo UK de CineBret es de los más potentes del feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "reino unido"
+      },
+      "first_proposed": "2026-05-27T14:24:59.587Z",
+      "last_proposed": "2026-05-27T14:24:59.587Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-26T21:47:38.967Z"
+  "last_saved": "2026-05-27T14:29:17.794Z"
 }

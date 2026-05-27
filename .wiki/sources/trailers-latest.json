@@ -1,17 +1,147 @@
 {
-  "generated_at": "2026-05-26T21:43:46.347Z",
-  "total_videos": 57,
-  "trailers_count": 11,
+  "generated_at": "2026-05-27T14:24:04.048Z",
+  "total_videos": 56,
+  "trailers_count": 14,
   "matched_to_cinebret": 12,
   "videos": [
     {
-      "video_id": "JrUGHsDfOd8",
-      "title": "PlayStation Plus Games for June 2026 Add Warhammer 40K, More - IGN Daily Fix",
-      "url": "https://www.youtube.com/watch?v=JrUGHsDfOd8",
-      "published": "2026-05-26T21:30:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/JrUGHsDfOd8/hqdefault.jpg",
+      "video_id": "Wp6D9eKvFRY",
+      "title": "C-Beams - Official Announcement Trailer",
+      "url": "https://www.youtube.com/watch?v=Wp6D9eKvFRY",
+      "published": "2026-05-27T14:16:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/Wp6D9eKvFRY/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "j9TsiTgYZGw",
+      "title": "A trailer to die for. Jane Schoenbrun's TEENAGE SEX AND DEATH AT CAMP MIASMA. A MUBI Release.",
+      "url": "https://www.youtube.com/watch?v=j9TsiTgYZGw",
+      "published": "2026-05-27T14:01:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/j9TsiTgYZGw/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "pgULLEo36OE",
+      "title": "Witchspire: 17 Minutes of Developer-Narrated Gameplay",
+      "url": "https://www.youtube.com/watch?v=pgULLEo36OE",
+      "published": "2026-05-27T14:00:14Z",
+      "thumbnail": "https://i.ytimg.com/vi/pgULLEo36OE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "dimCiC_hdoA",
+      "title": "TEENAGE SEX AND DEATH AT CAMP MIASMA | Official Trailer | In Theaters August 7",
+      "url": "https://www.youtube.com/watch?v=dimCiC_hdoA",
+      "published": "2026-05-27T14:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/dimCiC_hdoA/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "cvaxfK_6_p0",
+      "title": "Primetime - Official Teaser Trailer (Robert Pattinson, Merritt Wever, Skyler Gisondo,)",
+      "url": "https://www.youtube.com/watch?v=cvaxfK_6_p0",
+      "published": "2026-05-27T13:48:58Z",
+      "thumbnail": "https://i.ytimg.com/vi/cvaxfK_6_p0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "4ovGTdyjrJo",
+      "title": "Tides of Annihilation - Official Technical Behind-the-Scenes Overview",
+      "url": "https://www.youtube.com/watch?v=4ovGTdyjrJo",
+      "published": "2026-05-27T13:45:28Z",
+      "thumbnail": "https://i.ytimg.com/vi/4ovGTdyjrJo/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "NtMCsqNt6No",
+      "title": "Zorro - Exclusive Trailer (2026) Jean Dujardin",
+      "url": "https://www.youtube.com/watch?v=NtMCsqNt6No",
+      "published": "2026-05-27T13:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/NtMCsqNt6No/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "Yrfrf53ttYY",
+      "title": "Primetime | Official Teaser HD | A24",
+      "url": "https://www.youtube.com/watch?v=Yrfrf53ttYY",
+      "published": "2026-05-27T13:00:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/Yrfrf53ttYY/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "g1fq327snPU",
+      "title": "Enola Holmes 3 | Official Teaser | Netflix",
+      "url": "https://www.youtube.com/watch?v=g1fq327snPU",
+      "published": "2026-05-27T12:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/g1fq327snPU/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "2b0fd091-6df6-4217-8d32-db07a6a17136",
+        "titulo": "Enola Holmes",
+        "anio": 2020
+      }
+    },
+    {
+      "video_id": "VbUXrxyYsQs",
+      "title": "Girls' night in at the #SummerHouse...but make it #ScaryMovie! #AD",
+      "url": "https://www.youtube.com/watch?v=VbUXrxyYsQs",
+      "published": "2026-05-27T04:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/VbUXrxyYsQs/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "D9Aey5JsvCU",
+      "title": "He's keeping track. #MaximumPleasureGuaranteed — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=D9Aey5JsvCU",
+      "published": "2026-05-27T00:59:57Z",
+      "thumbnail": "https://i.ytimg.com/vi/D9Aey5JsvCU/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "23ojcVBdlVE",
+      "title": "Monarch: Legacy of Monsters — Lee and Keiko in the Skullcrawler Boneyard | Apple TV",
+      "url": "https://www.youtube.com/watch?v=23ojcVBdlVE",
+      "published": "2026-05-26T22:59:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/23ojcVBdlVE/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
+        "titulo": "Monsters: El infierno del dragón",
+        "anio": 2024
+      }
+    },
+    {
+      "video_id": "kFIwQS-JdVo",
+      "title": "This is a set tour presented by Nick Offerman. #MargosGotMoneyTroubles",
+      "url": "https://www.youtube.com/watch?v=kFIwQS-JdVo",
+      "published": "2026-05-26T21:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/kFIwQS-JdVo/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -30,16 +160,6 @@
       }
     },
     {
-      "video_id": "DYFzgpvZ7rA",
-      "title": "The Agent roles and how they work in World of Tanks: HEAT. Presented by @WoT_HEAT",
-      "url": "https://www.youtube.com/watch?v=DYFzgpvZ7rA",
-      "published": "2026-05-26T20:11:41Z",
-      "thumbnail": "https://i.ytimg.com/vi/DYFzgpvZ7rA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "ZINz_c6AD_M",
       "title": "The man behind the music. Paul Rudd and Nick Jonas on working with John Carney. #PowerBallad",
       "url": "https://www.youtube.com/watch?v=ZINz_c6AD_M",
@@ -48,26 +168,6 @@
       "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "rZUpiQgfeLo",
-      "title": "Marathon - Official Season 2 Cinematic Trailer",
-      "url": "https://www.youtube.com/watch?v=rZUpiQgfeLo",
-      "published": "2026-05-26T19:16:33Z",
-      "thumbnail": "https://i.ytimg.com/vi/rZUpiQgfeLo/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "TGQdG9MxDJA",
-      "title": "Mount & Blade 2: Bannerlord War Sails - Official Seaborne Village Raids Trailer",
-      "url": "https://www.youtube.com/watch?v=TGQdG9MxDJA",
-      "published": "2026-05-26T19:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/TGQdG9MxDJA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "5M4pRfJKx9w",
@@ -83,16 +183,6 @@
         "titulo": "Cómo entrenar a tu dragón (2010)",
         "anio": 2010
       }
-    },
-    {
-      "video_id": "OEDOi7raKoc",
-      "title": "War Fantasy - Official Announcement Trailer",
-      "url": "https://www.youtube.com/watch?v=OEDOi7raKoc",
-      "published": "2026-05-26T18:11:41Z",
-      "thumbnail": "https://i.ytimg.com/vi/OEDOi7raKoc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "4oPHkAsHxX8",
@@ -320,47 +410,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "ZOgzblUIG4k",
-      "title": "#JasonSchwartzman leads as an egocentric writer in Alex Ross Perry’s LISTEN UP PHILLIP",
-      "url": "https://www.youtube.com/watch?v=ZOgzblUIG4k",
-      "published": "2026-05-24T19:00:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/ZOgzblUIG4k/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "JNSUtGlhHKU",
-      "title": "Millie Bobby Brown and Louis Partridge crack the case of the Enola Holmes 3 trailer drop date",
-      "url": "https://www.youtube.com/watch?v=JNSUtGlhHKU",
-      "published": "2026-05-24T17:22:21Z",
-      "thumbnail": "https://i.ytimg.com/vi/JNSUtGlhHKU/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "2b0fd091-6df6-4217-8d32-db07a6a17136",
-        "titulo": "Enola Holmes",
-        "anio": 2020
-      }
-    },
-    {
       "video_id": "hhQNNm68e4s",
       "title": "You ready? #PowerBallad — in select cities May 29, in theaters everywhere June 5.",
       "url": "https://www.youtube.com/watch?v=hhQNNm68e4s",
       "published": "2026-05-24T17:04:20Z",
       "thumbnail": "https://i.ytimg.com/vi/hhQNNm68e4s/hqdefault.jpg",
       "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "pE3Et1XM76E",
-      "title": "Begin the end. From the first deal, to the last. Stream #WongKarWai's dazzling BLOSSOMS SHANGHAI.",
-      "url": "https://www.youtube.com/watch?v=pE3Et1XM76E",
-      "published": "2026-05-24T15:00:40Z",
-      "thumbnail": "https://i.ytimg.com/vi/pE3Et1XM76E/hqdefault.jpg",
-      "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -385,16 +440,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "s1kksM02U_A",
-      "title": "Margo's Got Money Troubles — Elle Fanning, Nick Offerman & Thaddea Make Orange Meal | Apple TV",
-      "url": "https://www.youtube.com/watch?v=s1kksM02U_A",
-      "published": "2026-05-23T16:59:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/s1kksM02U_A/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "WpulYte6HIY",
       "title": "Last Night in Soho | The Moment Ellie Learns the Secret of Sandie",
       "url": "https://www.youtube.com/watch?v=WpulYte6HIY",
@@ -410,32 +455,12 @@
       }
     },
     {
-      "video_id": "C1F7KKGToVM",
-      "title": "Attention all flyers: #PropellerMovie will premiere May 29 on Apple TV.",
-      "url": "https://www.youtube.com/watch?v=C1F7KKGToVM",
-      "published": "2026-05-22T20:59:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/C1F7KKGToVM/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "jXjMt-rj7XA",
       "title": "3 Moments Jack is Suspicious of Greg | The Focker's Franchise",
       "url": "https://www.youtube.com/watch?v=jXjMt-rj7XA",
       "published": "2026-05-22T19:00:20Z",
       "thumbnail": "https://i.ytimg.com/vi/jXjMt-rj7XA/hqdefault.jpg",
       "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "V7GiJTX44gY",
-      "title": "Nicole Kidman. No notes. #MargosGotMoneyTroubles — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=V7GiJTX44gY",
-      "published": "2026-05-22T18:59:57Z",
-      "thumbnail": "https://i.ytimg.com/vi/V7GiJTX44gY/hqdefault.jpg",
-      "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
     },
@@ -585,16 +610,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "S3oMKfEqQBE",
-      "title": "Did you get all that? #TheNakedGun",
-      "url": "https://www.youtube.com/watch?v=S3oMKfEqQBE",
-      "published": "2026-05-20T16:59:53Z",
-      "thumbnail": "https://i.ytimg.com/vi/S3oMKfEqQBE/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "A0fgugC7ZCo",
       "title": "TALLADEGA NIGHTS: THE BALLAD OF RICKY BOBBY (2006) - 20th Anniversary - Official Trailer (HD)",
       "url": "https://www.youtube.com/watch?v=A0fgugC7ZCo",
@@ -607,31 +622,6 @@
         "pelicula_id": "73ce8d6b-2425-4ed9-b586-7a3a150f6f4d",
         "titulo": "Pasado de vueltas",
         "anio": 2006
-      }
-    },
-    {
-      "video_id": "lpbvwAchkuI",
-      "title": "Be Careful What You Wish For...",
-      "url": "https://www.youtube.com/watch?v=lpbvwAchkuI",
-      "published": "2026-05-20T14:01:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/lpbvwAchkuI/hqdefault.jpg",
-      "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "ii1gTLxWukk",
-      "title": "The Death of Robin Hood | Official First Look | A24",
-      "url": "https://www.youtube.com/watch?v=ii1gTLxWukk",
-      "published": "2026-05-20T13:00:19Z",
-      "thumbnail": "https://i.ytimg.com/vi/ii1gTLxWukk/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "a3566360-53c4-48a6-9441-27d4d08d7f6f",
-        "titulo": "La muerte de Robin Hood",
-        "anio": 2026
       }
     }
   ]

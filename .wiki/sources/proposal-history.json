@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-27T14:24:59.587Z",
-      "cycles_proposed": 15,
+      "last_proposed": "2026-05-27T21:52:36.869Z",
+      "cycles_proposed": 16,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1199,10 +1199,11 @@
       "first_proposed": "2026-05-13T21:25:39.118Z",
       "last_proposed": "2026-05-18T21:11:30.072Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-14T21:09:21.524Z"
+      "became_backlog_at": "2026-05-14T21:09:21.524Z",
+      "expired_at": "2026-05-27T21:52:36.869Z"
     },
     {
       "id": "740a5e134bba1070",
@@ -1519,15 +1520,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-23T20:50:44.214Z",
-      "last_proposed": "2026-05-27T14:24:59.587Z",
-      "cycles_proposed": 6,
-      "status": "backlog",
+      "first_proposed": "2026-05-27T21:52:36.869Z",
+      "last_proposed": "2026-05-27T21:52:36.869Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-24T12:00:25.007Z",
-      "expired_at": "2026-05-23T20:50:44.214Z",
-      "expired_reason": "§5 backlog duplicado: mismo sujeto que 6134534c62ee6a31 (Parásito 2019, Bong Joon-ho); dedup — mantener el de mayor score."
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de Parásito (2019) — ya cubierta por id 6134534c62ee6a31 en este mismo ciclo con score más alto."
     },
     {
       "id": "080b5658325e2dfe",
@@ -1698,15 +1699,15 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "first_proposed": "2026-05-21T21:27:02.250Z",
-      "last_proposed": "2026-05-27T14:24:59.587Z",
-      "cycles_proposed": 6,
-      "status": "backlog",
+      "first_proposed": "2026-05-27T21:52:36.869Z",
+      "last_proposed": "2026-05-27T21:52:36.869Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-22T13:28:52.694Z",
-      "expired_at": "2026-05-21T21:27:02.250Z",
-      "expired_reason": "§8 duplicado: mismo film que 86cd64c42c4ddc8b (Fight Club 1999, David Fincher) ya propuesto en este ciclo como proposal y backlog; dedup por sujeto."
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de El Club de la Pelea (1999) — ya cubierta por id 86cd64c42c4ddc8b con score más alto en este ciclo."
     },
     {
       "id": "671afc46c7215a07",
@@ -1929,10 +1930,12 @@
       "first_proposed": "2026-05-24T12:00:25.007Z",
       "last_proposed": "2026-05-26T21:43:46.437Z",
       "cycles_proposed": 4,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-24T20:54:29.653Z"
+      "became_backlog_at": "2026-05-24T20:54:29.653Z",
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de TOP 10 películas japonesas — ya cubierta por id fe5875c8c649d23e en este mismo ciclo; descartar la del backlog."
     },
     {
       "id": "66992078c76d77b2",
@@ -2004,10 +2007,12 @@
       "first_proposed": "2026-05-25T21:04:44.986Z",
       "last_proposed": "2026-05-25T21:04:44.986Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-26T13:52:15.054Z"
+      "became_backlog_at": "2026-05-26T13:52:15.054Z",
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de El Señor de los Anillos: El Retorno del Rey — ya cubierta por id ee7db1141ee271a2 con score más alto en este ciclo."
     },
     {
       "id": "7163cfb6762a3811",
@@ -2029,10 +2034,12 @@
       "first_proposed": "2026-05-25T21:04:44.986Z",
       "last_proposed": "2026-05-25T21:04:44.986Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-26T13:52:15.054Z"
+      "became_backlog_at": "2026-05-26T13:52:15.054Z",
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de Parásito (2019) — ya cubierta por id 6134534c62ee6a31 con score más alto en este ciclo."
     },
     {
       "id": "568c2a5a255ef46b",
@@ -2054,10 +2061,12 @@
       "first_proposed": "2026-05-25T21:04:44.986Z",
       "last_proposed": "2026-05-25T21:04:44.986Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-26T13:52:15.054Z"
+      "became_backlog_at": "2026-05-26T13:52:15.054Z",
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de El Club de la Pelea (1999) — ya cubierta por id 86cd64c42c4ddc8b con score más alto en este ciclo."
     },
     {
       "id": "7da21078c1ff6fff",
@@ -2152,9 +2161,12 @@
       "first_proposed": "2026-05-27T14:24:59.587Z",
       "last_proposed": "2026-05-27T14:24:59.587Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-27T21:52:36.869Z",
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de '10 escenas de apertura' — ya cubierta por id 4b3356f5fb9297a7 con score más alto en este ciclo."
     },
     {
       "id": "803da414a47202e4",
@@ -2172,13 +2184,39 @@
         "topic_type": "country",
         "topic": "reino unido"
       },
-      "first_proposed": "2026-05-27T14:24:59.587Z",
-      "last_proposed": "2026-05-27T14:24:59.587Z",
+      "first_proposed": "2026-05-27T21:52:36.869Z",
+      "last_proposed": "2026-05-27T21:52:36.869Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-27T21:52:36.869Z",
+      "expired_at": "2026-05-27T21:52:36.869Z",
+      "expired_reason": "§5 dedup: entrada duplicada de TOP 10 películas británicas — ya cubierta por id 787cebed76170ab8 con score más alto en este ciclo."
+    },
+    {
+      "id": "b1d19e4d9fa20cce",
+      "action": "generate_carousel_topic",
+      "title": "10 películas donde la última línea de diálogo lo cambia todo",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 88,
+      "reasoning": "Usual Suspects, Chinatown, The Mist: los cierres verbales que reescriben lo que acabas de ver.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-27T21:52:36.869Z",
+      "last_proposed": "2026-05-27T21:52:36.869Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-27T14:29:17.794Z"
+  "last_saved": "2026-05-27T21:56:35.829Z"
 }

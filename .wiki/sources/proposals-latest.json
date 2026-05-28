@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-27T21:52:36.869Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-28T14:35:11.721Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 7,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -24,32 +24,32 @@
   },
   "top": [
     {
-      "id": "119c0775fc431172",
+      "id": "6276902b8705f60e",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "IMDb 9.0, cierre épico de Jackson; una de las sagradas sin review en el feed.",
-      "score": 98,
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + director Peter Jackson (muy respetado) + plataforma activa."
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 + plataforma activa; déficit de review activo."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parásito (2019)",
-      "reasoning": "Una de las 38 sagradas de Bong Joon-ho sin review publicado en el feed.",
+      "title": "Review: Parasite (2019)",
+      "reasoning": "La Palma de Oro y el Óscar de Bong; una de tus 38 sagradas sin review en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,36 +61,36 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (admired); sigue siendo propuesta válida."
+      "critic_reason": "§5.2 backlog re-evaluación: Rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; age_days=10 dentro del límite."
     },
     {
-      "id": "86cd64c42c4ddc8b",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El Club de la Pelea (1999)",
-      "reasoning": "Fincher en el Olimpo con IMDb 8.8; sagrada sin review publicado en el feed.",
-      "score": 97,
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre épico de Jackson que ganó 11 Óscar; IMDb 9.0 y tu rating 10 sin review publicado.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§5 backlog reevaluado: rating 10 + sello bret + IMDb 8.8 + David Fincher (olimpo); sigue siendo propuesta válida urgente."
+      "critic_reason": "§4.5 review: Rating 10 + sello bret + Peter Jackson (muy respetado, 3 sello bret) + IMDb 9.0 + plataforma activa."
     },
     {
-      "id": "acd49a844ab42a4e",
+      "id": "4ef1d13ee02e3a60",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas donde la última línea de diálogo lo cambia todo",
-      "reasoning": "Usual Suspects, Chinatown, The Mist: los cierres verbales que reescriben lo que acabas de ver.",
-      "score": 88,
+      "title": "10 finales que reescriben todo lo que acabas de ver (y por qué funcionan)",
+      "reasoning": "Usual Suspects, Memento, The Prestige: los cierres que te obligan a repasar la película entera.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,16 +100,16 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§3 slot creativo: kind=craft/narrative no está en recent_top_kinds; propongo ángulo narrativo no obvio con conexión directa al gusto de Alberto por plot twists y diálogos icónicos."
+      "critic_reason": "Slot creativo con kind=craft (no está en recent_top_kinds); ángulo narrativo fresco que conecta con el amor de Alberto por plot twists y guiones."
     },
     {
-      "id": "787cebed76170ab8",
+      "id": "fe5875c8c649d23e",
       "type": "FEED",
-      "priority": "alta",
+      "priority": "media",
       "action": "generate_carousel_topic",
-      "title": "TOP 10 películas británicas que todo cinéfilo debería conocer",
-      "reasoning": "Nolan, Boyle, Ritchie y Wright: el catálogo UK de CineBret es de los más potentes.",
-      "score": 80,
+      "title": "TOP 10 películas japonesas que cambiaron el cine",
+      "reasoning": "Miyazaki, Kurosawa y los autores que Alberto más respeta del cine asiático en un solo carrusel.",
+      "score": 75,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -117,9 +117,9 @@
       "skill_to_invoke": "cinebret-carousel-topic",
       "skill_args": {
         "topic_type": "country",
-        "topic": "reino unido"
+        "topic": "japón"
       },
-      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; el catálogo UK de CineBret incluye Nolan, Boyle, Wright y Ritchie."
+      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Japón (Miyazaki, Kurosawa) tiene fuerte presencia en catálogo y gustos de Alberto."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 9,
+      "days_ago": 10,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,23 +160,23 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
-      "id": "740a5e134bba1070",
+      "id": "b1d19e4d9fa20cce",
       "type": "FEED",
-      "title": "Villeneuve busca al próximo James Bond: Nina Gold contratada como directora de casting",
-      "reasoning": "Denis Villeneuve y Amazon avanzan en la búsqueda del nuevo 007; primer paso concreto del casting.",
-      "days_ago": 13,
-      "skill_to_invoke": "cinebret-list-from-news"
+      "title": "10 películas donde la última línea de diálogo lo cambia todo",
+      "reasoning": "Usual Suspects, Chinatown, The Mist: los cierres verbales que reescriben lo que acabas de ver.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-carousel-topic"
     },
     {
       "id": "46ae158885609ffe",
       "type": "FEED",
       "title": "TOP 10 actuaciones que merecían el Óscar y no lo ganaron",
       "reasoning": "Ledger ganó póstumamente, pero cuántas actuaciones del nivel de Pitt en Seven o Hopkins en Silence se perdieron.",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-carousel-topic"
     },
     {
@@ -184,46 +184,90 @@
       "type": "FEED",
       "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
       "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
-      "days_ago": 7,
+      "days_ago": 8,
       "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "title_es": "Backrooms va a batir el récord histórico de apertura de A24",
-      "summary_es": "A24 podría duplicar sus 25M de récord con esta película; dato relevante del momento.",
-      "source": "The Wrap",
+      "title_es": "Trailer de 'In the Hand of Dante': Scorsese actúa junto a Oscar Isaac y Jason Momoa",
+      "summary_es": "Scorsese aparece como actor en el épico histórico de Julian Schnabel; dato curioso para Alberto.",
+      "source": "r/movies",
       "age_hours": 1,
-      "url": "https://www.thewrap.com/creative-content/movies/backrooms-box-office-tracking-kane-parsons/",
+      "url": "https://www.reddit.com/r/movies/comments/1tq3wdm/in_the_hand_of_dante_trailer_oscar_isaac_jason/",
+      "angle": "trailer-drop",
+      "catalog_match": null,
+      "score": 72,
+      "reason": "§4.4 regla 3: Martin Scorsese (Olimpo) aparece en el trailer de 'In the Hand of Dante' pero no es su película como director; ángulo informativo válido, no accionable como propuesta sin más contexto."
+    },
+    {
+      "title_es": "Trailer oficial: In the Hand of Dante — Scorsese actúa con Oscar Isaac y Jason Momoa",
+      "summary_es": "Scorsese frente a cámara en un épico histórico de Netflix; dato curioso para Alberto.",
+      "source": "Netflix",
+      "age_hours": 1,
+      "url": "https://www.youtube.com/watch?v=cXA3Zgsky18",
+      "angle": "trailer-drop",
+      "catalog_match": null,
+      "score": 68,
+      "reason": "§4.4 regla 3: 'In the Hand of Dante' con Martin Scorsese (Olimpo) como actor; trailer de Netflix con ángulo informativo interesante aunque Scorsese no dirige."
+    },
+    {
+      "title_es": "IMAX, la marca más caliente del cine, está en venta: ¿qué significa para las salas?",
+      "summary_es": "IMAX busca comprador mientras el cine premium crece; dato de industria relevante para cualquier cinéfilo.",
+      "source": "Variety",
+      "age_hours": 1,
+      "url": "https://variety.com/2026/film/news/imax-for-sale-potential-buyers-1236759793/",
       "angle": "cultural-moment",
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§4.4 regla 3: IMAX es relevante para Alberto como fan de la experiencia cinematográfica premium, ángulo informativo sobre el futuro de las salas."
+    },
+    {
+      "title_es": "Nuevo póster de Masters of the Universe: estreno en cines el 5 de junio",
+      "summary_es": "He-Man llega a cines en días; dato de estreno próximo por si Alberto quiere reaccionar.",
+      "source": "r/movies",
+      "age_hours": 1,
+      "url": "https://www.reddit.com/r/movies/comments/1tq32iw/new_poster_for_masters_of_the_universe_in/",
+      "angle": "trailer-drop",
       "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
+        "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
+        "titulo": "He-Man y los masters del universo",
         "anio": 2026
       },
       "score": 52,
-      "reason": "§4.4 regla 3: match al catálogo (Backrooms 2026); récord de apertura de A24 es informativo pero no hay ángulo postable concreto para CineBret hoy."
+      "reason": "§4.4 regla 3: poster de Masters of the Universe (2026) con match al catálogo; ángulo solo informativo — no hay trailer ni evento grande todavía."
     },
     {
-      "title_es": "Mark Duplass defiende al director de Backrooms (A24) ante rumores de control",
-      "summary_es": "El debut de A24's director más joven genera controversia; Backrooms está en tu catálogo.",
+      "title_es": "Ejecutivos de Hollywood con sueldos +51% mientras se eliminan 17.000 empleos en 2025",
+      "summary_es": "La paradoja salarial de Hollywood 2025; dato de industria que Alberto querría saber.",
+      "source": "r/movies",
+      "age_hours": 2,
+      "url": "https://www.reddit.com/r/movies/comments/1tq2yjq/hollywoods_top_execs_got_a_51_pay_hike_in_2025_as/",
+      "angle": "cultural-moment",
+      "catalog_match": null,
+      "score": 50,
+      "reason": "§4.4 regla 3: noticia de industria (ejecutivos +51% sueldo, 17.000 despidos en Hollywood) sin match al catálogo pero relevante para contexto de la industria que Alberto sigue."
+    },
+    {
+      "title_es": "Gabriel Yared, compositor de The English Patient y Cold Mountain, homenajeado en Zurich",
+      "summary_es": "El Óscar de Yared tiene conexión directa con Cold Mountain del catálogo; dato para el bloque de noticias.",
       "source": "Deadline",
-      "age_hours": 0,
-      "url": "https://deadline.com/2026/05/mark-duplass-slams-rumor-kane-parsons-didnt-direct-backrooms-1236928407/",
-      "angle": null,
+      "age_hours": 2,
+      "url": "https://deadline.com/2026/05/english-patient-composer-gabriel-yared-honored-zurich-1236928948/",
+      "angle": "festival",
       "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
+        "pelicula_id": "45f2133c-fca2-4e42-a432-5283aa8820e5",
+        "titulo": "Cold Mountain",
+        "anio": 2003
       },
-      "score": 45,
-      "reason": "§4.4 regla 3: match al catálogo (Backrooms 2026) pero el ángulo es informativo/industria; no hay ángulo postable claro para CineBret."
+      "score": 48,
+      "reason": "§4.4 regla 3: Gabriel Yared es compositor de Cold Mountain (match al catálogo, rating necesita verificación) y The English Patient; homenaje en Zurich es informativo pero no accionable."
     },
     {
-      "title_es": "Tráiler final de 'El Día de la Revelación' (Disclosure Day, 2026)",
-      "summary_es": "Tráiler final disponible; película en catálogo sin sello ni director de referencia.",
+      "title_es": "Trailer final de Disclosure Day (El día de la revelación): estreno próximo en cines",
+      "summary_es": "Película nueva en el catálogo con trailer final disponible; dato de estreno para seguimiento.",
       "source": "Universal Pictures",
-      "age_hours": 7,
+      "age_hours": 24,
       "url": "https://www.youtube.com/watch?v=icDuEHSxE-w",
       "angle": "trailer-drop",
       "catalog_match": {
@@ -231,26 +275,26 @@
         "titulo": "El día de la revelación",
         "anio": 2026
       },
-      "score": 42,
-      "reason": "§4.4 regla 3: match al catálogo (Disclosure Day 2026) pero la película no tiene rating ≥7 confirmado ni sello ni director olimpo; ángulo solo informativo."
+      "score": 45,
+      "reason": "§4.4 regla 3: match al catálogo con 'El día de la revelación' (2026) pero película sin rating conocido alto ni director favorito; ángulo solo informativo."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
-    "newsapi_items": 90,
+    "newsapi_items": 92,
     "reddit_posts": 0,
     "trailers": 54
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
-    "expiredByTime": 1,
-    "expiredByCritic": 8
+    "agedCount": 4,
+    "expiredByTime": 0,
+    "expiredByCritic": 4
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16791,
-    "output": 12531
+    "input": 16408,
+    "output": 12507
   }
 }

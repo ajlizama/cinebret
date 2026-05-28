@@ -1,18 +1,148 @@
 {
-  "generated_at": "2026-05-27T21:52:36.780Z",
+  "generated_at": "2026-05-28T14:34:25.073Z",
   "total_videos": 54,
-  "trailers_count": 11,
+  "trailers_count": 13,
   "matched_to_cinebret": 15,
   "videos": [
     {
-      "video_id": "kWqwEBHnY3Q",
-      "title": "Silent Planet - Elegy of a Dying World - Official Gameplay Teaser Trailer",
-      "url": "https://www.youtube.com/watch?v=kWqwEBHnY3Q",
-      "published": "2026-05-27T21:00:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/kWqwEBHnY3Q/hqdefault.jpg",
+      "video_id": "aZ7baNi9RdM",
+      "title": "Street Fighter 6 - Official Ingrid Update Trailer",
+      "url": "https://www.youtube.com/watch?v=aZ7baNi9RdM",
+      "published": "2026-05-28T14:18:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/aZ7baNi9RdM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "2e98a9b8-b170-4e7e-b696-590d74207984",
+        "titulo": "Street Fighter",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "vZQwtXZIafQ",
+      "title": "Indie Loop | Three New Indie Games to Check Out: Husk Protocol, The Wilds of Dacrima, Pawsome Resort",
+      "url": "https://www.youtube.com/watch?v=vZQwtXZIafQ",
+      "published": "2026-05-28T14:03:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/vZQwtXZIafQ/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "gbAG4kFjs84",
+      "title": "The Adventures of Elliot: The Millennium Tales – 10 Minutes of HD-2D RPG Gameplay",
+      "url": "https://www.youtube.com/watch?v=gbAG4kFjs84",
+      "published": "2026-05-28T14:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/gbAG4kFjs84/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "cXA3Zgsky18",
+      "title": "In the Hand of Dante | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=cXA3Zgsky18",
+      "published": "2026-05-28T14:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/cXA3Zgsky18/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "WJMbHySi5eQ",
+      "title": "Sugar — Season 2 Official Trailer | Apple TV",
+      "url": "https://www.youtube.com/watch?v=WJMbHySi5eQ",
+      "published": "2026-05-28T13:59:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/WJMbHySi5eQ/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "73oEJK_dnNg",
+      "title": "The Wilds of Dacrima - Official Launch Trailer",
+      "url": "https://www.youtube.com/watch?v=73oEJK_dnNg",
+      "published": "2026-05-28T13:50:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/73oEJK_dnNg/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": true
+    },
+    {
+      "video_id": "-I2-X9v-ogs",
+      "title": "FATHERLAND | Official Trailer | This Fall",
+      "url": "https://www.youtube.com/watch?v=-I2-X9v-ogs",
+      "published": "2026-05-28T13:35:43Z",
+      "thumbnail": "https://i.ytimg.com/vi/-I2-X9v-ogs/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "ef44gYyDOl0",
+      "title": "The Biggest Game Releases of June 2026",
+      "url": "https://www.youtube.com/watch?v=ef44gYyDOl0",
+      "published": "2026-05-28T13:15:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/ef44gYyDOl0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "c6-2Z222_U0",
+      "title": "FATHERLAND. From director Paweł Pawlikowski, starring Sandra Hüller and Hanns Zischler.",
+      "url": "https://www.youtube.com/watch?v=c6-2Z222_U0",
+      "published": "2026-05-28T13:01:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/c6-2Z222_U0/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "MF1DomxBNDE",
+      "title": "1 of 1. John Carney's #PowerBallad starring Paul Rudd and Nick Jonas.",
+      "url": "https://www.youtube.com/watch?v=MF1DomxBNDE",
+      "published": "2026-05-27T23:07:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/MF1DomxBNDE/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Kfh8H9O4FF8",
+      "title": "Evening | Buddy Thinks Lila's Making a Big Mistake",
+      "url": "https://www.youtube.com/watch?v=Kfh8H9O4FF8",
+      "published": "2026-05-27T23:00:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/Kfh8H9O4FF8/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "TmH-Q3vXtYg",
+      "title": "“Spider-Noir” - Opening Chase Scene | Prime Video",
+      "url": "https://www.youtube.com/watch?v=TmH-Q3vXtYg",
+      "published": "2026-05-27T23:00:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/TmH-Q3vXtYg/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "H9Oyas-i36k",
+      "title": "Your Friends & Neighbors — Almost Caught | Season 2 Scene | Apple TV",
+      "url": "https://www.youtube.com/watch?v=H9Oyas-i36k",
+      "published": "2026-05-27T22:59:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/H9Oyas-i36k/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "5364e328-6185-4056-9d6d-43c0dc3eab27",
+        "titulo": "Malditos vecinos",
+        "anio": 2014
+      }
     },
     {
       "video_id": "KxDm-Pm46Ek",
@@ -31,36 +161,6 @@
       "published": "2026-05-27T20:07:26Z",
       "thumbnail": "https://i.ytimg.com/vi/xpVZho3fjhg/hqdefault.jpg",
       "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "dlmAqLEkfrY",
-      "title": "Spider-Noir - Official Behind-the-Scenes Featurette (2026) Nicolas Cage, Lamorne Morris, Li Jun Li",
-      "url": "https://www.youtube.com/watch?v=dlmAqLEkfrY",
-      "published": "2026-05-27T19:42:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/dlmAqLEkfrY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "WuENJbun4QY",
-      "title": "Fans of the One Piece live-action show NEED to pick up this book",
-      "url": "https://www.youtube.com/watch?v=WuENJbun4QY",
-      "published": "2026-05-27T19:24:28Z",
-      "thumbnail": "https://i.ytimg.com/vi/WuENJbun4QY/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "EPNk006pjxs",
-      "title": "007 First Light - 007 Things I Wish I Knew Before Starting",
-      "url": "https://www.youtube.com/watch?v=EPNk006pjxs",
-      "published": "2026-05-27T19:12:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/EPNk006pjxs/hqdefault.jpg",
-      "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -107,16 +207,6 @@
       "thumbnail": "https://i.ytimg.com/vi/bKH3TiHeriQ/hqdefault.jpg",
       "channel": "Apple TV",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "7bvsPDJQPKg",
-      "title": "The Best-Selling Games of 2026 So Far - Game Scoop! Clip",
-      "url": "https://www.youtube.com/watch?v=7bvsPDJQPKg",
-      "published": "2026-05-27T18:29:42Z",
-      "thumbnail": "https://i.ytimg.com/vi/7bvsPDJQPKg/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -210,16 +300,6 @@
       }
     },
     {
-      "video_id": "q3Ju1BU9jMI",
-      "title": "5 times Alastor forgot he was on his best behavior | Hazbin Hotel | Prime Video",
-      "url": "https://www.youtube.com/watch?v=q3Ju1BU9jMI",
-      "published": "2026-05-27T15:00:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/q3Ju1BU9jMI/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "icDuEHSxE-w",
       "title": "Disclosure Day | Final Trailer",
       "url": "https://www.youtube.com/watch?v=icDuEHSxE-w",
@@ -288,31 +368,6 @@
       "channel": "Paramount Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "D9Aey5JsvCU",
-      "title": "He's keeping track. #MaximumPleasureGuaranteed — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=D9Aey5JsvCU",
-      "published": "2026-05-27T00:59:57Z",
-      "thumbnail": "https://i.ytimg.com/vi/D9Aey5JsvCU/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "23ojcVBdlVE",
-      "title": "Monarch: Legacy of Monsters — Lee and Keiko in the Skullcrawler Boneyard | Apple TV",
-      "url": "https://www.youtube.com/watch?v=23ojcVBdlVE",
-      "published": "2026-05-26T22:59:53Z",
-      "thumbnail": "https://i.ytimg.com/vi/23ojcVBdlVE/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "593a7dc5-df14-41c9-b101-6019e2828ce0",
-        "titulo": "Monsters: El infierno del dragón",
-        "anio": 2024
-      }
     },
     {
       "video_id": "ZINz_c6AD_M",
@@ -395,16 +450,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "w_zN2nsThe8",
-      "title": "Notebook magazine | Issue 8 | Official Trailer | MUBI",
-      "url": "https://www.youtube.com/watch?v=w_zN2nsThe8",
-      "published": "2026-05-26T15:25:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/w_zN2nsThe8/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "1NsS9DslLq0",
       "title": "Emily Blunt on Disclosure Day",
       "url": "https://www.youtube.com/watch?v=1NsS9DslLq0",
@@ -420,16 +465,6 @@
       }
     },
     {
-      "video_id": "J8FuKZc4pD4",
-      "title": "Paolo Sorrentino's PARTHENOPE - a meditation on female beauty, youth and the magnetic pull of Naples",
-      "url": "https://www.youtube.com/watch?v=J8FuKZc4pD4",
-      "published": "2026-05-26T15:00:55Z",
-      "thumbnail": "https://i.ytimg.com/vi/J8FuKZc4pD4/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "n--mHQ8hnu4",
       "title": "The Death of Robinhood | Official Promo | A24",
       "url": "https://www.youtube.com/watch?v=n--mHQ8hnu4",
@@ -438,16 +473,6 @@
       "channel": "A24",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "Z8pes4PRAUQ",
-      "title": "Norway: The Dark Horse | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=Z8pes4PRAUQ",
-      "published": "2026-05-26T07:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/Z8pes4PRAUQ/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
     },
     {
       "video_id": "1jdkVW3L7bM",
@@ -475,16 +500,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "hhQNNm68e4s",
-      "title": "You ready? #PowerBallad — in select cities May 29, in theaters everywhere June 5.",
-      "url": "https://www.youtube.com/watch?v=hhQNNm68e4s",
-      "published": "2026-05-24T17:04:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/hhQNNm68e4s/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "Nw9u8DUSFqY",
       "title": "Greta | Frances Finds Something Disturbing in Greta's Cabinet",
       "url": "https://www.youtube.com/watch?v=Nw9u8DUSFqY",
@@ -493,21 +508,6 @@
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "WpulYte6HIY",
-      "title": "Last Night in Soho | The Moment Ellie Learns the Secret of Sandie",
-      "url": "https://www.youtube.com/watch?v=WpulYte6HIY",
-      "published": "2026-05-22T21:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/WpulYte6HIY/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "e77bc287-f2f9-496e-8f6b-2274eddf7cc3",
-        "titulo": "Última noche en el Soho",
-        "anio": 2021
-      }
     },
     {
       "video_id": "LTqqJPf0cbM",

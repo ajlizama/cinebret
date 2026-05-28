@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-28T14:35:11.721Z",
-  "cycle": "am",
+  "generated_at": "2026-05-28T21:54:55.622Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 7,
+  "news_count": 3,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -29,7 +29,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "reasoning": "Live action de DeBlois con tu rating 10: la historia más personal del director llega a pantalla grande.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review: Rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 + plataforma activa; déficit de review activo."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025."
     },
     {
       "id": "6134534c62ee6a31",
@@ -49,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parasite (2019)",
-      "reasoning": "La Palma de Oro y el Óscar de Bong; una de tus 38 sagradas sin review en el feed.",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película: una de las 38 sagradas sin review.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,15 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog re-evaluación: Rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; age_days=10 dentro del límite."
+      "critic_reason": "§5.2 reevaluación backlog: sigue válido — rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + plataforma activa."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson que ganó 11 Óscar; IMDb 9.0 y tu rating 10 sin review publicado.",
+      "title": "Review: Fight Club (1999)",
+      "reasoning": "Fincher y el thriller que redefinió los 90: tu rating 10 todavía sin review publicado.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -77,19 +77,19 @@
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review: Rating 10 + sello bret + Peter Jackson (muy respetado, 3 sello bret) + IMDb 9.0 + plataforma activa."
+      "critic_reason": "§5.2 reevaluación backlog: sigue válido — rating 10 + sello bret + Fincher (olimpo) + plataforma activa; no hay hard discard aplicable."
     },
     {
-      "id": "4ef1d13ee02e3a60",
+      "id": "6235539cb2c06c15",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 finales que reescriben todo lo que acabas de ver (y por qué funcionan)",
-      "reasoning": "Usual Suspects, Memento, The Prestige: los cierres que te obligan a repasar la película entera.",
+      "title": "10 bandas sonoras que convirtieron una escena ordinaria en algo eterno",
+      "reasoning": "Silencio de los Inocentes, Inception, Interstellar: cuando la música reescribe lo que ves en pantalla.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo con kind=craft (no está en recent_top_kinds); ángulo narrativo fresco que conecta con el amor de Alberto por plot twists y guiones."
+      "critic_reason": "Slot creativo: kind=craft no está en recent_top_kinds; propuesta de ángulo narrativo no obvio sobre composición de bandas sonoras que definen escenas icónicas."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -108,8 +108,8 @@
       "priority": "media",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas que cambiaron el cine",
-      "reasoning": "Miyazaki, Kurosawa y los autores que Alberto más respeta del cine asiático en un solo carrusel.",
-      "score": 75,
+      "reasoning": "Miyazaki, Kurosawa y los autores japoneses que Alberto más respeta en un solo carrusel.",
+      "score": 78,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§3 top válido: kind=country no está en recent_top_kinds; Japón (Miyazaki, Kurosawa) tiene fuerte presencia en catálogo y gustos de Alberto."
+      "critic_reason": "§3 mix: kind=country no está en recent_top_kinds; Japón conecta con Miyazaki y el cine de autor asiático que Alberto respeta especialmente."
     }
   ],
   "backlog": [
@@ -190,84 +190,25 @@
   ],
   "news": [
     {
-      "title_es": "Trailer de 'In the Hand of Dante': Scorsese actúa junto a Oscar Isaac y Jason Momoa",
-      "summary_es": "Scorsese aparece como actor en el épico histórico de Julian Schnabel; dato curioso para Alberto.",
-      "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1tq3wdm/in_the_hand_of_dante_trailer_oscar_isaac_jason/",
-      "angle": "trailer-drop",
-      "catalog_match": null,
-      "score": 72,
-      "reason": "§4.4 regla 3: Martin Scorsese (Olimpo) aparece en el trailer de 'In the Hand of Dante' pero no es su película como director; ángulo informativo válido, no accionable como propuesta sin más contexto."
-    },
-    {
-      "title_es": "Trailer oficial: In the Hand of Dante — Scorsese actúa con Oscar Isaac y Jason Momoa",
-      "summary_es": "Scorsese frente a cámara en un épico histórico de Netflix; dato curioso para Alberto.",
-      "source": "Netflix",
-      "age_hours": 1,
-      "url": "https://www.youtube.com/watch?v=cXA3Zgsky18",
-      "angle": "trailer-drop",
-      "catalog_match": null,
-      "score": 68,
-      "reason": "§4.4 regla 3: 'In the Hand of Dante' con Martin Scorsese (Olimpo) como actor; trailer de Netflix con ángulo informativo interesante aunque Scorsese no dirige."
-    },
-    {
-      "title_es": "IMAX, la marca más caliente del cine, está en venta: ¿qué significa para las salas?",
-      "summary_es": "IMAX busca comprador mientras el cine premium crece; dato de industria relevante para cualquier cinéfilo.",
-      "source": "Variety",
-      "age_hours": 1,
-      "url": "https://variety.com/2026/film/news/imax-for-sale-potential-buyers-1236759793/",
-      "angle": "cultural-moment",
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4 regla 3: IMAX es relevante para Alberto como fan de la experiencia cinematográfica premium, ángulo informativo sobre el futuro de las salas."
-    },
-    {
-      "title_es": "Nuevo póster de Masters of the Universe: estreno en cines el 5 de junio",
-      "summary_es": "He-Man llega a cines en días; dato de estreno próximo por si Alberto quiere reaccionar.",
-      "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1tq32iw/new_poster_for_masters_of_the_universe_in/",
-      "angle": "trailer-drop",
-      "catalog_match": {
-        "pelicula_id": "84c4e3a6-3d63-4119-b76d-5de00e133460",
-        "titulo": "He-Man y los masters del universo",
-        "anio": 2026
-      },
-      "score": 52,
-      "reason": "§4.4 regla 3: poster de Masters of the Universe (2026) con match al catálogo; ángulo solo informativo — no hay trailer ni evento grande todavía."
-    },
-    {
-      "title_es": "Ejecutivos de Hollywood con sueldos +51% mientras se eliminan 17.000 empleos en 2025",
-      "summary_es": "La paradoja salarial de Hollywood 2025; dato de industria que Alberto querría saber.",
-      "source": "r/movies",
-      "age_hours": 2,
-      "url": "https://www.reddit.com/r/movies/comments/1tq2yjq/hollywoods_top_execs_got_a_51_pay_hike_in_2025_as/",
-      "angle": "cultural-moment",
-      "catalog_match": null,
-      "score": 50,
-      "reason": "§4.4 regla 3: noticia de industria (ejecutivos +51% sueldo, 17.000 despidos en Hollywood) sin match al catálogo pero relevante para contexto de la industria que Alberto sigue."
-    },
-    {
-      "title_es": "Gabriel Yared, compositor de The English Patient y Cold Mountain, homenajeado en Zurich",
-      "summary_es": "El Óscar de Yared tiene conexión directa con Cold Mountain del catálogo; dato para el bloque de noticias.",
+      "title_es": "Toy Story 5 llega este verano con temática de inteligencia artificial",
+      "summary_es": "El quinto capítulo de Pixar añade nuevas voces y aborda la IA como tema central.",
       "source": "Deadline",
       "age_hours": 2,
-      "url": "https://deadline.com/2026/05/english-patient-composer-gabriel-yared-honored-zurich-1236928948/",
-      "angle": "festival",
+      "url": "https://deadline.com/feature/toy-story-5-news-updates-everything-we-know-1236929601/",
+      "angle": "sequel",
       "catalog_match": {
-        "pelicula_id": "45f2133c-fca2-4e42-a432-5283aa8820e5",
-        "titulo": "Cold Mountain",
-        "anio": 2003
+        "pelicula_id": "5a320242-3c3c-4449-8576-34bf5ce27e11",
+        "titulo": "Toy Story",
+        "anio": 1995
       },
-      "score": 48,
-      "reason": "§4.4 regla 3: Gabriel Yared es compositor de Cold Mountain (match al catálogo, rating necesita verificación) y The English Patient; homenaje en Zurich es informativo pero no accionable."
+      "score": 62,
+      "reason": "§4.4 match al catálogo (Toy Story, rating implícitamente alto, sello/Disney Pixar); ángulo es actualización informativa sobre Toy Story 5, no un event postable por sí solo."
     },
     {
-      "title_es": "Trailer final de Disclosure Day (El día de la revelación): estreno próximo en cines",
-      "summary_es": "Película nueva en el catálogo con trailer final disponible; dato de estreno para seguimiento.",
+      "title_es": "Tráiler final de 'El día de la revelación' (2026)",
+      "summary_es": "Universal lanzó el tráiler final de este thriller antes de su estreno.",
       "source": "Universal Pictures",
-      "age_hours": 24,
+      "age_hours": 31,
       "url": "https://www.youtube.com/watch?v=icDuEHSxE-w",
       "angle": "trailer-drop",
       "catalog_match": {
@@ -275,26 +216,41 @@
         "titulo": "El día de la revelación",
         "anio": 2026
       },
-      "score": 45,
-      "reason": "§4.4 regla 3: match al catálogo con 'El día de la revelación' (2026) pero película sin rating conocido alto ni director favorito; ángulo solo informativo."
+      "score": 52,
+      "reason": "§4.4 match al catálogo (El día de la revelación, 2026) pero película nueva sin sello bret ni historial de rating conocido; ángulo informativo solamente."
+    },
+    {
+      "title_es": "Enola Holmes 3: primer teaser oficial en Netflix",
+      "summary_es": "Netflix lanzó el teaser de la tercera entrega de la franquicia de Millie Bobby Brown.",
+      "source": "Netflix",
+      "age_hours": 34,
+      "url": "https://www.youtube.com/watch?v=g1fq327snPU",
+      "angle": "trailer-drop",
+      "catalog_match": {
+        "pelicula_id": "2b0fd091-6df6-4217-8d32-db07a6a17136",
+        "titulo": "Enola Holmes",
+        "anio": 2020
+      },
+      "score": 48,
+      "reason": "§4.4 match al catálogo (Enola Holmes, 2020) pero película sin sello bret ni rating ≥7 verificado; ángulo solo informativo."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
     "newsapi_items": 92,
     "reddit_posts": 0,
-    "trailers": 54
+    "trailers": 55
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 4,
+    "agedCount": 2,
     "expiredByTime": 0,
-    "expiredByCritic": 4
+    "expiredByCritic": 2
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16408,
-    "output": 12507
+    "input": 15947,
+    "output": 11776
   }
 }

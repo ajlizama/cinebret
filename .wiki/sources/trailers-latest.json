@@ -1,43 +1,228 @@
 {
-  "generated_at": "2026-05-28T14:34:25.073Z",
-  "total_videos": 54,
-  "trailers_count": 13,
-  "matched_to_cinebret": 15,
+  "generated_at": "2026-05-28T21:54:55.547Z",
+  "total_videos": 55,
+  "trailers_count": 12,
+  "matched_to_cinebret": 11,
   "videos": [
     {
-      "video_id": "aZ7baNi9RdM",
-      "title": "Street Fighter 6 - Official Ingrid Update Trailer",
-      "url": "https://www.youtube.com/watch?v=aZ7baNi9RdM",
-      "published": "2026-05-28T14:18:08Z",
-      "thumbnail": "https://i.ytimg.com/vi/aZ7baNi9RdM/hqdefault.jpg",
+      "video_id": "HECXr9eWPUI",
+      "title": "Apex Legends - Official Power Trip Event Trailer",
+      "url": "https://www.youtube.com/watch?v=HECXr9eWPUI",
+      "published": "2026-05-28T21:07:56Z",
+      "thumbnail": "https://i.ytimg.com/vi/HECXr9eWPUI/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
-      "is_trailer": true,
+      "is_trailer": true
+    },
+    {
+      "video_id": "gwmmh3h46_E",
+      "title": "Delightful was an understatement | The Boys | Prime Video",
+      "url": "https://www.youtube.com/watch?v=gwmmh3h46_E",
+      "published": "2026-05-28T21:00:11Z",
+      "thumbnail": "https://i.ytimg.com/vi/gwmmh3h46_E/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "PSmrT4zghxc",
+      "title": "Evening | Lila's Wedding (Time After Time Performance)",
+      "url": "https://www.youtube.com/watch?v=PSmrT4zghxc",
+      "published": "2026-05-28T21:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/PSmrT4zghxc/hqdefault.jpg",
+      "channel": "Focus Features",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "AJnzswSMR5Q",
+      "title": "Call of Duty: Modern Warfare 4 Is Leaving PS4, Xbox One Behind - IGN Daily Fix",
+      "url": "https://www.youtube.com/watch?v=AJnzswSMR5Q",
+      "published": "2026-05-28T20:47:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/AJnzswSMR5Q/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "exI46E4vO58",
+      "title": "Pedro Pascal is a Trivia MASTER",
+      "url": "https://www.youtube.com/watch?v=exI46E4vO58",
+      "published": "2026-05-28T20:30:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/exI46E4vO58/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Uj3Kj7g2sV0",
+      "title": "#JeanPierreLéaud interviewed by #FrançoisTruffaut for THE 400 BLOWS (1958.) Born on this day.",
+      "url": "https://www.youtube.com/watch?v=Uj3Kj7g2sV0",
+      "published": "2026-05-28T19:00:28Z",
+      "thumbnail": "https://i.ytimg.com/vi/Uj3Kj7g2sV0/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "DLcrVqOXJo0",
+      "title": "Set Sail: The Art and Making of One Piece - Official Trailer",
+      "url": "https://www.youtube.com/watch?v=DLcrVqOXJo0",
+      "published": "2026-05-28T19:00:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/DLcrVqOXJo0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "H2JQNCbyc04",
+      "title": "The Spider Ambushes Mob Convoy | \"Spider-Noir\" | Clip | Prime Video",
+      "url": "https://www.youtube.com/watch?v=H2JQNCbyc04",
+      "published": "2026-05-28T19:00:17Z",
+      "thumbnail": "https://i.ytimg.com/vi/H2JQNCbyc04/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "y9Q8Ws3ptFs",
+      "title": "Gobber Introduces the Dragons 🐉 #HowtoTrainYourDragon2025 #Shorts",
+      "url": "https://www.youtube.com/watch?v=y9Q8Ws3ptFs",
+      "published": "2026-05-28T19:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/y9Q8Ws3ptFs/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "deMaEZoe8DU",
+      "title": "Supergirl | Origins",
+      "url": "https://www.youtube.com/watch?v=deMaEZoe8DU",
+      "published": "2026-05-28T19:00:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/deMaEZoe8DU/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
       "cinebret_match": {
-        "pelicula_id": "2e98a9b8-b170-4e7e-b696-590d74207984",
-        "titulo": "Street Fighter",
+        "pelicula_id": "d750f9eb-180d-4b7a-a66b-b32301cb0a38",
+        "titulo": "Supergirl",
         "anio": 2026
       }
     },
     {
-      "video_id": "vZQwtXZIafQ",
-      "title": "Indie Loop | Three New Indie Games to Check Out: Husk Protocol, The Wilds of Dacrima, Pawsome Resort",
-      "url": "https://www.youtube.com/watch?v=vZQwtXZIafQ",
-      "published": "2026-05-28T14:03:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/vZQwtXZIafQ/hqdefault.jpg",
+      "video_id": "s7JOuPT7LPg",
+      "title": "Six: The Musical Live! - Official Trailer (2026)",
+      "url": "https://www.youtube.com/watch?v=s7JOuPT7LPg",
+      "published": "2026-05-28T19:00:04Z",
+      "thumbnail": "https://i.ytimg.com/vi/s7JOuPT7LPg/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "dgBeUICAl1M",
+      "title": "Thinky Direct 2026 Livestream",
+      "url": "https://www.youtube.com/watch?v=dgBeUICAl1M",
+      "published": "2026-05-28T18:04:55Z",
+      "thumbnail": "https://i.ytimg.com/vi/dgBeUICAl1M/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": false
     },
     {
-      "video_id": "gbAG4kFjs84",
-      "title": "The Adventures of Elliot: The Millennium Tales – 10 Minutes of HD-2D RPG Gameplay",
-      "url": "https://www.youtube.com/watch?v=gbAG4kFjs84",
-      "published": "2026-05-28T14:00:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/gbAG4kFjs84/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
+      "video_id": "lZDZpB9NBNI",
+      "title": "Supergirl | Krem",
+      "url": "https://www.youtube.com/watch?v=lZDZpB9NBNI",
+      "published": "2026-05-28T18:00:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/lZDZpB9NBNI/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "d750f9eb-180d-4b7a-a66b-b32301cb0a38",
+        "titulo": "Supergirl",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "yUrwmYdWz2s",
+      "title": "Mike Myers went full Shrek at the AFI Life Achievement Award: A Tribute to Eddie Murphy.",
+      "url": "https://www.youtube.com/watch?v=yUrwmYdWz2s",
+      "published": "2026-05-28T18:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/yUrwmYdWz2s/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
       "is_trailer": false
+    },
+    {
+      "video_id": "WX1i47uW_7w",
+      "title": "The Boys Retrospective - Chapter 4 - Crafting The Magic | Prime Video",
+      "url": "https://www.youtube.com/watch?v=WX1i47uW_7w",
+      "published": "2026-05-28T18:00:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/WX1i47uW_7w/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HACWchbc-mQ",
+      "title": "Elle Fanning on the many sides of Margo. #MargosGotMoneyTroubles — Now Streaming",
+      "url": "https://www.youtube.com/watch?v=HACWchbc-mQ",
+      "published": "2026-05-28T17:59:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/HACWchbc-mQ/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "L_f5KofGumk",
+      "title": "Arachnid Movements in Spider-Noir",
+      "url": "https://www.youtube.com/watch?v=L_f5KofGumk",
+      "published": "2026-05-28T17:30:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/L_f5KofGumk/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "1RbKkWw_JLc",
+      "title": "I'M 👏 STILL 👏 STANDING 👏",
+      "url": "https://www.youtube.com/watch?v=1RbKkWw_JLc",
+      "published": "2026-05-28T17:00:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/1RbKkWw_JLc/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "7C8WGFoMqfI",
+      "title": "The Boys Retrospective - Chapter 3 - Establishing The Voice | Prime Video",
+      "url": "https://www.youtube.com/watch?v=7C8WGFoMqfI",
+      "published": "2026-05-28T17:00:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/7C8WGFoMqfI/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "HE-mcUT--_k",
+      "title": "That’s not room service. #CapeFear — June 5 on Apple TV",
+      "url": "https://www.youtube.com/watch?v=HE-mcUT--_k",
+      "published": "2026-05-28T16:59:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/HE-mcUT--_k/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "diRwnGRr-Ko",
+      "title": "I Am Frankelda | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=diRwnGRr-Ko",
+      "published": "2026-05-28T15:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/diRwnGRr-Ko/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
     },
     {
       "video_id": "cXA3Zgsky18",
@@ -60,16 +245,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "73oEJK_dnNg",
-      "title": "The Wilds of Dacrima - Official Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=73oEJK_dnNg",
-      "published": "2026-05-28T13:50:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/73oEJK_dnNg/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "-I2-X9v-ogs",
       "title": "FATHERLAND | Official Trailer | This Fall",
       "url": "https://www.youtube.com/watch?v=-I2-X9v-ogs",
@@ -78,16 +253,6 @@
       "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": true
-    },
-    {
-      "video_id": "ef44gYyDOl0",
-      "title": "The Biggest Game Releases of June 2026",
-      "url": "https://www.youtube.com/watch?v=ef44gYyDOl0",
-      "published": "2026-05-28T13:15:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/ef44gYyDOl0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "c6-2Z222_U0",
@@ -145,16 +310,6 @@
       }
     },
     {
-      "video_id": "KxDm-Pm46Ek",
-      "title": "Just because Nick had to stay away didn't mean the tension wasn't real. | Culpa Mía | Prime Video",
-      "url": "https://www.youtube.com/watch?v=KxDm-Pm46Ek",
-      "published": "2026-05-27T21:00:06Z",
-      "thumbnail": "https://i.ytimg.com/vi/KxDm-Pm46Ek/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "xpVZho3fjhg",
       "title": "PRESSURE - \"The Wrath Of Nature Is Real\" Official Clip",
       "url": "https://www.youtube.com/watch?v=xpVZho3fjhg",
@@ -190,16 +345,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "JLwjFYG_KyQ",
-      "title": "\"Spider-Noir\" - Li Jun Li: Dream A Little Dream Of Me | Prime Video",
-      "url": "https://www.youtube.com/watch?v=JLwjFYG_KyQ",
-      "published": "2026-05-27T19:00:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/JLwjFYG_KyQ/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "bKH3TiHeriQ",
       "title": "Shrinking — Lukita Maxwell and Sherry Cola Celebrate AAPI Heritage Month | Apple TV",
       "url": "https://www.youtube.com/watch?v=bKH3TiHeriQ",
@@ -220,31 +365,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "1YXpjysKC8M",
-      "title": "The Boys Retrospective - Chapter 2 - Building The World | Prime Video",
-      "url": "https://www.youtube.com/watch?v=1YXpjysKC8M",
-      "published": "2026-05-27T18:00:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/1YXpjysKC8M/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "230a566c-156b-4a7a-b142-ccfba0dae1cb",
-        "titulo": "K.G.F: Chapter 2",
-        "anio": 2022
-      }
-    },
-    {
-      "video_id": "Yob-XzlgGhk",
-      "title": "Every good private detective needs a confidant they can trust. #Sugar Season 2 premieres June 19.",
-      "url": "https://www.youtube.com/watch?v=Yob-XzlgGhk",
-      "published": "2026-05-27T17:59:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/Yob-XzlgGhk/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "R2fBfYsRuxM",
       "title": "Need “Breadsticks for life, b--” on a decorative pillow | 🎬 Blockers (2018)",
       "url": "https://www.youtube.com/watch?v=R2fBfYsRuxM",
@@ -257,31 +377,6 @@
         "pelicula_id": "04e33acf-e33c-46fe-a16a-b09fc8237576",
         "titulo": "#SexPact",
         "anio": 2018
-      }
-    },
-    {
-      "video_id": "HyrLiDudAlw",
-      "title": "The Boys Retrospective - Chapter 1 - Origin Story | Prime Video",
-      "url": "https://www.youtube.com/watch?v=HyrLiDudAlw",
-      "published": "2026-05-27T17:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/HyrLiDudAlw/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "gHIo0QSPFdw",
-      "title": "Paula is reaching her boiling point. #MaximumPleasureGuaranteed — Now Streaming",
-      "url": "https://www.youtube.com/watch?v=gHIo0QSPFdw",
-      "published": "2026-05-27T16:59:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/gHIo0QSPFdw/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "6715e2cb-d0b3-49ee-b3a4-064fd5a02ce6",
-        "titulo": "Hierve",
-        "anio": 2021
       }
     },
     {
@@ -320,16 +415,6 @@
       "url": "https://www.youtube.com/watch?v=j9TsiTgYZGw",
       "published": "2026-05-27T14:01:07Z",
       "thumbnail": "https://i.ytimg.com/vi/j9TsiTgYZGw/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "dimCiC_hdoA",
-      "title": "TEENAGE SEX AND DEATH AT CAMP MIASMA | Official Trailer | In Theaters August 7",
-      "url": "https://www.youtube.com/watch?v=dimCiC_hdoA",
-      "published": "2026-05-27T14:00:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/dimCiC_hdoA/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
       "is_trailer": true
@@ -420,16 +505,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "z77qp-27D_M",
-      "title": "Calabasas Confidential | Official Trailer #2 | Netflix",
-      "url": "https://www.youtube.com/watch?v=z77qp-27D_M",
-      "published": "2026-05-26T17:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/z77qp-27D_M/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "_udyg7ZTYYE",
       "title": "The Furious (2026) Official Clip ‘Ice Fight’ - Xie Miao, Joe Taslim, Brian Le",
       "url": "https://www.youtube.com/watch?v=_udyg7ZTYYE",
@@ -438,31 +513,6 @@
       "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "etaJr-Mf0ME",
-      "title": "AFI Life Achievement Award: A Tribute to Eddie Murphy | Sneak Peek | Netflix",
-      "url": "https://www.youtube.com/watch?v=etaJr-Mf0ME",
-      "published": "2026-05-26T15:30:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/etaJr-Mf0ME/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "1NsS9DslLq0",
-      "title": "Emily Blunt on Disclosure Day",
-      "url": "https://www.youtube.com/watch?v=1NsS9DslLq0",
-      "published": "2026-05-26T15:07:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/1NsS9DslLq0/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "82c37c9f-76e4-4562-bbd3-adf0f647c279",
-        "titulo": "El día de la revelación",
-        "anio": 2026
-      }
     },
     {
       "video_id": "n--mHQ8hnu4",
@@ -495,16 +545,6 @@
       "url": "https://www.youtube.com/watch?v=WDzvi2pUgy0",
       "published": "2026-05-24T21:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/WDzvi2pUgy0/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "Nw9u8DUSFqY",
-      "title": "Greta | Frances Finds Something Disturbing in Greta's Cabinet",
-      "url": "https://www.youtube.com/watch?v=Nw9u8DUSFqY",
-      "published": "2026-05-23T21:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/Nw9u8DUSFqY/hqdefault.jpg",
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false
@@ -568,56 +608,6 @@
       "channel": "Sony Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "8_bV_RLwOSw",
-      "title": "Drive carefully. There's danger on the road. 𖨆 Get tix for #PassengerMovie - in theatres Friday.",
-      "url": "https://www.youtube.com/watch?v=8_bV_RLwOSw",
-      "published": "2026-05-21T22:06:06Z",
-      "thumbnail": "https://i.ytimg.com/vi/8_bV_RLwOSw/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "Szznn02Nli0",
-      "title": "Earth, Wind & Fire | Official Trailer | HBO",
-      "url": "https://www.youtube.com/watch?v=Szznn02Nli0",
-      "published": "2026-05-21T16:59:23Z",
-      "thumbnail": "https://i.ytimg.com/vi/Szznn02Nli0/hqdefault.jpg",
-      "channel": "HBO Max",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "N_KDtokTO1c",
-      "title": "RESIDENT EVIL – Zach Cregger on Survival Horror",
-      "url": "https://www.youtube.com/watch?v=N_KDtokTO1c",
-      "published": "2026-05-21T16:18:37Z",
-      "thumbnail": "https://i.ytimg.com/vi/N_KDtokTO1c/hqdefault.jpg",
-      "channel": "Sony Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
-        "titulo": "Resident evil - El huésped maldito",
-        "anio": 2002
-      }
-    },
-    {
-      "video_id": "5gR1GTJPGqQ",
-      "title": "RESIDENT EVIL - Zach Cregger on Survival Horror",
-      "url": "https://www.youtube.com/watch?v=5gR1GTJPGqQ",
-      "published": "2026-05-21T16:00:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/5gR1GTJPGqQ/hqdefault.jpg",
-      "channel": "Sony Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "2f578097-9a5d-43de-bd91-20645cb3dc9e",
-        "titulo": "Resident evil - El huésped maldito",
-        "anio": 2002
-      }
     }
   ]
 }

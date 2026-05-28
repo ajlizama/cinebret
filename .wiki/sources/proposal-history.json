@@ -305,8 +305,8 @@
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
       "first_proposed": "2026-05-20T13:36:31.578Z",
-      "last_proposed": "2026-05-20T13:36:31.578Z",
-      "cycles_proposed": 1,
+      "last_proposed": "2026-05-28T21:54:55.622Z",
+      "cycles_proposed": 2,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -907,8 +907,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-28T14:35:11.721Z",
-      "cycles_proposed": 15,
+      "last_proposed": "2026-05-28T21:54:55.622Z",
+      "cycles_proposed": 16,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1145,8 +1145,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-18T14:28:09.503Z",
-      "last_proposed": "2026-05-28T14:35:11.721Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-05-28T21:54:55.622Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -2239,9 +2239,12 @@
       "first_proposed": "2026-05-28T14:35:11.721Z",
       "last_proposed": "2026-05-28T14:35:11.721Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-28T21:54:55.622Z",
+      "expired_at": "2026-05-28T21:54:55.622Z",
+      "expired_reason": "§8 anti-pattern #8 topic pool repetitivo: este candidato cubre exactamente el mismo ángulo que 77631095cd02bcc9 (giros narrativos/twist finales con Usual Suspects, Memento, The Prestige); dedup temático."
     },
     {
       "id": "081cbb34b0877eb5",
@@ -2259,13 +2262,39 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "first_proposed": "2026-05-28T14:35:11.721Z",
-      "last_proposed": "2026-05-28T14:35:11.721Z",
+      "first_proposed": "2026-05-28T21:54:55.622Z",
+      "last_proposed": "2026-05-28T21:54:55.622Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-28T21:54:55.622Z",
+      "expired_at": "2026-05-28T21:54:55.622Z",
+      "expired_reason": "§8 anti-pattern #8 topic pool repetitivo: cubre exactamente el mismo ángulo que fe5875c8c649d23e (TOP películas japonesas) que ya está en el pool activo con propose; dedup temático."
+    },
+    {
+      "id": "715c6812814eba35",
+      "action": "generate_carousel_topic",
+      "title": "10 bandas sonoras que convirtieron una escena ordinaria en algo eterno",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Silencio de los Inocentes, Inception, Interstellar: cuando la música reescribe lo que ves en pantalla.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-28T21:54:55.622Z",
+      "last_proposed": "2026-05-28T21:54:55.622Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-28T14:39:15.720Z"
+  "last_saved": "2026-05-28T21:58:56.950Z"
 }

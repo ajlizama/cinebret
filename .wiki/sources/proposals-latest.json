@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-28T21:54:55.622Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-29T13:56:24.048Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 3,
+  "news_count": 4,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -24,32 +24,12 @@
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois con tu rating 10: la historia más personal del director llega a pantalla grande.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
-      },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + plataforma activa + año 2025."
-    },
-    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Parasite (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar a mejor película: una de las 38 sagradas sin review.",
+      "reasoning": "La única película no anglófona con Óscar a mejor película y una de las 38 sagradas sin review.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,7 +41,27 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 reevaluación backlog: sigue válido — rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + plataforma activa."
+      "critic_reason": "§5.2 backlog re-eval: rating 10 + Bong Joon-ho + IMDb 8.5 + 11 días en backlog, no expirado."
+    },
+    {
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "El cierre de la trilogía que barrió los Óscar y que Alberto tiene entre sus películas de rating 10.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret) + plataforma activa."
     },
     {
       "id": "86cd64c42c4ddc8b",
@@ -69,7 +69,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: Fight Club (1999)",
-      "reasoning": "Fincher y el thriller que redefinió los 90: tu rating 10 todavía sin review publicado.",
+      "reasoning": "Fincher en modo olimpo: el giro que nadie vio venir y que cambió el thriller de los 90 para siempre.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -81,15 +81,15 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§5.2 reevaluación backlog: sigue válido — rating 10 + sello bret + Fincher (olimpo) + plataforma activa; no hay hard discard aplicable."
+      "critic_reason": "§5.2 backlog re-eval: sigue siendo válido — rating 10 + Fincher olimpo + 9 días en backlog, sin expired trigger."
     },
     {
-      "id": "6235539cb2c06c15",
+      "id": "761f5aeffd2e765a",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 bandas sonoras que convirtieron una escena ordinaria en algo eterno",
-      "reasoning": "Silencio de los Inocentes, Inception, Interstellar: cuando la música reescribe lo que ves en pantalla.",
+      "title": "10 bandas sonoras que te cambian la escena sin que te des cuenta",
+      "reasoning": "Zimmer en Inception, Herrmann en Psycho: la música que reescribió lo que veías en pantalla.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=craft no está en recent_top_kinds; propuesta de ángulo narrativo no obvio sobre composición de bandas sonoras que definen escenas icónicas."
+      "critic_reason": "Slot creativo: kind=craft/technique, no está en recent_top_kinds. Idea: 10 bandas sonoras que convirtieron una escena ordinaria en algo eterno — conecta con Nolan/Zimmer, Silencio de los Inocentes, Inception, que están en el catálogo."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -108,8 +108,8 @@
       "priority": "media",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas que cambiaron el cine",
-      "reasoning": "Miyazaki, Kurosawa y los autores japoneses que Alberto más respeta en un solo carrusel.",
-      "score": 78,
+      "reasoning": "De Miyazaki a Kurosawa: las películas que prueban que Japón inventó varios géneros antes que Hollywood.",
+      "score": 74,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§3 mix: kind=country no está en recent_top_kinds; Japón conecta con Miyazaki y el cine de autor asiático que Alberto respeta especialmente."
+      "critic_reason": "§3 top con kind=country (no en recent_top_kinds); Japón tiene Miyazaki y otros favoritosde Alberto que justifican el carrusel."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 8,
+      "days_ago": 9,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 11,
+      "days_ago": 12,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "10 películas donde la última línea de diálogo lo cambia todo",
       "reasoning": "Usual Suspects, Chinatown, The Mist: los cierres verbales que reescriben lo que acabas de ver.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-carousel-topic"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "TOP 10 actuaciones que merecían el Óscar y no lo ganaron",
       "reasoning": "Ledger ganó póstumamente, pero cuántas actuaciones del nivel de Pitt en Seven o Hopkins en Silence se perdieron.",
-      "days_ago": 12,
+      "days_ago": 13,
       "skill_to_invoke": "cinebret-carousel-topic"
     },
     {
@@ -184,73 +184,84 @@
       "type": "FEED",
       "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
       "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
-      "days_ago": 8,
+      "days_ago": 9,
       "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "title_es": "Toy Story 5 llega este verano con temática de inteligencia artificial",
-      "summary_es": "El quinto capítulo de Pixar añade nuevas voces y aborda la IA como tema central.",
-      "source": "Deadline",
-      "age_hours": 2,
-      "url": "https://deadline.com/feature/toy-story-5-news-updates-everything-we-know-1236929601/",
-      "angle": "sequel",
-      "catalog_match": {
-        "pelicula_id": "5a320242-3c3c-4449-8576-34bf5ce27e11",
-        "titulo": "Toy Story",
-        "anio": 1995
-      },
-      "score": 62,
-      "reason": "§4.4 match al catálogo (Toy Story, rating implícitamente alto, sello/Disney Pixar); ángulo es actualización informativa sobre Toy Story 5, no un event postable por sí solo."
-    },
-    {
-      "title_es": "Tráiler final de 'El día de la revelación' (2026)",
-      "summary_es": "Universal lanzó el tráiler final de este thriller antes de su estreno.",
-      "source": "Universal Pictures",
-      "age_hours": 31,
-      "url": "https://www.youtube.com/watch?v=icDuEHSxE-w",
-      "angle": "trailer-drop",
+      "title_es": "Spielberg gana la semana: su nueva película genera el mayor buzz del momento",
+      "summary_es": "La película de OVNIs de Spielberg acumula expectativa; Tom Hardy protagoniza el otro gran titular.",
+      "source": "Hollywood Reporter",
+      "age_hours": 0,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/tom-hardy-steven-spielberg-backrooms-obsession-1236607876/",
+      "angle": "cultural-moment",
       "catalog_match": {
         "pelicula_id": "82c37c9f-76e4-4562-bbd3-adf0f647c279",
         "titulo": "El día de la revelación",
         "anio": 2026
       },
-      "score": 52,
-      "reason": "§4.4 match al catálogo (El día de la revelación, 2026) pero película nueva sin sello bret ni historial de rating conocido; ángulo informativo solamente."
+      "score": 62,
+      "reason": "§4.4 regla 2: Steven Spielberg (olimpo) mencionado con su nueva película; angle informativo sobre buzz de la semana."
     },
     {
-      "title_es": "Enola Holmes 3: primer teaser oficial en Netflix",
-      "summary_es": "Netflix lanzó el teaser de la tercera entrega de la franquicia de Millie Bobby Brown.",
-      "source": "Netflix",
-      "age_hours": 34,
-      "url": "https://www.youtube.com/watch?v=g1fq327snPU",
-      "angle": "trailer-drop",
+      "title_es": "Primeras imágenes de The End of Oak Street con Anne Hathaway y Ewan McGregor",
+      "summary_es": "David Robert Mitchell (It Follows) vuelve con una propuesta de ciencia ficción suburbana con gran cast.",
+      "source": "r/movies",
+      "age_hours": 1,
+      "url": "https://www.reddit.com/r/movies/comments/1tr1f9p/new_images_from_david_robert_mitchells_the_end_of/",
+      "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "2b0fd091-6df6-4217-8d32-db07a6a17136",
-        "titulo": "Enola Holmes",
-        "anio": 2020
+        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
+        "titulo": "Together: Juntos hasta la muerte",
+        "anio": 2025
       },
-      "score": 48,
-      "reason": "§4.4 match al catálogo (Enola Holmes, 2020) pero película sin sello bret ni rating ≥7 verificado; ángulo solo informativo."
+      "score": 58,
+      "reason": "§4.4 regla 3: nueva película de David Robert Mitchell con cast de renombre; ángulo informativo, sin match de calidad al catálogo pero director admirable de It Follows."
+    },
+    {
+      "title_es": "La nueva película de Na Hong-jin rompe récord de preventas para el cine coreano",
+      "summary_es": "El director de The Wailing bate récords con su sci-fi; señal de que el cine coreano sigue en ascenso.",
+      "source": "Hollywood Reporter",
+      "age_hours": 0,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/na-hong-jin-hope-sets-sales-record-for-korean-film-1236608576/",
+      "angle": "cultural-moment",
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§4.4 regla 3: Na Hong-jin es director coreano relevante para Alberto (Bong/Park territory) y el récord de ventas de película coreana es un evento cultural notable, pero sin match directo al catálogo."
+    },
+    {
+      "title_es": "Kane Parsons: no hay una versión oficial de Backrooms porque es código abierto",
+      "summary_es": "El creador del fenómeno viral aclara la naturaleza open source de Backrooms antes del estreno.",
+      "source": "r/movies",
+      "age_hours": 2,
+      "url": "https://www.reddit.com/r/movies/comments/1tqzkmn/kane_parsons_says_theres_no_true_version_of_the/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 52,
+      "reason": "§4.4 regla 3: Backrooms tiene match al catálogo + es fenómeno cultural viral de Kane Parsons, ángulo cultural-moment; rating de la peli no confirmado pero el evento es noticiable."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
     "newsapi_items": 92,
     "reddit_posts": 0,
-    "trailers": 55
+    "trailers": 53
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
     "agedCount": 2,
     "expiredByTime": 0,
-    "expiredByCritic": 2
+    "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15947,
-    "output": 11776
+    "input": 16442,
+    "output": 11509
   }
 }

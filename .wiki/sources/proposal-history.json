@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-29T13:56:24.048Z",
-      "cycles_proposed": 18,
+      "last_proposed": "2026-05-29T21:51:28.375Z",
+      "cycles_proposed": 19,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1522,10 +1522,10 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-27T21:52:36.869Z",
-      "last_proposed": "2026-05-27T21:52:36.869Z",
+      "first_proposed": "2026-05-29T21:51:28.375Z",
+      "last_proposed": "2026-05-29T21:51:28.375Z",
       "cycles_proposed": 1,
-      "status": "expired",
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-28T14:35:11.721Z",
@@ -1701,10 +1701,10 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "first_proposed": "2026-05-27T21:52:36.869Z",
-      "last_proposed": "2026-05-27T21:52:36.869Z",
+      "first_proposed": "2026-05-29T21:51:28.375Z",
+      "last_proposed": "2026-05-29T21:51:28.375Z",
       "cycles_proposed": 1,
-      "status": "expired",
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-28T14:35:11.721Z",
@@ -2265,12 +2265,12 @@
       "first_proposed": "2026-05-28T21:54:55.622Z",
       "last_proposed": "2026-05-29T13:56:24.048Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-29T13:56:24.048Z",
-      "expired_at": "2026-05-28T21:54:55.622Z",
-      "expired_reason": "§8 anti-pattern #8 topic pool repetitivo: cubre exactamente el mismo ángulo que fe5875c8c649d23e (TOP películas japonesas) que ya está en el pool activo con propose; dedup temático."
+      "expired_at": "2026-05-29T21:51:28.375Z",
+      "expired_reason": "§5.2 backlog reevaluado + §instrucción especial tops: duplicado con candidato fe5875c8c649d23e; ambos cubren el mismo tema 'TOP japonesas'."
     },
     {
       "id": "715c6812814eba35",
@@ -2315,10 +2315,59 @@
       "first_proposed": "2026-05-29T13:56:24.048Z",
       "last_proposed": "2026-05-29T13:56:24.048Z",
       "cycles_proposed": 1,
+      "status": "expired",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-29T21:51:28.375Z",
+      "expired_at": "2026-05-29T21:51:28.375Z",
+      "expired_reason": "§5.2 duplicado con id=715c6812814eba35 (mismo tema: bandas sonoras que cambian escenas); se descarta el más reciente para evitar redundancia."
+    },
+    {
+      "id": "2bde1086b87bd202",
+      "action": "share_trailer_in_story",
+      "title": "Emily Blunt revela cómo creó la voz alienígena en 'El día de la revelación' (Spielberg)",
+      "type": "STORY",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Spielberg vuelve a los extraterrestres; Blunt detalla el proceso creativo de la voz alien sin IA.",
+      "suggested_caption": null,
+      "source_name": "Deadline",
+      "source_url": "https://deadline.com/2026/05/emily-blunt-terrified-ai-disclosure-day-alien-voice-1236930601/",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://deadline.com/2026/05/emily-blunt-terrified-ai-disclosure-day-alien-voice-1236930601/",
+        "angle": "trailer-drop"
+      },
+      "first_proposed": "2026-05-29T21:51:28.375Z",
+      "last_proposed": "2026-05-29T21:51:28.375Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "24866867ca4cef5c",
+      "action": "generate_carousel_topic",
+      "title": "10 películas donde el diseño de producción ES el personaje principal",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Blade Runner 2049, Mad Max Fury Road, The Grand Budapest Hotel: mundos que existen más allá del guion.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-29T21:51:28.375Z",
+      "last_proposed": "2026-05-29T21:51:28.375Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-29T14:00:26.772Z"
+  "last_saved": "2026-05-29T21:55:12.569Z"
 }

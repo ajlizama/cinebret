@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-29T13:56:24.048Z",
-  "cycle": "am",
+  "generated_at": "2026-05-29T21:51:28.375Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 4,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parasite (2019)",
-      "reasoning": "La única película no anglófona con Óscar a mejor película y una de las 38 sagradas sin review.",
+      "title": "Review: Parásito (2019)",
+      "reasoning": "La obra maestra de Bong Joon-ho y su Óscar a mejor película; aún sin review en cinebret.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 backlog re-eval: rating 10 + Bong Joon-ho + IMDb 8.5 + 11 días en backlog, no expirado."
+      "critic_reason": "§5.2 backlog reevaluado: rating 10 + IMDb 8.5 + sello bret + Bong Joon-ho; sigue siendo prioridad alta."
     },
     {
       "id": "119c0775fc431172",
@@ -49,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre de la trilogía que barrió los Óscar y que Alberto tiene entre sus películas de rating 10.",
+      "reasoning": "Peter Jackson cierra su trilogía con IMDb 9.0; una de las sagradas de Alberto aún sin review.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,15 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret) + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa."
     },
     {
       "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Fight Club (1999)",
-      "reasoning": "Fincher en modo olimpo: el giro que nadie vio venir y que cambió el thriller de los 90 para siempre.",
+      "title": "Review: El Club de la Pelea (1999)",
+      "reasoning": "Fincher en su estado más radical; entre las 38 sagradas de Alberto sin review publicado.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -81,16 +81,35 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§5.2 backlog re-eval: sigue siendo válido — rating 10 + Fincher olimpo + 9 días en backlog, sin expired trigger."
+      "critic_reason": "§5.2 backlog reevaluado: rating 10 + sello bret + Fincher (olimpo) + IMDb 8.8; sigue siendo propuesta válida y vigente."
     },
     {
-      "id": "761f5aeffd2e765a",
+      "id": "c14e751aaac9ab5f",
+      "type": "STORY",
+      "priority": "alta",
+      "action": "share_trailer_in_story",
+      "title": "Emily Blunt revela cómo creó la voz alienígena en 'El día de la revelación' (Spielberg)",
+      "reasoning": "Spielberg vuelve a los extraterrestres; Blunt detalla el proceso creativo de la voz alien sin IA.",
+      "score": 82,
+      "category": "contenido",
+      "angle": "trailer-drop",
+      "source_name": "Deadline",
+      "source_url": "https://deadline.com/2026/05/emily-blunt-terrified-ai-disclosure-day-alien-voice-1236930601/",
+      "skill_to_invoke": "cinebret-share-story",
+      "skill_args": {
+        "url": "https://deadline.com/2026/05/emily-blunt-terrified-ai-disclosure-day-alien-voice-1236930601/",
+        "angle": "trailer-drop"
+      },
+      "critic_reason": "§4.4 regla 2: match al catálogo de calidad con director Spielberg (olimpo); ángulo postable — producción de Disclosure Day (nueva peli Spielberg)."
+    },
+    {
+      "id": "ca60dd25ddf31cc6",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 bandas sonoras que te cambian la escena sin que te des cuenta",
-      "reasoning": "Zimmer en Inception, Herrmann en Psycho: la música que reescribió lo que veías en pantalla.",
-      "score": 82,
+      "title": "10 películas donde el diseño de producción ES el personaje principal",
+      "reasoning": "Blade Runner 2049, Mad Max Fury Road, The Grand Budapest Hotel: mundos que existen más allá del guion.",
+      "score": 85,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,26 +119,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=craft/technique, no está en recent_top_kinds. Idea: 10 bandas sonoras que convirtieron una escena ordinaria en algo eterno — conecta con Nolan/Zimmer, Silencio de los Inocentes, Inception, que están en el catálogo."
-    },
-    {
-      "id": "fe5875c8c649d23e",
-      "type": "FEED",
-      "priority": "media",
-      "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas que cambiaron el cine",
-      "reasoning": "De Miyazaki a Kurosawa: las películas que prueban que Japón inventó varios géneros antes que Hollywood.",
-      "score": 74,
-      "category": "top",
-      "angle": null,
-      "source_name": "cinebret-carousel-topic",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-topic",
-      "skill_args": {
-        "topic_type": "country",
-        "topic": "japón"
-      },
-      "critic_reason": "§3 top con kind=country (no en recent_top_kinds); Japón tiene Miyazaki y otros favoritosde Alberto que justifican el carrusel."
+      "critic_reason": "Slot creativo: kind=craft/technique no está en recent_top_kinds; propuesta fresca sobre diseño de producción y dirección de arte en películas de Alberto."
     }
   ],
   "backlog": [
@@ -190,78 +190,37 @@
   ],
   "news": [
     {
-      "title_es": "Spielberg gana la semana: su nueva película genera el mayor buzz del momento",
-      "summary_es": "La película de OVNIs de Spielberg acumula expectativa; Tom Hardy protagoniza el otro gran titular.",
-      "source": "Hollywood Reporter",
-      "age_hours": 0,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/tom-hardy-steven-spielberg-backrooms-obsession-1236607876/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "82c37c9f-76e4-4562-bbd3-adf0f647c279",
-        "titulo": "El día de la revelación",
-        "anio": 2026
-      },
-      "score": 62,
-      "reason": "§4.4 regla 2: Steven Spielberg (olimpo) mencionado con su nueva película; angle informativo sobre buzz de la semana."
-    },
-    {
-      "title_es": "Primeras imágenes de The End of Oak Street con Anne Hathaway y Ewan McGregor",
-      "summary_es": "David Robert Mitchell (It Follows) vuelve con una propuesta de ciencia ficción suburbana con gran cast.",
-      "source": "r/movies",
-      "age_hours": 1,
-      "url": "https://www.reddit.com/r/movies/comments/1tr1f9p/new_images_from_david_robert_mitchells_the_end_of/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-        "titulo": "Together: Juntos hasta la muerte",
-        "anio": 2025
-      },
-      "score": 58,
-      "reason": "§4.4 regla 3: nueva película de David Robert Mitchell con cast de renombre; ángulo informativo, sin match de calidad al catálogo pero director admirable de It Follows."
-    },
-    {
-      "title_es": "La nueva película de Na Hong-jin rompe récord de preventas para el cine coreano",
-      "summary_es": "El director de The Wailing bate récords con su sci-fi; señal de que el cine coreano sigue en ascenso.",
-      "source": "Hollywood Reporter",
-      "age_hours": 0,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/na-hong-jin-hope-sets-sales-record-for-korean-film-1236608576/",
-      "angle": "cultural-moment",
-      "catalog_match": null,
-      "score": 55,
-      "reason": "§4.4 regla 3: Na Hong-jin es director coreano relevante para Alberto (Bong/Park territory) y el récord de ventas de película coreana es un evento cultural notable, pero sin match directo al catálogo."
-    },
-    {
-      "title_es": "Kane Parsons: no hay una versión oficial de Backrooms porque es código abierto",
-      "summary_es": "El creador del fenómeno viral aclara la naturaleza open source de Backrooms antes del estreno.",
-      "source": "r/movies",
+      "title_es": "Toy Story 5: nuevas vallas publicitarias avivan rumores sobre Taylor Swift",
+      "summary_es": "Pixar juega con easter eggs sobre la participación de Taylor Swift en Toy Story 5.",
+      "source": "Variety",
       "age_hours": 2,
-      "url": "https://www.reddit.com/r/movies/comments/1tqzkmn/kane_parsons_says_theres_no_true_version_of_the/",
-      "angle": "cultural-moment",
+      "url": "https://variety.com/2026/music/news/toy-story-5-taylor-swift-billboards-rumors-easter-eggs-1236762589/",
+      "angle": "sequel",
       "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
+        "pelicula_id": "5a320242-3c3c-4449-8576-34bf5ce27e11",
+        "titulo": "Toy Story",
+        "anio": 1995
       },
-      "score": 52,
-      "reason": "§4.4 regla 3: Backrooms tiene match al catálogo + es fenómeno cultural viral de Kane Parsons, ángulo cultural-moment; rating de la peli no confirmado pero el evento es noticiable."
+      "score": 55,
+      "reason": "§4.4 regla 3: match al catálogo (Toy Story, 1995) con sello_bret implícito; ángulo informativo sobre Toy Story 5 y posible participación de Taylor Swift."
     }
   ],
   "raw_signal_counts": {
     "news_items": 115,
     "newsapi_items": 92,
     "reddit_posts": 0,
-    "trailers": 53
+    "trailers": 52
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 2,
+    "agedCount": 1,
     "expiredByTime": 0,
-    "expiredByCritic": 0
+    "expiredByCritic": 2
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16442,
-    "output": 11509
+    "input": 15942,
+    "output": 11273
   }
 }

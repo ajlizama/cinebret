@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-30T12:03:36.479Z",
-      "cycles_proposed": 20,
+      "last_proposed": "2026-05-30T20:54:58.464Z",
+      "cycles_proposed": 21,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -907,8 +907,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-30T12:03:36.479Z",
-      "cycles_proposed": 17,
+      "last_proposed": "2026-05-30T20:54:58.464Z",
+      "cycles_proposed": 18,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1145,8 +1145,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-18T14:28:09.503Z",
-      "last_proposed": "2026-05-29T13:56:24.048Z",
-      "cycles_proposed": 5,
+      "last_proposed": "2026-05-30T20:54:58.464Z",
+      "cycles_proposed": 6,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1375,10 +1375,11 @@
       "first_proposed": "2026-05-16T20:44:03.156Z",
       "last_proposed": "2026-05-18T14:28:09.503Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-17T11:58:41.228Z"
+      "became_backlog_at": "2026-05-17T11:58:41.228Z",
+      "expired_at": "2026-05-30T20:54:58.464Z"
     },
     {
       "id": "82e888893ba1e41d",
@@ -2392,9 +2393,10 @@
       "first_proposed": "2026-05-30T12:03:36.479Z",
       "last_proposed": "2026-05-30T12:03:36.479Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-30T20:54:58.464Z"
     },
     {
       "id": "ec9cbfaded9923da",
@@ -2415,9 +2417,10 @@
       "first_proposed": "2026-05-30T12:03:36.479Z",
       "last_proposed": "2026-05-30T12:03:36.479Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-30T20:54:58.464Z"
     },
     {
       "id": "343ef4b643a6c602",
@@ -2438,10 +2441,57 @@
       "first_proposed": "2026-05-30T12:03:36.479Z",
       "last_proposed": "2026-05-30T12:03:36.479Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-30T20:54:58.464Z"
+    },
+    {
+      "id": "dbaf438921829d34",
+      "action": "generate_carousel_topic",
+      "title": "10 películas donde el silencio hace más ruido que los diálogos",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "No Man's Land, No Country for Old Men, Drive: el silencio como herramienta narrativa definitiva.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-30T20:54:58.464Z",
+      "last_proposed": "2026-05-30T20:54:58.464Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "3a83a7530c8fcfdc",
+      "action": "generate_carousel_topic",
+      "title": "TOP 10 películas japonesas que te cambian la forma de ver cine",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 80,
+      "reasoning": "Miyazaki y el thriller japonés con puntuaciones altas; kind=country no usado en 14 días.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "country",
+        "topic": "japón"
+      },
+      "first_proposed": "2026-05-30T20:54:58.464Z",
+      "last_proposed": "2026-05-30T20:54:58.464Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-30T12:07:24.158Z"
+  "last_saved": "2026-05-30T20:58:53.109Z"
 }

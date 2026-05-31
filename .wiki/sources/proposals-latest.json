@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-31T12:08:20.428Z",
-  "cycle": "am",
+  "generated_at": "2026-05-31T20:58:27.979Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
-  "backlog_count": 8,
-  "news_count": 1,
+  "backlog_count": 6,
+  "news_count": 6,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois con tu rating 10; prioridad máxima para cubrir el déficit de review.",
+      "title": "Review: Cómo entrenar a tu dragón (2025)",
+      "reasoning": "El live-action de DeBlois llega con tu rating 10; la revisión de una de tus sagradas más queridas.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,15 +41,15 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 + plataforma activa; déficit de review activo."
+      "critic_reason": "§4.5 rating 10 + sello bret + director muy respetado (Dean DeBlois) + año 2025 + plataforma activa; déficit de review activo."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parasite (2019)",
-      "reasoning": "Bong Joon-ho y su Óscar; backlog activo, sagrada sin review publicado en el feed.",
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar a mejor película; 13 días en backlog sin publicar.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,36 +61,36 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5.2 reevaluación backlog: Parasite sigue válida — rating 10, Bong Joon-ho, IMDb 8.5, 13 días en backlog vigente."
+      "critic_reason": "§5.2 reevaluación backlog: rating 10 + sello bret + Bong Joon-ho + IMDb 8.5; sigue siendo propuesta válida y urgente (13 días en backlog)."
     },
     {
-      "id": "86cd64c42c4ddc8b",
+      "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El Club de la Pelea (1999)",
-      "reasoning": "Fincher olimpo con rating 10 e IMDb 8.8; backlog vigente, máxima prioridad de review.",
-      "score": 96,
+      "title": "Review: El Señor de los Anillos: El retorno del rey (2003)",
+      "reasoning": "El cierre épico de Jackson con 11 Óscar; la trilogía merece su review definitivo en el feed.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "Fight Club",
-        "anio": 1999,
-        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§5.2 reevaluación backlog: Fight Club sigue válida — rating 10, Fincher olimpo, IMDb 8.8, sin review publicado, 11 días en backlog (dentro del límite de 14)."
+      "critic_reason": "§4.5 rating 10 + sello bret + IMDb 9.0 + Peter Jackson + plataforma activa; sin review publicado."
     },
     {
-      "id": "9a5d9f812b9616e6",
+      "id": "1315384edd410c18",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 actuaciones de reparto que eclipsaron al protagonista (y lo saben)",
-      "reasoning": "Ledger, Hopkins, Simmons: secundarios que robaron la película; kind=performance ausente en el feed.",
-      "score": 82,
+      "title": "10 actuaciones de reparto que eclipsaron al protagonista sin pedir permiso",
+      "reasoning": "Ledger, Hopkins, Simmons: secundarios que convirtieron una buena película en obra maestra sin ser el centro.",
+      "score": 88,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -100,26 +100,26 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds; propongo ángulo narrativo sobre actuaciones de reparto que eclipsaron al protagonista — conecta con el valor que Alberto da a las actuaciones memorables."
+      "critic_reason": "§instrucción slot creativo: kind=performance ausente en 14d; idea fresca con fuerte identidad cinebret y anclaje en el catálogo de Alberto."
     },
     {
-      "id": "fe5875c8c649d23e",
+      "id": "8023aaf275ffb029",
       "type": "FEED",
       "priority": "alta",
-      "action": "generate_carousel_topic",
-      "title": "TOP 10 películas japonesas que te cambian la forma de ver cine",
-      "reasoning": "Country kind sin usar en 14 días; Miyazaki y el thriller japonés concentran sello bret alto.",
-      "score": 80,
+      "action": "generate_carousel_mood",
+      "title": "10 películas para ver cuando el invierno te aplasta el ánimo",
+      "reasoning": "Lista de mood invernal con alto rewatchability; kind=mood ausente en los últimos 14 días.",
+      "score": 82,
       "category": "top",
       "angle": null,
-      "source_name": "cinebret-carousel-topic",
+      "source_name": "cinebret-carousel-mood",
       "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_to_invoke": "cinebret-carousel-mood",
       "skill_args": {
-        "topic_type": "country",
-        "topic": "japón"
+        "mood": "Pa'l domingo de bajón",
+        "count": 10
       },
-      "critic_reason": "§3 mix: kind=country no está en recent_top_kinds; Japón tiene Miyazaki (olimpo-adjacent, 4 sello bret) y varios autores que Alberto respeta."
+      "critic_reason": "§instrucción tops: kind=mood no está en recent_top_kinds; ángulo emocional/estacional fresco y ejecutable con el catálogo."
     }
   ],
   "backlog": [
@@ -132,22 +132,6 @@
       "skill_to_invoke": "cinebret-review"
     },
     {
-      "id": "755877a3c455b1e8",
-      "type": "FEED",
-      "title": "El club de la pelea (1999) — David Fincher",
-      "reasoning": "Fincher olimpo con rating 10 e IMDb 8.8; sagrada sin review en el feed.",
-      "days_ago": 1,
-      "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "96f13eee305fe1c4",
-      "type": "FEED",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 14,
-      "skill_to_invoke": "cinebret-review"
-    },
-    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "title": "Review: Parasite (2019)",
@@ -156,53 +140,128 @@
       "skill_to_invoke": "cinebret-review"
     },
     {
-      "id": "ee7db1141ee271a2",
-      "type": "FEED",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 14,
-      "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "b89c5321cbd38858",
-      "type": "FEED",
-      "title": "Review: Oldboy (2003) — Park Chan-wook",
-      "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 14,
-      "skill_to_invoke": "cinebret-review"
-    },
-    {
-      "id": "b1d19e4d9fa20cce",
-      "type": "FEED",
-      "title": "10 películas donde la última línea de diálogo lo cambia todo",
-      "reasoning": "Usual Suspects, Chinatown, The Mist: los cierres verbales que reescriben lo que acabas de ver.",
-      "days_ago": 4,
-      "skill_to_invoke": "cinebret-carousel-topic"
-    },
-    {
       "id": "7e36148fa29bda49",
       "type": "FEED",
       "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
       "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
       "days_ago": 11,
       "skill_to_invoke": "cinebret-carousel-topic"
+    },
+    {
+      "id": "080b5658325e2dfe",
+      "type": "FEED",
+      "title": "10 películas filmadas (casi) en una sola toma continua",
+      "reasoning": "1917, Birdman, Rope: el truco técnico que convierte cada plano en una apuesta total.",
+      "days_ago": 12,
+      "skill_to_invoke": "cinebret-carousel-topic"
+    },
+    {
+      "id": "2bde1086b87bd202",
+      "type": "STORY",
+      "title": "Emily Blunt revela cómo creó la voz alienígena en 'El día de la revelación' (Spielberg)",
+      "reasoning": "Spielberg vuelve a los extraterrestres; Blunt detalla el proceso creativo de la voz alien sin IA.",
+      "days_ago": 2,
+      "skill_to_invoke": "cinebret-share-story"
+    },
+    {
+      "id": "3a83a7530c8fcfdc",
+      "type": "FEED",
+      "title": "TOP 10 películas japonesas que te cambian la forma de ver cine",
+      "reasoning": "Miyazaki y el thriller japonés con puntuaciones altas; kind=country no usado en 14 días.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "title_es": "Robert De Niro espera hacer al menos una película más con Martin Scorsese",
-      "summary_es": "Scorsese del olimpo; De Niro confirma que su colaboración no ha terminado.",
+      "title_es": "El hijo de Clint Eastwood confirma su retiro definitivo del cine",
+      "summary_es": "El director de Mystic River y Gran Torino cierra su carrera; noticia que Alberto querrá saber.",
       "source": "r/movies",
-      "age_hours": 3,
-      "url": "https://www.reddit.com/r/movies/comments/1tsqply/robert_de_niro_says_he_expects_to_make_at_least/",
-      "angle": null,
+      "age_hours": 1,
+      "url": "https://www.reddit.com/r/movies/comments/1tt632e/clint_eastwoods_son_confirms_that_the_legendary/",
+      "angle": "obituary",
       "catalog_match": null,
+      "score": 72,
+      "reason": "§4.3 director match: Clint Eastwood (muy respetado, 5 sello bret) confirma retiro; ángulo informativo relevante sin material posteable inmediato."
+    },
+    {
+      "title_es": "'Backrooms' rompe récord de A24 con $118M de apertura mundial",
+      "summary_es": "Mejor apertura en la historia de A24; el fenómeno YouTube-a-cine se consolida con datos.",
+      "source": "Deadline",
+      "age_hours": 2,
+      "url": "https://deadline.com/2026/05/backrooms-kane-parsons-box-office-record-behind-the-scenes-1236931315/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 70,
+      "reason": "§4.2 match al catálogo: 'Backrooms' (2026); récord histórico para A24 es dato relevante que Alberto querrá conocer; dedup con d9414b2479cb28af (mismo sujeto)."
+    },
+    {
+      "title_es": "'Backrooms' ($118M): cuando YouTube conquista el cine y Hollywood no sabe qué hacer",
+      "summary_es": "El récord de A24 abre debate sobre la nueva economía del cine con creadores digitales.",
+      "source": "Hollywood Reporter",
+      "age_hours": 2,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/kane-parsons-backrooms-box-office-obsession-tickets-1236609951/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 68,
+      "reason": "§4.2 match al catálogo: 'Backrooms' (2026); análisis del fenómeno YouTubers-en-cine es informativo pero no tiene ángulo posteable directo para cinebret."
+    },
+    {
+      "title_es": "Kane Parsons, 20 años: el director de 'Backrooms' que llegó desde YouTube a A24",
+      "summary_es": "El joven director de 'Backrooms' explica su salto de YouTube al cine; cultural-moment del año.",
+      "source": "The Wrap",
+      "age_hours": 1,
+      "url": "https://www.thewrap.com/creative-content/movies/who-is-kane-parsons-all-about-the-20-year-old-backrooms-director/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
       "score": 65,
-      "reason": "§4.4 regla 3: director match con Martin Scorsese (olimpo) pero el ángulo es solo informativo (declaración casual, no movie-event concreto)."
+      "reason": "§4.2 match al catálogo: 'Backrooms' (2026) existe en catálogo; perfil de director joven con hit viral es cultural-moment interesante pero sin ángulo posteable inmediato."
+    },
+    {
+      "title_es": "Mark Duplass: 'Backrooms' y 'Obsession' son un rayo de esperanza para el cine democratizado",
+      "summary_es": "Duplass celebra el modelo YouTuber-a-cine como señal de apertura para cineastas independientes.",
+      "source": "The Wrap",
+      "age_hours": 3,
+      "url": "https://www.thewrap.com/creative-content/movies/mark-duplass-backrooms-obsession-democratized-filmmakers-video/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 63,
+      "reason": "§4.2 match al catálogo: 'Backrooms' (2026); comentario de Mark Duplass sobre la democratización del cine es informativo; dedup con otras noticias de Backrooms."
+    },
+    {
+      "title_es": "Actriz de 'Backrooms' evitó ver el lore de YouTube para dar perspectiva fresca a su personaje",
+      "summary_es": "Lukita Maxwell explica su enfoque actoral en el fenómeno del año de A24.",
+      "source": "Deadline",
+      "age_hours": 3,
+      "url": "https://deadline.com/2026/05/backrooms-lukita-maxwell-avoided-web-series-rabbit-hole-1236931511/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 62,
+      "reason": "§4.2 match al catálogo: 'Backrooms' (2026); detalle de producción interesante pero informativo; dedup con otras noticias de Backrooms del mismo ciclo."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 117,
+    "news_items": 116,
     "newsapi_items": 92,
     "reddit_posts": 0,
     "trailers": 54
@@ -210,13 +269,13 @@
   "reconciliation_stats": {
     "acceptedCount": 0,
     "agedCount": 2,
-    "expiredByTime": 1,
-    "expiredByCritic": 1
+    "expiredByTime": 3,
+    "expiredByCritic": 14
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 17753,
-    "output": 11698
+    "input": 15483,
+    "output": 10920
   }
 }

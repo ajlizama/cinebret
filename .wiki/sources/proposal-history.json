@@ -517,14 +517,14 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-30T20:54:58.464Z",
-      "cycles_proposed": 21,
-      "status": "backlog",
+      "first_proposed": "2026-05-31T20:58:27.979Z",
+      "last_proposed": "2026-05-31T20:58:27.979Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-18T14:28:09.503Z",
-      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
       "expired_reason": "§5.2 garbage collection: duplicado de 119c0775fc431172 (LOTR Return of the King/Jackson) ya en propuestas activas de este ciclo; expirar backlog."
     },
     {
@@ -621,10 +621,10 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "first_proposed": "2026-05-08T12:07:25.851Z",
-      "last_proposed": "2026-05-16T20:44:03.156Z",
-      "cycles_proposed": 14,
-      "status": "expired",
+      "first_proposed": "2026-05-31T20:58:27.979Z",
+      "last_proposed": "2026-05-31T20:58:27.979Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-08T20:58:56.691Z",
@@ -906,14 +906,14 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-31T12:08:20.428Z",
-      "cycles_proposed": 19,
-      "status": "backlog",
+      "first_proposed": "2026-05-31T20:58:27.979Z",
+      "last_proposed": "2026-05-31T20:58:27.979Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-18T14:28:09.503Z",
-      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
       "expired_reason": "§5.2 garbage collection: duplicado de 6276902b8705f60e (HTTYD 2025/DeBlois) ya en propuestas activas de este ciclo; expirar backlog."
     },
     {
@@ -1426,10 +1426,11 @@
       "first_proposed": "2026-05-17T20:49:19.561Z",
       "last_proposed": "2026-05-17T20:49:19.561Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-18T14:28:09.503Z"
+      "became_backlog_at": "2026-05-18T14:28:09.503Z",
+      "expired_at": "2026-05-31T20:58:27.979Z"
     },
     {
       "id": "677e8c13da416c81",
@@ -1708,12 +1709,12 @@
       "first_proposed": "2026-05-31T12:08:20.428Z",
       "last_proposed": "2026-05-31T12:08:20.428Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-30T12:03:36.479Z",
-      "expired_at": "2026-05-30T12:03:36.479Z",
-      "expired_reason": "§5.2: duplicado de 86cd64c42c4ddc8b (Fight Club / El club de la pelea mismo sujeto); descartar el duplicado más nuevo."
+      "became_backlog_at": "2026-05-31T20:58:27.979Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§5.2 reevaluación backlog: duplicado funcional de id 86cd64c42c4ddc8b (Fight Club mismo director/película); el id del proposal directo ya cubre esta propuesta."
     },
     {
       "id": "671afc46c7215a07",
@@ -1734,10 +1735,12 @@
       "first_proposed": "2026-05-21T21:27:02.250Z",
       "last_proposed": "2026-05-21T21:27:02.250Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-22T13:28:52.694Z"
+      "became_backlog_at": "2026-05-22T13:28:52.694Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds (TOP 20 Perdedores Oscar, TOP 10 Heist usan theme); penalización suficiente para descartar dado el pool competido."
     },
     {
       "id": "308a93b46c33df64",
@@ -1784,10 +1787,12 @@
       "first_proposed": "2026-05-22T13:28:52.694Z",
       "last_proposed": "2026-05-22T13:28:52.694Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-22T21:08:20.992Z"
+      "became_backlog_at": "2026-05-22T21:08:20.992Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds; giros narrativos es ángulo temático que colisiona con tops recientes."
     },
     {
       "id": "ac0f489e7cc392f3",
@@ -1912,10 +1917,12 @@
       "first_proposed": "2026-05-24T12:00:25.007Z",
       "last_proposed": "2026-05-24T12:00:25.007Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-24T20:54:29.653Z"
+      "became_backlog_at": "2026-05-24T20:54:29.653Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds; villanos con razón es ángulo temático que repite kind reciente."
     },
     {
       "id": "ab276674a644b02d",
@@ -1962,10 +1969,12 @@
       "first_proposed": "2026-05-24T20:54:29.653Z",
       "last_proposed": "2026-05-25T21:04:44.986Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-25T13:58:36.522Z"
+      "became_backlog_at": "2026-05-25T13:58:36.522Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=performance es válido pero duplica funcionalmente a 7e36148fa29bda49 (secundarios que eclipsan al protagonista); dedup entre backlogs del mismo kind."
     },
     {
       "id": "eac25550394dc80d",
@@ -2093,10 +2102,12 @@
       "first_proposed": "2026-05-26T13:52:15.054Z",
       "last_proposed": "2026-05-26T13:52:15.054Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-26T21:43:46.437Z"
+      "became_backlog_at": "2026-05-26T21:43:46.437Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=performance duplica funcionalmente a 7e36148fa29bda49 ya propuesto; dedup por kind dentro del mismo ciclo."
     },
     {
       "id": "8e4a7ed90dce82e4",
@@ -2143,10 +2154,12 @@
       "first_proposed": "2026-05-26T21:43:46.437Z",
       "last_proposed": "2026-05-26T21:43:46.437Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-27T14:24:59.587Z"
+      "became_backlog_at": "2026-05-27T14:24:59.587Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds; escenas de apertura es ángulo temático que repite kind reciente."
     },
     {
       "id": "082fc9d62a854c77",
@@ -2219,10 +2232,12 @@
       "first_proposed": "2026-05-27T21:52:36.869Z",
       "last_proposed": "2026-05-27T21:52:36.869Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-28T14:35:11.721Z"
+      "became_backlog_at": "2026-05-28T14:35:11.721Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme repetido recientemente; última línea de diálogo es ángulo temático que colisiona con ciclos anteriores."
     },
     {
       "id": "1234ae07b29d2745",
@@ -2295,10 +2310,12 @@
       "first_proposed": "2026-05-28T21:54:55.622Z",
       "last_proposed": "2026-05-28T21:54:55.622Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-29T13:56:24.048Z"
+      "became_backlog_at": "2026-05-29T13:56:24.048Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme repetido recientemente; bandas sonoras es ángulo temático que repite kind reciente."
     },
     {
       "id": "72b3de97e9202cd8",
@@ -2369,10 +2386,12 @@
       "first_proposed": "2026-05-29T21:51:28.375Z",
       "last_proposed": "2026-05-29T21:51:28.375Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-30T12:03:36.479Z"
+      "became_backlog_at": "2026-05-30T12:03:36.479Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds; diseño de producción como personaje es ángulo temático que colisiona con ciclos recientes."
     },
     {
       "id": "755877a3c455b1e8",
@@ -2394,10 +2413,12 @@
       "first_proposed": "2026-05-30T12:03:36.479Z",
       "last_proposed": "2026-05-30T12:03:36.479Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-30T20:54:58.464Z"
+      "became_backlog_at": "2026-05-30T20:54:58.464Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§5.2 reevaluación backlog: duplicado funcional de id 86cd64c42c4ddc8b (Fight Club, misma película); descartado por dedup."
     },
     {
       "id": "ec9cbfaded9923da",
@@ -2418,10 +2439,12 @@
       "first_proposed": "2026-05-30T12:03:36.479Z",
       "last_proposed": "2026-05-30T12:03:36.479Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-30T20:54:58.464Z"
+      "became_backlog_at": "2026-05-30T20:54:58.464Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds; secuelas que superaron al original es ángulo temático que repite kind reciente."
     },
     {
       "id": "343ef4b643a6c602",
@@ -2468,10 +2491,12 @@
       "first_proposed": "2026-05-30T20:54:58.464Z",
       "last_proposed": "2026-05-30T20:54:58.464Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-31T12:08:20.428Z"
+      "became_backlog_at": "2026-05-31T12:08:20.428Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§instrucción tops: kind=theme está en recent_top_kinds; el silencio como herramienta narrativa es ángulo temático que repite kind reciente."
     },
     {
       "id": "3a83a7530c8fcfdc",
@@ -2516,10 +2541,59 @@
       "first_proposed": "2026-05-31T12:08:20.428Z",
       "last_proposed": "2026-05-31T12:08:20.428Z",
       "cycles_proposed": 1,
+      "status": "expired",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-31T20:58:27.979Z",
+      "expired_at": "2026-05-31T20:58:27.979Z",
+      "expired_reason": "§5.2 reevaluación backlog: duplicado funcional de 7e36148fa29bda49 (mismo kind=performance, mismo ángulo de secundarios que eclipsan al protagonista); descartado por dedup."
+    },
+    {
+      "id": "492012dd5944db35",
+      "action": "generate_carousel_topic",
+      "title": "10 actuaciones de reparto que eclipsaron al protagonista sin pedir permiso",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 88,
+      "reasoning": "Ledger, Hopkins, Simmons: secundarios que convirtieron una buena película en obra maestra sin ser el centro.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-31T20:58:27.979Z",
+      "last_proposed": "2026-05-31T20:58:27.979Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "ac7481f3b5e6f67e",
+      "action": "generate_carousel_mood",
+      "title": "10 películas para ver cuando el invierno te aplasta el ánimo",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Lista de mood invernal con alto rewatchability; kind=mood ausente en los últimos 14 días.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-mood",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-mood",
+      "skill_args": {
+        "mood": "Pa'l domingo de bajón",
+        "count": 10
+      },
+      "first_proposed": "2026-05-31T20:58:27.979Z",
+      "last_proposed": "2026-05-31T20:58:27.979Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-31T12:12:16.898Z"
+  "last_saved": "2026-05-31T21:02:08.101Z"
 }

@@ -1,9 +1,134 @@
 {
-  "generated_at": "2026-05-31T12:07:38.662Z",
+  "generated_at": "2026-05-31T20:58:27.900Z",
   "total_videos": 54,
-  "trailers_count": 4,
-  "matched_to_cinebret": 14,
+  "trailers_count": 5,
+  "matched_to_cinebret": 16,
   "videos": [
+    {
+      "video_id": "KU9RAFDMzUE",
+      "title": "Mic drop. John Carney’s POWER BALLAD - now playing in select theaters. Everywhere Friday.",
+      "url": "https://www.youtube.com/watch?v=KU9RAFDMzUE",
+      "published": "2026-05-31T20:09:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/KU9RAFDMzUE/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "WGZwEyudkPY",
+      "title": "The girls in the movie. #SydneySweeney and #BobbiSalvörMenuez in UNDER THE SILVER LAKE",
+      "url": "https://www.youtube.com/watch?v=WGZwEyudkPY",
+      "published": "2026-05-31T19:00:44Z",
+      "thumbnail": "https://i.ytimg.com/vi/WGZwEyudkPY/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "3efaac68-9e5e-4765-af9e-d006893170f0",
+        "titulo": "Lo que esconde Silver Lake",
+        "anio": 2018
+      }
+    },
+    {
+      "video_id": "VsLOlxLus7Q",
+      "title": "Jason Bourne Vs. Jarda 💥 #TheBourneSupremacy #Shorts",
+      "url": "https://www.youtube.com/watch?v=VsLOlxLus7Q",
+      "published": "2026-05-31T19:00:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/VsLOlxLus7Q/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "7a7b0ab7-a578-4d39-89cb-f71c6c6e2802",
+        "titulo": "Jason Bourne",
+        "anio": 2016
+      }
+    },
+    {
+      "video_id": "i2PCcXgAAFg",
+      "title": "The Top 8 Relationships in Culpa Mía, The Idea of You, My Fault: London, & More | Prime Video",
+      "url": "https://www.youtube.com/watch?v=i2PCcXgAAFg",
+      "published": "2026-05-31T19:00:15Z",
+      "thumbnail": "https://i.ytimg.com/vi/i2PCcXgAAFg/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
+        "titulo": "Culpa mía: Londres",
+        "anio": 2025
+      }
+    },
+    {
+      "video_id": "-Y8XVSI7I-k",
+      "title": "Call of Duty: Modern Warfare 4 - Official Vault Edition Trailer",
+      "url": "https://www.youtube.com/watch?v=-Y8XVSI7I-k",
+      "published": "2026-05-31T17:48:46Z",
+      "thumbnail": "https://i.ytimg.com/vi/-Y8XVSI7I-k/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "jl4iQe6IO2w",
+      "title": "THE MYSTERIOUS GAZE OF THE FLAMINGO director Diego Céspedes shares his filmmaking inspirations.",
+      "url": "https://www.youtube.com/watch?v=jl4iQe6IO2w",
+      "published": "2026-05-31T17:01:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/jl4iQe6IO2w/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "6cd3UFi4LhA",
+      "title": "Every Ending Scene from The Boys Seasons 1-5 | Prime Video",
+      "url": "https://www.youtube.com/watch?v=6cd3UFi4LhA",
+      "published": "2026-05-31T17:00:13Z",
+      "thumbnail": "https://i.ytimg.com/vi/6cd3UFi4LhA/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "R_bTRMy88go",
+      "title": "Korea. IL-2 Series - Official Early Access Release Date Trailer",
+      "url": "https://www.youtube.com/watch?v=R_bTRMy88go",
+      "published": "2026-05-31T16:00:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/R_bTRMy88go/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "vWdjFyf8XZg",
+      "title": "Absolutely LIVING for Belly Conklin 😍 | The Summer I Turned Pretty | Prime Video",
+      "url": "https://www.youtube.com/watch?v=vWdjFyf8XZg",
+      "published": "2026-05-31T15:00:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/vWdjFyf8XZg/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "pZChOAyf-RE",
+      "title": "Tracy Morgan praises Eddie Murphy in AFI Life Achievement Award: A Tribute to Eddie Murphy",
+      "url": "https://www.youtube.com/watch?v=pZChOAyf-RE",
+      "published": "2026-05-31T14:00:30Z",
+      "thumbnail": "https://i.ytimg.com/vi/pZChOAyf-RE/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "6KtO_ZXivus",
+      "title": "Frog and Toad — 10 Heartwarming Moments | Apple TV",
+      "url": "https://www.youtube.com/watch?v=6KtO_ZXivus",
+      "published": "2026-05-31T13:59:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/6KtO_ZXivus/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
     {
       "video_id": "eEKFkmLLiMA",
       "title": "Three cities. One must-see movie. An encore moviegoers never expected. #PowerBallad.",
@@ -95,16 +220,6 @@
       }
     },
     {
-      "video_id": "z8xcBjvnBVM",
-      "title": "10 Times The Idea of You Attacked Our Relationship Status | Prime Video",
-      "url": "https://www.youtube.com/watch?v=z8xcBjvnBVM",
-      "published": "2026-05-30T17:00:12Z",
-      "thumbnail": "https://i.ytimg.com/vi/z8xcBjvnBVM/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "N9bPTBfsHCE",
       "title": "Shrinking — Behind the Scenes with Harrison Ford | In It Together | Apple TV",
       "url": "https://www.youtube.com/watch?v=N9bPTBfsHCE",
@@ -127,16 +242,6 @@
       "thumbnail": "https://i.ytimg.com/vi/LBAVueVh4A8/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "1_weueeuFzg",
-      "title": "Top Priyanka Chopra scenes in Citadel | Prime Video",
-      "url": "https://www.youtube.com/watch?v=1_weueeuFzg",
-      "published": "2026-05-30T15:00:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/1_weueeuFzg/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -188,41 +293,6 @@
         "titulo": "GoldenEye",
         "anio": 1995
       }
-    },
-    {
-      "video_id": "RoLrf33BrM0",
-      "title": "Backrooms director is a big Half-Life fan",
-      "url": "https://www.youtube.com/watch?v=RoLrf33BrM0",
-      "published": "2026-05-30T00:48:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/RoLrf33BrM0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "pNuzzp0Jwsw",
-      "title": "Fable won't be out until February",
-      "url": "https://www.youtube.com/watch?v=pNuzzp0Jwsw",
-      "published": "2026-05-30T00:47:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/pNuzzp0Jwsw/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "QishIn3lP3s",
-      "title": "The duality of John Krasinski | Prime Video",
-      "url": "https://www.youtube.com/watch?v=QishIn3lP3s",
-      "published": "2026-05-29T23:00:18Z",
-      "thumbnail": "https://i.ytimg.com/vi/QishIn3lP3s/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "68T6CvvM3M4",
@@ -345,16 +415,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "cEiBk8WcKZ4",
-      "title": "Safety is not guaranteed. The first two episodes of #StarCity are now streaming on Apple TV.",
-      "url": "https://www.youtube.com/watch?v=cEiBk8WcKZ4",
-      "published": "2026-05-29T16:59:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/cEiBk8WcKZ4/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "pWgJNIehQ7k",
       "title": "AFI Life Achievement Award: A Tribute to Eddie Murphy | Martin Lawrence | Sneak Peek | Netflix",
       "url": "https://www.youtube.com/watch?v=pWgJNIehQ7k",
@@ -363,26 +423,6 @@
       "channel": "Netflix",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "Z2RI5-B7I2Q",
-      "title": "🪰 A carefully controlled world begins to shift in FLIES, from Mexican director Fernando Eimbcke.",
-      "url": "https://www.youtube.com/watch?v=Z2RI5-B7I2Q",
-      "published": "2026-05-29T15:00:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/Z2RI5-B7I2Q/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "wtuCOy5ZW6A",
-      "title": "FLIES | Official Trailer | ComingSoon",
-      "url": "https://www.youtube.com/watch?v=wtuCOy5ZW6A",
-      "published": "2026-05-29T15:00:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/wtuCOy5ZW6A/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "jIvRblu2OD4",
@@ -500,16 +540,6 @@
       }
     },
     {
-      "video_id": "yUrwmYdWz2s",
-      "title": "Mike Myers went full Shrek at the AFI Life Achievement Award: A Tribute to Eddie Murphy.",
-      "url": "https://www.youtube.com/watch?v=yUrwmYdWz2s",
-      "published": "2026-05-28T18:00:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/yUrwmYdWz2s/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "L_f5KofGumk",
       "title": "Arachnid Movements in Spider-Noir",
       "url": "https://www.youtube.com/watch?v=L_f5KofGumk",
@@ -546,26 +576,6 @@
       "published": "2026-05-27T23:00:34Z",
       "thumbnail": "https://i.ytimg.com/vi/Kfh8H9O4FF8/hqdefault.jpg",
       "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "OjOTDQE1DOw",
-      "title": "Hiccup Frees a Tied Up Toothless 🐉 #HowtoTrainYourDragon2025 #Shorts",
-      "url": "https://www.youtube.com/watch?v=OjOTDQE1DOw",
-      "published": "2026-05-27T19:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/OjOTDQE1DOw/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "_zvXp4rrFBQ",
-      "title": "This tracks. Paul Rudd and Nick Jonas star in #PowerBallad — in select theaters this Friday.",
-      "url": "https://www.youtube.com/watch?v=_zvXp4rrFBQ",
-      "published": "2026-05-27T18:00:36Z",
-      "thumbnail": "https://i.ytimg.com/vi/_zvXp4rrFBQ/hqdefault.jpg",
-      "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
     },

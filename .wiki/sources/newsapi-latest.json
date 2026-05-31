@@ -1,127 +1,757 @@
 {
-  "generated_at": "2026-05-30T12:02:40.673Z",
+  "generated_at": "2026-05-31T12:07:41.940Z",
   "queries_used": 5,
-  "total_unique_items": 93,
+  "total_unique_items": 92,
   "items": [
     {
       "query_label": "festivals",
-      "title": "Poppy Liu Won’t Be Silenced",
-      "description": "The socialist actor Poppy Liu was on the verge of quitting Hollywood. Then ‘I Love Boosters’ came along.",
-      "url": "http://www.thecut.com/article/poppy-liu-i-love-boosters-hacks-finale-interview.html",
-      "source": "The Cut",
-      "author": "Cat Zhang",
-      "published_at": "2026-05-29T12:00:39Z",
-      "image": "https://pyxis.nymag.com/v1/imgs/6b7/f56/478c287fef32821a8fc52cad937396e4bf-Poppy-Liu-x-Ally-Chen-1.1x.rsocial.w1200.jpg"
+      "title": "Why is Chris Pratt’s blockbuster leaving streaming? #entertainment",
+      "description": "Chris Pratt’s blockbuster is set to vanish from streaming A major streaming shift is on the horizon for Chris Pratt’s biggest movies , with coverage singling out a film that’s currently considered among his wildest and most effective blockbusters—and which is…",
+      "url": "https://alltoc.com/entertainment/why-is-chris-pratts-blockbuster-leaving-streaming",
+      "source": "Alltoc.com",
+      "author": "AllToc",
+      "published_at": "2026-05-30T12:02:34Z",
+      "image": "https://alltoc.com/cdn/1048/og.png"
     },
     {
       "query_label": "festivals",
-      "title": "You’ve Never Seen Anything Like the World of ‘I Am Frankelda’",
-      "description": "The new stop-motion animated film about a writer facing her own monsters comes to Netflix June 12.",
-      "url": "https://gizmodo.com/youve-never-seen-anything-like-the-world-of-i-am-frankelda-2000764864",
-      "source": "Gizmodo.com",
-      "author": "Germain Lussier",
-      "published_at": "2026-05-29T12:00:15Z",
-      "image": "https://gizmodo.com/app/uploads/2026/05/I-Am-Frankelda-1200x675.jpg"
+      "title": "What’s Stephen King’s 1408 adaptation news? #entertainment",
+      "description": "Stephen King’s “1408” is the overlooked haunted thriller fans keep returning to A lot of Stephen King adaptation chatter tends to cluster around his most famous horror properties, but the latest wave of attention is back on “1408,” the haunted room thriller b…",
+      "url": "https://alltoc.com/entertainment/whats-stephen-kings-1408-adaptation-news",
+      "source": "Alltoc.com",
+      "author": "AllToc",
+      "published_at": "2026-05-30T12:02:34Z",
+      "image": "https://alltoc.com/cdn/1048/og.png"
     },
     {
       "query_label": "festivals",
-      "title": "Hyundai Motor Launches \"School of Football\" Campaign Featuring Boston Dynamics' Atlas Ahead of FIFA World Cup 2026™",
-      "description": "New five-part social film series follows Atlas' journey to learn football (soccer) through human emotion and creativity Campaign brings Hyundai Motor's \"Next Starts Now\" FIFA World Cup 2026™ platform to life through human-centered robotics and storytelling At…",
-      "url": "https://www.prnewswire.co.uk/news-releases/hyundai-motor-launches-school-of-football-campaign-featuring-boston-dynamics-atlas-ahead-of-fifa-world-cup-2026-302785549.html",
-      "source": "PR Newswire UK",
-      "author": null,
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://mma.prnewswire.com/media/2989966/School_of_Football.jpg?p=facebook"
+      "title": "What’s the next two-week streaming offer? #tabloid",
+      "description": "War film “Saving Private Ryan” goes free for two weeks A classic war blockbuster is being offered free to watch for a limited two week window. The film being promoted is Saving Private Ryan , long regarded as one of the most influential and widely acclaimed w…",
+      "url": "https://alltoc.com/tabloid/whats-the-next-two-week-streaming-offer",
+      "source": "Alltoc.com",
+      "author": "AllToc",
+      "published_at": "2026-05-30T12:01:44Z",
+      "image": "https://alltoc.com/cdn/1048/og.png"
+    },
+    {
+      "query_label": "awards",
+      "title": "Steve Tesich, Los Angeles Heat Mortality, Caribbean Cultural Heritage, More: Saturday ResearchBuzz, May 30, 2026",
+      "description": "NEW RESOURCES Indiana University Bloomington: Breaking Away and Beyond: New Steve Tesich Collection. “A major new collection that brings together the life and work of IU alumnus Steve Tesich was added to […]",
+      "url": "https://researchbuzz.me/2026/05/30/steve-tesich-los-angeles-heat-mortality-caribbean-cultural-heritage-more-saturday-researchbuzz-may-30-2026/",
+      "source": "Researchbuzz.me",
+      "author": "ResearchBuzz",
+      "published_at": "2026-05-30T12:01:26Z",
+      "image": "https://s0.wp.com/_si/?t=eyJpbWciOiJodHRwczpcL1wvczAud3AuY29tXC9pXC9ibGFuay5qcGciLCJ0eHQiOiJSZXNlYXJjaEJ1enoiLCJ0ZW1wbGF0ZSI6ImhpZ2h3YXkiLCJmb250IjoiIiwiYmxvZ19pZCI6NDMyODc1Nn0.BjdcPIDlw4ZG0Ki13B-quwxnrzAxn9iB5rJXagRMNlcMQ"
     },
     {
       "query_label": "festivals",
-      "title": "International Insider: ‘MAFS’ Scandal Widens; Pope Warns Over AI; Reality TV Summit UK",
-      "description": "Hello again, Insiders. Jesse Whittock here. It’s been a scorcher of a week here in London, but even hotter is the fact Deadline’s Reality TV Summit is coming to SXSW London on June 2. There are still very limited places available if you don’t want to miss out…",
-      "url": "http://deadline.com/2026/05/international-insider-mafs-uk-scandal-widens-1236929152/",
-      "source": "Deadline",
-      "author": "Jesse Whittock",
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://deadline.com/wp-content/uploads/2026/05/Screenshot-2026-05-27-at-08.19.36-e1779866482673.png?w=1024"
+      "title": "People Think These Celebs Have Experienced The Best And Worst Sides Of “Pretty Privilege”",
+      "description": "“I actually think being as attractive as he is works against him. He's very talented, but most people can't see past his looks to notice.”View Entire Post ›",
+      "url": "https://www.buzzfeed.com/leylamohammed/celebs-people-think-have-been-impacted-by-pretty-privilege",
+      "source": "Buzzfeed",
+      "author": "Leyla Mohammed",
+      "published_at": "2026-05-30T12:01:04Z",
+      "image": "https://img.buzzfeed.com/buzzfeed-static/static/2026-05/11/11/thumb/IiXjZjOml.jpg?crop=2999:1570;0,2%26downsize=1250:*"
     },
     {
       "query_label": "festivals",
-      "title": "15 Movies That Clearly Wanted to Be the Next Harry Potter",
-      "description": "The cultural success (and impact) of the Harry Potter series can’t be underestimated, making it only natural that studios would want to catch that lightning in a second bottle. However, a big part of Harry Potter’s success comes down to luck, something no amo…",
-      "url": "http://www.denofgeek.com/tv/15-movies-that-clearly-wanted-to-be-the-next-harry-potter/",
-      "source": "Den of Geek US",
-      "author": "Alfredo Federico Robelo",
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://www.denofgeek.com/wp-content/uploads/2026/05/img-23-2.jpg?fit=1200%2C675"
+      "title": "‘A Good Girl’s Guide to Murder’ Ups the Stakes but Sidelines Its Queer Character",
+      "description": "The good news is, season two is great! The bad news is there's even less queerness than last season.\nThe post ‘A Good Girl’s Guide to Murder’ Ups the Stakes but Sidelines Its Queer Character appeared first on Autostraddle.",
+      "url": "http://www.autostraddle.com/a-good-girls-guide-to-murder-ups-the-stakes-but-sidelines-its-queer-character/",
+      "source": "Autostraddle.com",
+      "author": "Valerie Anne",
+      "published_at": "2026-05-30T12:00:58Z",
+      "image": "https://www.autostraddle.com/wp-content/uploads/2026/05/good-girl-s2-feature.jpg?fit=1200%2C600"
     },
     {
       "query_label": "festivals",
-      "title": "New Shows & Movies To Watch This Weekend: Netflix’s ‘The Four Seasons,’ ‘Deli Boys’ on Hulu + More",
-      "description": "These titles and many more are streaming now!",
-      "url": "https://decider.com/2026/05/29/best-new-movies-shows-weekend-netflix-hulu-amazon-prime-hbo-may-29-2026/",
-      "source": "Decider",
-      "author": "mliss1578",
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://decider.com/wp-content/uploads/2026/05/WHATS-NEW-may-29-2026-.jpg?quality=75&strip=all&w=1200"
+      "title": "Will Gen Z be the generation to revive moviegoing?",
+      "description": "Gen Zers like affordable, social experiences and are driving demand for anime and video game titles at the theaters.",
+      "url": "https://www.cnbc.com/2026/05/30/gen-z-movie-theaters.html",
+      "source": "CNBC",
+      "author": "Sarah Whitten",
+      "published_at": "2026-05-30T12:00:01Z",
+      "image": "https://image.cnbcfm.com/api/v1/image/108257722-1769536376654-gettyimages-2218632851-dsc8364.jpeg?v=1769536439&w=1920&h=1080"
     },
     {
       "query_label": "festivals",
-      "title": "Hyundai Motor Launches \"School of Football\" Campaign Featuring Boston Dynamics' Atlas Ahead of FIFA World Cup 2026™",
-      "description": "New five-part social film series follows Atlas' journey to learn football (soccer) through human emotion and creativity Campaign brings Hyundai Motor's \"Next Starts Now\" FIFA World Cup 2026™ platform to life through human-centered robotics and storytelling At…",
-      "url": "https://www.prnewswire.com/news-releases/hyundai-motor-launches-school-of-football-campaign-featuring-boston-dynamics-atlas-ahead-of-fifa-world-cup-2026-302785520.html",
-      "source": "PRNewswire",
-      "author": null,
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://mma.prnewswire.com/media/2989966/School_of_Football.jpg?p=facebook"
-    },
-    {
-      "query_label": "festivals",
-      "title": "66 YEAR OLD IRISH ULTRA-ENDURANCE CYCLIST ATTEMPTS GUINNESS WORLD RECORD ON US ROUTE 66 – SANTA MONICA TO CHICAGO — AND DOCUMENTARY FILMMAKERS ARE FOLLOWING EVERY MILE",
-      "description": "66 year-old Irish ultra-endurance cycling legend Joe Barr will attempt to set a Guinness World Record by cycling the full length of Route 66....",
-      "url": "https://www.globenewswire.com/news-release/2026/05/29/3303538/0/en/66-YEAR-OLD-IRISH-ULTRA-ENDURANCE-CYCLIST-ATTEMPTS-GUINNESS-WORLD-RECORD-ON-US-ROUTE-66-SANTA-MONICA-TO-CHICAGO-AND-DOCUMENTARY-FILMMAKERS-ARE-FOLLOWING-EVERY-MILE.html",
-      "source": "GlobeNewswire",
-      "author": "Scenic Films",
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://ml.globenewswire.com/Resource/Download/c2296ae7-6dd9-4773-8c4c-bda7b583783e"
-    },
-    {
-      "query_label": "festivals",
-      "title": "‘Power Ballad’ Review: John Carney Wonders If a Song Can Also Ruin Your Life",
-      "description": "After a career spent exploring transcendent friendships sparked by music, Carney directs Paul Rudd and Nick Jonas in a story that gives the ugly side of human nature a fighting chance.",
-      "url": "https://www.indiewire.com/criticism/movies/power-ballad-review-paul-rudd-nick-jonas-john-carney-1235196996/",
-      "source": "IndieWire",
-      "author": "Christian Zilko",
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://www.indiewire.com/wp-content/uploads/2026/05/MCDPOBA_LG004.jpg?w=650"
-    },
-    {
-      "query_label": "festivals",
-      "title": "The One Thing That Connects Jack Huston’s Characters",
-      "description": "The former Boardwalk Empire star channeled everything he’s learned into a standout turn in Spider-Noir. Meanwhile, he’s readying his next film: a biopic about the real-life “Elephant Man.”",
-      "url": "https://www.esquire.com/entertainment/tv/a71434794/jack-huston-spider-noir-interview/",
+      "title": "How Johnny Yong Bosch Became Anime’s Greatest Leading Man",
+      "description": "The former Power Rangers star has voiced the most famous anime heroes for 20-plus years. He’s unsure how much he has left.",
+      "url": "https://www.esquire.com/entertainment/tv/a71438207/johnny-yong-bosch-anime-interview/",
       "source": "esquire.com",
       "author": "Eric Francisco",
-      "published_at": "2026-05-29T12:00:00Z",
-      "image": "https://hips.hearstapps.com/hmg-prod/images/0d719a7c-fb5d-4987-af98-4b5f9e996052.jpeg?crop=1xw:0.333xh;0xw,0.067xh&resize=1200:*"
+      "published_at": "2026-05-30T12:00:00Z",
+      "image": "https://hips.hearstapps.com/hmg-prod/images/3b496b65-2578-470b-aeb2-fb48943b7cea.jpeg?crop=1xw:0.333xh;0xw,0.171xh&resize=1200:*"
     },
     {
       "query_label": "festivals",
-      "title": "New JAWS Documentary THE FARMER AND THE SHARK Will Explore the Film's Unsung Hero Craig Kingsbury",
-      "description": "There’s a new documentary on the horizon that Jaws fans are going to want to keep a close eye on. Filmmaker John Campopiano has officially wrapped production on The Farmer And The Shark, a feature doc that shines a spotlight on one of the film’s most fascinat…",
-      "url": "https://geektyrant.com/news/new-jaws-documentary-the-farmer-and-the-shark-will-explore-the-films-unsung-hero-craig-kingsbury",
+      "title": "China opposes devt and use of lethal intelligent weapons that lack human control: head of China's delegation to SLD on AI development",
+      "description": "AI-related topics are among the highlights of this year's Shangri-La Dialogue. On Saturday afternoon, Meng Xiangqing, the head of China's delegation to the 23rd Shangri-La Dialogue (SLD) responded to questions on AI development during a parallel session and s…",
+      "url": "https://www.globalsecurity.org/wmd/library/news/china/2026/05/china-260530-globaltimes01.htm",
+      "source": "Globalsecurity.org",
+      "author": "John Pike",
+      "published_at": "2026-05-30T12:00:00Z",
+      "image": null
+    },
+    {
+      "query_label": "festivals",
+      "title": "How to Make the End of World War II Feel Like a Surprise",
+      "description": "The new film Pressure offers a freshly suspenseful take on D-Day.",
+      "url": "https://www.theatlantic.com/culture/2026/05/pressure-movie-review-andrew-scott-brendan-fraser/687366/",
+      "source": "The Atlantic",
+      "author": "David Sims",
+      "published_at": "2026-05-30T12:00:00Z",
+      "image": "https://cdn.theatlantic.com/thumbor/oAuSn-KMZ6yjyiLRlu-RhD3mIe4=/0x115:5383x2919/1200x625/media/img/mt/2026/05/2026_05_28_Pressure_Film_TK/original.jpg"
+    },
+    {
+      "query_label": "festivals",
+      "title": "Black Men Ditched Mainstream Media. Here Is Where They Actually Get Their News.",
+      "description": "Bypassing mainstream media, Black men are seeking out alternative information sources—from Roland Martin to Marc Lamont Hill.\"Read more...",
+      "url": "https://www.theroot.com/black-men-ditched-mainstream-media-here-is-where-they-2000108363",
+      "source": "The Root",
+      "author": "William Ketchum",
+      "published_at": "2026-05-30T11:59:06Z",
+      "image": null
+    },
+    {
+      "query_label": "festivals",
+      "title": "UPDATE: Onslaught: First Look At Adam Wingard's Action Horror Movie Starring Adria Arjona Leaks Online",
+      "description": "The first trailer for Adam Wingard's Onslaught is now playing in theaters ahead of Backrooms, and a few screenshots have been leaked online...",
+      "url": "https://comicbookmovie.com/horror/update-onslaught-first-look-at-adam-wingards-action-horror-movie-starring-adria-arjona-leaks-online-a228068",
+      "source": "CBM (Comic Book Movie)",
+      "author": "MarkCassidy",
+      "published_at": "2026-05-30T11:55:00Z",
+      "image": "https://comicbookmovie.com/images/articles/banners/update-onslaught-first-look-at-adam-wingards-action-horror-movie-starring-adria-arjona-leaks-online-ab228068.jpg"
+    },
+    {
+      "query_label": "festivals",
+      "title": "'Rupaya Bhi Haath Mein Leke Photo Khinchwa Lijiye': Shekhar Suman Takes A Dig At PM Modi",
+      "description": "Shekhar Suman's latest episode of Shekhar Tonite has gone viral for its satirical remarks on the falling rupee, PM Modi's 'Melody' moment with Giorgia Meloni, and Cockroach Janata Party.",
+      "url": "https://news.abplive.com/entertainment/celebrities/rupaya-bhi-haath-mein-leke-photo-khinchwa-lijiye-shekhar-suman-takes-a-dig-at-pm-modi-over-falling-rupee-1847143",
+      "source": "Abplive.com",
+      "author": "Devyani Nautiyal",
+      "published_at": "2026-05-30T11:49:53Z",
+      "image": "https://feeds.abplive.com/onecms/images/uploaded-images/2026/05/30/762e0516930e284cd806cee4681b604d17801409944301090_original.png?impolicy=abp_cdn&imwidth=1200"
+    },
+    {
+      "query_label": "festivals",
+      "title": "Adam Sandler’s sloppy red carpet look is peak ‘Schlub Hub’: Spare us your slob routine, guys, and learn to dress to impress",
+      "description": "Husbands of America, take heed — Adam Sandler should never be your style hero.",
+      "url": "https://nypost.com/2026/05/30/lifestyle/adam-sandler-will-never-stop-being-a-schlub-hub/",
+      "source": "New York Post",
+      "author": "Zachary Kussin",
+      "published_at": "2026-05-30T11:45:00Z",
+      "image": "https://nypost.com/wp-content/uploads/sites/2/2026/05/los-angeles-26-jackie-sandler-129103122.jpg?quality=75&strip=all&w=1200"
+    },
+    {
+      "query_label": "festivals",
+      "title": "Kevin Costner's 2024 Western Flop With An Unreleased Sequel Has Found A New Streaming Home",
+      "description": "Kevin Costner's expensive Western flop that was supposed to kickstart a whole franchise has found itself a new streaming location.",
+      "url": "https://www.slashfilm.com/2182336/kevin-costner-western-flop-horizon-an-american-saga-chapter-1-streaming-prime-video/",
+      "source": "/FILM",
+      "author": "staff@slashfilm.com (Kieran Fisher)",
+      "published_at": "2026-05-30T11:45:00Z",
+      "image": "https://www.slashfilm.com/img/gallery/kevin-costner-western-flop-horizon-an-american-saga-chapter-1-streaming-prime-video/l-intro-1779980158.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "adidas announces special guests for the 19th edition of Eurocamp",
+      "description": "adidas Eurocamp lineup of guests and coaches confirmed for the 19th edition of the pre-draft scouting event taking place from June 5-7 in Treviso.",
+      "url": "https://www.hoopshype.com/story/sports/nba/2026/05/30/adidas-announces-special-guests-for-the-19th-edition-of-eurocamp/90317512007/",
+      "source": "Hoops Hype",
+      "author": "Cyro Asseo, HoopsHype",
+      "published_at": "2026-05-30T11:39:23Z",
+      "image": "https://s.yimg.com/lo/mysterio/api/dab54235f4ce2597ae53715fb64602bbb2332c3b3258d082525b2bb194891a11/lightyear_networkapi/resizefill_w1200;quality_80;format_webp/https:%2F%2Fmedia.zenfs.com%2Fen%2Fhoops_hype_usa_today_sports_articles_974%2Fea390d5d96ec6ac031ce811f3224188e"
+    },
+    {
+      "query_label": "festivals",
+      "title": "Blue Origin faces months of delay after rocket explosion damages launch pad, puts launch schedule at risk",
+      "description": "Blue Origin's New Glenn rocket launch pad suffered extensive damage after an engine test fire explosion. This incident will cause a significant delay of at least six months for rebuilding. Amazon's satellite deployment schedule faces jeopardy and SpaceX's dom…",
+      "url": "https://economictimes.indiatimes.com/news/international/world-news/blue-origin-faces-months-of-delay-after-rocket-explosion-damages-launch-pad-puts-launch-schedule-at-risk/articleshow/131408250.cms",
+      "source": "The Times of India",
+      "author": "Reuters",
+      "published_at": "2026-05-30T11:32:44Z",
+      "image": "https://img.etimg.com/thumb/msid-131408627,width-1200,height-630,imgsize-269094,overlay-economictimes/articleshow.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Donovan Mitchell Defends James Harden's Playoff Struggles Citing Jordan and LeBron's Early Failures",
+      "description": "Donovan Mitchell defends James Harden's playoff performance, comparing his struggles to those of NBA legends. Mitchell emphasizes resilience and long-term success over immediate failures.",
+      "url": "https://www.ibtimes.com.au/donovan-mitchell-defends-james-harden-playoff-criticism-1869753",
+      "source": "Ibtimes.com.au",
+      "author": "Patrick Jordan",
+      "published_at": "2026-05-30T11:32:33Z",
+      "image": "https://d.ibtimes.com.au/en/full/1891129/james-harden.jpg"
+    },
+    {
+      "query_label": "festivals",
+      "title": "Panthers playmaker poised for breakout season in 2026",
+      "description": "Panthers WR Tetairoa McMillan was named one of five NFL sophomores who could be ready to break out in 2026.",
+      "url": "https://pantherswire.usatoday.com/story/sports/nfl/panthers/2026/05/30/panthers-tetairoa-mcmillan-2nd-year-breakout-candidate/90312804007/",
+      "source": "USA Today",
+      "author": "Tim Weaver, Panthers Wire",
+      "published_at": "2026-05-30T11:30:53Z",
+      "image": "https://s.yimg.com/ny/api/res/1.2/JI.ydn9COsv_ApS0R5KQAw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD04MDA7Y2Y9d2VicA--/https://media.zenfs.com/en/carolina_panthers_wire_usa_today_sports_articles_855/2337965195d260d7decf767370d71c92"
+    },
+    {
+      "query_label": "festivals",
+      "title": "Groove doctor: Acting US surgeon general is a dancing phenom",
+      "description": "Dr. Stephanie Haridopolos, who stepped into the role last week after President Trump's original nominee imploded, once performed with a Dancing with the Stars pro and did flips on video to the Bee Gees with former Dance Fever host Deney Terrio, who helped coa…",
+      "url": "https://nypost.com/2026/05/30/us-news/rfk-jrs-new-interim-surgeon-general-a-dancing-phenom-and-former-tv-doc/",
+      "source": "New York Post",
+      "author": "Geoff Earle",
+      "published_at": "2026-05-30T11:24:50Z",
+      "image": "https://nypost.com/wp-content/uploads/sites/2/2026/05/129106628.jpg?quality=75&strip=all&w=1200"
+    },
+    {
+      "query_label": "festivals",
+      "title": "How a Rhodes Scholar with ties to Cuba's president organized the convoy that brought Hasan Piker to Havana",
+      "description": "Experts say federal investigators should examine Progressive International's role in the Cuba convoy that brought Twitch streamer Hasan Piker to Havana in March.",
+      "url": "https://www.foxnews.com/politics/rhodes-scholar-ties-cubas-president-organized-convoy-brought-hasan-piker-havana",
+      "source": "Fox News",
+      "author": null,
+      "published_at": "2026-05-30T11:21:48Z",
+      "image": "https://static.foxnews.com/foxnews.com/content/uploads/2026/05/david-adler-miguel-diaz-canel-hasan-piker-cuba.png"
+    },
+    {
+      "query_label": "festivals",
+      "title": "How Michael Jackson moonwalked back into pop culture",
+      "description": "A month since the Antoine Fuqua-directed ‘Michael’ released, the buzz around King of Pop refuses to die down leading to a resurgence of interest in him and his music",
+      "url": "https://indianexpress.com/article/opinion/columns/michael-jackson-moonwalk-pop-culture-djokovic-scorcese-10715787/",
+      "source": "The Indian Express",
+      "author": "Alaka Sahani",
+      "published_at": "2026-05-30T11:17:47Z",
+      "image": "https://images.indianexpress.com/2026/05/michael-jackson.jpg"
+    },
+    {
+      "query_label": "festivals",
+      "title": "\"The secret weapon of Star Wars\" and editor Marcia Lucas dies aged 80",
+      "description": "Marcia Lucas, the Academy Award-winning editor and former wife of Star Wars creator George Lucas, has died aged 80. Read more",
+      "url": "https://www.eurogamer.net/secret-weapon-of-star-wars-editor-marcia-lucas-dies",
+      "source": "Eurogamer.net",
+      "author": "Vikki Blake",
+      "published_at": "2026-05-30T11:14:30Z",
+      "image": "https://assetsio.gnwcdn.com/david_prowse_darth_vader_star_wars.jpg?width=1200&height=630&fit=crop&enable=upscale&auto=webp"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Carmeni Selvam OTT release date confirmed: When and where to watch P. Samuthirakani and Gautham Vasudev Menon's Tamil feel-good movie online",
+      "description": "Carmeni Selvam, a Tamil film about a family's financial challenges and changing values, is all set to stream on OTT. Starring P. Samuthirakani and Gautham Vasudev Menon, the drama offers a realistic portrayal of everyday life. Directed by Ram Chakri, the movi…",
+      "url": "https://economictimes.indiatimes.com/magazines/panache/carmeni-selvam-ott-release-date-confirmed-when-and-where-to-watch-p-samuthirakani-and-gautham-vasudev-menons-tamil-feel-good-movie-online/articleshow/131407878.cms",
+      "source": "The Times of India",
+      "author": "ET Online",
+      "published_at": "2026-05-30T11:11:08Z",
+      "image": "https://img.etimg.com/thumb/msid-131408165,width-1200,height-630,imgsize-41888,overlay-etpanache/articleshow.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Stanley Cup Final Will Be Headlined by Former Flyers",
+      "description": "Tortorella is back on hockey's biggest stage for the first time in 22 years, and it will be box office.",
+      "url": "https://thehockeynews.com/nhl/philadelphia-flyers/latest-news/stanley-cup-final-will-be-headlined-by-former-flyers",
+      "source": "The Hockey News",
+      "author": "Jonathan Bailey",
+      "published_at": "2026-05-30T11:00:37Z",
+      "image": "https://s.yimg.com/ny/api/res/1.2/.AfgEzyTfC74Fk2aLDIrIw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD04MDA7Y2Y9d2VicA--/https://media.zenfs.com/en/the_hockey_news_philadelphia_flyers_articles_543/df5fbb9c9b99dfbac07f775170a9aef3"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Kevin Hart's No Good, Very Bad Comments About That George Floyd Joke",
+      "description": "The comedian said Tony Hinchcliffe had one of the best sets of his Netflix roast.",
+      "url": "https://www.huffpost.com/entry/kevin-hart-roast-tony-hinchcliffe-george-floyd_n_6a18695be4b0ddcc8468b827",
+      "source": "HuffPost",
+      "author": "HuffPost",
+      "published_at": "2026-05-30T11:00:18Z",
+      "image": "https://img.huffingtonpost.com/asset/6a189891140000f8721ad216.jpeg?ops=500_281%2Cscalefit_1200_630"
+    },
+    {
+      "query_label": "awards",
+      "title": "Why Cool Hand Luke Is The Best Film To Start With To Get Into Paul Newman's Filmography",
+      "description": "There will be no failure in communicating how good Paul Newman is in Cool Hand Luke.",
+      "url": "https://www.cinemablend.com/movies/why-cool-hand-luke-is-best-film-start-with-to-paul-newman-filmography",
+      "source": "CinemaBlend",
+      "author": "Rich Knight",
+      "published_at": "2026-05-30T11:00:00Z",
+      "image": "https://cdn.mos.cms.futurecdn.net/w6JJvfHGRxdfYDDmMcSBMC-1280-80.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "‘Toy Story’ Franchise Will Change Forever Next Month, Fourth Movie To Be Taken Down",
+      "description": "The Toy Story franchise will change forever next month when the fifth film in the beloved series is released worldwide. For nearly three decades, Pixar’s Toy Story franchise has remained one of Disney’s most reliable box office powerhouses. From Woody (Tom Ha…",
+      "url": "https://insidethemagic.net/2026/05/toy-story-franchise-will-change-forever-next-month-fourth-movie-to-be-taken-down-th1/",
+      "source": "Inside the Magic",
+      "author": "Thomas Hitchen",
+      "published_at": "2026-05-30T10:47:15Z",
+      "image": "https://insidethemagic.net/wp-content/uploads/2025/03/Rex-in-Toy-Story.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Marcia Lucas passes away at 80; Oscar-Winning editor helped shape the ‘Star Wars’ legacy",
+      "description": "Oscar-winning film editor Marcia Lucas, celebrated for her work on 'Star Wars' and 'American Graffiti,' has passed away at 80. Her family's statement highlighted her brilliance as a storyteller and trailblazer for women in cinema. Lucas's editing, known for i…",
+      "url": "https://timesofindia.indiatimes.com/entertainment/english/hollywood/news/marcia-lucas-passes-away-at-80-oscar-winning-editor-helped-shape-the-star-wars-legacy/articleshow/131407738.cms",
+      "source": "The Times of India",
+      "author": "ANI",
+      "published_at": "2026-05-30T10:33:32Z",
+      "image": "https://static.toiimg.com/thumb/msid-131407768,width-1280,height-720,resizemode-6,overlay-toi_sw,pt-32,y_pad-600/photo.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Quote of the day by Steven Spielberg: 'Everything has to start with fear. Loss, loneliness, being challenged and pursued by big forces...'; Jaws, Schindler's List, Jurassic Park director explains why fear and loneliness can shape personal growth",
+      "description": "Filmmaker Steven Spielberg once shared how his personal struggles with fear and loneliness influenced his connection to one of his movies. He reveals that childhood bullying resonated deeply with him. The Hollywood legend believes that facing challenges and o…",
+      "url": "https://economictimes.indiatimes.com/magazines/panache/quote-of-the-day-by-steven-spielberg-everything-has-to-start-with-fear-loss-loneliness-being-challenged-and-pursued-by-big-forces-jaws-schindlers-list-jurassic-park-director-explains-why-fear-and-loneliness-can-shape-personal-growth/articleshow/131406820.cms",
+      "source": "The Times of India",
+      "author": "ET Online",
+      "published_at": "2026-05-30T10:24:22Z",
+      "image": "https://img.etimg.com/thumb/msid-131407574,width-1200,height-630,imgsize-52440,overlay-etpanache/articleshow.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Want to Watch a James Bond Movie? These Are My Top Picks",
+      "description": "I know the Bond movies inside and out. Let me help you find the right one to watch tonight.",
+      "url": "https://www.cnet.com/culture/entertainment/james-bond-007-movies-actors-guide-to-getting-started/",
+      "source": "CNET",
+      "author": "Jon Skillings",
+      "published_at": "2026-05-30T10:01:07Z",
+      "image": "https://www.cnet.com/a/img/resize/91fcd71f93e69859c4486d836296dad5eebb1d5d/hub/2026/05/29/237278af-58c0-462f-a453-121172459bae/gettyimages-2200836559.jpg?auto=webp&fit=crop&height=675&width=1200"
+    },
+    {
+      "query_label": "awards",
+      "title": "Flopping Is Ethically Fine and Visually Atrocious",
+      "description": "Flopping in the NBA is ethically defensible, Jake Nevins writes. But the Oklahoma City Thunder’s mastery of this dark art has made them a deserving villain.",
+      "url": "http://nymag.com/intelligencer/article/flopping-nba-sga-thunder-spurs-knicks.html",
+      "source": "New York Magazine",
+      "author": "Jake Nevins",
+      "published_at": "2026-05-30T10:00:20Z",
+      "image": "https://pyxis.nymag.com/v1/imgs/dfd/b91/125bcb812bb42d45c378b38ae99fa8e6d1-flopping.1x.rsocial.w1200.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Architects will \"cringe a bit\" at design horrors in Backrooms says production designer - Dezeen",
+      "description": "Architects will \"cringe a bit\" at design horrors in Backrooms says production designerDezeen Kane Parsons: From YouTube Sensation to A24’s Youngest DirectorThe New York Times 'Backrooms': Breaking Down the Ending of A24's New Atmospheric HorrorTime Magazine ‘…",
+      "url": "https://slashdot.org/firehose.pl?op=view&amp;id=183454730",
+      "source": "Slashdot.org",
+      "author": "feedfeeder",
+      "published_at": "2026-05-30T09:52:42Z",
+      "image": null
+    },
+    {
+      "query_label": "box_office",
+      "title": "Bhooth Bangla OTT Release Date: Akshay Kumar's horror-comedy sets its Netflix premiere | Entertainment News | Sacnilk",
+      "description": "Latest Entertainment news about Bhooth Bangla OTT Release Date: Akshay Kumar's horror-comedy sets its Netflix premiere. Stay updated with entertainment industry updates on Sacnilk.",
+      "url": "https://www.sacnilk.com/news/bhooth-bangla-ott-release-date-akshay-kumars-horror-comedy-sets-its-netflix-premiere",
+      "source": "Sacnilk.com",
+      "author": "Sacnilk Technologies Pvt. Ltd.",
+      "published_at": "2026-05-30T09:39:42Z",
+      "image": "https://cdn.sacnilk.com/image/news300/1000025892.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Maura Higgins showcases her toned abs in tiny black bralette and figure-hugging skirt as she wows in second stylish look for Sports Illustrated beach club party in Miami",
+      "description": "Maura Higgins made sure not to miss the mark once again as she showcased her impressive physique for the Sports Illustrated Swimsuit Dinner in Miami on Friday night.",
+      "url": "https://www.dailymail.com/tvshowbiz/article-15860415/Maura-Higgins-abs-tiny-black-bralette-skirt-Sports-Illustrated-party-Miami.html",
+      "source": "Dailymail.com",
+      "author": "Kirsten Murray",
+      "published_at": "2026-05-30T08:53:02Z",
+      "image": "https://i.dailymail.com/1s/2026/05/30/09/108973233-0-image-m-13_1780129351737.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Oscar Cluff showed he's 'good all-around player' at NBA draft workout, credits Purdue basketball",
+      "description": "Oscar Cluff credited his Purdue experience for preparing him to play professionally. He said he played with \"NBA players\" and had \"elite\" coaches.",
+      "url": "https://www.indystar.com/story/sports/college/purdue/2026/05/30/purdue-basketball-oscar-cluff-eligibility-nba-draft-workout-warriors-adidas-eurocamp-italy/90315045007/",
+      "source": "The Indianapolis Star",
+      "author": "Nathan Baird, Indianapolis Star",
+      "published_at": "2026-05-30T08:50:36Z",
+      "image": "https://s.yimg.com/ny/api/res/1.2/GqSjyyKHJtBMNpljdqsjxg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD0xMTczO2NmPXdlYnA-/https://media.zenfs.com/en/indianapolis_star_natl_articles_522/af876f2569a1d94a6b2e793ca2a460b9"
+    },
+    {
+      "query_label": "awards",
+      "title": "Reclusive 90s Hollywood star makes first appearance in 11 years on Toy Story 5 red carpet",
+      "description": "The ‘Shameless’ alum voices Jessie in the hit Pixar franchise",
+      "url": "https://www.the-independent.com/arts-entertainment/films/news/joan-cusack-toy-story-5-london-red-carpet-b2986361.html",
+      "source": "The-independent.com",
+      "author": "Amber Raiken",
+      "published_at": "2026-05-30T07:23:23Z",
+      "image": "https://static.the-independent.com/2026/05/29/12/46/MixCollage-29-May-2026-08-56-AM-5008.jpeg?trim=0,0,0,0&width=1200&height=800&crop=1200:800"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Samara Weaving Reveals She Once Pretended to Be Margot Robbie for a Fan",
+      "description": "Samara Weaving is sharing a hilarious story about the time she was mistaken for Margot Robbie and decided to go […]\nThe post Samara Weaving Reveals She Once Pretended to Be Margot Robbie for a Fan appeared first on Just Jared - Celebrity News and Gossip | Ent…",
+      "url": "https://www.justjared.com/2026/05/30/samara-weaving-reveals-she-once-pretended-to-be-margot-robbie-for-a-fan/",
+      "source": "Just Jared",
+      "author": "Maddy Lennon",
+      "published_at": "2026-05-30T06:32:27Z",
+      "image": "https://www.justjared.com/wp-content/uploads/2026/05/samara-weaving-pretending-margot-robbie.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "This Year’s Most Anticipated Horror Movie Captures One of the Internet’s Eeriest Phenomena - Slate Magazine",
+      "description": "This Year’s Most Anticipated Horror Movie Captures One of the Internet’s Eeriest PhenomenaSlate Magazine Kane Parsons: From YouTube Sensation to A24’s Youngest DirectorThe New York Times ‘Backrooms’ Review: Entering an Eerie ExpanseWSJ Backrooms review – Kane…",
+      "url": "https://slashdot.org/firehose.pl?op=view&amp;id=183452068",
+      "source": "Slashdot.org",
+      "author": "feedfeeder",
+      "published_at": "2026-05-30T06:32:06Z",
+      "image": null
+    },
+    {
+      "query_label": "awards",
+      "title": "Marcia Lucas, Oscar-winning ‘Star Wars’ editor and George Lucas ex-wife, dead at 80",
+      "description": "She was also part of the editing team for director Martin Scorsese’s 1970s films “Taxi Driver,” “Alice Doesn’t Live Here Anymore” and “New York, New York.”",
+      "url": "https://nypost.com/2026/05/30/media/marcia-lucas-oscar-winning-star-wars-editor-and-george-lucas-ex-wife-dead-at-80/",
+      "source": "New York Post",
+      "author": "Associated Press",
+      "published_at": "2026-05-30T06:04:19Z",
+      "image": "https://nypost.com/wp-content/uploads/sites/2/2026/05/crop-39532142.jpg?quality=75&strip=all&w=1200"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Ram Charan to Undergo Surgery Soon | Ram Charan to Undergo Surgery Soon",
+      "description": "During one of these training sessions, he suffered a cartilage tear in his hand and also damaged a bone.",
+      "url": "https://english.tupaki.com/entertainment/ram-charan-hand-injury-surgery-soon-1489542",
+      "source": "Tupaki.com",
+      "author": "Priya Chowdhary Nuthalapti",
+      "published_at": "2026-05-30T05:50:55Z",
+      "image": "https://content.tupaki.com/h-upload/2026/05/30/1214112-sdfehfe.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Speed on and off the pitch: What Irish rugby can learn from France",
+      "description": "Ireland need to consider expansion and finding a way to tap into the cultural zeitgeist to increase funds and playing numbers",
+      "url": "https://www.irishtimes.com/sport/rugby/2026/05/30/speed-on-and-off-the-pitch-what-irish-rugby-can-learn-from-france/",
+      "source": "The Irish Times",
+      "author": "Nathan Johns",
+      "published_at": "2026-05-30T05:00:00Z",
+      "image": "https://www.irishtimes.com/resizer/v2/HIBCZVWSOWB35JRDM73NWHUOWM.jpg?smart=true&auth=fbef6f8de62314b8079c0002c18fa5350954ef3e2e5cea95f6e3a3c2d756541a&width=1200&height=630"
+    },
+    {
+      "query_label": "awards",
+      "title": "Bill Nighy: The smooth podcast king no one saw coming",
+      "description": "It would be hard to like the ‘Love Actually’ star more – but now the 76-year-old actor has pivoted to podcasting and it’s all anyone wants to talk to him about. He tells Ellie Harrison about his sublime side-hustle",
+      "url": "https://www.the-independent.com/arts-entertainment/tv/features/bill-nighy-ill-advised-podcast-interview-b2985131.html",
+      "source": "The-independent.com",
+      "author": "Ellie Harrison",
+      "published_at": "2026-05-30T05:00:00Z",
+      "image": "https://static.the-independent.com/2026/05/28/10/44/Screenshot-2026-05-28-at-11-58-03.png?trim=20,0,20,0&width=1200&height=800&crop=1200:800"
+    },
+    {
+      "query_label": "awards",
+      "title": "Gwyneth Paltrow's hilarious response to fans roasting her 'disgusting' dairy substitute",
+      "description": "Gwyneth Paltrow managed to keep her sense of humor after her fans shared their disgust over the unexpected ingredient she uses to replace dairy in her cooking.",
+      "url": "https://www.dailymail.com/tvshowbiz/article-15860221/Gwyneth-Paltrow-hilarious-response-fans-roasting-dairy-substitute.html",
+      "source": "Dailymail.com",
+      "author": "Brian Marks, Sharon Mai",
+      "published_at": "2026-05-30T04:59:30Z",
+      "image": "https://i.dailymail.com/1s/2026/05/30/05/108971915-0-image-m-13_1780116413836.jpg"
+    },
+    {
+      "query_label": "awards",
+      "title": "Appleton area high school sports results for Friday, May 29",
+      "description": "High school track and field, baseball and lacrosse teams were in action.",
+      "url": "https://www.postcrescent.com/story/sports/high-school/2026/05/29/appleton-area-high-school-sports-results-for-friday-may-29/90326098007/",
+      "source": "Appleton Post Crescent",
+      "author": "USA TODAY NETWORK-Wisconsin, Appleton Post-Crescent",
+      "published_at": "2026-05-30T04:34:56Z",
+      "image": "https://s.yimg.com/ny/api/res/1.2/lRYWIGurC5Jh21JA_N6YmQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD04NTI7Y2Y9d2VicA--/https://media.zenfs.com/en/the-post-crescent/17a46ac596bebba8f5c80022c960752b"
+    },
+    {
+      "query_label": "awards",
+      "title": "Green Bay area high school sports results for Friday, May 29",
+      "description": "High school track and field, baseball and lacrosse teams were in action.",
+      "url": "https://www.greenbaypressgazette.com/story/sports/high-school/2026/05/29/green-bay-area-high-school-sports-results-for-friday-may-29/90326282007/",
+      "source": "Green Bay Press Gazette",
+      "author": "USA TODAY NETWORK-Wisconsin, Green Bay Press-Gazette",
+      "published_at": "2026-05-30T04:32:46Z",
+      "image": "https://s.yimg.com/ny/api/res/1.2/gedLEsqcQ.D0612CcnOeUQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD04Nzk7Y2Y9d2VicA--/https://media.zenfs.com/en/green-bay-press-gazette/527ada38a5d80156896fa662abc9fe3d"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Obsession OTT release details: When and where to watch the uncensored version of Michael Johnston, Inde Navarrette’s hit horror movie online in India",
+      "description": "Low-budget horror film Obsession has become a global box-office sensation, earning over $100 million worldwide. Directed by Curry Barker, the supernatural thriller about a wish gone wrong is reportedly set for a digital release in India. Read on to know more …",
+      "url": "https://economictimes.indiatimes.com/magazines/panache/obsession-ott-release-details-when-and-where-to-watch-the-uncensored-version-of-michael-johnston-inde-navarrettes-hit-horror-movie-online-in-india/articleshow/131403400.cms",
+      "source": "The Times of India",
+      "author": "ET Online",
+      "published_at": "2026-05-30T03:39:34Z",
+      "image": "https://img.etimg.com/thumb/msid-131403440,width-1200,height-630,imgsize-42024,overlay-etpanache/articleshow.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Stanley Cup drought in Canada extends to 33 years after Canadiens fall to Hurricanes",
+      "description": "It's been over three decades since a Canadian team lifted the Stanley Cup",
+      "url": "https://www.cbssports.com/nhl/news/canada-stanley-cup-drought-canadiens-oilers-maple-leafs-senators-canucks-flames-jets/",
+      "source": "CBS Sports",
+      "author": "Austin Nivison",
+      "published_at": "2026-05-30T03:38:15Z",
+      "image": "https://sportshub.cbsistatic.com/i/r/2026/05/30/0302aa52-0753-443e-8db0-6d0403f90bb5/thumbnail/1200x675/d61d0041874b993ab8e1409d70c40a16/canadiens-goalie-sad.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Third Installment of 28 Years Later Planned to Film Next Year",
+      "description": "Good news for fans of 28 Years Later as Director Danny Boyle finally confirms they plan to begin filming the third installment next year. There was concern that we would not get a third film after The Bone Temple performed poorly at the box office. The first …",
+      "url": "https://ohnotheydidnt.livejournal.com/132405118.html",
+      "source": "Livejournal.com",
+      "author": "snowfallens",
+      "published_at": "2026-05-30T02:45:37Z",
+      "image": "https://l-files.livejournal.net/og_image/3616053/517207?v=1780109140"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Grammy-winning folk music icon known for his boyish good looks is unrecognizable in yearbook photos... can you guess who he is?",
+      "description": "He dropped out of college in the mid-1960s to move to Los Angeles and pursue music, in spite of the initial disapproval of his father, a decorated military pilot.",
+      "url": "https://www.dailymail.com/tvshowbiz/article-15859779/folk-country-singer-nature-guess-who.html",
+      "source": "Dailymail.com",
+      "author": "Jennifer Pearson",
+      "published_at": "2026-05-30T02:23:05Z",
+      "image": "https://i.dailymail.com/1s/2026/05/30/00/108967645-0-image-m-84_1780097318805.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Box Office: ‘Backrooms’ Makes $10.4 Million in Previews, Shattering A24 Record - Yahoo",
+      "description": "Box Office: &lsquo;Backrooms&rsquo; Makes $10.4 Million in Previews, Shattering A24 RecordYahoo See more headlines &amp; perspectives on Google News ...",
+      "url": "https://slashdot.org/firehose.pl?op=view&amp;id=183450852",
+      "source": "Slashdot.org",
+      "author": "feedfeeder",
+      "published_at": "2026-05-30T01:32:49Z",
+      "image": null
+    },
+    {
+      "query_label": "trailers",
+      "title": "In brief: 'In the Hand of Dante' official trailer and more",
+      "description": "In brief: 'In the Hand of Dante' official trailer and moretheboneonline.com",
+      "url": "https://www.theboneonline.com/entertainment/brief-in-hand-dante-official-trailer-more/SRZYJBO5PEZTRM5USQBJSO65VI/",
+      "source": "Theboneonline.com",
+      "author": "Mary Pat Thompson",
+      "published_at": "2026-05-30T00:30:52Z",
+      "image": "https://cmg-cmg-rd-20104-prod.cdn.arcpublishing.com/resizer/v2/https%3A%2F%2Fcloudfront-us-east-1.images.arcpublishing.com%2Fcmg%2FYM4SRFS6FQ4WNIMIQ2BTTXDJBA.jpg?auth=73186830fad4f1361f7ae337246aa1b1eadcea2b2ff52ca9eed70cae788627a9&width=1200&height=630&smart=true"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Demon Slayer Meets Dragon Ball in Netflix's Most Underrated Anime Gem, Yaiba",
+      "description": "Discover the overlooked anime gem Yaiba: Samurai Legend, a perfect blend of Dragon Ball and Demon Slayer, now streaming on Netflix.",
+      "url": "https://screenrant.com/yaiba-samurai-hero-demon-slayer-meets-dragon-ball/",
+      "source": "Screen Rant",
+      "author": "Zach Zamora",
+      "published_at": "2026-05-30T00:00:21Z",
+      "image": "https://static0.srcdn.com/wordpress/wp-content/uploads/2025/11/goku-tanjiro-demon-slayer-dragon-ball.png?w=1600&h=900&fit=crop"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "AI-generated movie \"Dreams of Violets\" cost $2,000, took 2 months to make, director says",
+      "description": "A new movie titled \"Dreams of Violets,\" with images fully generated by artificial intelligence, is set to premiere next month. Jo Ling Kent reports on the film made with no lights, no cameras and no actors.",
+      "url": "https://www.cbsnews.com/video/ai-generated-movie-dreams-violets-director/",
+      "source": "CBS News",
+      "author": "CBS News",
+      "published_at": "2026-05-29T23:53:15Z",
+      "image": "https://assets3.cbsnewsstatic.com/hub/i/r/2026/05/29/da8d69cd-8404-4908-b732-4edf0d3dfd5b/thumbnail/1200x630/7aa91436abee48cea9799e0cb64aa677/cbsn-fusion-ai-generated-movie-dreams-violets-director-thumbnail.jpg"
+    },
+    {
+      "query_label": "box_office",
+      "title": "‘Mandalorian And Grogu’ Heading Toward 69% Dive At Weekend 2 Box Office",
+      "description": "“Backrooms” and “Obsession” are poised to blast “The Mandalorian and Grogu” from the top of the box office as the “Star Wars” film heads into its second weekend of release.",
+      "url": "https://www.forbes.com/sites/timlammers/2026/05/29/mandalorian-and-grogu-heading-toward-69-drop-at-weekend-2-box-office/",
+      "source": "Forbes",
+      "author": "Tim Lammers, Contributor, \n Tim Lammers, Contributor\n https://www.forbes.com/sites/timlammers/",
+      "published_at": "2026-05-29T23:50:38Z",
+      "image": "https://imageio.forbes.com/specials-images/imageserve/6a1a22ed093a6271ed0e5ccf/0x0.jpg?format=jpg&crop=3110,1749,x0,y0,safe&height=900&width=1600&fit=bounds"
+    },
+    {
+      "query_label": "box_office",
+      "title": "How to Watch the Original ‘Backrooms’ YouTube Series That Inspired Kane Parsons’ Eerie A24 Film",
+      "description": "Having already grossed more than $10 million in previews, “Backrooms,” the latest feature from A24 and the debut directorial effort of 20-year-old Kane Parson, is already posed to be a box office hit.  Out in theaters nationwide now, the horror film, starring…",
+      "url": "https://variety.com/2026/film/news/watch-backrooms-youtube-series-kane-parsons-horror-movie-1236762708/",
+      "source": "Variety",
+      "author": "Payton Turkeltaub",
+      "published_at": "2026-05-29T23:30:00Z",
+      "image": "https://variety.com/wp-content/uploads/2026/05/MCDBACK_EC089.jpg?crop=527px%2C650px%2C2400px%2C1351px&resize=1000%2C563"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Avan Jogia Wants to Bring You Into His World",
+      "description": "When choosing his latest projects, 'Backrooms' and '56 Days,' the actor and filmmaker was specifically seeking out roles that not only immersed him but also the audience. That's exactly what he got.",
+      "url": "http://www.hollywoodreporter.com/movies/movie-features/avan-jogia-backrooms-56-days-directing-halsey-interview-1236608318/",
+      "source": "Hollywood Reporter",
+      "author": "Carly Thomas",
+      "published_at": "2026-05-29T23:18:10Z",
+      "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/05/Avan-Jogia-NBT-temp-getty-H-2026.png?w=1440&h=810&crop=1"
+    },
+    {
+      "query_label": "box_office",
+      "title": "Why Scream 7’s Ghostface Killers Are the Worst in the Entire Franchise",
+      "description": "Scream 7 is now streaming on Paramount+, and a much wider audience is getting to check it out. As such, social media is once again lighting up wth reactions to the film, and the overall consensus seems clear: many fans are saying that Scream 7 has the worst G…",
+      "url": "http://comicbook.com/movies/news/why-scream-7s-ghostface-killers-are-the-worst-in-the-entire-franchise/",
+      "source": "ComicBook.com",
+      "author": "Kofi Outlaw",
+      "published_at": "2026-05-29T23:00:00Z",
+      "image": "https://comicbook.com/wp-content/uploads/sites/4/2026/02/scream-7-movie.jpg?resize=2000,1125"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Jana Kramer Shares Her Experience of Finding Faith Through Divorce",
+      "description": "Although Jana Kramer’s divorce from Mike Caussin was far from easy, the actress is grateful that the experience led her to God. “I really truly found faith through my divorce,” Kramer, 42, exclusively shared with Us Weekly before the Saturday, May 30, premier…",
+      "url": "https://www.usmagazine.com/celebrity-news/news/how-jana-kramer-found-faith-through-her-public-divorce/",
+      "source": "Us Weekly",
+      "author": "Mike Vulpo",
+      "published_at": "2026-05-29T21:35:24Z",
+      "image": "https://www.usmagazine.com/wp-content/uploads/2026/05/GettyImages-2277022352-jana-kramer.jpg?crop=0px%2C0px%2C1200px%2C630px&resize=1200%2C630&quality=70&strip=all"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Original HE-MAN Star Dolph Lundgren Reveals His Role in New MASTERS OF THE UNIVERSE Movie",
+      "description": "Fans of Masters of the Universe are about to get a pretty awesome full-circle moment when the new movie hits theaters, and it sounds like the original live-action He-Man himself is stepping back into Eternia in a meaningful way.During a recent interview at th…",
+      "url": "https://geektyrant.com/news/original-he-man-star-dolph-lundgren-reveals-his-role-in-new-masters-of-the-universe-movie",
       "source": "GeekTyrant",
       "author": "Joey Paur",
-      "published_at": "2026-05-29T11:58:00Z",
-      "image": "http://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/69f4ae049ec2ed7dcff1d6f2/1780055915761/New+JAWS+Documentary+THE+FARMER+AND+THE+SHARK+Will+Explore+The+Film%27s+Unsung+Hero+Craig+Kingsbury.jpg?format=1500w"
+      "published_at": "2026-05-29T21:31:00Z",
+      "image": "http://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/6a15ab5db6672c5ec121c7db/1780090306488/Original+HE-MAN+Star+Dolph+Lundgren+Reveals+His+Role+in+New+MASTERS+OF+THE+UNIVERSE+Movie.jpg?format=1500w"
     },
     {
-      "query_label": "festivals",
-      "title": "What the Hell Are the ‘Backrooms’ Monsters Anyway?",
-      "description": "The monsters of the Backrooms are frequently suggested, but not often seen in images and videos. Kane Parsons' new film takes a different approach.",
-      "url": "https://collider.com/backrooms-monsters-explained/",
-      "source": "Collider.com",
-      "author": "Anthony Crislip",
-      "published_at": "2026-05-29T11:57:14Z",
-      "image": "https://static0.colliderimages.com/wordpress/wp-content/uploads/2026/05/backrooms-3.jpg?w=1600&h=900&fit=crop"
+      "query_label": "streaming_releases",
+      "title": "How the success of D-Day hinged on a weather forecast",
+      "description": "As General Dwight D. Eisenhower prepared for D-Day, he needed a forecast. The new movie Pressure shows the tense make-or-break weather prediction that led to the successful invasion of Europe that spelled the beginning of the end of World War II",
+      "url": "https://www.scientificamerican.com/article/how-the-success-of-d-day-hinged-on-a-weather-forecast/",
+      "source": "Scientific American",
+      "author": "Andrea Thompson",
+      "published_at": "2026-05-29T21:27:00Z",
+      "image": "https://static.scientificamerican.com/dam/asset/8dccb06d-2e24-432d-8933-fb8c7f7bbc59/GettyImages-566464387-web.jpeg?m=1780089416.768&w=1200"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "6 hilarious times RuPaul couldn't remember someone's name",
+      "description": "RuPaul may be the head of a hugely successful reality TV franchise and have the memory of a steel trap when it comes to pop culture, but he can’t remember a name to save his life.",
+      "url": "https://www.out.com/rupaul-forgetting-names",
+      "source": "Out.com",
+      "author": "Ariel Messman-Rucker",
+      "published_at": "2026-05-29T20:39:56Z",
+      "image": "https://www.out.com/media-library/rupaul-charles.jpg?id=66838435&width=1200&height=600&coordinates=0%2C62%2C0%2C63"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Power Ballad's Tale of Artistic Theft Is Almost Too Much to Bear",
+      "description": "John Carney's new movie, starring Paul Rudd and Nick Jonas, springs from a horrifying premise: that an idea you’ve protected and nurtured for years can be stolen in an instant by someone more powerful.",
+      "url": "https://time.com/article/2026/05/29/power-ballad-movie-review/",
+      "source": "Time",
+      "author": "Stephanie Zacharek",
+      "published_at": "2026-05-29T20:37:21Z",
+      "image": "https://gcp-na-images.contentstack.com/v3/assets/bltea6093859af6183b/blt93d0106babc6dcb5/6a19f6775198ff6948fbac6f/powerballad-unit-240510-00156rc.jpg?branch=production&width=3840&quality=75&auto=webp&crop=16:9"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "What To Watch This Weekend: New Shows And Movies To Stream On Netflix, Hulu, Prime Video, Apple TV And More",
+      "description": "Looking for something new to stream this weekend? Here’s every major new movie and show hitting Netflix, Hulu, Prime Video, Apple TV and more.",
+      "url": "https://www.forbes.com/sites/erikkain/2026/05/29/what-to-watch-this-weekend-new-shows-and-movies-to-stream-on-netflix-hulu-prime-video-apple-tv-and-more/",
+      "source": "Forbes",
+      "author": "Erik Kain, Senior Contributor, \n Erik Kain, Senior Contributor\n https://www.forbes.com/sites/erikkain/",
+      "published_at": "2026-05-29T20:00:29Z",
+      "image": "https://imageio.forbes.com/specials-images/imageserve/6a19eaa43eeb07c6b5348b8d/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "KAYLA'S GOING-AWAY PARTY: Horror Icons Bill Moseley And Lynn Lowry Join Indie Horror Film",
+      "description": "After a suburban housewife suffers a psychotic episode during her farewell party and her guests vanish without a trace, a movie-obsessed detective must unravel a crime with no evidence--and a suspect who remembers nothing.\n \n [Read the whole post on screenana…",
+      "url": "https://screenanarchy.com/2026/05/kaylas-going-away-party-horror-icons-bill-moseley-and-lynn-lowry-join-indie-horror-film.html",
+      "source": "Screenanarchy.com",
+      "author": "https://facebook.com/https://www.facebook.com/andrew.mack.735",
+      "published_at": "2026-05-29T19:37:49Z",
+      "image": "https://screenanarchy.com/assets_c/2026/05/Kayla_s%20Going-Away%20Party%20Proof-of-Concept%20Poster-thumb-500x500-104523.jpg"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "What's New to Watch on Netflix the Week of May 29-June 4, 2026",
+      "description": "Close out one month and start a new one with our top Netflix picks, including tons of new movies, a Michael Jackson docuseries, and more.\nThe first of the month, as always, delivers a load of new content to Netflix, including the Riddick flicks, the Rocky mov…",
+      "url": "https://uk.pcmag.com/video-streaming-services/165235/whats-new-to-watch-on-netflix-the-week-of-may-29-june-4-2026",
+      "source": "PCMag.com",
+      "author": "K. Thor Jensen",
+      "published_at": "2026-05-29T18:00:00Z",
+      "image": "https://sm.pcmag.com/t/pcmag_uk/news/w/whats-new-/whats-new-to-watch-on-netflix-the-week-of-may-29-june-4-2026_sypb.1200.jpg"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Everything NEW Coming to Disney+ in June",
+      "description": "June is a packed month for Disney+ new releases!",
+      "url": "https://www.disneyfoodblog.com/2026/05/29/everything-new-coming-to-disney-in-june/",
+      "source": "disneyfoodblog.com",
+      "author": "Sydney Leever",
+      "published_at": "2026-05-29T17:51:53Z",
+      "image": "https://www.disneyfoodblog.com/wp-content/uploads/2026/05/2026-disney-plus-locker-diaries-phineas-and-ferb-school-700x394.jpg"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Is John Travolta’s ‘Propeller One-Way Night Coach’ Movie Based on a True Story?",
+      "description": "John Travolta's new film is inspired by his childhood passion for aviation.",
+      "url": "https://decider.com/2026/05/29/john-travolta-movie-propeller-one-way-night-coach-true-story-cast/",
+      "source": "Decider",
+      "author": "mliss1578",
+      "published_at": "2026-05-29T17:00:00Z",
+      "image": "https://decider.com/wp-content/uploads/2026/05/john-travolta-movie-propeller-one-way-night-coach-true-story.jpg?quality=75&strip=all&w=1200"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Toy Story 5’s Original Plan Should Fix 1 Major Fear About the Pixar Sequel",
+      "description": "One of the biggest animated movie franchises of all time is coming back. Toy Story 5 already has big expectations surrounding it, especially because of its surprisingly timely premise. But at the same time, Pixar probably expected a somewhat complicated react…",
+      "url": "http://comicbook.com/movies/feature/toy-story-5s-original-plan-should-fix-1-major-fear-about-the-pixar-sequel/",
+      "source": "ComicBook.com",
+      "author": "Catherine Delgado",
+      "published_at": "2026-05-29T17:00:00Z",
+      "image": "https://comicbook.com/wp-content/uploads/sites/4/2026/05/toy-story-5-movie-still.jpg?resize=2000,1125"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "20 Years Later, X-Men: The Last Stand's Mistakes Are Avengers: Doomsday's Roadmap",
+      "description": "X-Men: The Last Stand destroyed the original trilogy thanks to terrible reviews, but the MCU can use that as a template for what not to do.",
+      "url": "https://screenrant.com/xmen-last-stand-20-anniversary-avengers-doomsday/",
+      "source": "Screen Rant",
+      "author": "Shawn S. Lealos",
+      "published_at": "2026-05-29T16:55:21Z",
+      "image": "https://static0.srcdn.com/wordpress/wp-content/uploads/2026/05/halle-berry-as-storm-in-x-men-the-last-stand-1.jpg?w=1600&h=900&fit=crop"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Paul Rudd Denies Doing Botox While Talking About His Ageless Appearance at 57",
+      "description": "Paul Rudd is speaking out on his ageless appearance amid people questioning if he’s had any work done. The 57-year-old […]\nThe post Paul Rudd Denies Doing Botox While Talking About His Ageless Appearance at 57 appeared first on Just Jared - Celebrity News and…",
+      "url": "https://www.justjared.com/2026/05/29/paul-rudd-denies-doing-botox-while-talking-about-his-ageless-appearance-at-57/",
+      "source": "Just Jared",
+      "author": "David Niederhoffer",
+      "published_at": "2026-05-29T16:39:47Z",
+      "image": "https://www.justjared.com/wp-content/uploads/2026/05/paul-rudd-denies-doing-botoz.jpg"
+    },
+    {
+      "query_label": "trailers",
+      "title": "Spielberg 'DISCLOSURE' Feeding UFO Confusion... | UNIVERSAL marketing blurring reality and fiction...",
+      "description": "Steven Spielberg's 'Disclosure Day' gets confusing buzz. Tom Hardy cannot be bothered. Miles Teller discovers the Streisand effect. Kane Parsons and Curry Barker gang up on Grogu. AI makes history (again) as we look at who won and lost the week in Hollywood.",
+      "url": "http://www.hollywoodreporter.com/movies/movie-news/tom-hardy-steven-spielberg-backrooms-obsession-1236607876/",
+      "source": "Hollywood Reporter",
+      "author": "the hollywood reporter",
+      "published_at": "2026-05-29T16:00:23Z",
+      "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/05/Steven-Spielberg-and-Tom-Hardy-Split-Getty-H-2026.jpg?w=1296&h=730&crop=1"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "I Just Found Out Barack Obama Absolutely Trolled Steven Spielberg When He Didn’t Let Him Watch Disclosure Day Early",
+      "description": "Honestly, I get it.",
+      "url": "https://www.cinemablend.com/movies/barack-obama-absolutely-trolled-steven-spielberg-when-he-didnt-let-him-watch-disclosure-day-early",
+      "source": "CinemaBlend",
+      "author": "Corey Chichizola",
+      "published_at": "2026-05-29T14:46:57Z",
+      "image": "https://cdn.mos.cms.futurecdn.net/o2Ht3zLo4xSyz78ji8NxW3-1280-80.jpg"
+    },
+    {
+      "query_label": "streaming_releases",
+      "title": "Invisible Spending Crisis: Why Rs 99 Subscriptions Are Costing More Than Gen Z Salaries Expect",
+      "description": "The issue gained traction after a Reddit user shared his surprise at discovering where his monthly income was actually going.",
+      "url": "https://news.abplive.com/business/personal-finance/invisible-spending-crisis-why-rs-99-subscriptions-are-costing-more-than-gen-z-salaries-expect-1846995",
+      "source": "Abplive.com",
+      "author": "Sagarika Chakraborty",
+      "published_at": "2026-05-29T14:40:11Z",
+      "image": "https://feeds.abplive.com/onecms/images/uploaded-images/2026/05/29/241f862e78148f3fae200448beebc53217800627171171313_original.jpg?impolicy=abp_cdn&imwidth=1200"
+    },
+    {
+      "query_label": "trailers",
+      "title": "The Most Epic Fantasy Franchise Returns With New Trailer That Promises All-Out War",
+      "description": "Image via HBO\n\nThe past 10-15 years have seen a lot of epic fantasy sagas and franchises on TV, led by the popularity of Game of Thrones. Every studio and network has tried to capitalize on that success and launch not only rival series (like Prime Video’s The…",
+      "url": "http://comicbook.com/tv-shows/news/the-most-epic-fantasy-franchise-returns-with-new-trailer-that-promises-all-out-war/",
+      "source": "ComicBook.com",
+      "author": "James Hunt",
+      "published_at": "2026-05-29T14:02:38Z",
+      "image": "https://comicbook.com/wp-content/uploads/sites/4/2026/05/House-of-the-Dragon-Season-3.jpg?resize=2000,1125"
     },
     {
       "query_label": "trailers",
@@ -134,116 +764,6 @@
       "image": "https://img.etimg.com/thumb/msid-131390169,width-1200,height-630,imgsize-130534,overlay-etpanache/articleshow.jpg"
     },
     {
-      "query_label": "festivals",
-      "title": "Tollywood bids an emotional adieu to Anik Dutta",
-      "description": "The Tollywood film industry and fans mourn the unexpected passing of acclaimed filmmaker Anik Dutta, remembered for his impactful social commentary and celebrated works like 'Bhooter Bhabishyat.'",
-      "url": "https://timesofindia.indiatimes.com/entertainment/tollywood-mourns-the-loss-of-visionary-filmmaker-anik-dutta/articleshow/131389984.cms",
-      "source": "The Times of India",
-      "author": "Smritika Banerjee",
-      "published_at": "2026-05-29T11:51:38Z",
-      "image": "https://static.toiimg.com/thumb/msid-131390072,width-1280,height-720,resizemode-6,overlay-toi_sw,pt-32,y_pad-600/photo.jpg"
-    },
-    {
-      "query_label": "festivals",
-      "title": "Amir Khan’s Dil Hai Ki Manta Nahin heroine Pooja Bhatt reveals the truth of their equation: ‘We were totally in love when…’",
-      "description": "Pooja Bhatt recently revealed a romantic spark with Aamir Khan during the filming of 'Dil Hai Ki Manta Nahi,' though she clarified it never materialized into a relationship.  She described their on-screen chemistry as being 'totally in love,' while Khan was m…",
-      "url": "https://economictimes.indiatimes.com/magazines/panache/amir-khans-dil-hai-ki-manta-nahin-heroine-pooja-bhatt-reveals-the-truth-of-their-equation-we-were-totally-in-love-when/articleshow/131389902.cms",
-      "source": "The Times of India",
-      "author": "ET Online",
-      "published_at": "2026-05-29T11:50:51Z",
-      "image": "https://img.etimg.com/thumb/msid-131389992,width-1200,height-630,imgsize-50996,overlay-etpanache/articleshow.jpg"
-    },
-    {
-      "query_label": "festivals",
-      "title": "Celebripost",
-      "description": "Con Jennifer Lopez, Camila Mendes e Tom Hanks con Woody di \"Toy Story\"",
-      "url": "https://www.ilpost.it/2026/05/29/celebripost-618/",
-      "source": "Ilpost.it",
-      "author": null,
-      "published_at": "2026-05-29T11:49:20Z",
-      "image": "https://static-prod.cdnilpost.com/wp-content/uploads/2026/05/29/1780045546-GettyImages-2278643902.jpg"
-    },
-    {
-      "query_label": "festivals",
-      "title": "The A-Team legend Mr. T, 74, attends meet and greet in Philadelphia... where photo opportunities cost $159.99!",
-      "description": "The actor, famed for his legendary role as tough-talking B.A. Baracus in The A-Team, was in attendance at Philadelphia Convention Centre for FAN EXPO.",
-      "url": "https://www.dailymail.com/tvshowbiz/article-15858311/The-Team-legend-Mr-T-74-attends-meet-greet-Philadelphia-photo-opportunities-cost-159-99.html",
-      "source": "Dailymail.com",
-      "author": "Jason Chester",
-      "published_at": "2026-05-29T11:47:21Z",
-      "image": "https://i.dailymail.com/1s/2026/05/29/12/108954177-0-image-m-18_1780054915963.jpg"
-    },
-    {
-      "query_label": "festivals",
-      "title": "15 Times American Movies Pretended Mexico Was Yellow",
-      "description": "You’d be forgiven for not knowing this, but Mexico isn’t covered in yellow tint. This is a myth propagated by popular media, since they insist on using the filter when showing scenes happening within the country. The alleged reason is that it helps inform the…",
-      "url": "http://www.denofgeek.com/tv/15-times-american-movies-pretended-mexico-was-yellow/",
-      "source": "Den of Geek US",
-      "author": "Alfredo Federico Robelo",
-      "published_at": "2026-05-29T11:45:00Z",
-      "image": "https://www.denofgeek.com/wp-content/uploads/2026/05/img-22-2.jpg?fit=1200%2C675"
-    },
-    {
-      "query_label": "festivals",
-      "title": "The Ride Everyone Thought Was Getting Replaced Just Got a Surprise Refresh From Disney",
-      "description": "The Gran Fiesta Tour Starring The Three Caballeros at EPCOT’s Mexico Pavilion occupies a specific and contested space in the Walt Disney World conversation. It is not the most technically advanced ride on the property. It is not the longest. It is not the one…",
-      "url": "https://insidethemagic.net/2026/05/the-ride-everyone-thought-was-getting-replaced-just-got-a-surprise-refresh-from-disney-el1/",
-      "source": "Inside the Magic",
-      "author": "Erica Lauren",
-      "published_at": "2026-05-29T11:44:52Z",
-      "image": "https://insidethemagic.net/wp-content/uploads/2026/03/spaceship-earth-epcot-el1.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Lancer And Realligator! Launch in Bad Idea's Full August 2026 Solicits",
-      "description": "Two comics about the hunted and the hunters launch in Bad Idea Comics' full August 2026 solicits and solicitations. Lancer #1 is the new launch title from Mike Costa, Jake Baker, and Lee Loughridge about freelance hunters and exterminators, of all animals, bi…",
-      "url": "https://bleedingcool.com/comics/lancer-and-realligator-launch-in-bad-ideas-full-august-2026-solicits/",
-      "source": "Bleeding Cool News",
-      "author": "Rich Johnston",
-      "published_at": "2026-05-29T11:42:12Z",
-      "image": "https://bleedingcool.com/wp-content/uploads/2026/05/lancer-2000x1125.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "130 Happy Anniversary Quotes, Wishes and Messages for Couples and Cards",
-      "description": "If you or someone you know has an anniversary coming up and you need to find the right words to express how you feel, then you’re in the right place. Because in today’s post I want to share 130 of the most meaningful, funny and famous anniversary quotes, wish…",
-      "url": "https://www.positivityblog.com/happy-anniversary-quotes/",
-      "source": "Positivityblog.com",
-      "author": "Henrik Edberg",
-      "published_at": "2026-05-29T11:37:39Z",
-      "image": "https://www.positivityblog.com/wp-content/uploads/happy_anniversary_quotes_wishes.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Bad Bunny secures cameo role in Toy Story 5 after director discovered videos of the rapper playing with Woody and Buzz Lightyear dolls in snaps during Covid",
-      "description": "Bad Bunny has been cast in Toy Story 5 as Pizza with Sunglasses after he posted videos of himself playing with Woody and Buzz Lightyear dolls to Instagram during Covid.",
-      "url": "https://www.dailymail.com/tvshowbiz/article-15858249/Bad-Bunny-cameo-role-Toy-Story-5-videos-rapper-playing-Woody-Buzz-Lightyear-dolls.html",
-      "source": "Dailymail.com",
-      "author": "Kirsten Murray",
-      "published_at": "2026-05-29T11:34:01Z",
-      "image": "https://i.dailymail.com/1s/2026/05/29/12/108954255-0-image-m-41_1780053268373.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "15 Actors Who Tragically Never Saw the End of Production",
-      "description": "Most of the time, audiences only see one version of the movie, the finished product. But for actors, the experience of making and seeing a film are two different things, especially considering how out of chronological order some scenes can be filmed in.\nSadly…",
-      "url": "http://www.denofgeek.com/tv/15-actors-who-tragically-never-saw-the-end-of-production/",
-      "source": "Den of Geek US",
-      "author": "Alfredo Federico Robelo",
-      "published_at": "2026-05-29T11:15:00Z",
-      "image": "https://www.denofgeek.com/wp-content/uploads/2026/05/img-20-3.jpg?fit=1200%2C675"
-    },
-    {
-      "query_label": "awards",
-      "title": "Friday Faves : May 29, 2026",
-      "description": "Hello, and let’s say hey to Friday Faves! When my husband is out of town, it’s lazy dinners for me. Too often that means a bowl of Cinnamon Life cereal with blueberries, raspberries, and high-protein milk. Weird...\nThe post Friday Faves : May 29, 2026 appeare…",
-      "url": "https://www.foodiecrush.com/friday-faves-may-29-2026/",
-      "source": "Foodiecrush.com",
-      "author": "Heidi Larsen",
-      "published_at": "2026-05-29T11:08:00Z",
-      "image": "https://www.foodiecrush.com/wp-content/uploads/2026/05/Chikn-Bowl-with-Spinach-foodiecrush.com_.jpg"
-    },
-    {
       "query_label": "trailers",
       "title": "Spider-Man: Brand New Day Trailer Rated In Canada - And Its Runtime Has Been Revealed!",
       "description": "The second trailer for Spider-Man: Brand New Day has been officially rated in Canada, and we have details on its runtime and insights into when the sneak peek could be released online.",
@@ -252,56 +772,6 @@
       "author": "JoshWilding",
       "published_at": "2026-05-29T11:05:45Z",
       "image": "https://comicbookmovie.com/images/articles/banners/spider-man-brand-new-day-trailer-rated-in-canada---and-its-runtime-has-been-revealed-ab228052.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "I Think There's A Clear Move Disney Needs To Make After The Mandalorian And Grogu",
-      "description": "Since fans can't get over The Child...",
-      "url": "https://www.cinemablend.com/movies/clear-move-disney-needs-to-make-after-the-mandalorian-and-grogu",
-      "source": "CinemaBlend",
-      "author": "Sarah El-Mahmoud",
-      "published_at": "2026-05-29T11:05:00Z",
-      "image": "https://cdn.mos.cms.futurecdn.net/7bmaBRJigpV9bUatiVaTfm-1280-80.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "Nicolas Cage Breaks Silence on Joining HBO’s Iconic Mystery Series",
-      "description": "Image Courtesy of Prime Video\n\nFew actors in Hollywood are as versatile as Nicolas Cage. Over the course of a career spanning four decades, the Academy Award winner has anchored big-budget action franchises like National Treasure and Con Air, delivered quiet …",
-      "url": "http://comicbook.com/tv-shows/news/nicolas-cage-breaks-silence-on-joining-hbos-iconic-mystery-series/",
-      "source": "ComicBook.com",
-      "author": "Marco Vito Oddo",
-      "published_at": "2026-05-29T11:00:00Z",
-      "image": "https://comicbook.com/wp-content/uploads/sites/4/2026/03/Nicolas-Cage-Spider-Noir-Ben-Reilly.jpg?resize=2000,1125"
-    },
-    {
-      "query_label": "awards",
-      "title": "SXSW London Guide: The 9 Best Panels and Premieres to Catch, From Michelle Obama to the Russo Brothers to a New Virginia Woolf Film",
-      "description": "SXSW London kicks off with near perfect timing: Just weeks earlier, the U.K.’s AI sector reported record investment numbers, underscoring London’s status as the AI capital of Europe. “AI as the New Power Structure” is, aptly, a central theme of the second edi…",
-      "url": "https://variety.com/2026/film/festivals/sxsw-london-guide-michelle-obama-russo-brothers-1236761990/",
-      "source": "Variety",
-      "author": "Alex Ritman",
-      "published_at": "2026-05-29T11:00:00Z",
-      "image": "https://variety.com/wp-content/uploads/2026/05/obama-russo-bros.jpg?w=1000&h=563&crop=1"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Meteorologists were central to D-Day. 'Pressure' tells the story of navigating uncertainty",
-      "description": "The new movie, based on writer and actor David Haig's 2014 play, dramatizes the tensions between military leaders and meteorologists in the lead up to the Allied invasion of Normandy.",
-      "url": "https://www.npr.org/2026/05/29/nx-s1-5834960/pressure-movie-review-brendan-fraser-andrew-scott",
-      "source": "NPR",
-      "author": "Daniel Jonah Wolpert",
-      "published_at": "2026-05-29T11:00:00Z",
-      "image": "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/8256x4647+0+159/resize/1400/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F2c%2F2d%2F2e8c6faf4644a122351d7e8d505f%2Fp-03634-r-rgb.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "One Backrooms Reveal Will Make Longtime Fans Very Happy",
-      "description": "There's a hefty amount of lore behind Backrooms, but the new movie draws directly on these elements from Kane Parsons' webseries.",
-      "url": "https://www.slashfilm.com/2182882/backrooms-movie-phil-asynch-the-complex-explained/",
-      "source": "/FILM",
-      "author": "staff@slashfilm.com (Chris Evangelista)",
-      "published_at": "2026-05-29T11:00:00Z",
-      "image": "https://www.slashfilm.com/img/gallery/one-backrooms-reveal-will-make-longtime-fans-very-happy/l-intro-1779977584.jpg"
     },
     {
       "query_label": "trailers",
@@ -314,66 +784,6 @@
       "image": "http://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/69d56b5f2ab2b0542cbf874f/1780052375744/Screenshot%2B%25281144%2529.png?format=1500w"
     },
     {
-      "query_label": "box_office",
-      "title": "Tom Holland Discusses Exit From Spider-Man Role, “Swinging off Into the Sunset”",
-      "description": "Tom Holland has opened up about the conditions of his Marvel Cinematic Universe exit. Holland first joined the Marvel Cinematic Universe in Captain America: Civil War (2016), becoming the third live-action Spider-Man and the first version of Peter Parker full…",
-      "url": "https://insidethemagic.net/?p=829801&preview=true&preview_id=829801",
-      "source": "Inside the Magic",
-      "author": "Chloe James",
-      "published_at": "2026-05-29T10:49:27Z",
-      "image": "https://insidethemagic.net/wp-content/uploads/2023/12/untitled-1200-x-600-px-2023-12-03t183920773.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Karuppu Box Office Collections: Suriya starrer records superb 2nd Week, on track to hit Rs 200 crore mark in India",
-      "description": "Karuppu Is Currently The Sixteenth-highest-grossing Film In Tamil Nadu And Is Poised To Enter The Top Ten With Over Rs. 150 Crore In Full Run, Likely Around Rs. 160 Crore.",
-      "url": "https://www.pinkvilla.com/entertainment/box-office/karuppu-box-office-collections-suriya-starrer-records-superb-2nd-week-on-track-to-hit-rs-200-crore-mark-in-india-1403379",
-      "source": "PINKVILLA",
-      "author": "Jatinder Singh",
-      "published_at": "2026-05-29T10:32:40Z",
-      "image": "https://www.pinkvilla.com/images/2026-05/246586935_1416868850_karuppu-release-date-webp.webp"
-    },
-    {
-      "query_label": "awards",
-      "title": "Nicolas Cage Changes His Name And Gives Colorful Reason",
-      "description": "The “Spider-Noir” star revealed he took the legal leap for his name “in life” and “on camera.”",
-      "url": "https://www.huffpost.com/entry/nicolas-cage-name-change_n_6a19546fe4b0ea2d03ce3623",
-      "source": "HuffPost",
-      "author": "HuffPost",
-      "published_at": "2026-05-29T10:26:15Z",
-      "image": "https://img.huffingtonpost.com/asset/6a195a0c140000baa81ad351.jpeg?cache=yjC7FzYI6H&ops=1200_630"
-    },
-    {
-      "query_label": "awards",
-      "title": "Wonderful Photos of Annette Bening as Merteuil on the Set of “Valmont” (1989)",
-      "description": "Annette Bening’s portrayal of the Marquise de Merteuil in Miloš Forman’s Valmont  (1989) remains one of the most intriguing, yet widely over...",
-      "url": "https://www.vintag.es/2026/05/annette-bening-valmont.html",
-      "source": "Vintag.es",
-      "author": "Unknown",
-      "published_at": "2026-05-29T10:24:31Z",
-      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh08ygRFLbDinOIJjHkrjmQUc0cdf0rdcdS5_QUCRGzNw3QlrO2jMllOodck8DJ8gIm1rezVF_3b6UHggi1HYy631Y0Xxa8hbZOpwYDZqSs9C7fhJZB1QeZi-KP3JhHVi7EChjQ6uK0fzS39JyVBs7Ad7BBrT0gONaUw8KXziJH8Xu7VpuKxJ9ZyEX3qQw/w1200-h630-p-k-no-nu/annette-bening-valmont-1.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "Toy Story 5 Eyes Record-Breaking Opening Weekend - But It May Be Bad News For Supergirl",
-      "description": "Toy Story 5 is on course to have the franchise's biggest ever opening weekend, but good news for Pixar may be disastrous for Supergirl, which swoops into theaters just one week later.",
-      "url": "https://comicbookmovie.com/disney/toy-story-5-eyes-record-breaking-opening-weekend---but-it-may-be-bad-news-for-supergirl-a228051",
-      "source": "CBM (Comic Book Movie)",
-      "author": "JoshWilding",
-      "published_at": "2026-05-29T10:23:58Z",
-      "image": "https://comicbookmovie.com/images/articles/banners/toy-story-5-eyes-record-breaking-opening-weekend---but-it-may-be-bad-news-for-supergirl-ab228051.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Madhavan reveals his doctor told him one habit can impact not just health, but success too: ‘He told me to finish eating…’",
-      "description": "Actor Madhavan shared insights from a 150-year-old Austrian wellness center, revealing how mindful eating habits, like not eating after 6 PM, significantly impacted his health and professional success. He explained that this practice allows blood to flow to t…",
-      "url": "https://economictimes.indiatimes.com/magazines/panache/madhavan-reveals-his-doctor-told-him-one-habit-can-impact-not-just-health-but-success-too-he-told-me-to-finish-eating/articleshow/131388149.cms",
-      "source": "The Times of India",
-      "author": "ET Online",
-      "published_at": "2026-05-29T10:14:54Z",
-      "image": "https://img.etimg.com/thumb/msid-131388149,width-1200,height-630,imgsize-30972,overlay-etpanache/articleshow.jpg"
-    },
-    {
       "query_label": "trailers",
       "title": "A second Spider-Man: Brand New Day trailer has just been age-rated, and it looks like it could drop online very soon",
       "description": "Get ready for the second Spider-Man: Brand New Day trailer",
@@ -382,276 +792,6 @@
       "author": "Megan Garside",
       "published_at": "2026-05-29T10:05:03Z",
       "image": "https://cdn.mos.cms.futurecdn.net/zhbiEdA63tdrYq5ZWursR3-1920-80.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "HANDMADE ARTIST BOOKS WEEK: VERONIKA SCHÅPERS",
-      "description": "The final artist of Handmade Artist Books week is Veronika Schapers. It was to see her work that I went to the Book Becoming Art exhibition at the SVMA last year. My heart leapt. Experiencing her work firsthand expanded my understanding of the artist’s book a…",
-      "url": "http://lenscratch.com/2026/05/interview-with-veronika-schapers/",
-      "source": "Lenscratch.com",
-      "author": "Laila Nahar",
-      "published_at": "2026-05-29T10:00:49Z",
-      "image": "http://lenscratch.com/wp-content/uploads/2026/05/Schaepers_Passion_2.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "Kevin Bacon Heads to the Dirty South for Hulu’s SOUTHERN BASTARDS Pilot",
-      "description": "Kevin Bacon is stepping into a gritty new world, and it sounds like the kind of role he can really sink his teeth into. The actor has officially signed on to lead Hulu’s upcoming drama pilot Southern Bastards, a crime story packed with small-town tension, foo…",
-      "url": "https://geektyrant.com/news/kevin-bacon-heads-to-the-dirty-south-for-hulus-southern-bastards-pilot",
-      "source": "GeekTyrant",
-      "author": "Joey Paur",
-      "published_at": "2026-05-29T09:53:00Z",
-      "image": "http://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/69d7e79b8931df43ea4e985e/1780048415761/Kevin+Bacon+Heads+to+the+Dirty+South+for+Hulu%E2%80%99s+SOUTHERN+BASTARDS+Pilot.jpg?format=1500w"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Korea Forms Committee to Hammer Out Six-Month Theatrical Window Deal",
-      "description": "South Korea’s Ministry of Culture, Sports and Tourism and the Korean Film Council (KOFIC) have launched a public-private consultative body to negotiate a voluntary theatrical holdback agreement, aiming to finalize terms by August without waiting for pending l…",
-      "url": "https://variety.com/2026/film/news/korea-six-month-theatrical-window-1236762020/",
-      "source": "Variety",
-      "author": "Naman Ramachandran",
-      "published_at": "2026-05-29T09:37:28Z",
-      "image": "https://variety.com/wp-content/uploads/2026/02/The-Kings-Warden.jpg?w=1000&h=563&crop=1"
-    },
-    {
-      "query_label": "awards",
-      "title": "Dancer In The Dark 2000 1080p AMZN WEB-DL H264-BLOOM",
-      "description": "Nominated for 1 Oscar 34 wins & 48 nominations total See more awards » Plot: An Eastern European US immigrant with a love for musicals has to cope with the gradual loss of her vision. Genre: Crime | Drama | MusicalIMDB Rating Live: IMDB Rating: 7.9/10 From 12…",
-      "url": "https://post.rlsbb.to/dancer-in-the-dark-2000-1080p-amzn-web-dl-h264-bloom/",
-      "source": "Rlsbb.to",
-      "author": "Damon",
-      "published_at": "2026-05-29T09:36:42Z",
-      "image": null
-    },
-    {
-      "query_label": "awards",
-      "title": "Original ‘Amores Perros’ Screenplay Being Adapted As TV Series From AF Films & Sofia Vergara’s LatinWe",
-      "description": "EXCLUSIVE: Guillermo Arriaga’s original screenplay on which seminal Mexican film Amores Perros was based is being turned into a scripted TV series. AF Films has acquired rights to Perro Blanco, Perro Negro and is working with Sofia Vergara’s Hispanic talent m…",
-      "url": "http://deadline.com/2026/05/amores-perros-screenplay-tv-series-guillermo-arriaga-1236930010/",
-      "source": "Deadline",
-      "author": "Jesse Whittock",
-      "published_at": "2026-05-29T09:35:45Z",
-      "image": "https://deadline.com/wp-content/uploads/2026/05/Amores-Perros.jpg?w=1024"
-    },
-    {
-      "query_label": "awards",
-      "title": "Minister pushes multi-business forestry to support productive forests",
-      "description": "Forestry Minister Raja Juli Antoni has encouraged the implementation of multi-business forestry (MUK) to promote forest management that is productive, ...",
-      "url": "https://en.antaranews.com/news/417303/minister-pushes-multi-business-forestry-to-support-productive-forests",
-      "source": "Antaranews.com",
-      "author": "Arnidhya, Kenzu",
-      "published_at": "2026-05-29T09:27:29Z",
-      "image": "https://cdn.antaranews.com/cache/1200x800/2026/05/12/6ba44337-b44e-43dc-84fd-2bac3ce99cf7.jpeg"
-    },
-    {
-      "query_label": "awards",
-      "title": "Tina Fey Reacts to Timothee Chalamet 'Manspreading' Claims at Knicks Games",
-      "description": "Tina Fey is coming to Timothée Chalamet’s defense after the Oscar nominee was called out for “manspreading” at a recent New York Knicks game. Fey, 56, was spotted courtside next to Chalamet, 30, his girlfriend, Kylie Jenner, and Ben Stiller at the Knicks’ NBA…",
-      "url": "https://www.usmagazine.com/celebrity-news/news/tina-fey-reacts-to-timothee-chalamet-manspreading-claims/",
-      "source": "Us Weekly",
-      "author": "Tufayel Ahmed",
-      "published_at": "2026-05-29T09:09:24Z",
-      "image": "https://www.usmagazine.com/wp-content/uploads/2026/05/GettyImages-2273615653-Tina-Fey-Reacts-to-Timothee-Chalamet-Manspreading-Claims-at-Knicks-Games.jpg?crop=45px%2C74px%2C918px%2C481px&resize=1200%2C630&quality=86&strip=all"
-    },
-    {
-      "query_label": "awards",
-      "title": "oscar magnuson on building a brand DNA that resists fleeting trends",
-      "description": "launching a new interview series with most studios, designboom talks to oscar magnuson on maintaining independence and a long-term horizon in design.\nThe post oscar magnuson on building a brand DNA that resists fleeting trends appeared first on designboom | a…",
-      "url": "https://www.designboom.com/design/oscar-magnuson-building-brand-dna-resisting-fleeting-trends/",
-      "source": "Designboom",
-      "author": "lisa kostyra I designboom",
-      "published_at": "2026-05-29T09:00:39Z",
-      "image": "https://www.designboom.com/twitterimages/uploads/2026/05/oscar-magnuson-navigators-of-design-designboom-FB-1.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "The Literary Film &TV You Need to Stream in June",
-      "description": "Every month, all the major streaming services add a host of newly acquired (or just plain new) shows, movies, and documentaries into their ever-rotating libraries. So what’s a dedicated reader to watch? Well, whatever you want, of course, but the",
-      "url": "https://lithub.com/the-literary-film-tv-you-need-to-stream-in-june-2/",
-      "source": "Lithub.com",
-      "author": "Emily Temple",
-      "published_at": "2026-05-29T08:59:52Z",
-      "image": "https://s26162.pcdn.co/wp-content/uploads/2026/05/capefear-copy.jpg"
-    },
-    {
-      "query_label": "awards",
-      "title": "Hundreds of Journalists, Academics, Filmmakers Sign Letter Opposing Paramount Takeover of CNN: ‘Threatening Press Freedom’",
-      "description": "Over 200 journalists, academics, and filmmakers have signed a letter opposing the Paramount Skydance takeover of CNN following the former’s purchase of Warner Bros. Discovery. Letter from the Freedom of the Press Foundation argued that Paramount taking contro…",
-      "url": "https://freerepublic.com/focus/f-news/4381406/posts",
-      "source": "Freerepublic.com",
-      "author": "Breitbart",
-      "published_at": "2026-05-29T08:26:06Z",
-      "image": null
-    },
-    {
-      "query_label": "awards",
-      "title": "Toy Story 5 star hails ‘important’ film focusing on children’s screen time debate",
-      "description": "The iconic toys band together to rescue Bonnie from the clutches of her new Lilypad smart tablet",
-      "url": "https://www.the-independent.com/arts-entertainment/films/news/toy-story-5-lilepad-greta-lee-b2985720.html",
-      "source": "The-independent.com",
-      "author": "Carla Feric",
-      "published_at": "2026-05-29T08:13:10Z",
-      "image": "https://static.the-independent.com/2026/04/28/21/ESTRENOS_DE_VERANO-TOY_STORY_5_98915.jpg?width=1200&height=800&crop=1200:800"
-    },
-    {
-      "query_label": "awards",
-      "title": "Trailer: ‘House Of The Dragon’ Actor Ewan Mitchell Stars In Short Comedy ‘Still Life’ As Lonely Man Living With Mannequins",
-      "description": "EXCLUSIVE: Ewan Mitchell is best known to audiences as the dastardly Prince Aemond Targaryen in House of the Dragon, but his latest project promises to be a more offbeat affair. The British actor stars in Still Life, a short comedy film in which he depicts a …",
-      "url": "http://deadline.com/2026/05/trailer-ewan-mitchell-still-life-1236929995/",
-      "source": "Deadline",
-      "author": "Jake Kanter",
-      "published_at": "2026-05-29T07:58:57Z",
-      "image": "https://deadline.com/wp-content/uploads/2026/05/EM-as-Leo-w_-Mannequins-WIDE-e1780040047106.jpg?w=1024"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Ram Charan recalls discussing Peddi with PM Narendra Modi as film based on 'Vikisit Bharat'; actor calls it ‘Mitti ka story’",
-      "description": "Ram Charan recalled his meeting with PM Narendra Modi while promoting Peddi in Delhi and explained how the film celebrates the identity, talent and spirit of India’s villages and small towns.",
-      "url": "https://www.moneycontrol.com/entertainment/ram-charan-recalls-discussing-peddi-with-pm-narendra-modi-as-film-based-on-vikisit-bharat-actor-calls-it-mitti-ka-story-article-13935572.html",
-      "source": "Moneycontrol",
-      "author": "M Snehanjali",
-      "published_at": "2026-05-29T07:58:45Z",
-      "image": "https://images.moneycontrol.com/static-mcnews/2026/05/20260529075820_ram-pm.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Korean Officials & Industry Execs Launch Committee To Discuss Six-Month Theatrical Window",
-      "description": "South Korea’s Ministry of Culture, Sports and Tourism and the Korean Film Council (KOFIC) have launched a public-private consultative body to discuss setting a theatrical window for films in the Korean market.  A bill is currently working its way through Kore…",
-      "url": "http://deadline.com/2026/05/korea-cinema-culture-streamers-kofic-theatrical-window-1236929991/",
-      "source": "Deadline",
-      "author": "Liz Shackleton",
-      "published_at": "2026-05-29T07:42:33Z",
-      "image": "https://deadline.com/wp-content/uploads/2026/05/Colony1_44d060.jpg?w=1024"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Neymar faces World Cup race against time after injury blow",
-      "description": "Neymar junior’s fourth World Cup is in jeopardy before a ball has been kicked. A grade two calf injury will keep the Brazil forward out for two to three weeks. So he misses the pre-tournament friend...",
-      "url": "https://thefootballfaithful.com/neymar-faces-world-cup-race-against-time-after-injury-blow/",
-      "source": "The Football Faithful",
-      "author": "The Football Faithful",
-      "published_at": "2026-05-29T06:40:00Z",
-      "image": "https://s.yimg.com/ny/api/res/1.2/iYQI6CkkZx3NqaX6Pf9LGg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD03NDE7Y2Y9d2VicA--/https://media.zenfs.com/en/the_football_faithful_articles_458/12f57b0d980f05abbc3e2d308d78e0ca"
-    },
-    {
-      "query_label": "box_office",
-      "title": "The 10 best new London theatre openings in June 2026",
-      "description": "From ‘War Horse’ to ‘Sinatra the Musical’, Sandra Oh to Adrian Lester, it’s another wonderful month on the London stage",
-      "url": "https://www.timeout.com/london/news/the-10-best-new-london-theatre-openings-in-june-2026-052926",
-      "source": "Time Out",
-      "author": "Primary Author: Andrzej Lukowski",
-      "published_at": "2026-05-29T06:05:13Z",
-      "image": "https://media.timeout.com/images/106409426/image.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Hit occult film ‘Exhuma' to get Naver Webtoon adaptation - The Korea Times",
-      "description": "The sprawling occult universe of “Exhuma,” the supernatural thriller that captivated more than 10 million moviegoers to become one of Korea’s bigge...",
-      "url": "https://www.koreatimes.co.kr/entertainment/others/20260529/hit-occult-film-exhuma-to-get-naver-webtoon-adaptation",
-      "source": "코리아타임스",
-      "author": "Lee Kyung-min",
-      "published_at": "2026-05-29T05:50:41Z",
-      "image": "https://newsimg.koreatimes.co.kr/2026/05/29/ce280ab2-bec6-4c19-a36c-58a02d23a4fb.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Bhooth Bangla Box Office: Akshay Kumar-led horror comedy collects Rs 4.75 crore in Week 6, targets Rs 170 crore finish",
-      "description": "Bhooth Bangla Is Expected To Surpass The Lifetime Cume Of Housefull 5 And Close Its Entire Run Around Rs. 170 Crore Nett Mark At The Indian Box Office.",
-      "url": "https://www.pinkvilla.com/entertainment/box-office/bhooth-bangla-box-office-akshay-kumar-led-horror-comedy-collects-rs-4-75-crore-in-week-6-targets-rs-170-crore-finish-1403368",
-      "source": "PINKVILLA",
-      "author": "Mohit Dixit",
-      "published_at": "2026-05-29T05:31:47Z",
-      "image": "https://www.pinkvilla.com/images/2026-05/1575527252_bb-_1_.webp"
-    },
-    {
-      "query_label": "box_office",
-      "title": "“Toy Story 5” Box-Office To Be Year’s Biggest",
-      "description": "Pixar’s highly anticipated “Toy Story 5” has hit early tracking, and the numbers for the animated sequel look incredibly impressive. Deadlinereports that earliest projections for the film have it on track to take in $150 million in its domestic opening weeken…",
-      "url": "https://www.darkhorizons.com/toy-story-5-box-office-to-be-years-biggest/",
-      "source": "Dark Horizons",
-      "author": "Garth Franklin",
-      "published_at": "2026-05-29T05:21:49Z",
-      "image": "https://cdndark.darkhorizons.com/wp-content/uploads/2026/05/toy-story-5-box-office-to-be-years-biggest.jpg"
-    },
-    {
-      "query_label": "box_office",
-      "title": "Let The ‘Backrooms’ Bonanza Begin: Previews For Kane Parsons Movie At $9M – Late Thursday Box Office",
-      "description": "There’s a lot of cash getting stuffed in those Backrooms. The A24 Kane Parsons feature take of his digital IP is racking up $9M in previews which began at 4PM. We told you presales were at a crazy blockbuster level, around Scream 7‘s. Well, guess what? The pr…",
-      "url": "http://deadline.com/2026/05/box-office-backrooms-1236929953/",
-      "source": "Deadline",
-      "author": "Anthonypauldalessandro",
-      "published_at": "2026-05-29T05:21:42Z",
-      "image": "https://deadline.com/wp-content/uploads/2026/05/Backrooms-6.jpg?w=1024"
-    },
-    {
-      "query_label": "box_office",
-      "title": "‘Project Hail Mary’ Tops Golden Trailer Awards With 5 Prizes",
-      "description": "Amazon MGM’s “Project Hail Mary” marketing swept the Golden Trailer Awards Thursday with five wins. The film’s trailer titled “Chance” from Wild Card Creative Group won Best in Show prize at the event at the Saban Theatre in Beverly Hills. “Project Hail Mary”…",
-      "url": "https://variety.com/2026/film/news/golden-trailer-awards-project-hail-mary-1236761839/",
-      "source": "Variety",
-      "author": "Pat Saperstein",
-      "published_at": "2026-05-29T05:10:00Z",
-      "image": "https://variety.com/wp-content/uploads/2026/04/Rocky-Project-Hail-Mary.jpg?w=1000&h=563&crop=1"
-    },
-    {
-      "query_label": "box_office",
-      "title": "‘Project Hail Mary’ Dominates Golden Trailer Awards With 5 Wins, Including Best of Show",
-      "description": "\"This trailer and the others for 'Project Hail Mary' clearly connected with audiences, helping to make the film a global box office hit,\" says Executive Director Evelyn Brady\nThe post ‘Project Hail Mary’ Dominates Golden Trailer Awards With 5 Wins, Including …",
-      "url": "https://www.thewrap.com/industry-news/awards/golden-trailer-awards-2026-winners-list-project-hail-mary/",
-      "source": "TheWrap",
-      "author": "Alyssa Ray",
-      "published_at": "2026-05-29T05:10:00Z",
-      "image": "https://i0.wp.com/www.thewrap.com/wp-content/uploads/2026/03/Project-Hail-Mary.jpg?fit=1200%2C675&quality=89&ssl=1"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "How to Watch the Original ‘Backrooms’ YouTube Video Before Seeing the New Movie",
-      "description": "Backrooms arrives in theaters on May 29, introducing a whole new audience to one of the internet’s most famous creepypastas. […]\nThe post How to Watch the Original ‘Backrooms’ YouTube Video Before Seeing the New Movie appeared first on Just Jared - Celebrity …",
-      "url": "https://www.justjared.com/2026/05/28/how-to-watch-original-backrooms-before-new-movie/",
-      "source": "Just Jared",
-      "author": "Maddy Lennon",
-      "published_at": "2026-05-29T01:11:58Z",
-      "image": "https://www.justjared.com/wp-content/uploads/2026/05/backrooms-a24-stills-01.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Joan Cusack, 63, makes her first appearance on the red carpet in 11 YEARS… see her now",
-      "description": "The actress, 63, attended the London premiere of her new movie Toy Story. Cusack's last red carper appearance was back in September 2015.",
-      "url": "https://www.dailymail.com/tvshowbiz/article-15857173/Joan-Cusack-red-carpet-Toy-Story-11-year-hiatus.html",
-      "source": "Dailymail.com",
-      "author": "Sonia Horon",
-      "published_at": "2026-05-28T23:56:07Z",
-      "image": "https://i.dailymail.com/1s/2026/05/28/23/108944453-0-image-m-12_1780008089775.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Jennifer Lopez Picks Flirty Shoes for the ‘Office Romance’ Press Tour",
-      "description": "Check out Jennifer Lopez's office-inspired shoes and looks for the 'Office Romance' press tour.",
-      "url": "http://wwd.com/footwear-news/shoe-trends/jennifer-lopez-shoes-office-romance-press-tour-1238984874/",
-      "source": "WWD",
-      "author": "Karla Rodriguez",
-      "published_at": "2026-05-28T21:27:00Z",
-      "image": "https://wwd.com/wp-content/uploads/2026/05/jennifer-lopez-office-romance-shoes.jpg?w=1000&h=563&crop=1"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "No Mere Muse, This Influential Surrealist Artist and Feminist Gets Her Due in a New Biopic and Art Exhibitions",
-      "description": "Leonora Carrington's life and work are celebrated with the new film \"Leonora in the Morning Light.\" Meanwhile, an exhibition at the Freud Museum showcases for the first time artwork she created inside a psychiatric hospital",
-      "url": "https://www.smithsonianmag.com/smart-news/leonora-carrington-is-no-mere-muse-this-influential-surrealist-artist-and-feminist-gets-her-due-in-a-new-biopic-and-art-exhibitions-180988844/",
-      "source": "Smithsonian.com",
-      "author": "Michele Debczak",
-      "published_at": "2026-05-28T19:26:51Z",
-      "image": "https://th-thumbnailer.cdn-si-edu.com/PL1rQWI8x4H3sKu3NwxGLcmnLEs=/fit-in/1600x0/filters:focal(3024x2016:3025x2017)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/13/6c/136cebb6-137e-44de-9aff-f4f601149de4/leonora.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "What Mandy Moore Watches (and Listens to) With Her Kids",
-      "description": "Mandy Moore is excited to share some of the classic girl movies she starred in with her daughter, since her two boys aren’t interested in ‘Tangled’ even after she asked ‘Doesn’t Rapunzel sound a little familiar?’",
-      "url": "http://www.vulture.com/article/mandy-moore-kids-movies-music-books.html",
-      "source": "Vulture",
-      "author": "Mandy Moore, Marah Eakin",
-      "published_at": "2026-05-28T18:00:39Z",
-      "image": "https://pyxis.nymag.com/v1/imgs/ce1/42b/e139ad44c133d48d61b634fc9d628704ea-mandymoore.1x.rsocial.w1200.png"
     },
     {
       "query_label": "trailers",
@@ -664,26 +804,6 @@
       "image": "http://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/6a1867e393624760034971eb/1779991230477/Screenshot+2026-05-28+at+9.08.15%E2%80%AFAM.jpg?format=1500w"
     },
     {
-      "query_label": "streaming_releases",
-      "title": "How to Watch the John Travolta Movie ‘Propeller One-Way Night Coach’ on Streaming",
-      "description": "This is the movie that John Travolta is wearing berets for.",
-      "url": "https://decider.com/2026/05/28/watch-new-john-travolta-movie-propeller-one-way-night-coach-streaming-apple-tv/",
-      "source": "Decider",
-      "author": "mliss1578",
-      "published_at": "2026-05-28T18:00:00Z",
-      "image": "https://decider.com/wp-content/uploads/2026/05/john-travolta-movie-propeller-one-way-night-coach.jpg?quality=75&strip=all&w=1200"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "The new Star Wars figures are up for preorder, including the mercenary droids from the new movie",
-      "description": "The droids don't even get distinguishing names?",
-      "url": "https://www.superpunch.net/2026/05/the-new-star-wars-figures-are-up-for.html",
-      "source": "Superpunch.net",
-      "author": "noreply@blogger.com (John)",
-      "published_at": "2026-05-28T17:06:43Z",
-      "image": null
-    },
-    {
       "query_label": "trailers",
       "title": "Steven Spielberg stuns fans by suggesting ‘close encounters’ with aliens in new film trailer",
       "description": "The release of the film comes amid the release of numerous UFO files from the US government over the last few months.",
@@ -692,26 +812,6 @@
       "author": "News.com.au",
       "published_at": "2026-05-28T17:04:57Z",
       "image": "https://pagesix.com/wp-content/uploads/sites/3/2026/05/128981134.jpg?quality=75&strip=all&w=1200"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Is the Nate Bargatze’s ‘The Breadwinner’ Movie Streaming on Netflix or Amazon Prime Video?",
-      "description": "Nate Bargatze's new comedy opens in theaters this weekend.",
-      "url": "https://decider.com/2026/05/28/watch-the-breadwinner-movie-streaming-netflix-amazon-nate-bargatze-movie/",
-      "source": "Decider",
-      "author": "mliss1578",
-      "published_at": "2026-05-28T15:30:00Z",
-      "image": "https://decider.com/wp-content/uploads/2026/05/watch-nate-bargatze-movie-the-breadwinner-streaming.jpg?quality=75&strip=all&w=1200"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Susan Boyle drops MORE hints of a brand new project as she keeps fans guessing with latest post - after showing off glamorous look",
-      "description": "Susan Boyle has dropped yet another hint that she is gearing up to announce a brand new project with her latest post - after showing off a glamorous new look and teasing the start of a 'new era'.",
-      "url": "https://www.dailymail.com/tvshowbiz/article-15855973/Susan-Boyle-drops-hints-brand-new-project-guessing.html",
-      "source": "Dailymail.com",
-      "author": "Amelia Wynne",
-      "published_at": "2026-05-28T15:27:36Z",
-      "image": "https://i.dailymail.com/1s/2026/05/28/15/108933953-0-image-m-118_1779980394784.jpg"
     },
     {
       "query_label": "trailers",
@@ -724,36 +824,6 @@
       "image": "https://comicbookmovie.com/images/articles/banners/spider-man-brand-new-day-empire-covers-show-spidey-battling-the-hand-and-their-new-leader-ab228045.jpg"
     },
     {
-      "query_label": "streaming_releases",
-      "title": "James Bond’s Brightest Future Could Be in Video Games",
-      "description": "The long-running franchise's newest release, '007 First Light,' combines cinematic action and literary depth for an unparalleled spy fantasy.",
-      "url": "http://www.rollingstone.com/culture/rs-gaming/james-bond-007-first-light-1235569266/",
-      "source": "Rolling Stone",
-      "author": "Elisabeth Garber-Paul",
-      "published_at": "2026-05-28T15:18:43Z",
-      "image": "https://www.rollingstone.com/wp-content/uploads/2026/05/james-bond-essay-interview.jpg?crop=0px%2C62px%2C1800px%2C1014px&resize=1600%2C900"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Jennifer Lopez Dishes on Looking for Love Again",
-      "description": "Jennifer Lopez was in the hot seat on “Jimmy Kimmel Live!” Wednesday night.\n The late-night host asked the “Office Romance” star about her love life, noting, “You’re single right now.”\n J.Lo, who finalized her divorce from Ben Affleck in early 2025, replied w…",
-      "url": "https://extratv.com/2026/05/28/jennifer-lopez-dishes-on-looking-for-love-again/",
-      "source": "Extra",
-      "author": null,
-      "published_at": "2026-05-28T14:46:52Z",
-      "image": null
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Epic Universe’s Biggest Flaws Confirm 3 Mistakes Universal Orlando Continues to Make",
-      "description": "Universal Orlando has spent the last several years trying to prove it can stand shoulder-to-shoulder with Disney. In many ways, the company deserves credit for how much it has evolved. Epic Universe opened with enormous ambition, Universal has expanded its ho…",
-      "url": "https://insidethemagic.net/2026/05/epic-universes-biggest-flaws-confirm-3-mistakes-universal-orlando-continues-to-make-ab1/",
-      "source": "Inside the Magic",
-      "author": "Andrew Boardwine",
-      "published_at": "2026-05-28T14:40:44Z",
-      "image": "https://insidethemagic.net/wp-content/uploads/2026/05/epic-universe-entrance-with-flowers-universal.jpg"
-    },
-    {
       "query_label": "trailers",
       "title": "Retro sports roguelike first-person shooter SPORTAL launches June 11 for PS5, Xbox Series, PS4, Xbox One, Switch, and PC",
       "description": "Retro sports roguelike first-person shooter SPORTAL will launch for PlayStation 5, Xbox Series, PlayStation 4, Xbox One, Switch, and PC via Steam, Epic Games Store, and GOG on June 11, publisher Re…",
@@ -764,16 +834,6 @@
       "image": "https://www.gematsu.com/wp-content/uploads/2026/05/SPORTAL-Date_05-28-26.jpg"
     },
     {
-      "query_label": "streaming_releases",
-      "title": "Steven Spielberg's 49-Year-Old Classic Must Be Seen In The Next Two Weeks",
-      "description": "49 years ago, a classic Steven Spielberg movie came out, and there's a great reason why you must watch the hit film in the next two weeks.",
-      "url": "https://screenrant.com/steven-spielberg-movie-close-encounters-watch-now/",
-      "source": "Screen Rant",
-      "author": "Cooper Hood",
-      "published_at": "2026-05-28T13:30:18Z",
-      "image": "https://static0.srcdn.com/wordpress/wp-content/uploads/2026/05/cary-guffey-as-barry-guiler-in-close-encounters-of-the-third-kind.jpg?w=1600&h=900&fit=crop"
-    },
-    {
       "query_label": "trailers",
       "title": "‘X-Men ’97’ Season 2: Every Easter Egg in the New Trailer",
       "description": "To me, my X-Men Easter eggs! Continue reading…",
@@ -782,46 +842,6 @@
       "author": "ScreenCrush Staff",
       "published_at": "2026-05-28T13:18:13Z",
       "image": "https://townsquare.media/site/442/files/2026/05/attachment-x-men97s2-trailer-0400_201.jpg?w=1200&q=75&format=natural"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "I drank almost every day for two decades. Seven years after getting sober, I received a shocking diagnosis. I knew it was my fault... I'd left it too late: CORRINE BARRACLOUGH",
-      "description": "At 41, I threw in the towel with booze. I decided on a total abstinence approach; it was the hardest thing I'd ever done but also the most rewarding. Then, seven years later, my world fell apart.",
-      "url": "https://www.dailymail.com/health/article-14505841/Corrine-Barraclough-drinking-alcoholism.html",
-      "source": "Dailymail.com",
-      "author": "Corrine Barraclough",
-      "published_at": "2026-05-28T13:11:44Z",
-      "image": "https://i.dailymail.co.uk/1s/2025/03/18/03/96297977-0-image-m-37_1742268241963.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Sonic the Hedgehog star says voice recording has officially begun in an exciting Sonic 4 production update",
-      "description": "The fourquel is set to release in early 2027",
-      "url": "https://www.gamesradar.com/entertainment/animation-movies/sonic-the-hedgehog-star-says-voice-recording-has-officially-begun-in-an-exciting-sonic-4-production-update/",
-      "source": "GamesRadar+",
-      "author": "fay.watson@futurenet.com (Fay Watson) , Fay Watson",
-      "published_at": "2026-05-28T11:56:54Z",
-      "image": "https://cdn.mos.cms.futurecdn.net/c3GrUAv4Fc9uHZtpTpuuDg-1920-80.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Jon Favreau says he \"called up\" JJ Abrams about using the Anzellans, which might explain why The Rise of Skywalker director is thanked in The Mandalorian and Grogu credits",
-      "description": "Jon Favreau contacted J.J. Abrams about using the Anzellans",
-      "url": "https://www.gamesradar.com/entertainment/star-wars-movies/jon-favreau-says-he-called-up-jj-abrams-about-using-the-anzellans-which-might-explain-why-the-rise-of-skywalker-director-is-thanked-in-the-mandalorian-and-grogu-credits/",
-      "source": "GamesRadar+",
-      "author": "molly.edwards@futurenet.com (Molly Edwards) , Molly Edwards",
-      "published_at": "2026-05-28T11:09:29Z",
-      "image": "https://cdn.mos.cms.futurecdn.net/5GnsLULaR5rEvVbmWCBP8Q-1920-80.jpg"
-    },
-    {
-      "query_label": "streaming_releases",
-      "title": "Adam Sandler criticized for wearing an orange hoodie to his wife’s movie premiere",
-      "description": "Adam Sandler is famous for his laid back style of boldly-patterned shirts paired with long shorts. Gen Z once dubbed it “Sandlercore.” His red carpet style is very similar. Adam has one suit that he rewears as needed but otherwise, he shows up in his finest a…",
-      "url": "https://www.celebitchy.com/979056/adam_sandler_criticized_for_wearing_an_orange_hoodie_to_his_wifes_movie_premiere/",
-      "source": "Celebitchy.com",
-      "author": "Rosie",
-      "published_at": "2026-05-28T11:00:14Z",
-      "image": "https://www.celebitchy.com/wp-content/uploads/2026/05/GNZ04118_y6sRWnEh.jpg"
     },
     {
       "query_label": "trailers",
@@ -902,36 +922,6 @@
       "author": "James Hunt",
       "published_at": "2026-05-26T13:29:20Z",
       "image": "https://comicbook.com/wp-content/uploads/sites/4/2026/03/Spider-Man-on-rooftop-in-Brand-New-Day-1.jpg?resize=2000,1125"
-    },
-    {
-      "query_label": "trailers",
-      "title": "Supergirl Defends The Galaxy In Action-Packed New Trailer; Kara Takes Flight On Chinese Magazine Cover",
-      "description": "A 60-second teaser for Craig Gillepie's Supergirl aired on TBS last night, spotlighting some action-packed new footage from the next DCU movie...",
-      "url": "https://comicbookmovie.com/supergirl/supergirl-defends-the-galaxy-in-action-packed-new-trailer-kara-takes-flight-on-chinese-magazine-cover-a228000",
-      "source": "CBM (Comic Book Movie)",
-      "author": "MarkCassidy",
-      "published_at": "2026-05-26T12:38:49Z",
-      "image": "https://comicbookmovie.com/images/articles/banners/supergirl-defends-the-galaxy-in-action-packed-new-trailer-kara-takes-flight-on-chinese-magazine-cover-ab228000.jpg"
-    },
-    {
-      "query_label": "trailers",
-      "title": "20th Anniversary Trailer for Ferrell & Reilly's 'Talladega Nights' Movie",
-      "description": "\"If you ain't first, you're last.\" Preach, Ricky!  Sony Pictures has revealed a quick new trailer for the 20th anniversary celebration of the sports comedy classic Talladega Nights: The Ballad of Ricky Bobby, the hilarious Adam McKay + Judd Apatow racing mo…",
-      "url": "https://www.firstshowing.net/2026/20th-anniversary-trailer-for-ferrell-reillys-talladega-nights-movie/",
-      "source": "First Showing",
-      "author": "Alex Billington",
-      "published_at": "2026-05-26T00:19:09Z",
-      "image": "https://media2.firstshowing.net/firstshowing/img17/talladegarickybobmainimgtw2.jpg"
-    },
-    {
-      "query_label": "trailers",
-      "title": "Final Trailer for Brendan Fraser's PRESSURE Turns the D-Day Forecast Into a Nerve-Shredding Countdown",
-      "description": "Focus Features has released the final US trailer for Pressure, a World War II thriller that digs into one of the most stressful decisions made during the war. Instead of following soldiers storming the beaches, this film locks in on the people trying to decid…",
-      "url": "https://geektyrant.com/news/final-trailer-for-brendan-frasers-pressure-turns-the-d-day-forecast-into-a-nerve-shredding-countdown",
-      "source": "GeekTyrant",
-      "author": "Joey Paur",
-      "published_at": "2026-05-25T14:59:00Z",
-      "image": "http://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/6a107c39158ba87a6786a085/1779721171785/Final+Trailer+for+Brendan+Fraser%27s+PRESSURE+Turns+the+D-Day+Forecast+Into+a+Nerve-Shredding+Countdown.jpg?format=1500w"
     }
   ]
 }

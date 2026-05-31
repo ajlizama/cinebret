@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-30T20:54:58.464Z",
-  "cycle": "pm",
+  "generated_at": "2026-05-31T12:08:20.428Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 7,
+  "news_count": 1,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de DeBlois con tu rating 10; ningún review publicado y está en Netflix.",
+      "title": "Cómo entrenar a tu dragón (2025)",
+      "reasoning": "Live action de DeBlois con tu rating 10; prioridad máxima para cubrir el déficit de review.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,15 +41,15 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + plataforma activa. Director Dean DeBlois (muy respetado, 4 sello bret). Año 2025 (+5). No hay review publicada."
+      "critic_reason": "§4.5 review: rating 10 + sello bret + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 + plataforma activa; déficit de review activo."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parasite (2019)",
-      "reasoning": "Obra maestra de Bong Joon-ho con Óscar a mejor película; backlog de 12 días sin review.",
+      "title": "Parasite (2019)",
+      "reasoning": "Bong Joon-ho y su Óscar; backlog activo, sagrada sin review publicado en el feed.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,35 +61,35 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§5 backlog reevaluado: sigue válido. Rating 10 + IMDb 8.5 + sello bret + Bong Joon-ho. 12 días en backlog sin review publicada."
+      "critic_reason": "§5.2 reevaluación backlog: Parasite sigue válida — rating 10, Bong Joon-ho, IMDb 8.5, 13 días en backlog vigente."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "El cierre épico de Jackson con IMDb 9.0; tu rating 10 y sin review publicado.",
-      "score": 97,
+      "title": "El Club de la Pelea (1999)",
+      "reasoning": "Fincher olimpo con rating 10 e IMDb 8.8; backlog vigente, máxima prioridad de review.",
+      "score": 96,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + plataforma activa. Peter Jackson (muy respetado). No hay review publicada."
+      "critic_reason": "§5.2 reevaluación backlog: Fight Club sigue válida — rating 10, Fincher olimpo, IMDb 8.8, sin review publicado, 11 días en backlog (dentro del límite de 14)."
     },
     {
-      "id": "8c866b31742bdc25",
+      "id": "9a5d9f812b9616e6",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas donde el silencio hace más ruido que los diálogos",
-      "reasoning": "No Man's Land, No Country for Old Men, Drive: el silencio como herramienta narrativa definitiva.",
+      "title": "10 actuaciones de reparto que eclipsaron al protagonista (y lo saben)",
+      "reasoning": "Ledger, Hopkins, Simmons: secundarios que robaron la película; kind=performance ausente en el feed.",
       "score": 82,
       "category": "top",
       "angle": null,
@@ -100,7 +100,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=country ya cubierto por otros candidatos; propongo kind=craft (técnica narrativa) — '10 películas donde el silencio hace más ruido que los diálogos' — ángulo fresco no en recent_top_kinds ni en el pool."
+      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds; propongo ángulo narrativo sobre actuaciones de reparto que eclipsaron al protagonista — conecta con el valor que Alberto da a las actuaciones memorables."
     },
     {
       "id": "fe5875c8c649d23e",
@@ -108,7 +108,7 @@
       "priority": "alta",
       "action": "generate_carousel_topic",
       "title": "TOP 10 películas japonesas que te cambian la forma de ver cine",
-      "reasoning": "Miyazaki y el thriller japonés con puntuaciones altas; kind=country no usado en 14 días.",
+      "reasoning": "Country kind sin usar en 14 días; Miyazaki y el thriller japonés concentran sello bret alto.",
       "score": 80,
       "category": "top",
       "angle": null,
@@ -119,7 +119,7 @@
         "topic_type": "country",
         "topic": "japón"
       },
-      "critic_reason": "§3 kind=country no repetido. Japón tiene peso especial (Miyazaki, thrillers) y Alberto los respeta. Ángulo diferenciador."
+      "critic_reason": "§3 mix: kind=country no está en recent_top_kinds; Japón tiene Miyazaki (olimpo-adjacent, 4 sello bret) y varios autores que Alberto respeta."
     }
   ],
   "backlog": [
@@ -128,7 +128,7 @@
       "type": "FEED",
       "title": "Review: Fight Club (1999)",
       "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -136,7 +136,7 @@
       "type": "FEED",
       "title": "El club de la pelea (1999) — David Fincher",
       "reasoning": "Fincher olimpo con rating 10 e IMDb 8.8; sagrada sin review en el feed.",
-      "days_ago": 0,
+      "days_ago": 1,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +144,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 13,
+      "days_ago": 14,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +152,7 @@
       "type": "FEED",
       "title": "Review: Parasite (2019)",
       "reasoning": "Bong Joon-ho y su Óscar a mejor película; una de tus 38 sagradas sin review publicado.",
-      "days_ago": 12,
+      "days_ago": 13,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +160,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 13,
+      "days_ago": 14,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +168,7 @@
       "type": "FEED",
       "title": "Review: Oldboy (2003) — Park Chan-wook",
       "reasoning": "Park Chan-wook y el thriller coreano que Alberto tiene en su top absoluto sin review.",
-      "days_ago": 13,
+      "days_ago": 14,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +176,7 @@
       "type": "FEED",
       "title": "10 películas donde la última línea de diálogo lo cambia todo",
       "reasoning": "Usual Suspects, Chinatown, The Mist: los cierres verbales que reescriben lo que acabas de ver.",
-      "days_ago": 3,
+      "days_ago": 4,
       "skill_to_invoke": "cinebret-carousel-topic"
     },
     {
@@ -184,129 +184,39 @@
       "type": "FEED",
       "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
       "reasoning": "Heath Ledger, Javier Bardem, Ralph Fiennes: los secundarios que eclipsaron a todos en pantalla.",
-      "days_ago": 10,
+      "days_ago": 11,
       "skill_to_invoke": "cinebret-carousel-topic"
     }
   ],
   "news": [
     {
-      "title_es": "Apple TV+ estrena 'Mr. Scorsese', serie documental sobre la vida del director",
-      "summary_es": "Documental de 5 partes sobre Scorsese con Daniel Day-Lewis como hilo conductor.",
-      "source": "Deadline",
-      "age_hours": 2,
-      "url": "https://deadline.com/2026/05/mr-scorsese-documentary-director-interview-1236865021/",
-      "angle": "cultural-moment",
-      "catalog_match": null,
-      "score": 72,
-      "reason": "§4.3 director match: Martin Scorsese (Olimpo) en documental de Apple TV sobre su vida y carrera. Ángulo informativo relevante para Alberto; no hay trailer ni evento postable concreto."
-    },
-    {
-      "title_es": "Emily Blunt creó la voz alienígena de 'El día de la revelación' sin inteligencia artificial",
-      "summary_es": "Spielberg dirige; Blunt detalla el proceso creativo de su escena más inusual en la película.",
-      "source": "Hollywood Reporter",
-      "age_hours": 1,
-      "url": "https://www.hollywoodreporter.com/movies/movie-news/emily-blunt-terrified-ai-chose-did-not-use-disclosure-day-1236609389/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "a9ee404b-d79b-4dfe-a20e-d4d3a71115c4",
-        "titulo": "El diablo viste de Prada 2",
-        "anio": 2026
-      },
-      "score": 60,
-      "reason": "§4.4 regla 3: Emily Blunt en película de Spielberg (Olimpo). Ángulo interesante (voz alien sin IA) pero no hay trailer ni evento postable concreto hoy; solo informativo."
-    },
-    {
-      "title_es": "Backrooms y Obsession demuestran que Hollywood necesita pensar fuera de la caja",
-      "summary_es": "Variety analiza cómo dos películas de bajo presupuesto reescribieron las reglas del fin de semana.",
-      "source": "Variety",
-      "age_hours": 3,
-      "url": "https://variety.com/2026/film/columns/backrooms-obsession-hollywood-needs-whats-outside-the-box-1236762844/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      },
-      "score": 60,
-      "reason": "§4.4 regla 3: match Backrooms (2026) con reflexión editorial de Variety sobre el sistema Hollywood. Más relevante que el Reddit duplicado; solo informativo."
-    },
-    {
-      "title_es": "Jason Blum y James Wan: quieren que Blumhouse sea 'el Disney del terror'",
-      "summary_es": "Blum y Wan explican su visión tras el éxito de Backrooms y Obsession en taquilla.",
-      "source": "Deadline",
-      "age_hours": 3,
-      "url": "https://deadline.com/2026/05/jason-blum-james-wan-youtube-filmmakers-disney-of-horror-1236930742/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      },
-      "score": 58,
-      "reason": "§4.4 regla 3: match Backrooms (2026). Blum + Wan hablan de nueva generación de directores. Mismo evento subyacente que otros Backrooms items; §8 anti-pattern 6 — tercer dedup, solo informativo si los anteriores también lo son."
-    },
-    {
-      "title_es": "Tom Holland quiere ser el Robert Downey Jr. del próximo Spider-Man",
-      "summary_es": "Holland confirma que quiere guiar al próximo Spider-Man como Downey lo hizo con él.",
-      "source": "Variety",
-      "age_hours": 2,
-      "url": "https://variety.com/2026/film/news/tom-holland-setting-new-spider-man-brand-new-day-marvel-1236763157/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "69ba6ccc-14dc-4b4a-acf7-0ebe617e4523",
-        "titulo": "El hombre araña",
-        "anio": 2002
-      },
-      "score": 55,
-      "reason": "§4.4 regla 3: match débil (El hombre araña 2002, rating necesita verificación ≥7). Spider-Man es franquicia Marvel respetada en el catálogo; Tom Holland pasando el testigo es culturalmente relevante pero sin ángulo postable hoy."
-    },
-    {
-      "title_es": "El éxito de Backrooms y Obsession como señal de cambio en Hollywood",
-      "summary_es": "Reddit amplifica el debate sobre lo que el éxito indie de Backrooms dice del sistema.",
+      "title_es": "Robert De Niro espera hacer al menos una película más con Martin Scorsese",
+      "summary_es": "Scorsese del olimpo; De Niro confirma que su colaboración no ha terminado.",
       "source": "r/movies",
       "age_hours": 3,
-      "url": "https://www.reddit.com/r/movies/comments/1ts6xxs/the_shocking_success_of_backrooms_and_obsession/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      },
-      "score": 55,
-      "reason": "§4.4 regla 3: match Backrooms (2026) pero duplicado temático con 317a4ec116b4c0d1 y b955f8b0ffc4d2ec. Mismo evento subyacente; §8 anti-pattern 6: dedup por sujeto."
-    },
-    {
-      "title_es": "Jason Blum sobre el éxito de Backrooms: 'Hay un espíritu de los 70s'",
-      "summary_es": "Blumhouse celebra el éxito sorpresa de Backrooms con directores del espacio digital.",
-      "source": "The Wrap",
-      "age_hours": 1,
-      "url": "https://www.thewrap.com/industry-news/business/jason-blum-backrooms-obsession-box-office-feeling-of-the-70s/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
-        "anio": 2026
-      },
-      "score": 52,
-      "reason": "§4.4 regla 3: match al catálogo de Backrooms (2026) existe pero el ángulo es box office/industria interna sin movie-event postable; solo informativo."
+      "url": "https://www.reddit.com/r/movies/comments/1tsqply/robert_de_niro_says_he_expects_to_make_at_least/",
+      "angle": null,
+      "catalog_match": null,
+      "score": 65,
+      "reason": "§4.4 regla 3: director match con Martin Scorsese (olimpo) pero el ángulo es solo informativo (declaración casual, no movie-event concreto)."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 116,
-    "newsapi_items": 93,
+    "news_items": 117,
+    "newsapi_items": 92,
     "reddit_posts": 0,
     "trailers": 54
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 3,
+    "agedCount": 2,
     "expiredByTime": 1,
-    "expiredByCritic": 0
+    "expiredByCritic": 1
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16921,
-    "output": 11837
+    "input": 17753,
+    "output": 11698
   }
 }

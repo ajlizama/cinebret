@@ -907,8 +907,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-17T20:49:19.561Z",
-      "last_proposed": "2026-05-30T20:54:58.464Z",
-      "cycles_proposed": 18,
+      "last_proposed": "2026-05-31T12:08:20.428Z",
+      "cycles_proposed": 19,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1145,8 +1145,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-18T14:28:09.503Z",
-      "last_proposed": "2026-05-30T20:54:58.464Z",
-      "cycles_proposed": 6,
+      "last_proposed": "2026-05-31T12:08:20.428Z",
+      "cycles_proposed": 7,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1400,10 +1400,11 @@
       "first_proposed": "2026-05-17T11:58:41.228Z",
       "last_proposed": "2026-05-17T11:58:41.228Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-17T20:49:19.561Z"
+      "became_backlog_at": "2026-05-17T20:49:19.561Z",
+      "expired_at": "2026-05-31T12:08:20.428Z"
     },
     {
       "id": "b89c5321cbd38858",
@@ -1704,10 +1705,10 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "first_proposed": "2026-05-29T21:51:28.375Z",
-      "last_proposed": "2026-05-29T21:51:28.375Z",
+      "first_proposed": "2026-05-31T12:08:20.428Z",
+      "last_proposed": "2026-05-31T12:08:20.428Z",
       "cycles_proposed": 1,
-      "status": "expired",
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-30T12:03:36.479Z",
@@ -2441,10 +2442,12 @@
       "first_proposed": "2026-05-30T12:03:36.479Z",
       "last_proposed": "2026-05-30T12:03:36.479Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-30T20:54:58.464Z"
+      "became_backlog_at": "2026-05-30T20:54:58.464Z",
+      "expired_at": "2026-05-31T12:08:20.428Z",
+      "expired_reason": "§5.2 reevaluación backlog + §3 dedup: contenido idéntico al candidato 3a83a7530c8fcfdc (TOP japonesas) que sigue activo; descartar el duplicado de menor calidad de título."
     },
     {
       "id": "dbaf438921829d34",
@@ -2465,9 +2468,10 @@
       "first_proposed": "2026-05-30T20:54:58.464Z",
       "last_proposed": "2026-05-30T20:54:58.464Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-31T12:08:20.428Z"
     },
     {
       "id": "3a83a7530c8fcfdc",
@@ -2486,12 +2490,36 @@
         "topic": "japón"
       },
       "first_proposed": "2026-05-30T20:54:58.464Z",
-      "last_proposed": "2026-05-30T20:54:58.464Z",
+      "last_proposed": "2026-05-31T12:08:20.428Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-05-31T12:08:20.428Z"
+    },
+    {
+      "id": "466cafae45c20ca0",
+      "action": "generate_carousel_topic",
+      "title": "10 actuaciones de reparto que eclipsaron al protagonista (y lo saben)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Ledger, Hopkins, Simmons: secundarios que robaron la película; kind=performance ausente en el feed.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-05-31T12:08:20.428Z",
+      "last_proposed": "2026-05-31T12:08:20.428Z",
       "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-30T20:58:53.109Z"
+  "last_saved": "2026-05-31T12:12:16.898Z"
 }

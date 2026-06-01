@@ -1,33 +1,198 @@
 {
-  "generated_at": "2026-06-01T16:34:12.303Z",
-  "total_videos": 55,
-  "trailers_count": 7,
-  "matched_to_cinebret": 15,
+  "generated_at": "2026-06-01T22:33:05.411Z",
+  "total_videos": 57,
+  "trailers_count": 9,
+  "matched_to_cinebret": 12,
   "videos": [
     {
-      "video_id": "LDGuRd4ScjI",
-      "title": "Scary Movie - Official Final Trailer",
-      "url": "https://www.youtube.com/watch?v=LDGuRd4ScjI",
-      "published": "2026-06-01T16:20:28Z",
-      "thumbnail": "https://i.ytimg.com/vi/LDGuRd4ScjI/hqdefault.jpg",
+      "video_id": "t1VsIQvqwok",
+      "title": "For All Mankind — The Rebels Spring Their Trap | Season 5 Scene  | Apple TV",
+      "url": "https://www.youtube.com/watch?v=t1VsIQvqwok",
+      "published": "2026-06-01T22:02:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/t1VsIQvqwok/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "XkW2Y6NoLRk",
+      "title": "007 First Light - Official Accolades Trailer",
+      "url": "https://www.youtube.com/watch?v=XkW2Y6NoLRk",
+      "published": "2026-06-01T22:00:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/XkW2Y6NoLRk/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
-      "is_trailer": true,
+      "is_trailer": true
+    },
+    {
+      "video_id": "__peUsDqQ-4",
+      "title": "Have you experienced the new trailer for #EndofOakStreet?",
+      "url": "https://www.youtube.com/watch?v=__peUsDqQ-4",
+      "published": "2026-06-01T22:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/__peUsDqQ-4/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "Q-sGIcgTrAo",
+      "title": "\"This movie looks crazy!\" The End of Oak Street only in theaters and IMAX August 14. #EndofOakStreet",
+      "url": "https://www.youtube.com/watch?v=Q-sGIcgTrAo",
+      "published": "2026-06-01T21:10:43Z",
+      "thumbnail": "https://i.ytimg.com/vi/Q-sGIcgTrAo/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
       "cinebret_match": {
-        "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
-        "titulo": "Scary Movie",
+        "pelicula_id": "7249bdd1-f36d-4f93-bcc3-e012d805ad14",
+        "titulo": "El final de Oak Street",
         "anio": 2026
       }
     },
     {
-      "video_id": "7Eyy-2j8klY",
-      "title": "PlayStation - Official 27\" Gaming Monitor Trailer",
-      "url": "https://www.youtube.com/watch?v=7Eyy-2j8klY",
-      "published": "2026-06-01T16:04:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/7Eyy-2j8klY/hqdefault.jpg",
+      "video_id": "4SB2siEXvVU",
+      "title": "Prince Henry lets loose | Red, White & Royal Blue | Prime Video",
+      "url": "https://www.youtube.com/watch?v=4SB2siEXvVU",
+      "published": "2026-06-01T21:00:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/4SB2siEXvVU/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "286d8228-b16f-4f2b-9d95-e84349db204f",
+        "titulo": "Rojo, blanco y sangre azul",
+        "anio": 2023
+      }
+    },
+    {
+      "video_id": "Xq-QnOLhVxE",
+      "title": "MIDSUMMER NIGHT'S SCREAM: A Horror Game Awards Showcase 2026",
+      "url": "https://www.youtube.com/watch?v=Xq-QnOLhVxE",
+      "published": "2026-06-01T20:22:58Z",
+      "thumbnail": "https://i.ytimg.com/vi/Xq-QnOLhVxE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "L_EyyrAa8L8",
+      "title": "Dad has always been a believer. #EndofOakStreet only in theaters and IMAX August 14. #FilmedForIMAX",
+      "url": "https://www.youtube.com/watch?v=L_EyyrAa8L8",
+      "published": "2026-06-01T20:20:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/L_EyyrAa8L8/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "UQ4i_4XK6ko",
+      "title": "Protect your family at all costs. #EndofOakStreet only in theaters and IMAX August 14.",
+      "url": "https://www.youtube.com/watch?v=UQ4i_4XK6ko",
+      "published": "2026-06-01T20:15:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/UQ4i_4XK6ko/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "B-UCC9khAoc",
+      "title": "Get inside now. #EndofOakStreet only in theaters and IMAX August 14. #FilmedForIMAX",
+      "url": "https://www.youtube.com/watch?v=B-UCC9khAoc",
+      "published": "2026-06-01T20:10:35Z",
+      "thumbnail": "https://i.ytimg.com/vi/B-UCC9khAoc/hqdefault.jpg",
+      "channel": "Warner Bros. Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "cesAWSRsGDc",
+      "title": "In Hope Voiden - Official Trailer | The Horror Game Awards Showcase 2026",
+      "url": "https://www.youtube.com/watch?v=cesAWSRsGDc",
+      "published": "2026-06-01T20:00:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/cesAWSRsGDc/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": true
+    },
+    {
+      "video_id": "f38doCrP-P0",
+      "title": "Where Dolls Hang - Official Announcement Trailer | The Horror Game Awards Showcase 2026",
+      "url": "https://www.youtube.com/watch?v=f38doCrP-P0",
+      "published": "2026-06-01T20:00:34Z",
+      "thumbnail": "https://i.ytimg.com/vi/f38doCrP-P0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "9QJ1KxKenGc",
+      "title": "Vampire Huntress: Lament of the Sun - Official Trailer | The Horror Game Awards Showcase 2026",
+      "url": "https://www.youtube.com/watch?v=9QJ1KxKenGc",
+      "published": "2026-06-01T20:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/9QJ1KxKenGc/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "KfuZXIh5P00",
+      "title": "The Carney touch. Learn how John Carney and Gary Clark created \"How to Write a Song Without You.\"",
+      "url": "https://www.youtube.com/watch?v=KfuZXIh5P00",
+      "published": "2026-06-01T19:34:06Z",
+      "thumbnail": "https://i.ytimg.com/vi/KfuZXIh5P00/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "RQ5mzHmusp0",
+      "title": "4 Minutes of Steamy Stolas & Blitzø Moments | Helluva Boss | Prime Video",
+      "url": "https://www.youtube.com/watch?v=RQ5mzHmusp0",
+      "published": "2026-06-01T19:00:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/RQ5mzHmusp0/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "zzhJHbW7I5k",
+      "title": "Hard truths and difficult realizations in THE WORST PERSON IN THE WORLD, starring #RenateReinsve",
+      "url": "https://www.youtube.com/watch?v=zzhJHbW7I5k",
+      "published": "2026-06-01T19:00:20Z",
+      "thumbnail": "https://i.ytimg.com/vi/zzhJHbW7I5k/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "9vvVp-UpLIA",
+      "title": "Never gets old. POWER BALLAD - now playing in select theaters. Everywhere Friday.",
+      "url": "https://www.youtube.com/watch?v=9vvVp-UpLIA",
+      "published": "2026-06-01T18:38:19Z",
+      "thumbnail": "https://i.ytimg.com/vi/9vvVp-UpLIA/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "rtHJY26iXng",
+      "title": "From set to the big screen, see how Titanic was brought to life!",
+      "url": "https://www.youtube.com/watch?v=rtHJY26iXng",
+      "published": "2026-06-01T17:01:21Z",
+      "thumbnail": "https://i.ytimg.com/vi/rtHJY26iXng/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "oOW_6cSvMY8",
+      "title": "New for June 2026 | Sugar, Cape Fear & More | Apple TV",
+      "url": "https://www.youtube.com/watch?v=oOW_6cSvMY8",
+      "published": "2026-06-01T16:59:48Z",
+      "thumbnail": "https://i.ytimg.com/vi/oOW_6cSvMY8/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
     },
     {
       "video_id": "C-Hhu6b6R2E",
@@ -63,26 +228,6 @@
         "titulo": "Scary Movie",
         "anio": 2026
       }
-    },
-    {
-      "video_id": "wsjf7T9Cb8I",
-      "title": "Call of Duty: Modern Warfare 4 - Official Key Art Behind The Scenes Video",
-      "url": "https://www.youtube.com/watch?v=wsjf7T9Cb8I",
-      "published": "2026-06-01T15:28:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/wsjf7T9Cb8I/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "Xq-QnOLhVxE",
-      "title": "MIDSUMMER NIGHT'S SCREAM: A Horror Game Awards Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=Xq-QnOLhVxE",
-      "published": "2026-06-01T15:23:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/Xq-QnOLhVxE/hqdefault_live.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "ZT9kb3iAOtY",
@@ -121,16 +266,6 @@
       "published": "2026-06-01T14:00:01Z",
       "thumbnail": "https://i.ytimg.com/vi/mObRUsA7dPY/hqdefault.jpg",
       "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
-      "video_id": "3oB9AxspVow",
-      "title": "The End of Oak Street | Official Trailer",
-      "url": "https://www.youtube.com/watch?v=3oB9AxspVow",
-      "published": "2026-06-01T13:00:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/3oB9AxspVow/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
       "is_trailer": true
     },
@@ -195,21 +330,6 @@
       }
     },
     {
-      "video_id": "i2PCcXgAAFg",
-      "title": "The Top 8 Relationships in Culpa Mía, The Idea of You, My Fault: London, & More | Prime Video",
-      "url": "https://www.youtube.com/watch?v=i2PCcXgAAFg",
-      "published": "2026-05-31T19:00:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/i2PCcXgAAFg/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "830408a7-8266-4b9a-b9f6-a552e796677b",
-        "titulo": "Culpa mía: Londres",
-        "anio": 2025
-      }
-    },
-    {
       "video_id": "jl4iQe6IO2w",
       "title": "THE MYSTERIOUS GAZE OF THE FLAMINGO director Diego Céspedes shares his filmmaking inspirations.",
       "url": "https://www.youtube.com/watch?v=jl4iQe6IO2w",
@@ -217,16 +337,6 @@
       "thumbnail": "https://i.ytimg.com/vi/jl4iQe6IO2w/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "6cd3UFi4LhA",
-      "title": "Every Ending Scene from The Boys Seasons 1-5 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=6cd3UFi4LhA",
-      "published": "2026-05-31T17:00:13Z",
-      "thumbnail": "https://i.ytimg.com/vi/6cd3UFi4LhA/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -335,16 +445,6 @@
       }
     },
     {
-      "video_id": "LBAVueVh4A8",
-      "title": "AGON director Giulio Bertelli on collaborating with Tom Wheatley to bring Ludoj to life.",
-      "url": "https://www.youtube.com/watch?v=LBAVueVh4A8",
-      "published": "2026-05-30T15:01:04Z",
-      "thumbnail": "https://i.ytimg.com/vi/LBAVueVh4A8/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "68T6CvvM3M4",
       "title": "Shrinking — Recording A Thousand Years with Christina Perri | In It Together | Apple TV",
       "url": "https://www.youtube.com/watch?v=68T6CvvM3M4",
@@ -358,31 +458,6 @@
         "titulo": "Together: Juntos hasta la muerte",
         "anio": 2025
       }
-    },
-    {
-      "video_id": "AE1l6WkPIhM",
-      "title": "Shrinking — Michael J Fox & Bill Lawrence | In It Together | Apple TV",
-      "url": "https://www.youtube.com/watch?v=AE1l6WkPIhM",
-      "published": "2026-05-29T22:18:24Z",
-      "thumbnail": "https://i.ytimg.com/vi/AE1l6WkPIhM/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-        "titulo": "Together: Juntos hasta la muerte",
-        "anio": 2025
-      }
-    },
-    {
-      "video_id": "xNxAfhOJNmI",
-      "title": "The MIX Summer Game Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=xNxAfhOJNmI",
-      "published": "2026-05-29T21:57:37Z",
-      "thumbnail": "https://i.ytimg.com/vi/xNxAfhOJNmI/hqdefault_live.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
     },
     {
       "video_id": "mqDYfDPJ3IU",
@@ -445,26 +520,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "FYIrDb9NSGw",
-      "title": "A world awaits. #PropellerMovie now streaming on Apple TV.",
-      "url": "https://www.youtube.com/watch?v=FYIrDb9NSGw",
-      "published": "2026-05-29T17:59:47Z",
-      "thumbnail": "https://i.ytimg.com/vi/FYIrDb9NSGw/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "jWem0YyUNZU",
-      "title": "Ok too far, Billy.",
-      "url": "https://www.youtube.com/watch?v=jWem0YyUNZU",
-      "published": "2026-05-29T17:00:28Z",
-      "thumbnail": "https://i.ytimg.com/vi/jWem0YyUNZU/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "YikKsuwfW18",
       "title": "Emperor (2012) | Full Movie | Matthew Fox, Colin Moy, Tommy Lee Jones",
       "url": "https://www.youtube.com/watch?v=YikKsuwfW18",
@@ -520,16 +575,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "8dnxi4x_wXM",
-      "title": "A New York minute with Paul Rudd, Nick Jonas and John Carney. #PowerBallad. Creator Cred: Wes Ellis",
-      "url": "https://www.youtube.com/watch?v=8dnxi4x_wXM",
-      "published": "2026-05-28T22:01:44Z",
-      "thumbnail": "https://i.ytimg.com/vi/8dnxi4x_wXM/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "PSmrT4zghxc",
       "title": "Evening | Ann Sings 'Time After Time' at Lila's Wedding",
       "url": "https://www.youtube.com/watch?v=PSmrT4zghxc",
@@ -560,36 +605,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "deMaEZoe8DU",
-      "title": "Supergirl | Origins",
-      "url": "https://www.youtube.com/watch?v=deMaEZoe8DU",
-      "published": "2026-05-28T19:00:13Z",
-      "thumbnail": "https://i.ytimg.com/vi/deMaEZoe8DU/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "d750f9eb-180d-4b7a-a66b-b32301cb0a38",
-        "titulo": "Supergirl",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "lZDZpB9NBNI",
-      "title": "Supergirl | Krem",
-      "url": "https://www.youtube.com/watch?v=lZDZpB9NBNI",
-      "published": "2026-05-28T18:00:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/lZDZpB9NBNI/hqdefault.jpg",
-      "channel": "Warner Bros. Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "d750f9eb-180d-4b7a-a66b-b32301cb0a38",
-        "titulo": "Supergirl",
-        "anio": 2026
-      }
-    },
-    {
       "video_id": "L_f5KofGumk",
       "title": "Arachnid Movements in Spider-Noir",
       "url": "https://www.youtube.com/watch?v=L_f5KofGumk",
@@ -597,16 +612,6 @@
       "thumbnail": "https://i.ytimg.com/vi/L_f5KofGumk/hqdefault.jpg",
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "MF1DomxBNDE",
-      "title": "1 of 1. John Carney's #PowerBallad starring Paul Rudd and Nick Jonas.",
-      "url": "https://www.youtube.com/watch?v=MF1DomxBNDE",
-      "published": "2026-05-27T23:07:50Z",
-      "thumbnail": "https://i.ytimg.com/vi/MF1DomxBNDE/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {

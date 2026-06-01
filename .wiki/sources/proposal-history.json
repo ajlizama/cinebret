@@ -2517,10 +2517,12 @@
       "first_proposed": "2026-05-30T20:54:58.464Z",
       "last_proposed": "2026-05-31T12:08:20.428Z",
       "cycles_proposed": 2,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-31T12:08:20.428Z"
+      "became_backlog_at": "2026-05-31T12:08:20.428Z",
+      "expired_at": "2026-06-01T22:33:05.499Z",
+      "expired_reason": "§instrucción especial tops y backlog: duplicado de fe5875c8c649d23e (TOP 10 películas japonesas ya en pool); además déficit exige reviews."
     },
     {
       "id": "466cafae45c20ca0",
@@ -2567,10 +2569,12 @@
       "first_proposed": "2026-05-31T20:58:27.979Z",
       "last_proposed": "2026-05-31T20:58:27.979Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-06-01T16:34:12.387Z"
+      "became_backlog_at": "2026-06-01T16:34:12.387Z",
+      "expired_at": "2026-06-01T22:33:05.499Z",
+      "expired_reason": "§8 anti-pattern: duplicado temático de 7e36148fa29bda49 (actores secundarios que eclipsan); mismo concepto con distinto título; se mantiene el de mayor score."
     },
     {
       "id": "ac7481f3b5e6f67e",
@@ -2615,9 +2619,10 @@
       "first_proposed": "2026-06-01T16:34:12.387Z",
       "last_proposed": "2026-06-01T16:34:12.387Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-06-01T22:33:05.499Z"
     },
     {
       "id": "561612cc5b003e2f",
@@ -2638,10 +2643,132 @@
       "first_proposed": "2026-06-01T16:34:12.387Z",
       "last_proposed": "2026-06-01T16:34:12.387Z",
       "cycles_proposed": 1,
+      "status": "expired",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-06-01T22:33:05.499Z",
+      "expired_at": "2026-06-01T22:33:05.499Z",
+      "expired_reason": "§8 anti-pattern: duplicado temático de ac7481f3b5e6f67e (mismo mood invernal); se mantiene el de mayor antigüedad en backlog."
+    },
+    {
+      "id": "64da9cf70b95fb22",
+      "action": "generate_review",
+      "title": "Cómo entrenar a tu dragón (2025) — live action de tu película rating 10",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "first_proposed": "2026-06-01T22:33:05.499Z",
+      "last_proposed": "2026-06-01T22:33:05.499Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "4dda7b80cb658a0b",
+      "action": "generate_review",
+      "title": "El Señor de los Anillos: El Retorno del Rey (2003) — el cierre épico",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 97,
+      "reasoning": "Jackson cerró la trilogía con 11 Óscars; una de tus 38 películas sagradas.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "first_proposed": "2026-06-01T22:33:05.499Z",
+      "last_proposed": "2026-06-01T22:33:05.499Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "9e9617d3b390beb6",
+      "action": "generate_review",
+      "title": "Fight Club (1999) — Fincher en estado puro",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 96,
+      "reasoning": "Fincher y Pitt construyeron una de las grandes decepciones planificadas del cine; tu rating 10 habla solo.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "first_proposed": "2026-06-01T22:33:05.499Z",
+      "last_proposed": "2026-06-01T22:33:05.499Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "c4237e52a6a6e269",
+      "action": "generate_carousel_topic",
+      "title": "10 finales de película que no puedes spoilear sin arruinar todo",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Prestige, Usual Suspects, Memento, Oldboy: los giros que hacen que el cine importe de verdad.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-06-01T22:33:05.499Z",
+      "last_proposed": "2026-06-01T22:33:05.499Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "9a69297991140150",
+      "action": "generate_review",
+      "title": "Parásitos (2019) — la obra maestra de Bong Joon-ho",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 95,
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta película; revisión prioritaria en el catálogo.",
+      "suggested_caption": null,
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Parasite",
+        "anio": 2019,
+        "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
+      },
+      "first_proposed": "2026-06-01T22:33:05.499Z",
+      "last_proposed": "2026-06-01T22:33:05.499Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-06-01T16:38:01.963Z"
+  "last_saved": "2026-06-01T22:36:30.065Z"
 }

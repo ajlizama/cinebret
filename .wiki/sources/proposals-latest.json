@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-01T16:34:12.387Z",
+  "generated_at": "2026-06-01T22:33:05.499Z",
   "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 0,
+  "news_count": 5,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -28,8 +28,8 @@
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Dean DeBlois lleva su historia más icónica al live action; tu rating 10 la convierte en prioridad máxima.",
+      "title": "Cómo entrenar a tu dragón (2025) — live action de tu película rating 10",
+      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,15 +41,15 @@
         "anio": 2025,
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + plataforma activa; Dean DeBlois muy respetado; live action 2025 es momento oportuno."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + plataforma activa + Dean DeBlois (muy respetado, 4 sello bret) + año 2025 boost."
     },
     {
       "id": "119c0775fc431172",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "La conclusión épica de la trilogía más importante de tu catálogo merece su review definitiva.",
+      "title": "El Señor de los Anillos: El Retorno del Rey (2003) — el cierre épico",
+      "reasoning": "Jackson cerró la trilogía con 11 Óscars; una de tus 38 películas sagradas.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,15 +61,54 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + plataforma activa; Peter Jackson muy respetado."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + Peter Jackson (muy respetado, 3 sello bret) + plataforma activa."
+    },
+    {
+      "id": "86cd64c42c4ddc8b",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Fight Club (1999) — Fincher en estado puro",
+      "reasoning": "Fincher y Pitt construyeron una de las grandes decepciones planificadas del cine; tu rating 10 habla solo.",
+      "score": 96,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
+      },
+      "critic_reason": "§5 backlog reevaluado: Fight Club (1999) rating 10 + Fincher olimpo + plataforma activa; no hay post IG reciente; sigue siendo propuesta válida."
+    },
+    {
+      "id": "972228fc7b714ede",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_carousel_topic",
+      "title": "10 finales de película que no puedes spoilear sin arruinar todo",
+      "reasoning": "Prestige, Usual Suspects, Memento, Oldboy: los giros que hacen que el cine importe de verdad.",
+      "score": 82,
+      "category": "top",
+      "angle": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "critic_reason": "§instrucción CREATIVE_TOPIC: idea fresca kind=country/occasion que evita todos los recent_top_kinds; ángulo narrativo no obvio con fuerte conexión al catálogo de Alberto."
     },
     {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Review: Parásitos (2019)",
-      "reasoning": "La obra maestra de Bong Joon-ho que ganó el Óscar merece su lugar en el feed.",
+      "title": "Parásitos (2019) — la obra maestra de Bong Joon-ho",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta película; revisión prioritaria en el catálogo.",
       "score": 95,
       "category": "review",
       "angle": "review",
@@ -81,45 +120,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + plataforma activa; Bong Joon-ho en lista de admired."
-    },
-    {
-      "id": "7f59ad7ec4092535",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_carousel_topic",
-      "title": "10 actuaciones que destruyeron (físicamente) a los actores que las hicieron",
-      "reasoning": "Bale en La Maquinista, Ledger en Joker, McConaughey en Dallas: cuando el cine cobra un precio real.",
-      "score": 82,
-      "category": "top",
-      "angle": null,
-      "source_name": "cinebret-carousel-topic",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-topic",
-      "skill_args": {
-        "topic_type": "custom",
-        "topic": "__TBD_BY_CRITIC__"
-      },
-      "critic_reason": "Slot creativo: kind=performance no está en recent_top_kinds; ángulo narrativo no obvio — actuaciones físicas extremas que cambiaron para siempre a los actores."
-    },
-    {
-      "id": "8023aaf275ffb029",
-      "type": "FEED",
-      "priority": "media",
-      "action": "generate_carousel_mood",
-      "title": "10 películas para el domingo de bajón de invierno",
-      "reasoning": "Lista de mood invernal con alto rewatchability para el frío que ya llegó.",
-      "score": 78,
-      "category": "top",
-      "angle": null,
-      "source_name": "cinebret-carousel-mood",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-mood",
-      "skill_args": {
-        "mood": "Pa'l domingo de bajón",
-        "count": 10
-      },
-      "critic_reason": "§3 kind=mood no está en recent_top_kinds; el frío invernal es momento estacional oportuno."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + Bong Joon-ho (autor admirado) + plataforma activa."
     }
   ],
   "backlog": [
@@ -156,14 +157,6 @@
       "skill_to_invoke": "cinebret-review"
     },
     {
-      "id": "492012dd5944db35",
-      "type": "FEED",
-      "title": "10 actuaciones de reparto que eclipsaron al protagonista sin pedir permiso",
-      "reasoning": "Ledger, Hopkins, Simmons: secundarios que convirtieron una buena película en obra maestra sin ser el centro.",
-      "days_ago": 1,
-      "skill_to_invoke": "cinebret-carousel-topic"
-    },
-    {
       "id": "7e36148fa29bda49",
       "type": "FEED",
       "title": "TOP 10 actores secundarios que se robaron la película (y deberían ser los protagonistas)",
@@ -186,25 +179,109 @@
       "reasoning": "Spielberg vuelve a los extraterrestres; Blunt detalla el proceso creativo de la voz alien sin IA.",
       "days_ago": 3,
       "skill_to_invoke": "cinebret-share-story"
+    },
+    {
+      "id": "ac7481f3b5e6f67e",
+      "type": "FEED",
+      "title": "10 películas para ver cuando el invierno te aplasta el ánimo",
+      "reasoning": "Lista de mood invernal con alto rewatchability; kind=mood ausente en los últimos 14 días.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-carousel-mood"
     }
   ],
-  "news": [],
+  "news": [
+    {
+      "title_es": "Taquilla doméstica supera $1.000 millones en mayo sin película Marvel por primera vez",
+      "summary_es": "Biopics, legacyquels y horror lideran mayo; el hueco de Avengers lo llenaron otros.",
+      "source": "The Wrap",
+      "age_hours": 1,
+      "url": "https://www.thewrap.com/creative-content/movies/box-office-1-billion-may-without-marvel/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "dea76bf7-5679-4e6c-be7a-086d9b92b13c",
+        "titulo": "Vengadores: Doomsday",
+        "anio": 2026
+      },
+      "score": 65,
+      "reason": "§4.4 regla 3: match a Vengadores Doomsday + hito de taquilla de mayo sin Marvel; dato de industria relevante para seguir el panorama."
+    },
+    {
+      "title_es": "Backrooms (A24) abre con $118 millones: el productor no para de recibir llamadas",
+      "summary_es": "El horror de YouTube se convierte en fenómeno de taquilla; dato de industria que te puede interesar.",
+      "source": "Hollywood Reporter",
+      "age_hours": 1,
+      "url": "https://www.hollywoodreporter.com/business/business-news/backrooms-producer-chris-ferguson-1236610885/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 62,
+      "reason": "§4.3/4.4: Backrooms (2026, A24) match al catálogo; apertura de $118M es un hecho de industria notable pero sin ángulo postable claro para cinebret."
+    },
+    {
+      "title_es": "Backrooms: ¿por qué la gente cree que hay un director fantasma detrás del hit de A24?",
+      "summary_es": "Las conspiraciones online niegan que el director YouTuber pueda hacer una película así de buena.",
+      "source": "Hollywood Reporter",
+      "age_hours": 1,
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/backrooms-obsession-ghost-directing-conspiracies-youtube-1236609102/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 60,
+      "reason": "§4.4 regla 3: Backrooms match al catálogo; controversia de ghost-directing es dato de industria interesante pero sin ángulo postable claro."
+    },
+    {
+      "title_es": "Backrooms y Obsession: por qué el éxito de los directores YouTube genera teorías conspirativas",
+      "summary_es": "Análisis de industria sobre la nueva ola de directores digitales que están rompiendo en taquilla.",
+      "source": "IndieWire",
+      "age_hours": 1,
+      "url": "https://www.indiewire.com/features/commentary/backrooms-obsession-teach-film-industry-different-lessons-1235197516/",
+      "angle": "cultural-moment",
+      "catalog_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      },
+      "score": 58,
+      "reason": "§4.4 regla 3: Backrooms match al catálogo; opinión de industria sobre nuevos directores YouTube — informativo pero sin ángulo postable para cinebret."
+    },
+    {
+      "title_es": "Trailer final de Scary Movie (2026): los Wayans y Anna Faris vuelven a la parodia",
+      "summary_es": "Paramount lanzó el trailer final del reboot; la saga original tiene peso nostálgico en el catálogo.",
+      "source": "Paramount Pictures",
+      "age_hours": 7,
+      "url": "https://www.youtube.com/watch?v=cGgWAHXuTKc",
+      "angle": "trailer-drop",
+      "catalog_match": {
+        "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
+        "titulo": "Scary Movie",
+        "anio": 2026
+      },
+      "score": 55,
+      "reason": "§4.4 regla 3: Scary Movie 2026 match al catálogo pero es reboot/comedia de parodia; ángulo informativo (trailer final) sin propuesta postable clara para cinebret."
+    }
+  ],
   "raw_signal_counts": {
     "news_items": 117,
     "newsapi_items": 92,
     "reddit_posts": 0,
-    "trailers": 55
+    "trailers": 57
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 5,
-    "expiredByTime": 1,
-    "expiredByCritic": 0
+    "agedCount": 2,
+    "expiredByTime": 0,
+    "expiredByCritic": 3
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 14563,
-    "output": 9585
+    "input": 14937,
+    "output": 9728
   }
 }

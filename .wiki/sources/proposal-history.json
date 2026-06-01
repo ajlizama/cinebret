@@ -518,12 +518,12 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-05-31T20:58:27.979Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-06-01T16:34:12.387Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-18T14:28:09.503Z",
+      "became_backlog_at": "2026-06-01T16:34:12.387Z",
       "expired_at": "2026-05-31T20:58:27.979Z",
       "expired_reason": "§5.2 garbage collection: duplicado de 119c0775fc431172 (LOTR Return of the King/Jackson) ya en propuestas activas de este ciclo; expirar backlog."
     },
@@ -622,12 +622,12 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-05-31T20:58:27.979Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-06-01T16:34:12.387Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-08T20:58:56.691Z",
+      "became_backlog_at": "2026-06-01T16:34:12.387Z",
       "expired_at": "2026-05-17T20:49:19.561Z",
       "expired_reason": "§5.2 garbage collection: tercer duplicado de Parasite/Bong (6134534c ya en propuestas); expirar."
     },
@@ -907,12 +907,12 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-05-31T20:58:27.979Z",
-      "cycles_proposed": 1,
-      "status": "fresh",
+      "last_proposed": "2026-06-01T16:34:12.387Z",
+      "cycles_proposed": 2,
+      "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-18T14:28:09.503Z",
+      "became_backlog_at": "2026-06-01T16:34:12.387Z",
       "expired_at": "2026-05-31T20:58:27.979Z",
       "expired_reason": "§5.2 garbage collection: duplicado de 6276902b8705f60e (HTTYD 2025/DeBlois) ya en propuestas activas de este ciclo; expirar backlog."
     },
@@ -1147,11 +1147,11 @@
       "first_proposed": "2026-05-18T14:28:09.503Z",
       "last_proposed": "2026-05-31T12:08:20.428Z",
       "cycles_proposed": 7,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-18T21:11:30.072Z",
-      "expired_at": "2026-05-17T20:49:19.561Z",
+      "expired_at": "2026-06-01T16:34:12.387Z",
       "expired_reason": "§5.2 garbage collection: duplicado exacto del candidato activo 6134534c62ee6a31 (Parasite/Bong) ya evaluado como propose en este ciclo; expirar backlog."
     },
     {
@@ -2567,9 +2567,10 @@
       "first_proposed": "2026-05-31T20:58:27.979Z",
       "last_proposed": "2026-05-31T20:58:27.979Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-06-01T16:34:12.387Z"
     },
     {
       "id": "ac7481f3b5e6f67e",
@@ -2590,10 +2591,57 @@
       "first_proposed": "2026-05-31T20:58:27.979Z",
       "last_proposed": "2026-05-31T20:58:27.979Z",
       "cycles_proposed": 1,
+      "status": "backlog",
+      "accepted_at": null,
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-06-01T16:34:12.387Z"
+    },
+    {
+      "id": "1231650789036081",
+      "action": "generate_carousel_topic",
+      "title": "10 actuaciones que destruyeron (físicamente) a los actores que las hicieron",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 82,
+      "reasoning": "Bale en La Maquinista, Ledger en Joker, McConaughey en Dallas: cuando el cine cobra un precio real.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-06-01T16:34:12.387Z",
+      "last_proposed": "2026-06-01T16:34:12.387Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "561612cc5b003e2f",
+      "action": "generate_carousel_mood",
+      "title": "10 películas para el domingo de bajón de invierno",
+      "type": "FEED",
+      "priority": "media",
+      "score": 78,
+      "reasoning": "Lista de mood invernal con alto rewatchability para el frío que ya llegó.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-mood",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-mood",
+      "skill_args": {
+        "mood": "Pa'l domingo de bajón",
+        "count": 10
+      },
+      "first_proposed": "2026-06-01T16:34:12.387Z",
+      "last_proposed": "2026-06-01T16:34:12.387Z",
+      "cycles_proposed": 1,
       "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-05-31T21:02:08.101Z"
+  "last_saved": "2026-06-01T16:38:01.963Z"
 }

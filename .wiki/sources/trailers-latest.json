@@ -1,9 +1,89 @@
 {
-  "generated_at": "2026-06-01T22:33:05.411Z",
+  "generated_at": "2026-06-02T14:47:42.536Z",
   "total_videos": 57,
-  "trailers_count": 9,
-  "matched_to_cinebret": 12,
+  "trailers_count": 10,
+  "matched_to_cinebret": 11,
   "videos": [
+    {
+      "video_id": "t1RVln5Q5pM",
+      "title": "Clutch - Official Behind-the-Scenes Reveal",
+      "url": "https://www.youtube.com/watch?v=t1RVln5Q5pM",
+      "published": "2026-06-02T14:09:07Z",
+      "thumbnail": "https://i.ytimg.com/vi/t1RVln5Q5pM/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "8aN6lgoI_k0",
+      "title": "Arms of God - Official Early Access Launch Trailer",
+      "url": "https://www.youtube.com/watch?v=8aN6lgoI_k0",
+      "published": "2026-06-02T14:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/8aN6lgoI_k0/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "JMKqWV2J9CA",
+      "title": "My Arms Are Longer Now: Exclusive Developer Let's Play",
+      "url": "https://www.youtube.com/watch?v=JMKqWV2J9CA",
+      "published": "2026-06-02T14:00:12Z",
+      "thumbnail": "https://i.ytimg.com/vi/JMKqWV2J9CA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "BLBvbMtjyAQ",
+      "title": "Silo — Season 3 Official Trailer | Apple TV",
+      "url": "https://www.youtube.com/watch?v=BLBvbMtjyAQ",
+      "published": "2026-06-02T13:59:47Z",
+      "thumbnail": "https://i.ytimg.com/vi/BLBvbMtjyAQ/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "0X2w2pVbuZA",
+      "title": "Wuthering Waves x Cyberpunk: Edgerunners - Official Rebecca Combat Trailer",
+      "url": "https://www.youtube.com/watch?v=0X2w2pVbuZA",
+      "published": "2026-06-02T13:52:32Z",
+      "thumbnail": "https://i.ytimg.com/vi/0X2w2pVbuZA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "3jE39ZhG8Aw",
+      "title": "Onslaught - Official Trailer (2026) Adria Arjona, Alex Pereira, Drew Starkey",
+      "url": "https://www.youtube.com/watch?v=3jE39ZhG8Aw",
+      "published": "2026-06-02T13:32:20Z",
+      "thumbnail": "https://i.ytimg.com/vi/3jE39ZhG8Aw/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "L24CYVpQ-LI",
+      "title": "Onslaught | Official Trailer HD | A24",
+      "url": "https://www.youtube.com/watch?v=L24CYVpQ-LI",
+      "published": "2026-06-02T13:00:08Z",
+      "thumbnail": "https://i.ytimg.com/vi/L24CYVpQ-LI/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "duzjRRtKTS4",
+      "title": "Cheers to love! THE MYSTERIOUS GAZE OF THE FLAMINGO is now streaming.",
+      "url": "https://www.youtube.com/watch?v=duzjRRtKTS4",
+      "published": "2026-06-02T11:28:27Z",
+      "thumbnail": "https://i.ytimg.com/vi/duzjRRtKTS4/hqdefault.jpg",
+      "channel": "Mubi",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
     {
       "video_id": "t1VsIQvqwok",
       "title": "For All Mankind — The Rebels Spring Their Trap | Season 5 Scene  | Apple TV",
@@ -13,16 +93,6 @@
       "channel": "Apple TV",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "XkW2Y6NoLRk",
-      "title": "007 First Light - Official Accolades Trailer",
-      "url": "https://www.youtube.com/watch?v=XkW2Y6NoLRk",
-      "published": "2026-06-01T22:00:09Z",
-      "thumbnail": "https://i.ytimg.com/vi/XkW2Y6NoLRk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "__peUsDqQ-4",
@@ -65,16 +135,6 @@
       }
     },
     {
-      "video_id": "Xq-QnOLhVxE",
-      "title": "MIDSUMMER NIGHT'S SCREAM: A Horror Game Awards Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=Xq-QnOLhVxE",
-      "published": "2026-06-01T20:22:58Z",
-      "thumbnail": "https://i.ytimg.com/vi/Xq-QnOLhVxE/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "L_EyyrAa8L8",
       "title": "Dad has always been a believer. #EndofOakStreet only in theaters and IMAX August 14. #FilmedForIMAX",
       "url": "https://www.youtube.com/watch?v=L_EyyrAa8L8",
@@ -103,36 +163,6 @@
       "channel": "Warner Bros. Pictures",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "cesAWSRsGDc",
-      "title": "In Hope Voiden - Official Trailer | The Horror Game Awards Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=cesAWSRsGDc",
-      "published": "2026-06-01T20:00:39Z",
-      "thumbnail": "https://i.ytimg.com/vi/cesAWSRsGDc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "f38doCrP-P0",
-      "title": "Where Dolls Hang - Official Announcement Trailer | The Horror Game Awards Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=f38doCrP-P0",
-      "published": "2026-06-01T20:00:34Z",
-      "thumbnail": "https://i.ytimg.com/vi/f38doCrP-P0/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "9QJ1KxKenGc",
-      "title": "Vampire Huntress: Lament of the Sun - Official Trailer | The Horror Game Awards Showcase 2026",
-      "url": "https://www.youtube.com/watch?v=9QJ1KxKenGc",
-      "published": "2026-06-01T20:00:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/9QJ1KxKenGc/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
     },
     {
       "video_id": "KfuZXIh5P00",
@@ -380,16 +410,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "KTfgHjlInDs",
-      "title": "A father and son cross a scorched desert alongside a convoy of ravers in Oliver Laxe's SIRÂT.",
-      "url": "https://www.youtube.com/watch?v=KTfgHjlInDs",
-      "published": "2026-05-30T19:00:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/KTfgHjlInDs/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "PnYvsDzAHtA",
       "title": "The Bourne Supremacy | Jason Bourne Fights his Former CIA Associate",
       "url": "https://www.youtube.com/watch?v=PnYvsDzAHtA",
@@ -445,21 +465,6 @@
       }
     },
     {
-      "video_id": "68T6CvvM3M4",
-      "title": "Shrinking — Recording A Thousand Years with Christina Perri | In It Together | Apple TV",
-      "url": "https://www.youtube.com/watch?v=68T6CvvM3M4",
-      "published": "2026-05-29T22:59:54Z",
-      "thumbnail": "https://i.ytimg.com/vi/68T6CvvM3M4/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-        "titulo": "Together: Juntos hasta la muerte",
-        "anio": 2025
-      }
-    },
-    {
       "video_id": "mqDYfDPJ3IU",
       "title": "Is This the Start to a Backrooms Franchise?",
       "url": "https://www.youtube.com/watch?v=mqDYfDPJ3IU",
@@ -476,7 +481,7 @@
     },
     {
       "video_id": "Mgn9bK9GEaQ",
-      "title": "Evening | Ann Gets a Visit from Lila in the Present",
+      "title": "Evening | The Moment Lila Visits Ann in the Present",
       "url": "https://www.youtube.com/watch?v=Mgn9bK9GEaQ",
       "published": "2026-05-29T21:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/Mgn9bK9GEaQ/hqdefault.jpg",
@@ -623,16 +628,6 @@
       "channel": "A24",
       "channel_tier": 1,
       "is_trailer": true
-    },
-    {
-      "video_id": "n--mHQ8hnu4",
-      "title": "The Death of Robinhood | Official Promo | A24",
-      "url": "https://www.youtube.com/watch?v=n--mHQ8hnu4",
-      "published": "2026-05-26T14:00:45Z",
-      "thumbnail": "https://i.ytimg.com/vi/n--mHQ8hnu4/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": false
     }
   ]
 }

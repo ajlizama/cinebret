@@ -1,37 +1,287 @@
 {
-  "generated_at": "2026-06-02T14:47:42.536Z",
-  "total_videos": 57,
-  "trailers_count": 10,
-  "matched_to_cinebret": 11,
+  "generated_at": "2026-06-02T22:22:19.852Z",
+  "total_videos": 59,
+  "trailers_count": 12,
+  "matched_to_cinebret": 17,
   "videos": [
     {
-      "video_id": "t1RVln5Q5pM",
-      "title": "Clutch - Official Behind-the-Scenes Reveal",
-      "url": "https://www.youtube.com/watch?v=t1RVln5Q5pM",
-      "published": "2026-06-02T14:09:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/t1RVln5Q5pM/hqdefault.jpg",
+      "video_id": "UN2C0OgZkE8",
+      "title": "Ace Combat 8: Wings of Theve - Official Deluxe Edition Trailer | State of Play 2026",
+      "url": "https://www.youtube.com/watch?v=UN2C0OgZkE8",
+      "published": "2026-06-02T22:20:22Z",
+      "thumbnail": "https://i.ytimg.com/vi/UN2C0OgZkE8/hqdefault.jpg",
       "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
+        "titulo": "La sombra del poder",
+        "anio": 2009
+      }
+    },
+    {
+      "video_id": "BB2_yd_3Dj4",
+      "title": "No Rest For The Wicked - Official 1.0 Release Date Trailer | State of Play 2026",
+      "url": "https://www.youtube.com/watch?v=BB2_yd_3Dj4",
+      "published": "2026-06-02T22:07:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/BB2_yd_3Dj4/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
+        "titulo": "La sombra del poder",
+        "anio": 2009
+      }
+    },
+    {
+      "video_id": "GABVu4w1aaw",
+      "title": "Dune: Awakening - PlayStation Announcement Trailer | State of Play 2026",
+      "url": "https://www.youtube.com/watch?v=GABVu4w1aaw",
+      "published": "2026-06-02T22:07:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/GABVu4w1aaw/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
+        "titulo": "La sombra del poder",
+        "anio": 2009
+      }
+    },
+    {
+      "video_id": "SRSZpIT0OGA",
+      "title": "ILL - Official Story Trailer | State of Play 2026",
+      "url": "https://www.youtube.com/watch?v=SRSZpIT0OGA",
+      "published": "2026-06-02T22:05:51Z",
+      "thumbnail": "https://i.ytimg.com/vi/SRSZpIT0OGA/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
+        "titulo": "La sombra del poder",
+        "anio": 2009
+      }
+    },
+    {
+      "video_id": "BaFInaWX7lk",
+      "title": "Dynasty Warriors 3 - Complete Edition: Remastered - Official Reveal Trailer | State of Play 2026",
+      "url": "https://www.youtube.com/watch?v=BaFInaWX7lk",
+      "published": "2026-06-02T22:05:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/BaFInaWX7lk/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
+        "titulo": "La sombra del poder",
+        "anio": 2009
+      }
+    },
+    {
+      "video_id": "NTCjre18pk8",
+      "title": "Absolutely living for Hannah and Garrett 😍 | Off Campus | Prime Video",
+      "url": "https://www.youtube.com/watch?v=NTCjre18pk8",
+      "published": "2026-06-02T21:00:24Z",
+      "thumbnail": "https://i.ytimg.com/vi/NTCjre18pk8/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "xKMC3RSwd4s",
+      "title": "Star City — First Five Minutes | Sneak Peek | Apple TV",
+      "url": "https://www.youtube.com/watch?v=xKMC3RSwd4s",
+      "published": "2026-06-02T20:59:52Z",
+      "thumbnail": "https://i.ytimg.com/vi/xKMC3RSwd4s/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "OnrDgTWVvnA",
+      "title": "The Shrinking cast and special guests read the S3 finale June 6, 7:40 PM PT on YouTube. #Shrinking",
+      "url": "https://www.youtube.com/watch?v=OnrDgTWVvnA",
+      "published": "2026-06-02T20:42:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/OnrDgTWVvnA/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "zxIbwH6e0rk",
+      "title": "Shrinking — Live Table Read | June 6, 2026",
+      "url": "https://www.youtube.com/watch?v=zxIbwH6e0rk",
+      "published": "2026-06-02T20:06:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/zxIbwH6e0rk/hqdefault_live.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Pb8KqfkLe24",
+      "title": "Backrooms | Official Clip | A24",
+      "url": "https://www.youtube.com/watch?v=Pb8KqfkLe24",
+      "published": "2026-06-02T19:54:02Z",
+      "thumbnail": "https://i.ytimg.com/vi/Pb8KqfkLe24/hqdefault.jpg",
+      "channel": "A24",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
+      }
+    },
+    {
+      "video_id": "69vrb6tTm28",
+      "title": "FIRE ISLAND | Meet Cute",
+      "url": "https://www.youtube.com/watch?v=69vrb6tTm28",
+      "published": "2026-06-02T19:03:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/69vrb6tTm28/hqdefault.jpg",
+      "channel": "Searchlight Pictures",
+      "channel_tier": 2,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "9f21c1a1-d051-4ee1-86cb-202491dd33e4",
+        "titulo": "Fire Island",
+        "anio": 2022
+      }
+    },
+    {
+      "video_id": "YPSOx51K-Hw",
+      "title": "It's called taste. Nick Jonas stars in John Carney's #PowerBallad.",
+      "url": "https://www.youtube.com/watch?v=YPSOx51K-Hw",
+      "published": "2026-06-02T19:02:36Z",
+      "thumbnail": "https://i.ytimg.com/vi/YPSOx51K-Hw/hqdefault.jpg",
+      "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
     },
     {
-      "video_id": "8aN6lgoI_k0",
-      "title": "Arms of God - Official Early Access Launch Trailer",
-      "url": "https://www.youtube.com/watch?v=8aN6lgoI_k0",
-      "published": "2026-06-02T14:00:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/8aN6lgoI_k0/hqdefault.jpg",
-      "channel": "IGN",
+      "video_id": "MN0k3DFXjdE",
+      "title": "Maxton Hall’s Top 5 Watched Moments | Prime Video",
+      "url": "https://www.youtube.com/watch?v=MN0k3DFXjdE",
+      "published": "2026-06-02T19:00:31Z",
+      "thumbnail": "https://i.ytimg.com/vi/MN0k3DFXjdE/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "iRjviw0L_2U",
+      "title": "Fall Guy | Colt Seavers Breaks into Tom Ryder’s Apartment (Props Fight)",
+      "url": "https://www.youtube.com/watch?v=iRjviw0L_2U",
+      "published": "2026-06-02T19:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/iRjviw0L_2U/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "Tyjh0aVZoss",
+      "title": "The Beguiling Dir. ishkwaazhe Shane McSauby | Student Short Film Showcase 2026",
+      "url": "https://www.youtube.com/watch?v=Tyjh0aVZoss",
+      "published": "2026-06-02T17:00:39Z",
+      "thumbnail": "https://i.ytimg.com/vi/Tyjh0aVZoss/hqdefault.jpg",
+      "channel": "Focus Features",
       "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "UjxC5iDmi60",
+      "title": "The Legend of Vox Machina Season 1-3 Recap | Prime Video",
+      "url": "https://www.youtube.com/watch?v=UjxC5iDmi60",
+      "published": "2026-06-02T17:00:23Z",
+      "thumbnail": "https://i.ytimg.com/vi/UjxC5iDmi60/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "mNnnX9NEazw",
+      "title": "John Michael Higgins has always been pitch perfect | 🎬 The Break-Up (2006)",
+      "url": "https://www.youtube.com/watch?v=mNnnX9NEazw",
+      "published": "2026-06-02T17:00:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/mNnnX9NEazw/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false,
+      "cinebret_match": {
+        "pelicula_id": "899d55d8-40e1-44d5-8fbf-c1d5aaf125a5",
+        "titulo": "Dando la nota",
+        "anio": 2012
+      }
+    },
+    {
+      "video_id": "U_bMYV_gQCw",
+      "title": "A perfect formula. Paul Rudd and Nick Jonas star in John Carney's #PowerBallad.",
+      "url": "https://www.youtube.com/watch?v=U_bMYV_gQCw",
+      "published": "2026-06-02T16:00:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/U_bMYV_gQCw/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "9YDt6vhSSCI",
+      "title": "The Furious (2026) Official Clip ‘Here to Help You’ - Xie Miao, Joe Taslim",
+      "url": "https://www.youtube.com/watch?v=9YDt6vhSSCI",
+      "published": "2026-06-02T16:00:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/9YDt6vhSSCI/hqdefault.jpg",
+      "channel": "Lionsgate",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "0NWHhWdkqEM",
+      "title": "America's Sweethearts: Dallas Cowboys Cheerleaders | Season 3 Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=0NWHhWdkqEM",
+      "published": "2026-06-02T16:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/0NWHhWdkqEM/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
       "is_trailer": true
     },
     {
-      "video_id": "JMKqWV2J9CA",
-      "title": "My Arms Are Longer Now: Exclusive Developer Let's Play",
-      "url": "https://www.youtube.com/watch?v=JMKqWV2J9CA",
-      "published": "2026-06-02T14:00:12Z",
-      "thumbnail": "https://i.ytimg.com/vi/JMKqWV2J9CA/hqdefault.jpg",
-      "channel": "IGN",
+      "video_id": "q2MJjJmj-Q4",
+      "title": "The Odyssey | On The Set of The Odyssey Featurette",
+      "url": "https://www.youtube.com/watch?v=q2MJjJmj-Q4",
+      "published": "2026-06-02T15:00:42Z",
+      "thumbnail": "https://i.ytimg.com/vi/q2MJjJmj-Q4/hqdefault.jpg",
+      "channel": "Universal Pictures",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "6EWdzHoLedA",
+      "title": "Revisit Ira Sachs on Michael Haneke, Pier Paolo Pasolini, Bob Fosse. Watch the full video now.",
+      "url": "https://www.youtube.com/watch?v=6EWdzHoLedA",
+      "published": "2026-06-02T15:00:29Z",
+      "thumbnail": "https://i.ytimg.com/vi/6EWdzHoLedA/hqdefault.jpg",
+      "channel": "Mubi",
       "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "XND-JN7dh4U",
+      "title": "Sometimes, it's the simple things. | The Legend of Vox Machina | Prime Video",
+      "url": "https://www.youtube.com/watch?v=XND-JN7dh4U",
+      "published": "2026-06-02T15:00:10Z",
+      "thumbnail": "https://i.ytimg.com/vi/XND-JN7dh4U/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "WRbcHKRB8Fw",
+      "title": "Tony Hinchcliffe: Man of the People | Sneak Peek | Netflix",
+      "url": "https://www.youtube.com/watch?v=WRbcHKRB8Fw",
+      "published": "2026-06-02T15:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/WRbcHKRB8Fw/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -45,26 +295,6 @@
       "is_trailer": true
     },
     {
-      "video_id": "0X2w2pVbuZA",
-      "title": "Wuthering Waves x Cyberpunk: Edgerunners - Official Rebecca Combat Trailer",
-      "url": "https://www.youtube.com/watch?v=0X2w2pVbuZA",
-      "published": "2026-06-02T13:52:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/0X2w2pVbuZA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
-      "video_id": "3jE39ZhG8Aw",
-      "title": "Onslaught - Official Trailer (2026) Adria Arjona, Alex Pereira, Drew Starkey",
-      "url": "https://www.youtube.com/watch?v=3jE39ZhG8Aw",
-      "published": "2026-06-02T13:32:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/3jE39ZhG8Aw/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true
-    },
-    {
       "video_id": "L24CYVpQ-LI",
       "title": "Onslaught | Official Trailer HD | A24",
       "url": "https://www.youtube.com/watch?v=L24CYVpQ-LI",
@@ -72,7 +302,12 @@
       "thumbnail": "https://i.ytimg.com/vi/L24CYVpQ-LI/hqdefault.jpg",
       "channel": "A24",
       "channel_tier": 1,
-      "is_trailer": true
+      "is_trailer": true,
+      "cinebret_match": {
+        "pelicula_id": "53edfa55-02a9-4b5d-aa58-f5016f16373c",
+        "titulo": "Onslaught",
+        "anio": 2026
+      }
     },
     {
       "video_id": "duzjRRtKTS4",
@@ -175,16 +410,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "RQ5mzHmusp0",
-      "title": "4 Minutes of Steamy Stolas & Blitzø Moments | Helluva Boss | Prime Video",
-      "url": "https://www.youtube.com/watch?v=RQ5mzHmusp0",
-      "published": "2026-06-01T19:00:32Z",
-      "thumbnail": "https://i.ytimg.com/vi/RQ5mzHmusp0/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "zzhJHbW7I5k",
       "title": "Hard truths and difficult realizations in THE WORST PERSON IN THE WORLD, starring #RenateReinsve",
       "url": "https://www.youtube.com/watch?v=zzhJHbW7I5k",
@@ -215,16 +440,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "oOW_6cSvMY8",
-      "title": "New for June 2026 | Sugar, Cape Fear & More | Apple TV",
-      "url": "https://www.youtube.com/watch?v=oOW_6cSvMY8",
-      "published": "2026-06-01T16:59:48Z",
-      "thumbnail": "https://i.ytimg.com/vi/oOW_6cSvMY8/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "C-Hhu6b6R2E",
       "title": "I wanna be loved by you. #MarilynMonroe in SOME LIKE IT HOT.",
       "url": "https://www.youtube.com/watch?v=C-Hhu6b6R2E",
@@ -232,16 +447,6 @@
       "thumbnail": "https://i.ytimg.com/vi/C-Hhu6b6R2E/hqdefault.jpg",
       "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "vnXt3zid-FQ",
-      "title": "New to Prime Video June 2026 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=vnXt3zid-FQ",
-      "published": "2026-06-01T16:00:12Z",
-      "thumbnail": "https://i.ytimg.com/vi/vnXt3zid-FQ/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
       "is_trailer": false
     },
     {
@@ -270,16 +475,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "wmgDfK0veI8",
-      "title": "They came a long way from that first line | The Boys | Prime Video",
-      "url": "https://www.youtube.com/watch?v=wmgDfK0veI8",
-      "published": "2026-06-01T15:00:07Z",
-      "thumbnail": "https://i.ytimg.com/vi/wmgDfK0veI8/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "dOaDBby_Go8",
       "title": "Dunesday SHOWDOWN",
       "url": "https://www.youtube.com/watch?v=dOaDBby_Go8",
@@ -300,32 +495,12 @@
       "is_trailer": true
     },
     {
-      "video_id": "46VpKXRvfkQ",
-      "title": "Absolutely Obsessed with Justin Kohl in Off Campus 😍 | Prime Video",
-      "url": "https://www.youtube.com/watch?v=46VpKXRvfkQ",
-      "published": "2026-05-31T21:00:27Z",
-      "thumbnail": "https://i.ytimg.com/vi/46VpKXRvfkQ/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "SdQn5GpCELM",
       "title": "The Debt | Attempting to Smuggle a Doctor Out of East Berlin",
       "url": "https://www.youtube.com/watch?v=SdQn5GpCELM",
       "published": "2026-05-31T21:00:00Z",
       "thumbnail": "https://i.ytimg.com/vi/SdQn5GpCELM/hqdefault.jpg",
       "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "KU9RAFDMzUE",
-      "title": "Mic drop. John Carney’s POWER BALLAD - now playing in select theaters. Everywhere Friday.",
-      "url": "https://www.youtube.com/watch?v=KU9RAFDMzUE",
-      "published": "2026-05-31T20:09:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/KU9RAFDMzUE/hqdefault.jpg",
-      "channel": "Lionsgate",
       "channel_tier": 2,
       "is_trailer": false
     },
@@ -360,16 +535,6 @@
       }
     },
     {
-      "video_id": "jl4iQe6IO2w",
-      "title": "THE MYSTERIOUS GAZE OF THE FLAMINGO director Diego Céspedes shares his filmmaking inspirations.",
-      "url": "https://www.youtube.com/watch?v=jl4iQe6IO2w",
-      "published": "2026-05-31T17:01:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/jl4iQe6IO2w/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "pZChOAyf-RE",
       "title": "Tracy Morgan praises Eddie Murphy in AFI Life Achievement Award: A Tribute to Eddie Murphy",
       "url": "https://www.youtube.com/watch?v=pZChOAyf-RE",
@@ -377,26 +542,6 @@
       "thumbnail": "https://i.ytimg.com/vi/pZChOAyf-RE/hqdefault.jpg",
       "channel": "Netflix",
       "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "6KtO_ZXivus",
-      "title": "Frog and Toad — 10 Heartwarming Moments | Apple TV",
-      "url": "https://www.youtube.com/watch?v=6KtO_ZXivus",
-      "published": "2026-05-31T13:59:52Z",
-      "thumbnail": "https://i.ytimg.com/vi/6KtO_ZXivus/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "eEKFkmLLiMA",
-      "title": "Three cities. One must-see movie. An encore moviegoers never expected. #PowerBallad.",
-      "url": "https://www.youtube.com/watch?v=eEKFkmLLiMA",
-      "published": "2026-05-30T21:43:18Z",
-      "thumbnail": "https://i.ytimg.com/vi/eEKFkmLLiMA/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
       "is_trailer": false
     },
     {
@@ -450,21 +595,6 @@
       }
     },
     {
-      "video_id": "N9bPTBfsHCE",
-      "title": "Shrinking — Behind the Scenes with Harrison Ford | In It Together | Apple TV",
-      "url": "https://www.youtube.com/watch?v=N9bPTBfsHCE",
-      "published": "2026-05-30T16:59:46Z",
-      "thumbnail": "https://i.ytimg.com/vi/N9bPTBfsHCE/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "345d161a-775f-4356-8d24-aea8a4071321",
-        "titulo": "Together: Juntos hasta la muerte",
-        "anio": 2025
-      }
-    },
-    {
       "video_id": "mqDYfDPJ3IU",
       "title": "Is This the Start to a Backrooms Franchise?",
       "url": "https://www.youtube.com/watch?v=mqDYfDPJ3IU",
@@ -490,21 +620,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "9_8rUJ-7CTU",
-      "title": "Can’t decide which is more mesmerizing, the music or the animation | 🎬 Abominable (2019)",
-      "url": "https://www.youtube.com/watch?v=9_8rUJ-7CTU",
-      "published": "2026-05-29T19:00:38Z",
-      "thumbnail": "https://i.ytimg.com/vi/9_8rUJ-7CTU/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "22eae4cf-0d6b-4922-84f9-6fa225c03442",
-        "titulo": "Un amigo abominable",
-        "anio": 2019
-      }
-    },
-    {
       "video_id": "_gl-tJedttg",
       "title": "Emma's Love Story | One Day",
       "url": "https://www.youtube.com/watch?v=_gl-tJedttg",
@@ -525,51 +640,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "YikKsuwfW18",
-      "title": "Emperor (2012) | Full Movie | Matthew Fox, Colin Moy, Tommy Lee Jones",
-      "url": "https://www.youtube.com/watch?v=YikKsuwfW18",
-      "published": "2026-05-29T17:00:06Z",
-      "thumbnail": "https://i.ytimg.com/vi/YikKsuwfW18/hqdefault.jpg",
-      "channel": "Lionsgate",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
-      "video_id": "pWgJNIehQ7k",
-      "title": "AFI Life Achievement Award: A Tribute to Eddie Murphy | Martin Lawrence | Sneak Peek | Netflix",
-      "url": "https://www.youtube.com/watch?v=pWgJNIehQ7k",
-      "published": "2026-05-29T16:30:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/pWgJNIehQ7k/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "jIvRblu2OD4",
-      "title": "Disclosure Day | Full Disclosure",
-      "url": "https://www.youtube.com/watch?v=jIvRblu2OD4",
-      "published": "2026-05-29T15:00:14Z",
-      "thumbnail": "https://i.ytimg.com/vi/jIvRblu2OD4/hqdefault.jpg",
-      "channel": "Universal Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "82c37c9f-76e4-4562-bbd3-adf0f647c279",
-        "titulo": "El día de la revelación",
-        "anio": 2026
-      }
-    },
-    {
-      "video_id": "fxTUc20-GIM",
-      "title": "A Different World | Official Teaser | Netflix",
-      "url": "https://www.youtube.com/watch?v=fxTUc20-GIM",
-      "published": "2026-05-29T15:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/fxTUc20-GIM/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "f7AjFMcO-rc",
       "title": "Nic Cage's Spider-Noir Inspirations",
       "url": "https://www.youtube.com/watch?v=f7AjFMcO-rc",
@@ -580,32 +650,12 @@
       "is_trailer": false
     },
     {
-      "video_id": "PSmrT4zghxc",
-      "title": "Evening | Ann Sings 'Time After Time' at Lila's Wedding",
-      "url": "https://www.youtube.com/watch?v=PSmrT4zghxc",
-      "published": "2026-05-28T21:00:00Z",
-      "thumbnail": "https://i.ytimg.com/vi/PSmrT4zghxc/hqdefault.jpg",
-      "channel": "Focus Features",
-      "channel_tier": 2,
-      "is_trailer": false
-    },
-    {
       "video_id": "exI46E4vO58",
       "title": "Pedro Pascal is a Trivia MASTER",
       "url": "https://www.youtube.com/watch?v=exI46E4vO58",
       "published": "2026-05-28T20:30:08Z",
       "thumbnail": "https://i.ytimg.com/vi/exI46E4vO58/hqdefault.jpg",
       "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "y9Q8Ws3ptFs",
-      "title": "Gobber Introduces the Dragons 🐉 #HowtoTrainYourDragon2025 #Shorts",
-      "url": "https://www.youtube.com/watch?v=y9Q8Ws3ptFs",
-      "published": "2026-05-28T19:00:15Z",
-      "thumbnail": "https://i.ytimg.com/vi/y9Q8Ws3ptFs/hqdefault.jpg",
-      "channel": "Universal Pictures",
       "channel_tier": 1,
       "is_trailer": false
     },

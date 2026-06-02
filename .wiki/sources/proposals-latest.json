@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-02T14:48:16.927Z",
-  "cycle": "am",
+  "generated_at": "2026-06-02T22:22:19.949Z",
+  "cycle": "pm",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
-  "news_count": 4,
+  "news_count": 5,
   "ig_mix": {
     "last6_counts": {
       "review": 2,
@@ -24,32 +24,12 @@
   },
   "top": [
     {
-      "id": "6276902b8705f60e",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "Live action de tu película rating 10; DeBlois lleva su historia más personal a la pantalla grande.",
-      "score": 97,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
-      },
-      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + Dean DeBlois (muy respetado) + año 2025 + plataforma activa; déficit de review activo."
-    },
-    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
       "title": "Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; una de tus 38 películas sagradas pendiente de review.",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra maestra; una de tus 38 películas sagradas.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -61,7 +41,7 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + Bong Joon-ho + IMDb 8.5 + plataforma activa; déficit de review activo."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + director Bong Joon-ho (Admired) + plataforma activa."
     },
     {
       "id": "119c0775fc431172",
@@ -69,7 +49,7 @@
       "priority": "alta",
       "action": "generate_review",
       "title": "El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "Jackson cerró la trilogía con 11 Óscars; el cierre épico de tus películas sagradas.",
+      "reasoning": "Jackson cerró la trilogía con 11 Óscars; una de tus 38 películas sagradas y el cierre épico por excelencia.",
       "score": 96,
       "category": "review",
       "angle": "review",
@@ -81,15 +61,54 @@
         "anio": 2003,
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
-      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa."
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + director Peter Jackson (muy respetado) + plataforma activa."
     },
     {
-      "id": "2d7520a936279d77",
+      "id": "6276902b8705f60e",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Cómo entrenar a tu dragón (2025)",
+      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
+      "score": 95,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "How to Train Your Dragon",
+        "anio": 2025,
+        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
+      },
+      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director Dean DeBlois (muy respetado) + plataforma activa + año 2025; déficit de review activo."
+    },
+    {
+      "id": "a3e1514ade55f09a",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "react_to_news",
+      "title": "Tom Holland llamó a Sony para retrasar Spider-Man y no chocar con La Odisea de Nolan",
+      "reasoning": "Holland postergó su propio estreno para no competir con Nolan; señal del peso de The Odyssey este verano.",
+      "score": 88,
+      "category": "contenido",
+      "angle": "casting",
+      "source_name": "Hollywood Reporter",
+      "source_url": "https://www.hollywoodreporter.com/movies/movie-news/tom-holland-delayed-spider-man-the-odyssey-called-sony-1236611855/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.hollywoodreporter.com/movies/movie-news/tom-holland-delayed-spider-man-the-odyssey-called-sony-1236611855/",
+        "angle": "casting"
+      },
+      "critic_reason": "§4.2 director match Olimpo (Christopher Nolan) + §4.4 ángulo postable (casting/producción de The Odyssey); Tom Holland retrasó Spider-Man por Nolan."
+    },
+    {
+      "id": "2308c7f5aa9f8fb2",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 actuaciones que destruyeron físicamente a los actores que las hicieron",
-      "reasoning": "Bale, Ledger, McConaughey: cuando el cine cobra un precio real en el cuerpo del actor.",
+      "title": "10 películas donde una sola escena lo cambia todo (y no es el final)",
+      "reasoning": "Las escenas pivote que redefinen todo lo anterior: Ledger, Hanks, Hopkins. Ángulo de actuación poco explorado.",
       "score": 85,
       "category": "top",
       "angle": null,
@@ -100,26 +119,7 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "§instrucción creativa: slot abierto con kind=country/mood/performance disponibles; propongo kind=performance (no en recent_top_kinds) con ángulo no explotado."
-    },
-    {
-      "id": "8023aaf275ffb029",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_carousel_mood",
-      "title": "10 películas para ver cuando el invierno te aplasta el ánimo",
-      "reasoning": "Kind mood ausente en los últimos 14 días; lista estacional con alto potencial de conexión emocional.",
-      "score": 80,
-      "category": "top",
-      "angle": null,
-      "source_name": "cinebret-carousel-mood",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-carousel-mood",
-      "skill_args": {
-        "mood": "Pa'l domingo de bajón",
-        "count": 10
-      },
-      "critic_reason": "§3 kind=mood no está en recent_top_kinds; ángulo estacional pertinente y diversidad editorial garantizada."
+      "critic_reason": "Slot creativo: kind=mood/colección-personal no está en recent_top_kinds; propongo lista de películas con el mejor primer plano de la historia — ángulo narrativo no obvio que conecta con el gusto de Alberto por actuaciones memorables."
     }
   ],
   "backlog": [
@@ -190,82 +190,97 @@
   ],
   "news": [
     {
-      "title_es": "Holland negoció con Sony para que La Odisea de Nolan no esperara",
-      "summary_es": "Nolan convenció a Holland antes que Sony; primer vistazo a la dinámica detrás del rodaje de La Odisea.",
-      "source": "Variety",
-      "age_hours": 0,
-      "url": "https://variety.com/2026/film/news/tom-holland-sony-spider-man-brand-new-day-delay-the-odyssey-1236764785/",
+      "title_es": "Pattinson reveló la primera pregunta que le hizo Nolan cuando lo eligió para The Batman",
+      "summary_es": "Nolan preguntó sobre la capa antes que nada; anécdota que conecta a The Dark Knight con el casting de Pattinson.",
+      "source": "The Wrap",
+      "age_hours": 1,
+      "url": "https://www.thewrap.com/culture-lifestyle/culture/robert-pattinson-christopher-nolan-batman-first-question/",
       "angle": "casting",
+      "catalog_match": {
+        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
+        "titulo": "El caballero oscuro",
+        "anio": 2008
+      },
+      "score": 72,
+      "reason": "§4.2 match al catálogo de calidad (El caballero oscuro, rating 10) + director match Olimpo (Christopher Nolan); ángulo informativo sobre casting Batman."
+    },
+    {
+      "title_es": "Zendaya y Holland reescribieron una escena de Spider-Man en el set porque no funcionaba",
+      "summary_es": "Holland describió a Zendaya como su 'salvavidas' en set; el director paró todo para reescribir la escena.",
+      "source": "Variety",
+      "age_hours": 1,
+      "url": "https://variety.com/2026/film/news/zendaya-tom-holland-spider-man-brand-new-day-rewrite-bad-scene-1236765076/",
+      "angle": "cultural-moment",
       "catalog_match": {
         "pelicula_id": "e79d84e3-c8c5-489e-9573-2cb651988011",
         "titulo": "Spider-Man: Un nuevo día",
         "anio": 2026
       },
-      "score": 75,
-      "reason": "§4.4 news_only: Christopher Nolan (Olimpo) es el sujeto real de la noticia; ángulo informativo fuerte pero duplica el ítem anterior."
+      "score": 65,
+      "reason": "§4.4 match al catálogo (Spider-Man: Brand New Day) con ángulo humano interesante; informativo pero no el mejor ángulo para propuesta vs. a3e1514ade55f09a."
     },
     {
-      "title_es": "Tom Holland retrasó Spider-Man 4 para poder filmar La Odisea de Nolan",
-      "summary_es": "Holland eligió a Nolan sobre Sony; el impacto en ambos proyectos queda claro en esta entrevista.",
-      "source": "The Wrap",
+      "title_es": "Easter egg de Hereditary (2018): cultistas visibles en la transición noche/día",
+      "summary_es": "Detalle oculto en Hereditary que confirma la presencia del culto en la escena del fuego; dato de detrás de cámara.",
+      "source": "r/MovieDetails",
       "age_hours": 0,
-      "url": "https://www.thewrap.com/creative-content/movies/tom-holland-delayed-spider-man-4-for-the-odyssey/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "69ba6ccc-14dc-4b4a-acf7-0ebe617e4523",
-        "titulo": "El hombre araña",
-        "anio": 2002
-      },
-      "score": 72,
-      "reason": "§4.4 news_only: match débil (Spider-Man 2002, rating implícito en catálogo) pero el ángulo real es The Odyssey de Nolan (Olimpo); informativo relevante."
-    },
-    {
-      "title_es": "Tráiler de 'How to Rob a Bank': Leitch arma un thriller de atracos con Zoë Kravitz y Nicholas Hoult",
-      "summary_es": "Leitch (Bullet Train) regresa al género con un elenco sólido; para tu radar de estreno en septiembre.",
-      "source": "IndieWire",
-      "age_hours": 2,
-      "url": "https://www.indiewire.com/news/trailers/how-to-rob-a-bank-trailer-nicholas-hoult-zoe-kravitz-1235197620/",
-      "angle": "trailer-drop",
-      "catalog_match": {
-        "pelicula_id": "6ae98ce9-26b9-4082-ac75-aeaa67793526",
-        "titulo": "Bullet Train",
-        "anio": 2022
-      },
-      "score": 62,
-      "reason": "§4.4 news_only: match débil con Bullet Train (catálogo, director David Leitch); nuevo tráiler de thriller de atracos es ángulo informativo relevante para Alberto."
-    },
-    {
-      "title_es": "YouTubers conquistan Hollywood: Backrooms y Obsession rompen récords de A24",
-      "summary_es": "Backrooms ($81M) abre una nueva vía de distribución que cambia cómo se financia el cine independiente.",
-      "source": "Variety",
-      "age_hours": 1,
-      "url": "https://variety.com/2026/film/features/backrooms-obsession-youtubers-hollywood-kane-parsons-curry-barker-1236764464/",
+      "url": "https://www.reddit.com/r/MovieDetails/comments/1tv5h34/in_hereditary2018_at_14709_during_the_daytonight/",
       "angle": "cultural-moment",
       "catalog_match": {
-        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
-        "titulo": "Backrooms",
+        "pelicula_id": "915ef926-4bfd-49f4-9a04-c1c558f22465",
+        "titulo": "Hereditary",
+        "anio": 2018
+      },
+      "score": 62,
+      "reason": "§4.4 match al catálogo de calidad (Hereditary, sello bret) con detalle de Easter egg relevante; ángulo cultural-moment menor, no posteable pero informativo."
+    },
+    {
+      "title_es": "Trailer de Onslaught (A24, 2026): nuevo thriller del sello más interesante del cine actual",
+      "summary_es": "A24 lanzó el trailer de su próximo film; sin rating confirmado pero el sello merece seguimiento.",
+      "source": "A24",
+      "age_hours": 9,
+      "url": "https://www.youtube.com/watch?v=L24CYVpQ-LI",
+      "angle": "trailer-drop",
+      "catalog_match": {
+        "pelicula_id": "53edfa55-02a9-4b5d-aa58-f5016f16373c",
+        "titulo": "Onslaught",
         "anio": 2026
       },
       "score": 60,
-      "reason": "§4.4 news_only: Backrooms tiene match al catálogo; el fenómeno YouTubers→Hollywood es culturalmente relevante para el universo cinebret aunque no accionable como post."
+      "reason": "§4.4 match al catálogo (Onslaught 2026, A24) pero sin rating ni sello confirmado; A24 relevante para cinebret; ángulo informativo solo."
+    },
+    {
+      "title_es": "Trailer final de Scary Movie (2026): los Wayans y Anna Faris vuelven",
+      "summary_es": "Paramount lanzó el trailer final del reboot con el elenco original; sin confirmación de calidad aún.",
+      "source": "Paramount Pictures",
+      "age_hours": 30,
+      "url": "https://www.youtube.com/watch?v=cGgWAHXuTKc",
+      "angle": "sequel",
+      "catalog_match": {
+        "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
+        "titulo": "Scary Movie",
+        "anio": 2026
+      },
+      "score": 58,
+      "reason": "§4.4 match al catálogo (Scary Movie 2026) pero el match de calidad es débil; sin sello ni rating confirmado; informativo como sequel/reboot."
     }
   ],
   "raw_signal_counts": {
-    "news_items": 119,
+    "news_items": 120,
     "newsapi_items": 90,
     "reddit_posts": 0,
-    "trailers": 57
+    "trailers": 59
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 5,
-    "expiredByTime": 1,
+    "agedCount": 0,
+    "expiredByTime": 0,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 15174,
-    "output": 10439
+    "input": 16049,
+    "output": 10879
   }
 }

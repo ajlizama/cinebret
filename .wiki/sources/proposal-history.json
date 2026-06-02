@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-06-02T14:48:16.927Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-06-02T22:22:19.949Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -622,8 +622,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-06-02T14:48:16.927Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-06-02T22:22:19.949Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -907,8 +907,8 @@
         "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-06-02T14:48:16.927Z",
-      "cycles_proposed": 3,
+      "last_proposed": "2026-06-02T22:22:19.949Z",
+      "cycles_proposed": 4,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -2774,7 +2774,53 @@
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-06-02T14:48:16.927Z"
+    },
+    {
+      "id": "0634cc8ebaa96f0c",
+      "action": "react_to_news",
+      "title": "Tom Holland llamó a Sony para retrasar Spider-Man y no chocar con La Odisea de Nolan",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 88,
+      "reasoning": "Holland postergó su propio estreno para no competir con Nolan; señal del peso de The Odyssey este verano.",
+      "suggested_caption": null,
+      "source_name": "Hollywood Reporter",
+      "source_url": "https://www.hollywoodreporter.com/movies/movie-news/tom-holland-delayed-spider-man-the-odyssey-called-sony-1236611855/",
+      "skill_to_invoke": "cinebret-list-from-news",
+      "skill_args": {
+        "url": "https://www.hollywoodreporter.com/movies/movie-news/tom-holland-delayed-spider-man-the-odyssey-called-sony-1236611855/",
+        "angle": "casting"
+      },
+      "first_proposed": "2026-06-02T22:22:19.949Z",
+      "last_proposed": "2026-06-02T22:22:19.949Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
+    },
+    {
+      "id": "4fe410970b207fba",
+      "action": "generate_carousel_topic",
+      "title": "10 películas donde una sola escena lo cambia todo (y no es el final)",
+      "type": "FEED",
+      "priority": "alta",
+      "score": 85,
+      "reasoning": "Las escenas pivote que redefinen todo lo anterior: Ledger, Hanks, Hopkins. Ángulo de actuación poco explorado.",
+      "suggested_caption": null,
+      "source_name": "cinebret-carousel-topic",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-topic",
+      "skill_args": {
+        "topic_type": "custom",
+        "topic": "__TBD_BY_CRITIC__"
+      },
+      "first_proposed": "2026-06-02T22:22:19.949Z",
+      "last_proposed": "2026-06-02T22:22:19.949Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
+      "accepted_at": null,
+      "accepted_match_url": null
     }
   ],
-  "last_saved": "2026-06-02T14:51:38.069Z"
+  "last_saved": "2026-06-02T22:25:43.554Z"
 }

@@ -304,14 +304,14 @@
         "anio": 1999,
         "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "first_proposed": "2026-05-20T13:36:31.578Z",
-      "last_proposed": "2026-05-29T13:56:24.048Z",
-      "cycles_proposed": 3,
-      "status": "backlog",
+      "first_proposed": "2026-06-03T15:26:57.175Z",
+      "last_proposed": "2026-06-03T15:26:57.175Z",
+      "cycles_proposed": 1,
+      "status": "fresh",
       "accepted_at": null,
       "accepted_match_url": null,
       "became_backlog_at": "2026-05-20T21:51:55.698Z",
-      "expired_at": "2026-05-20T13:36:31.578Z"
+      "expired_at": "2026-06-03T15:26:57.175Z"
     },
     {
       "id": "642db2ce3ffde83d",
@@ -518,8 +518,8 @@
         "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-06-02T22:22:19.949Z",
-      "cycles_proposed": 4,
+      "last_proposed": "2026-06-03T15:26:57.175Z",
+      "cycles_proposed": 5,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -622,8 +622,8 @@
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-06-02T22:22:19.949Z",
-      "cycles_proposed": 4,
+      "last_proposed": "2026-06-03T15:26:57.175Z",
+      "cycles_proposed": 5,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -1633,10 +1633,11 @@
       "first_proposed": "2026-05-20T13:36:31.578Z",
       "last_proposed": "2026-05-20T13:36:31.578Z",
       "cycles_proposed": 1,
-      "status": "backlog",
+      "status": "expired",
       "accepted_at": null,
       "accepted_match_url": null,
-      "became_backlog_at": "2026-05-20T21:51:55.698Z"
+      "became_backlog_at": "2026-05-20T21:51:55.698Z",
+      "expired_at": "2026-06-03T15:26:57.175Z"
     },
     {
       "id": "5711a048811f755a",
@@ -2594,8 +2595,8 @@
         "count": 10
       },
       "first_proposed": "2026-05-31T20:58:27.979Z",
-      "last_proposed": "2026-06-02T14:48:16.927Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-06-03T15:26:57.175Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -2618,8 +2619,8 @@
         "topic": "__TBD_BY_CRITIC__"
       },
       "first_proposed": "2026-06-01T16:34:12.387Z",
-      "last_proposed": "2026-06-02T14:48:16.927Z",
-      "cycles_proposed": 2,
+      "last_proposed": "2026-06-03T15:26:57.175Z",
+      "cycles_proposed": 3,
       "status": "backlog",
       "accepted_at": null,
       "accepted_match_url": null,
@@ -2794,9 +2795,10 @@
       "first_proposed": "2026-06-02T22:22:19.949Z",
       "last_proposed": "2026-06-02T22:22:19.949Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-06-03T15:26:57.175Z"
     },
     {
       "id": "4fe410970b207fba",
@@ -2817,10 +2819,11 @@
       "first_proposed": "2026-06-02T22:22:19.949Z",
       "last_proposed": "2026-06-02T22:22:19.949Z",
       "cycles_proposed": 1,
-      "status": "fresh",
+      "status": "backlog",
       "accepted_at": null,
-      "accepted_match_url": null
+      "accepted_match_url": null,
+      "became_backlog_at": "2026-06-03T15:26:57.175Z"
     }
   ],
-  "last_saved": "2026-06-02T22:25:43.554Z"
+  "last_saved": "2026-06-03T15:30:22.411Z"
 }

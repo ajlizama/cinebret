@@ -1,83 +1,163 @@
 {
-  "generated_at": "2026-06-02T22:22:19.852Z",
-  "total_videos": 59,
-  "trailers_count": 12,
-  "matched_to_cinebret": 17,
+  "generated_at": "2026-06-03T15:25:58.817Z",
+  "total_videos": 58,
+  "trailers_count": 15,
+  "matched_to_cinebret": 12,
   "videos": [
     {
-      "video_id": "UN2C0OgZkE8",
-      "title": "Ace Combat 8: Wings of Theve - Official Deluxe Edition Trailer | State of Play 2026",
-      "url": "https://www.youtube.com/watch?v=UN2C0OgZkE8",
-      "published": "2026-06-02T22:20:22Z",
-      "thumbnail": "https://i.ytimg.com/vi/UN2C0OgZkE8/hqdefault.jpg",
+      "video_id": "4-38iXE8sfI",
+      "title": "LEGO Batman: Legacy of the Dark Knight - Official Nintendo Switch 2 Release Date Trailer",
+      "url": "https://www.youtube.com/watch?v=4-38iXE8sfI",
+      "published": "2026-06-03T15:17:11Z",
+      "thumbnail": "https://i.ytimg.com/vi/4-38iXE8sfI/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": true,
       "cinebret_match": {
-        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
-        "titulo": "La sombra del poder",
-        "anio": 2009
+        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
+        "titulo": "El caballero oscuro",
+        "anio": 2008
       }
     },
     {
-      "video_id": "BB2_yd_3Dj4",
-      "title": "No Rest For The Wicked - Official 1.0 Release Date Trailer | State of Play 2026",
-      "url": "https://www.youtube.com/watch?v=BB2_yd_3Dj4",
-      "published": "2026-06-02T22:07:49Z",
-      "thumbnail": "https://i.ytimg.com/vi/BB2_yd_3Dj4/hqdefault.jpg",
+      "video_id": "_LI5vErCdsI",
+      "title": "Another World: Exclusive Clip (2026)",
+      "url": "https://www.youtube.com/watch?v=_LI5vErCdsI",
+      "published": "2026-06-03T15:00:16Z",
+      "thumbnail": "https://i.ytimg.com/vi/_LI5vErCdsI/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": false
+    },
+    {
+      "video_id": "EWtxiQilnBg",
+      "title": "The voices behind Vox Machina | The Legend of Vox Machina | Prime Video",
+      "url": "https://www.youtube.com/watch?v=EWtxiQilnBg",
+      "published": "2026-06-03T15:00:01Z",
+      "thumbnail": "https://i.ytimg.com/vi/EWtxiQilnBg/hqdefault.jpg",
+      "channel": "Prime Video",
+      "channel_tier": 1,
+      "is_trailer": false
+    },
+    {
+      "video_id": "qN_AE0LPthA",
+      "title": "Chris & Martina: The Final Set | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=qN_AE0LPthA",
+      "published": "2026-06-03T14:30:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/qN_AE0LPthA/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "Uo5V6AXfdyU",
+      "title": "Hell Let Loose - Official Juno Beach Update 20 Map Overview Trailer",
+      "url": "https://www.youtube.com/watch?v=Uo5V6AXfdyU",
+      "published": "2026-06-03T14:23:28Z",
+      "thumbnail": "https://i.ytimg.com/vi/Uo5V6AXfdyU/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "GAbT5qCTXR8",
+      "title": "Lucky — Official Trailer | Apple TV",
+      "url": "https://www.youtube.com/watch?v=GAbT5qCTXR8",
+      "published": "2026-06-03T13:59:50Z",
+      "thumbnail": "https://i.ytimg.com/vi/GAbT5qCTXR8/hqdefault.jpg",
+      "channel": "Apple TV",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "pkog5pq9CtE",
+      "title": "Sorry, My King - Official Gameplay Trailer",
+      "url": "https://www.youtube.com/watch?v=pkog5pq9CtE",
+      "published": "2026-06-03T13:59:14Z",
+      "thumbnail": "https://i.ytimg.com/vi/pkog5pq9CtE/hqdefault.jpg",
+      "channel": "IGN",
+      "channel_tier": 2,
+      "is_trailer": true
+    },
+    {
+      "video_id": "yuhTsEJn3HI",
+      "title": "Jurassic World Evolution 3 - Official Update 1.3 Highlights Trailer",
+      "url": "https://www.youtube.com/watch?v=yuhTsEJn3HI",
+      "published": "2026-06-03T13:43:49Z",
+      "thumbnail": "https://i.ytimg.com/vi/yuhTsEJn3HI/hqdefault.jpg",
       "channel": "IGN",
       "channel_tier": 2,
       "is_trailer": true,
       "cinebret_match": {
-        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
-        "titulo": "La sombra del poder",
-        "anio": 2009
+        "pelicula_id": "1ca43f6f-5682-47ec-8df1-ce59fd14b22e",
+        "titulo": "Jurassic World",
+        "anio": 2015
       }
     },
     {
-      "video_id": "GABVu4w1aaw",
-      "title": "Dune: Awakening - PlayStation Announcement Trailer | State of Play 2026",
-      "url": "https://www.youtube.com/watch?v=GABVu4w1aaw",
-      "published": "2026-06-02T22:07:02Z",
-      "thumbnail": "https://i.ytimg.com/vi/GABVu4w1aaw/hqdefault.jpg",
-      "channel": "IGN",
+      "video_id": "6mqoMuGWCrI",
+      "title": "When the system is broken, break the rules. Watch the #ByAnyMeansMovie trailer now - in theatres 9.4",
+      "url": "https://www.youtube.com/watch?v=6mqoMuGWCrI",
+      "published": "2026-06-03T13:00:53Z",
+      "thumbnail": "https://i.ytimg.com/vi/6mqoMuGWCrI/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "ej8pjisr0Pc",
+      "title": "By Any Means | Official Trailer (2026 Movie) – Yahya Abdul-Mateen II, Mark Wahlberg",
+      "url": "https://www.youtube.com/watch?v=ej8pjisr0Pc",
+      "published": "2026-06-03T13:00:38Z",
+      "thumbnail": "https://i.ytimg.com/vi/ej8pjisr0Pc/hqdefault.jpg",
+      "channel": "Paramount Pictures",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "PQ0DS3oyWUE",
+      "title": "Oasis | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=PQ0DS3oyWUE",
+      "published": "2026-06-03T13:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/PQ0DS3oyWUE/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
+    },
+    {
+      "video_id": "A74LEcCrFo0",
+      "title": "The backrooms of the Black Lodge. #DavidLynch and #MarkFrost’s TWIN PEAKS.",
+      "url": "https://www.youtube.com/watch?v=A74LEcCrFo0",
+      "published": "2026-06-03T11:00:09Z",
+      "thumbnail": "https://i.ytimg.com/vi/A74LEcCrFo0/hqdefault.jpg",
+      "channel": "Mubi",
       "channel_tier": 2,
-      "is_trailer": true,
+      "is_trailer": false,
       "cinebret_match": {
-        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
-        "titulo": "La sombra del poder",
-        "anio": 2009
+        "pelicula_id": "9ecb200e-f284-4ede-8873-2b87f6185021",
+        "titulo": "Backrooms",
+        "anio": 2026
       }
     },
     {
-      "video_id": "SRSZpIT0OGA",
-      "title": "ILL - Official Story Trailer | State of Play 2026",
-      "url": "https://www.youtube.com/watch?v=SRSZpIT0OGA",
-      "published": "2026-06-02T22:05:51Z",
-      "thumbnail": "https://i.ytimg.com/vi/SRSZpIT0OGA/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
-        "titulo": "La sombra del poder",
-        "anio": 2009
-      }
+      "video_id": "0OaGiiL3G8I",
+      "title": "The Rest Is Football | Official Trailer | Netflix",
+      "url": "https://www.youtube.com/watch?v=0OaGiiL3G8I",
+      "published": "2026-06-03T09:00:00Z",
+      "thumbnail": "https://i.ytimg.com/vi/0OaGiiL3G8I/hqdefault.jpg",
+      "channel": "Netflix",
+      "channel_tier": 1,
+      "is_trailer": true
     },
     {
-      "video_id": "BaFInaWX7lk",
-      "title": "Dynasty Warriors 3 - Complete Edition: Remastered - Official Reveal Trailer | State of Play 2026",
-      "url": "https://www.youtube.com/watch?v=BaFInaWX7lk",
-      "published": "2026-06-02T22:05:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/BaFInaWX7lk/hqdefault.jpg",
-      "channel": "IGN",
-      "channel_tier": 2,
-      "is_trailer": true,
-      "cinebret_match": {
-        "pelicula_id": "8a6e14d5-bbe2-4613-b839-dffebb69baee",
-        "titulo": "La sombra del poder",
-        "anio": 2009
-      }
+      "video_id": "8CbZofkKPfY",
+      "title": "What to Watch: Euphoria Season 3 Finale",
+      "url": "https://www.youtube.com/watch?v=8CbZofkKPfY",
+      "published": "2026-06-02T23:13:24Z",
+      "thumbnail": "https://i.ytimg.com/vi/8CbZofkKPfY/hqdefault.jpg",
+      "channel": "Rotten Tomatoes",
+      "channel_tier": 1,
+      "is_trailer": false
     },
     {
       "video_id": "NTCjre18pk8",
@@ -161,7 +241,7 @@
     },
     {
       "video_id": "MN0k3DFXjdE",
-      "title": "Maxton Hall’s Top 5 Watched Moments | Prime Video",
+      "title": "5 Fan-Favorite Maxton Hall Moments | Prime Video",
       "url": "https://www.youtube.com/watch?v=MN0k3DFXjdE",
       "published": "2026-06-02T19:00:31Z",
       "thumbnail": "https://i.ytimg.com/vi/MN0k3DFXjdE/hqdefault.jpg",
@@ -191,7 +271,7 @@
     },
     {
       "video_id": "UjxC5iDmi60",
-      "title": "The Legend of Vox Machina Season 1-3 Recap | Prime Video",
+      "title": "Everything To Know Before Season 4 | The Legend of Vox Machina | Prime Video",
       "url": "https://www.youtube.com/watch?v=UjxC5iDmi60",
       "published": "2026-06-02T17:00:23Z",
       "thumbnail": "https://i.ytimg.com/vi/UjxC5iDmi60/hqdefault.jpg",
@@ -320,16 +400,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "t1VsIQvqwok",
-      "title": "For All Mankind — The Rebels Spring Their Trap | Season 5 Scene  | Apple TV",
-      "url": "https://www.youtube.com/watch?v=t1VsIQvqwok",
-      "published": "2026-06-01T22:02:16Z",
-      "thumbnail": "https://i.ytimg.com/vi/t1VsIQvqwok/hqdefault.jpg",
-      "channel": "Apple TV",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "__peUsDqQ-4",
       "title": "Have you experienced the new trailer for #EndofOakStreet?",
       "url": "https://www.youtube.com/watch?v=__peUsDqQ-4",
@@ -352,21 +422,6 @@
         "pelicula_id": "7249bdd1-f36d-4f93-bcc3-e012d805ad14",
         "titulo": "El final de Oak Street",
         "anio": 2026
-      }
-    },
-    {
-      "video_id": "4SB2siEXvVU",
-      "title": "Prince Henry lets loose | Red, White & Royal Blue | Prime Video",
-      "url": "https://www.youtube.com/watch?v=4SB2siEXvVU",
-      "published": "2026-06-01T21:00:35Z",
-      "thumbnail": "https://i.ytimg.com/vi/4SB2siEXvVU/hqdefault.jpg",
-      "channel": "Prime Video",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "286d8228-b16f-4f2b-9d95-e84349db204f",
-        "titulo": "Rojo, blanco y sangre azul",
-        "anio": 2023
       }
     },
     {
@@ -485,16 +540,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "mObRUsA7dPY",
-      "title": "I Will Find You | Official Trailer | Netflix",
-      "url": "https://www.youtube.com/watch?v=mObRUsA7dPY",
-      "published": "2026-06-01T14:00:01Z",
-      "thumbnail": "https://i.ytimg.com/vi/mObRUsA7dPY/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": true
-    },
-    {
       "video_id": "SdQn5GpCELM",
       "title": "The Debt | Attempting to Smuggle a Doctor Out of East Berlin",
       "url": "https://www.youtube.com/watch?v=SdQn5GpCELM",
@@ -503,21 +548,6 @@
       "channel": "Focus Features",
       "channel_tier": 2,
       "is_trailer": false
-    },
-    {
-      "video_id": "WGZwEyudkPY",
-      "title": "The girls in the movie. #SydneySweeney and #BobbiSalvörMenuez in UNDER THE SILVER LAKE",
-      "url": "https://www.youtube.com/watch?v=WGZwEyudkPY",
-      "published": "2026-05-31T19:00:44Z",
-      "thumbnail": "https://i.ytimg.com/vi/WGZwEyudkPY/hqdefault.jpg",
-      "channel": "Mubi",
-      "channel_tier": 2,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "3efaac68-9e5e-4765-af9e-d006893170f0",
-        "titulo": "Lo que esconde Silver Lake",
-        "anio": 2018
-      }
     },
     {
       "video_id": "VsLOlxLus7Q",
@@ -533,16 +563,6 @@
         "titulo": "Jason Bourne",
         "anio": 2016
       }
-    },
-    {
-      "video_id": "pZChOAyf-RE",
-      "title": "Tracy Morgan praises Eddie Murphy in AFI Life Achievement Award: A Tribute to Eddie Murphy",
-      "url": "https://www.youtube.com/watch?v=pZChOAyf-RE",
-      "published": "2026-05-31T14:00:30Z",
-      "thumbnail": "https://i.ytimg.com/vi/pZChOAyf-RE/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
     },
     {
       "video_id": "NMXfxy5zqCw",
@@ -567,31 +587,6 @@
         "pelicula_id": "6a9da4ec-120f-4bb5-b293-77ad8de60c6c",
         "titulo": "El mito de Bourne",
         "anio": 2004
-      }
-    },
-    {
-      "video_id": "yuvlYNJWmkE",
-      "title": "these rooms ain't big enough for us! 👻 #ScaryMovie is in theatres in ONE WEEK. Get tickets now.",
-      "url": "https://www.youtube.com/watch?v=yuvlYNJWmkE",
-      "published": "2026-05-30T17:19:25Z",
-      "thumbnail": "https://i.ytimg.com/vi/yuvlYNJWmkE/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "X7jT3vVMaEY",
-      "title": "Scary Movie | Backrooms (2026 Movie) - Marlon Wayans, Shawn Wayans, Anna Faris, Regina Hall",
-      "url": "https://www.youtube.com/watch?v=X7jT3vVMaEY",
-      "published": "2026-05-30T17:15:20Z",
-      "thumbnail": "https://i.ytimg.com/vi/X7jT3vVMaEY/hqdefault.jpg",
-      "channel": "Paramount Pictures",
-      "channel_tier": 1,
-      "is_trailer": false,
-      "cinebret_match": {
-        "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
-        "titulo": "Scary Movie",
-        "anio": 2026
       }
     },
     {
@@ -630,16 +625,6 @@
       "is_trailer": false
     },
     {
-      "video_id": "vnN612JaptM",
-      "title": "talking to your crush is an olympic sport. OFFICE ROMANCE premieres June 5",
-      "url": "https://www.youtube.com/watch?v=vnN612JaptM",
-      "published": "2026-05-29T18:30:31Z",
-      "thumbnail": "https://i.ytimg.com/vi/vnN612JaptM/hqdefault.jpg",
-      "channel": "Netflix",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
       "video_id": "f7AjFMcO-rc",
       "title": "Nic Cage's Spider-Noir Inspirations",
       "url": "https://www.youtube.com/watch?v=f7AjFMcO-rc",
@@ -658,26 +643,6 @@
       "channel": "Rotten Tomatoes",
       "channel_tier": 1,
       "is_trailer": false
-    },
-    {
-      "video_id": "L_f5KofGumk",
-      "title": "Arachnid Movements in Spider-Noir",
-      "url": "https://www.youtube.com/watch?v=L_f5KofGumk",
-      "published": "2026-05-28T17:30:29Z",
-      "thumbnail": "https://i.ytimg.com/vi/L_f5KofGumk/hqdefault.jpg",
-      "channel": "Rotten Tomatoes",
-      "channel_tier": 1,
-      "is_trailer": false
-    },
-    {
-      "video_id": "Yrfrf53ttYY",
-      "title": "Primetime | Official Teaser HD | A24",
-      "url": "https://www.youtube.com/watch?v=Yrfrf53ttYY",
-      "published": "2026-05-27T13:00:08Z",
-      "thumbnail": "https://i.ytimg.com/vi/Yrfrf53ttYY/hqdefault.jpg",
-      "channel": "A24",
-      "channel_tier": 1,
-      "is_trailer": true
     }
   ]
 }

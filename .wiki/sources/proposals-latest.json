@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-02T22:22:19.949Z",
-  "cycle": "pm",
+  "generated_at": "2026-06-03T15:26:57.175Z",
+  "cycle": "am",
   "passes_quality_gate": true,
   "top_count": 5,
   "backlog_count": 8,
@@ -24,12 +24,32 @@
   },
   "top": [
     {
+      "id": "119c0775fc431172",
+      "type": "FEED",
+      "priority": "alta",
+      "action": "generate_review",
+      "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
+      "reasoning": "Jackson cerró la trilogía con 11 Óscars; el cierre épico de una de tus sagas sagradas.",
+      "score": 98,
+      "category": "review",
+      "angle": "review",
+      "source_name": "cinebret-review",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-review",
+      "skill_args": {
+        "titulo": "The Lord of the Rings: The Return of the King",
+        "anio": 2003,
+        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+      },
+      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + Peter Jackson (muy respetado) + IMDb 9.0 + plataforma activa."
+    },
+    {
       "id": "6134534c62ee6a31",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "Parásitos (2019)",
-      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra maestra; una de tus 38 películas sagradas.",
+      "title": "Review: Parásitos (2019)",
+      "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; una de tus 38 películas sagradas pendiente de review.",
       "score": 97,
       "category": "review",
       "angle": "review",
@@ -41,75 +61,36 @@
         "anio": 2019,
         "pelicula_id": "14353e60-1b0d-4a67-8da2-7e6fcec005d7"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 8.5 + director Bong Joon-ho (Admired) + plataforma activa."
+      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + Bong Joon-ho (admired) + IMDb 8.5 + plataforma activa."
     },
     {
-      "id": "119c0775fc431172",
+      "id": "86cd64c42c4ddc8b",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_review",
-      "title": "El Señor de los Anillos: El Retorno del Rey (2003)",
-      "reasoning": "Jackson cerró la trilogía con 11 Óscars; una de tus 38 películas sagradas y el cierre épico por excelencia.",
-      "score": 96,
+      "title": "Review: Fight Club (1999)",
+      "reasoning": "Fincher y Pitt construyeron la gran decepción planificada del cine; tu rating 10 habla solo.",
+      "score": 97,
       "category": "review",
       "angle": "review",
       "source_name": "cinebret-review",
       "source_url": null,
       "skill_to_invoke": "cinebret-review",
       "skill_args": {
-        "titulo": "The Lord of the Rings: The Return of the King",
-        "anio": 2003,
-        "pelicula_id": "9565b926-eb3d-4849-9015-82343f35980e"
+        "titulo": "Fight Club",
+        "anio": 1999,
+        "pelicula_id": "bd949631-ddca-4355-8abb-471f9cbca5e2"
       },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + IMDb 9.0 + director Peter Jackson (muy respetado) + plataforma activa."
+      "critic_reason": "§4.5 review válida: Rating 10 + sello bret + David Fincher (olimpo) + IMDb 8.8 + plataforma activa."
     },
     {
-      "id": "6276902b8705f60e",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "generate_review",
-      "title": "Cómo entrenar a tu dragón (2025)",
-      "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "score": 95,
-      "category": "review",
-      "angle": "review",
-      "source_name": "cinebret-review",
-      "source_url": null,
-      "skill_to_invoke": "cinebret-review",
-      "skill_args": {
-        "titulo": "How to Train Your Dragon",
-        "anio": 2025,
-        "pelicula_id": "6d217b96-b9a6-4623-946c-a7b9b22f6c18"
-      },
-      "critic_reason": "§4.5 review válida: rating 10 + sello bret + director Dean DeBlois (muy respetado) + plataforma activa + año 2025; déficit de review activo."
-    },
-    {
-      "id": "a3e1514ade55f09a",
-      "type": "FEED",
-      "priority": "alta",
-      "action": "react_to_news",
-      "title": "Tom Holland llamó a Sony para retrasar Spider-Man y no chocar con La Odisea de Nolan",
-      "reasoning": "Holland postergó su propio estreno para no competir con Nolan; señal del peso de The Odyssey este verano.",
-      "score": 88,
-      "category": "contenido",
-      "angle": "casting",
-      "source_name": "Hollywood Reporter",
-      "source_url": "https://www.hollywoodreporter.com/movies/movie-news/tom-holland-delayed-spider-man-the-odyssey-called-sony-1236611855/",
-      "skill_to_invoke": "cinebret-list-from-news",
-      "skill_args": {
-        "url": "https://www.hollywoodreporter.com/movies/movie-news/tom-holland-delayed-spider-man-the-odyssey-called-sony-1236611855/",
-        "angle": "casting"
-      },
-      "critic_reason": "§4.2 director match Olimpo (Christopher Nolan) + §4.4 ángulo postable (casting/producción de The Odyssey); Tom Holland retrasó Spider-Man por Nolan."
-    },
-    {
-      "id": "2308c7f5aa9f8fb2",
+      "id": "d102e6ca68d3da55",
       "type": "FEED",
       "priority": "alta",
       "action": "generate_carousel_topic",
-      "title": "10 películas donde una sola escena lo cambia todo (y no es el final)",
-      "reasoning": "Las escenas pivote que redefinen todo lo anterior: Ledger, Hanks, Hopkins. Ángulo de actuación poco explorado.",
-      "score": 85,
+      "title": "10 actuaciones que destruyeron (físicamente) a los actores que las hicieron",
+      "reasoning": "Bale, Ledger, McConaughey: cuando el cine cobra un precio real en el cuerpo del actor.",
+      "score": 82,
       "category": "top",
       "angle": null,
       "source_name": "cinebret-carousel-topic",
@@ -119,24 +100,35 @@
         "topic_type": "custom",
         "topic": "__TBD_BY_CRITIC__"
       },
-      "critic_reason": "Slot creativo: kind=mood/colección-personal no está en recent_top_kinds; propongo lista de películas con el mejor primer plano de la historia — ángulo narrativo no obvio que conecta con el gusto de Alberto por actuaciones memorables."
+      "critic_reason": "Slot creativo: propongo kind=performance (actuaciones transformadoras), no está en recent_top_kinds [director, theme, genre, era, studio] ni en pool actual."
+    },
+    {
+      "id": "8023aaf275ffb029",
+      "type": "FEED",
+      "priority": "media",
+      "action": "generate_carousel_mood",
+      "title": "10 películas para ver cuando el invierno te aplasta el ánimo",
+      "reasoning": "Lista de mood invernal con alto rewatchability; kind ausente en los últimos 14 días.",
+      "score": 78,
+      "category": "top",
+      "angle": null,
+      "source_name": "cinebret-carousel-mood",
+      "source_url": null,
+      "skill_to_invoke": "cinebret-carousel-mood",
+      "skill_args": {
+        "mood": "Pa'l domingo de bajón",
+        "count": 10
+      },
+      "critic_reason": "§3 top válido: kind=mood no está en recent_top_kinds; ángulo invernal relevante al contexto de junio en hemisferio sur."
     }
   ],
   "backlog": [
-    {
-      "id": "86cd64c42c4ddc8b",
-      "type": "FEED",
-      "title": "Review: Fight Club (1999)",
-      "reasoning": "Tu rating 10 + sello bret en amazon prime, disney plus, netflix. Dirigida por David Fincher (Olimpo). Continuidad temática con tu última semana.",
-      "days_ago": 13,
-      "skill_to_invoke": "cinebret-review"
-    },
     {
       "id": "2cbe21c0e2cfc26c",
       "type": "FEED",
       "title": "Review: Parásitos (2019)",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta obra; revisión prioritaria tras el TOP de coreanas.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -144,7 +136,7 @@
       "type": "FEED",
       "title": "Review: Cómo entrenar a tu dragón (2025)",
       "reasoning": "Dean DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -152,7 +144,7 @@
       "type": "FEED",
       "title": "Cómo entrenar a tu dragón (2025) — live action de tu película rating 10",
       "reasoning": "DeBlois lleva su historia más personal al live action; tu rating 10 la convierte en prioridad máxima.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -160,7 +152,7 @@
       "type": "FEED",
       "title": "El Señor de los Anillos: El Retorno del Rey (2003) — el cierre épico",
       "reasoning": "Jackson cerró la trilogía con 11 Óscars; una de tus 38 películas sagradas.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -168,7 +160,7 @@
       "type": "FEED",
       "title": "Review: El Señor de los Anillos: El Retorno del Rey (2003)",
       "reasoning": "Rating 10, IMDb 9.0, sello bret; Peter Jackson con 3 sello bret y disponible en Amazon y HBO.",
-      "days_ago": 2,
+      "days_ago": 3,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -176,7 +168,7 @@
       "type": "FEED",
       "title": "Fight Club (1999) — Fincher en estado puro",
       "reasoning": "Fincher y Pitt construyeron una de las grandes decepciones planificadas del cine; tu rating 10 habla solo.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
     },
     {
@@ -184,61 +176,35 @@
       "type": "FEED",
       "title": "Parásitos (2019) — la obra maestra de Bong Joon-ho",
       "reasoning": "Bong Joon-ho ganó el Óscar con esta película; revisión prioritaria en el catálogo.",
-      "days_ago": 1,
+      "days_ago": 2,
       "skill_to_invoke": "cinebret-review"
+    },
+    {
+      "id": "0634cc8ebaa96f0c",
+      "type": "FEED",
+      "title": "Tom Holland llamó a Sony para retrasar Spider-Man y no chocar con La Odisea de Nolan",
+      "reasoning": "Holland postergó su propio estreno para no competir con Nolan; señal del peso de The Odyssey este verano.",
+      "days_ago": 1,
+      "skill_to_invoke": "cinebret-list-from-news"
     }
   ],
   "news": [
     {
-      "title_es": "Pattinson reveló la primera pregunta que le hizo Nolan cuando lo eligió para The Batman",
-      "summary_es": "Nolan preguntó sobre la capa antes que nada; anécdota que conecta a The Dark Knight con el casting de Pattinson.",
-      "source": "The Wrap",
+      "title_es": "Falleció Marcia Lucas (1945-2026), la editora que salvó Star Wars",
+      "summary_es": "Sin Marcia Lucas, Star Wars no habría sido lo que fue; su edición definió el montaje de la película original.",
+      "source": "Roger Ebert",
       "age_hours": 1,
-      "url": "https://www.thewrap.com/culture-lifestyle/culture/robert-pattinson-christopher-nolan-batman-first-question/",
-      "angle": "casting",
-      "catalog_match": {
-        "pelicula_id": "8bc7ab40-9dc7-42e8-9e20-5c9e085c4b33",
-        "titulo": "El caballero oscuro",
-        "anio": 2008
-      },
+      "url": "https://www.rogerebert.com/tributes/the-woman-who-saved-star-wars-marcia-lucas-1945-2026",
+      "angle": "obituary",
+      "catalog_match": null,
       "score": 72,
-      "reason": "§4.2 match al catálogo de calidad (El caballero oscuro, rating 10) + director match Olimpo (Christopher Nolan); ángulo informativo sobre casting Batman."
+      "reason": "§4.4 regla 2: Marcia Lucas editó Star Wars (Spielberg-tier cultural overlap, Lucas es figura del olimpo cultural); obituario relevante — editora que salvó una de las franquicias del catálogo de Alberto."
     },
     {
-      "title_es": "Zendaya y Holland reescribieron una escena de Spider-Man en el set porque no funcionaba",
-      "summary_es": "Holland describió a Zendaya como su 'salvavidas' en set; el director paró todo para reescribir la escena.",
-      "source": "Variety",
-      "age_hours": 1,
-      "url": "https://variety.com/2026/film/news/zendaya-tom-holland-spider-man-brand-new-day-rewrite-bad-scene-1236765076/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "e79d84e3-c8c5-489e-9573-2cb651988011",
-        "titulo": "Spider-Man: Un nuevo día",
-        "anio": 2026
-      },
-      "score": 65,
-      "reason": "§4.4 match al catálogo (Spider-Man: Brand New Day) con ángulo humano interesante; informativo pero no el mejor ángulo para propuesta vs. a3e1514ade55f09a."
-    },
-    {
-      "title_es": "Easter egg de Hereditary (2018): cultistas visibles en la transición noche/día",
-      "summary_es": "Detalle oculto en Hereditary que confirma la presencia del culto en la escena del fuego; dato de detrás de cámara.",
-      "source": "r/MovieDetails",
-      "age_hours": 0,
-      "url": "https://www.reddit.com/r/MovieDetails/comments/1tv5h34/in_hereditary2018_at_14709_during_the_daytonight/",
-      "angle": "cultural-moment",
-      "catalog_match": {
-        "pelicula_id": "915ef926-4bfd-49f4-9a04-c1c558f22465",
-        "titulo": "Hereditary",
-        "anio": 2018
-      },
-      "score": 62,
-      "reason": "§4.4 match al catálogo de calidad (Hereditary, sello bret) con detalle de Easter egg relevante; ángulo cultural-moment menor, no posteable pero informativo."
-    },
-    {
-      "title_es": "Trailer de Onslaught (A24, 2026): nuevo thriller del sello más interesante del cine actual",
-      "summary_es": "A24 lanzó el trailer de su próximo film; sin rating confirmado pero el sello merece seguimiento.",
+      "title_es": "Nuevo trailer de 'Onslaught' (A24, 2026)",
+      "summary_es": "A24 lanzó el trailer oficial de su próxima película; señal de una propuesta de autor para este año.",
       "source": "A24",
-      "age_hours": 9,
+      "age_hours": 26,
       "url": "https://www.youtube.com/watch?v=L24CYVpQ-LI",
       "angle": "trailer-drop",
       "catalog_match": {
@@ -247,40 +213,58 @@
         "anio": 2026
       },
       "score": 60,
-      "reason": "§4.4 match al catálogo (Onslaught 2026, A24) pero sin rating ni sello confirmado; A24 relevante para cinebret; ángulo informativo solo."
+      "reason": "§4.4 regla 3: A24 es sello de calidad y 'Onslaught' tiene match en catálogo (2026); sin director favorito confirmado pero A24 + trailer nuevo es ángulo informativo válido."
     },
     {
-      "title_es": "Trailer final de Scary Movie (2026): los Wayans y Anna Faris vuelven",
-      "summary_es": "Paramount lanzó el trailer final del reboot con el elenco original; sin confirmación de calidad aún.",
-      "source": "Paramount Pictures",
-      "age_hours": 30,
-      "url": "https://www.youtube.com/watch?v=cGgWAHXuTKc",
-      "angle": "sequel",
-      "catalog_match": {
-        "pelicula_id": "b5943e59-38eb-4eb8-886d-abdded8bd869",
-        "titulo": "Scary Movie",
-        "anio": 2026
-      },
+      "title_es": "Harrison Ford, candidato a recibir un Óscar Honorífico en los Governors Awards",
+      "summary_es": "Ford encabeza la lista de candidatos a Honorary Oscar; el reconocimiento a una leyenda del cine de acción.",
+      "source": "Variety",
+      "age_hours": 0,
+      "url": "https://variety.com/2026/film/awards/honorary-oscars-contenders-harrison-ford-glenn-close-1236765413/",
+      "angle": "oscar",
+      "catalog_match": null,
       "score": 58,
-      "reason": "§4.4 match al catálogo (Scary Movie 2026) pero el match de calidad es débil; sin sello ni rating confirmado; informativo como sequel/reboot."
+      "reason": "§4.4 regla 3: Harrison Ford es actor relevante del universo cinebret (Indiana Jones, Star Wars en catálogo) pero sin match directo a peli de calidad; ángulo informativo sobre Honorary Oscar."
+    },
+    {
+      "title_es": "The Ring (2002): discusión en Reddit sobre la escena de Samara saliendo del televisor",
+      "summary_es": "Verbinski creó una de las escenas más perturbadoras del horror; el culto de The Ring sigue vivo en Reddit.",
+      "source": "r/movies",
+      "age_hours": 1,
+      "url": "https://www.reddit.com/r/movies/comments/1tvqhfs/the_ring_2002_dir_gore_verbinski_samaras_ghost/",
+      "angle": "cultural-moment",
+      "catalog_match": null,
+      "score": 55,
+      "reason": "§4.4 regla 2: Gore Verbinski está en lista 'muy respetados' (3 sello bret); The Ring es catálogo con match de director; ángulo es cultural/Reddit discussion sobre escena icónica."
+    },
+    {
+      "title_es": "Trailer de 'By Any Means' (2026): Wahlberg y Yahya Abdul-Mateen II en thriller de acción",
+      "summary_es": "Paramount lanzó el trailer de su thriller de acción para septiembre; Wahlberg regresa al género.",
+      "source": "Paramount Pictures",
+      "age_hours": 2,
+      "url": "https://www.youtube.com/watch?v=6mqoMuGWCrI",
+      "angle": "trailer-drop",
+      "catalog_match": null,
+      "score": 52,
+      "reason": "§4.4 regla 3: 'By Any Means' es película de Paramount con Mark Wahlberg (actor del catálogo en Boogie Nights, etc.) pero sin match de calidad directo; ángulo informativo de trailer de acción 2026."
     }
   ],
   "raw_signal_counts": {
     "news_items": 120,
-    "newsapi_items": 90,
+    "newsapi_items": 91,
     "reddit_posts": 0,
-    "trailers": 59
+    "trailers": 58
   },
   "reconciliation_stats": {
     "acceptedCount": 0,
-    "agedCount": 0,
-    "expiredByTime": 0,
+    "agedCount": 2,
+    "expiredByTime": 2,
     "expiredByCritic": 0
   },
   "critic_usage": {
     "cache_read": 0,
     "cache_write": 8922,
-    "input": 16049,
-    "output": 10879
+    "input": 15486,
+    "output": 10029
   }
 }
